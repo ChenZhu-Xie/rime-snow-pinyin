@@ -23,7 +23,7 @@ switches:
     reset: 1
   - name: chaifen
     states: [ 隐藏, 拆分 ]
-    reset: 0
+    reset: 1
   - name: unicode
     states: [ 隐藏, 注解 ]
     reset: 0
