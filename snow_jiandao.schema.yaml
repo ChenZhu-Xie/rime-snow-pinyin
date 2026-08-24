@@ -140,7 +140,7 @@ patch:
   translator/shape_elements: snow_jiandao_chaifen
   translator/shape_mapping: "radical_jiandao.txt"
   key_binder/bindings/+:
-    - { when: always, accept: "Control+j", toggle: buffered }
+    # - { when: always, accept: "Control+j", toggle: buffered }
     - { when: always, accept: "Control+l", send_sequence: "{Home}{Right}{Right}" }
     - { when: always, accept: v, toggle: buffered }
     - { when: composing, accept: v, send: v }
