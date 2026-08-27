@@ -61,6 +61,21 @@ deploy:
       # 缓冲造词
       - send: "ekr qz  krqz"
         assert: cand[1].text == "可爱裙子"
+      # 略码与顶屏
+      - send: "krK"
+        assert: commit == "可爱了一可爱"
+      - send: "kxP"
+        assert: commit == "开不开心"
+      - send: "kxJ"
+        assert: commit == "开了开心"
+      - send: "kxN"
+        assert: commit == "开里开心"
+      - send: "kxG"
+        assert: commit == "开个心"
+      - send: "krU"
+        assert: commit == "可爱呀可爱"
+      - send: "dG"
+        assert: commit == "都个"
   # 无理音节
   special:
     patch:

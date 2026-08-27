@@ -14,6 +14,13 @@ local lookup = {
   ["F"] = "一",
   ["R"] = "啊",
   ["U"] = "呀",
+  ["K"] = "了一",
+}
+
+local partial_lookup = {
+  ["J"] = "了",
+  ["P"] = "不",
+  ["N"] = "里",
 }
 
 ---@param key_event KeyEvent
@@ -41,6 +48,17 @@ function this.func(key_event, env)
     context:commit()
     env.engine:commit_text(lookup[incoming])
     env.engine:commit_text(selection.text)
+  elseif partial_lookup[incoming] ~= nil then -- 插入并部分重复（ＡＸＡＢ）
+    env.engine:commit_text(snow.sub(selection.text, 1, 1) .. partial_lookup[incoming])
+    context:confirm_current_selection()
+    context:commit()
+  elseif incoming == 'G' then -- 只插入不重复（Ａ个Ｂ）
+    if length == 1 then
+      env.engine:commit_text(selection.text .. '个')
+    else
+      env.engine:commit_text(snow.sub(selection.text, 1, 1) .. '个' .. snow.sub(selection.text, 2))
+    end
+    context:clear()
   elseif incoming == 'E' or incoming == 'I' then -- 重复词的首字或末字
     if incoming == 'E' then
       env.engine:commit_text(snow.sub(selection.text, 1, 1))

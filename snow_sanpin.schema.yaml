@@ -22,6 +22,7 @@ engine:
     - recognizer
     - lua_processor@*snow.shape_processor
     - key_binder
+    - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - speller
