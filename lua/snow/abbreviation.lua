@@ -59,13 +59,17 @@ function this.func(key_event, env)
       env.engine:commit_text(snow.sub(selection.text, 1, 1) .. '个' .. snow.sub(selection.text, 2))
     end
     context:clear()
-  elseif incoming == 'E' or incoming == 'I' then -- 重复词的首字或末字
+  elseif incoming == 'E' or incoming == 'T' or incoming == 'Y' or incoming == 'I' then -- 重复词的首字或末字（E: 前插首, T: 前插末, Y: 后插首, I: 后插末）
     if incoming == 'E' then
       env.engine:commit_text(snow.sub(selection.text, 1, 1))
+    elseif incoming == 'T' then
+      env.engine:commit_text(snow.sub(selection.text, -1, -1))
     end
     context:confirm_current_selection()
     context:commit()
-    if incoming == 'I' then
+    if incoming == 'Y' then
+      env.engine:commit_text(snow.sub(selection.text, 1, 1))
+    elseif incoming == 'I' then
       env.engine:commit_text(snow.sub(selection.text, -1, -1))
     end
   elseif incoming == 'A' then -- 重复多字词
