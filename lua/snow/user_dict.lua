@@ -29,7 +29,7 @@ function this.init(env)
   env.add_word = ""
   env.add_input = ""
   env.add_index = 0
-  env.fix_key = KeyEvent("Control+semicolon")
+  env.fix_key = KeyEvent("Control+comma")
   env.add_key = KeyEvent("Control+apostrophe")
   env.up_key = KeyEvent("Control+bracketleft")
   env.down_key = KeyEvent("Control+bracketright")

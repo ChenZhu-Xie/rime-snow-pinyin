@@ -793,7 +793,7 @@ function makeCandidates(config: Config): [any, Collection] {
 		systemImageName: "delete.left",
 	};
 	const candidateContextMenu: CandidateContextMenu = [
-		{ name: "固定", action: { sendKeys: "Control+semicolon" } },
+		{ name: "固定", action: { sendKeys: "Control+comma" } },
 		{ name: "前移", action: { sendKeys: "Control+bracketleft" } },
 		{ name: "后移", action: { sendKeys: "Control+bracketright" } },
 		{ name: "加词", action: { sendKeys: "Control+apostrophe" } },
