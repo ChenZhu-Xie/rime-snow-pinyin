@@ -21,6 +21,7 @@ engine:
     - ascii_composer
     - recognizer
     - lua_processor@*snow.shape_processor
+    - lua_processor@*snow.history
     - key_binder
     - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character

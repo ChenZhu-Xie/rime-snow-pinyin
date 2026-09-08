@@ -34,14 +34,18 @@ function t12.func(input, segment, env)
   -- 一字词
   if rime_api.regex_match(input, env.pattern) or env.engine.context:get_option("fluid") == true then
     local translation = env.translator:query(input, segment)
-    for candidate in translation:iter() do
-      yield(snow.prepare(candidate, input, true))
+    if translation then
+      for candidate in translation:iter() do
+        yield(snow.prepare(candidate, input, true))
+      end
     end
     if input:len() == 2 then
       local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2))
       local translation2 = env.translator:query(proxy, segment)
-      for candidate in translation2:iter() do
-        yield(snow.prepare(candidate, proxy, true))
+      if translation2 then
+        for candidate in translation2:iter() do
+          yield(snow.prepare(candidate, proxy, true))
+        end
       end
     end
   end
@@ -116,9 +120,11 @@ function jianpin.func(input, segment, env)
       )
     end
     local translation = env.translator:query(proxy, segment)
-    for candidate in translation:iter() do
-      if utf8.len(candidate.text) >= input:gsub("[viuoa]", ""):len() and candidate.type ~= "sentence" then
-        yield(snow.prepare(candidate, proxy, true))
+    if translation then
+      for candidate in translation:iter() do
+        if utf8.len(candidate.text) >= input:gsub("[viuoa]", ""):len() and candidate.type ~= "sentence" then
+          yield(snow.prepare(candidate, proxy, true))
+        end
       end
     end
   end

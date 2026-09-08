@@ -25,6 +25,7 @@ engine:
     - recognizer
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor
+    - lua_processor@*snow.history
     - key_binder
     - lua_processor@*snow.select_character
     - speller

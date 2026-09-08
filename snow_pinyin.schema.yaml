@@ -29,6 +29,7 @@ engine:
   processors:
     - ascii_composer
     - recognizer
+    - lua_processor@*snow.history
     - key_binder
     - speller
     - punctuator
