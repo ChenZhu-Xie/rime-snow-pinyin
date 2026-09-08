@@ -98,8 +98,8 @@ function history.process(key, env)
     return snow.kNoop
   end
 
-  -- 处理 Alt+数字 快捷选词（同时兼容 23456 和 23890 方案，不影响纯数字的 i+数字 符号功能）
-  if key:alt() and not key:ctrl() then
+  -- 处理 Ctrl+数字 或 Alt+数字 快捷选词（同时兼容 23456 和 23890 方案，不影响纯数字的 i+数字 符号功能）
+  if key:ctrl() or key:alt() then
     local char = ""
     if key.keycode >= 0x30 and key.keycode <= 0x39 then
       char = string.char(key.keycode)
@@ -107,20 +107,20 @@ function history.process(key, env)
     local repr = key:repr()
 
     local target_slot = nil
-    -- 第 2 候选：Alt+2
-    if char == "2" or repr == "Alt+2" then
+    -- 第 2 候选：2
+    if char == "2" or repr:find("2$") then
       target_slot = 1
-    -- 第 3 候选：Alt+3
-    elseif char == "3" or repr == "Alt+3" then
+    -- 第 3 候选：3
+    elseif char == "3" or repr:find("3$") then
       target_slot = 2
-    -- 第 4 候选：Alt+4 (23456方案) 或 Alt+8 (23890方案)
-    elseif char == "4" or char == "8" or repr == "Alt+4" or repr == "Alt+8" then
+    -- 第 4 候选：4 (23456方案) 或 8 (23890方案)
+    elseif char == "4" or char == "8" or repr:find("4$") or repr:find("8$") then
       target_slot = 3
-    -- 第 5 候选：Alt+5 (23456方案) 或 Alt+9 (23890方案)
-    elseif char == "5" or char == "9" or repr == "Alt+5" or repr == "Alt+9" then
+    -- 第 5 候选：5 (23456方案) 或 9 (23890方案)
+    elseif char == "5" or char == "9" or repr:find("5$") or repr:find("9$") then
       target_slot = 4
-    -- 第 6 候选：Alt+6 (23456方案) 或 Alt+0 (23890方案)
-    elseif char == "6" or char == "0" or repr == "Alt+6" or repr == "Alt+0" then
+    -- 第 6 候选：6 (23456方案) 或 0 (23890方案)
+    elseif char == "6" or char == "0" or repr:find("6$") or repr:find("0$") then
       target_slot = 5
     end
 
