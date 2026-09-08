@@ -32,7 +32,7 @@ engine:
   translators:
     - punct_translator
     - lua_translator@*snow.yingpin
-    - history_translator
+    - lua_translator@*snow.history
   filters:
     - uniquifier
     - simplifier

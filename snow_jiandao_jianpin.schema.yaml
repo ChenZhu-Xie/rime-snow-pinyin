@@ -34,7 +34,7 @@ engine:
   translators:
     - punct_translator
     - script_translator
-    - history_translator
+    - lua_translator@*snow.history
   filters:
     - uniquifier
     - simplifier

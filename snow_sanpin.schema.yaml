@@ -47,7 +47,7 @@ engine:
     - lua_translator@*snow.datetime
     - lua_translator@*snow.number
     - lua_translator@*snow.calculator
-    - history_translator
+    - lua_translator@*snow.history
   filters:
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sanpin

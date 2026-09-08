@@ -74,7 +74,7 @@ engine:
     - lua_translator@*snow.datetime
     - lua_translator@*snow.number
     - lua_translator@*snow.calculator
-    - history_translator
+    - lua_translator@*snow.history
   filters:
     - lua_filter@*snow.fix
     - lua_filter@*snow.qingyun

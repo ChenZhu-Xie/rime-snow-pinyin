@@ -45,6 +45,7 @@ engine:
     - punct_translator
     - table_translator@stroke
     - script_translator
+    - lua_translator@*snow.history
   filters:
     - reverse_lookup_filter@lookup_pinyin
     - simplifier
@@ -116,8 +117,9 @@ pinyin:
 history:
   tag: history
   input: "i"
-  size: 5
-  initial_quality: -1
+  size: 20
+  max_records: 100
+  initial_quality: 1000
 
 lookup_pinyin:
   tags: [stroke]
