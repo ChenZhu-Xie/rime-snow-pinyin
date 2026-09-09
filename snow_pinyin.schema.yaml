@@ -140,8 +140,8 @@ key_binder:
     - { when: has_menu, accept: "Control+l", send_sequence: "{Down}{Down}" }
 
     # 光标/音节切换
+    - { when: composing, accept: "Control+u", send: Shift+Left }
     - { when: composing, accept: "Control+i", send: Shift+Right }
-    - { when: composing, accept: "Control+o", send: Shift+Left }
 
     # Emacs 编辑键
     - { accept: "Control+p", send: Up, when: composing }
