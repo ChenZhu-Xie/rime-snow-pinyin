@@ -19,19 +19,19 @@ deploy:
   popping:
     tests:
       # 组词规则
-      - send: bgv
+      - send: bgi
         assert: cand[1].text == "冰"
       - send: bgxh
         assert: has("冰雪")
-      - send: jbekoo
+      - send: jbekaa
         assert: has("近世")
       - send: erf
         assert: has("输入法")
-      - send: bhhviv
+      - send: bhhivi
         assert: has("白花花")
       - send: wmxw
         assert: has("充满希望")
-      - send: jjjjuv
+      - send: jjjjui
         assert: has("经济基础")
       - send: fwerF
         assert: has("中文输入法")
@@ -54,12 +54,12 @@ deploy:
       # 顶功
       - send: yiyi
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bgvxhu
+      - send: bgixhu
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pbyberf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 动态码长
-      - send: "ekekvoekek"
+      - send: "ekekiaekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
       - send: "vbe kk  bekk"

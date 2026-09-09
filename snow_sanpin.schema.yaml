@@ -95,7 +95,7 @@ sanpin_algebra:
   - xform/(er|u)(?=\d)/J/
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
   # 声调
-  - xlit/12345/viuoa/
+  - xlit/12345/ivuao/
 
 jianpin:
   dictionary: snow_pinyin
@@ -116,30 +116,30 @@ jianpin2:
     - snow_pinyin.user
 
 speller:
-  alphabet: bpmfdtnlgkhjqxzcsrwyeviuoa
+  alphabet: bpmfdtnlgkhjqxzcsrwyeivuao
   initials: bpmfdtnlgkhjqxzcsrwye
   delimiter: " "
   shape:
-    - match: "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]?"
+    - match: "[bpmfdtnlgkhjqxzcsrywe][a-z][ivuao]?"
       accept: "1"
     - match_shape: "1"
       accept: "[a-z]"
-    - match: "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]"
-      accept: "[viuoa]"
+    - match: "[bpmfdtnlgkhjqxzcsrywe][a-z][ivuao]"
+      accept: "[ivuao]"
     - match_shape: ".+"
-      accept: "[viuoa]"
+      accept: "[ivuao]"
   popping:
     # 630
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe][viuoa]+"
+      match: "[bpmfdtnlgkhjqxzcsrywe][ivuao]+"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 单字和三字词
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe]{2,3}[viuoa]+"
+      match: "[bpmfdtnlgkhjqxzcsrywe]{2,3}[ivuao]+"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 四字词和多字词
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe]{4,}[viuoa]*"
+      match: "[bpmfdtnlgkhjqxzcsrywe]{4,}[ivuao]*"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 大写参与编码
     - when: popping
@@ -156,7 +156,7 @@ speller:
     __include: /sanpin_algebra
     __append:
       - abbrev/^([a-z]).+$/$1/ # 简拼
-      - derive/[viuoa]$// # 无声调
+      - derive/[ivuao]$// # 无声调
 
 lookup_sanpin:
   tags: [pinyin]
@@ -179,9 +179,9 @@ patch:
       reset: 0
   translator/prism: snow_sanpin
   translator/preedit_format: null
-  translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[viuoa]?"
-  translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[viuoa]{0,2}"
-  translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywe]{3,}[viuoa]{0,3}"
+  translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[ivuao]?"
+  translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[ivuao]{0,2}"
+  translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywe]{3,}[ivuao]{0,3}"
   key_binder/bindings/+:
     - { when: always, accept: "Control+period", toggle: buffered }
     - { when: always, accept: v, toggle: buffered }
