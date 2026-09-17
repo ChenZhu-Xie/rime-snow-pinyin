@@ -1,5 +1,5 @@
 -- 上屏历史翻译器与处理器 (History Translator & Processor)
--- 1. 记录上屏历史，过滤纯空格与空白，避免空格与退格打断历史，并支持超过 5 条（默认 20 条）的查询与多页翻页
+-- 1. 记录上屏历史，过滤纯空白与纯标点，避免无意义提交污染历史，并支持超过 5 条（默认 20 条）的查询与多页翻页
 -- 2. 在 i 历史列表激活时，支持通过 Alt+2/3/4/5/6 或 Alt+2/3/8/9/0 快速选定对应非首候选（兼顾不同方案，避免占用 i+数字 的原有符号功能）
 
 local snow = require "snow.snow"
@@ -8,6 +8,88 @@ local history = {}
 
 -- 模块级共享历史记录，跨方案切换时保持连续性
 local shared_history = {}
+
+-- 常见 Unicode 标点所在区段。这里按码点判断，避免 Lua 的字节模式把
+-- UTF-8 中文标点拆开后误判；未列入的字符（例如 emoji）仍可正常记录。
+local punctuation_ranges = {
+  { 0x0021, 0x002F }, -- ASCII 标点与符号
+  { 0x003A, 0x0040 },
+  { 0x005B, 0x0060 },
+  { 0x007B, 0x007E },
+  { 0x2000, 0x206F }, -- 通用标点
+  { 0x2E00, 0x2E7F }, -- 补充标点
+  { 0x3000, 0x303F }, -- CJK 符号和标点
+  { 0xFE10, 0xFE1F }, -- 竖排标点
+  { 0xFE30, 0xFE6F }, -- CJK 兼容形式、小写变体
+  { 0xFF01, 0xFF0F }, -- 全角 ASCII 标点
+  { 0xFF1A, 0xFF20 },
+  { 0xFF3B, 0xFF40 },
+  { 0xFF5B, 0xFF65 },
+  { 0xFFE0, 0xFFE6 }, -- 全角货币及符号
+}
+
+local punctuation_codepoints = {
+  [0x00A1] = true, -- ¡
+  [0x00A7] = true, -- §
+  [0x00AB] = true, -- «
+  [0x00B6] = true, -- ¶
+  [0x00B7] = true, -- ·
+  [0x00BB] = true, -- »
+  [0x00BF] = true, -- ¿
+  [0x037E] = true, -- Greek question mark
+  [0x0387] = true, -- Greek ano teleia
+}
+
+local whitespace_codepoints = {
+  [0x0020] = true,
+  [0x0085] = true,
+  [0x00A0] = true,
+  [0x1680] = true,
+  [0x2028] = true,
+  [0x2029] = true,
+  [0x202F] = true,
+  [0x205F] = true,
+  [0x3000] = true,
+}
+
+---@param codepoint integer
+---@return boolean
+local function is_punctuation(codepoint)
+  if punctuation_codepoints[codepoint] then
+    return true
+  end
+  for _, range in ipairs(punctuation_ranges) do
+    if codepoint >= range[1] and codepoint <= range[2] then
+      return true
+    end
+  end
+  return false
+end
+
+---@param codepoint integer
+---@return boolean
+local function is_whitespace(codepoint)
+  return (codepoint >= 0x0009 and codepoint <= 0x000D)
+      or (codepoint >= 0x2000 and codepoint <= 0x200A)
+      or whitespace_codepoints[codepoint] == true
+end
+
+---@param text string
+---@return boolean
+local function has_history_content(text)
+  -- 仅由空白、标点构成的提交不进入历史；含文字、数字或 emoji 的提交保留。
+  local ok, has_content = pcall(function()
+    for _, codepoint in utf8.codes(text) do
+      if not is_whitespace(codepoint) and not is_punctuation(codepoint) then
+        return true
+      end
+    end
+    return false
+  end)
+
+  -- 对异常 UTF-8 保守处理，不因过滤器丢弃用户提交。
+  return not ok or has_content
+end
 
 ---@class HistoryEnv: Env
 ---@field connection Connection
@@ -36,8 +118,8 @@ function history.init(env)
         return
       end
 
-      -- 过滤纯空白字符（如空格、换行、制表符）及查询引导键本身（如 "i"）
-      if commit_text:match("^%s+$") or commit_text == env.input_key then
+      -- 过滤查询引导键，以及仅由空白或标点构成的提交。
+      if commit_text == env.input_key or not has_history_content(commit_text) then
         return
       end
 
