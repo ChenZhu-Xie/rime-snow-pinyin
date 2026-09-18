@@ -52,6 +52,8 @@ engine:
     - lua_translator@*snow.calculator
     - history_translator
   filters:
+    - lua_filter@*snow.placeholder
+    - lua_filter@*snow.enforce
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
@@ -97,7 +99,6 @@ speller:
   algebra:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
-      - abbrev/^([a-z]).+$/$1/ # 简拼
       - xform/[viuoa]$// # 无声调
 
 jianpin:
@@ -142,8 +143,6 @@ patch:
   key_binder/bindings/+:
     - { when: always, accept: "Control+j", toggle: buffered }
     - { when: always, accept: "Control+l", send_sequence: "{Home}{Right}{Right}" }
-    - { when: always, accept: v, toggle: buffered }
-    - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: null
   recognizer/patterns/jianpin: "^[bpmfdtnlgkhjqxzcsrywe]{3,}$"
   stroke/prism: snow_jiandao_bihua

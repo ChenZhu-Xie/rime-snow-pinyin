@@ -184,13 +184,32 @@ end
 function filter.func(translation, env)
   local context = env.engine.context
   local shape_input = context:get_property("shape_input")
+  local has_candidate = false
+  local has_match = false
+  ---@type string?
+  local first_preedit = nil
   for candidate in translation:iter() do
+    has_candidate = true
     local show, prompt, comment = filter.handle_candidate(candidate.text, shape_input, env)
+    if not first_preedit and prompt then
+      first_preedit = candidate.preedit .. prompt
+      snow.errorf("候选词 %s 的 preedit: %s, prompt: %s", candidate.text, candidate.preedit, prompt)
+    end
     if show then
       if comment then snow.comment(candidate, comment) end
       if prompt then candidate.preedit = candidate.preedit .. prompt end
+      has_match = true
       yield(candidate)
     end
+  end
+  if has_candidate and not has_match then
+    local segment = context.composition:toSegmentation():back()
+    if not segment then
+      return
+    end
+    local candidate = Candidate("hint", segment.start, segment._end, "🈚️", "无匹配候选词")
+    candidate.preedit = first_preedit or ""
+    yield(candidate)
   end
 end
 

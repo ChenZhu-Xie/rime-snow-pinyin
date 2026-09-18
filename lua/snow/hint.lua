@@ -25,22 +25,23 @@ end
 function filter.func(translation, env)
   local input = snow.current(env.engine.context) or ""
   local shape_input = env.engine.context:get_property("shape_input")
+  local full_input = input
   if shape_input then
-    input = input .. shape_input
+    full_input = full_input .. shape_input
   end
   local affix = { "v", "i", "u", "o", "a" }
   local first = true
-  if rime_api.regex_match(input, "[bpmfdtnlgkhjqxzcsrywe][viuoa]?") then
+  if rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe][viuoa]?") then
     -- 一码，提示 sb 简词
     for candidate in translation:iter() do
       if first then
         yield(candidate)
         for _, letter in ipairs(affix) do
-          local code = input .. letter
+          local code = full_input .. letter
           local word = env.jiandao[code]
           if word then
             local hint_candidate = Candidate("hint", candidate.start, candidate._end, word, code)
-            hint_candidate.preedit = input
+            hint_candidate.preedit = full_input
             yield(hint_candidate)
           end
         end
@@ -49,7 +50,7 @@ function filter.func(translation, env)
       end
       first = false
     end
-  elseif rime_api.regex_match(input, "[bpmfdtnlgkhjqxzcsrywe]{3,4}[vioua]*") then
+  elseif rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{3,}[vioua]*") then
     -- 四码，提示所有简词
     for candidate in translation:iter() do
       if env.reverse_630[candidate.text] then
@@ -69,7 +70,7 @@ end
 ---@param segment Segment
 ---@param env Env
 function filter.tags_match(segment, env)
-  return segment:has_tag("abc")
+  return segment:has_tag("abc") or segment:has_tag("jianpin")
 end
 
 return filter
