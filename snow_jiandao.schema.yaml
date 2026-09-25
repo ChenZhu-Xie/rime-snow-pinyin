@@ -53,6 +53,8 @@ engine:
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history
   filters:
+    - lua_filter@*snow.placeholder
+    - lua_filter@*snow.enforce
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
@@ -98,7 +100,6 @@ speller:
   algebra:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
-      - abbrev/^([a-z]).+$/$1/ # 简拼
       - xform/[viuoa]$// # 无声调
 
 jianpin:

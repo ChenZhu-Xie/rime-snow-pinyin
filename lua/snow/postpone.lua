@@ -50,8 +50,6 @@ end
 ---@param input string
 ---@param env SnowPostponeEnv
 function this.finalize(postponed_candidates, regular_candidates, final_table, input, env)
-  snow.errorf("后置过滤器：输入 %s，已知候选=%s，后置候选=%s，常规候选=%s",
-    input, format_known_candidates(env.known_candidates), format_candidate_list(postponed_candidates), format_candidate_list(regular_candidates))
   ---@type Candidate[]
   local merged_candidates = { regular_candidates[1] }
   table.sort(postponed_candidates, function(a, b)

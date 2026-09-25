@@ -34,7 +34,7 @@ export class SpellingAlgebra {
 				});
 			}
 		});
-		parsed.push({ from: /^([a-z]{3})$/g, to: "$1o" });
+		// parsed.push({ from: /^([a-z]{3})$/g, to: "$1o" });
 		this.rules = parsed;
 	}
 

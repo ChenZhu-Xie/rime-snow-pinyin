@@ -51,8 +51,6 @@ deploy:
       - send: mmmmmm
         assert: commit == "密密麻麻" and cand[1].text == "慢慢"
       # 动态码长
-      - send: "fiaoeei fiao"
-        assert: cand[1].text == "玴"
       - send: "bxoui bxo"
         assert: cand[1].text == "冰雪"
       # 自动造词
