@@ -44,15 +44,15 @@ deploy:
         assert: cand[1].text == "学"
       - send: be
         assert: cand[1].text == "表示"
-      - send: yo
+      - send: ya
         assert: cand[1].text == "一个"
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"
-      - send: ekeki
+      - send: ekekv
         assert: cand[2].text == "事实"
       # 顶功
-      - send: yoyo
+      - send: yaya
         assert: commit == "一个" and cand[1].text == "一个"
       - send: bgixhu
         assert: commit == "冰" and cand[1].text == "雪"
@@ -62,5 +62,5 @@ deploy:
       - send: "ekekiaekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "vjp mzv  jpmz"
+      - send: "vjp mzi  jpmz"
         assert: cand[1].text == "长猫"

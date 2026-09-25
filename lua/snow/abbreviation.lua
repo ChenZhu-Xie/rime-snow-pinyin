@@ -39,6 +39,11 @@ function this.func(key_event, env)
     return snow.kNoop
   end
   local incoming = utf8.char(key_event.keycode)
+  local input = snow.current(context) or ""
+  -- 弹出模式下，四码后的大写字母继续参与编码；短码仍使用略码功能。
+  if context:get_option("popping") and input:match("^[a-z][a-z][a-z][a-z]+$") then
+    return snow.kNoop
+  end
   if incoming == '[' and length == 1 then -- 重复一字词
     context:confirm_current_selection()
     context:commit()

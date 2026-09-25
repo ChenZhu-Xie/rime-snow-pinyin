@@ -136,6 +136,7 @@ function snow.table_from_tsv(path)
     if not content or not character then
       goto continue
     end
+    content = content:gsub("\r$", "")
     result[character] = content
     ::continue::
   end

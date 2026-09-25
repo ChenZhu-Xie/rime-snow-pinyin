@@ -30,7 +30,9 @@ function filter.func(translation, env)
   if shape_input then
     full_input = full_input .. shape_input
   end
-  local affix = { "v", "i", "u", "o", "a" }
+  local affix = env.engine.schema.schema_id == "snow_sanpin"
+      and { "i", "v", "u", "a", "o" }
+      or { "v", "i", "u", "o", "a" }
   local first = true
   if rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe][viuoa]?") then
     -- 一码，提示 sb 简词

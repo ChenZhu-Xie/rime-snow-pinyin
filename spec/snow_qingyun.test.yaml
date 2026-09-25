@@ -51,5 +51,5 @@ deploy:
       - send: mmmmmm
         assert: commit == "密密麻麻" and cand[1].text == "步"
       # 形音替换造词
-      - send: "{Control+j}ppjgkvnagnpabw  mzxk"
+      - send: "{Control+period}ppjgkvnagnpabw  mzxk"
         assert: cand[1].text == "梦泽闲客"
