@@ -23,6 +23,43 @@ local function encode(element, map)
   return result
 end
 
+--- 冰雪四拼和冰雪三拼的笔画匹配函数
+--- @param text string
+--- @param partial_code string
+--- @param env AssistEnv
+local function stroke_match(text, partial_code, env)
+  local prompt = partial_code:len() > 0 and
+      " 笔画 [" .. partial_code:gsub(".", { ["e"] = "一", ["i"] = "丨", ["u"] = "丿", ["o"] = "丶", ["a"] = "乙" }) .. "]" or
+      nil
+  local elements = snow.split(env.strokes:lookup(text), " ")
+  local match = #elements == 0
+  ---@type string[]
+  local codes = {}
+  for _, element in ipairs(elements) do
+    local code = encode(element, { ["h"] = "e", ["s"] = "i", ["p"] = "u", ["n"] = "o", ["z"] = "a" })
+    if code:len() > partial_code:len() + 4 then
+      code = code:sub(1, partial_code:len() + 4) .. "~"
+    end
+    table.insert(codes, code)
+    ---@type boolean
+    match = match or code:sub(1, #partial_code) == partial_code
+  end
+  local comment = table.concat(codes, " ")
+  return match, prompt, comment
+end
+
+--- @param text string
+--- @param partial_code string
+--- @param env AssistEnv
+local function radical_match(text, partial_code, env)
+  local element = env.shape_elements:lookup(text) or ""
+  local code = encode(element, env.shape_mapping)
+  local prompt = " 部首 [" .. partial_code .. "]"
+  local comment = code .. " " .. element
+  local match = not code or code:sub(1, #partial_code) == partial_code
+  return match, prompt, comment
+end
+
 --- 键道的特殊处理
 ---@param text string
 ---@param current string
@@ -82,67 +119,22 @@ function filter.handle_candidate(text, shape_input, env)
   local current = snow.current(env.engine.context) or ""
   local id = env.engine.schema.schema_id
   if id == "snow_sipin" then -- 冰雪四拼
-    if shape_input:len() > 0 or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrwyv][aeiou]{3}") then
-      local code = ""
-      local partial_code = ""
-      ---@type string?
-      local prompt = ""
-      local comment = ""
-      local match = false
-      if shape_input:sub(1, 1) == "1" then
-        partial_code = shape_input:sub(2)
-        local element = env.shape_elements:lookup(text) or ""
-        code = encode(element, env.shape_mapping)
-        prompt = " 部首 [" .. partial_code .. "]"
-        comment = code .. " " .. element
-        match = not code or code:sub(1, #partial_code) == partial_code
-      else
-        partial_code = shape_input
-        prompt = partial_code:len() > 0 and
-            " 笔画 [" .. partial_code:gsub(".", { ["e"] = "一", ["i"] = "丨", ["u"] = "丿", ["o"] = "丶", ["a"] = "乙" }) .. "]" or
-            nil
-        local elements = snow.split(env.strokes:lookup(text), " ")
-        match = #elements == 0
-        ---@type string[]
-        local codes = {}
-        for _, element in ipairs(elements) do
-          code = encode(element, { ["h"] = "e", ["s"] = "i", ["p"] = "u", ["n"] = "o", ["z"] = "a" })
-          if code:len() > partial_code:len() + 4 then
-            code = code:sub(1, partial_code:len() + 4) .. "~"
-          end
-          table.insert(codes, code)
-          match = match or code:sub(1, #partial_code) == partial_code
-        end
-        comment = table.concat(codes, " ")
-      end
-      return match, prompt, comment
-    else
+    if shape_input:len() == 0 and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrwyv][aeiou]{3}") then
       return true, nil, nil
     end
-  elseif id == "snow_sanpin" then -- 冰雪三拼
-    if shape_input:len() > 0 or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]") then
-      local code = ""
-      local partial_code = ""
-      local prompt = ""
-      local comment = ""
-      if shape_input:sub(1, 1) == "1" then
-        partial_code = shape_input:sub(2)
-        local element = env.shape_elements:lookup(text) or ""
-        code = encode(element, env.shape_mapping)
-        prompt = " 部首 [" .. partial_code .. "]"
-        comment = code .. " " .. element
-      else
-        partial_code = shape_input
-        local element = snow.split(env.strokes:lookup(text), " ")[1] or ""
-        code = encode(element, { ["h"] = "v", ["s"] = "i", ["p"] = "u", ["n"] = "o", ["z"] = "a" })
-        prompt = " 笔画 [" ..
-            partial_code:gsub(".", { ["v"] = "一", ["i"] = "丨", ["u"] = "丿", ["o"] = "丶", ["a"] = "乙" }) .. "]"
-        comment = code
-      end
-      local match = not code or code:sub(1, #partial_code) == partial_code
-      return match, prompt, comment
+    if shape_input:sub(1, 1) == "1" then
+      return radical_match(text, shape_input:sub(2), env)
     else
+      return stroke_match(text, shape_input, env)
+    end
+  elseif id == "snow_sanpin" then -- 冰雪三拼
+    if shape_input:len() == 0 and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]") then
       return true, nil, nil
+    end
+    if shape_input:sub(1, 1) == "1" then
+      return radical_match(text, shape_input:sub(2), env)
+    else
+      return stroke_match(text, shape_input, env)
     end
   elseif id == "snow_jiandao" then -- 冰雪键道
     if is_pinyin or shape_input:len() > 0 or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?") then
@@ -193,7 +185,6 @@ function filter.func(translation, env)
     local show, prompt, comment = filter.handle_candidate(candidate.text, shape_input, env)
     if not first_preedit and prompt then
       first_preedit = candidate.preedit .. prompt
-      snow.errorf("候选词 %s 的 preedit: %s, prompt: %s", candidate.text, candidate.preedit, prompt)
     end
     if show then
       if comment then snow.comment(candidate, comment) end

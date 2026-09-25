@@ -182,6 +182,4 @@ patch:
   translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywe]{3,}[viuoa]{0,3}"
   key_binder/bindings/+:
     - { when: always, accept: "Control+j", toggle: buffered }
-    - { when: always, accept: v, toggle: buffered }
-    - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: null

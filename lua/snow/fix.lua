@@ -111,9 +111,6 @@ function this.func(translation, env)
     full_input = input .. shape_input
   end
   local fixed_phrases = this.get_customized_list(env, full_input)
-  if #fixed_phrases > 0 then
-    snow.errorf("编码 %s：固定词 %s", full_input, table.concat(fixed_phrases, ", "))
-  end
   if not fixed_phrases then
     for candidate in translation:iter() do
       yield(candidate)

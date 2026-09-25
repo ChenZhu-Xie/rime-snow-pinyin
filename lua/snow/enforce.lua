@@ -16,12 +16,24 @@ function filter.func(translation, env)
   if shape_input then
     full_input = full_input .. shape_input
   end
+  local jianpin = input:gsub("(.)", "%1 "):sub(1, -2)
+  local shuangpin = input:gsub("(..)", "%1 "):sub(1, -2)
+  -- 整句模式下，不允许简拼组词，其余都可以接受
+  if not env.engine.context:get_option("popping") then
+    for candidate in translation:iter() do
+      local is_sentence = candidate:get_dynamic_type() == "Sentence"
+      if is_sentence and candidate.preedit == jianpin then
+        goto continue
+      end
+      yield(candidate)
+      ::continue::
+    end
+    return
+  end
   for candidate in translation:iter() do
     local is_phrase = candidate:get_dynamic_type() == "Phrase" or candidate:get_dynamic_type() == "Sentence"
     local is_normal_spelling = false
     local preedit = rime_api.regex_replace(candidate.preedit, " 形.+$", "")
-    local jianpin = input:gsub("(.)", "%1 "):sub(1, -2)
-    local shuangpin = input:gsub("(..)", "%1 "):sub(1, -2)
     local is_character = utf8.len(candidate.text) == 1 and preedit:len() == 2
     if rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{2}[vioua]*") then
       -- 两码时一定是双拼

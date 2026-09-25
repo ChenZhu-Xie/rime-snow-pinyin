@@ -34,7 +34,6 @@ function this.init(env)
     local current = ctx:get_option("character")
     if current ~= target then
       ctx:set_option("character", target)
-      snow.errorf("自动%s单字模式", target and "启用" or "关闭")
     end
   end)
 end

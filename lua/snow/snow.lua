@@ -31,7 +31,7 @@ function snow.current(context)
   return context.input:sub(segment.start + 1, segment._end)
 end
 
-snow.debug = false
+snow.debug = true
 
 ---格式化 Info 日志
 ---@param format string|number

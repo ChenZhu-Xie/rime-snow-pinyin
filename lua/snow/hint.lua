@@ -1,19 +1,20 @@
 local snow = require "snow.snow"
 -- 提示过滤器
--- 目前仅用于提示键道的 630 简词
+-- 目前仅用于提示冰雪键道和冰雪四拼的 630 简词
 
 local filter = {}
 
 ---@class HintEnv: Env
----@field jiandao table<string, string>
+---@field fixed table<string, string>
 ---@field reverse_630 table<string, string>
 
 ---@param env HintEnv
 function filter.init(env)
-  env.jiandao = snow.table_from_tsv(rime_api.get_user_data_dir() .. "/snow_jiandao.fixed.txt")
+  local id = env.engine.schema.schema_id
+  env.fixed = snow.table_from_tsv(rime_api.get_user_data_dir() .. ("/%s.fixed.txt"):format(id))
   ---@type table<string, string>
   env.reverse_630 = {}
-  for key, value in pairs(env.jiandao) do
+  for key, value in pairs(env.fixed) do
     if rime_api.regex_match(key, "[bpmfdtnlgkhjqxzcsrywe][viuoa]{1,2}") then
       env.reverse_630[value] = key
     end
@@ -38,7 +39,7 @@ function filter.func(translation, env)
         yield(candidate)
         for _, letter in ipairs(affix) do
           local code = full_input .. letter
-          local word = env.jiandao[code]
+          local word = env.fixed[code]
           if word then
             local hint_candidate = Candidate("hint", candidate.start, candidate._end, word, code)
             hint_candidate.preedit = full_input
@@ -62,7 +63,16 @@ function filter.func(translation, env)
   else
     -- 其他情况，直接返回
     for candidate in translation:iter() do
+      -- 造词过程中屏蔽二简词
+      local segment = env.engine.context.composition:toSegmentation():back()
+      if segment then
+        local is_not_first_segment = segment.start ~= 0
+        if is_not_first_segment and candidate:get_dynamic_type() == "Simple" then
+          goto continue
+        end
+      end
       yield(candidate)
+      ::continue::
     end
   end
 end
