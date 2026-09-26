@@ -14,47 +14,47 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: bgxhpbyb
+      - send: bkxhpdfd
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
       # 组词规则
-      - send: bgxh
+      - send: bkxh
         assert: has("冰雪")
-      - send: erf
+      - send: yrf
         assert: has("输入法")
-      - send: wmxw
+      - send: wmxj
         assert: has("充满希望")
-      - send: fwerF
+      - send: ejyrF
         assert: has("中文输入法")
-      - send: fhrmGHG
+      - send: ehrmGHG
         assert: has("中华人民共和国")
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
       - send: xh
         assert: cand[1].text == "学"
-      - send: bgov
+      - send: bkov
         assert: cand[1].text == "冰"
-      - send: be
+      - send: by
         assert: cand[1].text == "表示"
-      - send: yi
+      - send: fpgs
         assert: cand[1].text == "一个"
       # 首选后置
-      - send: ekek
+      - send: ypyp
         assert: cand[1].text == "事实"
-      - send: ekekv
+      - send: ypypv
         assert: cand[2].text == "事实"
       # 顶功
-      - send: yiyi
+      - send: fpgsfpgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bgovxhv
+      - send: bkovxhv
         assert: commit == "冰" and cand[1].text == "雪"
-      - send: pbyberf
+      - send: pdfdyrf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 动态码长
-      - send: "ekekiiekek"
+      - send: "ypypiiypyp"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "vjp mzua  jpmz"
+      - send: "vwq myua  wqmy"
         assert: cand[1].text == "长猫"

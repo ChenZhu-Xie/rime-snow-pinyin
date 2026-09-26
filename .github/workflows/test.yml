@@ -3,8 +3,25 @@ on: [push]
 name: 测试
 
 jobs:
+  validate-shenyun:
+    name: 核验神韵双拼映射
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 获取代码
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: 安装 Bun
+        uses: oven-sh/setup-bun@v2
+      - name: 安装校验依赖
+        working-directory: scripts
+        run: bun install --frozen-lockfile
+      - name: 批量核验映射和固顶词
+        run: bun scripts/验证神韵双拼.ts
+
   test:
     name: 测试
+    needs: validate-shenyun
     runs-on: ubuntu-24.04
     strategy:
       matrix:

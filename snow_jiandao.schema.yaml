@@ -6,12 +6,13 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_jiandao
   name: 冰雪键道
-  version: "0.3"
+  version: "0.4"
   author:
     - 吅吅大山
     - 谭淞宸 <i@tansongchen.com>
   description: |
     单字三码起顶、词组四码起顶的双拼词顶功方案
+    双拼编码：零飞键道·神韵 v1（NF3-21X21-M40-44）
   dependencies:
     - snow_pinyin
     - snow_jiandao_bihua
