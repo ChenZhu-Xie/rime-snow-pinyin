@@ -48,7 +48,8 @@ jobs:
           cp rime-stroke/stroke* .
       - name: 安装 Mira
         run: |
-          wget https://github.com/rimeinn/mira/releases/download/latest/mira
+          wget -O mira https://github.com/rimeinn/mira/releases/download/v0.3.0/mira-linux-x86_64
           chmod +x mira
+          ./mira --version
       - name: ${{ matrix.name }}
         run: ./mira -C cache spec/${{ matrix.schema }}.test.yaml
