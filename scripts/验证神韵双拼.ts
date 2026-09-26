@@ -11,10 +11,7 @@ const schemaSource = readFileSync(schemaPath, "utf8");
 if (!schemaSource.includes("erase/^(hng|m|n|ng|ê)\\d$/")) {
 	throw new Error("神韵双拼缺少 5 个未编码扩展音节的 erase 规则。");
 }
-const algebra = new SpellingAlgebra(
-	schemaPath,
-	"sanpin_algebra",
-);
+const algebra = new SpellingAlgebra(schemaPath, "sanpin_algebra");
 
 const initialMap: Record<string, string> = {
 	b: "b",
@@ -149,12 +146,16 @@ for (const dictionary of [
 	"snow_pinyin.tencent.dict.yaml",
 	"snow_pinyin.user.dict.yaml",
 ]) {
-	for (const line of readFileSync(join(scriptDirectory, "..", dictionary), "utf8").split(/\r?\n/)) {
+	for (const line of readFileSync(
+		join(scriptDirectory, "..", dictionary),
+		"utf8",
+	).split(/\r?\n/)) {
 		if (!line.includes("\t") || line.startsWith("#")) continue;
 		const [word, pinyin] = line.split("\t");
 		if (!word || !pinyin) continue;
 		const values = pronunciationMap.get(word) ?? [];
-		if (!values.some((value) => value.join(" ") === pinyin)) values.push(pinyin.split(" "));
+		if (!values.some((value) => value.join(" ") === pinyin))
+			values.push(pinyin.split(" "));
 		pronunciationMap.set(word, values);
 	}
 }
@@ -185,44 +186,64 @@ function fixedCodeMatches(
 		return sounds[0]![0] === code[0];
 	}
 	if (section === "# 单字") {
-		return code.length === 1 ? sounds[0]![0] === code : sounds[0] === code.slice(0, 2);
+		return code.length === 1
+			? sounds[0]![0] === code
+			: sounds[0] === code.slice(0, 2);
 	}
 	return false;
 }
 
 for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 	let section = "";
-	let checked = 0;
-	const seen = new Map<string, Set<string>>();
+	let checkedCodes = 0;
+	let checkedWords = 0;
+	const seen = new Set<string>();
 	const fixedFailures: string[] = [];
-	for (const line of readFileSync(join(scriptDirectory, "..", file), "utf8").split(/\r?\n/)) {
+	for (const line of readFileSync(
+		join(scriptDirectory, "..", file),
+		"utf8",
+	).split(/\r?\n/)) {
 		if (!line) continue;
 		if (line.startsWith("#")) {
 			section = line;
-			seen.set(section, new Set());
 			continue;
 		}
-		const [code, word] = line.split("\t");
-		if (!code || !word || !seen.has(section)) {
+		const [code, wordsText] = line.split("\t");
+		if (!code || !wordsText || !section) {
 			fixedFailures.push(`无法解析：${line}`);
 			continue;
 		}
-		if (seen.get(section)!.has(code)) fixedFailures.push(`${section} 存在重复码：${code}`);
-		seen.get(section)!.add(code);
-		const pronunciations = pronunciationMap.get(word) ?? [];
-		if (!pronunciations.some((pinyin) => fixedCodeMatches(file, section, code, pinyin))) {
-			fixedFailures.push(`${section} ${code}→${word} 与现行神韵编码不一致`);
+		if (seen.has(code))
+			fixedFailures.push(`扁平固顶码表存在全局重复码：${code}`);
+		seen.add(code);
+		for (const word of wordsText.split(" ")) {
+			const pronunciations = pronunciationMap.get(word) ?? [];
+			if (
+				!pronunciations.some((pinyin) =>
+					["# 二简词", "# 630", "# 单字"].some((candidateSection) =>
+						fixedCodeMatches(file, candidateSection, code, pinyin),
+					),
+				)
+			) {
+				fixedFailures.push(`${section} ${code}→${word} 与现行神韵编码不一致`);
+			}
+			checkedWords += 1;
 		}
-		checked += 1;
+		checkedCodes += 1;
 	}
 	if (fixedFailures.length > 0) {
 		throw new Error(`${file} 批量核验失败：\n${fixedFailures.join("\n")}`);
 	}
-	console.log(`${file} 批量核验通过：${checked} 个码位，分区内无重复码。`);
+	console.log(
+		`${file} 批量核验通过：${checkedCodes} 个全局唯一码位、${checkedWords} 个固顶候选。`,
+	);
 }
 
 const fixture = JSON.parse(
-	readFileSync(join(scriptDirectory, "..", "docs", "shenyun-v1-mapping.json"), "utf8"),
+	readFileSync(
+		join(scriptDirectory, "..", "docs", "shenyun-v1-mapping.json"),
+		"utf8",
+	),
 ) as {
 	scheme: string;
 	mappingSha256: string;
@@ -231,20 +252,27 @@ const fixture = JSON.parse(
 const fixtureHash = createHash("sha256")
 	.update(JSON.stringify(fixture.codes))
 	.digest("hex");
-if (fixture.scheme !== "NF3-21X21-M40-44" || fixtureHash !== fixture.mappingSha256) {
+if (
+	fixture.scheme !== "NF3-21X21-M40-44" ||
+	fixtureHash !== fixture.mappingSha256
+) {
 	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
 }
 const fixtureFailures: string[] = [];
 for (const [syllable, code] of Object.entries(fixture.codes)) {
-	const actual = code === null && unencodedSyllables.has(syllable)
-		? null
-		: algebra.apply(`${syllable}1`).slice(0, -1);
-	if (actual !== code) fixtureFailures.push(`${syllable}: ${actual ?? "∅"} != ${code ?? "∅"}`);
+	const actual =
+		code === null && unencodedSyllables.has(syllable)
+			? null
+			: algebra.apply(`${syllable}1`).slice(0, -1);
+	if (actual !== code)
+		fixtureFailures.push(`${syllable}: ${actual ?? "∅"} != ${code ?? "∅"}`);
 }
 if (fixtureFailures.length > 0) {
 	throw new Error(`冻结映射快照核验失败：\n${fixtureFailures.join("\n")}`);
 }
-console.log(`冻结映射快照核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`);
+console.log(
+	`冻结映射快照核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
+);
 
 const benchmarkPath = process.argv[2];
 if (benchmarkPath) {
@@ -276,7 +304,9 @@ if (benchmarkPath) {
 			sourceFailures.push(`${syllable}: HTML 与冻结映射快照不一致`);
 		}
 		if (actual !== expected) {
-			sourceFailures.push(`${syllable}: ${actual || "∅"} != ${expected || "∅"}`);
+			sourceFailures.push(
+				`${syllable}: ${actual || "∅"} != ${expected || "∅"}`,
+			);
 		}
 	}
 	if (sourceFailures.length > 0) {

@@ -1,9 +1,15 @@
+import { execFileSync } from "child_process";
 import { readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { SpellingAlgebra, 获取大字集拼音 } from "./utils";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const sourceRefIndex = process.argv.indexOf("--source-ref");
+const sourceRef =
+	sourceRefIndex >= 0 ? process.argv[sourceRefIndex + 1] : undefined;
+if (sourceRefIndex >= 0 && !sourceRef)
+	throw new Error("--source-ref 后必须提供 Git 引用。");
 const algebra = new SpellingAlgebra(
 	join(root, "snow_sanpin.schema.yaml"),
 	"sanpin_algebra",
@@ -20,7 +26,9 @@ const dictionaries = [
 const pronunciations = new Map<string, string[][]>();
 const wordWeights = new Map<string, number>();
 for (const dictionary of dictionaries) {
-	for (const line of readFileSync(join(root, dictionary), "utf8").split(/\r?\n/)) {
+	for (const line of readFileSync(join(root, dictionary), "utf8").split(
+		/\r?\n/,
+	)) {
 		if (!line.includes("\t") || line.startsWith("#")) continue;
 		const [word, pinyin, weightText] = line.split("\t");
 		if (!word || !pinyin) continue;
@@ -28,7 +36,8 @@ for (const dictionary of dictionaries) {
 		wordWeights.set(word, Math.max(wordWeights.get(word) ?? 0, weight));
 		const values = pronunciations.get(word) ?? [];
 		const syllables = pinyin.split(" ");
-		if (!values.some((value) => value.join(" ") === pinyin)) values.push(syllables);
+		if (!values.some((value) => value.join(" ") === pinyin))
+			values.push(syllables);
 		pronunciations.set(word, values);
 	}
 }
@@ -50,7 +59,8 @@ function legacySoundCodes(rawSyllable: string): string[] {
 	if (syllable === "n") return ["xn"];
 	if (syllable === "ng") return ["xr"];
 	if (syllable === "hng") return ["hr"];
-	if (/^[jqxy]ue?$/.test(syllable)) syllable = syllable.replace(/ue?$/, (x) => x.replace("u", "v"));
+	if (/^[jqxy]ue?$/.test(syllable))
+		syllable = syllable.replace(/ue?$/, (x) => x.replace("u", "v"));
 	let initial = "";
 	let final = syllable;
 	const match = syllable.match(/^(zh|ch|sh|[bpmfdtnlgkhjqxzcsrwy])/);
@@ -115,14 +125,17 @@ function matchesLegacy(section: string, oldCode: string, pinyin: string[]) {
 }
 
 function matchesCurrent(section: string, code: string, pinyin: string[]) {
-	if (pinyin.some((syllable) => unencoded.has(syllable.replace(/[1-5]$/, "")))) return false;
+	if (pinyin.some((syllable) => unencoded.has(syllable.replace(/[1-5]$/, ""))))
+		return false;
 	const sounds = pinyin.map((syllable) => algebra.apply(syllable).slice(0, -1));
 	if (section === "# 二简词") {
 		return sounds.length >= 2 && sounds[0][0] + sounds[1][0] === code;
 	}
 	if (section === "# 630") return sounds[0][0] === code[0];
 	if (section === "# 单字") {
-		return code.length === 1 ? sounds[0][0] === code : sounds[0] === code.slice(0, 2);
+		return code.length === 1
+			? sounds[0][0] === code
+			: sounds[0] === code.slice(0, 2);
 	}
 	return false;
 }
@@ -132,18 +145,37 @@ function choosePronunciation(
 	section: string,
 	oldCode: string,
 	word: string,
+	allowConsolidatedCode: boolean,
 ) {
 	const values = pronunciations.get(word);
 	if (!values) throw new Error(`${file} 中的“${word}”未在词典找到拼音。`);
-	const matched = values.find((pinyin) => matchesCurrent(section, oldCode, pinyin))
-		?? values.find((pinyin) => matchesLegacy(section, oldCode, pinyin));
-	if (matched) return matched;
+	const current = values.find((pinyin) =>
+		matchesCurrent(section, oldCode, pinyin),
+	);
+	if (current) return { pinyin: current, preserveCode: true };
+	if (allowConsolidatedCode) {
+		const consolidated = values.find((pinyin) =>
+			["# 二简词", "# 630", "# 单字"].some((candidateSection) =>
+				matchesCurrent(candidateSection, oldCode, pinyin),
+			),
+		);
+		if (consolidated) return { pinyin: consolidated, preserveCode: true };
+	}
+	const legacy = values.find((pinyin) =>
+		matchesLegacy(section, oldCode, pinyin),
+	);
+	if (legacy) return { pinyin: legacy, preserveCode: false };
 	return undefined;
 }
 
 function migrate(file: string) {
-	const source = readFileSync(join(root, file), "utf8");
-	const sections = new Map<string, Map<string, { word: string; weight: number }>>();
+	const source = sourceRef
+		? execFileSync("git", ["show", `${sourceRef}:${file}`], {
+				cwd: root,
+				encoding: "utf8",
+			})
+		: readFileSync(join(root, file), "utf8");
+	const sections = new Map<string, Map<string, Map<string, number>>>();
 	const conflicts: string[] = [];
 	const omissions: string[] = [];
 	let section = "";
@@ -158,65 +190,104 @@ function migrate(file: string) {
 		if (!oldCode || !wordsText || !sections.has(section)) {
 			throw new Error(`${file} 中无法解析：${line}`);
 		}
-		for (const word of wordsText.split(" ")) {
-			const pinyin = choosePronunciation(file, section, oldCode, word);
-			if (!pinyin) {
-				omissions.push(`${section} ${oldCode}: “${word}”的现有词典读音与旧码不一致`);
+		const sourceWords = wordsText.split(" ");
+		for (const word of sourceWords) {
+			const selected = choosePronunciation(
+				file,
+				section,
+				oldCode,
+				word,
+				sourceWords.length > 1,
+			);
+			if (!selected) {
+				omissions.push(
+					`${section} ${oldCode}: “${word}”的现有词典读音与旧码不一致`,
+				);
 				continue;
 			}
-			if (pinyin.some((syllable) => unencoded.has(syllable.replace(/[1-5]$/, "")))) {
+			const { pinyin, preserveCode } = selected;
+			if (
+				pinyin.some((syllable) => unencoded.has(syllable.replace(/[1-5]$/, "")))
+			) {
 				omissions.push(`${section} ${oldCode}: “${word}”含目标方案未编码音节`);
 				continue;
 			}
 			let code: string;
-			if (section === "# 二简词") {
+			if (preserveCode) {
+				code = oldCode;
+			} else if (section === "# 二简词") {
 				code = firstKey(pinyin[0]) + firstKey(pinyin[1]);
 			} else if (section === "# 630") {
 				code = firstKey(pinyin[0]) + oldCode.slice(1);
 			} else if (section === "# 单字") {
 				const soundCode = algebra.apply(pinyin[0]).slice(0, -1);
-				code = oldCode.length === 1 ? soundCode[0] : soundCode + oldCode.slice(2);
+				code =
+					oldCode.length === 1 ? soundCode[0] : soundCode + oldCode.slice(2);
 			} else {
 				throw new Error(`${file} 中存在未知分区：${section}`);
 			}
 			const target = sections.get(section)!;
 			const weight = wordWeights.get(word) ?? 0;
-			const previous = target.get(code);
-			if (!previous) target.set(code, { word, weight });
-			else if (previous.word !== word) {
-				if (weight > previous.weight) {
-					conflicts.push(`${section} ${code}: 保留“${word}”(${weight})，舍弃“${previous.word}”(${previous.weight})`);
-					target.set(code, { word, weight });
-				} else {
-					conflicts.push(`${section} ${code}: 保留“${previous.word}”(${previous.weight})，舍弃“${word}”(${weight})`);
-				}
+			const entry = target.get(code) ?? new Map<string, number>();
+			if (!entry.has(word) && entry.size > 0) {
+				conflicts.push(
+					`${section} ${code}: 合并候选“${[...entry.keys()].join("、")}”与“${word}”`,
+				);
 			}
+			entry.set(word, Math.max(entry.get(word) ?? 0, weight));
+			target.set(code, entry);
+		}
+	}
+
+	// 固顶词加载器使用扁平码表。跨分区同码必须合并到第一次出现的位置，
+	// 否则后面的分区会静默覆盖前面的二简词或 630 固顶词。
+	const owners = new Map<string, Map<string, number>>();
+	for (const [heading, entries] of sections) {
+		for (const [code, words] of [...entries]) {
+			const owner = owners.get(code);
+			if (!owner) {
+				owners.set(code, words);
+				continue;
+			}
+			for (const [word, weight] of words) {
+				if (!owner.has(word)) owner.set(word, weight);
+			}
+			entries.delete(code);
+			conflicts.push(
+				`${heading} ${code}: 合并到更高优先级分区，避免扁平码表覆盖`,
+			);
 		}
 	}
 
 	const output: string[] = [];
 	for (const [heading, entries] of sections) {
 		output.push(heading);
-		for (const [code, entry] of [...entries].sort(([a], [b]) =>
+		for (const [code, words] of [...entries].sort(([a], [b]) =>
 			a < b ? -1 : a > b ? 1 : 0,
 		)) {
-			output.push(`${code}\t${entry.word}`);
+			output.push(`${code}\t${[...words.keys()].join(" ")}`);
 		}
 	}
 	return {
 		file,
 		output: `${output.join("\n")}\n`,
-		codes: [...sections.values()].reduce((sum, entries) => sum + entries.size, 0),
+		codes: owners.size,
+		words: [...owners.values()].reduce((sum, words) => sum + words.size, 0),
 		conflicts,
 		omissions,
 	};
 }
 
-const results = ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"].map(migrate);
-for (const result of results) writeFileSync(join(root, result.file), result.output, "utf8");
+const results = ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"].map(
+	migrate,
+);
+for (const result of results)
+	writeFileSync(join(root, result.file), result.output, "utf8");
 for (const result of results) {
 	const file = result.file;
-	console.log(`${file}: ${result.codes} 个重映射码位，${result.conflicts.length} 个新冲突，${result.omissions.length} 个未编码项`);
+	console.log(
+		`${file}: ${result.codes} 个唯一码位、${result.words} 个固顶候选，${result.conflicts.length} 个已合并冲突，${result.omissions.length} 个未编码项`,
+	);
 	for (const conflict of result.conflicts) console.log(`  ${conflict}`);
 	for (const omission of result.omissions) console.log(`  ${omission}`);
 }
