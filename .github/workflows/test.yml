@@ -46,6 +46,7 @@ jobs:
       - name: 复制笔画输入方案
         run: |
           cp rime-stroke/stroke* .
+          cp spec/fixtures/default.yaml default.yaml
       - name: 安装 Mira
         run: |
           wget -O mira https://github.com/rimeinn/mira/releases/download/v0.3.0/mira-linux-x86_64
