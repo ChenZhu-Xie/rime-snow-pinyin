@@ -1,9 +1,10 @@
-import { createHash } from "crypto";
-import { readFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-import { gunzipSync } from "zlib";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { gunzipSync } from "node:zlib";
 import { SpellingAlgebra, 获取大字集拼音 } from "./utils";
+import { readShapeCodes, wordLength } from "./固顶编译器";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const schemaPath = join(scriptDirectory, "..", "snow_sanpin.schema.yaml");
@@ -171,24 +172,90 @@ const getSoundCode = (syllable: string) => {
 	return algebra.apply(syllable).slice(0, -1);
 };
 
+const shapeElementKeys = new Map<string, string>();
+for (const line of readFileSync(
+	join(scriptDirectory, "..", "lua", "snow", "radical_jiandao.txt"),
+	"utf8",
+).split(/\r?\n/)) {
+	const [element, code] = line.split("\t");
+	if (element && code) shapeElementKeys.set(element, code);
+}
+const shapeCodes = readShapeCodes(
+	join(scriptDirectory, "..", "snow_jiandao_chaifen.dict.yaml"),
+	Object.fromEntries(shapeElementKeys),
+);
+const mainKeys = new Set([..."bpmfdtnlgkhjqxzcsrwye"]);
+const auxiliaryKeys = new Set([..."ivuao"]);
+
+function toneKey(syllable: string) {
+	return algebra.apply(syllable).at(-1) ?? null;
+}
+
 function fixedCodeMatches(
 	file: string,
 	section: string,
 	code: string,
+	word: string,
 	pinyin: string[],
 ) {
 	const sounds = pinyin.map(getSoundCode);
 	if (sounds.some((sound) => !sound)) return false;
+	const firstSound = sounds[0];
+	if (!firstSound) return false;
 	if (section === "# 二简词") {
-		return sounds.length >= 2 && sounds[0]![0] + sounds[1]![0] === code;
+		const secondSound = sounds[1];
+		if (!secondSound) return false;
+		return (
+			pinyin.length === 2 &&
+			wordLength(word) === 2 &&
+			firstSound[0] + secondSound[0] === code
+		);
 	}
 	if (section === "# 630") {
-		return sounds[0]![0] === code[0];
+		if (file === "snow_sanpin.fixed.txt") {
+			if (pinyin.length < 2 || wordLength(word) !== pinyin.length) return false;
+			const shortCode = firstSound[0] + toneKey(pinyin[1]);
+			if (code.length === 2) return code === shortCode;
+			const target = pinyin.length === 2 ? pinyin[0] : pinyin[2];
+			return code === shortCode + toneKey(target);
+		}
+		if (pinyin.length !== 2 || wordLength(word) !== 2) return false;
+		const secondCharacter = [...word][1];
+		const shape = shapeCodes.get(secondCharacter);
+		if (!shape) return false;
+		return code === firstSound[0] + shape.slice(0, code.length - 1);
 	}
 	if (section === "# 单字") {
-		return code.length === 1
-			? sounds[0]![0] === code
-			: sounds[0] === code.slice(0, 2);
+		if (pinyin.length !== 1 || wordLength(word) !== 1) return false;
+		if (code.length === 1) return firstSound[0] === code;
+		if (code.length === 2) return firstSound === code;
+		if (file !== "snow_jiandao.fixed.txt" || code.length !== 3) return false;
+		const shape = shapeCodes.get(word);
+		if (!shape) return false;
+		return code === firstSound + shape[0];
+	}
+	return false;
+}
+
+function codeBelongsToSection(file: string, section: string, code: string) {
+	if (section === "# 二简词")
+		return code.length === 2 && [...code].every((key) => mainKeys.has(key));
+	if (section === "# 630")
+		return (
+			(code.length === 2 || code.length === 3) &&
+			mainKeys.has(code[0]) &&
+			[...code.slice(1)].every((key) => auxiliaryKeys.has(key))
+		);
+	if (section === "# 单字") {
+		if (code.length === 1) return mainKeys.has(code);
+		if (code.length === 2) return [...code].every((key) => mainKeys.has(key));
+		return (
+			file === "snow_jiandao.fixed.txt" &&
+			code.length === 3 &&
+			mainKeys.has(code[0]) &&
+			mainKeys.has(code[1]) &&
+			auxiliaryKeys.has(code[2])
+		);
 	}
 	return false;
 }
@@ -198,6 +265,10 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 	let checkedCodes = 0;
 	let checkedWords = 0;
 	const seen = new Set<string>();
+	const entries: Array<{ section: string; code: string; word: string }> = [];
+	const sectionLengths = new Map<string, number>();
+	const phraseWords = new Set<string>();
+	const singleWords = new Set<string>();
 	const fixedFailures: string[] = [];
 	for (const line of readFileSync(
 		join(scriptDirectory, "..", file),
@@ -216,21 +287,69 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 		if (seen.has(code))
 			fixedFailures.push(`扁平固顶码表存在全局重复码：${code}`);
 		seen.add(code);
-		for (const word of wordsText.split(" ")) {
+		const words = wordsText.split(" ");
+		if (words.length !== 1)
+			fixedFailures.push(`${section} ${code} 必须且只能有一个固顶候选`);
+		if (!codeBelongsToSection(file, section, code))
+			fixedFailures.push(`${section} ${code} 不属于该固顶空间`);
+		sectionLengths.set(
+			`${section}:${code.length}`,
+			(sectionLengths.get(`${section}:${code.length}`) ?? 0) + 1,
+		);
+		for (const word of words) {
 			const pronunciations = pronunciationMap.get(word) ?? [];
 			if (
 				!pronunciations.some((pinyin) =>
-					["# 二简词", "# 630", "# 单字"].some((candidateSection) =>
-						fixedCodeMatches(file, candidateSection, code, pinyin),
-					),
+					fixedCodeMatches(file, section, code, word, pinyin),
 				)
 			) {
 				fixedFailures.push(`${section} ${code}→${word} 与现行神韵编码不一致`);
 			}
+			const wordSet = section === "# 单字" ? singleWords : phraseWords;
+			if (wordSet.has(word)) fixedFailures.push(`${section} 重复固顶“${word}”`);
+			wordSet.add(word);
+			entries.push({ section, code, word });
 			checkedWords += 1;
 		}
 		checkedCodes += 1;
 	}
+	for (const short of entries) {
+		for (const long of entries) {
+			if (
+				short.code !== long.code &&
+				long.code.startsWith(short.code) &&
+				short.word === long.word
+			) {
+				fixedFailures.push(
+					`固顶父子码重复：${short.code}、${long.code} 均为“${short.word}”`,
+				);
+			}
+		}
+	}
+	const count = (name: string, length: number) =>
+		sectionLengths.get(`${name}:${length}`) ?? 0;
+	if (count("# 二简词", 2) !== 64)
+		fixedFailures.push(`二简应为 64，实际 ${count("# 二简词", 2)}`);
+	if (count("# 630", 2) !== 105)
+		fixedFailures.push(`630 二码应为 105，实际 ${count("# 630", 2)}`);
+	if (file === "snow_jiandao.fixed.txt" && count("# 630", 3) !== 525) {
+		fixedFailures.push(`键道 630 三码应为 525，实际 ${count("# 630", 3)}`);
+	}
+	if (file === "snow_sanpin.fixed.txt" && count("# 630", 3) < 500) {
+		fixedFailures.push(`三拼 630 三码少于质量下限 500`);
+	}
+	if (count("# 单字", 1) !== 21 || count("# 单字", 2) !== 377) {
+		fixedFailures.push(
+			`单字空间应为 21 个一码和 377 个二码，实际 ${count("# 单字", 1)}/${count("# 单字", 2)}`,
+		);
+	}
+	const allocatedMainPairs = entries.filter(
+		(entry) =>
+			entry.code.length === 2 &&
+			(entry.section === "# 二简词" || entry.section === "# 单字"),
+	);
+	if (allocatedMainPairs.length !== 441)
+		fixedFailures.push(`AA 空间未完整覆盖 441 槽`);
 	if (fixedFailures.length > 0) {
 		throw new Error(`${file} 批量核验失败：\n${fixedFailures.join("\n")}`);
 	}
@@ -296,9 +415,8 @@ if (benchmarkPath) {
 	const unencoded = new Set(["hng", "m", "n", "ng", "ê"]);
 	for (const [index, syllable] of payload.pinyin.entries()) {
 		const actual = unencoded.has(syllable) ? "" : algebra.apply(`${syllable}1`);
-		const expected = target.codeList[index]
-			? `${target.codeList[index]!.toLowerCase()}i`
-			: "";
+		const targetCode = target.codeList[index];
+		const expected = targetCode ? `${targetCode.toLowerCase()}i` : "";
 		const fixtureCode = fixture.codes[syllable];
 		if ((target.codeList[index]?.toLowerCase() ?? null) !== fixtureCode) {
 			sourceFailures.push(`${syllable}: HTML 与冻结映射快照不一致`);

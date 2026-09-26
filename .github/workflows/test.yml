@@ -19,7 +19,9 @@ jobs:
         working-directory: scripts
         run: bun install --frozen-lockfile
       - name: 批量核验映射和固顶词
-        run: bun scripts/验证神韵双拼.ts
+        run: |
+          bun scripts/生成神韵固顶词.ts --check
+          bun scripts/验证神韵双拼.ts
 
   test:
     name: 测试

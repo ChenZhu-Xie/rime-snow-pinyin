@@ -42,8 +42,8 @@ deploy:
         assert: cand[1].text == "平"
       - send: xh
         assert: cand[1].text == "学"
-      - send: by
-        assert: cand[1].text == "表示"
+      - send: bf
+        assert: cand[1].text == "不要"
       - send: fpgs
         assert: cand[1].text == "一个"
       # 首选后置
