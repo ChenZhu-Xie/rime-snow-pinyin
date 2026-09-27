@@ -47,10 +47,8 @@ export class SpellingAlgebra {
 	}
 }
 
-export function 获取大字集拼音() {
-	const 原始数据 = readFileSync("pinyin-data/pinyin.txt", "utf-8")
-		.trim()
-		.split("\n");
+export function 获取大字集拼音(path = "pinyin-data/pinyin.txt") {
+	const 原始数据 = readFileSync(path, "utf-8").trim().split("\n");
 	const 处理结果: { 汉字: string; 拼音: string }[] = [];
 	const 特殊处理: Record<string, string> = {
 		m̄: "m1",

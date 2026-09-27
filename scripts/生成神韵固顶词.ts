@@ -2,6 +2,10 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+	cumulativeEvidence,
+	readEvidenceSnapshot,
+} from "./fixed-corpus/evidence";
+import {
 	addCandidate,
 	assertLayout,
 	assertNoPrefixWordRepeats,
@@ -21,7 +25,6 @@ import {
 	soundCode,
 	toneOf,
 	wordLength,
-	wordsInSection,
 } from "./固顶编译器";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
@@ -33,6 +36,48 @@ const reportSanpinArgument = process.argv.find((value) =>
 const reportSanpinCodes = reportSanpinArgument
 	? reportSanpinArgument.split("=")[1].split(",")
 	: [];
+const evidence = readEvidenceSnapshot(
+	join(root, "config", "shenyun-fixed-evidence.json"),
+);
+
+interface EvidenceSummary {
+	families: string[];
+	sources: string[];
+	bestRank: number | null;
+}
+
+function wordEvidence(word: string, maximumCodeLength: 1 | 2 | 3) {
+	return cumulativeEvidence(evidence.words[word], maximumCodeLength);
+}
+
+function evidenceBonus(summary: EvidenceSummary) {
+	const rankBonus = summary.bestRank
+		? Math.max(0, 4 - summary.bestRank) * 250_000
+		: 0;
+	return (
+		summary.families.length * 8_000_000 +
+		summary.sources.length * 400_000 +
+		rankBonus
+	);
+}
+
+function makeOptimizedCandidate(
+	entry: Parameters<typeof makeCandidate>[0],
+	legacy: boolean,
+	maximumEvidenceCodeLength: 1 | 2 | 3,
+	bonus = 0,
+	legacyBonus = 0,
+) {
+	const candidate = makeCandidate(
+		entry,
+		new Set<string>(),
+		bonus +
+			evidenceBonus(wordEvidence(entry.word, maximumEvidenceCodeLength)) +
+			(legacy ? legacyBonus : 0),
+	);
+	candidate.legacy = legacy;
+	return candidate;
+}
 
 const fixture = JSON.parse(
 	readFileSync(join(root, "docs", "shenyun-v1-mapping.json"), "utf8"),
@@ -67,7 +112,7 @@ assertLayout(layout);
 
 // 一码只保留一个冠军。未发生语义变化的原版习惯优先保留；发生首键合并的
 // j/f/q 与新出现的 w/x 则按独立使用频率和下级可达性重新决胜。
-const oneKeyWords = new Map<string, string>([
+const seedOneKeyWords = new Map<string, string>([
 	["b", "不"],
 	["c", "才"],
 	["d", "的"],
@@ -93,7 +138,7 @@ const oneKeyWords = new Map<string, string>([
 
 // 53 个神韵天然音码空位，加 11 个极冷音码让位，恢复 64 个二简的完整规模。
 // 每个词的两键均为两个音节在当前布局中的首键，不能通过旧码迁移得到。
-const erjianWords = new Map<string, string>([
+const seedErjianWords = new Map<string, string>([
 	["bf", "不要"],
 	["bm", "部门"],
 	["bs", "比赛"],
@@ -203,18 +248,22 @@ const baseWordEntries = mergeDictionaries(
 
 const legacySanpin = readLegacyFixed(join(root, "snow_sanpin.fixed.txt"));
 const legacyJiandao = readLegacyFixed(join(root, "snow_jiandao.fixed.txt"));
-const legacySingles = new Set<string>();
-for (const sections of [legacySanpin, legacyJiandao]) {
-	for (const entries of sections.values()) {
-		for (const words of entries.values()) {
-			for (const word of words) {
-				if (wordLength(word) === 1) legacySingles.add(word);
-			}
-		}
-	}
+
+function isLegacyAtCode(
+	sections: ReturnType<typeof readLegacyFixed>,
+	section: string,
+	code: string,
+	word: string,
+) {
+	return sections.get(section)?.get(code)?.includes(word) ?? false;
 }
-const legacySanpin630 = wordsInSection(legacySanpin, "# 630");
-const legacyJiandao630 = wordsInSection(legacyJiandao, "# 630");
+
+function isLegacySingleAtCode(code: string, word: string) {
+	return (
+		isLegacyAtCode(legacySanpin, "# 单字", code, word) ||
+		isLegacyAtCode(legacyJiandao, "# 单字", code, word)
+	);
+}
 
 const readingsByWord = new Map<string, string[][]>();
 for (const entry of allEntries) {
@@ -227,7 +276,10 @@ for (const entry of allEntries) {
 	readingsByWord.set(entry.word, readings);
 }
 
-function assertCuratedCodes() {
+function assertCuratedCodes(
+	oneKeyWords: ReadonlyMap<string, string>,
+	erjianWords: ReadonlyMap<string, string>,
+) {
 	if (oneKeyWords.size !== 21) throw new Error("一码单字必须恰好为 21 个。");
 	if (erjianWords.size !== 64) throw new Error("二简必须恰好为 64 个唯一码。");
 	for (const [code, word] of oneKeyWords) {
@@ -249,7 +301,71 @@ function assertCuratedCodes() {
 		}
 	}
 }
-assertCuratedCodes();
+assertCuratedCodes(seedOneKeyWords, seedErjianWords);
+
+// 只在既定空间骨架内选优：53 个天然空位和 11 个极冷音码让位保持不变，
+// 因而不会为了二简牺牲“有”这类高频 AA 单字。独立方案家族共识可以击败
+// 一般词频，但旧固顶享有明确的肌肉记忆成本，只有显著改进才会替换。
+const oneKeyPools = new Map<string, ReturnType<typeof makeCandidate>[]>();
+for (const entry of singleEntries) {
+	const code = firstKey(layout, entry.syllables[0]);
+	if (!code) continue;
+	addCandidate(
+		oneKeyPools,
+		code,
+		makeOptimizedCandidate(
+			entry,
+			seedOneKeyWords.get(code) === entry.word,
+			1,
+			0,
+			60_000_000,
+		),
+	);
+}
+const oneKeyWords = new Map<string, string>();
+const usedOneKeyWords = new Set<string>();
+for (const code of layout.mainKeys) {
+	const selected = chooseCandidate(
+		oneKeyPools.get(code) ?? [],
+		usedOneKeyWords,
+	);
+	if (!selected) throw new Error(`一码 ${code} 没有可用候选。`);
+	oneKeyWords.set(code, selected.word);
+	usedOneKeyWords.add(selected.word);
+}
+
+const erjianPools = new Map<string, ReturnType<typeof makeCandidate>[]>();
+for (const entry of baseWordEntries) {
+	if (!isHanWord(entry.word, 2, 2) || entry.syllables.length !== 2) continue;
+	const first = firstKey(layout, entry.syllables[0]);
+	const second = firstKey(layout, entry.syllables[1]);
+	if (!first || !second) continue;
+	const code = first + second;
+	if (!seedErjianWords.has(code)) continue;
+	addCandidate(
+		erjianPools,
+		code,
+		makeOptimizedCandidate(
+			entry,
+			seedErjianWords.get(code) === entry.word,
+			2,
+			0,
+			20_000_000,
+		),
+	);
+}
+const erjianWords = new Map<string, string>();
+const usedErjianWords = new Set<string>();
+for (const code of seedErjianWords.keys()) {
+	const selected = chooseCandidate(
+		erjianPools.get(code) ?? [],
+		usedErjianWords,
+	);
+	if (!selected) throw new Error(`二简 ${code} 没有可用候选。`);
+	erjianWords.set(code, selected.word);
+	usedErjianWords.add(selected.word);
+}
+assertCuratedCodes(oneKeyWords, erjianWords);
 
 const soundCodes = new Set(
 	Object.values(layout.syllableCodes).filter(
@@ -269,7 +385,17 @@ const singlePools = new Map<string, ReturnType<typeof makeCandidate>[]>();
 for (const entry of singleEntries) {
 	const code = soundCode(layout, entry.syllables[0]);
 	if (!code) continue;
-	addCandidate(singlePools, code, makeCandidate(entry, legacySingles));
+	addCandidate(
+		singlePools,
+		code,
+		makeOptimizedCandidate(
+			entry,
+			isLegacySingleAtCode(code, entry.word),
+			3,
+			0,
+			20_000_000,
+		),
+	);
 }
 
 const sharedSingles = new Map(oneKeyWords);
@@ -368,7 +494,13 @@ for (const entry of baseWordEntries) {
 	addCandidate(
 		sanpinPools,
 		twoKeyCode,
-		makeCandidate(entry, legacySanpin630, length === 2 ? 100_000_000 : 0),
+		makeOptimizedCandidate(
+			entry,
+			isLegacyAtCode(legacySanpin, "# 630", twoKeyCode, entry.word),
+			3,
+			length === 2 ? 100_000_000 : 0,
+			250_000_000,
+		),
 	);
 	const target =
 		entry.syllables.length === 2 ? entry.syllables[0] : entry.syllables[2];
@@ -379,10 +511,12 @@ for (const entry of baseWordEntries) {
 	addCandidate(
 		sanpinPools,
 		twoKeyCode + third,
-		makeCandidate(
+		makeOptimizedCandidate(
 			entry,
-			legacySanpin630,
+			isLegacyAtCode(legacySanpin, "# 630", twoKeyCode + third, entry.word),
+			3,
 			targetTone === "5" && length >= 3 ? 200_000_000 : 0,
+			250_000_000,
 		),
 	);
 }
@@ -394,7 +528,9 @@ for (const code of reportSanpinCodes) {
 		20,
 	)) {
 		console.log(
-			`  ${candidate.word}\t${candidate.syllables.join(" ")}\t${candidate.weight}${candidate.legacy ? "\t旧固顶" : ""}`,
+			`  ${candidate.word}\t${candidate.syllables.join(" ")}\t词频=${candidate.weight}` +
+				`\t得分=${candidate.score}\t家族=${wordEvidence(candidate.word, 3).families.length}` +
+				`${candidate.legacy ? "\t原码位固顶" : ""}`,
 		);
 	}
 }
@@ -420,13 +556,30 @@ for (const entry of baseWordEntries) {
 	addCandidate(
 		jiandaoPools,
 		twoKeyCode,
-		makeCandidate(entry, legacyJiandao630, 100_000_000),
+		makeOptimizedCandidate(
+			entry,
+			isLegacyAtCode(legacyJiandao, "# 630", twoKeyCode, entry.word),
+			3,
+			100_000_000,
+			250_000_000,
+		),
 	);
 	if (shape.length >= 2) {
 		addCandidate(
 			jiandaoPools,
 			twoKeyCode + shape[1],
-			makeCandidate(entry, legacyJiandao630),
+			makeOptimizedCandidate(
+				entry,
+				isLegacyAtCode(
+					legacyJiandao,
+					"# 630",
+					twoKeyCode + shape[1],
+					entry.word,
+				),
+				3,
+				0,
+				250_000_000,
+			),
 		);
 	}
 }
@@ -452,7 +605,13 @@ for (const entry of singleEntries) {
 	addCandidate(
 		threeKeySinglePools,
 		sound + shape[0],
-		makeCandidate(entry, legacySingles),
+		makeOptimizedCandidate(
+			entry,
+			isLegacyAtCode(legacyJiandao, "# 单字", sound + shape[0], entry.word),
+			3,
+			0,
+			20_000_000,
+		),
 	);
 }
 const jiandaoSingles = new Map(sharedSingles);
