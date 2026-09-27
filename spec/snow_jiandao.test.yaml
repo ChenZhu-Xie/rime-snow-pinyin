@@ -44,6 +44,8 @@ deploy:
         assert: cand[1].text == "随着" and not has("(sei1)")
       - send: seu
         assert: not has("(sei3)")
+      - send: ge
+        assert: cand[1].text == "给" and cand[2].text != "給"
       - send: we
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
@@ -60,6 +62,10 @@ deploy:
         assert: cand[1].text == "行叭"
       - send: fpgs
         assert: cand[1].text == "一个"
+      - send: nnfq
+        assert: cand[1].text == "那样"
+      - send: jprlT
+        assert: cand[1].text == "键盘热力图"
       # 首选后置
       - send: ypyp
         assert: cand[1].text == "事实"

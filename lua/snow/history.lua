@@ -1,6 +1,6 @@
 -- 上屏历史翻译器与处理器 (History Translator & Processor)
 -- 1. 记录上屏历史，过滤纯空白与纯标点，避免无意义提交污染历史，并支持超过 5 条（默认 20 条）的查询与多页翻页
--- 2. 在 i 历史列表激活时，支持通过 Alt+2/3/4/5/6 或 Alt+2/3/8/9/0 快速选定对应非首候选（兼顾不同方案，避免占用 i+数字 的原有符号功能）
+-- 2. 在 i 历史列表激活时，支持通过 Ctrl/Alt+2/3/8/9/0 快速选定对应非首候选（避免占用 i+数字 的原有符号功能）
 
 local snow = require "snow.snow"
 
@@ -180,7 +180,7 @@ function history.process(key, env)
     return snow.kNoop
   end
 
-  -- 处理 Ctrl+数字 或 Alt+数字 快捷选词（同时兼容 23456 和 23890 方案，不影响纯数字的 i+数字 符号功能）
+  -- 处理 Ctrl+数字 或 Alt+数字快捷选词；与三拼、键道、四拼统一为 23890。
   if key:ctrl() or key:alt() then
     local char = ""
     if key.keycode >= 0x30 and key.keycode <= 0x39 then
@@ -195,14 +195,14 @@ function history.process(key, env)
     -- 第 3 候选：3
     elseif char == "3" or repr:find("3$") then
       target_slot = 2
-    -- 第 4 候选：4 (23456方案) 或 8 (23890方案)
-    elseif char == "4" or char == "8" or repr:find("4$") or repr:find("8$") then
+    -- 第 4 候选：8
+    elseif char == "8" or repr:find("8$") then
       target_slot = 3
-    -- 第 5 候选：5 (23456方案) 或 9 (23890方案)
-    elseif char == "5" or char == "9" or repr:find("5$") or repr:find("9$") then
+    -- 第 5 候选：9
+    elseif char == "9" or repr:find("9$") then
       target_slot = 4
-    -- 第 6 候选：6 (23456方案) 或 0 (23890方案)
-    elseif char == "6" or char == "0" or repr:find("6$") or repr:find("0$") then
+    -- 第 6 候选：0
+    elseif char == "0" or repr:find("0$") then
       target_slot = 5
     end
 

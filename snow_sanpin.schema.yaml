@@ -57,8 +57,9 @@ engine:
     - lua_filter@*snow.fix
     - lua_filter@*snow.shape_filter
     - lua_filter@*snow.postpone
-    - uniquifier
+    - lua_filter@*snow.simplified
     - simplifier
+    - uniquifier
     - lua_filter@*snow.hint
 
 sanpin_algebra:
@@ -196,4 +197,4 @@ patch:
     - { when: always, accept: "Control+period", toggle: buffered }
     - { when: always, accept: v, toggle: buffered }
     - { when: composing, accept: v, send: v }
-  menu/alternative_select_keys: null
+  menu/alternative_select_keys: "_23890"

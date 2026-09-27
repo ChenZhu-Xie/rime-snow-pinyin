@@ -63,8 +63,9 @@ engine:
     - lua_filter@*snow.fix
     - lua_filter@*snow.shape_filter
     - lua_filter@*snow.postpone
-    - uniquifier
+    - lua_filter@*snow.simplified
     - simplifier
+    - uniquifier
     - lua_filter@*snow.hint
 
 speller:
@@ -156,7 +157,7 @@ patch:
     # - { when: always, accept: "Control+l", send_sequence: "{Home}{Right}{Right}" }
     - { when: always, accept: v, toggle: buffered }
     - { when: composing, accept: v, send: v }
-  menu/alternative_select_keys: null
+  menu/alternative_select_keys: "_23890"
   recognizer/patterns/jianpin: "^[bpmfdtnlgkhjqxzcsrywe]{3,}$"
   stroke/prism: snow_jiandao_bihua
   stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]

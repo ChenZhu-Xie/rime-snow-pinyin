@@ -49,6 +49,7 @@ engine:
     - lua_translator@*snow.history
   filters:
     - reverse_lookup_filter@lookup_pinyin
+    - lua_filter@*snow.simplified
     - simplifier
     - uniquifier
 
