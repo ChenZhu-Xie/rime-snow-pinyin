@@ -85,3 +85,19 @@ test("loads the tracked manifest", () => {
 	assert.ok(manifest.sources.some((source) => source.id === "sbxh"));
 	assert.ok(manifest.sources.every((source) => source.family.length > 0));
 });
+
+test("tracked policy blocks scheme-local personal dictionaries", () => {
+	const manifest = loadManifest(
+		resolve(import.meta.dirname, "../../../config/fixed-corpus-sources.yaml"),
+		process.env,
+	);
+	const broadInput: SourceInput = {
+		adapter: "encoder-derived",
+		include: ["**/*.dict.yaml"],
+	};
+
+	assert.equal(
+		isAllowedSourcePath("cn_dicts/my_user.dict.yaml", broadInput, manifest.globalPolicy),
+		false,
+	);
+});
