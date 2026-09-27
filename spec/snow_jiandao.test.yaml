@@ -61,6 +61,27 @@ deploy:
         assert: cand[1].text == "的"
       - send: l
         assert: cand[1].text == "了"
+      # 大写结构略码；四码后的大写仍由原顶功编码处理
+      - send: kuoK
+        assert: commit == "可爱了一可爱"
+      - send: koaP
+        assert: commit == "开不开心"
+      - send: koaJ
+        assert: commit == "开了开心"
+      - send: koaN
+        assert: commit == "开里开心"
+      - send: koaG
+        assert: commit == "开个心"
+      - send: kuoE
+        assert: commit == "可可爱"
+      - send: kuoT
+        assert: commit == "爱可爱"
+      - send: kuoY
+        assert: commit == "可爱可"
+      - send: kuoI
+        assert: commit == "可爱爱"
+      - send: bfA
+        assert: commit == "不要不要"
       # 动态码长
       - send: "ypypiiypyp"
         assert: cand[1].text == "誓师"

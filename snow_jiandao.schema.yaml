@@ -22,6 +22,8 @@ schema:
 engine:
   processors:
     - ascii_composer
+    # 必须早于 popping，否则大写略码会先被当作“标点大写顶”处理。
+    - lua_processor@*snow.abbreviation
     - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.user_dict
