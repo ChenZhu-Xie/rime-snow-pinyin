@@ -1,6 +1,8 @@
 node_modules
 diff
 cache
+# 固顶候选语料、公共仓库缓存与详细测量报告（均可重建）
+/cache/fixed-corpus/
 stroke.*
 
 

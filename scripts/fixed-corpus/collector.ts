@@ -1,8 +1,11 @@
 import { createHash } from "node:crypto";
 import {
+	closeSync,
 	existsSync,
 	mkdirSync,
+	openSync,
 	readFileSync,
+	writeSync,
 	writeFileSync,
 } from "node:fs";
 import { dirname, join, relative, resolve, sep } from "node:path";
@@ -49,7 +52,9 @@ export interface CollectionDiagnostic {
 	raw?: string;
 }
 
-export interface CollectionOptions extends ResolveSourceOptions {}
+export interface CollectionOptions extends ResolveSourceOptions {
+	inspectWords?: string[];
+}
 
 export interface SourceProvenance {
 	id: string;
@@ -104,12 +109,13 @@ function parseDictionaryDocument(text: string, sourcePath: string): DictionaryDo
 	const headerEnd = lines.findIndex(
 		(line, index) => index > headerStart && line.trim() === "...",
 	);
-	const header = headerStart >= 0 && headerEnd > headerStart
-		? (load(lines.slice(headerStart + 1, headerEnd).join("\n")) as DictionaryDocument["header"])
+	const headerLimit = headerEnd > headerStart ? headerEnd : lines.length;
+	const header = headerStart >= 0
+		? (load(lines.slice(headerStart + 1, headerLimit).join("\n")) as DictionaryDocument["header"])
 		: {};
 	const columns = header.columns ?? ["text", "code", "weight"];
 	const entries: DictionaryEntry[] = [];
-	const dataStart = headerEnd >= 0 ? headerEnd + 1 : 0;
+	const dataStart = headerEnd >= 0 ? headerEnd + 1 : headerStart >= 0 ? lines.length : 0;
 	for (let index = dataStart; index < lines.length; index += 1) {
 		const raw = lines[index];
 		const trimmed = raw.trim();
@@ -304,13 +310,38 @@ function recordComparator(sourceOrder: Map<string, number>) {
 		a.rank - b.rank;
 }
 
+function appendAll<T>(target: T[], items: Iterable<T>): void {
+	for (const item of items) target.push(item);
+}
+
+export function* serializeJsonLineChunks(
+	records: Iterable<CorpusRecord>,
+	maxChunkCharacters = 4 * 1024 * 1024,
+): Generator<string> {
+	if (!Number.isInteger(maxChunkCharacters) || maxChunkCharacters < 1) {
+		throw new Error("maxChunkCharacters 必须是正整数");
+	}
+	let chunk = "";
+	for (const record of records) {
+		const line = `${JSON.stringify(record)}\n`;
+		if (chunk.length > 0 && chunk.length + line.length > maxChunkCharacters) {
+			yield chunk;
+			chunk = line;
+		} else {
+			chunk += line;
+		}
+	}
+	if (chunk.length > 0) yield chunk;
+}
+
 export function writeJsonLines(records: CorpusRecord[], path: string): void {
 	mkdirSync(dirname(path), { recursive: true });
-	writeFileSync(
-		path,
-		records.length > 0 ? `${records.map((record) => JSON.stringify(record)).join("\n")}\n` : "",
-		"utf8",
-	);
+	const handle = openSync(path, "w");
+	try {
+		for (const chunk of serializeJsonLineChunks(records)) writeSync(handle, chunk, null, "utf8");
+	} finally {
+		closeSync(handle);
+	}
 }
 
 export async function collectCorpus(
@@ -334,6 +365,14 @@ export async function collectCorpus(
 			source = await resolveSource(definition, options);
 		} catch (error) {
 			if (definition.required) throw error;
+			sourceSummaries.push({
+				id: definition.id,
+				name: definition.name,
+				family: definition.family,
+				resolution: "failed",
+				recordCount: 0,
+				fileCount: 0,
+			});
 			diagnostics.push({
 				sourceId: definition.id,
 				severity: "warning",
@@ -343,6 +382,14 @@ export async function collectCorpus(
 			continue;
 		}
 		if (!source.root || !source.revision) {
+			sourceSummaries.push({
+				id: definition.id,
+				name: definition.name,
+				family: definition.family,
+				resolution: "missing",
+				recordCount: 0,
+				fileCount: 0,
+			});
 			for (const diagnostic of source.diagnostics) {
 				diagnostics.push({
 					sourceId: definition.id,
@@ -363,14 +410,14 @@ export async function collectCorpus(
 				const parsed = input.adapter === "encoder-derived"
 					? parseEncoderInput(manifest, source, input, path)
 					: parseExplicitInput(source, input, path);
-				sourceRecords.push(...parsed.records);
-				diagnostics.push(...parsed.diagnostics);
+				appendAll(sourceRecords, parsed.records);
+				appendAll(diagnostics, parsed.diagnostics);
 				for (const file of parsed.files) files.add(file);
 			}
 		}
 		sourceRecords.sort(recordComparator(sourceOrder));
 		writeJsonLines(sourceRecords, join(normalizedRoot, `${definition.id}.jsonl`));
-		records.push(...sourceRecords);
+		appendAll(records, sourceRecords);
 		const provenanceFiles = [...files]
 			.sort((a, b) => a.localeCompare(b, "en"))
 			.map((path) => ({ path, sha256: sha256(resolve(source.root as string, path)) }));
@@ -398,7 +445,7 @@ export async function collectCorpus(
 	writeJsonLines(records, join(cacheRoot, "corpus.jsonl"));
 	const provenance = { schemaVersion: 1 as const, sources: provenanceSources };
 	writeFileSync(join(cacheRoot, "provenance.json"), `${JSON.stringify(provenance, null, 2)}\n`, "utf8");
-	const summary = summarizeCorpus(records, sourceSummaries);
+	const summary = summarizeCorpus(records, sourceSummaries, options.inspectWords);
 	writeFileSync(join(reportsRoot, "summary.json"), `${JSON.stringify(summary, null, 2)}\n`, "utf8");
 	const markdown = renderSummaryMarkdown(summary);
 	return { records, diagnostics, summary, provenance, markdown };

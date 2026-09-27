@@ -24,6 +24,13 @@ test("parses Rime encoder rules from a dictionary header", () => {
 	]);
 });
 
+test("accepts a header-only import dictionary without a YAML terminator", () => {
+	assert.deepEqual(
+		parseEncoderRules("---\nname: aggregate\nimport_tables:\n  - child\n"),
+		[],
+	);
+});
+
 test("derives two, three, and four-character formula codes", () => {
 	const rules = parseEncoderRules(header);
 	const charCodes = new Map([

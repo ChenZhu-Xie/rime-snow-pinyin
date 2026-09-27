@@ -101,3 +101,33 @@ test("tracked policy blocks scheme-local personal dictionaries", () => {
 		false,
 	);
 });
+
+test("tracked public KeyTao sources select their released fixed tables", () => {
+	const manifest = loadManifest(
+		resolve(import.meta.dirname, "../../../config/fixed-corpus-sources.yaml"),
+		process.env,
+	);
+	const cases: Array<[string, string]> = [
+		["keytao", "rime/keytao.css.dict.yaml"],
+		["keytao", "rime/keytao.single.dict.yaml"],
+		["keytao", "rime/keytao.phrase.dict.yaml"],
+		["xingmao-keytao", "xmjd6.candidate_order.dict.yaml"],
+		["xingmao-keytao", "xmjd6.danzi.dict.yaml"],
+		["xingmao-keytao", "xmjd6.same_code_short_first.dict.yaml"],
+		["tianxingjian", "txjx.core.dict.yaml"],
+		["tianxingjian", "txjx.danzi.dict.yaml"],
+		["eosphoros-keytao", "dicts/eosphoros/eosphoros.core.dict.yaml"],
+		["eosphoros-keytao", "dicts/eosphoros/eosphoros.danzi.dict.yaml"],
+	];
+	for (const [sourceId, path] of cases) {
+		const source = manifest.sources.find((entry) => entry.id === sourceId);
+		assert.ok(source, `missing source ${sourceId}`);
+		assert.equal(
+			source.inputs.some((input) =>
+				isAllowedSourcePath(path, input, manifest.globalPolicy),
+			),
+			true,
+			`${sourceId} should include ${path}`,
+		);
+	}
+});

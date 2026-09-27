@@ -117,12 +117,11 @@ sources:
     inputs:
       - adapter: rime-table
         include:
-          - "**/*fixed*.dict.yaml"
-          - "**/*jian*.dict.yaml"
-      - adapter: ordered-fixed
-        include:
-          - "**/*fixed*.txt"
-          - "**/*简码*.txt"
+          - rime/keytao.css.dict.yaml
+          - rime/keytao.css-single.dict.yaml
+          - rime/keytao.single.dict.yaml
+          - rime/keytao.phrase.dict.yaml
+          - rime/keytao.supplement.dict.yaml
 
   - id: xingmao-keytao
     name: 星猫键道
@@ -133,10 +132,11 @@ sources:
     inputs:
       - adapter: rime-table
         include:
-          - "**/*fixed*.dict.yaml"
-          - "**/*jian*.dict.yaml"
-      - adapter: ordered-fixed
-        include: ["**/*fixed*.txt"]
+          - xmjd6.candidate_order.dict.yaml
+          - xmjd6.danzi.dict.yaml
+          - xmjd6.cizu.dict.yaml
+          - xmjd6.fjcy.dict.yaml
+          - xmjd6.same_code_short_first.dict.yaml
 
   - id: tianxingjian
     name: 天行键
@@ -147,10 +147,10 @@ sources:
     inputs:
       - adapter: rime-table
         include:
-          - "**/*fixed*.dict.yaml"
-          - "**/*jian*.dict.yaml"
-      - adapter: ordered-fixed
-        include: ["**/*fixed*.txt"]
+          - txjx.core.dict.yaml
+          - txjx.danzi.dict.yaml
+          - txjx.extended.dict.yaml
+          - txjx.fjcy.dict.yaml
 
   - id: moran
     name: 魔然
@@ -187,7 +187,7 @@ sources:
     inputs:
       - adapter: rime-table
         include:
-          - "**/*fixed*.dict.yaml"
-          - "**/*jian*.dict.yaml"
-      - adapter: ordered-fixed
-        include: ["**/*fixed*.txt"]
+          - dicts/eosphoros/eosphoros.core.dict.yaml
+          - dicts/eosphoros/eosphoros.danzi.dict.yaml
+          - dicts/eosphoros/eosphoros.cizu.dict.yaml
+          - dicts/eosphoros/eosphoros.fjcy.dict.yaml

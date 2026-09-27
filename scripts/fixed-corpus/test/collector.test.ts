@@ -3,8 +3,10 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
-import { collectCorpus } from "../collector";
+import { collectCorpus, serializeJsonLineChunks } from "../collector";
 import type { CorpusManifest, SourceAdapter } from "../manifest";
+import { summarizeCorpus } from "../summary";
+import type { CorpusRecord } from "../types";
 
 function temporaryDirectory(prefix: string): string {
 	return mkdtempSync(join(tmpdir(), prefix));
@@ -107,4 +109,124 @@ test("collection is deterministic and preserves source versus family coverage", 
 	};
 	assert.deepEqual(provenance.sources.map((source) => source.id), ["first", "second", "third"]);
 	assert.match(provenance.sources[0].files[0].sha256, /^[0-9a-f]{64}$/u);
+});
+
+test("collection appends large source batches without argument-stack overflow", async (t) => {
+	const fixtureRoot = temporaryDirectory("fixed-corpus-large-");
+	const cacheRoot = temporaryDirectory("fixed-corpus-large-output-");
+	t.after(() => {
+		removeTemporaryDirectory(fixtureRoot);
+		removeTemporaryDirectory(cacheRoot);
+	});
+	writeFileSync(
+		join(fixtureRoot, "large.dict.yaml"),
+		`---\nname: large\n...\n${"词\tz\n".repeat(126_000)}`,
+		"utf8",
+	);
+	const manifest = manifestFor([
+		{
+			id: "large",
+			family: "large",
+			root: fixtureRoot,
+			file: "large.dict.yaml",
+			adapter: "rime-table",
+		},
+	]);
+
+	const result = await collectCorpus(manifest, { cacheRoot, offline: true });
+
+	assert.equal(result.records.length, 126_000);
+});
+
+test("collection follows imports from a header-only encoder dictionary", async (t) => {
+	const fixtureRoot = temporaryDirectory("fixed-corpus-import-");
+	const cacheRoot = temporaryDirectory("fixed-corpus-import-output-");
+	t.after(() => {
+		removeTemporaryDirectory(fixtureRoot);
+		removeTemporaryDirectory(cacheRoot);
+	});
+	writeFileSync(
+		join(fixtureRoot, "aggregate.dict.yaml"),
+		"---\nname: aggregate\nimport_tables:\n  - child\n",
+		"utf8",
+	);
+	writeFileSync(
+		join(fixtureRoot, "child.dict.yaml"),
+		"---\nname: child\ncolumns: [text, code, weight]\n...\n一些\tyx\t88\n",
+		"utf8",
+	);
+	const manifest = manifestFor([
+		{
+			id: "aggregate",
+			family: "aggregate",
+			root: fixtureRoot,
+			file: "aggregate.dict.yaml",
+			adapter: "encoder-derived",
+		},
+	]);
+
+	const result = await collectCorpus(manifest, { cacheRoot, offline: true });
+
+	assert.deepEqual(
+		result.records.map((record) => [record.word, record.originalCode, record.sourcePath]),
+		[["一些", "yx", "child.dict.yaml"]],
+	);
+});
+
+test("JSONL serialization yields bounded deterministic chunks", () => {
+	const record = {
+		schemaVersion: 1,
+		sourceId: "fixture",
+		family: "fixture",
+		sourcePath: "fixture.txt",
+		sourceRevision: "revision",
+		line: 1,
+		word: "一些",
+		originalCode: "yx",
+		normalizedCode: "yx",
+		wordLength: 2,
+		codeLength: 2,
+		category: "erjian",
+		level: "two-code",
+		rank: 1,
+		weight: 10,
+		derived: false,
+		metadata: {},
+	} satisfies CorpusRecord;
+	const records = [record, { ...record, line: 2 }, { ...record, line: 3 }];
+
+	const chunks = [...serializeJsonLineChunks(records, 350)];
+
+	assert.ok(chunks.length > 1);
+	assert.equal(
+		chunks.join(""),
+		`${records.map((entry) => JSON.stringify(entry)).join("\n")}\n`,
+	);
+});
+
+test("summary bounds detailed word coverage while reporting omissions", () => {
+	const records: CorpusRecord[] = Array.from({ length: 10_005 }, (_, index) => ({
+		schemaVersion: 1,
+		sourceId: "fixture",
+		family: "fixture",
+		sourcePath: "fixture.txt",
+		sourceRevision: "revision",
+		line: index + 1,
+		word: `词${index.toString().padStart(5, "0")}`,
+		originalCode: "z",
+		normalizedCode: "z",
+		wordLength: 2,
+		codeLength: 1,
+		category: "shortcut",
+		level: "one-code",
+		rank: 1,
+		weight: null,
+		derived: false,
+		metadata: {},
+	}));
+
+	const summary = summarizeCorpus(records, []);
+
+	assert.equal(summary.wordCoverage.length, 10_000);
+	assert.equal(summary.omittedWordCoverageCount, 5);
 });

@@ -26,8 +26,8 @@ interface RawEncoderRule {
 function dictionaryHeader(text: string): string {
 	const start = text.indexOf("---");
 	const end = text.indexOf("...", start + 3);
-	if (start < 0 || end < 0) throw new Error("Rime 词典缺少完整 YAML 头");
-	return text.slice(start + 3, end);
+	if (start < 0) throw new Error("Rime 词典缺少 YAML 头");
+	return text.slice(start + 3, end < 0 ? text.length : end);
 }
 
 export function parseEncoderRules(text: string): EncoderRule[] {
@@ -157,4 +157,3 @@ export function deriveWordCode(
 		diagnostics: [],
 	};
 }
-

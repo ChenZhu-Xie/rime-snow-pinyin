@@ -7,6 +7,8 @@
 		"format": "bunx --bun @biomejs/biome format --write",
 		"typecheck": "bunx tsc -p fixed-corpus/tsconfig.json",
 		"test:corpus": "tsx --test fixed-corpus/test/*.test.ts",
+		"corpus:collect": "tsx fixed-corpus/cli.ts",
+		"corpus:all": "npm run corpus:collect",
 		"deploy": "tsx scripts/tasks.ts deploy",
 		"retrieve": "tsx scripts/tasks.ts retrieve",
 		"test-sipin": "mira spec/snow_sipin.test.yaml",
