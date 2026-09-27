@@ -1,0 +1,190 @@
+schemaVersion: 1
+
+globalPolicy:
+  deny:
+    - build/**
+    - sync/**
+    - logs/**
+    - backup/**
+    - backups/**
+    - "**/*.userdb/**"
+    - "**/*.userdb.*"
+    - "**/*.user.dict.yaml"
+    - "**/*.custom.yaml"
+    - "**/*.custom.*"
+    - "**/installation.yaml"
+    - "**/user.yaml"
+  requireExplicitInclude:
+    - "**/custom_phrase*.txt"
+
+sources:
+  - id: snow-current
+    name: 冰雪键道与三拼（当前仓库）
+    family: snow-keytao
+    required: true
+    localPaths:
+      - "${REPO_ROOT}"
+    licenseHint: GPL-3.0
+    inputs:
+      - adapter: ordered-fixed
+        include:
+          - snow_jiandao.fixed.txt
+          - snow_sanpin.fixed.txt
+          - snow_sipin.fixed.txt
+          - snow_yipin.fixed.txt
+          - snow_qingyun.fixed.txt
+
+  - id: moqi-wanxiang
+    name: 墨奇/万象方案集
+    family: wanxiang
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/rime-moqi-wanxiang-schemas"
+    repository: https://github.com/gaboolic/rime-shuangpin-fuzhuma.git
+    inputs:
+      - adapter: custom-phrase
+        codeMarkers: ["/"]
+        include:
+          - custom_phrase/custom_phrase_super_1jian.txt
+          - custom_phrase/custom_phrase_super_2jian.txt
+          - custom_phrase/custom_phrase_super_3jian.txt
+          - custom_phrase/custom_phrase_super_3jian_no_conflict.txt
+          - custom_phrase/custom_phrase_super_4jian_no_conflict.txt
+      - adapter: rime-table
+        include:
+          - cn_dicts_common/jian.dict.yaml
+          - cn_dicts_common/changcijian.dict.yaml
+          - cn_dicts_common/changcijian3.dict.yaml
+          - cn_dicts_common/4jian_no_conflict.dict.yaml
+
+  - id: pindu-double-pinyin
+    name: 品度双拼
+    family: pindu
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/rime-pindu-double-pinyin"
+    repository: https://github.com/zhanghaozhecn/rime-pindu-double-pinyin.git
+    inputs:
+      - adapter: encoder-derived
+        include: [pdsp.dict.yaml]
+
+  - id: jdhe
+    name: 简道鹤
+    family: jdhe
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/rime-JDhe"
+    repository: https://github.com/rimeinn/rime-JDhe.git
+    inputs:
+      - adapter: custom-phrase
+        codeMarkers: ["'"]
+        include:
+          - custom_phrase/custom_phrase_double.txt
+          - custom_phrase/custom_phrase_full.txt
+          - custom_phrase/custom_phrase_t17.txt
+          - custom_phrase/custom_phrase_t9.txt
+      - adapter: encoder-derived
+        include: [jde_fixed.dict.yaml]
+
+  - id: fast-xhup
+    name: 极速小鹤
+    family: xiaohe
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/rime-fast-xhup"
+    repository: https://github.com/boomker/rime-fast-xhup.git
+    inputs:
+      - adapter: custom-phrase
+        include: [custom_phrase.txt]
+      - adapter: encoder-derived
+        include: [flyhe_fast.dict.yaml]
+
+  - id: sbxh
+    name: 声笔小鹤
+    family: shengbi
+    localPaths:
+      - "%APPDATA%/Rime"
+    inputs:
+      - adapter: rime-table
+        codeMarkers: ["'"]
+        include: [sbxh.dict.yaml]
+
+  - id: keytao
+    name: 星空键道
+    family: keytao
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/KeyTao"
+    repository: https://github.com/xkinput/KeyTao.git
+    inputs:
+      - adapter: rime-table
+        include:
+          - "**/*fixed*.dict.yaml"
+          - "**/*jian*.dict.yaml"
+      - adapter: ordered-fixed
+        include:
+          - "**/*fixed*.txt"
+          - "**/*简码*.txt"
+
+  - id: xingmao-keytao
+    name: 星猫键道
+    family: keytao
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/xmjd6-rere"
+    repository: https://github.com/hugh7007/xmjd6-rere.git
+    inputs:
+      - adapter: rime-table
+        include:
+          - "**/*fixed*.dict.yaml"
+          - "**/*jian*.dict.yaml"
+      - adapter: ordered-fixed
+        include: ["**/*fixed*.txt"]
+
+  - id: tianxingjian
+    name: 天行键
+    family: keytao
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/rime-txjx"
+    repository: https://github.com/wzxmer/rime-txjx.git
+    inputs:
+      - adapter: rime-table
+        include:
+          - "**/*fixed*.dict.yaml"
+          - "**/*jian*.dict.yaml"
+      - adapter: ordered-fixed
+        include: ["**/*fixed*.txt"]
+
+  - id: moran
+    name: 魔然
+    family: moran
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/rime-moran"
+    repository: https://github.com/rimeinn/rime-moran.git
+    inputs:
+      - adapter: rime-table
+        include:
+          - "**/*fixed*.dict.yaml"
+          - "**/*jian*.dict.yaml"
+      - adapter: custom-phrase
+        include: [custom_phrase.txt]
+
+  - id: molong
+    name: 魔龙
+    family: moran
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/rime-molong"
+    repository: https://github.com/rimeinn/rime-molong.git
+    inputs:
+      - adapter: rime-table
+        include:
+          - "**/*fixed*.dict.yaml"
+          - "**/*jian*.dict.yaml"
+
+  - id: eosphoros-keytao
+    name: Eosphoros 键道衍生方案
+    family: keytao
+    localPaths:
+      - "${FIXED_CORPUS_INPUTMETHOD_ROOT}/eosphoros-keytao"
+    repository: https://github.com/0x696c757a696f/eosphoros-keytao.git
+    inputs:
+      - adapter: rime-table
+        include:
+          - "**/*fixed*.dict.yaml"
+          - "**/*jian*.dict.yaml"
+      - adapter: ordered-fixed
+        include: ["**/*fixed*.txt"]
