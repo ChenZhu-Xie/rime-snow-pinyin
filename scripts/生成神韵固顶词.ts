@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,6 +19,7 @@ import {
 	isHanWord,
 	makeCandidate,
 	mergeDictionaries,
+	parseLegacyFixed,
 	readDictionary,
 	readLegacyFixed,
 	readShapeCodes,
@@ -27,7 +29,17 @@ import {
 	toneOf,
 	wordLength,
 } from "./固顶编译器";
-import { FixedReplacementIndex, type FixedReplacement } from "./固顶替代";
+import {
+	findStructuralAbbreviation,
+	FixedReplacementIndex,
+	type FixedReplacement,
+} from "./固顶替代";
+import {
+	explicitlyRequestedWords,
+	fullCodeAlreadyEasyWords,
+	preferredEverydayWords,
+	rejectedFixedWords,
+} from "./固顶选优策略";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const root = join(scriptDirectory, "..");
@@ -38,6 +50,9 @@ const reportSanpinArgument = process.argv.find((value) =>
 const reportSanpinCodes = reportSanpinArgument
 	? reportSanpinArgument.split("=")[1].split(",")
 	: [];
+const legacyReference = process.argv
+	.find((value) => value.startsWith("--legacy-ref="))
+	?.split("=", 2)[1];
 
 interface OptimizationRejection {
 	scope: string;
@@ -47,6 +62,59 @@ interface OptimizationRejection {
 }
 
 const optimizationRejections: OptimizationRejection[] = [];
+let structuralRejectionCount = 0;
+let efficientFullCodeRejectionCount = 0;
+let selectableAbbreviationBases = new Set<string>();
+
+function structuralAbbreviation(word: string) {
+	return findStructuralAbbreviation(word, (base) =>
+		selectableAbbreviationBases.has(base),
+	);
+}
+
+interface FullCodeStanding {
+	rank: number;
+	siblingCount: number;
+	weight: number;
+	runnerUpWeight: number;
+}
+
+const fullCodeStandings = new Map<string, FullCodeStanding>();
+
+function dictionaryEntryKey(entry: { word: string; syllables: string[] }) {
+	return `${entry.word}\t${entry.syllables.join(" ")}`;
+}
+
+function everydayBonus(word: string) {
+	if (explicitlyRequestedWords.has(word)) return 900_000_000;
+	return preferredEverydayWords.has(word) ? 600_000_000 : 0;
+}
+
+function fullCodeDifficultyBonus(entry: {
+	word: string;
+	syllables: string[];
+	weight: number;
+}) {
+	if (!preferredEverydayWords.has(entry.word)) return 0;
+	const standing = fullCodeStandings.get(dictionaryEntryKey(entry));
+	if (!standing || standing.rank <= 1 || entry.weight < 1_000) return 0;
+	if (standing.rank === 2) return 30_000_000;
+	if (standing.rank === 3) return 20_000_000;
+	return 10_000_000;
+}
+
+function isEfficientAtFullCode(entry: { word: string; syllables: string[] }) {
+	if (preferredEverydayWords.has(entry.word)) return false;
+	if (!fullCodeAlreadyEasyWords.has(entry.word)) return false;
+	const standing = fullCodeStandings.get(dictionaryEntryKey(entry));
+	return Boolean(
+		standing &&
+			standing.rank === 1 &&
+			standing.siblingCount >= 5 &&
+			standing.runnerUpWeight > 0 &&
+			standing.weight >= standing.runnerUpWeight * 3,
+	);
+}
 
 function chooseWithoutRedundancy(
 	candidates: Candidate[],
@@ -55,12 +123,33 @@ function chooseWithoutRedundancy(
 	replacements: FixedReplacementIndex,
 	scope: string,
 	minimumWeight = 0,
+	rejectEfficientFullCode = false,
 ) {
 	for (const candidate of sortCandidates(candidates)) {
 		if (
 			usedWords.has(candidate.word) ||
-			(!candidate.legacy && candidate.weight < minimumWeight)
+			rejectedFixedWords.has(candidate.word) ||
+			(!candidate.legacy &&
+				!preferredEverydayWords.has(candidate.word) &&
+				candidate.weight < minimumWeight)
 		) {
+			continue;
+		}
+		if (
+			scope === "三拼 630" &&
+			code.length === 3 &&
+			!candidate.legacy &&
+			!preferredEverydayWords.has(candidate.word) &&
+			wordLength(candidate.word) > 2
+		) {
+			continue;
+		}
+		if (structuralAbbreviation(candidate.word)) {
+			structuralRejectionCount += 1;
+			continue;
+		}
+		if (rejectEfficientFullCode && isEfficientAtFullCode(candidate)) {
+			efficientFullCodeRejectionCount += 1;
 			continue;
 		}
 		const replacement = replacements.find(candidate.word, code.length);
@@ -269,6 +358,7 @@ const dictionaryFiles = [
 const allEntries = mergeDictionaries(
 	dictionaryFiles.flatMap((file) => readDictionary(join(root, file))),
 );
+selectableAbbreviationBases = new Set(allEntries.map((entry) => entry.word));
 const singleEntries = allEntries.filter(
 	(entry) => entry.syllables.length === 1 && isHanWord(entry.word, 1, 1),
 );
@@ -286,12 +376,55 @@ function hasTailKeyReplacement(entry: { word: string; syllables: string[] }) {
 	);
 }
 
-const baseWordEntries = mergeDictionaries(
-	readDictionary(join(root, "snow_pinyin.base.dict.yaml")),
-).filter((entry) => !hasTailKeyReplacement(entry));
+const supplementalEverydayEntries = [
+	"snow_pinyin.ext.dict.yaml",
+	"snow_pinyin.user.dict.yaml",
+]
+	.flatMap((file) => readDictionary(join(root, file)))
+	.filter((entry) => preferredEverydayWords.has(entry.word));
+const baseWordEntries = mergeDictionaries([
+	...readDictionary(join(root, "snow_pinyin.base.dict.yaml")),
+	...supplementalEverydayEntries,
+]).filter((entry) => !hasTailKeyReplacement(entry));
 
-const legacySanpin = readLegacyFixed(join(root, "snow_sanpin.fixed.txt"));
-const legacyJiandao = readLegacyFixed(join(root, "snow_jiandao.fixed.txt"));
+// 用完整双音码模拟二字词的默认同码排序。排名靠后的词使用固定简码收益更高；
+// 反之，像 jkjp→“经济”这样在大量同码词中又明显稳居首选的词，完整码已足够顺手。
+const fullCodeGroups = new Map<string, typeof baseWordEntries>();
+for (const entry of baseWordEntries) {
+	if (wordLength(entry.word) !== 2 || entry.syllables.length !== 2) continue;
+	const codes = entry.syllables.map((syllable) => soundCode(layout, syllable));
+	if (codes.some((code) => !code)) continue;
+	const code = codes.join("");
+	const group = fullCodeGroups.get(code) ?? [];
+	group.push(entry);
+	fullCodeGroups.set(code, group);
+}
+for (const group of fullCodeGroups.values()) {
+	group.sort(
+		(a, b) => b.weight - a.weight || a.word.localeCompare(b.word, "zh-CN"),
+	);
+	for (const [index, entry] of group.entries()) {
+		fullCodeStandings.set(dictionaryEntryKey(entry), {
+			rank: index + 1,
+			siblingCount: group.length,
+			weight: entry.weight,
+			runnerUpWeight: group[index === 0 ? 1 : 0]?.weight ?? 0,
+		});
+	}
+}
+
+function readLegacy(file: string) {
+	if (!legacyReference) return readLegacyFixed(join(root, file));
+	return parseLegacyFixed(
+		execFileSync("git", ["show", `${legacyReference}:${file}`], {
+			cwd: root,
+			encoding: "utf8",
+		}),
+	);
+}
+
+const legacySanpin = readLegacy("snow_sanpin.fixed.txt");
+const legacyJiandao = readLegacy("snow_jiandao.fixed.txt");
 
 function isLegacyAtCode(
 	sections: ReturnType<typeof readLegacyFixed>,
@@ -396,7 +529,7 @@ for (const entry of baseWordEntries) {
 			entry,
 			seedErjianWords.get(code) === entry.word,
 			2,
-			0,
+			everydayBonus(entry.word),
 			20_000_000,
 		),
 	);
@@ -504,6 +637,8 @@ function selectSixThirty(
 				code,
 				replacements,
 				scope,
+				0,
+				true,
 			);
 			if (!candidate) throw new Error(`630 短码 ${code} 没有可用候选。`);
 			selected.set(code, candidate.word);
@@ -529,6 +664,7 @@ function selectSixThirty(
 			replacements,
 			scope,
 			minimumThreeKeyWeight,
+			true,
 		);
 		if (!candidate) continue;
 		selected.set(code, candidate.word);
@@ -572,7 +708,8 @@ for (const entry of baseWordEntries) {
 			entry,
 			isLegacyAtCode(legacySanpin, "# 630", twoKeyCode, entry.word),
 			3,
-			length === 2 ? 100_000_000 : 0,
+			everydayBonus(entry.word) +
+				(length === 2 ? 100_000_000 + fullCodeDifficultyBonus(entry) : 0),
 			250_000_000,
 		),
 	);
@@ -589,7 +726,9 @@ for (const entry of baseWordEntries) {
 			entry,
 			isLegacyAtCode(legacySanpin, "# 630", twoKeyCode + third, entry.word),
 			3,
-			targetTone === "5" && length >= 3 ? 200_000_000 : 0,
+			everydayBonus(entry.word) +
+				(length === 2 ? fullCodeDifficultyBonus(entry) : 0) +
+				(targetTone === "5" && length >= 3 ? 200_000_000 : 0),
 			250_000_000,
 		),
 	);
@@ -639,7 +778,7 @@ for (const entry of baseWordEntries) {
 			entry,
 			isLegacyAtCode(legacyJiandao, "# 630", twoKeyCode, entry.word),
 			3,
-			100_000_000,
+			100_000_000 + everydayBonus(entry.word) + fullCodeDifficultyBonus(entry),
 			250_000_000,
 		),
 	);
@@ -656,7 +795,7 @@ for (const entry of baseWordEntries) {
 					entry.word,
 				),
 				3,
-				0,
+				everydayBonus(entry.word) + fullCodeDifficultyBonus(entry),
 				250_000_000,
 			),
 		);
@@ -745,6 +884,13 @@ function assertNoReplaceableFixed(name: string, sections: FixedSections) {
 		["630", sections.sixThirty],
 	] as const) {
 		for (const [code, word] of entries) {
+			const abbreviation = structuralAbbreviation(word);
+			if (abbreviation) {
+				redundant.push(
+					`${section} ${code}→${word} 符合结构略码 ${abbreviation.base}${abbreviation.trigger}`,
+				);
+				continue;
+			}
 			const replacement = replacements.find(word, code.length);
 			if (replacement) {
 				redundant.push(
@@ -799,5 +945,5 @@ const rejectionSummary = [...uniqueRejections.values()].reduce(
 	{} as Record<string, number>,
 );
 console.log(
-	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 64；AA 单字 377；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}；等长或更短替代筛选 ${JSON.stringify(rejectionSummary)}。`,
+	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 64；AA 单字 377；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}；结构略码筛选 ${structuralRejectionCount}；完整码稳居首选筛选 ${efficientFullCodeRejectionCount}；等长或更短替代筛选 ${JSON.stringify(rejectionSummary)}。`,
 );

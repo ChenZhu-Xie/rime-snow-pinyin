@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { FixedReplacementIndex, generateAbbreviations } from "../../固顶替代";
+import {
+	findStructuralAbbreviation,
+	FixedReplacementIndex,
+	generateAbbreviations,
+} from "../../固顶替代";
 
 test("structure abbreviations mirror the Lua processor", () => {
 	const twoCharacters = new Map(
@@ -53,4 +57,33 @@ test("suffix keys and abbreviations only replace equal-or-longer fixed codes", (
 		cost: 3,
 		mechanism: "结构略码+尾字键",
 	});
+});
+
+test("detects structural abbreviations without requiring a fixed base", () => {
+	const selectable = new Set(["翻", "慢", "测试"]);
+	const detect = (word: string) =>
+		findStructuralAbbreviation(word, (base) => selectable.has(base));
+	assert.deepEqual(findStructuralAbbreviation("翻了翻"), {
+		word: "翻了翻",
+		base: "翻",
+		trigger: "L",
+	});
+	assert.deepEqual(findStructuralAbbreviation("慢慢"), {
+		word: "慢慢",
+		base: "慢",
+		trigger: "[",
+	});
+	assert.deepEqual(findStructuralAbbreviation("测试测试"), {
+		word: "测试测试",
+		base: "测试",
+		trigger: "A",
+	});
+	assert.equal(findStructuralAbbreviation("以及"), undefined);
+	assert.equal(findStructuralAbbreviation("经济"), undefined);
+	assert.deepEqual(detect("翻了翻"), {
+		word: "翻了翻",
+		base: "翻",
+		trigger: "L",
+	});
+	assert.equal(detect("悄悄地"), undefined);
 });

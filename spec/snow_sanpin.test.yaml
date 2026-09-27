@@ -44,6 +44,22 @@ deploy:
         assert: cand[1].text == "学"
       - send: bf
         assert: cand[1].text == "不要"
+      - send: ee
+        assert: cand[1].text == "这种" and not has("(zhei4)")
+      - send: se
+        assert: cand[1].text == "随着" and not has("(sei1)")
+      - send: ja
+        assert: cand[1].text == "就是"
+      - send: fv
+        assert: cand[1].text == "以及"
+      - send: ho
+        assert: cand[1].text == "好吧"
+      - send: hoo
+        assert: cand[1].text == "好的吧"
+      - send: xo
+        assert: cand[1].text == "行吧"
+      - send: xov
+        assert: cand[1].text == "行叭"
       - send: fpgs
         assert: cand[1].text == "一个"
       # 首选后置

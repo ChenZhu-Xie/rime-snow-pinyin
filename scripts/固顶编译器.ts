@@ -129,10 +129,10 @@ export function readShapeCodes(
 	return result;
 }
 
-export function readLegacyFixed(path: string) {
+export function parseLegacyFixed(content: string) {
 	const sections = new Map<string, Map<string, string[]>>();
 	let section = "";
-	for (const line of readFileSync(path, "utf8").split(/\r?\n/)) {
+	for (const line of content.split(/\r?\n/)) {
 		if (!line) continue;
 		if (line.startsWith("#")) {
 			section = line;
@@ -144,6 +144,10 @@ export function readLegacyFixed(path: string) {
 		sections.get(section)?.set(code, wordsText.split(" "));
 	}
 	return sections;
+}
+
+export function readLegacyFixed(path: string) {
+	return parseLegacyFixed(readFileSync(path, "utf8"));
 }
 
 export function wordsInSection(

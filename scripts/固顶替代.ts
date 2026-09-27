@@ -13,6 +13,12 @@ interface GeneratedWord {
 	trigger: string;
 }
 
+export interface StructuralAbbreviation {
+	word: string;
+	base: string;
+	trigger: string;
+}
+
 const suffixKeys = [
 	["的", ";"],
 	["了", "/"],
@@ -65,6 +71,30 @@ export function generateAbbreviations(base: string): GeneratedWord[] {
 	add(`${base}来${base}去`, "Q");
 
 	return generated;
+}
+
+/**
+ * 判断一个现成词是否属于略码规则能直接生成的结构。
+ *
+ * 这里刻意不要求 base 已经占有某个固定码：略码处理器作用于当前选中的
+ * 任意候选，因此“翻了翻”这类词即使需要先选择“翻”，也不应再占固定简码。
+ */
+export function findStructuralAbbreviation(
+	word: string,
+	isSelectableBase: (base: string) => boolean = () => true,
+): StructuralAbbreviation | undefined {
+	const values = characters(word);
+	for (let baseLength = 1; baseLength <= 3; baseLength += 1) {
+		for (let start = 0; start + baseLength <= values.length; start += 1) {
+			const base = values.slice(start, start + baseLength).join("");
+			if (!isSelectableBase(base)) continue;
+			const generated = generateAbbreviations(base).find(
+				(candidate) => candidate.word === word,
+			);
+			if (generated) return { ...generated, base };
+		}
+	}
+	return undefined;
 }
 
 function compareReplacement(a: FixedReplacement, b: FixedReplacement) {

@@ -76,10 +76,13 @@ bun scripts/验证神韵双拼.ts "路径/a7_CKT_NF3_closure.html"
 - 三拼 630 使用“首字声键＋第二字声调”，第三键对二字词取第一字声调，对三字以上词取第三字声调；轻声尾键优先承载自然的三、四字表达。
 - 键道 630 使用“首字声键＋第二字前一至二形码”；键道三码单字使用“完整音码＋首形”。
 - 三拼和键道均可在候选后按 `;` 补“的”、按 `/` 补“了”并立即上屏；这组尾字键正是受四拼同类设计启发。单打“的/了”时也可直接按 `;`/`/`，比 `d`/`l` 后再按空格少一键且保持顶功；原有 `d → 的`、`l → 了` 继续保留，用户无须强制迁移到右小指。
-- 选优器同时理解上述尾字键和[冰雪结构略码](https://input.tansongchen.com/snow4/advanced.html#略码)。多字词若以轻声 `de/le` 结尾，一律改走尾字键，不再占用二简、630 或其他固定简码位；其他候选只有在替代打法的逻辑按键数不长于原固顶码时才回收。判断按读音进行，因此“目的（dì）”等词不受影响；大写略码的 Shift 手感成本仍明确保留在设计权衡中。
+- 选优器同时理解上述尾字键和[冰雪结构略码](https://input.tansongchen.com/snow4/advanced.html#略码)。多字词若以轻声 `de/le` 结尾，一律改走尾字键；凡符合完整重复、部分重复或插入重复等结构略码规则的词，也不再占用二简、630 或其他固定简码位。判断按读音进行，因此“目的（dì）”等词不受影响。
+- 固顶收益按实际输入难度而不是裸词频衡量：逻辑连接、日常应答和完整四码非首选的常用词优先；像 `jkjp → 经济` 这样同码兄弟多、但完整码已明显稳居首选的窄领域词主动让位。当前表已覆盖“如果、应该、测试、那么、以及、好吧、好的吧、行吧、行叭”等表达。
 - 每个码位只固定一个候选；同一固顶空间不重复词，父码与子码也不连续固定同一个字词。低质量冷槽允许留空，不为凑满数量强塞词条。
 
 以启用结构略码前的 `1ffca15` 为基线，三拼共调整 70 个槽位：53 个轻声 `de/le` 尾词按尾字键策略让位，12 个旧固顶已有等长或更短的结构略码，4 个迁移到其他固顶位，另有“我们的心”经质量复核让位给更自然且有外部简码证据的“忘了吧”。键道共调整 36 个槽位：19 个尾词让位、12 个结构略码替代、5 个迁移。被取消固顶的普通词仍可按完整编码输入；比较器确认没有无策略丢失。
+
+在此基础上的日常语用复核相对 `v0.3.9` 又调整三拼 62 槽、键道 52 槽：三拼分别有 20 个结构略码让位、3 个完整码首选让位、31 个日常语用让位和 8 个迁移；键道分别为 11、1、26、14。两表均无未归因丢失。
 
 固顶表是可复现的编译产物。生成器把主码键、辅码键、音节码表、声调键和形码键作为布局配置，因此也可用于其他“21 主码键＋5 个互斥辅码键”的键盘分布：
 
@@ -90,7 +93,7 @@ bun scripts/分析神韵固顶替代.ts --baseline=1ffca15
 bun scripts/验证神韵双拼.ts
 ```
 
-批量校验会检查空间数量、编码公式、一码一候选、父子码重复、词语重复、生成结果是否过期、多字轻声 `de/le` 尾词是否误占固顶位，以及是否仍有可由结构略码等长/更短完成的冗余固顶。比较器会把“尾字键策略让位”“质量复核让位”“等长/更短替代”“迁移”“新增”和“无策略丢失”分开统计，并在最后一项非零时失败。
+批量校验会检查空间数量、编码公式、一码一候选、父子码重复、词语重复、生成结果是否过期、多字轻声 `de/le` 尾词及结构略码词是否误占固顶位。比较器会把“尾字键策略让位”“结构略码让位”“完整码首选让位”“日常语用让位”“迁移”“新增”和“无策略丢失”分开统计，并在最后一项非零时失败。
 
 ### 关于词库的说明
 
@@ -168,7 +171,7 @@ bun scripts/验证神韵双拼.ts "path/to/a7_CKT_NF3_closure.html"
 
 #### Shenyun fixed-code space
 
-Shenyun's fixed candidates were jointly re-optimized for its 21 main keys, five auxiliary keys, and current dictionaries instead of mechanically remapping the old layout. The `AA` space contains 377 two-key characters and 64 abbreviations; the Three-Code and KeyTao 630 spaces use tone and shape auxiliaries respectively. Inspired by the same feature in Snow Four-Code, both schemes use `;` to append “的” and `/` to append “了”. Pressing either key by itself also commits that character one keystroke sooner than `d`/`l` plus Space while preserving top-up behavior; the original `d` and `l` codes remain available. Multi-character entries ending in neutral-tone `de/le` are therefore reserved for the suffix keys and never occupy fixed abbreviation slots. For other entries, the optimizer only reclaims an old slot when an equal-or-shorter alternative exists, while also understanding [Snow structural abbreviations](https://input.tansongchen.com/snow4/advanced.html#略码).
+Shenyun's fixed candidates were jointly re-optimized for its 21 main keys, five auxiliary keys, and current dictionaries instead of mechanically remapping the old layout. The `AA` space contains 377 two-key characters and 64 abbreviations; the Three-Code and KeyTao 630 spaces use tone and shape auxiliaries respectively. Inspired by the same feature in Snow Four-Code, both schemes use `;` to append “的” and `/` to append “了”. Pressing either key by itself also commits that character one keystroke sooner than `d`/`l` plus Space while preserving top-up behavior; the original `d` and `l` codes remain available. Multi-character entries ending in neutral-tone `de/le`, as well as words covered by [Snow structural abbreviations](https://input.tansongchen.com/snow4/advanced.html#略码), never occupy fixed abbreviation slots. Logical connectors, everyday responses, and useful words that are not the first full-code candidate are preferred over specialist terms that already rank first at four keys.
 
 ```powershell
 bun scripts/生成神韵固顶词.ts
@@ -245,7 +248,7 @@ bun scripts/验证神韵双拼.ts "路徑/a7_CKT_NF3_closure.html"
 
 #### 神韻固頂空間
 
-神韻固頂詞依現行 21 主碼鍵、5 輔碼鍵與詞典重新聯合選優，而非從舊雙拼機械移碼。`AA` 空間由 377 個二碼單字與 64 個二簡完整覆蓋；三拼與鍵道的 630 空間分別使用聲調與形碼輔鍵。受四拼同類設計啟發，兩者皆支援 `;` 補「的」、`/` 補「了」；單打時直接按 `;`/`/`，也比 `d`/`l` 後再按空格少一鍵並保持頂功，原有 `d`、`l` 編碼則繼續保留。多字詞若以輕聲 `de/le` 結尾，一律改走尾字鍵，不再占用固定簡碼位；其他候選只有存在等長或更短打法時才回收。選優器亦同時理解[冰雪結構略碼](https://input.tansongchen.com/snow4/advanced.html#略码)。
+神韻固頂詞依現行 21 主碼鍵、5 輔碼鍵與詞典重新聯合選優，而非從舊雙拼機械移碼。`AA` 空間由 377 個二碼單字與 64 個二簡完整覆蓋；三拼與鍵道的 630 空間分別使用聲調與形碼輔鍵。受四拼同類設計啟發，兩者皆支援 `;` 補「的」、`/` 補「了」；單打時直接按 `;`/`/`，也比 `d`/`l` 後再按空格少一鍵並保持頂功，原有 `d`、`l` 編碼則繼續保留。多字詞若以輕聲 `de/le` 結尾，或符合[冰雪結構略碼](https://input.tansongchen.com/snow4/advanced.html#略码)，一律不再占用固定簡碼位。選優時優先邏輯連詞、日常應答及完整四碼非首選的常用詞，並讓完整碼已穩居首選的窄領域詞主動讓位。
 
 ```powershell
 bun scripts/生成神韵固顶词.ts

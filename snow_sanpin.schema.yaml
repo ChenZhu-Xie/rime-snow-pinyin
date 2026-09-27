@@ -50,6 +50,8 @@ engine:
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history
   filters:
+    # 隐藏为补全音节而保留的 (sei1)、(zhei4) 一类占位候选。
+    - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
