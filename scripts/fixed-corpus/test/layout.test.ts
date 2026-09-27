@@ -16,7 +16,10 @@ const shenyun: LayoutDefinition = {
 const original: LayoutDefinition = {
 	id: "original",
 	rules: parseAlgebraRules(
-		readFileSync(resolve(repoRoot, "config/original-jiandao-algebra.yaml"), "utf8"),
+		readFileSync(
+			resolve(repoRoot, "config/original-jiandao-algebra.yaml"),
+			"utf8",
+		),
 		"sanpin_algebra",
 	),
 };
@@ -35,7 +38,10 @@ test("layout encodes representative zero initials, initials, and ju/jue", () => 
 test("original accepted mode exposes derived spellings without changing canonical", () => {
 	assert.deepEqual(encodeSyllable("zhao3", original, "canonical"), ["fz"]);
 	assert.deepEqual(encodeSyllable("zhao3", original, "accepted"), ["fz", "qz"]);
-	assert.deepEqual(encodeSyllable("huang4", original, "accepted"), ["hx", "hm"]);
+	assert.deepEqual(encodeSyllable("huang4", original, "accepted"), [
+		"hx",
+		"hm",
+	]);
 	assert.deepEqual(encodeSyllable("huang4", shenyun, "accepted"), ["hk"]);
 });
 
@@ -46,8 +52,21 @@ test("two-character words use full syllable codes and four-character words use i
 		encodeWord(["zhong1", "hua2", "ren2", "min2"], shenyun, "canonical"),
 		["ehrm"],
 	);
+	assert.deepEqual(encodeWord(["zhao3", "huang4"], original, "accepted"), [
+		"fzhx",
+		"fzhm",
+		"qzhx",
+		"qzhm",
+	]);
+});
+
+test("real severe buckets independently recompute from their source readings", () => {
+	assert.deepEqual(encodeWord(["yi1", "zhi1"], shenyun, "canonical"), ["fpep"]);
 	assert.deepEqual(
-		encodeWord(["zhao3", "huang4"], original, "accepted"),
-		["fzhx", "fzhm", "qzhx", "qzhm"],
+		encodeWord(["zhu3", "yao4", "yuan2", "yin1"], shenyun, "canonical"),
+		["efff"],
 	);
+	assert.deepEqual(encodeWord(["yi1", "zhi1"], original, "canonical"), [
+		"ykfk",
+	]);
 });
