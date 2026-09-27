@@ -152,3 +152,23 @@ test("Ice Snow and KeyTao derivatives share one ancestry family", () => {
 		new Set(["keytao"]),
 	);
 });
+
+test("tracked Longma source selects only the three supplied static artifacts", () => {
+	const manifest = loadManifest(
+		resolve(import.meta.dirname, "../../../config/fixed-corpus-sources.yaml"),
+		{
+			FIXED_CORPUS_LONGMA_ROOT: resolve(import.meta.dirname, "fixtures/longma"),
+		},
+	);
+	const longma = manifest.sources.find(({ id }) => id === "longma");
+
+	assert.equal(longma?.family, "longma");
+	assert.deepEqual(
+		longma?.inputs.flatMap(({ include }) => include),
+		[
+			"龙码一二级简码表多多版.xlsx",
+			"龙码整句（汉）2.0-rime部署包.zip",
+			"龙码字词库无辅文件.zip",
+		],
+	);
+});

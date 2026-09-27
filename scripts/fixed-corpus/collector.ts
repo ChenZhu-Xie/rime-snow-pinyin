@@ -8,7 +8,7 @@ import {
 	writeSync,
 	writeFileSync,
 } from "node:fs";
-import { dirname, join, relative, resolve, sep } from "node:path";
+import { dirname, join, resolve, sep } from "node:path";
 import { load } from "js-yaml";
 import { deriveWordCode, parseEncoderRules } from "./encoder";
 import type {
@@ -23,6 +23,11 @@ import {
 	parseOrderedFixed,
 	parseRimeTable,
 } from "./parsers";
+import {
+	parseLongmaArchive,
+	parseLongmaWorkbook,
+	type LongmaArchiveProfile,
+} from "./longma";
 import {
 	readSourceRevision,
 	resolveSource,
@@ -40,7 +45,7 @@ import type {
 	CorpusSummary,
 	SourceCollectionSummary,
 } from "./summary";
-import type { CorpusRecord, ParseDiagnostic } from "./types";
+import type { CorpusRecord, ParseDiagnostic, ParseResult } from "./types";
 
 export interface CollectionDiagnostic {
 	sourceId: string;
@@ -286,12 +291,28 @@ function parseExplicitInput(
 		sourceRevision: source.revision,
 		codeMarkers: input.codeMarkers,
 	};
-	const text = readFileSync(resolve(source.root, path), "utf8");
-	const result = input.adapter === "ordered-fixed"
-		? parseOrderedFixed(text, context)
-		: input.adapter === "custom-phrase"
-			? parseCustomPhrase(text, context)
-			: parseRimeTable(text, context);
+	const fullPath = resolve(source.root, path);
+	let result: ParseResult;
+	if (input.adapter === "longma-workbook") {
+		result = parseLongmaWorkbook(readFileSync(fullPath), context);
+	} else if (input.adapter === "longma-archive") {
+		const profile = input.options?.profile;
+		if (profile !== "rime-fixed" && profile !== "no-aux-singles") {
+			throw new Error(`龙码压缩包 ${path} 缺少有效 profile`);
+		}
+		result = parseLongmaArchive(
+			readFileSync(fullPath),
+			context,
+			profile as LongmaArchiveProfile,
+		);
+	} else {
+		const text = readFileSync(fullPath, "utf8");
+		result = input.adapter === "ordered-fixed"
+			? parseOrderedFixed(text, context)
+			: input.adapter === "custom-phrase"
+				? parseCustomPhrase(text, context)
+				: parseRimeTable(text, context);
+	}
 	return {
 		records: result.records,
 		diagnostics: convertDiagnostics(result.diagnostics),

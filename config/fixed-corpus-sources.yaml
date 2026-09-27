@@ -191,3 +191,20 @@ sources:
           - dicts/eosphoros/eosphoros.danzi.dict.yaml
           - dicts/eosphoros/eosphoros.cizu.dict.yaml
           - dicts/eosphoros/eosphoros.fjcy.dict.yaml
+
+  - id: longma
+    name: 龙码简码与固顶资料
+    family: longma
+    localPaths:
+      - "${FIXED_CORPUS_LONGMA_ROOT}"
+    inputs:
+      - adapter: longma-workbook
+        include: [龙码一二级简码表多多版.xlsx]
+      - adapter: longma-archive
+        include: [龙码整句（汉）2.0-rime部署包.zip]
+        options:
+          profile: rime-fixed
+      - adapter: longma-archive
+        include: [龙码字词库无辅文件.zip]
+        options:
+          profile: no-aux-singles

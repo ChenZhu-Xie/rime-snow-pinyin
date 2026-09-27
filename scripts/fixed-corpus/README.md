@@ -8,6 +8,7 @@
 
 ```powershell
 npm run corpus:collect -- --input-method-root "D:\C2D\Desktop\Code\Lua\inputMethod"
+npm run corpus:collect -- --longma-root "D:\path\to\shuangpin-layout-benchmark-history"
 ```
 
 常用参数：
@@ -16,6 +17,7 @@ npm run corpus:collect -- --input-method-root "D:\C2D\Desktop\Code\Lua\inputMeth
 - `--cache <path>`：覆盖生成目录，默认是仓库的 `cache/fixed-corpus/`。
 - `--summary <path>`：覆盖精简 Markdown 摘要位置。
 - `--input-method-root <path>`：设置本机输入法源码根目录。
+- `--longma-root <path>`：设置龙码简码工作簿与两个发布压缩包所在目录。
 - `--inspect-word <词>`：向摘要追加关注词覆盖；默认检查“一些、冲着、下了”。
 - `--offline`：只使用现有本地目录和缓存，不访问网络。
 

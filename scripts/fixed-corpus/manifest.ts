@@ -7,7 +7,9 @@ export type SourceAdapter =
 	| "ordered-fixed"
 	| "custom-phrase"
 	| "encoder-derived"
-	| "plain-word-list";
+	| "plain-word-list"
+	| "longma-workbook"
+	| "longma-archive";
 
 export interface GlobalSourcePolicy {
 	deny: string[];
@@ -154,4 +156,3 @@ export function loadManifest(path: string, environment: Environment): CorpusMani
 	}
 	return raw as CorpusManifest;
 }
-

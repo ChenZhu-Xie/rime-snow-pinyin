@@ -10,6 +10,7 @@ export interface CollectCliOptions {
 	summaryPath: string;
 	offline: boolean;
 	inputMethodRoot?: string;
+	longmaRoot?: string;
 	inspectWords: string[];
 }
 
@@ -54,6 +55,11 @@ export function parseCollectArgs(args: string[]): CollectCliOptions {
 			index += 1;
 			continue;
 		}
+		if (argument === "--longma-root") {
+			options.longmaRoot = resolve(requiredValue(args, index, argument));
+			index += 1;
+			continue;
+		}
 		if (argument === "--inspect-word") {
 			const word = requiredValue(args, index, argument);
 			if (!options.inspectWords.includes(word)) options.inspectWords.push(word);
@@ -71,6 +77,9 @@ export async function runCollectCli(args: string[]): Promise<number> {
 		...process.env,
 		...(options.inputMethodRoot
 			? { FIXED_CORPUS_INPUTMETHOD_ROOT: options.inputMethodRoot }
+			: {}),
+		...(options.longmaRoot
+			? { FIXED_CORPUS_LONGMA_ROOT: options.longmaRoot }
 			: {}),
 	};
 	const manifest = loadManifest(options.manifestPath, environment);
