@@ -116,3 +116,19 @@ test("clones only into the selected repository cache", async (t) => {
 	assert.match(result.revision ?? "", /^sha256:[0-9a-f]{64}$/u);
 });
 
+test("does not treat an interrupted Git clone as a valid cache", async (t) => {
+	const cacheRoot = temporaryDirectory("fixed-corpus-interrupted-");
+	t.after(() => removeTemporaryDirectory(cacheRoot));
+	const interrupted = join(cacheRoot, "repositories", "fixture");
+	mkdirSync(join(interrupted, ".git"), { recursive: true });
+	writeFileSync(join(interrupted, "partial.pack"), "incomplete", "utf8");
+
+	const result = await resolveSource(
+		source({ repository: "https://example.test/fixture.git" }),
+		{ cacheRoot, offline: true },
+	);
+
+	assert.equal(result.root, null);
+	assert.equal(result.resolution, "missing");
+	assert.equal(result.diagnostics[0]?.code, "SOURCE_CACHE_INCOMPLETE");
+});

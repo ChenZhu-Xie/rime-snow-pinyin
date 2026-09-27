@@ -23,7 +23,7 @@ globalPolicy:
 sources:
   - id: snow-current
     name: 冰雪键道与三拼（当前仓库）
-    family: snow-keytao
+    family: keytao
     required: true
     localPaths:
       - "${REPO_ROOT}"

@@ -131,3 +131,24 @@ test("tracked public KeyTao sources select their released fixed tables", () => {
 		);
 	}
 });
+
+test("Ice Snow and KeyTao derivatives share one ancestry family", () => {
+	const manifest = loadManifest(
+		resolve(import.meta.dirname, "../../../config/fixed-corpus-sources.yaml"),
+		process.env,
+	);
+	const sourceIds = [
+		"snow-current",
+		"keytao",
+		"xingmao-keytao",
+		"tianxingjian",
+		"eosphoros-keytao",
+	];
+
+	assert.deepEqual(
+		new Set(
+			sourceIds.map((id) => manifest.sources.find((source) => source.id === id)?.family),
+		),
+		new Set(["keytao"]),
+	);
+});

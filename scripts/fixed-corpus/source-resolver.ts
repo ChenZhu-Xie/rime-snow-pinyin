@@ -103,6 +103,18 @@ function exactSelectedFiles(definition: SourceDefinition): string[] {
 		.filter((path) => !/[*?]/u.test(path));
 }
 
+function hasGitHead(root: string): boolean {
+	try {
+		execFileSync("git", ["-C", root, "rev-parse", "--verify", "HEAD"], {
+			stdio: ["ignore", "ignore", "ignore"],
+			windowsHide: true,
+		});
+		return true;
+	} catch {
+		return false;
+	}
+}
+
 export async function resolveSource(
 	definition: SourceDefinition,
 	options: ResolveSourceOptions,
@@ -129,6 +141,24 @@ export async function resolveSource(
 	const destination = resolve(repositoryRoot, definition.id);
 	if (!destination.startsWith(`${repositoryRoot}${sep}`)) {
 		throw new Error(`来源缓存路径越界：${definition.id}`);
+	}
+	if (
+		existsSync(destination) &&
+		statSync(destination).isDirectory() &&
+		!hasGitHead(destination)
+	) {
+		return {
+			definition,
+			root: null,
+			revision: null,
+			resolution: "missing",
+			diagnostics: [
+				{
+					code: "SOURCE_CACHE_INCOMPLETE",
+					message: `来源 ${definition.id} 的 Git 缓存不完整，请移走后重新收集`,
+				},
+			],
+		};
 	}
 	if (existsSync(destination) && statSync(destination).isDirectory()) {
 		return {
