@@ -2,7 +2,7 @@
 
 > 优雅、高效、个性化的中文输入体验
 
-[简体中文](#简体中文) · [English](#english) · [繁體中文](#繁體中文) · [下载 Release](https://github.com/ChenZhu-Xie/rime-snow-pinyin/releases/latest)
+[简体中文](#简体中文) · [English](#english) · [繁體中文](#繁體中文) · [下载 Release](https://gitee.com/xie-chenzhu/rime-snow-pinyin/releases/latest)
 
 <a id="简体中文"></a>
 ## 简体中文
@@ -26,7 +26,7 @@
 
 #### 与原键道 21 键双拼的同口径比较
 
-下表来自 [shuangpin-layout-benchmark 的 NF3 冻结报告](https://github.com/more-14-different/shuangpin-layout-benchmark)，比较对象为恢复自 PR1 快照的 `S005 冰雪键道双拼（原作基线）`。两者使用相同音节表、字词语料、成本模型、形码数据和编码合同，因此可以作同口径比较；数值仍是模型测评，不等同于真实用户测速。耗时及综合分越低越好，LU 越高越好。
+下表来自 [shuangpin-layout-benchmark 的 NF3 冻结报告](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark)，比较对象为恢复自 PR1 快照的 `S005 冰雪键道双拼（原作基线）`。两者使用相同音节表、字词语料、成本模型、形码数据和编码合同，因此可以作同口径比较；数值仍是模型测评，不等同于真实用户测速。耗时及综合分越低越好，LU 越高越好。
 
 | 指标 | 神韵 v1（21×21） | 原键道 S005（21 键） | 公平解读 |
 | --- | ---: | ---: | --- |
@@ -43,7 +43,7 @@
 
 #### 与首道 26 键双拼的同环境测评
 
-下表同样来自 [shuangpin-layout-benchmark 的 NF3 冻结报告](https://github.com/more-14-different/shuangpin-layout-benchmark)，比较对象为其中的 `B04 首道双拼`。两者在相同码表、语料、成本模型和编码合同的测评环境中计算，但键域分别为 21×21 与 26×26，因此这里称为同环境测评，而不是同键域比较。数值不等同于真实用户测速。耗时及综合分越低越好，交替率、主键区占比和 LU 越高越好。
+下表同样来自 [shuangpin-layout-benchmark 的 NF3 冻结报告](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark)，比较对象为其中的 `B04 首道双拼`。两者在相同码表、语料、成本模型和编码合同的测评环境中计算，但键域分别为 21×21 与 26×26，因此这里称为同环境测评，而不是同键域比较。数值不等同于真实用户测速。耗时及综合分越低越好，交替率、主键区占比和 LU 越高越好。
 
 | 指标 | 神韵 v1（21×21） | 首道 B04（26×26） | 公平解读 |
 | --- | ---: | ---: | --- |
@@ -60,7 +60,7 @@
 | 右小指负载 | 9.00% | 1.26% | 神韵高 7.74 个百分点，是需要正视的代价 |
 | LU-v1r 规则一致性 | 78.43 | 83.11 | 首道高 4.68 分 |
 
-因此，神韵 v1 的优势不是“每一项都赢”，而是在只占用 21 个声韵键、保持 M=40 的条件下，取得更低的裸二键 CKT、更少的同指连击和更高的主键区覆盖；代价是音节重码、补全成本、右小指负载以及部分规则一致性。完整交互报告、测量定义与复现材料见 [Benchmark Releases](https://github.com/more-14-different/shuangpin-layout-benchmark/releases)。本仓库还提供映射校验脚本：
+因此，神韵 v1 的优势不是“每一项都赢”，而是在只占用 21 个声韵键、保持 M=40 的条件下，取得更低的裸二键 CKT、更少的同指连击和更高的主键区覆盖；代价是音节重码、补全成本、右小指负载以及部分规则一致性。完整交互报告、测量定义与复现材料见 [Benchmark Releases](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/releases)。本仓库还提供映射校验脚本：
 
 ```powershell
 bun scripts/验证神韵双拼.ts "路径/a7_CKT_NF3_closure.html"
@@ -94,7 +94,7 @@ bun scripts/验证神韵双拼.ts
 
 ### 关于词库的说明
 
-冰雪拼音词库收词范围与[雾凇拼音](http://github.com/iDvel/rime-ice)相同。其特点为：
+冰雪拼音词库收词范围与[雾凇拼音](ice/README.md)相同。其特点为：
 
 1. 大词库：与雾凇拼音共享 180 万词库
 2. 持续更新：上游雾凇拼音更新后，本仓库也会随之更新
@@ -126,7 +126,7 @@ Snow KeyTao and Snow Three-Code now share **LingFei KeyTao · Shenyun v1**, publ
 
 #### Like-for-like comparison with the original 21-key KeyTao layout
 
-The frozen NF3 report in [shuangpin-layout-benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark) restores `S005`, the original Snow KeyTao baseline from the PR1 snapshot. S005 and Shenyun share the same syllable table, corpora, cost model, shape data, and encoding contract, so this is a like-for-like model comparison rather than a real-world typing-speed claim. Lower timing and aggregate scores are better; higher LU is better.
+The frozen NF3 report in [shuangpin-layout-benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark) restores `S005`, the original Snow KeyTao baseline from the PR1 snapshot. S005 and Shenyun share the same syllable table, corpora, cost model, shape data, and encoding contract, so this is a like-for-like model comparison rather than a real-world typing-speed claim. Lower timing and aggregate scores are better; higher LU is better.
 
 | Metric | Shenyun v1 (21×21) | Original KeyTao S005 (21 keys) | Interpretation |
 | --- | ---: | ---: | --- |
@@ -160,7 +160,7 @@ The same report evaluates Shenyun and `B04 Shoudao` with a shared code table, co
 | Right-pinky load | 9.00% | 1.26% | Shenyun is higher by 7.74 percentage points |
 | LU-v1r consistency | 78.43 | 83.11 | Shoudao is higher by 4.68 |
 
-Shenyun's 21-key design yields lower bare CKT, fewer same-finger bigrams, and better home-area coverage at M=40, while paying for syllable collisions, completion cost, right-pinky load, and some rule consistency. See [Benchmark Releases](https://github.com/more-14-different/shuangpin-layout-benchmark/releases) for the interactive report, definitions, and reproducibility materials.
+Shenyun's 21-key design yields lower bare CKT, fewer same-finger bigrams, and better home-area coverage at M=40, while paying for syllable collisions, completion cost, right-pinky load, and some rule consistency. See [Benchmark Releases](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/releases) for the interactive report, definitions, and reproducibility materials.
 
 ```powershell
 bun scripts/验证神韵双拼.ts "path/to/a7_CKT_NF3_closure.html"
@@ -179,7 +179,7 @@ bun scripts/验证神韵双拼.ts
 
 ### Dictionaries
 
-Snow Pinyin follows the vocabulary scope of [Rime Ice](https://github.com/iDvel/rime-ice): roughly 1.8 million shared entries, continuous upstream synchronization, standard single-character readings, and predictable word pronunciations suitable for user-defined words.
+Snow Pinyin follows the vocabulary scope of [Rime Ice](ice/README.md): roughly 1.8 million shared entries, continuous upstream synchronization, standard single-character readings, and predictable word pronunciations suitable for user-defined words.
 
 ---
 
@@ -203,7 +203,7 @@ Snow Pinyin follows the vocabulary scope of [Rime Ice](https://github.com/iDvel/
 
 #### 與原鍵道 21 鍵雙拼的同口徑比較
 
-[shuangpin-layout-benchmark 的 NF3 凍結報告](https://github.com/more-14-different/shuangpin-layout-benchmark)恢復了 PR1 快照中的 `S005 冰雪鍵道雙拼（原作基線）`。它與神韻使用相同音節表、字詞語料、成本模型、形碼資料及編碼合約，因此可作同口徑模型比較；數值不等同於真實使用者測速。
+[shuangpin-layout-benchmark 的 NF3 凍結報告](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark)恢復了 PR1 快照中的 `S005 冰雪鍵道雙拼（原作基線）`。它與神韻使用相同音節表、字詞語料、成本模型、形碼資料及編碼合約，因此可作同口徑模型比較；數值不等同於真實使用者測速。
 
 | 指標 | 神韻 v1（21×21） | 原鍵道 S005（21 鍵） | 公平解讀 |
 | --- | ---: | ---: | --- |
@@ -237,7 +237,7 @@ Snow Pinyin follows the vocabulary scope of [Rime Ice](https://github.com/iDvel/
 | 右小指負載 | 9.00% | 1.26% | 神韻高 7.74 個百分點 |
 | LU-v1r 規則一致性 | 78.43 | 83.11 | 首道高 4.68 分 |
 
-神韻 v1 在只使用 21 個聲韻鍵、維持 M=40 的前提下，取得較低的裸二鍵 CKT、較少的同指連擊及較高的主鍵區覆蓋，代價則是音節重碼、補全成本、右小指負載及部分規則一致性。完整互動報告、定義與復現材料見 [Benchmark Releases](https://github.com/more-14-different/shuangpin-layout-benchmark/releases)。
+神韻 v1 在只使用 21 個聲韻鍵、維持 M=40 的前提下，取得較低的裸二鍵 CKT、較少的同指連擊及較高的主鍵區覆蓋，代價則是音節重碼、補全成本、右小指負載及部分規則一致性。完整互動報告、定義與復現材料見 [Benchmark Releases](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/releases)。
 
 ```powershell
 bun scripts/验证神韵双拼.ts "路徑/a7_CKT_NF3_closure.html"
@@ -256,4 +256,4 @@ bun scripts/验证神韵双拼.ts
 
 ### 詞庫說明
 
-冰雪拼音的收詞範圍與[霧凇拼音](https://github.com/iDvel/rime-ice)相同，包含約 180 萬共享詞條、持續上游同步、規範單字讀音，以及適合自動造詞的穩定詞語讀音。
+冰雪拼音的收詞範圍與[霧凇拼音](ice/README.md)相同，包含約 180 萬共享詞條、持續上游同步、規範單字讀音，以及適合自動造詞的穩定詞語讀音。

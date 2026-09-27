@@ -300,6 +300,19 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 		);
 		for (const word of words) {
 			const pronunciations = pronunciationMap.get(word) ?? [];
+			const lastCharacter = [...word].at(-1);
+			if (
+				wordLength(word) > 1 &&
+				pronunciations.some(
+					(pinyin) =>
+						(lastCharacter === "的" && pinyin.at(-1) === "de5") ||
+						(lastCharacter === "了" && pinyin.at(-1) === "le5"),
+				)
+			) {
+				fixedFailures.push(
+					`${section} ${code}→${word} 应使用的/了尾字键，不应占用固顶位`,
+				);
+			}
 			if (
 				!pronunciations.some((pinyin) =>
 					fixedCodeMatches(file, section, code, word, pinyin),

@@ -246,28 +246,17 @@ const seedErjianWords = new Map<string, string>([
 	["zk", "最快"],
 ]);
 
-// 词频不能识别所有句法边界。这些词条在大词库中有较高权重，但单独固顶时
-// 明显是不完整片段；仅作精确否决，避免误伤“是的、算了”等可独立使用表达。
+// 词频不能识别所有句法边界和独立使用价值。这些词条在大词库中可能有较高
+// 权重，但单独固顶时不自然或不够常用；仅作精确否决，避免误伤“是的、算了”
+// 等可独立使用表达。
 const rejectedSanpinWords = new Set([
-	"别的了",
 	"吧啊",
-	"词的",
 	"有了吗",
 	"有的啊",
 	"快了吧",
 	"没了啊",
-	"你们了",
 	"男的呢",
-	"平的",
-	"强的",
-	"群的",
-	"墙的",
-	"全的",
-	"俗的",
-	"差的",
-	"车的",
-	"处理的",
-	"下的",
+	"我们的心",
 ]);
 
 const dictionaryFiles = [
@@ -283,9 +272,23 @@ const allEntries = mergeDictionaries(
 const singleEntries = allEntries.filter(
 	(entry) => entry.syllables.length === 1 && isHanWord(entry.word, 1, 1),
 );
+
+// “的/了”尾字键可以从已有固顶候选直接追加轻声 de/le。除单字“的/了”
+// 本身外，这类词不再占用二简、630 或其他固定简码位。按读音而非字面判断，
+// 因而“目的（dì）”“除了（liǎo）”等词不受影响。
+function hasTailKeyReplacement(entry: { word: string; syllables: string[] }) {
+	if (entry.syllables.length <= 1) return false;
+	const lastCharacter = [...entry.word].at(-1);
+	const lastSyllable = entry.syllables.at(-1);
+	return (
+		(lastCharacter === "的" && lastSyllable === "de5") ||
+		(lastCharacter === "了" && lastSyllable === "le5")
+	);
+}
+
 const baseWordEntries = mergeDictionaries(
 	readDictionary(join(root, "snow_pinyin.base.dict.yaml")),
-);
+).filter((entry) => !hasTailKeyReplacement(entry));
 
 const legacySanpin = readLegacyFixed(join(root, "snow_sanpin.fixed.txt"));
 const legacyJiandao = readLegacyFixed(join(root, "snow_jiandao.fixed.txt"));

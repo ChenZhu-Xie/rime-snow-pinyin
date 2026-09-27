@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { FixedReplacementIndex } from "./固顶替代";
+import { mergeDictionaries, readDictionary } from "./固顶编译器";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const baseline =
@@ -11,6 +12,22 @@ const baseline =
 		?.split("=", 2)[1] ?? "HEAD";
 const jsonOnly = process.argv.includes("--json");
 const files = ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"] as const;
+
+const tailKeyWords = new Map<string, ";" | "/">();
+for (const entry of mergeDictionaries(
+	readDictionary(join(root, "snow_pinyin.base.dict.yaml")),
+)) {
+	if (entry.syllables.length <= 1) continue;
+	const lastCharacter = [...entry.word].at(-1);
+	const lastSyllable = entry.syllables.at(-1);
+	if (lastCharacter === "的" && lastSyllable === "de5")
+		tailKeyWords.set(entry.word, ";");
+	else if (lastCharacter === "了" && lastSyllable === "le5")
+		tailKeyWords.set(entry.word, "/");
+}
+
+// 用户复核后确认不值得继续占用固顶位；词条仍可按完整编码输入。
+const qualityCuratedWords = new Set(["我们的心"]);
 
 interface FixedEntry {
 	section: string;
@@ -67,8 +84,23 @@ for (const file of files) {
 	);
 	const moved: object[] = [];
 	const replaced: object[] = [];
+	const tailKeyPolicy: object[] = [];
+	const qualityPolicy: object[] = [];
 	const lost: object[] = [];
 	for (const entry of changed) {
+		const tailKey = tailKeyWords.get(entry.word);
+		if (tailKey) {
+			tailKeyPolicy.push({
+				...entry,
+				base: [...entry.word].slice(0, -1).join(""),
+				tailKey,
+			});
+			continue;
+		}
+		if (qualityCuratedWords.has(entry.word)) {
+			qualityPolicy.push(entry);
+			continue;
+		}
 		const movedCodes = afterCodesByWord.get(entry.word);
 		if (movedCodes) {
 			moved.push({ ...entry, to: movedCodes });
@@ -94,6 +126,8 @@ for (const file of files) {
 		changedSlots: changed.length,
 		moved,
 		replaced,
+		tailKeyPolicy,
+		qualityPolicy,
 		mechanisms,
 		added,
 		lost,
@@ -110,12 +144,14 @@ else {
 			changedSlots: number;
 			moved: object[];
 			replaced: object[];
+			tailKeyPolicy: object[];
+			qualityPolicy: object[];
 			mechanisms: object;
 			added: object[];
 			lost: object[];
 		};
 		console.log(
-			`${file}：变化 ${values.changedSlots} 槽；等长或更短替代 ${values.replaced.length}；迁移 ${values.moved.length}；新增 ${values.added.length}；无替代丢失 ${values.lost.length}；机制 ${JSON.stringify(values.mechanisms)}`,
+			`${file}：变化 ${values.changedSlots} 槽；尾字键策略让位 ${values.tailKeyPolicy.length}；质量复核让位 ${values.qualityPolicy.length}；等长或更短替代 ${values.replaced.length}；迁移 ${values.moved.length}；新增 ${values.added.length}；无策略丢失 ${values.lost.length}；机制 ${JSON.stringify(values.mechanisms)}`,
 		);
 	}
 }
