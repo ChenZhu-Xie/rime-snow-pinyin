@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"target": "ES2022",
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"types": ["node"],
+		"noEmit": true
+	},
+	"include": ["./**/*.ts"]
+}
