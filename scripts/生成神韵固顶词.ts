@@ -11,6 +11,7 @@ import {
 	assertNoPrefixWordRepeats,
 	assertOneCandidatePerCode,
 	chooseCandidate,
+	type Candidate,
 	type FixedLayout,
 	type FixedSections,
 	firstKey,
@@ -26,6 +27,7 @@ import {
 	toneOf,
 	wordLength,
 } from "./固顶编译器";
+import { FixedReplacementIndex, type FixedReplacement } from "./固顶替代";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const root = join(scriptDirectory, "..");
@@ -36,6 +38,45 @@ const reportSanpinArgument = process.argv.find((value) =>
 const reportSanpinCodes = reportSanpinArgument
 	? reportSanpinArgument.split("=")[1].split(",")
 	: [];
+
+interface OptimizationRejection {
+	scope: string;
+	code: string;
+	word: string;
+	replacement: FixedReplacement;
+}
+
+const optimizationRejections: OptimizationRejection[] = [];
+
+function chooseWithoutRedundancy(
+	candidates: Candidate[],
+	usedWords: ReadonlySet<string>,
+	code: string,
+	replacements: FixedReplacementIndex,
+	scope: string,
+	minimumWeight = 0,
+) {
+	for (const candidate of sortCandidates(candidates)) {
+		if (
+			usedWords.has(candidate.word) ||
+			(!candidate.legacy && candidate.weight < minimumWeight)
+		) {
+			continue;
+		}
+		const replacement = replacements.find(candidate.word, code.length);
+		if (replacement) {
+			optimizationRejections.push({
+				scope,
+				code,
+				word: candidate.word,
+				replacement,
+			});
+			continue;
+		}
+		return candidate;
+	}
+	return undefined;
+}
 const evidence = readEvidenceSnapshot(
 	join(root, "config", "shenyun-fixed-evidence.json"),
 );
@@ -334,6 +375,9 @@ for (const code of layout.mainKeys) {
 	usedOneKeyWords.add(selected.word);
 }
 
+const erjianReplacements = new FixedReplacementIndex();
+for (const [code, word] of oneKeyWords) erjianReplacements.addFixed(code, word);
+
 const erjianPools = new Map<string, ReturnType<typeof makeCandidate>[]>();
 for (const entry of baseWordEntries) {
 	if (!isHanWord(entry.word, 2, 2) || entry.syllables.length !== 2) continue;
@@ -357,13 +401,17 @@ for (const entry of baseWordEntries) {
 const erjianWords = new Map<string, string>();
 const usedErjianWords = new Set<string>();
 for (const code of seedErjianWords.keys()) {
-	const selected = chooseCandidate(
+	const selected = chooseWithoutRedundancy(
 		erjianPools.get(code) ?? [],
 		usedErjianWords,
+		code,
+		erjianReplacements,
+		"二简",
 	);
 	if (!selected) throw new Error(`二简 ${code} 没有可用候选。`);
 	erjianWords.set(code, selected.word);
 	usedErjianWords.add(selected.word);
+	erjianReplacements.addFixed(code, selected.word);
 }
 assertCuratedCodes(oneKeyWords, erjianWords);
 
@@ -439,16 +487,25 @@ if (
 function selectSixThirty(
 	pools: Map<string, ReturnType<typeof makeCandidate>[]>,
 	minimumThreeKeyWeight: number,
+	replacements: FixedReplacementIndex,
+	scope: string,
 ) {
 	const selected = new Map<string, string>();
 	const usedWords = new Set(erjianWords.values());
 	for (const first of layout.mainKeys) {
 		for (const second of layout.auxiliaryKeys) {
 			const code = first + second;
-			const candidate = chooseCandidate(pools.get(code) ?? [], usedWords);
+			const candidate = chooseWithoutRedundancy(
+				pools.get(code) ?? [],
+				usedWords,
+				code,
+				replacements,
+				scope,
+			);
 			if (!candidate) throw new Error(`630 短码 ${code} 没有可用候选。`);
 			selected.set(code, candidate.word);
 			usedWords.add(candidate.word);
+			replacements.addFixed(code, candidate.word);
 		}
 	}
 	const threeKeyCodes = layout.mainKeys.flatMap((first) =>
@@ -462,16 +519,30 @@ function selectSixThirty(
 			a.localeCompare(b),
 	);
 	for (const code of threeKeyCodes) {
-		const candidate = chooseCandidate(
+		const candidate = chooseWithoutRedundancy(
 			pools.get(code) ?? [],
 			usedWords,
+			code,
+			replacements,
+			scope,
 			minimumThreeKeyWeight,
 		);
 		if (!candidate) continue;
 		selected.set(code, candidate.word);
 		usedWords.add(candidate.word);
+		replacements.addFixed(code, candidate.word);
 	}
 	return selected;
+}
+
+function createCommonReplacementIndex() {
+	const replacements = new FixedReplacementIndex();
+	for (const [code, word] of oneKeyWords) replacements.addFixed(code, word);
+	for (const [code, word] of erjianWords) replacements.addFixed(code, word);
+	for (const [code, word] of sharedSingles) {
+		if (code.length === 2) replacements.addFixed(code, word);
+	}
+	return replacements;
 }
 
 const sanpinPools = new Map<string, ReturnType<typeof makeCandidate>[]>();
@@ -520,7 +591,12 @@ for (const entry of baseWordEntries) {
 		),
 	);
 }
-const sanpin630 = selectSixThirty(sanpinPools, 1_000);
+const sanpin630 = selectSixThirty(
+	sanpinPools,
+	1_000,
+	createCommonReplacementIndex(),
+	"三拼 630",
+);
 for (const code of reportSanpinCodes) {
 	console.log(`三拼 630 候选 ${code}:`);
 	for (const candidate of sortCandidates(sanpinPools.get(code) ?? []).slice(
@@ -583,7 +659,12 @@ for (const entry of baseWordEntries) {
 		);
 	}
 }
-const jiandao630 = selectSixThirty(jiandaoPools, 0);
+const jiandao630 = selectSixThirty(
+	jiandaoPools,
+	0,
+	createCommonReplacementIndex(),
+	"键道 630",
+);
 if (jiandao630.size !== 630)
 	throw new Error(`键道 630 必须完整覆盖 630 槽，实际为 ${jiandao630.size}。`);
 
@@ -646,6 +727,39 @@ for (const sections of [sanpin, jiandao]) {
 	assertNoPrefixWordRepeats(sections);
 }
 
+function assertNoReplaceableFixed(name: string, sections: FixedSections) {
+	const replacements = new FixedReplacementIndex();
+	for (const entries of [
+		sections.erjian,
+		sections.sixThirty,
+		sections.single,
+	]) {
+		for (const [code, word] of entries) replacements.addFixed(code, word);
+	}
+	const redundant: string[] = [];
+	for (const [section, entries] of [
+		["二简", sections.erjian],
+		["630", sections.sixThirty],
+	] as const) {
+		for (const [code, word] of entries) {
+			const replacement = replacements.find(word, code.length);
+			if (replacement) {
+				redundant.push(
+					`${section} ${code}→${word} 可由 ${replacement.code}（${replacement.mechanism}）替代`,
+				);
+			}
+		}
+	}
+	if (redundant.length > 0) {
+		throw new Error(
+			`${name} 仍有等长或更短的冗余固顶：\n${redundant.join("\n")}`,
+		);
+	}
+}
+
+assertNoReplaceableFixed("冰雪三拼", sanpin);
+assertNoReplaceableFixed("冰雪键道", jiandao);
+
 const outputs = new Map([
 	["snow_sanpin.fixed.txt", renderFixedTable(sanpin)],
 	["snow_jiandao.fixed.txt", renderFixedTable(jiandao)],
@@ -667,6 +781,20 @@ const sanpinThreeKey = [...sanpin630.keys()].filter(
 const jiandaoThreeKeySingles = [...jiandaoSingles.keys()].filter(
 	(code) => code.length === 3,
 ).length;
+const uniqueRejections = new Map(
+	optimizationRejections.map((value) => [
+		`${value.scope}\t${value.code}\t${value.word}`,
+		value,
+	]),
+);
+const rejectionSummary = [...uniqueRejections.values()].reduce(
+	(summary, value) => {
+		summary[value.replacement.mechanism] =
+			(summary[value.replacement.mechanism] ?? 0) + 1;
+		return summary;
+	},
+	{} as Record<string, number>,
+);
 console.log(
-	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 64；AA 单字 377；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}。`,
+	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 64；AA 单字 377；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}；等长或更短替代筛选 ${JSON.stringify(rejectionSummary)}。`,
 );

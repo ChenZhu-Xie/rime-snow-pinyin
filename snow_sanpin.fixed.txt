@@ -17,7 +17,7 @@ ee	这种
 fb	一般
 fc	因此
 ff	方法
-fg	一个
+fg	应该
 gc	刚才
 gp	公平
 hc	缓存
@@ -43,7 +43,7 @@ rn	热闹
 sb	随便
 sc	三次
 se	随着
-sg	三个
+sg	送给
 sk	思考
 te	调整
 tz	投资
@@ -77,11 +77,11 @@ bio	悲伤地
 biu	本身
 biv	白天
 bo	变得
-boa	不了
+boa	罢了
 boi	般的
 boo	啵啵
 bou	本着
-bov	别的
+bov	别的人
 bu	标准
 bua	不好
 bui	保险公司
@@ -154,7 +154,7 @@ dvo	躲藏着
 dvu	等于
 dvv	多长时间
 ea	只是
-eaa	这个
+eaa	这样
 eai	之后
 eao	这样的话
 eau	准备
@@ -167,7 +167,7 @@ eiu	转发
 eiv	直接
 eo	这么
 eoa	照着
-eoi	真的
+eoi	这么多
 eoo	这么着
 eou	指着
 eov	真的没有
@@ -191,7 +191,7 @@ fau	以后
 fav	严重
 fi	已经
 fia	意思
-fii	应该
+fii	一些
 fio	负担得起
 fiu	有关
 fiv	原因
@@ -221,7 +221,7 @@ gau	感谢
 gav	国际
 gi	公司
 gia	更加
-gii	刚刚
+gii	沟通
 gio	更多地
 giu	广州
 giv	国家
@@ -251,7 +251,7 @@ hau	好像
 hav	回去
 hi	呵呵
 hia	互相
-hii	哈哈
+hii	好东西
 hio	回家吧
 hiu	好多
 hiv	回家
@@ -265,7 +265,7 @@ hu	或者
 hua	患者
 hui	喝酒
 huo	缓缓的
-huu	好好
+huu	还可以
 huv	还有
 hv	欢迎
 hva	后来
@@ -277,7 +277,7 @@ ja	经济
 jaa	就是
 jai	微信
 jao	静静地
-jau	几个
+jau	晚上
 jav	文化
 ji	今天
 jia	据说
@@ -304,7 +304,7 @@ jvo	为什么
 jvu	简直
 jvv	完成
 ka	可是
-kaa	看看
+kaa	控制
 kai	科技
 kao	酷毙了
 kau	肯定
@@ -337,7 +337,7 @@ la	离线
 laa	厉害
 lai	联系方式
 lao	亮亮的
-lau	两个
+lau	里面
 lav	联系
 li	来说
 lia	链接
@@ -377,7 +377,7 @@ miu	某些
 miv	明星
 mo	免得
 moa	慢着
-moi	摸了摸
+moi	么么哒
 moo	忙着呢
 mou	买得起
 mov	明着
@@ -497,7 +497,7 @@ riu	忍心
 riv	人生
 ro	人们
 roa	认得
-roi	扔了
+roi	认得出
 roo	认了吧
 rou	忍着
 rov	人嘛
@@ -529,9 +529,9 @@ so	算了
 soa	算啦
 soi	缩着
 soo	算了吧
-sou	死的死
+sou	死吧
 su	所以
-sua	送给
+sua	桑塔纳
 sui	搜索
 suo	所有的人
 suu	所有
@@ -550,14 +550,14 @@ tau	讨论
 tav	同意
 ti	提升
 tia	太多
-tii	天天
+tii	拖拉机
 tio	他妈的
 tiu	统一
 tiv	提供
 to	他们
 toa	透着
 toi	它们
-too	他们的
+too	它们的
 tou	听得懂
 tov	提着
 tu	帖子
@@ -581,12 +581,12 @@ wav	城市
 wi	承包
 wia	创新
 wii	拆迁
-wio	成功的
+wio	产生了
 wiu	产生
 wiv	重新
 wo	穿着
 woa	冲着
-woi	吃了
+woi	除了他
 woo	吃了吗
 wou	差得远
 wov	除了
@@ -599,7 +599,7 @@ wuv	查处
 wv	成为
 wva	成人用品
 wvi	出来
-wvo	成为了
+wvo	吃完了
 wvu	处于
 wvv	查询
 xa	学校
@@ -615,7 +615,7 @@ xio	香香的
 xiu	许多
 xiv	学生
 xo	新的
-xoa	下了
+xoa	信得过
 xoi	笑着说
 xoo	行了吧
 xou	想着
@@ -671,7 +671,7 @@ zav	足够
 zi	增加
 zia	在家
 zii	资金
-zio	增加了
+zio	增添了
 ziu	早安
 ziv	昨天
 zo	怎么
