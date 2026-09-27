@@ -1,14 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1420" height="530" viewBox="0 0 1420 530" role="img" aria-labelledby="title desc">
 <title id="title">零飞键道·神韵 v1 双拼键盘图</title>
 <desc id="desc">NF3-21X21-M40-44 的 21 键声韵映射及 AVUIO 五个声调与形码辅键。</desc>
+<defs>
+  <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#f3f0e9"/><stop offset="1" stop-color="#ece9e1"/>
+  </linearGradient>
+  <linearGradient id="header" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#dde7df"/><stop offset="0.58" stop-color="#e8ebe4"/><stop offset="1" stop-color="#ede4df"/>
+  </linearGradient>
+  <linearGradient id="soundCap" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fffdf8"/><stop offset="1" stop-color="#edf1eb"/>
+  </linearGradient>
+  <linearGradient id="auxCap" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f7f2f8"/><stop offset="1" stop-color="#e8e1eb"/>
+  </linearGradient>
+  <filter id="keyShadow" x="-10%" y="-10%" width="120%" height="130%">
+    <feDropShadow dx="0" dy="3" stdDeviation="2" flood-color="#43564d" flood-opacity="0.16"/>
+  </filter>
+</defs>
 <style>
-  text{font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;fill:#20362d}
-  .title{font-size:30px;font-weight:700}.subtitle{font-size:16px;fill:#60736a}
-  .key{stroke-width:2}.sound-key{fill:#f3f7f2;stroke:#789487}.aux-key{fill:#f4f0f8;stroke:#9383a3}
-  .letter{font-size:23px;font-weight:800}.initial{font-size:17px;font-weight:650;fill:#335f50}.final{font-size:18px;fill:#766779}.aux{font-size:17px;font-weight:650;fill:#695479}
-  .legend{font-size:15px;fill:#5d6d65}.badge{fill:#e7efe9;stroke:#9caf9f}
+  text{font-family:"Microsoft YaHei","Noto Sans CJK SC",system-ui,sans-serif;fill:#43564d}
+  .title{font-size:32px;font-weight:760;letter-spacing:.03em}.subtitle{font-size:17px;fill:#657469}
+  .key{stroke-width:2.5;filter:url(#keyShadow)}.sound-key{fill:url(#soundCap);stroke:#82988c}.aux-key{fill:url(#auxCap);stroke:#aaa0b2}
+  .letter{font-size:27px;font-weight:800;fill:#354d43}.initial{font-size:19px;font-weight:700;fill:#3f6252}.final{font-size:20px;font-weight:650;fill:#675c70}.aux{font-size:19px;font-weight:700;fill:#675c70}
+  .legend{font-size:16px;fill:#62685f}.badge{fill:#e5ece7;stroke:#cad5cd;stroke-width:1.5}
 </style>
-<rect width="1420" height="530" fill="#faf9f4"/>
+<rect width="1420" height="530" fill="url(#paper)"/>
+<rect x="12" y="12" width="1396" height="68" rx="12" fill="url(#header)" stroke="#c3cdc1"/>
 <text class="title" x="24" y="42">零飞键道·神韵 v1</text>
 <text class="subtitle" x="24" y="70">NF3-21X21-M40-44 · 21×21 声韵键域 · M=40 · AVUIO 五辅键</text>
 <rect class="badge" x="1050" y="27" width="346" height="43" rx="21"/>

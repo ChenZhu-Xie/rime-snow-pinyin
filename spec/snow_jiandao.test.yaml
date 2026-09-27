@@ -42,6 +42,14 @@ deploy:
         assert: cand[1].text == "这种" and not has("(zhei4)")
       - send: se
         assert: cand[1].text == "随着" and not has("(sei1)")
+      - send: seu
+        assert: not has("(sei3)")
+      - send: we
+        assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
+      - send: sd
+        assert: not has("四但")
+      - send: rc
+        assert: not has("人从")
       - send: fu
         assert: cand[1].text == "以及"
       - send: ho

@@ -102,4 +102,4 @@ export const fullCodeAlreadyEasyWords = new Set([
 	"平台",
 ]);
 
-export const rejectedFixedWords = new Set(["妈逼", "软盘"]);
+export const rejectedFixedWords = new Set(["妈逼", "软盘", "四但", "人从"]);
