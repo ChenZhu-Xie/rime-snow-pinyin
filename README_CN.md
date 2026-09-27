@@ -17,7 +17,49 @@
 
 冰雪键道和冰雪三拼现共用 **零飞键道·神韵 v1** 双拼编码，对应公开测评中的 `NF3-21X21-M40-44`。它从 314 个固定单首键候选中选出，是 21×21 键域、五辅键 `AVUIO`、声韵记忆量 M=40 的九轴非支配候选之一，定位为低记忆 21 键双拼的综合性能第一梯队。这里的“零飞键道·神韵 v1”是本仓库的用户向名称，内部编号继续保留，便于复核和复现。
 
-![零飞键道·神韵 v1 双拼键盘图](docs/shenyun-v1-keyboard.svg)
+**声韵映射**
+
+![零飞键道·神韵 v1 声韵映射图](docs/shenyun-v1-keyboard.svg)
+
+**当前路径键频**
+
+![零飞键道·神韵 v1 当前路径键频图](docs/shenyun-v1-keyboard-heat.svg)
+
+#### 声韵编码规则
+
+普通声母均使用固定首键：
+
+| 声母 | 首键 | 声母 | 首键 | 声母 | 首键 |
+| --- | :---: | --- | :---: | --- | :---: |
+| b | B | p | P | m | M |
+| f | F | d | D | t | T |
+| n | N | l | L | g | G |
+| k | K | h | H | j | J |
+| q | Q | x | X | zh | E |
+| ch | W | sh | Y | r | R |
+| z | Z | c | C | s | S |
+
+零声母按拼音开头分组；表中直接列出“音节=完整双拼码”：
+
+| 前导组 | 首键 | 完整音节编码 |
+| --- | :---: | --- |
+| ØA | Q | a=QN · ai=QH · an=QJ · ang=QQ · ao=QY |
+| ØE | Q | e=QS · ei=QE · en=QZ · eng=QR · er=QE |
+| ØO | Q | o=QW · ou=QX |
+| ØY | F | ya=FN · yan=FJ · yang=FQ · yao=FY · ye=FS · yi=FP · yin=FD · ying=FK · yo=FW · yong=FW · you=FX · yu=FL · yuan=FM · yue=FH · yun=FT |
+| ØW | J | wa=JN · wai=JH · wan=JJ · wang=JQ · wei=JE · wen=JZ · weng=JR · wo=JW · wu=JL |
+
+韵母使用第二键；`v` 表示 `ü`，`ve` 表示 `üe`：
+
+| 第二键 | 韵母 | 第二键 | 韵母 | 第二键 | 韵母 |
+| :---: | --- | :---: | --- | :---: | --- |
+| N | a | H | ai / ue | J | an |
+| Q | ang | Y | ao / iong | S | e / ia |
+| E | ei / er | Z | en | R | eng |
+| P | i | G | ian / ua | F | iang / ui |
+| C | iao | B | ie / uai | D | in / uo |
+| K | ing / uang | X | iu / ou | W | o / ong |
+| L | u | M | uan / v（ü） | T | un / ve（üe） |
 
 - 21 个普通声母均使用固定首键；`zh/ch/sh → E/W/Y`。
 - 零声母载体为 `AOE/Y/W → Q/F/J`。
@@ -120,7 +162,49 @@ Recipe: ℞ **snow-pinyin**
 
 Snow KeyTao and Snow Three-Code now share **LingFei KeyTao · Shenyun v1**, published in the benchmark as `NF3-21X21-M40-44`. Selected from 314 fixed-first-key layouts, it is a nine-objective non-dominated candidate in the 21×21 domain with five auxiliary keys `AVUIO` and memory load M=40.
 
-![Shenyun v1 double-pinyin keyboard](docs/shenyun-v1-keyboard.svg)
+**Initial/final mapping**
+
+![Shenyun v1 initial/final mapping](docs/shenyun-v1-keyboard.svg)
+
+**Current-path key-frequency heat map**
+
+![Shenyun v1 current-path key-frequency heat map](docs/shenyun-v1-keyboard-heat.svg)
+
+#### Initial/final coding rules
+
+Every ordinary initial uses one fixed first key:
+
+| Initial | First key | Initial | First key | Initial | First key |
+| --- | :---: | --- | :---: | --- | :---: |
+| b | B | p | P | m | M |
+| f | F | d | D | t | T |
+| n | N | l | L | g | G |
+| k | K | h | H | j | J |
+| q | Q | x | X | zh | E |
+| ch | W | sh | Y | r | R |
+| z | Z | c | C | s | S |
+
+Zero-onset syllables are grouped by their written Pinyin prefix; each cell gives `syllable=complete code`:
+
+| Carrier group | First key | Complete syllable codes |
+| --- | :---: | --- |
+| ØA | Q | a=QN · ai=QH · an=QJ · ang=QQ · ao=QY |
+| ØE | Q | e=QS · ei=QE · en=QZ · eng=QR · er=QE |
+| ØO | Q | o=QW · ou=QX |
+| ØY | F | ya=FN · yan=FJ · yang=FQ · yao=FY · ye=FS · yi=FP · yin=FD · ying=FK · yo=FW · yong=FW · you=FX · yu=FL · yuan=FM · yue=FH · yun=FT |
+| ØW | J | wa=JN · wai=JH · wan=JJ · wang=JQ · wei=JE · wen=JZ · weng=JR · wo=JW · wu=JL |
+
+Finals use the second key; `v` denotes `ü`, and `ve` denotes `üe`:
+
+| Second key | Finals | Second key | Finals | Second key | Finals |
+| :---: | --- | :---: | --- | :---: | --- |
+| N | a | H | ai / ue | J | an |
+| Q | ang | Y | ao / iong | S | e / ia |
+| E | ei / er | Z | en | R | eng |
+| P | i | G | ian / ua | F | iang / ui |
+| C | iao | B | ie / uai | D | in / uo |
+| K | ing / uang | X | iu / ou | W | o / ong |
+| L | u | M | uan / v (ü) | T | un / ve (üe) |
 
 - All 21 ordinary initials have fixed first keys; `zh/ch/sh → E/W/Y`.
 - Zero-onset carriers are `AOE/Y/W → Q/F/J`.
@@ -197,7 +281,49 @@ Snow Pinyin follows the vocabulary scope of [Rime Ice](ice/README.md): roughly 1
 
 冰雪鍵道與冰雪三拼現共用 **零飛鍵道·神韻 v1**，對應公開測評中的 `NF3-21X21-M40-44`。它從 314 個普通聲母固定單首鍵候選中選出，是 21×21 鍵域、五輔鍵 `AVUIO`、聲韻記憶量 M=40 的九軸非支配候選之一。
 
-![零飛鍵道·神韻 v1 雙拼鍵盤圖](docs/shenyun-v1-keyboard.svg)
+**聲韻映射**
+
+![零飛鍵道·神韻 v1 聲韻映射圖](docs/shenyun-v1-keyboard.svg)
+
+**目前路徑鍵頻**
+
+![零飛鍵道·神韻 v1 目前路徑鍵頻圖](docs/shenyun-v1-keyboard-heat.svg)
+
+#### 聲韻編碼規則
+
+普通聲母均使用固定首鍵：
+
+| 聲母 | 首鍵 | 聲母 | 首鍵 | 聲母 | 首鍵 |
+| --- | :---: | --- | :---: | --- | :---: |
+| b | B | p | P | m | M |
+| f | F | d | D | t | T |
+| n | N | l | L | g | G |
+| k | K | h | H | j | J |
+| q | Q | x | X | zh | E |
+| ch | W | sh | Y | r | R |
+| z | Z | c | C | s | S |
+
+零聲母按拼音開頭分組；表中直接列出「音節=完整雙拼碼」：
+
+| 前導組 | 首鍵 | 完整音節編碼 |
+| --- | :---: | --- |
+| ØA | Q | a=QN · ai=QH · an=QJ · ang=QQ · ao=QY |
+| ØE | Q | e=QS · ei=QE · en=QZ · eng=QR · er=QE |
+| ØO | Q | o=QW · ou=QX |
+| ØY | F | ya=FN · yan=FJ · yang=FQ · yao=FY · ye=FS · yi=FP · yin=FD · ying=FK · yo=FW · yong=FW · you=FX · yu=FL · yuan=FM · yue=FH · yun=FT |
+| ØW | J | wa=JN · wai=JH · wan=JJ · wang=JQ · wei=JE · wen=JZ · weng=JR · wo=JW · wu=JL |
+
+韻母使用第二鍵；`v` 表示 `ü`，`ve` 表示 `üe`：
+
+| 第二鍵 | 韻母 | 第二鍵 | 韻母 | 第二鍵 | 韻母 |
+| :---: | --- | :---: | --- | :---: | --- |
+| N | a | H | ai / ue | J | an |
+| Q | ang | Y | ao / iong | S | e / ia |
+| E | ei / er | Z | en | R | eng |
+| P | i | G | ian / ua | F | iang / ui |
+| C | iao | B | ie / uai | D | in / uo |
+| K | ing / uang | X | iu / ou | W | o / ong |
+| L | u | M | uan / v（ü） | T | un / ve（üe） |
 
 - 21 個普通聲母各自使用固定首鍵；`zh/ch/sh → E/W/Y`。
 - 零聲母載體為 `AOE/Y/W → Q/F/J`。
