@@ -142,6 +142,13 @@ patch:
   translator/enable_schema_user_dict: true
   translator/shape_elements: snow_jiandao_chaifen
   translator/shape_mapping: "radical_jiandao.txt"
+  # 与四拼一致：先顶出当前候选，再直接提交高频尾字。
+  # 保留 d→的、l→了，;/ 只作为可选的强制上屏尾字键。
+  punctuator/half_shape/+:
+    ";": 的
+    "|": ；
+    "/": 了
+    "\\": 、
   key_binder/bindings/+:
     - { when: always, accept: "Control+period", toggle: buffered }
     # - { when: always, accept: "Control+l", send_sequence: "{Home}{Right}{Right}" }

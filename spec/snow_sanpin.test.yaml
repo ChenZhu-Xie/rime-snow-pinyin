@@ -58,6 +58,15 @@ deploy:
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pdfdyrf
         assert: commit == "拼音" and cand[1].text == "输入法"
+      # 强制上屏尾字；原 d/l 一码仍然保留
+      - send: fpgs;
+        assert: commit == "一个的"
+      - send: fpgs/
+        assert: commit == "一个了"
+      - send: d
+        assert: cand[1].text == "的"
+      - send: l
+        assert: cand[1].text == "了"
       # 动态码长
       - send: "ypypiaypyp"
         assert: cand[1].text == "誓师"

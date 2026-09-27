@@ -183,6 +183,13 @@ patch:
   translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[ivuao]?"
   translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[ivuao]{0,2}"
   translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywe]{3,}[ivuao]{0,3}"
+  # 与四拼一致：先顶出当前候选，再直接提交高频尾字。
+  # 保留 d→的、l→了，;/ 只作为可选的强制上屏尾字键。
+  punctuator/half_shape/+:
+    ";": 的
+    "|": ；
+    "/": 了
+    "\\": 、
   key_binder/bindings/+:
     - { when: always, accept: "Control+period", toggle: buffered }
     - { when: always, accept: v, toggle: buffered }
