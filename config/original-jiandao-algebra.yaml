@@ -1,0 +1,36 @@
+# 原冰雪键道双拼代数的稳定测量快照。
+# 来源：`git show b8fd127^:snow_sanpin.schema.yaml` 的 `sanpin_algebra`。
+# b8fd127 是神韵布局替换原键道双拼映射的提交边界；测量不依赖运行时 Git 历史。
+sanpin_algebra:
+  - xform/(?<=[jqxy])u(e?\d)/v$1/
+  - xform/(^| )([aoe]|[mn]g?\d)/$1X$2/
+  - xform/zh(an|ang|ei|en|eng|u|un)(?=\d)/Q$1/
+  - derive/zh(ai|ao|e)(?=\d)/Q$1/
+  - xform/zh/F/
+  - xform/ch(ai|an|ang|ei|en|eng|u|un)(?=\d)/J$1/
+  - derive/ch(ao|e)(?=\d)/J$1/
+  - xform/ch/W/
+  - xform/sh/E/
+  - derive/uang(?=\d)/M/
+  - xform/[iu]ang(?=\d)/X/
+  - xform/i?ong(?=\d)/Y/
+  - xform/ang(?=\d)/P/
+  - xform/(ing|uai)(?=\d)/G/
+  - xform/e?ng(?=\d)/R/
+  - xform/(ei|un)(?=\d)/W/
+  - xform/en(?=\d)/N/
+  - xform/uan(?=\d)/T/
+  - xform/ian(?=\d)/M/
+  - xform/an(?=\d)/F/
+  - xform/(iu|ua)(?=\d)/Q/
+  - xform/(ie|ou)(?=\d)/D/
+  - xform/(ai|ve|ue)(?=\d)/H/
+  - xform/iao(?=\d)/C/
+  - xform/ao(?=\d)/Z/
+  - xform/(in|ui)(?=\d)/B/
+  - xform/(u?o|v)(?=\d)/L/
+  - xform/i(?=\d)/K/
+  - xform/i?a(?=\d)/S/
+  - xform/(er|u)(?=\d)/J/
+  - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
+  - xlit/12345/ivuao/
