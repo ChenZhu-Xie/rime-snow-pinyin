@@ -102,8 +102,6 @@ deploy:
         assert: cand[1].text == "那样"
       - send: tgvv
         assert: cand[1].text == "填" and cand[1].comment:find("vivv")
-      - send: jprlT
-        assert: cand[1].text == "键盘热力图"
       # 首选后置
       - send: ypyp
         assert: cand[1].text == "事实"

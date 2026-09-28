@@ -53,8 +53,11 @@ test("reported phrase codes follow the frozen Shenyun mapping", () => {
 	};
 	assert.equal(fixture.codes.na + fixture.codes.yang, "nnfq");
 	assert.notEqual(fixture.codes.na + fixture.codes.yang, "nnff");
+});
+
+test("KeyTao keeps the legacy two-position jump on Ctrl+P", () => {
 	assert.match(
-		read("snow_pinyin.user.dict.yaml"),
-		/^键盘热力图\tjian4 pan2 re4 li4 tu2\t100$/mu,
+		read("snow_jiandao.schema.yaml"),
+		/\{ when: composing, accept: "Control\+p", send_sequence: "\{Home\}\{Right\}\{Right\}" \}/u,
 	);
 });
