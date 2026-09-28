@@ -9,6 +9,11 @@ script: |
     end
     return false
   end
+  function eq(left, right)
+    print("Left  = " .. tostring(left))
+    print("Right = " .. tostring(right))
+    return left == right
+  end
 deploy:
   sentence:
     patch:
@@ -33,23 +38,23 @@ deploy:
         assert: has("充满希望")
       # 编码导航：14567 直达字位，UIOP 负责物理/逻辑移动
       - send: "wmxj1{BackSpace}"
-        assert: preedit == "mxj"
+        assert: eq(preedit, "mxj")
       - send: "wmxj4{BackSpace}"
-        assert: preedit == "wxj"
+        assert: eq(preedit, "wxj")
       - send: "wmxj5{BackSpace}"
-        assert: preedit == "wmj"
+        assert: eq(preedit, "wmj")
       - send: "wmxj6{BackSpace}"
-        assert: preedit == "wmx"
+        assert: eq(preedit, "wmx")
       - send: "wmxj7{BackSpace}"
-        assert: preedit == "wmx"
+        assert: eq(preedit, "wmx")
       - send: "wmxj{Control+u}{BackSpace}"
-        assert: preedit == "wmj"
+        assert: eq(preedit, "wmj")
       - send: "wmxj1{Control+i}{BackSpace}"
-        assert: preedit == "wxj"
+        assert: eq(preedit, "wxj")
       - send: "wmxj1{Control+o}{BackSpace}"
-        assert: preedit == "wmx"
+        assert: eq(preedit, "wmx")
       - send: "wmxj{Control+p}{BackSpace}"
-        assert: preedit == "wmx"
+        assert: eq(preedit, "wmx")
       - send: jjjwui
         assert: has("经济基础")
       - send: ejyrF
@@ -70,7 +75,7 @@ deploy:
       - send: seu
         assert: not has("(sei3)")
       - send: ge
-        assert: cand[1].text == "给" and cand[2].text ~= "給"
+        assert: cand[1].text == "给" and (not cand[2] or cand[2].text ~= "給")
       - send: we
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
