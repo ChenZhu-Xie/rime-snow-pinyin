@@ -57,5 +57,18 @@ assert(env.left_key == "Control+y")
 assert(env.previous_key == "Control+u")
 assert(env.next_key == "Control+i")
 assert(env.right_key == "Control+o")
+assert(env.uses_native_boundaries == false)
+
+for _, schema_id in ipairs({ "snow_sipin", "snow_qingyun" }) do
+  local native_env = {
+    engine = {
+      schema = {
+        schema_id = schema_id,
+      },
+    },
+  }
+  navigator.init(native_env)
+  assert(native_env.uses_native_boundaries == true)
+end
 
 print("code_navigator tests passed")

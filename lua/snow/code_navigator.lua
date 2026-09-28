@@ -1,8 +1,8 @@
--- 三拼、键道编码导航处理器
+-- 键道、三拼、四拼、清韵编码导航处理器
 --
--- 这两套方案会把多字词的辅码集中放在编码末尾，Rime 原生的
--- “按音节移动”无法稳定对应到原始输入中的字位。本处理器根据当前候选
--- 的字数还原逻辑字位，并直接设置原始输入的 caret_pos。
+-- 键道、三拼会把多字词的辅码集中放在编码末尾，Rime 原生的“按音节移动”
+-- 无法稳定对应到原始输入中的字位，因此根据当前候选字数还原逻辑字位。
+-- 四拼、清韵则复用 Rime 原生音节边界；四方案均由此处理器提供物理循环移动。
 
 local snow = require "snow.snow"
 
@@ -94,7 +94,7 @@ end
 ---@field snapshot_end integer?
 ---@field positions integer[]?
 ---@field logical_index integer?
----@field is_sipin boolean
+---@field uses_native_boundaries boolean
 ---@field logical_left_key KeyEvent
 ---@field logical_right_key KeyEvent
 
@@ -167,7 +167,8 @@ function navigator.init(env)
   env.right_key = KeyEvent("Control+o")
   env.logical_left_key = KeyEvent("Shift+Left")
   env.logical_right_key = KeyEvent("Shift+Right")
-  env.is_sipin = env.engine.schema.schema_id == "snow_sipin"
+  local schema_id = env.engine.schema.schema_id
+  env.uses_native_boundaries = schema_id == "snow_sipin" or schema_id == "snow_qingyun"
   clear_snapshot(env)
 end
 
@@ -187,7 +188,7 @@ function navigator.func(key, env)
   if key.modifier == 0 and key.keycode >= 0x30 and key.keycode <= 0x39 then
     digit = string.char(key.keycode)
   end
-  local is_direct = not env.is_sipin
+  local is_direct = not env.uses_native_boundaries
       and (digit == "1" or digit == "4" or digit == "5" or digit == "6" or digit == "7")
 
   if not (is_left or is_next or is_previous or is_right or is_direct) then
@@ -217,9 +218,9 @@ function navigator.func(key, env)
     return snow.kAccepted
   end
 
-  -- 四拼的音节边界由 Rime 的 navigator 精确掌握；转发方向键即可。
+  -- 四拼、清韵的音节边界由 Rime 的 navigator 精确掌握；转发方向键即可。
   -- 三拼和键道则继续使用下面按候选字数还原的逻辑字位。
-  if env.is_sipin then
+  if env.uses_native_boundaries then
     env.engine:process_key(is_next and env.logical_right_key or env.logical_left_key)
     return snow.kAccepted
   end

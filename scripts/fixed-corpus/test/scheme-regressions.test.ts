@@ -55,9 +55,63 @@ test("reported phrase codes follow the frozen Shenyun mapping", () => {
 	assert.notEqual(fixture.codes.na + fixture.codes.yang, "nnff");
 });
 
-test("KeyTao keeps the legacy two-position jump on Ctrl+P", () => {
+test("all current schemes keep the legacy two-position jump on Ctrl+P", () => {
 	assert.match(
-		read("snow_jiandao.schema.yaml"),
-		/\{ when: composing, accept: "Control\+p", send_sequence: "\{Home\}\{Right\}\{Right\}" \}/u,
+		read("snow_pinyin.schema.yaml"),
+		/\{ accept: "Control\+p", send_sequence: "\{Home\}\{Right\}\{Right\}", when: composing \}/u,
+	);
+	for (const schema of [
+		"snow_jiandao.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_sipin.schema.yaml",
+		"snow_qingyun.schema.yaml",
+	]) {
+		assert.match(read(schema), /__include: snow_pinyin\.schema\.yaml:\//u);
+	}
+});
+
+test("Clear Rhyme shares code navigation and frees Ctrl+U for it", () => {
+	const schema = read("snow_qingyun.schema.yaml");
+	assert.match(schema, /lua_processor@\*snow\.code_navigator/u);
+	assert.match(
+		schema,
+		/\{ when: always, accept: "Control\+q", toggle: unicode \}/u,
+	);
+	assert.doesNotMatch(schema, /accept: "Control\+u", toggle: unicode/u);
+	const navigator = read("lua/snow/code_navigator.lua");
+	assert.match(
+		navigator,
+		/schema_id == "snow_sipin" or schema_id == "snow_qingyun"/u,
+	);
+});
+
+test("Three-Code supports the shared fixed-candidate controls", () => {
+	const schema = read("snow_sanpin.schema.yaml");
+	assert.match(schema, /lua_processor@\*snow\.user_dict/u);
+	assert.match(schema, /translator\/enable_schema_user_dict: true/u);
+	const processor = read("lua/snow/user_dict.lua");
+	for (const key of [
+		"Control+comma",
+		"Control+apostrophe",
+		"Control+bracketleft",
+		"Control+bracketright",
+		"Control+backslash",
+	]) {
+		assert.ok(processor.includes(`KeyEvent("${key}")`));
+	}
+});
+
+test("Clear Rhyme history only changes the trigger key", () => {
+	const schema = read("snow_qingyun.schema.yaml");
+	assert.match(schema, /history\/input: "`"/u);
+	assert.doesNotMatch(schema, /history\/initial_quality:/u);
+	assert.match(schema, /recognizer\/patterns\/history: "\^`\$"/u);
+	assert.match(schema, /menu\/alternative_select_keys: "_23890"/u);
+	assert.match(schema, /menu\/page_size: 6/u);
+	assert.match(schema, /lua_processor@\*snow\.history/u);
+	assert.match(schema, /lua_translator@\*snow\.history/u);
+	assert.match(
+		read("lua/snow/qingyun.lua"),
+		/if candidate\.type == "history" then[\s\S]+yield\(candidate\)[\s\S]+goto continue/u,
 	);
 });

@@ -155,7 +155,6 @@ patch:
     "\\": 、
   key_binder/bindings/+:
     - { when: always, accept: "Control+period", toggle: buffered }
-    - { when: composing, accept: "Control+p", send_sequence: "{Home}{Right}{Right}" }
     - { when: always, accept: v, toggle: buffered }
     - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: "_23890"

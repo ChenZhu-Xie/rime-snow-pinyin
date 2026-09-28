@@ -21,6 +21,7 @@ engine:
     - ascii_composer
     - recognizer
     - lua_processor@*snow.code_navigator
+    - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor
     - lua_processor@*snow.history
     - key_binder
@@ -184,6 +185,7 @@ patch:
       reset: 0
   translator/prism: snow_sanpin
   translator/preedit_format: null
+  translator/enable_schema_user_dict: true
   translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[ivuao]?"
   translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[ivuao]{0,2}"
   translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywe]{3,}[ivuao]{0,3}"

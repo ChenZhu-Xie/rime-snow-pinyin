@@ -61,6 +61,12 @@ function this.func(translation, env)
   local segment = env.engine.context.composition:toSegmentation():back()
   local affix = { "a", "o", "e", "i", "u", ";", ",", ".", "/" }
   for candidate in translation:iter() do
+    -- 历史候选与其他方案共用同一套排序和选择行为，不受清韵的
+    -- 缓冲、单字模式、拆分提示等候选加工影响。
+    if candidate.type == "history" then
+      yield(candidate)
+      goto continue
+    end
     if env.engine.context:get_option("buffered") and not is_pinyin(candidate) then
       local result = env.lookup_pinyin:lookup(candidate.text)
       snow.comment(candidate, result)
