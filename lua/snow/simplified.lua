@@ -8,7 +8,7 @@
 local filter = {}
 
 ---@class SimplifiedEnv: Env
----@field converter Opencc
+---@field converter Opencc?
 
 ---@param env SimplifiedEnv
 function filter.init(env)
@@ -21,7 +21,10 @@ function filter.func(translation, env)
   local traditional = env.engine.context:get_option("traditionalization")
   local postponed = {}
   for candidate in translation:iter() do
-    if traditional or env.converter:convert_text(candidate.text) == candidate.text then
+    -- 精简测试环境（例如 Mira）可能不附带 OpenCC 的 t2s.json。
+    -- 此时保持原序，避免过滤器因初始化失败而吞掉全部候选。
+    if traditional or not env.converter
+        or env.converter:convert_text(candidate.text) == candidate.text then
       yield(candidate)
     else
       table.insert(postponed, candidate)
