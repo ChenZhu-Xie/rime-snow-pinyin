@@ -145,7 +145,6 @@ end
 ---@param position integer
 local function move_to(context, env, position)
   context.caret_pos = position
-  snow.errorf("code_navigator moved caret=%d actual=%d", position, context.caret_pos)
   env.logical_index = nil
   if env.positions and env.snapshot_start then
     for index, relative_pos in ipairs(env.positions) do
@@ -194,12 +193,6 @@ function navigator.func(key, env)
   if not prepare_snapshot(context, env) then
     return snow.kNoop
   end
-  snow.errorf(
-    "code_navigator key=%s code=%d modifier=%d input=%s caret=%d range=%d-%d candidate_positions=%s logical_index=%s",
-    key:repr(), key.keycode, key.modifier, context.input, context.caret_pos,
-    env.snapshot_start or -1, env.snapshot_end or -1,
-    table.concat(env.positions or {}, ","), tostring(env.logical_index)
-  )
   if is_direct and #(env.positions or {}) <= 1 then
     -- 单字后的 1 仍交给辅助码处理器作为部首引导键。
     return snow.kNoop

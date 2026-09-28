@@ -45,10 +45,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: 复制笔画输入方案
+      - name: 准备方案依赖
         run: |
           cp rime-stroke/stroke* .
           cp spec/fixtures/default.yaml default.yaml
+          sudo apt-get update
+          sudo apt-get install --yes opencc
+          mkdir -p opencc
+          cp /usr/share/opencc/* opencc/
       - name: 安装 Mira
         run: |
           wget -O mira https://github.com/rimeinn/mira/releases/download/v0.3.0/mira-linux-x86_64
