@@ -70,7 +70,7 @@ deploy:
       - send: seu
         assert: not has("(sei3)")
       - send: ge
-        assert: cand[1].text == "给" and cand[2].text != "給"
+        assert: cand[1].text == "给" and cand[2].text ~= "給"
       - send: we
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
