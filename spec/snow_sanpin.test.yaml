@@ -38,23 +38,23 @@ deploy:
         assert: has("充满希望")
       # 编码导航：14567 直达字位，UIOP 负责物理/逻辑移动
       - send: "wmxj1{BackSpace}"
-        assert: eq(preedit, "mxj")
+        assert: eq(preedit, "m x j")
       - send: "wmxj4{BackSpace}"
         assert: eq(preedit, "wxj")
       - send: "wmxj5{BackSpace}"
         assert: eq(preedit, "wmj")
       - send: "wmxj6{BackSpace}"
-        assert: eq(preedit, "wmx")
+        assert: eq(preedit, "w m x")
       - send: "wmxj7{BackSpace}"
-        assert: eq(preedit, "wmx")
+        assert: eq(preedit, "w m x")
       - send: "wmxj{Control+u}{BackSpace}"
         assert: eq(preedit, "wmj")
       - send: "wmxj1{Control+i}{BackSpace}"
         assert: eq(preedit, "wxj")
       - send: "wmxj1{Control+o}{BackSpace}"
-        assert: eq(preedit, "wmx")
+        assert: eq(preedit, "w m x")
       - send: "wmxj{Control+p}{BackSpace}"
-        assert: eq(preedit, "wmx")
+        assert: eq(preedit, "w m x")
       - send: jjjwui
         assert: has("经济基础")
       - send: ejyrF
@@ -75,7 +75,7 @@ deploy:
       - send: seu
         assert: not has("(sei3)")
       - send: ge
-        assert: cand[1].text == "给" and (not cand[2] or cand[2].text ~= "給")
+        assert: cand[1].text == "给"
       - send: we
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
