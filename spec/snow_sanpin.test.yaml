@@ -36,7 +36,7 @@ deploy:
         assert: has("白花花")
       - send: wmxj
         assert: has("充满希望")
-      # 编码导航：14567 直达字位，UIOP 负责物理/逻辑移动
+      # 编码导航：14567 直达字位；U/P 物理循环，I/O 逻辑左/右循环
       - send: "wmxj1{BackSpace}"
         assert: eq(preedit, "m x j")
       - send: "wmxj4{BackSpace}"
@@ -50,11 +50,13 @@ deploy:
       - send: "wmxj{Control+u}{BackSpace}"
         assert: eq(preedit, "wmj")
       - send: "wmxj1{Control+i}{BackSpace}"
-        assert: eq(preedit, "wxj")
+        assert: eq(preedit, "w m x")
       - send: "wmxj1{Control+o}{BackSpace}"
+        assert: eq(preedit, "wxj")
+      - send: "wmxj1{Control+u}{BackSpace}"
         assert: eq(preedit, "w m x")
-      - send: "wmxj{Control+p}{BackSpace}"
-        assert: eq(preedit, "w m x")
+      - send: "wmxj{Control+p}{Control+p}{BackSpace}"
+        assert: eq(preedit, "m x j")
       - send: jjjwui
         assert: has("经济基础")
       - send: ejyrF

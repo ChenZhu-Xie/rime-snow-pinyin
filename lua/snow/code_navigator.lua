@@ -94,6 +94,9 @@ end
 ---@field snapshot_end integer?
 ---@field positions integer[]?
 ---@field logical_index integer?
+---@field is_sipin boolean
+---@field logical_left_key KeyEvent
+---@field logical_right_key KeyEvent
 
 ---@param env CodeNavigatorEnv
 local function clear_snapshot(env)
@@ -159,9 +162,12 @@ end
 ---@param env CodeNavigatorEnv
 function navigator.init(env)
   env.left_key = KeyEvent("Control+u")
-  env.next_key = KeyEvent("Control+i")
-  env.previous_key = KeyEvent("Control+o")
+  env.previous_key = KeyEvent("Control+i")
+  env.next_key = KeyEvent("Control+o")
   env.right_key = KeyEvent("Control+p")
+  env.logical_left_key = KeyEvent("Shift+Left")
+  env.logical_right_key = KeyEvent("Shift+Right")
+  env.is_sipin = env.engine.schema.schema_id == "snow_sipin"
   clear_snapshot(env)
 end
 
@@ -181,7 +187,8 @@ function navigator.func(key, env)
   if key.modifier == 0 and key.keycode >= 0x30 and key.keycode <= 0x39 then
     digit = string.char(key.keycode)
   end
-  local is_direct = digit == "1" or digit == "4" or digit == "5" or digit == "6" or digit == "7"
+  local is_direct = not env.is_sipin
+      and (digit == "1" or digit == "4" or digit == "5" or digit == "6" or digit == "7")
 
   if not (is_left or is_next or is_previous or is_right or is_direct) then
     clear_snapshot(env)
@@ -201,10 +208,19 @@ function navigator.func(key, env)
   local start_pos = env.snapshot_start or 0
   local end_pos = env.snapshot_end or #context.input
   if is_left then
-    move_to(context, env, math.max(start_pos, context.caret_pos - 1))
+    local position = context.caret_pos <= start_pos and end_pos or context.caret_pos - 1
+    move_to(context, env, position)
     return snow.kAccepted
   elseif is_right then
-    move_to(context, env, math.min(end_pos, context.caret_pos + 1))
+    local position = context.caret_pos >= end_pos and start_pos or context.caret_pos + 1
+    move_to(context, env, position)
+    return snow.kAccepted
+  end
+
+  -- 四拼的音节边界由 Rime 的 navigator 精确掌握；转发方向键即可。
+  -- 三拼和键道则继续使用下面按候选字数还原的逻辑字位。
+  if env.is_sipin then
+    env.engine:process_key(is_next and env.logical_right_key or env.logical_left_key)
     return snow.kAccepted
   end
 
