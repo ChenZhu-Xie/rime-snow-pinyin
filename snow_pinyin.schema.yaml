@@ -140,13 +140,7 @@ key_binder:
     - { when: has_menu, accept: "Control+h", send_sequence: "{Up}{Up}" }
     - { when: has_menu, accept: "Control+l", send_sequence: "{Down}{Down}" }
 
-    # 光标/音节切换
-    - { when: composing, accept: "Control+u", send: Shift+Left }
-    - { when: composing, accept: "Control+i", send: Shift+Right }
-
     # Emacs 编辑键
-    - { accept: "Control+p", send: Up, when: composing }
-    - { accept: "Control+n", send: Down, when: composing }
     - { accept: "Control+b", send: Left, when: composing }
     - { accept: "Control+f", send: Right, when: composing }
     - { accept: "Control+a", send: Home, when: composing }
@@ -156,7 +150,7 @@ key_binder:
     # - { accept: "Control+h", send: BackSpace, when: composing }
     - { accept: "Control+g", send: Escape, when: composing }
     - { accept: "Control+bracketleft", send: Escape, when: composing }
-    - { accept: "Control+y", send: Page_Up, when: composing }
+    - { accept: "Control+m", send: Page_Up, when: composing }
     - { accept: "Alt+v", send: Page_Up, when: composing }
     - { accept: "Control+v", send: Page_Down, when: composing }
     # 翻页

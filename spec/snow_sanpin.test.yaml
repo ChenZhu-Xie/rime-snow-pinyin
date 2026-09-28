@@ -31,6 +31,25 @@ deploy:
         assert: has("白花花")
       - send: wmxj
         assert: has("充满希望")
+      # 编码导航：14567 直达字位，UIOP 负责物理/逻辑移动
+      - send: "wmxj1b"
+        assert: preedit == "wbmxj"
+      - send: "wmxj4b"
+        assert: preedit == "wmbxj"
+      - send: "wmxj5b"
+        assert: preedit == "wmxbj"
+      - send: "wmxj6b"
+        assert: preedit == "wmxjb"
+      - send: "wmxj7b"
+        assert: preedit == "wmxjb"
+      - send: "wmxj{Control+u}b"
+        assert: preedit == "wmxbj"
+      - send: "wmxj1{Control+i}b"
+        assert: preedit == "wmbxj"
+      - send: "wmxj1{Control+o}b"
+        assert: preedit == "wmxjb"
+      - send: "wmxj{Control+p}b"
+        assert: preedit == "wmxjb"
       - send: jjjwui
         assert: has("经济基础")
       - send: ejyrF

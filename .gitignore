@@ -46,5 +46,24 @@ program/generate_dict_code/jdh.dict.yaml
 # 压缩包
 *.zip
 
+# 图片（SVG 为可审查的文本格式，继续纳入版本控制）
+*.[pP][nN][gG]
+*.[aA][pP][nN][gG]
+*.[jJ][pP][gG]
+*.[jJ][pP][eE][gG]
+*.[jJ][fF][iI][fF]
+*.[jJ][xX][lL]
+*.[gG][iI][fF]
+*.[wW][eE][bB][pP]
+*.[bB][mM][pP]
+*.[iI][cC][oO]
+*.[tT][iI][fF]
+*.[tT][iI][fF][fF]
+*.[aA][vV][iI][fF]
+*.[hH][eE][iI][cC]
+*.[hH][eE][iI][fF]
+*.[dD][dD][sS]
+*.[pP][sS][dD]
+
 # 临时垃圾桶
 trash/

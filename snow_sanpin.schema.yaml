@@ -20,6 +20,7 @@ engine:
   processors:
     - ascii_composer
     - recognizer
+    - lua_processor@*snow.code_navigator
     - lua_processor@*snow.shape_processor
     - lua_processor@*snow.history
     - key_binder
