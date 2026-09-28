@@ -44,4 +44,18 @@ assert(navigator.index_for_digit("6", 4) == 4)
 assert(navigator.index_for_digit("6", 3) == nil)
 assert(navigator.index_for_digit("7", 4) == nil)
 
+KeyEvent = function(repr) return repr end
+local env = {
+  engine = {
+    schema = {
+      schema_id = "snow_sanpin",
+    },
+  },
+}
+navigator.init(env)
+assert(env.left_key == "Control+y")
+assert(env.previous_key == "Control+u")
+assert(env.next_key == "Control+i")
+assert(env.right_key == "Control+o")
+
 print("code_navigator tests passed")

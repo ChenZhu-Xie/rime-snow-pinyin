@@ -161,10 +161,10 @@ end
 
 ---@param env CodeNavigatorEnv
 function navigator.init(env)
-  env.left_key = KeyEvent("Control+u")
-  env.previous_key = KeyEvent("Control+i")
-  env.next_key = KeyEvent("Control+o")
-  env.right_key = KeyEvent("Control+p")
+  env.left_key = KeyEvent("Control+y")
+  env.previous_key = KeyEvent("Control+u")
+  env.next_key = KeyEvent("Control+i")
+  env.right_key = KeyEvent("Control+o")
   env.logical_left_key = KeyEvent("Shift+Left")
   env.logical_right_key = KeyEvent("Shift+Right")
   env.is_sipin = env.engine.schema.schema_id == "snow_sipin"
