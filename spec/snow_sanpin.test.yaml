@@ -53,8 +53,8 @@ deploy:
         assert: eq(preedit, "w m x")
       - send: "wmxj1{Control+o}{BackSpace}"
         assert: eq(preedit, "wxj")
-      - send: "wmxj1{Control+u}{BackSpace}"
-        assert: eq(preedit, "w m x")
+      - send: "wmxj1{Control+u}{Control+u}{Control+u}{BackSpace}"
+        assert: eq(preedit, "wmj")
       - send: "wmxj{Control+p}{Control+p}{BackSpace}"
         assert: eq(preedit, "m x j")
       - send: jjjwui
