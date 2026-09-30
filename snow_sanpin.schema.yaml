@@ -14,11 +14,13 @@ schema:
     双拼编码：零飞键道·神韵 v1（NF3-21X21-M40-44）
   dependencies:
     - snow_pinyin
-    - snow_bihua
+    - snow_jiandao_bihua
+    - snow_jiandao_jianpin
 
 engine:
   processors:
     - ascii_composer
+    - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
@@ -27,7 +29,6 @@ engine:
     - key_binder
     - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
-    - lua_processor@*snow.popping
     - speller
     - punctuator
     - selector
@@ -201,3 +202,5 @@ patch:
     - { when: always, accept: v, toggle: buffered }
     - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: "_23890"
+  stroke/prism: snow_jiandao_bihua
+  stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]

@@ -26,7 +26,7 @@ for (const line of dict) {
 	const code1 = algebra.apply(syllables[0]);
 	const code2 = algebra.apply(syllables[1]);
   const 二码 = code1[0] + code2.at(-1);
-	let 三码;
+	let 三码: string;
   if (syllables.length === 2) 三码 = code1[0] + code2.at(-1) + code1.at(-1);
   else {
     const code3 = algebra.apply(syllables[2]);

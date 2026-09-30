@@ -23,23 +23,38 @@ local function encode(element, map)
   return result
 end
 
+
+local stroke_names = { ["h"] = "一", ["s"] = "丨", ["p"] = "丿", ["n"] = "丶", ["z"] = "乙" }
+local sipin_stroke_map = { ["一"] = "e", ["丨"] = "i", ["丿"] = "u", ["丶"] = "o", ["乙"] = "a" }
+local sanpin_stroke_map = { ["一"] = "v", ["丨"] = "i", ["丿"] = "u", ["丶"] = "o", ["乙"] = "a" }
+
 --- 冰雪四拼和冰雪三拼的笔画匹配函数
 --- @param text string
 --- @param partial_code string
 --- @param env AssistEnv
-local function stroke_match(text, partial_code, env, horizontal_key)
-  local key_to_stroke = horizontal_key == "v"
-      and { ["v"] = "一", ["i"] = "丨", ["u"] = "丿", ["o"] = "丶", ["a"] = "乙" }
-      or { ["e"] = "一", ["i"] = "丨", ["u"] = "丿", ["o"] = "丶", ["a"] = "乙" }
-  local prompt = partial_code:len() > 0 and
-      " 笔画 [" .. partial_code:gsub(".", key_to_stroke) .. "]" or
-      nil
+--- @param map table<string, string>
+local function stroke_match(text, partial_code, env, map)
+  ---@type table<string, string>
+  local reverse_map = {}
+  ---@type table<string, string>
+  local direct_map = {}
+  for k, v in pairs(map) do
+    reverse_map[v] = k
+  end
+  for k, v in pairs(stroke_names) do
+    direct_map[k] = map[v]
+  end
+  ---@type string?
+  local prompt = nil
+  if partial_code:len() > 0 then
+    prompt = " 笔画 [" .. partial_code:gsub(".", reverse_map) .. "]"
+  end
   local elements = snow.split(env.strokes:lookup(text), " ")
   local match = #elements == 0
   ---@type string[]
   local codes = {}
   for _, element in ipairs(elements) do
-    local code = encode(element, { ["h"] = horizontal_key, ["s"] = "i", ["p"] = "u", ["n"] = "o", ["z"] = "a" })
+    local code = encode(element, direct_map)
     if code:len() > partial_code:len() + 4 then
       code = code:sub(1, partial_code:len() + 4) .. "~"
     end
@@ -128,7 +143,7 @@ function filter.handle_candidate(text, shape_input, env)
     if shape_input:sub(1, 1) == "1" then
       return radical_match(text, shape_input:sub(2), env)
     else
-      return stroke_match(text, shape_input, env, "e")
+      return stroke_match(text, shape_input, env, sipin_stroke_map)
     end
   elseif id == "snow_sanpin" then -- 冰雪三拼
     if shape_input:len() == 0 and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]") then
@@ -137,8 +152,7 @@ function filter.handle_candidate(text, shape_input, env)
     if shape_input:sub(1, 1) == "1" then
       return radical_match(text, shape_input:sub(2), env)
     else
-      -- 三拼与键道共用 viuoa 五个辅键，横必须显示并接受为 v。
-      return stroke_match(text, shape_input, env, "v")
+      return stroke_match(text, shape_input, env, sanpin_stroke_map)
     end
   elseif id == "snow_jiandao" then -- 冰雪键道
     if is_pinyin or shape_input:len() > 0 or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?") then

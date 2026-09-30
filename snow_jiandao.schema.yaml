@@ -60,7 +60,7 @@ engine:
     - lua_filter@*snow.placeholder
     - lua_filter@*snow.enforce
     - reverse_lookup_filter@lookup_pinyin
-    - reverse_lookup_filter@lookup_sanpin
+    - reverse_lookup_filter@lookup_jiandao
     - lua_filter@*snow.fix
     - lua_filter@*snow.shape_filter
     - lua_filter@*snow.postpone
@@ -117,7 +117,7 @@ jianpin:
     - snow_pinyin.tencent
     - snow_pinyin.user
 
-lookup_sanpin:
+lookup_jiandao:
   tags: [pinyin]
   overwrite_comment: true
   dictionary: snow_pinyin
