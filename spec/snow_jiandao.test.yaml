@@ -19,14 +19,14 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: bkxhpdfd
+      - send: bdxypgyg
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
       # 组词规则
-      - send: bkxh
+      - send: bdxy
         assert: has("冰雪")
-      - send: yrf
+      - send: erf
         assert: has("输入法")
       - send: wmxj
         assert: has("充满希望")
@@ -51,61 +51,63 @@ deploy:
         assert: eq(preedit, "wmj")
       - send: "wmxj{Control+o}{Control+o}{BackSpace}"
         assert: eq(preedit, "m x j")
-      - send: ejyrF
+      - send: fjerF
         assert: has("中文输入法")
-      - send: ehrmGHG
+      - send: fhrmGHG
         assert: has("中华人民共和国")
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
-      - send: xh
+      - send: xy
         assert: cand[1].text == "学"
-      - send: bkov
+      - send: bdov
         assert: cand[1].text == "冰"
-      - send: bf
+      - send: by
         assert: cand[1].text == "不要"
-      - send: ee
-        assert: cand[1].text == "这种" and not has("(zhei4)")
-      - send: se
-        assert: cand[1].text == "随着" and not has("(sei1)")
-      - send: seu
+      - send: fx
+        assert: cand[1].text == "飞" and not has("(zhei4)")
+      - send: fuv
+        assert: cand[1].text == "这种"
+      - send: sx
+        assert: cand[1].text == "思想" and not has("(sei1)")
+      - send: sxu
         assert: not has("(sei3)")
-      - send: ge
+      - send: gx
         assert: cand[1].text == "给"
-      - send: we
+      - send: wx
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
         assert: not has("四但")
       - send: rc
         assert: not has("人从")
-      - send: fu
+      - send: yj
         assert: cand[1].text == "以及"
-      - send: ho
+      - send: hb
         assert: cand[1].text == "好吧"
       - send: xo
         assert: cand[1].text == "行吧"
       - send: xou
         assert: cand[1].text == "行叭"
-      - send: fpgs
+      - send: ykgs
         assert: cand[1].text == "一个"
-      - send: nnfq
+      - send: nwym
         assert: cand[1].text == "那样"
       # 首选后置
-      - send: ypyp
+      - send: ekek
         assert: cand[1].text == "事实"
-      - send: ypypv
+      - send: ekekv
         assert: cand[2].text == "事实"
       # 顶功
-      - send: fpgsfpgs
+      - send: ykgsykgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bkovxhv
+      - send: bdovxyv
         assert: commit == "冰" and cand[1].text == "雪"
-      - send: pdfdyrf
+      - send: pgygerf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 强制上屏尾字；原 d/l 一码仍然保留
-      - send: fpgs;
+      - send: ykgs;
         assert: commit == "一个的"
-      - send: fpgs/
+      - send: ykgs/
         assert: commit == "一个了"
       - send: d
         assert: cand[1].text == "的"
@@ -130,11 +132,11 @@ deploy:
         assert: commit == "可爱可"
       - send: kuoI
         assert: commit == "可爱爱"
-      - send: bfA
+      - send: byA
         assert: commit == "不要不要"
       # 动态码长
-      - send: "ypypiiypyp"
+      - send: "ekekiiekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "vwq myua  wqmy"
+      - send: "vwm mzua  wmmz"
         assert: cand[1].text == "长猫"
