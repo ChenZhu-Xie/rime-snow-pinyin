@@ -47,7 +47,7 @@ const heatColor = (ratio: number) => {
 		Math.round(cold[index] + (hot[index] - cold[index]) * normalized);
 	return `rgb(${channel(0)}, ${channel(1)}, ${channel(2)})`;
 };
-const escape = (value: string) =>
+const escapeXml = (value: string) =>
 	value
 		.replaceAll("&", "&amp;")
 		.replaceAll("<", "&lt;")
@@ -60,12 +60,12 @@ const keys = visibleKeys
 		const y = 22 + position.y * 88;
 		const hits = sample.heat_map[key.toLowerCase()] ?? 0;
 		const ratio = hits / sample.hits;
-		return `<g data-mxkey="${escape(key)}"><title>${escape(key)}：${hits} 次，${percent(ratio)}</title><rect x="${x}" y="${y}" width="68" height="76" rx="7" fill="${heatColor(ratio)}" stroke="#9cad9e"/><text x="${x + 10}" y="${y + 23}" font-size="18" fill="#30483a">${escape(key)}</text><text x="${x + 34}" y="${y + 49}" text-anchor="middle" font-size="14" fill="#30483a">${percent(ratio)}</text><text x="${x + 34}" y="${y + 65}" text-anchor="middle" font-size="10" fill="#5a6c60">${hits} 次</text></g>`;
+		return `<g data-mxkey="${escapeXml(key)}"><title>${escapeXml(key)}：${hits} 次，${percent(ratio)}</title><rect x="${x}" y="${y}" width="68" height="76" rx="7" fill="${heatColor(ratio)}" stroke="#9cad9e"/><text x="${x + 10}" y="${y + 23}" font-size="18" fill="#30483a">${escapeXml(key)}</text><text x="${x + 34}" y="${y + 49}" text-anchor="middle" font-size="14" fill="#30483a">${percent(ratio)}</text><text x="${x + 34}" y="${y + 65}" text-anchor="middle" font-size="10" fill="#5a6c60">${hits} 次</text></g>`;
 	})
 	.join("\n");
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc">
-<title id="title">${targetScheme} 文稿击键热力图</title>
+<title id="title">神韵文稿击键热力图</title>
 <desc id="desc">${payload.macroxue.corpora.daily.label}，原生标点口径，共 ${sample.hits} 次击键；裁去右侧未使用的扩展键。</desc>
 <rect width="790" height="304" fill="#fbfcfa"/>
 ${keys}

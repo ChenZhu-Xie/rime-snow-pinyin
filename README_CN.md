@@ -13,21 +13,19 @@
 
 冰雪拼音包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪三拼](https://input.tansongchen.com/snow3/)、[冰雪双拼](https://input.tansongchen.com/snow2/)、[冰雪一拼](https://input.tansongchen.com/snow1/)和[冰雪键道](https://input.tansongchen.com/snow-jiandao/)输入方案。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
 
-### 零飞键道·神韵 v2 双拼编码
+### 无飞键道·神韵双拼编码
 
-冰雪键道和冰雪三拼现共用 **零飞键道·神韵 v2**，内部方案号为 `R8-21X21-M40-01`。它取代旧版 `NF3-21X21-M40-44`，使用 21×21 声韵键域、5 个互斥辅键 `IVUAO`，R10 记忆量为 M-R2=40。这里的“神韵 v2”是用户向名称；稳定内部编号用于测试和复现。
+冰雪键道和冰雪三拼现共用 **无飞键道·神韵**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。
 
 **声韵映射**
 
-![零飞键道·神韵 v2 声韵映射图](docs/shenyun-v2-keyboard.svg)
-
-声韵图直接调用本地 `a7_CKT_R10_integrated.html` 的原生键盘导出函数，再沿用 v1 的裁剪方式移除所有非 A–Z 键并收窄画布；不是在仓库内重新绘制的近似图。
+![无飞键道·神韵声韵映射图](docs/shenyun-v2-keyboard.svg)
 
 **R10 日常八场景文稿击键热力图（原生标点口径）**
 
-![R8-21X21-M40-01 文稿击键热力图](docs/shenyun-v2-keyboard-heat.svg)
+![神韵文稿击键热力图](docs/shenyun-v2-keyboard-heat.svg)
 
-热力图直接取自本地 `a7_CKT_R10_integrated.html` 的 `daily|native-punctuation` 数据，共 2149 次击键；SVG 已裁去右侧未使用的扩展键和 `/`，保留主键盘内的 0% 键作为键位参照。
+热力图基于日常八场景文稿的 2149 次击键，保留主键盘内的 0% 键作为键位参照。
 
 #### 声韵编码规则
 
@@ -72,9 +70,9 @@
 
 #### R10 与 S005、首道 B04 的公平比较
 
-本次数据取自尚未发布到 benchmark 仓库的本地 `a7_CKT_R10_integrated.html`。因此 [shuangpin-layout-benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark) 链接仍保持原地址，不把尚未公开的 R10 说成线上报告。三方案共用 Common399、冻结 20 合同、字词/形码数据和模型；S005 是同为 21×21 的原键道基线，B04 首道是 26×26 的同环境基线，不能称为同键域比较。
+三方案共用 Common399、冻结 20 合同、字词/形码数据和模型；S005 是 21×21 的同键域基线，B04 首道是 26×26 的同环境基线。
 
-| 指标 | 神韵 v2 R8 | 原键道 S005 | 首道 B04 | 方向／边界 |
+| 指标 | 神韵 | 原键道 S005 | 首道 B04 | 方向／边界 |
 | --- | ---: | ---: | ---: | --- |
 | M-R2 记忆项 | 40 | 44 | 51 | 描述性；预算不同 |
 | 不同二键码（Common399） | 373 | 372 | 399 | 越高重码越少 |
@@ -91,11 +89,11 @@
 | 20 合同右小指峰值 | 5.10% | 2.77% | 1.89% | 越低峰值越小 |
 | 20 合同最大单指峰值 | 26.17% | 29.53% | 29.27% | 越低峰值越小 |
 | 日常纯汉字 MX34 | 140.7933 | 134.6090 | 138.6378 | 同文稿越高越好；不含消歧 |
-| 默认说明兼容标点 MX34 | 148.5876 | 153.6883 | 156.1501 | 未参与本轮目标的敏感性轨 |
+| 默认说明兼容标点 MX34 | 148.5876 | 153.6883 | 156.1501 | 敏感性参考 |
 
-[R10 完整公平对比](reports/shenyun-v2-r10-comparison.md)逐项列出相对 NF3 新增的全部指标：记忆/偏移、补全与选重敏感性、v4/v4-C/v5/v6、LU、20 个冻结合同的主键区/左右小指/CKT/非首选权重、行区与远键峰值，以及 MX34 四条文稿轨的路径、手指、手区、行区和距离分桶；[原始 JSON 快照](reports/shenyun-v2-r10-comparison.json)用于机器复核。
+[R10 完整公平对比](reports/shenyun-v2-r10-comparison.md)提供详细指标和分场景结果；[原始 JSON 快照](reports/shenyun-v2-r10-comparison.json)可供机器复核。
 
-结论是：相对同键域 S005，神韵 v2 的主要优势是裸 S2 CKT、同指连击、主键区覆盖和日常文稿路径，代价是加权非首选音节、补全额外键、右小指峰值和较低 LU。相对 B04，神韵以更小键域取得若干裸码和路径优势，但 B04 在零碰撞、补全、部分小指/行区负载与若干综合分上更好。神韵 v2 是综合折中前沿，不是全指标支配；模型分数也不等同真人测速。
+结论是：相对同键域 S005，神韵的主要优势是裸 S2 CKT、同指连击、主键区覆盖和日常文稿路径，代价是加权非首选音节、补全额外键、右小指峰值和较低 LU。相对 B04，神韵以更小键域取得若干裸码和路径优势，但 B04 在零碰撞、补全、部分小指/行区负载与若干综合分上更好。神韵是综合折中前沿，不是全指标支配；模型分数也不等同真人测速。
 
 ```powershell
 bun scripts/验证神韵双拼.ts "路径/a7_CKT_R10_integrated.html"
@@ -104,14 +102,14 @@ bun run --cwd scripts keyboard:extract -- "路径/a7_CKT_R10_integrated.html"
 bun scripts/导出神韵热力图.ts "路径/a7_CKT_R10_integrated.html"
 ```
 
-#### 神韵 v2 固顶与二字词简码
+#### 神韵固顶与二字词简码
 
-固顶表已按新音节码重新联合选优，而不是把旧码机械搬移：
+固顶表与简码概况：
 
 - `AA` 的 441 个位置由 377 个二码单字和 64 个二简完整覆盖；其中 59 个二简使用天然空码，5 个让极冷音码下沉到第三键。
 - 三拼 630 当前为 105 个二码位＋509 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
 - 三拼二字词二、三码候选清单见 [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)：630 个理论码位中 550 个有合法候选，每码最多列 10 项，供逐级选词复核，不直接替代一码一候选的固顶表。
-- [二字词逐级排序调研](reports/sipin-bigram-ranking-research.md)还按四拼真实补码顺序复核 133,205 条可编码读音；本轮未发现兼具“逐级明显改善”与“完整路径非首选”的自动替换对象，因此只保留证据，不据此强改固顶。
+- [二字词逐级排序结果](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音。
 - 多字轻声 `de/le` 尾词改走 `;`/`/` 尾字键；已有结构略码、完整码首选或日常收益不足的词不强占固顶位。
 
 ```powershell
@@ -208,21 +206,19 @@ Recipe: ℞ **snow-pinyin**
 
 [Snow Pinyin](https://input.tansongchen.com) is a family of Mandarin-based Chinese input methods. It combines phonetic information, discrete optimization, top-up coding, and adaptive learning for natural, efficient, and personalized input. The family includes [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Three-Code](https://input.tansongchen.com/snow3/), [Snow Double Pinyin](https://input.tansongchen.com/snow2/), [Snow One-Code](https://input.tansongchen.com/snow1/), and [Snow KeyTao](https://input.tansongchen.com/snow-jiandao/).
 
-### LingFei KeyTao · Shenyun v2 double-pinyin layout
+### Wufei KeyTao · Shenyun double-pinyin layout
 
-Snow KeyTao and Snow Three-Code now share **LingFei KeyTao · Shenyun v2**, internally identified as `R8-21X21-M40-01`. It replaces `NF3-21X21-M40-44` with a 21×21 sound-code domain, five disjoint auxiliary keys `IVUAO`, and R10 memory load M-R2=40.
+Snow KeyTao and Snow Three-Code now share **Wufei KeyTao · Shenyun**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`.
 
 **Initial/final mapping**
 
-![Shenyun v2 initial/final mapping](docs/shenyun-v2-keyboard.svg)
-
-This SVG is exported by the native keyboard renderer in the local `a7_CKT_R10_integrated.html`, then cropped exactly like v1 by removing every non-A–Z key and narrowing the canvas. It is not a separately redrawn approximation.
+![Shenyun initial/final mapping](docs/shenyun-v2-keyboard.svg)
 
 **R10 daily-document keystroke heat map, native-punctuation track**
 
-![R8-21X21-M40-01 document heat map](docs/shenyun-v2-keyboard-heat.svg)
+![Shenyun document heat map](docs/shenyun-v2-keyboard-heat.svg)
 
-The heat map contains 2,149 keystrokes from the local R10 payload. Unused right-side extension keys and `/` are cropped; zero-use keys inside the main keyboard remain as positional references.
+The heat map contains 2,149 keystrokes from eight daily-use scenarios. Zero-use keys inside the main keyboard remain as positional references.
 
 #### Coding rules
 
@@ -242,9 +238,9 @@ The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. Th
 
 #### Fair R10 comparison with S005 and Shoudao B04
 
-These numbers come from a local `a7_CKT_R10_integrated.html` that has not yet been published in [shuangpin-layout-benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark), so the existing repository link is deliberately unchanged. R8, S005, and B04 use the same Common399 data, frozen 20 contracts, dictionaries, shapes, and models. S005 is the same-domain 21×21 baseline; B04 is a 26×26 same-environment baseline.
+The three layouts use the same Common399 data, frozen 20 contracts, dictionaries, shapes, and models. S005 is the same-domain 21×21 baseline; B04 is a 26×26 same-environment baseline.
 
-| Metric | Shenyun v2 R8 | KeyTao S005 | Shoudao B04 |
+| Metric | Shenyun | KeyTao S005 | Shoudao B04 |
 | --- | ---: | ---: | ---: |
 | M-R2 | 40 | 44 | 51 |
 | Unique Common399 two-key codes | 373 | 372 | 399 |
@@ -259,13 +255,13 @@ These numbers come from a local `a7_CKT_R10_integrated.html` that has not yet be
 | 20-contract right-pinky peak | 5.10% | 2.77% | 1.89% |
 | Daily Han-only MX34 | 140.7933 | 134.6090 | 138.6378 |
 
-The [complete R10 comparison](reports/shenyun-v2-r10-comparison.md) covers every metric added since NF3: memory and offsets, completion and selection sensitivity, v4/v4-C/v5/v6, LU, all 20 contract-level home/pinky/CKT/miss fields, row/far-key/finger peaks, and every path, hand, finger, row, and distance metric in all four MX34 tracks. A [raw JSON snapshot](reports/shenyun-v2-r10-comparison.json) is included for machine review.
+The [complete R10 comparison](reports/shenyun-v2-r10-comparison.md) provides detailed metrics and per-scenario results. A [raw JSON snapshot](reports/shenyun-v2-r10-comparison.json) is available for machine review.
 
-Against S005, R8's main wins are bare CKT, same-finger rate, home-area coverage, and daily-document paths; its costs include weighted misses, completion keys, right-pinky peaks, and lower LU. Against B04 there is no overall dominance: R8 gets several bare-code and path benefits in a smaller domain, while B04 wins collision freedom, completion, several load measures, and some aggregates. These are model results, not human speed tests.
+Against S005, Shenyun's main wins are bare CKT, same-finger rate, home-area coverage, and daily-document paths; its costs include weighted misses, completion keys, right-pinky peaks, and lower LU. Against B04 there is no overall dominance: Shenyun gets several bare-code and path benefits in a smaller domain, while B04 wins collision freedom, completion, several load measures, and some aggregates. These are model results, not human speed tests.
 
 #### Fixed candidates and staged two-character abbreviations
 
-The v2 build produces 64 two-key abbreviations plus 377 two-key characters, 105+509 Three-Code 630 candidates, and 105+525 KeyTao 630 candidates. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
+The current layout produces 64 two-key abbreviations plus 377 two-key characters, 105+509 Three-Code 630 candidates, and 105+525 KeyTao 630 candidates. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
 
 The [staged bigram ranking study](reports/sipin-bigram-ranking-research.md) also checks 133,205 encodable readings along the real Four-Code completion path. It found no automatic replacement that both improves multiple stages and remains non-first at full code, so the evidence is retained without forcing extra fixed-candidate changes.
 
@@ -288,21 +284,19 @@ Snow Pinyin follows the vocabulary scope of [Rime Ice](ice/README.md): roughly 1
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通話拼音為基礎的中文輸入方案，結合字音資訊、離散最佳化、頂功技術與使用習慣學習，提供自然、高效且個人化的輸入體驗。系列包含[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪三拼](https://input.tansongchen.com/snow3/)、[冰雪雙拼](https://input.tansongchen.com/snow2/)、[冰雪一拼](https://input.tansongchen.com/snow1/)及[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)。
 
-### 零飛鍵道·神韻 v2 雙拼編碼
+### 無飛鍵道·神韻雙拼編碼
 
-冰雪鍵道與冰雪三拼現共用 **零飛鍵道·神韻 v2**，內部方案號為 `R8-21X21-M40-01`。它取代 `NF3-21X21-M40-44`，使用 21×21 聲韻鍵域、5 個互斥輔鍵 `IVUAO`，R10 記憶量為 M-R2=40。
+冰雪鍵道與冰雪三拼現共用 **無飛鍵道·神韻**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。
 
 **聲韻映射**
 
-![零飛鍵道·神韻 v2 聲韻映射圖](docs/shenyun-v2-keyboard.svg)
-
-聲韻圖直接呼叫本機 `a7_CKT_R10_integrated.html` 的原生鍵盤匯出函式，再沿用 v1 的裁切方式移除所有非 A–Z 鍵並收窄畫布；並非在倉庫內另行重繪的近似圖。
+![無飛鍵道·神韻聲韻映射圖](docs/shenyun-v2-keyboard.svg)
 
 **R10 日常八場景文稿擊鍵熱力圖（原生標點口徑）**
 
-![R8-21X21-M40-01 文稿擊鍵熱力圖](docs/shenyun-v2-keyboard-heat.svg)
+![神韻文稿擊鍵熱力圖](docs/shenyun-v2-keyboard-heat.svg)
 
-熱力圖取自本機 R10 payload，共 2149 次擊鍵；已裁去右側未使用的擴充鍵與 `/`，主鍵盤內的 0% 鍵則保留作位置參照。
+熱力圖基於日常八場景文稿的 2149 次擊鍵，保留主鍵盤內的 0% 鍵作為位置參照。
 
 #### 聲韻規則
 
@@ -322,9 +316,9 @@ Snow Pinyin follows the vocabulary scope of [Rime Ice](ice/README.md): roughly 1
 
 #### R10 與 S005、首道 B04 的公平比較
 
-資料來自尚未發佈到 [shuangpin-layout-benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark) 的本機 `a7_CKT_R10_integrated.html`，因此外部倉庫連結刻意維持原址。三方案共用 Common399、凍結 20 合約、詞形資料與模型；S005 是同鍵域 21×21 基線，B04 是 26×26 同環境基線。
+三方案共用 Common399、凍結 20 合約、詞形資料與模型；S005 是 21×21 的同鍵域基線，B04 是 26×26 的同環境基線。
 
-| 指標 | 神韻 v2 R8 | 原鍵道 S005 | 首道 B04 |
+| 指標 | 神韻 | 原鍵道 S005 | 首道 B04 |
 | --- | ---: | ---: | ---: |
 | M-R2 | 40 | 44 | 51 |
 | Common399 不同二鍵碼 | 373 | 372 | 399 |
@@ -339,15 +333,15 @@ Snow Pinyin follows the vocabulary scope of [Rime Ice](ice/README.md): roughly 1
 | 20 合約右小指峰值 | 5.10% | 2.77% | 1.89% |
 | 日常純漢字 MX34 | 140.7933 | 134.6090 | 138.6378 |
 
-[R10 完整公平對比](reports/shenyun-v2-r10-comparison.md)列出 NF3 之後新增的全部指標：記憶與偏移、補全與選重敏感性、v4/v4-C/v5/v6、LU、20 合約的主鍵區/小指/CKT/非首選權重、行區與遠鍵峰值，以及 MX34 四軌的路徑、手指、行區與距離分桶；另附[原始 JSON](reports/shenyun-v2-r10-comparison.json)。
+[R10 完整公平對比](reports/shenyun-v2-r10-comparison.md)提供詳細指標與分場景結果；另附[原始 JSON](reports/shenyun-v2-r10-comparison.json)供機器複核。
 
-相對 S005，神韻 v2 的主要優勢是裸 CKT、同指連擊、主鍵區覆蓋與日常文稿路徑；代價是加權非首選、補全鍵、右小指峰值與較低 LU。相對 B04 並無全指標支配：神韻以較小鍵域取得若干裸碼與路徑優勢，B04 則在零碰撞、補全、部分負載與若干綜合分勝出。這些均是模型值，而非真人測速。
+相對 S005，神韻的主要優勢是裸 CKT、同指連擊、主鍵區覆蓋與日常文稿路徑；代價是加權非首選、補全鍵、右小指峰值與較低 LU。相對 B04 並無全指標支配：神韻以較小鍵域取得若干裸碼與路徑優勢，B04 則在零碰撞、補全、部分負載與若干綜合分勝出。這些均是模型值，而非真人測速。
 
 #### 固頂與二字詞逐級簡碼
 
-v2 生成 64 個二簡與 377 個二碼單字；三拼 630 為 105＋509，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
+當前方案生成 64 個二簡與 377 個二碼單字；三拼 630 為 105＋509，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
 
-[二字詞逐級排序調研](reports/sipin-bigram-ranking-research.md)另按四拼真實補碼順序檢查 133,205 條可編碼讀音；本輪沒有同時滿足「多級明顯改善」與「完整碼非首選」的自動替換對象，故保留證據而不強改固頂。
+[二字詞逐級排序結果](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音。
 
 ```powershell
 bun scripts/生成神韵固顶词.ts --check

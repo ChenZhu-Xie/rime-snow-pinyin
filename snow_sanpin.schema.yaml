@@ -11,7 +11,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     带调拼音词顶功输入方案
-    双拼编码：零飞键道·神韵 v2（R8-21X21-M40-01）
+    双拼编码：无飞键道·神韵
   dependencies:
     - snow_pinyin
     - snow_jiandao_bihua
@@ -66,7 +66,7 @@ engine:
     - lua_filter@*snow.hint
 
 sanpin_algebra:
-  # 零飞键道·神韵 v2（R8-21X21-M40-01）
+  # 无飞键道·神韵
   # 目标布局的 421 音节码表中不编码这 5 个扩展音节。
   - erase/^(hng|m|n|ng|ê)\d$/
   # j/q/x 与零声母 YU 系列统一按 v/van/ve/vn 韵尾编码。

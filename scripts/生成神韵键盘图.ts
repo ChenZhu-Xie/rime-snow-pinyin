@@ -91,7 +91,7 @@ async function main() {
 		}, schemeId);
 
 		svg = await page.evaluate(
-			({ source, targetId, width, height }) => {
+			({ source, width, height }) => {
 				const document = new DOMParser().parseFromString(
 					source,
 					"image/svg+xml",
@@ -116,10 +116,12 @@ async function main() {
 				const namespace = "http://www.w3.org/2000/svg";
 				const title = document.createElementNS(namespace, "title");
 				title.id = "title";
-				title.textContent = "零飞键道·神韵 v2 声韵映射图";
+				title.textContent = "无飞键道·神韵声韵映射图";
 				const description = document.createElementNS(namespace, "desc");
 				description.id = "desc";
-				description.textContent = `${targetId} 由 benchmark HTML 原生键盘图导出并裁剪，只保留 A 到 Z 字母键。`;
+				description.textContent = "无飞键道·神韵的声母、韵母与辅键映射。";
+				const heading = root.querySelector('text[x="24"][y="34"]');
+				if (heading) heading.textContent = "无飞键道·神韵";
 				root.insertBefore(description, root.firstChild);
 				root.insertBefore(title, description);
 
@@ -127,7 +129,6 @@ async function main() {
 			},
 			{
 				source: nativeSvg,
-				targetId: schemeId,
 				width: cropWidth,
 				height: cropHeight,
 			},
