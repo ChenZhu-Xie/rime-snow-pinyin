@@ -100,7 +100,7 @@ deploy:
         assert: cand[1].text == "一个"
       - send: nwym
         assert: cand[1].text == "那样"
-      - send: tpvi
+      - send: tpvvi
         assert: cand[1].text == "填" and cand[1].comment:find("vivv")
       # 首选后置
       - send: ekek
