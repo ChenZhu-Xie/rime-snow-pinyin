@@ -2,3 +2,7 @@ node_modules
 diff
 cache
 stroke.*
+build
+*.userdb
+installation.yaml
+user.yaml
