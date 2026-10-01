@@ -29,9 +29,9 @@ const initialMap: Record<string, string> = {
 	j: "j",
 	q: "q",
 	x: "x",
-	zh: "e",
+	zh: "f",
 	ch: "w",
-	sh: "y",
+	sh: "e",
 	r: "r",
 	z: "z",
 	c: "c",
@@ -39,88 +39,90 @@ const initialMap: Record<string, string> = {
 };
 
 const finalMap: Record<string, string> = {
-	a: "n",
+	a: "w",
 	ai: "h",
-	an: "j",
-	ang: "q",
-	ao: "y",
+	an: "l",
+	ang: "m",
+	ao: "z",
 	e: "s",
-	ei: "e",
-	en: "z",
-	eng: "r",
-	er: "e",
-	i: "p",
-	ia: "s",
-	ian: "g",
+	ei: "x",
+	en: "e",
+	eng: "n",
+	er: "j",
+	i: "k",
+	ia: "l",
+	ian: "p",
 	iang: "f",
 	iao: "c",
 	ie: "b",
-	in: "d",
-	ing: "k",
-	iong: "y",
-	iu: "x",
-	o: "w",
-	ong: "w",
-	ou: "x",
-	u: "l",
-	ua: "g",
-	uai: "b",
-	uan: "m",
-	uang: "k",
-	ue: "h",
-	ui: "f",
-	un: "t",
-	uo: "d",
-	v: "m",
-	ve: "t",
+	in: "g",
+	ing: "d",
+	iong: "n",
+	iu: "t",
+	o: "q",
+	ong: "p",
+	ou: "f",
+	u: "j",
+	ua: "c",
+	uai: "t",
+	uan: "q",
+	uang: "d",
+	ui: "r",
+	un: "g",
+	uo: "y",
+	v: "r",
+	van: "e",
+	ve: "y",
+	vn: "w",
 };
 
 const zeroCodes: Record<string, string> = {
-	a: "qn",
+	a: "qw",
 	ai: "qh",
-	an: "qj",
-	ang: "qq",
-	ao: "qy",
+	an: "ql",
+	ang: "qm",
+	ao: "qz",
 	e: "qs",
-	ei: "qe",
-	en: "qz",
-	eng: "qr",
-	er: "qe",
-	o: "qw",
-	ou: "qx",
-	ya: "fn",
-	yan: "fj",
-	yang: "fq",
-	yao: "fy",
-	ye: "fs",
-	yi: "fp",
-	yin: "fd",
-	ying: "fk",
-	yo: "fw",
-	yong: "fw",
-	you: "fx",
-	yu: "fl",
-	yuan: "fm",
-	yue: "fh",
-	yun: "ft",
-	wa: "jn",
+	ei: "qx",
+	en: "qe",
+	eng: "qn",
+	er: "qj",
+	o: "qq",
+	ou: "qf",
+	ya: "yw",
+	yan: "yl",
+	yang: "ym",
+	yao: "yz",
+	ye: "ys",
+	yi: "yk",
+	yin: "yg",
+	ying: "yd",
+	yo: "yq",
+	yong: "yp",
+	you: "yf",
+	yu: "yr",
+	yuan: "ye",
+	yue: "yy",
+	yun: "yw",
+	wa: "jw",
 	wai: "jh",
-	wan: "jj",
-	wang: "jq",
-	wei: "je",
-	wen: "jz",
-	weng: "jr",
-	wo: "jw",
-	wu: "jl",
+	wan: "jl",
+	wang: "jm",
+	wei: "jx",
+	wen: "je",
+	weng: "jn",
+	wo: "jq",
+	wu: "jj",
 };
 
 const cases = new Map<string, string>();
 for (const [initial, key] of Object.entries(initialMap)) {
-	cases.set(`${initial}a1`, `${key}ni`);
+	cases.set(`${initial}a1`, `${key}${finalMap.a}i`);
 }
 for (const [final, key] of Object.entries(finalMap)) {
-	if (final === "v") cases.set("lv1", `l${key}i`);
-	else if (final === "ve") cases.set("lve1", `l${key}i`);
+	if (["v", "ve"].includes(final)) cases.set(`l${final}1`, `l${key}i`);
+	else if (final === "van") cases.set("juan1", `j${key}i`);
+	else if (final === "vn") cases.set("jun1", `j${key}i`);
 	else cases.set(`b${final}1`, `b${key}i`);
 }
 for (const [syllable, code] of Object.entries(zeroCodes)) {
@@ -375,7 +377,7 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 
 const fixture = JSON.parse(
 	readFileSync(
-		join(scriptDirectory, "..", "docs", "shenyun-v1-mapping.json"),
+		join(scriptDirectory, "..", "docs", "shenyun-v2-mapping.json"),
 		"utf8",
 	),
 ) as {
@@ -387,7 +389,7 @@ const fixtureHash = createHash("sha256")
 	.update(JSON.stringify(fixture.codes))
 	.digest("hex");
 if (
-	fixture.scheme !== "NF3-21X21-M40-44" ||
+	fixture.scheme !== "R8-21X21-M40-01" ||
 	fixtureHash !== fixture.mappingSha256
 ) {
 	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
@@ -422,9 +424,9 @@ if (benchmarkPath) {
 		entries: Array<{ id: string; codeList: Array<string | null> }>;
 	};
 	const target = payload.entries.find(
-		(entry) => entry.id === "NF3-21X21-M40-44",
+		(entry) => entry.id === "R8-21X21-M40-01",
 	);
-	if (!target) throw new Error("Benchmark payload 中未找到 NF3-21X21-M40-44。");
+	if (!target) throw new Error("Benchmark payload 中未找到 R8-21X21-M40-01。");
 
 	const sourceFailures: string[] = [];
 	const unencoded = new Set(["hng", "m", "n", "ng", "ê"]);
@@ -433,10 +435,13 @@ if (benchmarkPath) {
 		const targetCode = target.codeList[index];
 		const expected = targetCode ? `${targetCode.toLowerCase()}i` : "";
 		const fixtureCode = fixture.codes[syllable];
-		if ((target.codeList[index]?.toLowerCase() ?? null) !== fixtureCode) {
+		if (
+			target.codeList[index] &&
+			target.codeList[index]?.toLowerCase() !== fixtureCode
+		) {
 			sourceFailures.push(`${syllable}: HTML 与冻结映射快照不一致`);
 		}
-		if (actual !== expected) {
+		if (targetCode && actual !== expected) {
 			sourceFailures.push(
 				`${syllable}: ${actual || "∅"} != ${expected || "∅"}`,
 			);

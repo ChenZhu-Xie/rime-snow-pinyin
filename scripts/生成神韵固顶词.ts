@@ -210,7 +210,7 @@ function makeOptimizedCandidate(
 }
 
 const fixture = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-v1-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-v2-mapping.json"), "utf8"),
 ) as {
 	scheme: string;
 	codes: Record<string, string | null>;
@@ -240,14 +240,13 @@ const layout: FixedLayout = {
 };
 assertLayout(layout);
 
-// 一码只保留一个冠军。未发生语义变化的原版习惯优先保留；发生首键合并的
-// j/f/q 与新出现的 w/x 则按独立使用频率和下级可达性重新决胜。
+// 一码只保留一个冠军。R8 保持普通声母原键，但重新安排 zh/sh 与零声母 Y。
 const seedOneKeyWords = new Map<string, string>([
 	["b", "不"],
 	["c", "才"],
 	["d", "的"],
-	["e", "这"],
-	["f", "一"],
+	["e", "是"],
+	["f", "这"],
 	["g", "个"],
 	["h", "和"],
 	["j", "我"],
@@ -262,13 +261,12 @@ const seedOneKeyWords = new Map<string, string>([
 	["t", "他"],
 	["w", "吃"],
 	["x", "想"],
-	["y", "是"],
+	["y", "一"],
 	["z", "在"],
 ]);
 
-// 53 个神韵天然音码空位，加 11 个极冷音码让位，恢复 64 个二简的完整规模。
-// 每个词的两键均为两个音节在当前布局中的首键，不能通过旧码迁移得到。
-const seedErjianWords = new Map<string, string>([
+// 旧版候选只作肌肉记忆偏好；R8 的二简槽位会按新音码空间重新计算。
+const legacySeedErjianWords = new Map<string, string>([
 	["bf", "不要"],
 	["bm", "部门"],
 	["bs", "比赛"],
@@ -478,11 +476,7 @@ function assertCuratedCodes(
 		}
 	}
 }
-assertCuratedCodes(seedOneKeyWords, seedErjianWords);
-
-// 只在既定空间骨架内选优：53 个天然空位和 11 个极冷音码让位保持不变，
-// 因而不会为了二简牺牲“有”这类高频 AA 单字。独立方案家族共识可以击败
-// 一般词频，但旧固顶享有明确的肌肉记忆成本，只有显著改进才会替换。
+// 独立方案家族共识可以击败一般词频，但可沿用的旧固顶仍享有肌肉记忆偏好。
 const oneKeyPools = new Map<string, ReturnType<typeof makeCandidate>[]>();
 for (const entry of singleEntries) {
 	const code = firstKey(layout, entry.syllables[0]);
@@ -513,6 +507,52 @@ for (const code of layout.mainKeys) {
 
 const erjianReplacements = new FixedReplacementIndex();
 for (const [code, word] of oneKeyWords) erjianReplacements.addFixed(code, word);
+
+const soundCodes = new Set(
+	Object.values(layout.syllableCodes).filter(
+		(code): code is string => code !== null,
+	),
+);
+const allMainPairsForErjian = layout.mainKeys.flatMap((first) =>
+	layout.mainKeys.map((second) => first + second),
+);
+const candidateErjianCodes = new Set<string>();
+for (const entry of baseWordEntries) {
+	if (!isHanWord(entry.word, 2, 2) || entry.syllables.length !== 2) continue;
+	const first = firstKey(layout, entry.syllables[0]);
+	const second = firstKey(layout, entry.syllables[1]);
+	if (first && second) candidateErjianCodes.add(first + second);
+}
+const naturalEmptyCodes = allMainPairsForErjian.filter(
+	(code) => !soundCodes.has(code) && candidateErjianCodes.has(code),
+);
+const singleCodePeakWeight = new Map<string, number>();
+for (const entry of singleEntries) {
+	const code = soundCode(layout, entry.syllables[0]);
+	if (!code) continue;
+	singleCodePeakWeight.set(
+		code,
+		Math.max(singleCodePeakWeight.get(code) ?? 0, entry.weight),
+	);
+}
+const occupiedGiveUpCodes = allMainPairsForErjian
+	.filter((code) => soundCodes.has(code) && candidateErjianCodes.has(code))
+	.sort(
+		(a, b) =>
+			(singleCodePeakWeight.get(a) ?? 0) - (singleCodePeakWeight.get(b) ?? 0) ||
+			a.localeCompare(b),
+	)
+	.slice(0, 64 - naturalEmptyCodes.length);
+const erjianCodeSet = new Set([...naturalEmptyCodes, ...occupiedGiveUpCodes]);
+if (erjianCodeSet.size !== 64) {
+	throw new Error(
+		`R8 二简槽位不足 64：天然空位 ${naturalEmptyCodes.length}，冷音码 ${occupiedGiveUpCodes.length}`,
+	);
+}
+const seedErjianWords = new Map<string, string>();
+for (const code of [...erjianCodeSet].sort()) {
+	seedErjianWords.set(code, legacySeedErjianWords.get(code) ?? "");
+}
 
 const erjianPools = new Map<string, ReturnType<typeof makeCandidate>[]>();
 for (const entry of baseWordEntries) {
@@ -551,17 +591,12 @@ for (const code of seedErjianWords.keys()) {
 }
 assertCuratedCodes(oneKeyWords, erjianWords);
 
-const soundCodes = new Set(
-	Object.values(layout.syllableCodes).filter(
-		(code): code is string => code !== null,
-	),
-);
 const occupiedErjianCodes = [...erjianWords.keys()].filter((code) =>
 	soundCodes.has(code),
 );
-if (soundCodes.size !== 388 || occupiedErjianCodes.length !== 11) {
+if (soundCodes.size !== 382 || occupiedErjianCodes.length !== 5) {
 	throw new Error(
-		`AA 空间不符合 388 音码、53 天然空位、11 冷音码让位的设计：${soundCodes.size}/${occupiedErjianCodes.length}`,
+		`AA 空间不符合 382 音码、59 天然空位、5 冷音码让位的设计：${soundCodes.size}/${occupiedErjianCodes.length}`,
 	);
 }
 

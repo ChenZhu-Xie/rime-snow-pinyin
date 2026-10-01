@@ -12,7 +12,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     单字三码起顶、词组四码起顶的双拼词顶功方案
-    双拼编码：零飞键道·神韵 v1（NF3-21X21-M40-44）
+    双拼编码：零飞键道·神韵 v2（R8-21X21-M40-01）
   dependencies:
     - snow_pinyin
     - snow_jiandao_bihua

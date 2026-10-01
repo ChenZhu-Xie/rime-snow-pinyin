@@ -25,13 +25,13 @@ const original: LayoutDefinition = {
 };
 
 test("layout encodes representative zero initials, initials, and ju/jue", () => {
-	assert.deepEqual(encodeSyllable("a1", shenyun, "canonical"), ["qn"]);
+	assert.deepEqual(encodeSyllable("a1", shenyun, "canonical"), ["qw"]);
 	assert.deepEqual(encodeSyllable("a1", original, "canonical"), ["xs"]);
-	assert.deepEqual(encodeSyllable("zhang1", shenyun, "canonical"), ["eq"]);
+	assert.deepEqual(encodeSyllable("zhang1", shenyun, "canonical"), ["fm"]);
 	assert.deepEqual(encodeSyllable("zhang1", original, "canonical"), ["qp"]);
-	assert.deepEqual(encodeSyllable("chang2", shenyun, "canonical"), ["wq"]);
-	assert.deepEqual(encodeSyllable("shang4", shenyun, "canonical"), ["yq"]);
-	assert.deepEqual(encodeSyllable("ju1", shenyun, "canonical"), ["jl"]);
+	assert.deepEqual(encodeSyllable("chang2", shenyun, "canonical"), ["wm"]);
+	assert.deepEqual(encodeSyllable("shang4", shenyun, "canonical"), ["em"]);
+	assert.deepEqual(encodeSyllable("ju1", shenyun, "canonical"), ["jr"]);
 	assert.deepEqual(encodeSyllable("jue2", original, "canonical"), ["jh"]);
 });
 
@@ -42,15 +42,15 @@ test("original accepted mode exposes derived spellings without changing canonica
 		"hx",
 		"hm",
 	]);
-	assert.deepEqual(encodeSyllable("huang4", shenyun, "accepted"), ["hk"]);
+	assert.deepEqual(encodeSyllable("huang4", shenyun, "accepted"), ["hd"]);
 });
 
 test("two-character words use full syllable codes and four-character words use initials", () => {
-	assert.deepEqual(encodeWord(["a1", "ba4"], shenyun, "canonical"), ["qnbn"]);
+	assert.deepEqual(encodeWord(["a1", "ba4"], shenyun, "canonical"), ["qwbw"]);
 	assert.deepEqual(encodeWord(["a1", "ba4"], original, "canonical"), ["xsbs"]);
 	assert.deepEqual(
 		encodeWord(["zhong1", "hua2", "ren2", "min2"], shenyun, "canonical"),
-		["ehrm"],
+		["fhrm"],
 	);
 	assert.deepEqual(encodeWord(["zhao3", "huang4"], original, "accepted"), [
 		"fzhx",
@@ -61,10 +61,10 @@ test("two-character words use full syllable codes and four-character words use i
 });
 
 test("real severe buckets independently recompute from their source readings", () => {
-	assert.deepEqual(encodeWord(["yi1", "zhi1"], shenyun, "canonical"), ["fpep"]);
+	assert.deepEqual(encodeWord(["yi1", "zhi1"], shenyun, "canonical"), ["ykfk"]);
 	assert.deepEqual(
 		encodeWord(["zhu3", "yao4", "yuan2", "yin1"], shenyun, "canonical"),
-		["efff"],
+		["fyyy"],
 	);
 	assert.deepEqual(encodeWord(["yi1", "zhi1"], original, "canonical"), [
 		"ykfk",

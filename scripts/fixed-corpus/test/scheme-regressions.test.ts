@@ -24,7 +24,11 @@ test("Three-Code uses v, not e, for the horizontal-stroke assist code", () => {
 	const filter = read("lua/snow/shape_filter.lua");
 	assert.match(
 		filter,
-		/elseif id == "snow_sanpin"[\s\S]+stroke_match\(text, shape_input, env, "v"\)/u,
+		/local sanpin_stroke_map = \{ \["一"\] = "v", \["丨"\] = "i", \["丿"\] = "u", \["丶"\] = "o", \["乙"\] = "a" \}/u,
+	);
+	assert.match(
+		filter,
+		/elseif id == "snow_sanpin"[\s\S]+stroke_match\(text, shape_input, env, sanpin_stroke_map\)/u,
 	);
 	assert.equal("hshh".replaceAll("h", "v").replaceAll("s", "i"), "vivv");
 });
@@ -48,10 +52,10 @@ test("default traditional source entries are postponed before conversion and ded
 });
 
 test("reported phrase codes follow the frozen Shenyun mapping", () => {
-	const fixture = JSON.parse(read("docs/shenyun-v1-mapping.json")) as {
+	const fixture = JSON.parse(read("docs/shenyun-v2-mapping.json")) as {
 		codes: Record<string, string>;
 	};
-	assert.equal(fixture.codes.na + fixture.codes.yang, "nnfq");
+	assert.equal(fixture.codes.na + fixture.codes.yang, "nwym");
 	assert.notEqual(fixture.codes.na + fixture.codes.yang, "nnff");
 });
 

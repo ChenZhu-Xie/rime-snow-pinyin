@@ -1,53 +1,104 @@
-import { readFileSync, writeFileSync } from "fs";
-import { SpellingAlgebra } from "./utils";
+import { readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+	mergeDictionaries,
+	plainSyllable,
+	readDictionary,
+	wordLength,
+} from "./固顶编译器";
 
-const algebra = new SpellingAlgebra("snow_sanpin.schema.yaml", "sanpin_algebra");
-const dict = readFileSync("snow_pinyin.base.dict.yaml", "utf-8").trim().split("\n");
-const frequency = readFileSync("/Users/tansongchen/Documents/160 - 汉字信息工程/资料/词频/社交媒体词频.txt", "utf-8").trim().split("\n");
-const frequencyMap = new Map<string, number>();
-for (const line of frequency) {
-  const [word, weightStr] = line.split("\t");
-  const weight = parseInt(weightStr ?? "0", 10) || 0;
-  frequencyMap.set(word, weight);
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const outputPath = join(root, "snow_sanpin.fixed.630.txt");
+const maximumWordsPerCode = 10;
+const toneKeys: Readonly<Record<string, string>> = {
+	"1": "i",
+	"2": "v",
+	"3": "u",
+	"4": "a",
+	"5": "o",
+};
+const mainKeys = [..."bpmfdtnlgkhjqxzcsrwye"];
+const auxiliaryKeys = [..."ivuao"];
+const dictionaries = [
+	"snow_pinyin.dict.yaml",
+	"snow_pinyin.base.dict.yaml",
+	"snow_pinyin.ext.dict.yaml",
+	"snow_pinyin.tencent.dict.yaml",
+	"snow_pinyin.user.dict.yaml",
+];
+const mapping = JSON.parse(
+	readFileSync(join(root, "docs", "shenyun-v2-mapping.json"), "utf8"),
+) as { scheme: string; codes: Record<string, string | null> };
+
+interface Candidate {
+	word: string;
+	weight: number;
 }
 
-const MAX_WORDS_PER_CODE = 10;
-const groups = new Map<string, { word: string; weight: number }[]>();
+const groups = new Map<string, Map<string, Candidate>>();
+const addCandidate = (code: string, candidate: Candidate) => {
+	const group = groups.get(code) ?? new Map<string, Candidate>();
+	const previous = group.get(candidate.word);
+	if (!previous || candidate.weight > previous.weight)
+		group.set(candidate.word, candidate);
+	groups.set(code, group);
+};
 
-for (const line of dict) {
-	if (line.startsWith("#") || !line.includes("\t")) continue;
-	const [word, pinyin] = line.split("\t");
-	const syllables = pinyin.split(" ");
-	if (syllables.length < 2) continue;
-  const weight = frequencyMap.get(word);
-  if (weight === undefined) continue;
+const entries = mergeDictionaries(
+	dictionaries.flatMap((file) => readDictionary(join(root, file))),
+).filter(
+	(entry) =>
+		wordLength(entry.word) === 2 &&
+		entry.syllables.length === 2 &&
+		/^\p{Script=Han}{2}$/u.test(entry.word),
+);
 
-	// 首字声母 + 次字声调 + 首字声调
-	const code1 = algebra.apply(syllables[0]);
-	const code2 = algebra.apply(syllables[1]);
-  const 二码 = code1[0] + code2.at(-1);
-	let 三码: string;
-  if (syllables.length === 2) 三码 = code1[0] + code2.at(-1) + code1.at(-1);
-  else {
-    const code3 = algebra.apply(syllables[2]);
-    三码 = code1[0] + code2.at(-1) + code3.at(-1);
-  }
-
-  for (const code of [二码, 三码]) {
-    const list = groups.get(code) ?? [];
-    list.push({ word, weight });
-    groups.set(code, list);
-  }
+for (const entry of entries) {
+	const [firstSyllable, secondSyllable] = entry.syllables;
+	const firstSound = mapping.codes[plainSyllable(firstSyllable)];
+	const secondSound = mapping.codes[plainSyllable(secondSyllable)];
+	const firstTone = toneKeys[firstSyllable.match(/[1-5]$/)?.[0] ?? ""];
+	const secondTone = toneKeys[secondSyllable.match(/[1-5]$/)?.[0] ?? ""];
+	if (!firstSound || !secondSound || !firstTone || !secondTone) continue;
+	const candidate = { word: entry.word, weight: entry.weight };
+	addCandidate(firstSound[0] + secondTone, candidate);
+	addCandidate(firstSound[0] + secondTone + firstTone, candidate);
 }
 
-const sortedGroups = [...groups].sort((a, b) => a[0].localeCompare(b[0]));
-const entries: Map<string, string[]> = new Map();
-for (const [code, words] of sortedGroups) {
-	const top = words
-		.sort((a, b) => b.weight - a.weight)
-		.slice(0, MAX_WORDS_PER_CODE)
-		.map((entry) => entry.word);
-	entries.set(code, top);
+const codes = [
+	...mainKeys.flatMap((main) => auxiliaryKeys.map((tone) => main + tone)),
+	...mainKeys.flatMap((main) =>
+		auxiliaryKeys.flatMap((secondTone) =>
+			auxiliaryKeys.map((firstTone) => main + secondTone + firstTone),
+		),
+	),
+];
+const lines = [
+	`# ${mapping.scheme} 三拼二字词二、三码候选（每码最多 ${maximumWordsPerCode} 项）`,
+];
+let populatedCodes = 0;
+for (const code of codes) {
+	const candidates = [...(groups.get(code)?.values() ?? [])]
+		.sort(
+			(a, b) => b.weight - a.weight || a.word.localeCompare(b.word, "zh-CN"),
+		)
+		.slice(0, maximumWordsPerCode);
+	if (candidates.length === 0) continue;
+	lines.push(`${code}\t${candidates.map(({ word }) => word).join(" ")}`);
+	populatedCodes += 1;
 }
+const output = `${lines.join("\n")}\n`;
 
-writeFileSync("snow_sanpin.fixed.630.txt", [...entries].map(([code, words]) => `${code}\t${words.join(" ")}`).join("\n"), "utf-8");
+if (process.argv.includes("--check")) {
+	if (readFileSync(outputPath, "utf8") !== output)
+		throw new Error("snow_sanpin.fixed.630.txt 不是当前神韵映射的生成结果。");
+	console.log(
+		`三拼二字词各级简码校验通过：${populatedCodes}/${codes.length} 个码位有候选。`,
+	);
+} else {
+	writeFileSync(outputPath, output, "utf8");
+	console.log(
+		`三拼二字词各级简码生成完成：${populatedCodes}/${codes.length} 个码位有候选（二码 ${mainKeys.length * auxiliaryKeys.length}，三码 ${mainKeys.length * auxiliaryKeys.length ** 2}）。`,
+	);
+}

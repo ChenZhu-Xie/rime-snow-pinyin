@@ -11,7 +11,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     带调拼音词顶功输入方案
-    双拼编码：零飞键道·神韵 v1（NF3-21X21-M40-44）
+    双拼编码：零飞键道·神韵 v2（R8-21X21-M40-01）
   dependencies:
     - snow_pinyin
     - snow_jiandao_bihua
@@ -66,40 +66,48 @@ engine:
     - lua_filter@*snow.hint
 
 sanpin_algebra:
-  # 零飞键道·神韵 v1（NF3-21X21-M40-44）
+  # 零飞键道·神韵 v2（R8-21X21-M40-01）
   # 目标布局的 421 音节码表中不编码这 5 个扩展音节。
   - erase/^(hng|m|n|ng|ê)\d$/
-  # 零声母载体：AOE / Y / W → Q / F / J。
+  # j/q/x 与零声母 YU 系列统一按 v/van/ve/vn 韵尾编码。
+  - xform/([jqx])uan(?=\d)/$1van/
+  - xform/([jqx])ue(?=\d)/$1ve/
+  - xform/([jqx])un(?=\d)/$1vn/
+  - xform/([jqx])u(?=\d)/$1v/
+  - xform/(^| )yu/$1Yv/
+  # 零声母载体：AOE / Y / W → Q / Y / J。
   - xform/(^| )(?=[aoe])/$1Q/
-  - xform/(^| )y/$1F/
+  - xform/(^| )y/$1Y/
   - xform/(^| )w/$1J/
-  # 按书写韵母编码：ju/jue 使用 u/ue；v/ve 留给 lü、nü 一类音节。
   # 21 个普通声母各使用一个固定首键。
-  - xform/(^| )zh/$1E/
+  - xform/(^| )zh/$1F/
   - xform/(^| )ch/$1W/
-  - xform/(^| )sh/$1Y/
+  - xform/(^| )sh/$1E/
   # 21 键韵母映射；较长韵母必须先处理。
-  - xform/(iang|ui)(?=\d)/F/
-  - xform/(ing|uang)(?=\d)/K/
-  - xform/(iao)(?=\d)/C/
-  - xform/(ao|iong)(?=\d)/Y/
-  - xform/(ian|ua)(?=\d)/G/
-  - xform/(ie|uai)(?=\d)/B/
-  - xform/(uan|v)(?=\d)/M/
-  - xform/(un|ve)(?=\d)/T/
-  - xform/ang(?=\d)/Q/
-  - xform/an(?=\d)/J/
-  - xform/eng(?=\d)/R/
-  - xform/(ai|ue)(?=\d)/H/
-  - xform/(ei|er)(?=\d)/E/
-  - xform/en(?=\d)/Z/
-  - xform/(in|uo)(?=\d)/D/
-  - xform/(iu|ou)(?=\d)/X/
-  - xform/(ong|o)(?=\d)/W/
-  - xform/(e|ia)(?=\d)/S/
-  - xform/i(?=\d)/P/
-  - xform/a(?=\d)/N/
-  - xform/u(?=\d)/L/
+  - xform/(iang|ou)(?=\d)/F/
+  - xform/(uang|ing)(?=\d)/D/
+  - xform/(iong|eng)(?=\d)/N/
+  - xform/(ian|ong)(?=\d)/P/
+  - xform/(iao|ua)(?=\d)/C/
+  - xform/(uai|iu)(?=\d)/T/
+  - xform/(van|en)(?=\d)/E/
+  - xform/(un|in)(?=\d)/G/
+  - xform/uan(?=\d)/Q/
+  - xform/ui(?=\d)/R/
+  - xform/(uo|ve)(?=\d)/Y/
+  - xform/(an|ia)(?=\d)/L/
+  - xform/ang(?=\d)/M/
+  - xform/ai(?=\d)/H/
+  - xform/ao(?=\d)/Z/
+  - xform/ei(?=\d)/X/
+  - xform/ie(?=\d)/B/
+  - xform/vn(?=\d)/W/
+  - xform/a(?=\d)/W/
+  - xform/o(?=\d)/Q/
+  - xform/v(?=\d)/R/
+  - xform/i(?=\d)/K/
+  - xform/(u|er)(?=\d)/J/
+  - xform/e(?=\d)/S/
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
   # 声调
   - xlit/12345/ivuao/
