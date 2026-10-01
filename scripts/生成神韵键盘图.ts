@@ -116,12 +116,12 @@ async function main() {
 				const namespace = "http://www.w3.org/2000/svg";
 				const title = document.createElementNS(namespace, "title");
 				title.id = "title";
-				title.textContent = "无飞键道·神韵声韵映射图";
+				title.textContent = "无飞键道・神韵声韵映射图";
 				const description = document.createElementNS(namespace, "desc");
 				description.id = "desc";
-				description.textContent = "无飞键道·神韵的声母、韵母与辅键映射。";
+				description.textContent = "无飞键道・神韵的声母、韵母与辅键映射。";
 				const heading = root.querySelector('text[x="24"][y="34"]');
-				if (heading) heading.textContent = "无飞键道·神韵";
+				if (heading) heading.textContent = "无飞键道・神韵";
 				root.insertBefore(description, root.firstChild);
 				root.insertBefore(title, description);
 

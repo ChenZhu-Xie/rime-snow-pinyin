@@ -141,7 +141,7 @@ reports/fixed-corpus-summary.md       # 可提交的精简摘要
 
 ### 对比布局
 
-- 神韵：当前 NF3-21X21-M40-44 / “零[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)键道·神韵 v1”的规范编码。
+- 神韵：当前 NF3-21X21-M40-44 / “零[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道・神韵 v1”的规范编码。
 - 原冰雪键道：迁移前的原始双拼映射。
 
 原冰雪键道的 `derive` 规则可能产生多个可接受拼写。测量器必须把 `xform` 与 `derive` 区分：
