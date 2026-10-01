@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc">
-<title id="title">神韵文稿击键热力图</title>
-<desc id="desc">日常八场景（人工编写），原生标点口径，共 2149 次击键；裁去右侧未使用的扩展键。</desc>
+<title id="title">R10 日常八场景文稿 纯双拼键频图（含标点）</title>
+<desc id="desc">双拼热力图基于日常八场景文稿的 2149 次击键。只包含双拼部分，5 辅键未参与评估。</desc>
 <rect width="790" height="304" fill="#fbfcfa"/>
 <g data-mxkey="Q"><title>Q：72 次，3.35%</title><rect x="18" y="22" width="68" height="76" rx="7" fill="rgb(179, 206, 187)" stroke="#9cad9e"/><text x="28" y="45" font-size="18" fill="#30483a">Q</text><text x="52" y="71" text-anchor="middle" font-size="14" fill="#30483a">3.35%</text><text x="52" y="87" text-anchor="middle" font-size="10" fill="#5a6c60">72 次</text></g>
 <g data-mxkey="W"><title>W：70 次，3.26%</title><rect x="94" y="22" width="68" height="76" rx="7" fill="rgb(181, 207, 189)" stroke="#9cad9e"/><text x="104" y="45" font-size="18" fill="#30483a">W</text><text x="128" y="71" text-anchor="middle" font-size="14" fill="#30483a">3.26%</text><text x="128" y="87" text-anchor="middle" font-size="10" fill="#5a6c60">70 次</text></g>

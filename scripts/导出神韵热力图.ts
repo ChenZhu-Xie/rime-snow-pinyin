@@ -65,8 +65,8 @@ const keys = visibleKeys
 	.join("\n");
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc">
-<title id="title">神韵文稿击键热力图</title>
-<desc id="desc">${payload.macroxue.corpora.daily.label}，原生标点口径，共 ${sample.hits} 次击键；裁去右侧未使用的扩展键。</desc>
+<title id="title">R10 日常八场景文稿 纯双拼键频图（含标点）</title>
+<desc id="desc">双拼热力图基于日常八场景文稿的 ${sample.hits} 次击键。只包含双拼部分，5 辅键未参与评估。</desc>
 <rect width="790" height="304" fill="#fbfcfa"/>
 ${keys}
 </svg>\n`;

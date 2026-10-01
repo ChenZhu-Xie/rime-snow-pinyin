@@ -15,10 +15,22 @@ const data = JSON.parse(
 ) as any;
 
 const ids = ["R8-21X21-M40-01", "S005", "B04"] as const;
+const benchmarkUrl =
+	"https://github.com/more-14-different/shuangpin-layout-benchmark";
+const cktUrl =
+	"https://github.com/zhanghaozhecn/conditional-keystroke-timing";
+const shoudaoUrl = "https://sspai.com/post/108949";
+const mx34Url = "https://macroxue.github.io/shuangpin/eval.html";
+const markdownLink = (text: string, url: string) => `[${text}](${url})`;
 const labels: Record<(typeof ids)[number], string> = {
 	"R8-21X21-M40-01": "神韵 v2（R8 21×21）",
 	S005: "原键道 S005（21×21）",
 	B04: "首道 B04（26×26）",
+};
+const markdownLabels: Record<(typeof ids)[number], string> = {
+	"R8-21X21-M40-01": labels["R8-21X21-M40-01"],
+	S005: markdownLink(labels.S005, benchmarkUrl),
+	B04: markdownLink(labels.B04, shoudaoUrl),
 };
 const entries = Object.fromEntries(
 	ids.map((id) => [id, data.entries.find((entry: any) => entry.id === id)]),
@@ -56,7 +68,7 @@ const metricTable = (
 	>,
 ) =>
 	table(
-		["指标", ...ids.map((id) => labels[id]), "方向／边界"],
+		["指标", ...ids.map((id) => markdownLabels[id]), "何为好"],
 		rows.map(([name, getter, format, direction]) => [
 			name,
 			...ids.map((id) => {
@@ -89,10 +101,10 @@ const eligibility = (id: (typeof ids)[number]) => data.r10Eligibility[id];
 
 const overview = metricTable([
 	[
-		"M-R2 记忆项",
+		`${markdownLink("M-R2", benchmarkUrl)} 记忆项`,
 		(id) => r2(id)?.M,
 		"number",
-		"描述性；同记忆预算时再比较性能",
+		"越低越好",
 	],
 	[
 		"普通声母偏移 D",
@@ -102,30 +114,35 @@ const overview = metricTable([
 	],
 	["a/e/i/o/u 韵键偏移 V", vowelDisplacement, "number", "越低越接近字母原键"],
 	[
-		"共同 399 覆盖",
+		`${markdownLink("共同 399", benchmarkUrl)} 覆盖`,
 		(id) => `${eligibility(id).commonCovered}/399`,
 		"text",
 		"必须完整覆盖",
 	],
 	["不同二键码", (id) => eligibility(id).unique399, "number", "越高重码越少"],
-	["裸 S2 CKT（ms/项）", (id) => s2(id).centerMs, "number", "越低越好"],
 	[
-		"规则补全 CKT（ms/项）",
+		`裸 S2 ${markdownLink("CKT", cktUrl)}（ms/项）`,
+		(id) => s2(id).centerMs,
+		"number",
+		"越低越好",
+	],
+	[
+		`规则补全 ${markdownLink("CKT", cktUrl)}（ms/项）`,
 		(id) => fair(id).S2Completion.centerMs,
 		"number",
 		"越低越好；仅为固定五进制补全模型",
 	],
-	["A7E-v5", (id) => data.ensembleV5.values[id].score, "number", "越低越好"],
-	["A7E-v4", (id) => data.ensembleV4.values[id].score, "number", "越低越好"],
+	[markdownLink("系综当量 v5", benchmarkUrl), (id) => data.ensembleV5.values[id].score, "number", "越低越好"],
+	[markdownLink("系综当量 v4", benchmarkUrl), (id) => data.ensembleV4.values[id].score, "number", "越低越好"],
 	[
-		"A7E-v4-C",
+		markdownLink("系综当量 v4-C", benchmarkUrl),
 		(id) => data.r10PairMetrics.values[id]._v4PublicSensitivity,
 		"number",
 		"越低越好；公开例外键表敏感性",
 	],
-	["A7E-v6-CW150", (id) => v6(id).score, "number", "越低越好；排除 S2"],
+	[markdownLink("系综当量 v6-CW150", benchmarkUrl), (id) => v6(id).score, "number", "越低越好；排除 S2"],
 	[
-		"LU-v1r",
+		markdownLink("LU-v1r", benchmarkUrl),
 		(id) => entries[id].logicUniformity?.score,
 		"number",
 		"越高规则一致性越强",
@@ -140,13 +157,13 @@ const overview = metricTable([
 	],
 	["S2 主键区占比", (id) => s2(id).home, "percent", "越高越集中于主键区"],
 	[
-		"日常纯汉字 MX34 得分",
+		`日常纯汉字 ${markdownLink("MX34", mx34Url)} 得分`,
 		(id) => macro(id, "daily|hanzi-only").score,
 		"number",
 		"同文稿越高越好；不含消歧",
 	],
 	[
-		"默认说明兼容标点 MX34 得分",
+		`默认说明兼容标点 ${markdownLink("MX34", mx34Url)} 得分`,
 		(id) => macro(id, "default|native-punctuation").score,
 		"number",
 		"同文稿越高越好；敏感性对照",
@@ -212,8 +229,8 @@ const loadTable = metricTable([
 ]);
 
 const fairnessTable = metricTable([
-	["共同 399 唯一码", (id) => fair(id).unique399, "number", "越高越好"],
-	["共同 399 碰撞音节", (id) => 399 - fair(id).unique399, "number", "越低越好"],
+	[`${markdownLink("共同 399", benchmarkUrl)} 唯一码`, (id) => fair(id).unique399, "number", "越高越好"],
+	[`${markdownLink("共同 399", benchmarkUrl)} 碰撞音节`, (id) => 399 - fair(id).unique399, "number", "越低越好"],
 	[
 		"补全后平均键数",
 		(id) => fair(id).S2Completion.meanKeys,
@@ -293,10 +310,10 @@ const contractTable = table(
 	[
 		"合同",
 		...ids.flatMap((id) => [
-			`${labels[id]} 主键区`,
+			`${markdownLabels[id]} 主键区`,
 			"左小指",
 			"右小指",
-			"CKT",
+			markdownLink("CKT", cktUrl),
 			"非首选",
 		]),
 	],
@@ -469,7 +486,7 @@ for (const contract of Object.keys(data.r10PairMetrics.values[ids[0]])) {
 	}
 }
 const pairTable = table(
-	["合同", "键对模型", ...ids.map((id) => labels[id])],
+	["合同", "键对模型", ...ids.map((id) => markdownLabels[id])],
 	pairRows,
 );
 
@@ -525,9 +542,9 @@ const json = {
 
 const report = `# 神韵 v2：R10 新指标公平对比
 
-数据直接取自本地 \`a7_CKT_R10_integrated.html\` 的压缩 payload。目标方案为 \`R8-21X21-M40-01\`；S005 是同为 21×21 的原键道基线，B04 首道是 26×26 的同环境基线。三者共用 Common399、冻结 20 合同、字词与形码资料及模型；B04 不能被称为“同键域”比较。
+数据直接取自本地 \`a7_CKT_R10_integrated.html\` 的压缩 payload。目标方案为 \`R8-21X21-M40-01\`；${markdownLink("S005", benchmarkUrl)} 是同为 21×21 的原键道基线，${markdownLink("B04 首道", shoudaoUrl)}是 26×26 的同环境基线。三者共用 ${markdownLink("Common399", benchmarkUrl)}、冻结 20 合同、字词与形码资料及模型；${markdownLink("B04", shoudaoUrl)} 不能被称为“同键域”比较。
 
-完整原始字段保存在 [shenyun-v2-r10-comparison.json](shenyun-v2-r10-comparison.json)。报告没有把 MX34 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
+完整原始字段保存在 [shenyun-v2-r10-comparison.json](shenyun-v2-r10-comparison.json)。报告没有把 ${markdownLink("MX34", mx34Url)} 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
 
 ## 总览
 
@@ -541,24 +558,24 @@ ${loadTable}
 
 ${fairnessTable}
 
-## A7E-v6-CW150 及敏感性
+## ${markdownLink("系综当量 v6-CW150", benchmarkUrl)} 及敏感性
 
 ${v6Table}
 
 ## 结论
 
-- 对同键域 S005，神韵 v2 的核心优势集中在裸 S2 CKT、同指连击、主键区覆盖和 MX34 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
-- 对 26×26 的 B04 首道，神韵 v2 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 B04 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
-- R10 新指标把“快”拆成了不同边界：冻结合同 CKT、v4/v5/v6、20 合同峰值、MX34 文稿移动手回放与选重敏感性必须分开读。神韵 v2 是综合折中前沿，不是每一列都最优。
-- 日常八场景 MX34 已参与 R10 搜索目标，不是未见验证；原站默认说明轨道才是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
+- 对同键域 ${markdownLink("S005", benchmarkUrl)}，神韵 v2 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对 26×26 的 ${markdownLink("B04 首道", shoudaoUrl)}，神韵 v2 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 ${markdownLink("B04", shoudaoUrl)} 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
+- R10 新指标把“快”拆成了不同边界：冻结合同 ${markdownLink("CKT", cktUrl)}、v4/v5/v6、20 合同峰值、${markdownLink("MX34", mx34Url)} 文稿移动手回放与选重敏感性必须分开读。神韵 v2 是综合折中前沿，不是每一列都最优。
+- 日常八场景 ${markdownLink("MX34", mx34Url)} 已参与 R10 搜索目标，不是未见验证；原站默认说明轨道才是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
 
 ## 冻结 20 合同逐项对比
 
-每个方案依次列主键区、左小指、右小指、CKT（ms/项）与非首选权重。
+每个方案依次列主键区、左小指、右小指、${markdownLink("CKT", cktUrl)}（ms/项）与非首选权重。
 
 ${contractTable}
 
-## MX34 四轨完整指标
+## ${markdownLink("MX34", mx34Url)} 四轨完整指标
 
 ${macroTracks
 	.map(([track, title]) => `### ${title}\n\n${macroMetricRows(track)}`)

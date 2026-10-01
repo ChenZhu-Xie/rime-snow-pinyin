@@ -1,35 +1,35 @@
 # 神韵 v2：R10 新指标公平对比
 
-数据直接取自本地 `a7_CKT_R10_integrated.html` 的压缩 payload。目标方案为 `R8-21X21-M40-01`；S005 是同为 21×21 的原键道基线，B04 首道是 26×26 的同环境基线。三者共用 Common399、冻结 20 合同、字词与形码资料及模型；B04 不能被称为“同键域”比较。
+数据直接取自本地 `a7_CKT_R10_integrated.html` 的压缩 payload。目标方案为 `R8-21X21-M40-01`；[S005](https://github.com/more-14-different/shuangpin-layout-benchmark) 是同为 21×21 的原键道基线，[B04 首道](https://sspai.com/post/108949)是 26×26 的同环境基线。三者共用 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark)、冻结 20 合同、字词与形码资料及模型；[B04](https://sspai.com/post/108949) 不能被称为“同键域”比较。
 
-完整原始字段保存在 [shenyun-v2-r10-comparison.json](shenyun-v2-r10-comparison.json)。报告没有把 MX34 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
+完整原始字段保存在 [shenyun-v2-r10-comparison.json](shenyun-v2-r10-comparison.json)。报告没有把 [MX34](https://macroxue.github.io/shuangpin/eval.html) 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
 
 ## 总览
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
-| M-R2 记忆项 | 40 | 44 | 51 | 描述性；同记忆预算时再比较性能 |
+| [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark) 记忆项 | 40 | 44 | 51 | 越低越好 |
 | 普通声母偏移 D | 0 | 0 | 0 | 越低规则越接近原键 |
 | a/e/i/o/u 韵键偏移 V | 5 | 4 | 0 | 越低越接近字母原键 |
-| 共同 399 覆盖 | 399/399 | 399/399 | 399/399 | 必须完整覆盖 |
+| [共同 399](https://github.com/more-14-different/shuangpin-layout-benchmark) 覆盖 | 399/399 | 399/399 | 399/399 | 必须完整覆盖 |
 | 不同二键码 | 373 | 372 | 399 | 越高重码越少 |
-| 裸 S2 CKT（ms/项） | 70.4936 | 82.0288 | 79.8901 | 越低越好 |
-| 规则补全 CKT（ms/项） | 82.0379 | 90.2571 | 79.8901 | 越低越好；仅为固定五进制补全模型 |
-| A7E-v5 | 10.4131 | 11.479 | 11.0912 | 越低越好 |
-| A7E-v4 | 10.7489 | 10.8058 | 10.5833 | 越低越好 |
-| A7E-v4-C | 10.7489 | 10.8058 | 10.5833 | 越低越好；公开例外键表敏感性 |
-| A7E-v6-CW150 | 9.4988 | 10 | 9.5896 | 越低越好；排除 S2 |
-| LU-v1r | 74.5231 | 78.8976 | 83.1074 | 越高规则一致性越强 |
+| 裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/项） | 70.4936 | 82.0288 | 79.8901 | 越低越好 |
+| 规则补全 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/项） | 82.0379 | 90.2571 | 79.8901 | 越低越好；仅为固定五进制补全模型 |
+| [系综当量 v5](https://github.com/more-14-different/shuangpin-layout-benchmark) | 10.4131 | 11.479 | 11.0912 | 越低越好 |
+| [系综当量 v4](https://github.com/more-14-different/shuangpin-layout-benchmark) | 10.7489 | 10.8058 | 10.5833 | 越低越好 |
+| [系综当量 v4-C](https://github.com/more-14-different/shuangpin-layout-benchmark) | 10.7489 | 10.8058 | 10.5833 | 越低越好；公开例外键表敏感性 |
+| [系综当量 v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark) | 9.4988 | 10 | 9.5896 | 越低越好；排除 S2 |
+| [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark) | 74.5231 | 78.8976 | 83.1074 | 越高规则一致性越强 |
 | S2 同指连击率 | 3.26% | 11.64% | 11.34% | 越低越好 |
 | S2 同键率 | 3.34% | 5.06% | 4.56% | 越低越好 |
 | S2 左右手交替率 | 56.22% | 53.84% | 56.33% | 越高通常越利于交替；非独立速度结论 |
 | S2 主键区占比 | 51.93% | 49.00% | 36.60% | 越高越集中于主键区 |
-| 日常纯汉字 MX34 得分 | 140.7933 | 134.609 | 138.6378 | 同文稿越高越好；不含消歧 |
-| 默认说明兼容标点 MX34 得分 | 148.5876 | 153.6883 | 156.1501 | 同文稿越高越好；敏感性对照 |
+| 日常纯汉字 [MX34](https://macroxue.github.io/shuangpin/eval.html) 得分 | 140.7933 | 134.609 | 138.6378 | 同文稿越高越好；不含消歧 |
+| 默认说明兼容标点 [MX34](https://macroxue.github.io/shuangpin/eval.html) 得分 | 148.5876 | 153.6883 | 156.1501 | 同文稿越高越好；敏感性对照 |
 
 ## R10 新增负载与键区指标
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | S2 主键区 | 51.93% | 49.00% | 36.60% | 越高越集中 |
 | C4-Snow 主键区 | 35.08% | 30.81% | 24.24% | 越高越集中 |
@@ -54,10 +54,10 @@
 
 ## 消歧、音形与选重敏感性
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
-| 共同 399 唯一码 | 373 | 372 | 399 | 越高越好 |
-| 共同 399 碰撞音节 | 26 | 27 | 0 | 越低越好 |
+| [共同 399](https://github.com/more-14-different/shuangpin-layout-benchmark) 唯一码 | 373 | 372 | 399 | 越高越好 |
+| [共同 399](https://github.com/more-14-different/shuangpin-layout-benchmark) 碰撞音节 | 26 | 27 | 0 | 越低越好 |
 | 补全后平均键数 | 2.0966 | 2.0725 | 2 | 越低越好 |
 | 补全额外键数 | 0.0966 | 0.0725 | 0 | 越低越好 |
 | 补全最长后缀 | 1 | 1 | 0 | 越低越好 |
@@ -69,9 +69,9 @@
 | v5-S(300ms) | 10.8221 | 11.5023 | 10.9572 | 同 τ、同合同越低越好 |
 | v5-S(600ms) | 11.3001 | 11.6006 | 10.893 | 同 τ、同合同越低越好 |
 
-## A7E-v6-CW150 及敏感性
+## [系综当量 v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark) 及敏感性
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | v6-CW150 | 9.4988 | 10 | 9.5896 | 越低越好 |
 | v6 选重敏感性 0ms | 9.4387 | 10 | 9.592 | 排除 S2；同 τ 越低越好 |
@@ -85,16 +85,16 @@
 
 ## 结论
 
-- 对同键域 S005，神韵 v2 的核心优势集中在裸 S2 CKT、同指连击、主键区覆盖和 MX34 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
-- 对 26×26 的 B04 首道，神韵 v2 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 B04 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
-- R10 新指标把“快”拆成了不同边界：冻结合同 CKT、v4/v5/v6、20 合同峰值、MX34 文稿移动手回放与选重敏感性必须分开读。神韵 v2 是综合折中前沿，不是每一列都最优。
-- 日常八场景 MX34 已参与 R10 搜索目标，不是未见验证；原站默认说明轨道才是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
+- 对同键域 [S005](https://github.com/more-14-different/shuangpin-layout-benchmark)，神韵 v2 的核心优势集中在裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指连击、主键区覆盖和 [MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对 26×26 的 [B04 首道](https://sspai.com/post/108949)，神韵 v2 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 [B04](https://sspai.com/post/108949) 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
+- R10 新指标把“快”拆成了不同边界：冻结合同 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、v4/v5/v6、20 合同峰值、[MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿移动手回放与选重敏感性必须分开读。神韵 v2 是综合折中前沿，不是每一列都最优。
+- 日常八场景 [MX34](https://macroxue.github.io/shuangpin/eval.html) 已参与 R10 搜索目标，不是未见验证；原站默认说明轨道才是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
 
 ## 冻结 20 合同逐项对比
 
-每个方案依次列主键区、左小指、右小指、CKT（ms/项）与非首选权重。
+每个方案依次列主键区、左小指、右小指、[CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/项）与非首选权重。
 
-| 合同 | 神韵 v2（R8 21×21） 主键区 | 左小指 | 右小指 | CKT | 非首选 | 原键道 S005（21×21） 主键区 | 左小指 | 右小指 | CKT | 非首选 | 首道 B04（26×26） 主键区 | 左小指 | 右小指 | CKT | 非首选 |
+| 合同 | 神韵 v2（R8 21×21） 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 | [首道 B04（26×26）](https://sspai.com/post/108949) 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | S2 | 51.93% | 6.92% | 4.18% | 70.494 | 2.71% | 49.00% | 6.72% | 2.15% | 82.029 | 0.93% | 36.60% | 6.78% | 1.26% | 79.89 | 0.00% |
 | C2 | 56.65% | 11.48% | 1.97% | 65.453 | 12.60% | 48.15% | 6.39% | 1.06% | 82.812 | 12.70% | 35.05% | 7.44% | 0.59% | 81.417 | 12.13% |
@@ -117,11 +117,11 @@
 | WX-SBzr-12 | 36.56% | 8.72% | 3.35% | 670.008 | 3.42% | 35.78% | 8.79% | 1.85% | 683.579 | 3.18% | 28.16% | 8.29% | 1.26% | 643.874 | 3.13% |
 | WX-SBzr-21 | 36.56% | 8.72% | 3.35% | 669.765 | 3.42% | 35.78% | 8.79% | 1.85% | 683.104 | 3.18% | 28.16% | 8.29% | 1.26% | 643.038 | 3.13% |
 
-## MX34 四轨完整指标
+## [MX34](https://macroxue.github.io/shuangpin/eval.html) 四轨完整指标
 
 ### 日常八场景＋兼容标点
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 140.9442 | 138.6723 | 135.3105 | 越高越好 |
 | hits/time×100 | 134.1404 | 131.9782 | 128.7786 | 越高越好 |
@@ -162,7 +162,7 @@
 
 ### 日常八场景＋仅汉字
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 140.7933 | 134.609 | 138.6378 | 越高越好 |
 | hits/time×100 | 140.7933 | 134.609 | 138.6378 | 越高越好 |
@@ -203,7 +203,7 @@
 
 ### 原站默认说明＋兼容标点
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 148.5876 | 153.6883 | 156.1501 | 越高越好 |
 | hits/time×100 | 139.5823 | 144.3739 | 146.6865 | 越高越好 |
@@ -244,7 +244,7 @@
 
 ### 原站默认说明＋仅汉字
 
-| 指标 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） | 方向／边界 |
+| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 136.7112 | 139.3326 | 150.358 | 越高越好 |
 | hits/time×100 | 136.7112 | 139.3326 | 150.358 | 越高越好 |
@@ -287,7 +287,7 @@
 
 每格依次给出合同内键对成本、IID 键对成本、追加一次空格的 IID、含空格每字成本，以及被该模型原生支持的键对权重。不同模型量纲与支持范围不同，只能在同一合同、同一模型内横向比较。
 
-| 合同 | 键对模型 | 神韵 v2（R8 21×21） | 原键道 S005（21×21） | 首道 B04（26×26） |
+| 合同 | 键对模型 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04（26×26）](https://sspai.com/post/108949) |
 | --- | --- | --- | --- | --- |
 | S2 | chen | within=1.30918<br>iid=1.345<br>space1IID=1.33996<br>space1CostPerChar=4.01989<br>supportedPairWeight=100.00% | within=1.32628<br>iid=1.35556<br>space1IID=1.34703<br>space1CostPerChar=4.0411<br>supportedPairWeight=100.00% | within=1.30419<br>iid=1.3365<br>space1IID=1.34572<br>space1CostPerChar=4.03716<br>supportedPairWeight=100.00% |
 | S2 | macroxue | within=0.65167<br>iid=0.7032<br>space1IID=—<br>space1CostPerChar=—<br>supportedPairWeight=100.00% | within=0.70221<br>iid=0.74675<br>space1IID=—<br>space1CostPerChar=—<br>supportedPairWeight=100.00% | within=0.68067<br>iid=0.72959<br>space1IID=—<br>space1CostPerChar=—<br>supportedPairWeight=100.00% |
