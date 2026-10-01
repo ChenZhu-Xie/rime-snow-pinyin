@@ -15,6 +15,7 @@
 		"fixed:check": "tsx 生成神韵固顶词.ts --check",
 		"fixed:compare": "tsx 分析神韵固顶替代.ts",
 		"fixed:verify": "tsx 验证神韵双拼.ts",
+		"keyboard:extract": "tsx 生成神韵键盘图.ts",
 		"research:sipin-ranking": "tsx 调研四拼二字排序.ts",
 		"deploy": "tsx scripts/tasks.ts deploy",
 		"retrieve": "tsx scripts/tasks.ts retrieve",
@@ -42,6 +43,7 @@
 		"@types/js-yaml": "^4.0.9",
 		"@types/lodash-es": "^4.17.12",
 		"@types/node": "^20.19.39",
+		"playwright-core": "1.57.0",
 		"tsx": "^4.7.2",
 		"typescript": "^7.0.2"
 	}

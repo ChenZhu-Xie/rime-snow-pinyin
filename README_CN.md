@@ -21,6 +21,8 @@
 
 ![零飞键道·神韵 v2 声韵映射图](docs/shenyun-v2-keyboard.svg)
 
+声韵图直接调用本地 `a7_CKT_R10_integrated.html` 的原生键盘导出函数，再沿用 v1 的裁剪方式移除所有非 A–Z 键并收窄画布；不是在仓库内重新绘制的近似图。
+
 **R10 日常八场景文稿击键热力图（原生标点口径）**
 
 ![R8-21X21-M40-01 文稿击键热力图](docs/shenyun-v2-keyboard-heat.svg)
@@ -98,6 +100,7 @@
 ```powershell
 bun scripts/验证神韵双拼.ts "路径/a7_CKT_R10_integrated.html"
 bun scripts/生成神韵R10对比.ts "路径/a7_CKT_R10_integrated.html"
+bun run --cwd scripts keyboard:extract -- "路径/a7_CKT_R10_integrated.html"
 bun scripts/导出神韵热力图.ts "路径/a7_CKT_R10_integrated.html"
 ```
 
@@ -213,6 +216,8 @@ Snow KeyTao and Snow Three-Code now share **LingFei KeyTao · Shenyun v2**, inte
 
 ![Shenyun v2 initial/final mapping](docs/shenyun-v2-keyboard.svg)
 
+This SVG is exported by the native keyboard renderer in the local `a7_CKT_R10_integrated.html`, then cropped exactly like v1 by removing every non-A–Z key and narrowing the canvas. It is not a separately redrawn approximation.
+
 **R10 daily-document keystroke heat map, native-punctuation track**
 
 ![R8-21X21-M40-01 document heat map](docs/shenyun-v2-keyboard-heat.svg)
@@ -290,6 +295,8 @@ Snow Pinyin follows the vocabulary scope of [Rime Ice](ice/README.md): roughly 1
 **聲韻映射**
 
 ![零飛鍵道·神韻 v2 聲韻映射圖](docs/shenyun-v2-keyboard.svg)
+
+聲韻圖直接呼叫本機 `a7_CKT_R10_integrated.html` 的原生鍵盤匯出函式，再沿用 v1 的裁切方式移除所有非 A–Z 鍵並收窄畫布；並非在倉庫內另行重繪的近似圖。
 
 **R10 日常八場景文稿擊鍵熱力圖（原生標點口徑）**
 
