@@ -14,13 +14,6 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump()
-    print("Preedit = " .. tostring(preedit))
-    for i, v in ipairs(cand) do
-      print(tostring(i) .. ": " .. tostring(v.text) .. " | " .. tostring(v.comment))
-    end
-    return false
-  end
 deploy:
   sentence:
     patch:
@@ -107,8 +100,8 @@ deploy:
         assert: cand[1].text == "一个"
       - send: nwym
         assert: cand[1].text == "那样"
-      - send: tpvv
-        assert: (cand[1].text == "填" and cand[1].comment:find("vivv")) or dump()
+      - send: tpvi
+        assert: cand[1].text == "填" and cand[1].comment:find("vivv")
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"

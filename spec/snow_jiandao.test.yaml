@@ -14,13 +14,6 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump()
-    print("Preedit = " .. tostring(preedit))
-    for i, v in ipairs(cand) do
-      print(tostring(i) .. ": " .. tostring(v.text) .. " | " .. tostring(v.comment))
-    end
-    return false
-  end
 deploy:
   sentence:
     patch:
@@ -145,5 +138,5 @@ deploy:
       - send: "ekekiiekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "vwm mzua  wmmz"
-        assert: cand[1].text == "长猫" or dump()
+      - send: "vwm mzu  wmmz"
+        assert: cand[1].text == "长猫"
