@@ -13,13 +13,13 @@
 
 [冰雪拼音](https://input.tansongchen.com)包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪三拼](https://input.tansongchen.com/snow3/)、[冰雪双拼](https://input.tansongchen.com/snow2/)、[冰雪一拼](https://input.tansongchen.com/snow1/)和[冰雪键道](https://input.tansongchen.com/snow-jiandao/)输入方案。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
 
-### 无飞键道神韵・双拼
+### 无[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)键道神韵・双拼
 
-[冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪三拼](https://input.tansongchen.com/snow3/)现共用 **无飞键道·神韵**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。
+[冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪三拼](https://input.tansongchen.com/snow3/)现共用 **无[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)键道·神韵**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。
 
 **声韵映射**
 
-![无飞键道·神韵声韵映射图](docs/shenyun-v2-keyboard.svg)
+[![无飞键道·神韵声韵映射图](docs/shenyun-v2-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
 
 **R10 日常八场景文稿 纯双拼键频图（含标点）**
 
@@ -68,16 +68,16 @@
 - `zh/ch/sh → F/W/E`；零声母载体 `AOE/Y/W → Q/Y/J`。
 - `j/q/x` 的 `u/uan/ue/un` 与零声母 YU 系列统一按 `v/van/ve/vn` 编码。
 - 三拼声调 `I/V/U/A/O → 一/二/三/四/轻`；键道形码 `A/V/U/I/O → 折/横/撇/竖/点`。
-- R10 的 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 全覆盖；实现另按同一规则推导 17 个扩展音节。`hng、m、n、ng、ê` 不编码。
+- R10 的 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 全覆盖；实现另按同一规则推导 17 个扩展音节。`hng、m、n、ng、ê` 不编码。
 
-#### R10 与 [S005](https://github.com/more-14-different/shuangpin-layout-benchmark)、[首道 B04](https://sspai.com/post/108949) 的公平比较
+#### R10 与 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949) 的公平比较
 
-三方案共用 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark)、冻结 20 合同、字词/形码数据和模型；[S005](https://github.com/more-14-different/shuangpin-layout-benchmark) 是 21×21 的同键域基线，[B04 首道](https://sspai.com/post/108949)是 26×26 的同环境基线。
+三方案共用 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin)、冻结 20 合同、字词/形码数据和模型；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 是 21×21 的同键域基线，[B04 首道](https://sspai.com/post/108949)是 26×26 的同环境基线。
 
-| 指标 | 神韵 | [原键道 S005](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 | [原键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://sspai.com/post/108949) | 何为好 |
 | --- | ---: | ---: | ---: | --- |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark) 记忆项[^m-r2] | 40 🥇 | 44 | 51 | 越低越好 |
-| 不同二键码（[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark)）[^common399] | 373 | 372 | 399 🥇 | 越高重码越少 |
+| 不同二键码（[Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin)）[^common399] | 373 | 372 | 399 🥇 | 越高重码越少 |
 | 裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/项）[^ckt] | 70.4936 🥇 | 82.0288 | 79.8901 | 越低越好 |
 | 规则补全 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/项）[^ckt] | 82.0379 | 90.2571 | 79.8901 🥇 | 固定五进制补全模型 |
 | [系综当量 v5](https://github.com/more-14-different/shuangpin-layout-benchmark)[^ensemble-v5] | 10.4131 🥇 | 11.4790 | 11.0912 | 越低越好 |
@@ -95,22 +95,22 @@
 
 [R10 完整公平对比](reports/shenyun-v2-r10-comparison.md)提供详细指标和分场景结果；[原始 JSON 快照](reports/shenyun-v2-r10-comparison.json)可供机器复核。
 
-[^m-r2]: 在 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 口径下计数非原键声韵映射及额外分派规则，表示需要记忆的映射／路由项数。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
+[^m-r2]: 在 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 口径下计数非原键声韵映射及额外分派规则，表示需要记忆的映射／路由项数。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
 [^common399]: 399 个共同音节实际得到的不同二键码数量；数量越少，音节重码越多。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
 [^ckt]: [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) 按音节或编码项频率加权估算条件击键时间；“裸 S2”只含声韵二键，“规则补全”给重码桶各项追加等长五进制后缀。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)、[Conditional Keystroke Timing](https://github.com/zhanghaozhecn/conditional-keystroke-timing)。
 [^ensemble-v5]: 以 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) 为唯一计时模型，对冻结的 20 个编码合同相对基线归一化后取四次幂均值的综合分。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)、[Conditional Keystroke Timing](https://github.com/zhanghaozhecn/conditional-keystroke-timing)。
 [^ensemble-v4]: 历史综合分：在冻结 20 合同上等权汇总公开击键当量与几何模型，再取四次幂均值。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)、[yuhao-assess 当量表](https://github.com/forfudan/yuhao-assess/blob/main/public/settings/equivTable.json)；网站说明：[宇浩输入法·统计指标](https://zhuyuhao.com/yu/docs/statistics.html)。
-[^ensemble-v6]: 实验性字词情景分：单字与二字词各半，在 19 个合同的组内 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) 上加入 `150 ms × 非首选率`，并以 [S005](https://github.com/more-14-different/shuangpin-layout-benchmark)＝10 归一化；不含抽象 S2。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)、[Conditional Keystroke Timing](https://github.com/zhanghaozhecn/conditional-keystroke-timing)。
+[^ensemble-v6]: 实验性字词情景分：单字与二字词各半，在 19 个合同的组内 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) 上加入 `150 ms × 非首选率`，并以 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)＝10 归一化；不含抽象 S2。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)、[Conditional Keystroke Timing](https://github.com/zhanghaozhecn/conditional-keystroke-timing)。
 [^lu]: 0–100 的规则统一度，综合声韵拆分一致性、韵类规则支持和声母规律性，并取五种拆分模板中的最高分。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
-[^sfb]: [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 裸声韵二键由同一手指连续击打的频率加权占比。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
-[^repeat]: [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 裸声韵二键落在同一物理键上的频率加权占比。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
-[^alternation]: [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 裸声韵二键由左右手交替击打的频率加权占比；它不能单独代表输入速度。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
-[^home]: [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 裸声韵击键落在键盘主行的频率加权占比。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
+[^sfb]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 裸声韵二键由同一手指连续击打的频率加权占比。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
+[^repeat]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 裸声韵二键落在同一物理键上的频率加权占比。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
+[^alternation]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 裸声韵二键由左右手交替击打的频率加权占比；它不能单独代表输入速度。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
+[^home]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 裸声韵击键落在键盘主行的频率加权占比。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
 [^right-pinky]: 每个合同先汇总右小指负责的 P、[、]、反斜线、;、'、/ 击键占比，再取 20 个合同中的最高值。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
 [^max-finger]: 每个合同先按手指汇总其负责键的击键占比，再取所有手指、所有 20 合同中的最高值。来源：[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)。
 [^mx34]: 在 [macroxue](https://macroxue.github.io/shuangpin/eval.html) 原生 30 键移动手模型上扩展 [、]、反斜线、' 四键，按 `200 × 有效输出字符数 ÷ 相对总时间` 评分；两行分别回放日常八场景纯汉字和原站默认说明兼容标点，均不含形辅、空格或选重。来源：[macroxue/shuangpin](https://github.com/macroxue/shuangpin)；在线评测：[双拼方案评测和优化](https://macroxue.github.io/shuangpin/eval.html)。
 
-结论是：相对同键域 [S005](https://github.com/more-14-different/shuangpin-layout-benchmark)，神韵的主要优势是裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指连击、主键区覆盖和日常文稿路径，代价是加权非首选音节、补全额外键、右小指峰值和较低 [LU](https://github.com/more-14-different/shuangpin-layout-benchmark)。相对 [B04](https://sspai.com/post/108949)，神韵以更小键域取得若干裸码和路径优势，但 [B04](https://sspai.com/post/108949) 在零碰撞、补全、部分小指/行区负载与若干综合分上更好。神韵是综合折中前沿，不是全指标支配；模型分数也不等同真人测速。
+结论是：相对同键域 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，神韵的主要优势是裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指连击、主键区覆盖和日常文稿路径，代价是加权非首选音节、补全额外键、右小指峰值和较低 [LU](https://github.com/more-14-different/shuangpin-layout-benchmark)。相对 [B04](https://sspai.com/post/108949)，神韵以更小键域取得若干裸码和路径优势，但 [B04](https://sspai.com/post/108949) 在零碰撞、补全、部分小指/行区负载与若干综合分上更好。神韵是综合折中前沿，不是全指标支配；模型分数也不等同真人测速。
 
 ```powershell
 bun scripts/验证神韵双拼.ts "路径/a7_CKT_R10_integrated.html"
@@ -253,16 +253,16 @@ All ordinary initials have a fixed first key; the exceptions to the letter itsel
 | D | ing / uang | T | iu / uai | Q | o / uan |
 | J | u / er | R | ui / v | Y | uo / ve |
 
-The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [Three-Code](https://input.tansongchen.com/snow3/) tone keys are `I/V/U/A/O → 1/2/3/4/neutral`; [KeyTao](https://input.tansongchen.com/snow-jiandao/) shape keys are `A/V/U/I/O → bend/horizontal/left-falling/vertical/dot`. [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) is fully covered, 17 extension syllables are derived by the same rules, and `hng/m/n/ng/ê` remain unencoded.
+The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [Three-Code](https://input.tansongchen.com/snow3/) tone keys are `I/V/U/A/O → 1/2/3/4/neutral`; [KeyTao](https://input.tansongchen.com/snow-jiandao/) shape keys are `A/V/U/I/O → bend/horizontal/left-falling/vertical/dot`. [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) is fully covered, 17 extension syllables are derived by the same rules, and `hng/m/n/ng/ê` remain unencoded.
 
-#### Fair R10 comparison with [S005](https://github.com/more-14-different/shuangpin-layout-benchmark) and [Shoudao B04](https://sspai.com/post/108949)
+#### Fair R10 comparison with [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [Shoudao B04](https://sspai.com/post/108949)
 
-The three layouts use the same [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) data, frozen 20 contracts, dictionaries, shapes, and models. [S005](https://github.com/more-14-different/shuangpin-layout-benchmark) is the same-domain 21×21 baseline; [B04](https://sspai.com/post/108949) is a 26×26 same-environment baseline.
+The three layouts use the same [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) data, frozen 20 contracts, dictionaries, shapes, and models. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) is the same-domain 21×21 baseline; [B04](https://sspai.com/post/108949) is a 26×26 same-environment baseline.
 
-| Metric | Shenyun | [KeyTao S005](https://github.com/more-14-different/shuangpin-layout-benchmark) | [Shoudao B04](https://sspai.com/post/108949) |
+| Metric | Shenyun | [KeyTao S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [Shoudao B04](https://sspai.com/post/108949) |
 | --- | ---: | ---: | ---: |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark) | 40 🥇 | 44 | 51 |
-| Unique [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) two-key codes | 373 | 372 | 399 🥇 |
+| Unique [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) two-key codes | 373 | 372 | 399 🥇 |
 | Bare S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) (ms/item) | 70.4936 🥇 | 82.0288 | 79.8901 |
 | Completion-aware [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 82.0379 | 90.2571 | 79.8901 🥇 |
 | [系综当量 v5](https://github.com/more-14-different/shuangpin-layout-benchmark) | 10.4131 🥇 | 11.4790 | 11.0912 |
@@ -276,7 +276,7 @@ The three layouts use the same [Common399](https://github.com/more-14-different/
 
 The [complete R10 comparison](reports/shenyun-v2-r10-comparison.md) provides detailed metrics and per-scenario results. A [raw JSON snapshot](reports/shenyun-v2-r10-comparison.json) is available for machine review.
 
-Against [S005](https://github.com/more-14-different/shuangpin-layout-benchmark), Shenyun's main wins are bare [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing), same-finger rate, home-area coverage, and daily-document paths; its costs include weighted misses, completion keys, right-pinky peaks, and lower [LU](https://github.com/more-14-different/shuangpin-layout-benchmark). Against [B04](https://sspai.com/post/108949) there is no overall dominance: Shenyun gets several bare-code and path benefits in a smaller domain, while [B04](https://sspai.com/post/108949) wins collision freedom, completion, several load measures, and some aggregates. These are model results, not human speed tests.
+Against [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts), Shenyun's main wins are bare [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing), same-finger rate, home-area coverage, and daily-document paths; its costs include weighted misses, completion keys, right-pinky peaks, and lower [LU](https://github.com/more-14-different/shuangpin-layout-benchmark). Against [B04](https://sspai.com/post/108949) there is no overall dominance: Shenyun gets several bare-code and path benefits in a smaller domain, while [B04](https://sspai.com/post/108949) wins collision freedom, completion, several load measures, and some aggregates. These are model results, not human speed tests.
 
 #### Fixed candidates and staged two-character abbreviations
 
@@ -303,13 +303,13 @@ bun scripts/验证神韵双拼.ts
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通話拼音為基礎的中文輸入方案，結合字音資訊、離散最佳化、頂功技術與使用習慣學習，提供自然、高效且個人化的輸入體驗。系列包含[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪三拼](https://input.tansongchen.com/snow3/)、[冰雪雙拼](https://input.tansongchen.com/snow2/)、[冰雪一拼](https://input.tansongchen.com/snow1/)及[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)。
 
-### 無飛鍵道神韻・雙拼
+### 無[飛鍵](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)鍵道神韻・雙拼
 
-[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)與[冰雪三拼](https://input.tansongchen.com/snow3/)現共用 **無飛鍵道·神韻**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。
+[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)與[冰雪三拼](https://input.tansongchen.com/snow3/)現共用 **無[飛鍵](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)鍵道·神韻**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。
 
 **聲韻映射**
 
-![無飛鍵道·神韻聲韻映射圖](docs/shenyun-v2-keyboard.svg)
+[![無飛鍵道·神韻聲韻映射圖](docs/shenyun-v2-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
 
 **R10 日常八場景文稿 純雙拼鍵頻圖（含標點）**
 
@@ -333,16 +333,16 @@ bun scripts/验证神韵双拼.ts
 | D | ing / uang | T | iu / uai | Q | o / uan |
 | J | u / er | R | ui / v | Y | uo / ve |
 
-`j/q/x` 的 u 系列與零聲母 YU 系列統一成 `v/van/ve/vn`。[三拼](https://input.tansongchen.com/snow3/)聲調鍵為 `I/V/U/A/O → 一/二/三/四/輕`，[鍵道](https://input.tansongchen.com/snow-jiandao/)形碼鍵為 `A/V/U/I/O → 折/橫/撇/豎/點`。[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 全覆蓋，另依同一規則推導 17 個擴充音節；`hng、m、n、ng、ê` 不編碼。
+`j/q/x` 的 u 系列與零聲母 YU 系列統一成 `v/van/ve/vn`。[三拼](https://input.tansongchen.com/snow3/)聲調鍵為 `I/V/U/A/O → 一/二/三/四/輕`，[鍵道](https://input.tansongchen.com/snow-jiandao/)形碼鍵為 `A/V/U/I/O → 折/橫/撇/豎/點`。[Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 全覆蓋，另依同一規則推導 17 個擴充音節；`hng、m、n、ng、ê` 不編碼。
 
-#### R10 與 [S005](https://github.com/more-14-different/shuangpin-layout-benchmark)、[首道 B04](https://sspai.com/post/108949) 的公平比較
+#### R10 與 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949) 的公平比較
 
-三方案共用 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark)、凍結 20 合約、詞形資料與模型；[S005](https://github.com/more-14-different/shuangpin-layout-benchmark) 是 21×21 的同鍵域基線，[B04](https://sspai.com/post/108949) 是 26×26 的同環境基線。
+三方案共用 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin)、凍結 20 合約、詞形資料與模型；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 是 21×21 的同鍵域基線，[B04](https://sspai.com/post/108949) 是 26×26 的同環境基線。
 
-| 指標 | 神韻 | [原鍵道 S005](https://github.com/more-14-different/shuangpin-layout-benchmark) | [首道 B04](https://sspai.com/post/108949) |
+| 指標 | 神韻 | [原鍵道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://sspai.com/post/108949) |
 | --- | ---: | ---: | ---: |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark) | 40 🥇 | 44 | 51 |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark) 不同二鍵碼 | 373 | 372 | 399 🥇 |
+| [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 不同二鍵碼 | 373 | 372 | 399 🥇 |
 | 裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/項） | 70.4936 🥇 | 82.0288 | 79.8901 |
 | 補全後 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 82.0379 | 90.2571 | 79.8901 🥇 |
 | [系综当量 v5](https://github.com/more-14-different/shuangpin-layout-benchmark) | 10.4131 🥇 | 11.4790 | 11.0912 |
@@ -356,7 +356,7 @@ bun scripts/验证神韵双拼.ts
 
 [R10 完整公平對比](reports/shenyun-v2-r10-comparison.md)提供詳細指標與分場景結果；另附[原始 JSON](reports/shenyun-v2-r10-comparison.json)供機器複核。
 
-相對 [S005](https://github.com/more-14-different/shuangpin-layout-benchmark)，神韻的主要優勢是裸 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指連擊、主鍵區覆蓋與日常文稿路徑；代價是加權非首選、補全鍵、右小指峰值與較低 [LU](https://github.com/more-14-different/shuangpin-layout-benchmark)。相對 [B04](https://sspai.com/post/108949) 並無全指標支配：神韻以較小鍵域取得若干裸碼與路徑優勢，[B04](https://sspai.com/post/108949) 則在零碰撞、補全、部分負載與若干綜合分勝出。這些均是模型值，而非真人測速。
+相對 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，神韻的主要優勢是裸 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指連擊、主鍵區覆蓋與日常文稿路徑；代價是加權非首選、補全鍵、右小指峰值與較低 [LU](https://github.com/more-14-different/shuangpin-layout-benchmark)。相對 [B04](https://sspai.com/post/108949) 並無全指標支配：神韻以較小鍵域取得若干裸碼與路徑優勢，[B04](https://sspai.com/post/108949) 則在零碰撞、補全、部分負載與若干綜合分勝出。這些均是模型值，而非真人測速。
 
 #### 固頂與二字詞逐級簡碼
 

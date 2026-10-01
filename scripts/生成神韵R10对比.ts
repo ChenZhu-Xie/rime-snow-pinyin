@@ -17,6 +17,10 @@ const data = JSON.parse(
 const ids = ["R8-21X21-M40-01", "S005", "B04"] as const;
 const benchmarkUrl =
 	"https://github.com/more-14-different/shuangpin-layout-benchmark";
+const common399Url =
+	"https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin";
+const s005Url =
+	"https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts";
 const cktUrl =
 	"https://github.com/zhanghaozhecn/conditional-keystroke-timing";
 const shoudaoUrl = "https://sspai.com/post/108949";
@@ -29,7 +33,7 @@ const labels: Record<(typeof ids)[number], string> = {
 };
 const markdownLabels: Record<(typeof ids)[number], string> = {
 	"R8-21X21-M40-01": labels["R8-21X21-M40-01"],
-	S005: markdownLink(labels.S005, benchmarkUrl),
+	S005: markdownLink(labels.S005, s005Url),
 	B04: markdownLink(labels.B04, shoudaoUrl),
 };
 const entries = Object.fromEntries(
@@ -114,7 +118,7 @@ const overview = metricTable([
 	],
 	["a/e/i/o/u 韵键偏移 V", vowelDisplacement, "number", "越低越接近字母原键"],
 	[
-		`${markdownLink("共同 399", benchmarkUrl)} 覆盖`,
+		`${markdownLink("共同 399", common399Url)} 覆盖`,
 		(id) => `${eligibility(id).commonCovered}/399`,
 		"text",
 		"必须完整覆盖",
@@ -229,8 +233,8 @@ const loadTable = metricTable([
 ]);
 
 const fairnessTable = metricTable([
-	[`${markdownLink("共同 399", benchmarkUrl)} 唯一码`, (id) => fair(id).unique399, "number", "越高越好"],
-	[`${markdownLink("共同 399", benchmarkUrl)} 碰撞音节`, (id) => 399 - fair(id).unique399, "number", "越低越好"],
+	[`${markdownLink("共同 399", common399Url)} 唯一码`, (id) => fair(id).unique399, "number", "越高越好"],
+	[`${markdownLink("共同 399", common399Url)} 碰撞音节`, (id) => 399 - fair(id).unique399, "number", "越低越好"],
 	[
 		"补全后平均键数",
 		(id) => fair(id).S2Completion.meanKeys,
@@ -542,7 +546,7 @@ const json = {
 
 const report = `# 神韵 v2：R10 新指标公平对比
 
-数据直接取自本地 \`a7_CKT_R10_integrated.html\` 的压缩 payload。目标方案为 \`R8-21X21-M40-01\`；${markdownLink("S005", benchmarkUrl)} 是同为 21×21 的原键道基线，${markdownLink("B04 首道", shoudaoUrl)}是 26×26 的同环境基线。三者共用 ${markdownLink("Common399", benchmarkUrl)}、冻结 20 合同、字词与形码资料及模型；${markdownLink("B04", shoudaoUrl)} 不能被称为“同键域”比较。
+数据直接取自本地 \`a7_CKT_R10_integrated.html\` 的压缩 payload。目标方案为 \`R8-21X21-M40-01\`；${markdownLink("S005", s005Url)} 是同为 21×21 的原键道基线，${markdownLink("B04 首道", shoudaoUrl)}是 26×26 的同环境基线。三者共用 ${markdownLink("Common399", common399Url)}、冻结 20 合同、字词与形码资料及模型；${markdownLink("B04", shoudaoUrl)} 不能被称为“同键域”比较。
 
 完整原始字段保存在 [shenyun-v2-r10-comparison.json](shenyun-v2-r10-comparison.json)。报告没有把 ${markdownLink("MX34", mx34Url)} 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
 
@@ -564,7 +568,7 @@ ${v6Table}
 
 ## 结论
 
-- 对同键域 ${markdownLink("S005", benchmarkUrl)}，神韵 v2 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对同键域 ${markdownLink("S005", s005Url)}，神韵 v2 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
 - 对 26×26 的 ${markdownLink("B04 首道", shoudaoUrl)}，神韵 v2 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 ${markdownLink("B04", shoudaoUrl)} 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
 - R10 新指标把“快”拆成了不同边界：冻结合同 ${markdownLink("CKT", cktUrl)}、v4/v5/v6、20 合同峰值、${markdownLink("MX34", mx34Url)} 文稿移动手回放与选重敏感性必须分开读。神韵 v2 是综合折中前沿，不是每一列都最优。
 - 日常八场景 ${markdownLink("MX34", mx34Url)} 已参与 R10 搜索目标，不是未见验证；原站默认说明轨道才是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
