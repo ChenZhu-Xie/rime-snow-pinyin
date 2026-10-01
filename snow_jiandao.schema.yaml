@@ -22,16 +22,17 @@ schema:
 engine:
   processors:
     - ascii_composer
-    # 必须早于 popping，否则大写略码会先被当作“标点大写顶”处理。
-    - lua_processor@*snow.abbreviation
-    - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor
     - lua_processor@*snow.history
     - key_binder
+    # abbreviation 必须早于 popping，select_character 也必须早于 popping；
+    # 否则大写略码或 [/] 以词定字会先被顶功处理器吞掉。
+    - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
     - speller
     - punctuator
     - selector

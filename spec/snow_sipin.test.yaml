@@ -40,6 +40,11 @@ deploy:
         assert: cand[1].text == "及"
       - send: xq
         assert: cand[1].text == "下去"
+      # 以词定字：[ 取词首，] 取词尾
+      - send: "xq["
+        assert: commit == "下"
+      - send: "xq]"
+        assert: commit == "去"
       # 首选后置
       - send: jieo
         assert: cand[2].text == "及"

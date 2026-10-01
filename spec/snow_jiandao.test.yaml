@@ -90,6 +90,11 @@ deploy:
         assert: cand[1].text == "行叭"
       - send: ykgs
         assert: cand[1].text == "一个"
+      # 以词定字：[ 取词首，] 取词尾
+      - send: "ykgs["
+        assert: commit == "一"
+      - send: "ykgs]"
+        assert: commit == "个"
       - send: nwym
         assert: cand[1].text == "那样"
       # 首选后置

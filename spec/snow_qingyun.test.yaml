@@ -40,6 +40,11 @@ deploy:
         assert: cand[1].text == "夕"
       - send: kv
         assert: cand[1].text == "清"
+      # 以词定字：[ 取词首，] 取词尾
+      - send: "yo["
+        assert: commit == "一"
+      - send: "yo]"
+        assert: commit == "个"
       # 首选后置
       - send: ygeI
         assert: cand[2].text == "一个"

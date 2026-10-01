@@ -33,6 +33,26 @@ test("Three-Code uses v, not e, for the horizontal-stroke assist code", () => {
 	assert.equal("hshh".replaceAll("h", "v").replaceAll("s", "i"), "vivv");
 });
 
+test("word-initial and word-final selection runs before popping", () => {
+	const processor = read("lua/snow/select_character.lua");
+	assert.match(processor, /or "bracketleft"/u);
+	assert.match(processor, /or "bracketright"/u);
+	for (const schema of [
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_qingyun.schema.yaml",
+	]) {
+		const source = read(schema);
+		const selectCharacter = source.indexOf(
+			"lua_processor@*snow.select_character",
+		);
+		const popping = source.indexOf("lua_processor@*snow.popping");
+		assert.ok(selectCharacter >= 0, `${schema} 缺少以词定字处理器`);
+		assert.ok(popping > selectCharacter, `${schema} 的顶功处理过早`);
+	}
+});
+
 test("default traditional source entries are postponed before conversion and deduplication", () => {
 	assert.match(read("lua/snow/simplified.lua"), /Opencc\("t2s\.json"\)/u);
 	assert.match(
