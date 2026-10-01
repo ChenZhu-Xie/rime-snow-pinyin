@@ -14,13 +14,11 @@ schema:
     双拼编码：无飞键道·神韵
   dependencies:
     - snow_pinyin
-    - snow_jiandao_bihua
-    - snow_jiandao_jianpin
+    - snow_bihua
 
 engine:
   processors:
     - ascii_composer
-    - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
@@ -29,6 +27,7 @@ engine:
     - key_binder
     - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
     - speller
     - punctuator
     - selector
@@ -170,6 +169,10 @@ speller:
   algebra:
     __include: /sanpin_algebra
     __append:
+      # 辅音字母补 ja
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1ja/
+      # 元音字母补 kk
+      - xform/~{1,2}([aviou])/kk$1/
       - abbrev/^([a-z]).+$/$1/ # 简拼
       - derive/[ivuao]$// # 无声调
 
@@ -195,6 +198,8 @@ patch:
   translator/prism: snow_sanpin
   translator/preedit_format: null
   translator/enable_schema_user_dict: true
+  translator/shape_elements: snow_bushou
+  translator/shape_mapping: "radical_sanpin.txt"
   translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[ivuao]?"
   translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[ivuao]{0,2}"
   translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywe]{3,}[ivuao]{0,3}"
@@ -210,5 +215,3 @@ patch:
     - { when: always, accept: v, toggle: buffered }
     - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: "_23890"
-  stroke/prism: snow_jiandao_bihua
-  stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]

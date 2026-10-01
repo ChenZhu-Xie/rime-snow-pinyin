@@ -5,7 +5,6 @@ cache
 /cache/fixed-corpus/
 stroke.*
 
-
 # Project exclude paths
 /venv/
 /cn_dicts_dazhu/
@@ -67,3 +66,8 @@ program/generate_dict_code/jdh.dict.yaml
 
 # 临时垃圾桶
 trash/
+# 上游生成文件（任意层级）
+build
+*.userdb
+installation.yaml
+user.yaml

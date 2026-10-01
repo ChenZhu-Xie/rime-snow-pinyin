@@ -91,7 +91,7 @@ for (const code of codes) {
 const output = `${lines.join("\n")}\n`;
 
 if (process.argv.includes("--check")) {
-	if (readFileSync(outputPath, "utf8") !== output)
+	if (readFileSync(outputPath, "utf8").replace(/\r\n/g, "\n") !== output)
 		throw new Error("snow_sanpin.fixed.630.txt 不是当前神韵映射的生成结果。");
 	console.log(
 		`三拼二字词各级简码校验通过：${populatedCodes}/${codes.length} 个码位有候选。`,

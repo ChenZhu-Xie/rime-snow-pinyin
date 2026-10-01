@@ -4,7 +4,12 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 import { SpellingAlgebra, 获取大字集拼音 } from "./utils";
-import { readShapeCodes, wordLength } from "./固顶编译器";
+import {
+	readShapeCodes,
+	sanpinLetterEntries,
+	sanpinSingleAliases,
+	wordLength,
+} from "./固顶编译器";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const schemaPath = join(scriptDirectory, "..", "snow_sanpin.schema.yaml");
@@ -242,6 +247,11 @@ function fixedCodeMatches(
 }
 
 function codeBelongsToSection(file: string, section: string, code: string) {
+	if (section === "# 字母")
+		return (
+			file === "snow_sanpin.fixed.txt" &&
+			sanpinLetterEntries.some(([letterCode]) => letterCode === code)
+		);
 	if (section === "# 二简词")
 		return code.length === 2 && [...code].every((key) => mainKeys.has(key));
 	if (section === "# 630")
@@ -262,6 +272,20 @@ function codeBelongsToSection(file: string, section: string, code: string) {
 		);
 	}
 	return false;
+}
+
+const sanpinLetterCandidates = new Map(sanpinLetterEntries);
+
+function isSupplementalCandidate(
+	file: string,
+	section: string,
+	code: string,
+	word: string,
+) {
+	if (file !== "snow_sanpin.fixed.txt") return false;
+	if (section === "# 单字") return sanpinSingleAliases.get(code) === word;
+	if (section !== "# 字母") return false;
+	return sanpinLetterCandidates.get(code)?.split(" ").includes(word) ?? false;
 }
 
 for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
@@ -292,7 +316,12 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 			fixedFailures.push(`扁平固顶码表存在全局重复码：${code}`);
 		seen.add(code);
 		const words = wordsText.split(" ");
-		if (words.length !== 1)
+		if (
+			words.length !== 1 &&
+			!words
+				.slice(1)
+				.every((word) => isSupplementalCandidate(file, section, code, word))
+		)
 			fixedFailures.push(`${section} ${code} 必须且只能有一个固顶候选`);
 		if (!codeBelongsToSection(file, section, code))
 			fixedFailures.push(`${section} ${code} 不属于该固顶空间`);
@@ -301,6 +330,11 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 			(sectionLengths.get(`${section}:${code.length}`) ?? 0) + 1,
 		);
 		for (const word of words) {
+			if (isSupplementalCandidate(file, section, code, word)) {
+				entries.push({ section, code, word });
+				checkedWords += 1;
+				continue;
+			}
 			const pronunciations = pronunciationMap.get(word) ?? [];
 			const lastCharacter = [...word].at(-1);
 			if (
@@ -360,12 +394,16 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 			`单字空间应为 21 个一码和 377 个二码，实际 ${count("# 单字", 1)}/${count("# 单字", 2)}`,
 		);
 	}
-	const allocatedMainPairs = entries.filter(
-		(entry) =>
-			entry.code.length === 2 &&
-			(entry.section === "# 二简词" || entry.section === "# 单字"),
+	const allocatedMainPairs = new Set(
+		entries
+			.filter(
+				(entry) =>
+					entry.code.length === 2 &&
+					(entry.section === "# 二简词" || entry.section === "# 单字"),
+			)
+			.map((entry) => entry.code),
 	);
-	if (allocatedMainPairs.length !== 441)
+	if (allocatedMainPairs.size !== 441)
 		fixedFailures.push(`AA 空间未完整覆盖 441 槽`);
 	if (fixedFailures.length > 0) {
 		throw new Error(`${file} 批量核验失败：\n${fixedFailures.join("\n")}`);

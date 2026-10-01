@@ -225,6 +225,58 @@ export function renderFixedTable(sections: FixedSections) {
 	return `${lines.join("\n")}\n`;
 }
 
+// 三拼上游表中还保留了数字备选和拉丁字母入口。它们不参与
+// 神韵固顶选优，但必须由同一生成器输出，避免下次生成时被覆盖。
+export const sanpinSingleAliases = new Map([
+	["qj", "2"],
+	["s", "3"],
+	["sk", "4"],
+	["y", "1"],
+]);
+
+export const sanpinLetterEntries = [
+	["bja", "B b"],
+	["pja", "P p"],
+	["mja", "M m"],
+	["fja", "F f"],
+	["dja", "D d"],
+	["tja", "T t"],
+	["nja", "N n"],
+	["lja", "L l"],
+	["gja", "G g"],
+	["kja", "K k"],
+	["hja", "H h"],
+	["jja", "J j"],
+	["qja", "Q q"],
+	["xja", "X x"],
+	["zja", "Z z"],
+	["cja", "C c"],
+	["sja", "S s"],
+	["rja", "R r"],
+	["yja", "Y y"],
+	["wja", "W w"],
+	["eja", "E e"],
+	["kkv", "V v"],
+	["kki", "I i"],
+	["kku", "U u"],
+	["kko", "O o"],
+	["kka", "A a"],
+] as const;
+
+export function renderSanpinFixedTable(sections: FixedSections) {
+	const core = renderFixedTable(sections)
+		.trimEnd()
+		.split("\n")
+		.map((line) => {
+			const [code] = line.split("\t", 1);
+			const alias = code && sanpinSingleAliases.get(code);
+			return alias ? `${line} ${alias}` : line;
+		});
+	return `${core.join("\n")}\n# 字母\n${sanpinLetterEntries
+		.map(([code, candidates]) => `${code}\t${candidates}`)
+		.join("\n")}\n`;
+}
+
 export function assertOneCandidatePerCode(sections: FixedSections) {
 	const seen = new Map<string, string>();
 	for (const [section, entries] of Object.entries(sections)) {

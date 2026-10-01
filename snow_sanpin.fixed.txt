@@ -945,7 +945,7 @@ qe	全
 qf	强
 qg	秦
 qh	爱
-qj	二
+qj	二 2
 qk	起
 ql	安
 qm	昂
@@ -974,13 +974,13 @@ rr	瑞
 rs	热
 ry	若
 rz	绕
-s	三
+s	三 3
 se	森
 sf	搜
 sg	孙
 sh	塞
 sj	诉
-sk	死
+sk	死 4
 sl	伞
 sm	丧
 sn	僧
@@ -1044,7 +1044,7 @@ xr	需
 xt	秀
 xw	寻
 xy	学
-y	一
+y	一 1
 yd	应
 ye	元
 yf	又
@@ -1077,3 +1077,30 @@ zw	扎
 zx	贼
 zy	做
 zz	早
+# 字母
+bja	B b
+pja	P p
+mja	M m
+fja	F f
+dja	D d
+tja	T t
+nja	N n
+lja	L l
+gja	G g
+kja	K k
+hja	H h
+jja	J j
+qja	Q q
+xja	X x
+zja	Z z
+cja	C c
+sja	S s
+rja	R r
+yja	Y y
+wja	W w
+eja	E e
+kkv	V v
+kki	I i
+kku	U u
+kko	O o
+kka	A a

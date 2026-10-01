@@ -24,6 +24,7 @@ import {
 	readLegacyFixed,
 	readShapeCodes,
 	renderFixedTable,
+	renderSanpinFixedTable,
 	sortCandidates,
 	soundCode,
 	toneOf,
@@ -945,14 +946,14 @@ assertNoReplaceableFixed("冰雪三拼", sanpin);
 assertNoReplaceableFixed("冰雪键道", jiandao);
 
 const outputs = new Map([
-	["snow_sanpin.fixed.txt", renderFixedTable(sanpin)],
+	["snow_sanpin.fixed.txt", renderSanpinFixedTable(sanpin)],
 	["snow_jiandao.fixed.txt", renderFixedTable(jiandao)],
 ]);
 for (const [file, output] of outputs) {
 	const path = join(root, file);
 	if (reportSanpinCodes.length > 0) continue;
 	if (checkOnly) {
-		if (readFileSync(path, "utf8") !== output)
+		if (readFileSync(path, "utf8").replace(/\r\n/g, "\n") !== output)
 			throw new Error(`${file} 不是通用固顶编译器的最新产物。`);
 	} else {
 		writeFileSync(path, output, "utf8");
