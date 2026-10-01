@@ -55,7 +55,7 @@ engine:
     - lua_filter@*snow.placeholder
     - lua_filter@*snow.enforce
     - reverse_lookup_filter@lookup_pinyin
-    - reverse_lookup_filter@lookup_jiandao
+    - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
     - lua_filter@*snow.shape_filter
     - lua_filter@*snow.postpone
@@ -99,6 +99,12 @@ speller:
   algebra:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1e/
+      - xform/~{1,2}v/xh/
+      - xform/~{1,2}i/xk/
+      - xform/~{1,2}u/xj/
+      - xform/~{1,2}o/xl/
+      - xform/~{1,2}a/xs/
       - xform/[viuoa]$// # 无声调
 
 jianpin:
@@ -111,7 +117,7 @@ jianpin:
     - snow_pinyin.tencent
     - snow_pinyin.user
 
-lookup_jiandao:
+lookup_sanpin:
   tags: [pinyin]
   overwrite_comment: true
   dictionary: snow_pinyin
@@ -142,7 +148,6 @@ patch:
   translator/shape_mapping: "radical_jiandao.txt"
   key_binder/bindings/+:
     - { when: always, accept: "Control+j", toggle: buffered }
-    - { when: always, accept: "Control+l", send_sequence: "{Home}{Right}{Right}" }
   menu/alternative_select_keys: null
   recognizer/patterns/jianpin: "^[bpmfdtnlgkhjqxzcsrywe]{3,}$"
   stroke/prism: snow_jiandao_bihua

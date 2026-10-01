@@ -10,7 +10,10 @@ interface Replace {
 export class SpellingAlgebra {
 	private rules: Replace[];
 
-	constructor(schema: string, key: string) {
+	// derive 在 Rime 中会保留原拼写，这里无法表示多个结果，故默认按 xform 处理；
+	// 传入 derive: false 则忽略 derive 规则，只计算规范拼写
+	constructor(schema: string, key: string, options: { derive?: boolean } = {}) {
+		const { derive = true } = options;
 		const content = readFileSync(schema, "utf8");
 		const yaml = load(content) as Record<string, any>;
 		const rules: string[] = yaml[key];
@@ -18,6 +21,7 @@ export class SpellingAlgebra {
 		rules.forEach((rule) => {
 			const trimmed = rule.trim();
 			const ruleParts = trimmed.split(trimmed.at(-1)!);
+			if (ruleParts[0] === "derive" && !derive) return;
 			if (ruleParts[0] === "xform" || ruleParts[0] === "derive") {
 				parsed.push({
 					from: new RegExp(ruleParts[1], "g"),
