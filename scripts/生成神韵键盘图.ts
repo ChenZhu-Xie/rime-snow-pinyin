@@ -11,7 +11,7 @@ const outputPath = join(
 	scriptDirectory,
 	"..",
 	"docs",
-	"shenyun-v2-keyboard.svg",
+	"shenyun-r8-keyboard.svg",
 );
 
 const args = process.argv.slice(2);
@@ -19,7 +19,7 @@ const check = args.includes("--check");
 const positional = args.filter((arg) => arg !== "--check");
 if (!positional[0]) {
 	throw new Error(
-		"用法：tsx 生成神韵键盘图.ts <a7_CKT_R10_integrated.html> [浏览器可执行文件] [--check]",
+		"用法：tsx 生成神韵键盘图.ts <benchmark.html> [浏览器可执行文件] [--check]",
 	);
 }
 

@@ -6,7 +6,7 @@ import { gunzipSync } from "zlib";
 
 const targetScheme = "R8-21X21-M40-01";
 const benchmarkPath = process.argv[2];
-if (!benchmarkPath) throw new Error("请传入 a7_CKT_R10_integrated.html 路径。");
+if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
 const html = readFileSync(resolve(benchmarkPath), "utf8");
 const payloadMatch = html.match(
 	/<script id="payload"[^>]*>([\s\S]*?)<\/script>/,
@@ -100,7 +100,7 @@ const mappingSha256 = createHash("sha256")
 	.digest("hex");
 const output = {
 	scheme: scheme.id,
-	release: "R10-integrated",
+	release: "R8",
 	mappingSha256,
 	payloadMappingSha256: createHash("sha256")
 		.update(JSON.stringify(payloadMapping))
@@ -110,7 +110,7 @@ const output = {
 	codes: mapping,
 };
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const outputPath = join(root, "docs", "shenyun-v2-mapping.json");
+const outputPath = join(root, "docs", "shenyun-r8-mapping.json");
 mkdirSync(dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`, "utf8");
 console.log(

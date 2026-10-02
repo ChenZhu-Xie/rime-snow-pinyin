@@ -211,7 +211,7 @@ function makeOptimizedCandidate(
 }
 
 const fixture = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-v2-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-r8-mapping.json"), "utf8"),
 ) as {
 	scheme: string;
 	codes: Record<string, string | null>;

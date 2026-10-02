@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 
 const benchmarkPath = process.argv[2];
-if (!benchmarkPath) throw new Error("请传入 a7_CKT_R10_integrated.html 路径。");
+if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
 const html = readFileSync(resolve(benchmarkPath), "utf8");
 const payloadMatch = html.match(
 	/<script id="payload"[^>]*>([\s\S]*?)<\/script>/,
@@ -13,6 +13,21 @@ if (!payloadMatch) throw new Error("Benchmark HTML 中未找到压缩 payload。
 const data = JSON.parse(
 	gunzipSync(Buffer.from(payloadMatch[1].trim(), "base64")).toString("utf8"),
 ) as any;
+
+const roundScoped = (suffix: string) => {
+	const key = Object.keys(data)
+		.filter((candidate) => candidate.endsWith(suffix))
+		.sort(
+			(a, b) =>
+				Number(b.match(/^[Rr](\d+)/)?.[1] ?? 0) -
+				Number(a.match(/^[Rr](\d+)/)?.[1] ?? 0),
+		)[0];
+	if (!key) throw new Error(`payload 缺少 *${suffix} 字段`);
+	return data[key];
+};
+const loadSummaries = roundScoped("LoadSummaries");
+const eligibilityByScheme = roundScoped("Eligibility");
+const pairMetrics = roundScoped("PairMetrics");
 
 const ids = ["R8-21X21-M40-01", "S005", "B04"] as const;
 const benchmarkUrl =
@@ -27,7 +42,7 @@ const shoudaoUrl = "https://sspai.com/post/108949";
 const mx34Url = "https://macroxue.github.io/shuangpin/eval.html";
 const markdownLink = (text: string, url: string) => `[${text}](${url})`;
 const labels: Record<(typeof ids)[number], string> = {
-	"R8-21X21-M40-01": "神韵 v2（R8 21×21）",
+	"R8-21X21-M40-01": "神韵 R8（21×21）",
 	S005: "原键道 S005（21×21）",
 	B04: "首道 B04（26×26）",
 };
@@ -42,8 +57,8 @@ const entries = Object.fromEntries(
 for (const id of ids) if (!entries[id]) throw new Error(`payload 缺少 ${id}`);
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const reportPath = join(root, "reports", "shenyun-v2-r10-comparison.md");
-const jsonPath = join(root, "reports", "shenyun-v2-r10-comparison.json");
+const reportPath = join(root, "reports", "shenyun-r8-comparison.md");
+const jsonPath = join(root, "reports", "shenyun-r8-comparison.json");
 const number = (value: unknown, digits = 4) =>
 	typeof value === "number" && Number.isFinite(value)
 		? value
@@ -95,13 +110,13 @@ const vowelDisplacement = (id: (typeof ids)[number]) => {
 			links[final]?.length !== 1 || links[final][0] !== final.toUpperCase(),
 	).length;
 };
-const load = (id: (typeof ids)[number]) => data.r10LoadSummaries[id];
+const load = (id: (typeof ids)[number]) => loadSummaries[id];
 const fair = (id: (typeof ids)[number]) => data.fairCKT.values[id];
 const v6 = (id: (typeof ids)[number]) => data.ensembleV6.values[id];
 const macro = (id: (typeof ids)[number], track: string) =>
 	data.macroxue.values[id][track];
 const s2 = (id: (typeof ids)[number]) => data.ckt.tracks[id].S2;
-const eligibility = (id: (typeof ids)[number]) => data.r10Eligibility[id];
+const eligibility = (id: (typeof ids)[number]) => eligibilityByScheme[id];
 
 const overview = metricTable([
 	[
@@ -140,7 +155,7 @@ const overview = metricTable([
 	[markdownLink("系综当量 v4", benchmarkUrl), (id) => data.ensembleV4.values[id].score, "number", "越低越好"],
 	[
 		markdownLink("系综当量 v4-C", benchmarkUrl),
-		(id) => data.r10PairMetrics.values[id]._v4PublicSensitivity,
+		(id) => pairMetrics.values[id]._v4PublicSensitivity,
 		"number",
 		"越低越好；公开例外键表敏感性",
 	],
@@ -463,16 +478,16 @@ const macroMetricRows = (track: string) => {
 };
 
 const pairRows: Array<Array<string | number>> = [];
-for (const contract of Object.keys(data.r10PairMetrics.values[ids[0]])) {
+for (const contract of Object.keys(pairMetrics.values[ids[0]])) {
 	if (contract.startsWith("_")) continue;
 	for (const model of Object.keys(
-		data.r10PairMetrics.values[ids[0]][contract],
+		pairMetrics.values[ids[0]][contract],
 	)) {
 		pairRows.push([
 			contract,
 			model,
 			...ids.map((id) => {
-				const value = data.r10PairMetrics.values[id][contract][model];
+				const value = pairMetrics.values[id][contract][model];
 				return [
 					"within",
 					"iid",
@@ -508,9 +523,9 @@ const snapshots = Object.fromEntries(
 				logicUniformity: entries[id].logicUniformity,
 				sound: entries[id].sound,
 			},
-			eligibility: data.r10Eligibility[id],
-			loadSummary: data.r10LoadSummaries[id],
-			pairMetrics: data.r10PairMetrics.values[id],
+			eligibility: eligibilityByScheme[id],
+			loadSummary: loadSummaries[id],
+			pairMetrics: pairMetrics.values[id],
 			macroxue: data.macroxue.values[id],
 			fairCKT: data.fairCKT.values[id],
 			cktTracks: data.ckt.tracks[id],
@@ -520,8 +535,14 @@ const snapshots = Object.fromEntries(
 		},
 	]),
 );
+const macroxuePolicy = Object.fromEntries(
+	Object.entries(data.macroxue.policy).map(([key, value]) => [
+		key.replace(/^[Rr]\d+/, "").replace(/^./, (letter) => letter.toLowerCase()),
+		value,
+	]),
+);
 const json = {
-	source: "a7_CKT_R10_integrated.html",
+	source: "benchmark HTML payload",
 	payloadVersion: data.version,
 	comparisonPolicy: {
 		commonSupport: "Common399 and the same frozen 20 contracts",
@@ -531,8 +552,8 @@ const json = {
 			"B04 is a same-environment 26×26 baseline, not a same-domain 21×21 baseline",
 	},
 	metricDefinitions: {
-		r10LoadPolicy: data.r10PairMetrics.policy,
-		macroxuePolicy: data.macroxue.policy,
+		loadPolicy: pairMetrics.policy,
+		macroxuePolicy,
 		fairCKTPolicy: data.fairCKT.policy,
 		ensembleV6: {
 			version: data.ensembleV6.version,
@@ -544,17 +565,17 @@ const json = {
 	schemes: snapshots,
 };
 
-const report = `# 神韵 v2：R10 新指标公平对比
+const report = `# 神韵 R8：公平对比
 
-数据直接取自本地 \`a7_CKT_R10_integrated.html\` 的压缩 payload。目标方案为 \`R8-21X21-M40-01\`；${markdownLink("S005", s005Url)} 是同为 21×21 的原键道基线，${markdownLink("B04 首道", shoudaoUrl)}是 26×26 的同环境基线。三者共用 ${markdownLink("Common399", common399Url)}、冻结 20 合同、字词与形码资料及模型；${markdownLink("B04", shoudaoUrl)} 不能被称为“同键域”比较。
+数据取自 ${markdownLink("双拼布局 Benchmark", benchmarkUrl)} 的 HTML payload。目标方案为 ${markdownLink("R8-21X21-M40-01", benchmarkUrl)}；${markdownLink("S005", s005Url)} 是同为 21×21 的原键道基线，${markdownLink("B04 首道", shoudaoUrl)}是 26×26 的同环境基线。三者共用 ${markdownLink("Common399", common399Url)}、冻结 20 合同、字词与形码资料及模型；${markdownLink("B04", shoudaoUrl)} 不能被称为“同键域”比较。
 
-完整原始字段保存在 [shenyun-v2-r10-comparison.json](shenyun-v2-r10-comparison.json)。报告没有把 ${markdownLink("MX34", mx34Url)} 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
+完整原始字段保存在 [shenyun-r8-comparison.json](shenyun-r8-comparison.json)。报告没有把 ${markdownLink("MX34", mx34Url)} 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
 
 ## 总览
 
 ${overview}
 
-## R10 新增负载与键区指标
+## 补充负载与键区指标
 
 ${loadTable}
 
@@ -568,10 +589,10 @@ ${v6Table}
 
 ## 结论
 
-- 对同键域 ${markdownLink("S005", s005Url)}，神韵 v2 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
-- 对 26×26 的 ${markdownLink("B04 首道", shoudaoUrl)}，神韵 v2 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 ${markdownLink("B04", shoudaoUrl)} 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
-- R10 新指标把“快”拆成了不同边界：冻结合同 ${markdownLink("CKT", cktUrl)}、v4/v5/v6、20 合同峰值、${markdownLink("MX34", mx34Url)} 文稿移动手回放与选重敏感性必须分开读。神韵 v2 是综合折中前沿，不是每一列都最优。
-- 日常八场景 ${markdownLink("MX34", mx34Url)} 已参与 R10 搜索目标，不是未见验证；原站默认说明轨道才是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
+- 对同键域 ${markdownLink("S005", s005Url)}，神韵 R8 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对 26×26 的 ${markdownLink("B04 首道", shoudaoUrl)}，神韵 R8 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 ${markdownLink("B04", shoudaoUrl)} 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
+- 补充指标把“快”拆成了不同边界：冻结合同 ${markdownLink("CKT", cktUrl)}、v4/v5/v6、20 合同峰值、${markdownLink("MX34", mx34Url)} 文稿移动手回放与选重敏感性必须分开读。神韵 R8 是综合折中前沿，不是每一列都最优。
+- 日常八场景 ${markdownLink("MX34", mx34Url)} 曾参与来源报告的搜索目标；原站默认说明轨道是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
 
 ## 冻结 20 合同逐项对比
 
@@ -585,7 +606,7 @@ ${macroTracks
 	.map(([track, title]) => `### ${title}\n\n${macroMetricRows(track)}`)
 	.join("\n\n")}
 
-## R10 键对模型逐合同明细
+## 键对模型逐合同明细
 
 每格依次给出合同内键对成本、IID 键对成本、追加一次空格的 IID、含空格每字成本，以及被该模型原生支持的键对权重。不同模型量纲与支持范围不同，只能在同一合同、同一模型内横向比较。
 

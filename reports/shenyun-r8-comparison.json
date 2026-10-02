@@ -1,5 +1,5 @@
 {
-  "source": "a7_CKT_R10_integrated.html",
+  "source": "benchmark HTML payload",
   "payloadVersion": 7,
   "comparisonPolicy": {
     "commonSupport": "Common399 and the same frozen 20 contracts",
@@ -11,7 +11,7 @@
     "boundary": "B04 is a same-environment 26×26 baseline, not a same-domain 21×21 baseline"
   },
   "metricDefinitions": {
-    "r10LoadPolicy": "Within / IID boundary / one-space-per-entry IID explicitly separated; unsupported cells make whole aggregate null; no dropping/renormalization. Chen core inherited, 480 exception cells sourced from official table. Macro30 exact get_key_pair_time formula, not arbitrary geometry proxy.",
+    "loadPolicy": "Within / IID boundary / one-space-per-entry IID explicitly separated; unsupported cells make whole aggregate null; no dropping/renormalization. Chen core inherited, 480 exception cells sourced from official table. Macro30 exact get_key_pair_time formula, not arbitrary geometry proxy.",
     "macroxuePolicy": {
       "geometry": "QWERTY staggered",
       "upstreamNativeKeys": 30,
@@ -26,7 +26,7 @@
       "tokenization": "Shared locked highest-frequency source455 character readings. Not the full upstream char_info dictionary.",
       "primaryCorpus": "New eight-scene daily prose; written before scoring, not fitted to candidates. Default site text retained as secondary technical sample.",
       "purePhoneticCaution": "Colliding layouts still generate raw strokes; score excludes candidate selection. Must compare collision and CKT choice metrics separately.",
-      "R10trainingUse": "Daily hanzi score enters search objective/floor. Default text is post-evaluation sensitivity, not an unseen population validation."
+      "trainingUse": "Daily hanzi score enters search objective/floor. Default text is post-evaluation sensitivity, not an unseen population validation."
     },
     "fairCKTPolicy": "All five sizes use native CKT for known keys. Host domain validity and collision-freedom are separate. v5 stays frozen; v5-S(tau) is an independently labelled selection-sensitivity profile, not a new human calibration.",
     "ensembleV6": {
@@ -44,7 +44,7 @@
   },
   "schemes": {
     "R8-21X21-M40-01": {
-      "label": "神韵 v2（R8 21×21）",
+      "label": "神韵 R8（21×21）",
       "entry": {
         "id": "R8-21X21-M40-01",
         "name": "R8 21x21 / M40 / D0 / fixed aux",

@@ -1,6 +1,6 @@
 {
   "scheme": "R8-21X21-M40-01",
-  "release": "R10-integrated",
+  "release": "R8",
   "mappingSha256": "4d350bc6556e5c410d45555a8e5786d6d6a8fef847b4dfd50ec3e91b68798e9c",
   "payloadMappingSha256": "fc9f1a243740497f69afbb937407daf357a47d1715fe68154f9b7bcedb10deae",
   "derivedSyllables": [

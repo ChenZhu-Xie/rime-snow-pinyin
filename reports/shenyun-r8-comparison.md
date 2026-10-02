@@ -1,12 +1,12 @@
-# 神韵 v2：R10 新指标公平对比
+# 神韵 R8：公平对比
 
-数据直接取自本地 `a7_CKT_R10_integrated.html` 的压缩 payload。目标方案为 `R8-21X21-M40-01`；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 是同为 21×21 的原键道基线，[B04 首道](https://sspai.com/post/108949)是 26×26 的同环境基线。三者共用 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin)、冻结 20 合同、字词与形码资料及模型；[B04](https://sspai.com/post/108949) 不能被称为“同键域”比较。
+数据取自 [双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark) 的 HTML payload。目标方案为 [R8-21X21-M40-01](https://github.com/more-14-different/shuangpin-layout-benchmark)；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 是同为 21×21 的原键道基线，[B04 首道](https://sspai.com/post/108949)是 26×26 的同环境基线。三者共用 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin)、冻结 20 合同、字词与形码资料及模型；[B04](https://sspai.com/post/108949) 不能被称为“同键域”比较。
 
-完整原始字段保存在 [shenyun-v2-r10-comparison.json](shenyun-v2-r10-comparison.json)。报告没有把 [MX34](https://macroxue.github.io/shuangpin/eval.html) 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
+完整原始字段保存在 [shenyun-r8-comparison.json](shenyun-r8-comparison.json)。报告没有把 [MX34](https://macroxue.github.io/shuangpin/eval.html) 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
 
 ## 总览
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark) 记忆项 | 40 | 44 | 51 | 越低越好 |
 | 普通声母偏移 D | 0 | 0 | 0 | 越低规则越接近原键 |
@@ -27,9 +27,9 @@
 | 日常纯汉字 [MX34](https://macroxue.github.io/shuangpin/eval.html) 得分 | 140.7933 | 134.609 | 138.6378 | 同文稿越高越好；不含消歧 |
 | 默认说明兼容标点 [MX34](https://macroxue.github.io/shuangpin/eval.html) 得分 | 148.5876 | 153.6883 | 156.1501 | 同文稿越高越好；敏感性对照 |
 
-## R10 新增负载与键区指标
+## 补充负载与键区指标
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | S2 主键区 | 51.93% | 49.00% | 36.60% | 越高越集中 |
 | C4-Snow 主键区 | 35.08% | 30.81% | 24.24% | 越高越集中 |
@@ -54,7 +54,7 @@
 
 ## 消歧、音形与选重敏感性
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | [共同 399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 唯一码 | 373 | 372 | 399 | 越高越好 |
 | [共同 399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 碰撞音节 | 26 | 27 | 0 | 越低越好 |
@@ -71,7 +71,7 @@
 
 ## [系综当量 v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark) 及敏感性
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | v6-CW150 | 9.4988 | 10 | 9.5896 | 越低越好 |
 | v6 选重敏感性 0ms | 9.4387 | 10 | 9.592 | 排除 S2；同 τ 越低越好 |
@@ -85,16 +85,16 @@
 
 ## 结论
 
-- 对同键域 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，神韵 v2 的核心优势集中在裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指连击、主键区覆盖和 [MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
-- 对 26×26 的 [B04 首道](https://sspai.com/post/108949)，神韵 v2 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 [B04](https://sspai.com/post/108949) 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
-- R10 新指标把“快”拆成了不同边界：冻结合同 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、v4/v5/v6、20 合同峰值、[MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿移动手回放与选重敏感性必须分开读。神韵 v2 是综合折中前沿，不是每一列都最优。
-- 日常八场景 [MX34](https://macroxue.github.io/shuangpin/eval.html) 已参与 R10 搜索目标，不是未见验证；原站默认说明轨道才是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
+- 对同键域 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，神韵 R8 的核心优势集中在裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指连击、主键区覆盖和 [MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对 26×26 的 [B04 首道](https://sspai.com/post/108949)，神韵 R8 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 [B04](https://sspai.com/post/108949) 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
+- 补充指标把“快”拆成了不同边界：冻结合同 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、v4/v5/v6、20 合同峰值、[MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿移动手回放与选重敏感性必须分开读。神韵 R8 是综合折中前沿，不是每一列都最优。
+- 日常八场景 [MX34](https://macroxue.github.io/shuangpin/eval.html) 曾参与来源报告的搜索目标；原站默认说明轨道是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
 
 ## 冻结 20 合同逐项对比
 
 每个方案依次列主键区、左小指、右小指、[CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/项）与非首选权重。
 
-| 合同 | 神韵 v2（R8 21×21） 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 | [首道 B04（26×26）](https://sspai.com/post/108949) 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 |
+| 合同 | 神韵 R8（21×21） 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 | [首道 B04（26×26）](https://sspai.com/post/108949) 主键区 | 左小指 | 右小指 | [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing) | 非首选 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | S2 | 51.93% | 6.92% | 4.18% | 70.494 | 2.71% | 49.00% | 6.72% | 2.15% | 82.029 | 0.93% | 36.60% | 6.78% | 1.26% | 79.89 | 0.00% |
 | C2 | 56.65% | 11.48% | 1.97% | 65.453 | 12.60% | 48.15% | 6.39% | 1.06% | 82.812 | 12.70% | 35.05% | 7.44% | 0.59% | 81.417 | 12.13% |
@@ -121,7 +121,7 @@
 
 ### 日常八场景＋兼容标点
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 140.9442 | 138.6723 | 135.3105 | 越高越好 |
 | hits/time×100 | 134.1404 | 131.9782 | 128.7786 | 越高越好 |
@@ -162,7 +162,7 @@
 
 ### 日常八场景＋仅汉字
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 140.7933 | 134.609 | 138.6378 | 越高越好 |
 | hits/time×100 | 140.7933 | 134.609 | 138.6378 | 越高越好 |
@@ -203,7 +203,7 @@
 
 ### 原站默认说明＋兼容标点
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 148.5876 | 153.6883 | 156.1501 | 越高越好 |
 | hits/time×100 | 139.5823 | 144.3739 | 146.6865 | 越高越好 |
@@ -244,7 +244,7 @@
 
 ### 原站默认说明＋仅汉字
 
-| 指标 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
+| 指标 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | 速度得分 | 136.7112 | 139.3326 | 150.358 | 越高越好 |
 | hits/time×100 | 136.7112 | 139.3326 | 150.358 | 越高越好 |
@@ -283,11 +283,11 @@
 | 扩展键击数 | 0 | 0 | 0 | 越低表示越少使用 []\' |
 | 相对全拼得分倍数 | 1.4633 | 1.4914 | 1.6094 | 同轨越高越好 |
 
-## R10 键对模型逐合同明细
+## 键对模型逐合同明细
 
 每格依次给出合同内键对成本、IID 键对成本、追加一次空格的 IID、含空格每字成本，以及被该模型原生支持的键对权重。不同模型量纲与支持范围不同，只能在同一合同、同一模型内横向比较。
 
-| 合同 | 键对模型 | 神韵 v2（R8 21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) |
+| 合同 | 键对模型 | 神韵 R8（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) |
 | --- | --- | --- | --- | --- |
 | S2 | chen | within=1.30918<br>iid=1.345<br>space1IID=1.33996<br>space1CostPerChar=4.01989<br>supportedPairWeight=100.00% | within=1.32628<br>iid=1.35556<br>space1IID=1.34703<br>space1CostPerChar=4.0411<br>supportedPairWeight=100.00% | within=1.30419<br>iid=1.3365<br>space1IID=1.34572<br>space1CostPerChar=4.03716<br>supportedPairWeight=100.00% |
 | S2 | macroxue | within=0.65167<br>iid=0.7032<br>space1IID=—<br>space1CostPerChar=—<br>supportedPairWeight=100.00% | within=0.70221<br>iid=0.74675<br>space1IID=—<br>space1CostPerChar=—<br>supportedPairWeight=100.00% | within=0.68067<br>iid=0.72959<br>space1IID=—<br>space1CostPerChar=—<br>supportedPairWeight=100.00% |

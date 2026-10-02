@@ -415,7 +415,7 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 
 const fixture = JSON.parse(
 	readFileSync(
-		join(scriptDirectory, "..", "docs", "shenyun-v2-mapping.json"),
+		join(scriptDirectory, "..", "docs", "shenyun-r8-mapping.json"),
 		"utf8",
 	),
 ) as {

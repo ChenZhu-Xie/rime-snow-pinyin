@@ -72,7 +72,7 @@ test("default traditional source entries are postponed before conversion and ded
 });
 
 test("reported phrase codes follow the frozen Shenyun mapping", () => {
-	const fixture = JSON.parse(read("docs/shenyun-v2-mapping.json")) as {
+	const fixture = JSON.parse(read("docs/shenyun-r8-mapping.json")) as {
 		codes: Record<string, string>;
 	};
 	assert.equal(fixture.codes.na + fixture.codes.yang, "nwym");
