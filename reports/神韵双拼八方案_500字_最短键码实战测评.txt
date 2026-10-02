@@ -1,0 +1,441 @@
+神韵双拼加持的键道、三拼：500 字赛文八方案最短键码实战测评
+====================================================================================================
+口径：500 个汉字；中文逗号/句号 43 个；标点计键；均码 = 总实际按键 / 500。
+新增轨：R8-21X21-M40-01 神韵三拼、神韵键道；其余六轨逐键沿用两份指定冻结回放。
+优化目标：先最少实际按键，再少分词段、少 Space；禁用数字选重，只使用首选、各级简码、630、尾字键和原生结构略码。
+记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。
+
+Benchmark 排名表
+----------------------------------------------------------------------------------------------------
+排名  方案                 总按键   平均码长   Space  Shift  非标点分词段   相对第一名
+ 1    四拼                    919     1.8380      49      0           264   +  0
+ 2    神韵三拼                  923     1.8460      11      0           229   +  4
+ 3    神韵键道                  931     1.8620      28      1           237   + 12
+ 4    三拼（原冰雪）               943     1.8860      55      0           257   + 24
+ 5    键道（原冰雪）               944     1.8880      55      0           256   + 25
+ 6    声笔小鹤                  960     1.9200      29      0           238   + 41
+ 7    清韵                   1045     2.0900      99     42           325   +126
+ 8    小鹤音形                 1114     2.2280     110      0           305   +195
+
+新增两轨简码使用统计
+----------------------------------------------------------------------------------------------------
+神韵三拼：总实际按键 923；平均码长 1.8460；Space 11；Shift 0；标点 43；非标点编码动作 229（1字 35；2字 142；3字 33；4字 15；5字以上 4）。
+  简码命中：一简 6；二简单字 5；二简词 6；630 28；结构略码 0；尾字键 17；普通码 167。
+神韵键道：总实际按键 931；平均码长 1.8620；Space 28；Shift 1；标点 43；非标点编码动作 237（1字 40；2字 151；3字 32；4字 10；5字以上 4）。
+  简码命中：一简 5；二简单字 33；二简词 7；630 33；结构略码 2；尾字键 18；普通码 139。
+
+完整方案-specific 分词 / 键码对齐回放
+====================================================================================================
+[01]
+原文       清 晨 的 城 市 刚 刚 醒 来 ，
+四拼　　　　 qyeo  ;  yvi   ggxiea   l  ,
+三拼　　　　 qgjn  d_ jrek  ggxu     lh ,
+键道　　　　 qgjn  d_ jrek  gia   xglh  ,
+神韵三拼　　 qdwe;    wav   ggxu     lh ,
+神韵键道　　 qdwe;    wnek  ggxi     lh ,
+声笔小鹤　　 qci   dcsiui   ggxki    ld ,
+清韵　　　　 qc.   e  csi   ggx/⇧,_  k_ ,
+小鹤　　　　 qkif  d_ igui  gg;   xkld  ,
+
+[02]
+原文       街   边   的 小 店  打  开 卷 帘   门  ，
+四拼　　　　 jbuoe     ;  xduou  dka    jlme        ,
+三拼　　　　 jdbm      d_ xcdmo  dskh   jlmiu       ,
+键道　　　　 jdbmu     d_ xcdmi  dskh   jlmo        ,
+神韵三拼　　 jbbp;        xcdpa  diu    jlmv        ,
+神韵键道　　 jbbp;        xcdpi  dwkh   jlmo        ,
+声笔小鹤　　 jpbm      d_ xndm   dk'    jlmfo       ,
+清韵　　　　 dtt_ lhzi e  xo gh_ nk_ ki jlm.        ,
+小鹤　　　　 jpbm      d_ xndm   d;  kdjr  lmb_ mfd ,
+
+[03]
+原文       第 一 班   公 交 车 从  路  口 慢 慢 开  过 。
+四拼　　　　 dfi   baoi gjy_     c_  lkou   mm_   kgoaa  .
+三拼　　　　 dkyk  bfv  gjw_     cy_ ljkd   moo   khgl   .
+键道　　　　 dkyk  bfv  gjw_     cy_ ljkd   moo   khgl   .
+神韵三拼　　 dkyk  bli  gjwii    cpv ljkf   mmkia     gy .
+神韵键道　　 dkyk  blv  gjwu     cp_ ljkf   mmkoo     gy .
+声笔小鹤　　 dy'   bje  gjce     cslu    kzmm'    kdgo   .
+清韵　　　　 dyi   wd_  gjce     r/  fm_ fo mm;   ki  c_ .
+小鹤　　　　 diyi  bjw_ gji_     cs_ lukz   mm;   kd_ go .
+
+[04]
+原文       有 人 拿 着 早 餐  赶   去 上 班  ， 有 人 沿 着  河  边   跑 步  ，
+四拼　　　　 fr_   nwe   zcao   gqaa    vbao   ,  fr_   fweou  hbuoe    pbuaa  ,
+三拼　　　　 yr_   nsfe  zzcf   gfql    epbf   ,  yr_   yffe   hebm     pzbj   ,
+键道　　　　 yr_   nsfe  zzcf   gfql    epbf   ,  yr_   yffe   hebm     pzbj   ,
+神韵三拼　　 yfre  nwfs  zzcl   glqr    eia    ,  yfre  yov    hsbp     pau    ,
+神韵键道　　 yfre  nwfs  zzcl   glqr    embl   ,  yfre  ylfs   hsbp     pzbj   ,
+声笔小鹤　　 yzr_  naze  zccj   gjqu    sbe    ,  yzr_  yjze   hebm     pcbu   ,
+清韵　　　　 yr.   nze   zc;⇧o_ tzg; t_ s, wd_ ,  yr.   yze⇧;_ kk_ lhzi pbu⇧o_ ,
+小鹤　　　　 yzrf  nave  zccj   gjqu    uhbj   ,  yzrf  yjve   hebm     pcbu   ,
+
+[05]
+原文       也   有 人 坐   在 窗 前  整 理  今 天 的 计 划  。
+四拼　　　　 ffreo      zz_     yquoi  wliu   jt    ;  jhi    .
+三拼　　　　 yyr_       zvu     wmqm   qrlk   jtda     jva    .
+键道　　　　 yyr_       zvu     wmqm   qrlk   jtdi     jva    .
+神韵三拼　　 yyrv       zzwqvaa        fnlk   jtdjh           .
+神韵键道　　 yyra       zzwqiv         fnlk   jtdjh           .
+声笔小鹤　　 yeyz    r_ zozd    clqm   zgli   jtd⇥     jhe    .
+清韵　　　　 yyr.       rrtu ;  cq;⇧,_ zli⇧/_ jtde     jha⇧i_ .
+小鹤　　　　 yev_ yzrf  zozd    ilqm   vgli   jt_   d_ jihx   .
+
+[06]
+原文       输 入 法 像    一 件   不 起 眼 的 小  工 具 ，
+四拼　　　　 vrf_     xue   fjuoii  bqfu     ;  xgjaa     ,
+三拼　　　　 erf_     xxo   ykjmo   bqyuo    d_ xgjou     ,
+键道　　　　 erf_     xxi   ykjmv   bqyvvi   d_ xgji      ,
+神韵三拼　　 erfu     xfa   ykjpai  bqydo       xcu gpjr  ,
+神韵键道　　 erfv     xf_   yiu     bqyvvi;     xgji      ,
+声笔小鹤　　 srfae    xluiu yijme   bqyx            gsju  ,
+清韵　　　　 srfa     lx,   yj;     bqy;⇧u_  e  xgju⇧o_   ,
+小鹤　　　　 urfa     xlr_  y_ jmr_ bqy_     d_ x_  gsju  ,
+
+[07]
+原文       却   会   在   每 天 的 工 作 和   聊 天  里  反 复  出 现 ，
+四拼　　　　 qo   hu   zmtu       ;  gz_   h_   lt_    li  ffuaa  yx    ,
+三拼　　　　 qhhb      zmtv       d_ gi    h_   lctm   lk_ fffj   jvv   ,
+键道　　　　 qhhb      zmtv       d_ gi    h_   lctm   lk_ fffj   jvv   ,
+神韵三拼　　 qyhr      zmti;         ga    h_   lctp   lku flfj   wx    ,
+神韵键道　　 qyhr      zmtvu;        gi    h_   lctp   lk_ flfj   wx    ,
+声笔小鹤　　 qthv;     zmtme      d_ gzh⇥       lntm   li_ fjfu   cx'   ,
+清韵　　　　 ty_  r_   zmt;       e  gzo   /    lt;⇧o_ jvi ffu⇧;_ cx;   ,
+小鹤　　　　 qtte hvr_ zdut mt;   d_ gszo  hoh_ lntm   li_ fjfu   ix    ,
+
+[08]
+原文       速 度 和   准 确  往 往 来 自 长 期 形 成 的 习 惯  。
+四拼　　　　 sd_   h_   wqoa   ss_   lz_   yqi   xy    ;  xgio   .
+三拼　　　　 sov   h_   qwqh   wuu   lui   jpqk  xgjr  d_ xkgt   .
+键道　　　　 sov   h_   qwqh   wuu   lui   jpqk  xgjr  d_ xkgt   .
+神韵三拼　　 sd_   h_   fgqy   jmjm  lhzk  wmqk  xvv   dxgao     .
+神韵键道　　 sd_   h_   fgqy   jmu[  lhzk  wmqk  xvu   dxgua     .
+声笔小鹤　　 sudu  h_   zqeu   whwh  lz'   cqe   xcd⇥     xgo    .
+清韵　　　　 sdu   /    zqe⇧._ ww,   k_ hi z, c, xc/   e  xg;⇧i_ .
+小鹤　　　　 sd;   hoh_ vyqt   whwh  ldzi  ihqi  xkig  d_ xg     .
+
+[09]
+原文       好 的 编 码 不 只 要 短   ， 还  要 让   手 指  移   动 自 然 ，
+四拼　　　　 hde   bma   b_ wfu   diou ,  hfu    rae  vwiuo  fdo     zr    ,
+三拼　　　　 hu    bmms  b_ fvi   dt   ,  hvi    rp_  edfk   ykdy    zkrf  ,
+键道　　　　 hu    bmms  b_ fvi   dt   ,  hvi    rp_  edfk   ykdy    zkrf  ,
+神韵三拼　　 hz;   bpmw  b_ fkyz  dqu  ,  hhv yzrm    efydauu        zva   ,
+神韵键道　　 hz;   bpmw  b_ fvi   dquv ,  hvi    rm_  effk   ykdpu   zkrl  ,
+声笔小鹤　　 hcd_  bmma  b_ ziyc  drue ,  hdyc   rh_  szzi   yidsu   zr'   ,
+清韵　　　　 x_ e  bma   u  zy.   zdk_ ,  dm_ yr,     na nb_ hpjg vu zr;   ,
+小鹤　　　　 hcde  bmma  b_ viyc  dru  ,  hdyc   rhy_ uzvi   yids    zr    ,
+
+[10]
+原文       让   常   用 词 能 够 顺  手 打  出 ，
+四拼　　　　 rae  yfci       ngo   vvouu  dau y  ,
+三拼　　　　 rp_  jyciio     nua   ewed   dsjj   ,
+键道　　　　 rp_  jyciu      nua   ewed   dsjj   ,
+神韵三拼　　 rma  wycvv      nngf  egef   dwwj   ,
+神韵键道　　 rm_  wyci       nngf  egef   dwwj   ,
+声笔小鹤　　 rh_  cycii      nggz  sysz   dae c  ,
+清韵　　　　 js,  cyci⇧,_    nga   cd_ na nk_ cu ,
+小鹤　　　　 rhy_ ihx_ ysci  nggz  uyuz   daiu   ,
+
+[11]
+原文       让   连 续 输 入 时 少   一 点 停 顿 。 测 试  一 套  方 案 时 ，
+四拼　　　　 rae  lxa   vrvi     vfduo      tduoi .  cv_    fta    fra   vi ,
+三拼　　　　 rp_  laa   erei     eydu       tgdw  .  coa    yktz   foo   ek ,
+键道　　　　 rp_  laa   erev     eydi       tgdw  .  coa    yktz   foo   ek ,
+神韵三拼　　 rma  lpxr  erev     eydu       tddg  .  ca     ytfqa        ek ,
+神韵键道　　 rm_  laa   erev     eydiv      tddg  .  co     ytfqvv       ek ,
+声笔小鹤　　 rhlxa      srsie    sydmi      tkdy  .  cesi   ytfv         si ,
+清韵　　　　 js,  lxu   srsi⇧u_  syd;       td.   .  csi⇧e_ ke dz, fv;   ru ,
+小鹤　　　　 rhy_ lmxu  uuru  u; ucx_ yidm  tkdy  .  ceui   yitc   fhan  u; ,
+
+[12]
+原文       不 能 只 看 几 个 漂 亮 的 编 码 ，
+四拼　　　　 bn_   wi k_ jg_   pl    ;  bma   ,
+三拼　　　　 ba    fkkf  jii   po    d_ bmms  ,
+键道　　　　 ba    fkkf  jii   po    d_ bmms  ,
+神韵三拼　　 bjnn  fkkl  jkgs  paa;     bpmw  ,
+神韵键道　　 ba    fkkl  jkgs  pov;     bpmw  ,
+声笔小鹤　　 bng;  zikj  jguo  pld⇥     bmma  ,
+清韵　　　　 bn/   zi n_ to ge pl,   e  bma   ,
+小鹤　　　　 bung  vikj  jige  pnll  d_ bmma  ,
+
+[13]
+原文       也   要 看 普 通  句 子 里  真 正 需 要 多 少 按 键  。
+四拼　　　　 ffuu    k_ pt_    jzi   li  wwe   xf_   dva   rjuoa  .
+三拼　　　　 ye_  yzkf  pa     jlzk  lk_ qnqr  xvi   di    xfjm   .
+键道　　　　 ye_  yzkf  pa     jlzk  lk_ qnqr  xvi   di    xfjm   .
+神韵三拼　　 yykaua     pi     jrzk  lku fefn  xai   dui   qljp   .
+神韵键道　　 ysa  yzkl  pa     jrzk  lk_ fefn  xv    diu   qljp   .
+声笔小鹤　　 yykja      pt'    juz'  lizf   zgxu  ydsce    vjjme  .
+清韵　　　　 yyo     n_ pt/⇧u_ ju l; jvi zzo   xye   dso   vj;⇧;_ .
+小鹤　　　　 yev_ yckj  puts   juzi  li_ vv;   xy_   douc  aj;    .
+
+[14]
+原文       词   库   越   大 ， 可 选 择 的 分  词   就 越 多 ，
+四拼　　　　 ckuai     kdaa    ,  kxz      ;  fciee    jkdo     ,
+三拼　　　　 ckkj      yhds    ,  kxz_     d_ fncki    jydv     ,
+键道　　　　 ckkj      yhds    ,  kxz_     d_ fncku    jydovu   ,
+神韵三拼　　 ckkj      yydw    ,  kxz;        feckv    jydi     ,
+神韵键道　　 ckkj      yydw    ,  kxz;        fecku    jtyyo dy ,
+声笔小鹤　　 cikuo     ytda    ,  kxze     d_ ffciu    jydoo    ,
+清韵　　　　 jlk_ gdsi tzk_ da ,  kxze     e  bo  jlk_ jydo     ,
+小鹤　　　　 c;        ytda    ,  k_ xz;   d_ ff_ ciy_ j_ ytdo  ,
+
+[15]
+原文       但   最 短   的 分  词   未 必  总  是 最   容 易 用   ，
+四拼　　　　 dao  zdiou   ;  fciee    sbiaui zvi    zrf_       foe  ,
+三拼　　　　 df_  zbdt    d_ fncki    wwbk   zo     zry_       yy   ,
+键道　　　　 df_  zbdt    d_ fncku    wwbk   zo     zry_       yy   ,
+神韵三拼　　 dla  zrdq;      feckv    jxbk   zpek   zrya       yp   ,
+神韵键道　　 dl_  zrdq;      fecku    jxbk   zoi    zryo       yp   ,
+声笔小鹤　　 dj_  zvdr    d_ ffciu    wbo    zssi   zryii      ys   ,
+清韵　　　　 lr_  re zdk_ e  bo  jlk_ we bi  df_ i  zryi       n/   ,
+小鹤　　　　 djra zvdr    d_ ff_ ciy_ wwbi   zsui   zvo_ ry_   yskl ,
+
+[16]
+原文       也   未 必  符 合  真  实  使  用 习 惯  。
+四拼　　　　 fe   sbiaui fheeue wviee   vf_    xgio   .
+三拼　　　　 ye_  wwbk   fh_    qneki   ey_    xkgt   .
+键道　　　　 ye_  wwbk   fh_    qneku   eki yxgu      .
+神韵三拼　　 ysu  jxbk   fvv    feekv   eyxgau        .
+神韵键道　　 yjbavo      fjhsu  fe_ eko eki yxgu      .
+声笔小鹤　　 ywbi        fuhe   zfsie   siys   xgo    .
+清韵　　　　 d_   we bi  fhe    z.  bu  sy/    xg;⇧i_ .
+小鹤　　　　 yev_ wwbi   fuhe   vfui    uiys   xg     .
+
+[17]
+原文       因 此 这 次  比 较 只  把  总  按 键 数  作 为 目 标 ，
+四拼　　　　 fc_   wc_    bj_   wi  bzoea   rjvu      zsmb        ,
+三拼　　　　 yc_   fov    bkjc  fku bszy    xfjm  ej_ zwmb        ,
+键道　　　　 yc_   fov    bkjc  fko bszy    xjeiio    zwmb        ,
+神韵三拼　　 yc_   fsck   bau   fku bwzp    qljp  ey_ zjmb        ,
+神韵键道　　 yc_   fsck   bkjc  fk_ bwzp    qjeiio    zjmb        ,
+声笔小鹤　　 yc'   zeci   beea  zii bazse   vjsuei    zwmbu       ,
+清韵　　　　 yco   w_ dbo bjo   zi  nm_ df_ vjsu      zwmb        ,
+小鹤　　　　 ybci  vc;    b;    vi_ ba_ zs_ aj;   uu_ zoww  mubn  ,
+
+[18]
+原文       把  每 个 空 格 和   每 次  按 下 换 挡 键   都  单 独 算  作
+四拼　　　　 bmge      kge   h_   mc_    rxua  hdjuoi     d_  ddue  szoaio
+三拼　　　　 bmgo      kyge  h_   mov    xfxs  hdjoou     dd_ dfdj  stzl
+键道　　　　 bmgi      kyge  h_   mov    xfxs  hdjiii     dd_ dfdj  stzl
+神韵三拼　　 bmga      kpgs  h_   mau    qlxl  hdjaau     dfi dldj  sqzy
+神韵键道　　 bmgiu     kpgs  h_   mov    qlxl  hqdm  jpio df_ dldj  sqzy
+声笔小鹤　　 bmgee     ksge  h_   mwci   vxe   hdjme      du_ ddsro     zo_
+清韵　　　　 nm_ mg;   kge   /    mci⇧e_ vxa   hdj;⇧;_    s_  ddu   zm_ lz_
+小鹤　　　　 ba_ mwge  ksge  hoh_ mwci   anxx  hrdh  jmj_ dz_ djdu  srzo
+
+[19]
+原文       一 次 。 遇  到 可 以 由   后  续   的 按 键  顶   出   的 编 码 ，
+四拼　　　　 fci   .  kdau   kf_   fou  hxaa     ;  rjuoa  die  y    ;  bma   ,
+三拼　　　　 yov   .  yldz   ka    ydi  hdxl     d_ xfjm   dgu  jjdea   bmms  ,
+键道　　　　 yov   .  yldz   ka    ydi  hdxl     d_ xfjm   dgv  jj_  d_ bmms  ,
+神韵三拼　　 ykck  .  yrdz   ku    yfv  hfxr;       qljp   ddu  wj;     bpmw  ,
+神韵键道　　 yov   .  yrdz   ka    yfi  hfxr;       qljp   dd_  wj;     bpmw  ,
+声笔小鹤　　 yici  .  yde    ky'   yzi  hzxu     d_ vjjme  dke  cd;     bmma  ,
+清韵　　　　 yci   .  rn_ ko k/    ya   hxu⇧a_   e  vj;⇧;_ kmd_ cu   e  bma   ,
+小鹤　　　　 yici  .  yudc   k;    yzl_ hz_ xus_ d_ aj;    dkd_ iuvk d_ bmma  ,
+
+[20]
+原文       就 不 额 外 加 入  空 格 ，
+四拼　　　　 jbua  rsi   jrua   kge   ,
+三拼　　　　 jqbj  xewh  jsrj   kyge  ,
+键道　　　　 jqbj  xewh  jsrj   kyge  ,
+神韵三拼　　 jtbj  qsjh  jlrj   kpgs  ,
+神韵键道　　 jtbj  qsjh  jlrj   kpgs  ,
+声笔小鹤　　 jb;   vwu   jxrua  ksge  ,
+清韵　　　　 j_ u  vwi   jru⇧a_ kge   ,
+小鹤　　　　 jqbu  ew_   jxru   ksge  ,
+
+[21]
+原文       遇  到 不 能 安 全 顶   出   的 编 码 ，
+四拼　　　　 kdau   bn_   rqo   die  y    ;  bma   ,
+三拼　　　　 yldz   ba    xiv   dgu  jjdea   bmms  ,
+键道　　　　 yldz   ba    xiv   dgv  jj_  d_ bmms  ,
+神韵三拼　　 yrdz   b_ nqqvv    ddu  wj;     bpmw  ,
+神韵键道　　 yrdz   ba    qiv   dd_  wj;     bpmw  ,
+声笔小鹤　　 yde    b_ ngvou    dke  cd;     bmma  ,
+清韵　　　　 rn_ ko bn/   vq;   kmd_ cu   e  bma   ,
+小鹤　　　　 yudc   bung  aq_   dkd_ iuvk d_ bmma  ,
+
+[22]
+原文       则   用   空 格 明 确 上 屏   。
+四拼　　　　 zfoee     kge   mqo   vpieae  .
+三拼　　　　 zeyy      kyge  mvu   eppg    .
+键道　　　　 zeyy      kyge  mvu   eppgi   .
+神韵三拼　　 zsyp      kpgs  mdqy  empd    .
+神韵键道　　 zsyp      kpgs  mvu   empd    .
+声笔小鹤　　 zeys      ksge  mqe   shpk    .
+清韵　　　　 nrdo n/   kge   mqe   s, gdki .
+小鹤　　　　 ze_  yskl ksge  mkqt  uhpk    .
+
+[23]
+原文       这 样 得 到 的 结 果 更  接 近 连 续 跟  打  时  的 理 论
+四拼　　　　 wf_   dd    ;  jgo   gjjio     lxa   gdaueo  vi  ;  ll_
+三拼　　　　 fv    dedz  d_ ji    gjjo      laa   gnds    ek_ d_ loa
+键道　　　　 fv    dedz  d_ ji    gjjv      laa   gnds    ekdeo  loa
+神韵三拼　　 faa   dddjg          gjjaa     lpxr  gedwu   ek;    lklg
+神韵键道　　 fvo   dddjg          gjjv      laa   ge_ dwi ek;    loa
+声笔小鹤　　 zy'   dddg           gjjbe     lxa   gfda    si_ dll'
+清韵　　　　 za    do ko e  jgo   gjj.⇧/_   lxu   f.  nk_ ru  e  wi jl.
+小鹤　　　　 vy_   dedc  d_ jg_   gg_ jpjb  lmxu  gfda    u;  d_ lily
+
+[24]
+原文       底 线  ， 同 时 保 留 了 可 以 人 工 检 查  的 编 码 路 径  。
+四拼　　　　 dxuoiu ,  tv_   blo   /  kf_   rgo   jya    ;  bma   ljieu  .
+三拼　　　　 dkxm   ,  toi   bzlq  l_ ka    rg_   jmws   d_ bmms  ljjg   .
+键道　　　　 dkxm   ,  toi   bzlq  l_ ka    rg_   jmws   d_ bmms  ljjg   .
+神韵三拼　　 dkxp   ,  te_   bzlt/    ku    rgjw;           bpmw  ljjd   .
+神韵键道　　 dkxp   ,  te_   bzlt/    ka    rgjw;           bpmw  ljjd   .
+声笔小鹤　　 dix'   ,  ts'   bclq  lky'     rfgs  jcd_      bmma  lujk   .
+清韵　　　　 dx;⇧i_ ,  ts;   bla   a  k/    rg/   jca⇧;_ e  bma   lj/⇧u_ .
+小鹤　　　　 dixm   ,  tsui  bclq  l_ k;    rfgs  jmia   d_ bmma  lujk   .
+
+[25]
+原文       四  种   方 案 使 用 同  一 段   文 字  ，
+四拼　　　　 swoe     fra   vf_   to  fdio    sz     ,
+三拼　　　　 skfy     foo   ey_   ty_ ykdt    wnzk   ,
+键道　　　　 skfy     foo   ey_   ty_ ykdt    wnzk   ,
+神韵三拼　　 skfp     fmql  eau   tpv ydjza          ,
+神韵键道　　 skfp     foo   ekyp  tpi ykdq    jz     ,
+声笔小鹤　　 sizsia   fvo   siys  ts_ ydwzee         ,
+清韵　　　　 ni  h/   fv;   sy/   t/  ke jksu w. bl_ ,
+小鹤　　　　 si_ vsh_ fhan  uiys  ts_ yidr    wz     ,
+
+[26]
+原文       标  点 位 置 完 全 相 同 ，
+四拼　　　　 bduou  swi   sqxt        ,
+三拼　　　　 bcdm   wia   wqxt        ,
+键道　　　　 bcdm   wia   wqxt        ,
+神韵三拼　　 bcdp   jxfk  jqxt        ,
+神韵键道　　 bcdp   jxfk  jqxt        ,
+声笔小鹤　　 bndm   wz'   wqxt        ,
+清韵　　　　 pv_ h; wzi   wqxt        ,
+小鹤　　　　 bndm   wv_   wq_   xlts  ,
+
+[27]
+原文       但   它   们   会   选 择 不 同 长 度 的 词   ，
+四拼　　　　 dao  tmeo      hu   xze   b_ tydua    ;  cie  ,
+三拼　　　　 df_  tsmnav    hb_  xiu   bt_   jpdj  deck    ,
+键道　　　　 df_  tsmno     hb_  xiu   bt_   jpdj  deck    ,
+神韵三拼　　 dla  toi       hra  xzbtv       wmdj  dsck    ,
+神韵键道　　 dl_  twmeo     kt_  xzbtu       wmdj  dsck    ,
+声笔小鹤　　 dtoo      mfhv;     xze   b_ tcdui    deciu   ,
+清韵　　　　 lr_  ta   lgne r_   xze   u  tcdu     e  jlk_ ,
+小鹤　　　　 djra tab_ mfrm hvr_ xz;   bt_   ihdu  d_ ciy  ,
+
+[28]
+原文       有  的 偏 爱 二   字  词   ， 有  的 更  适 合 三   字   或   四  字 词 。
+四拼　　　　 f   ;  prai  rzci          ,  f   ;  gvhe      hzia      hoa  szc       .
+三拼　　　　 yui    pmxh  xzci          ,  yui    gehi      sfzk      hl_  szc       .
+键道　　　　 yui    pmxh  xzcvo         ,  yui    gehv      sfzk      hl_  szc       .
+神韵三拼　　 yfu;   ppqh  qzcva         ,  yfu;   gehv      slzk      hya  szc       .
+神韵键道　　 yfv;   ppqh  qzcvo         ,  yfv;   gehvu     slzk      hy_  szc       .
+声笔小鹤　　 yzd_   pva   vzciee        ,  yzd_   gshee     sj_  zioo hoe  szcii     .
+清韵　　　　 q_  e  pvi   vi   bl_ jlk_ ,  q_  e  gshe      s;   bl_  kfk_ szci⇧i_   .
+小鹤　　　　 yz_ d_ pmai  eraa zici     ,  yz_ d_ gg_ uihe  sja_ zi_  ho_  si_ zici  .
+
+[29]
+原文       把  这 些 编 码 放  在 原   句   下 面 ，
+四拼　　　　 bwx_      bma   fza    kjaaoo    xm    ,
+三拼　　　　 bfx_      bmms  fpzh   ytjl      xvu   ,
+键道　　　　 bfx_      bmms  fpzh   ytjl      xvu   ,
+神韵三拼　　 bfxi      bpmw  fmzh   yejr      xm    ,
+神韵键道　　 bfxi      bpmw  fmzh   yejr      xm    ,
+声笔小鹤　　 bzxpe     bmma  fho zyr;    juu  xmm;  ,
+清韵　　　　 bzxe      bma   fw. ;  c;   ju   xmi   ,
+小鹤　　　　 ba_ vx;   bmma  fhzd   yri_ jub_ xxmm  ,
+
+[30]
+原文       可 以 直  观 看 出 哪   里  节 省  了 按 键  ，
+四拼　　　　 kf_   wgioi  ky_   nli      jvee   /  rjuoa  ,
+三拼　　　　 ka    fkgt   kai   nslku    jder   l_ xfjm   ,
+键道　　　　 ka    fkgt   kai   nslko    jder   l_ xfjm   ,
+神韵三拼　　 ku    fkgq   kia   nuu      jben/     qljp   ,
+神韵键道　　 ka    fkgq   kai   nwlko    jben/     qljp   ,
+声笔小鹤　　 ky'   zig'   kc'   nli      jpsg   l_ vjjme  ,
+清韵　　　　 k/    sn_ gk;   cu nli⇧a_   js/⇧e_ a  vj;⇧;_ ,
+小鹤　　　　 k;    vigr   kjiu  nak_ li_ jpug   l_ aj;    ,
+
+[31]
+原文       哪   里  因 为 编 码 冲 突  需 要 多  一 次 确 认 。
+四拼　　　　 nli      fs_   bma   ytu    xf_   dfci      qr    .
+三拼　　　　 nslku    yo    bmms  wytj   xvi   dycov     qhrn  .
+键道　　　　 nslko    yo    bmms  wytj   xvi   dycuvo    qhrn  .
+神韵三拼　　 nuu      ya    bpmw  wptj   xai   dycai     qyre  .
+神韵键道　　 nwlko    you   bpmw  wptj   xv    dy_ yov   qyre  .
+声笔小鹤　　 nli      yw'   bmma  cto    xy'   dyciua    qtrf  .
+清韵　　　　 nli⇧a_   y;    bma   ctu⇧/_ xye   je  yci   qr.   .
+小鹤　　　　 nak_ li_ yw_   bmma  istu   xy_   do_ yici  qr;   .
+
+[32]
+原文       平 均 长 度 只 是 一 个 汇 总 数 字  ，
+四拼　　　　 pja   ydua  wvfge       hzvu     zi  ,
+三拼　　　　 pvo   jpdj  foi   yi    hbzy  ejzk   ,
+键道　　　　 pvo   jpdj  feygo       hzeao    zk  ,
+神韵三拼　　 pjwdav      feygau      hrzp  ejzk   ,
+神韵键道　　 pjwdvv      fo    y⇧G   hrzp  ejzk   ,
+声笔小鹤　　 pjcde       zsygi       hvzs  suzio  ,
+清韵　　　　 pj.   z, gu zi i  yo    hz/   szi⇧u_ ,
+小鹤　　　　 pkjy  ihdu  vu;   yige  hvzs  uuzi   ,
+
+[33]
+原文       真 正 影 响 手 感  的 还 有 左 右 手 分 布  ， 连 续 按 键  ，
+四拼　　　　 wwe   fxuei vgao   ;  hf_   zfvo     fbuaeo ,  lxa   rjuoa  ,
+三拼　　　　 qnqr  ygxx  edgf   d_ hv    zyeuu    fnbj   ,  laa   xfjm   ,
+键道　　　　 qnqr  ygxx  edgf   d_ hv    zyevvi   fnbj   ,  laa   xfjm   ,
+神韵三拼　　 ffyxui      efgl;     huv   zyeuu    febj   ,  lpxr  qljp   ,
+神韵键道　　 fefn  ydxf  efgl;     hv    zyevvi   febj   ,  laa   qljp   ,
+声笔小鹤　　 zfzg  yxsz     gj_ dhy'     zysze    fb     ,  lxa   vjjme  ,
+清韵　　　　 zzo   yx,   sg;    e  hyi   zysa     bo qro ,  lxu   vj;⇧;_ ,
+小鹤　　　　 vv;   ykxl  uzgj   d_ hdyz  zyu_     ffbu   ,  lmxu  aj;    ,
+
+[34]
+原文       跨   排   移   动 以 及 记 忆  负 担  。
+四拼　　　　 kia  pai  fdo     fji   jfiai  fdaou  .
+三拼　　　　 kqo  ph_  ykdy    yj_   jkyk   fjdf   .
+键道　　　　 kqo  ph_  ykdy    yj_   jkyk   fjdf   .
+神韵三拼　　 kca  phu  ykdpa   yj_   jkyk   fjdl   .
+神韵键道　　 kco  phi  ykdpu   yj_   jkyk   fjdl   .
+声笔小鹤　　 kxpde     yidsu   yiji  jiyi   fde    .
+清韵　　　　 fmdj nfe  hpjg vu yji   jyi⇧i_ fd;⇧u_ .
+小鹤　　　　 kxz_ pdff yids    yiji  jiyi   fudj   .
+
+[35]
+原文       若   把  这 些 因 素  也   加 入 目 标 函 数 ，
+四拼　　　　 roa  bwx_      fsuai  fjrua      mbhvu       ,
+三拼　　　　 rl_  bfx_      ybsj   yjrou      mbheoo      ,
+键道　　　　 rl_  bfx_      ybsj   yjraa      mbhei       ,
+神韵三拼　　 rya  bfxi      ygsj   yjraui     mbheaa      ,
+神韵键道　　 ry_  bfxi      ygsj   yjraa      mbhei       ,
+声笔小鹤　　 robae    zx'   ybsu   yjrua      mbhsi       ,
+清韵　　　　 cqfo bzxe      ysu⇧._ yjru⇧e_    mbhs⇧u_     ,
+小鹤　　　　 ro_  ba_ vx;   ybsu   yev_ jxru  mubn  hjuu  ,
+
+[36]
+原文       最 佳  分  词   可 能 会   发 生 变 化 ，
+四拼　　　　 zjui   fciee    knh_       fvbh        ,
+三拼　　　　 zbjs   fncki    knh_       febho       ,
+键道　　　　 zbjs   fncku    knh_       febh        ,
+神韵三拼　　 zrjl   feckv    knhfebh                ,
+神韵键道　　 zrjl   fecku    knhfebh                ,
+声笔小鹤　　 zvjx   ffciu    knhv       fsbha       ,
+清韵　　　　 re lt_ bo  jlk_ knhe       fsbh        ,
+小鹤　　　　 zvjx   ff_ ciy_ kn_   hvr_ faug  bmhx  ,
+
+[37]
+原文       不 过 本 次  先   把  问 题 限  定 在   最 少  按 键  。
+四拼　　　　 bg_   bci    xuo  bst_      xdieu  z_   zvau   rjuoa  .
+三拼　　　　 bv    bnck   xmbs     wo    xmdg   z_   zbez   xfjm   .
+键道　　　　 bv    bnck   xmbs     wo    xmdg   z_   zbez   xfjm   .
+神韵三拼　　 ba    beck   xpbw     jetk  xpdd   z_   zrez   qljp   .
+神韵键道　　 bv    beck   xpbw     joi   xpdd   z_   zrez   qljp   .
+声笔小鹤　　 bg'   bfci   xmba     wt'   xaoo   z_   zvsc   vjjme  .
+清韵　　　　 u  c_ b. dbo h.   bwti      vg. b/ ;    re xhe vj;⇧;_ .
+小鹤　　　　 bugo  bfci   xmne ba_ wt_   xmdk   zdut zvuc   aj;    .
+
+核验说明
+====================================================================================================
+1. 新增两轨直接读取当前仓库 snow_sanpin.fixed.txt、snow_jiandao.fixed.txt、神韵 R8 映射和现行五部词典。
+2. 固顶简码按码表首选；普通码按现行权重逐码比较首选；三拼追加声调、键道追加形码消歧。
+3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
+4. 原冰雪三拼/键道与神韵三拼/键道分列；前者是指定旧回放，后者是本仓库当前布局的新回放。
