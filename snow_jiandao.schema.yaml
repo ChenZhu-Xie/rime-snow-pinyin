@@ -106,12 +106,13 @@ speller:
   algebra:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
-      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1e/
-      - xform/~{1,2}v/xh/
-      - xform/~{1,2}i/xk/
-      - xform/~{1,2}u/xj/
-      - xform/~{1,2}o/xl/
-      - xform/~{1,2}a/xs/
+      # 字母入口按神韵声韵语义迁移：辅音补 e 韵键，元音使用零声母载体 Q。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1s/
+      - xform/~{1,2}v/qy/
+      - xform/~{1,2}i/qk/
+      - xform/~{1,2}u/qj/
+      - xform/~{1,2}o/qq/
+      - xform/~{1,2}a/qw/
       - xform/[viuoa]$// # 无声调
 
 jianpin:

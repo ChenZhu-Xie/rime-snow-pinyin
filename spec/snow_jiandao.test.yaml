@@ -74,6 +74,11 @@ deploy:
         assert: not has("(sei3)")
       - send: gx
         assert: cand[1].text == "给"
+      # 辅音字母追加当前 e 韵键 s；旧布局的字面键 e 不再承载字母。
+      - send: gs
+        assert: cand[1].text == "哥" and has("G") and has("g")
+      - send: ge
+        assert: not has("G") and not has("g")
       - send: wx
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd

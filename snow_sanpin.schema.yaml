@@ -169,8 +169,8 @@ speller:
   algebra:
     __include: /sanpin_algebra
     __append:
-      # 辅音字母补 ja
-      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1ja/
+      # 辅音字母借用「u + 轻声」稀疏槽；当前 j 为 u、o 为轻声。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1jo/
       # 元音字母补 kk
       - xform/~{1,2}([aviou])/kk$1/
       - abbrev/^([a-z]).+$/$1/ # 简拼

@@ -78,6 +78,13 @@ deploy:
         assert: not has("(sei3)")
       - send: gx
         assert: cand[1].text == "给"
+      # 字母入口按本方案的 u + 轻声槽迁移；不能占用 gu4。
+      - send: gj
+        assert: cand[1].text == "故" and has("G") and has("g")
+      - send: gjo
+        assert: cand[1].text == "G" and cand[2].text == "g"
+      - send: gja
+        assert: not has("G") and not has("g")
       - send: wx
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
