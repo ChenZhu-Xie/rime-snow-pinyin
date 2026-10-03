@@ -18,7 +18,7 @@
 [冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪三拼](https://input.tansongchen.com/snow3/)现共用 **无[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道・神韵**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。
 
 > [!NOTE]
-> 由于作者也是冰雪四拼用户，因此冰雪三拼的五调辅键按照与冰雪四拼相近的顺序排列。
+> 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五调辅键按照与[冰雪四拼](https://input.tansongchen.com/snow4/)相近的顺序排列。
 
 本仓库采用的方案全名为 **[`R8-21X21-M40-01`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文称 **[神韵 R8](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它来自[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的离散优化与冻结复核：在 21×21 键域和固定五辅键约束下，兼顾记忆量、击键成本、键位负载与规则一致性，因而被选作神韵的现行声韵布局。
 
@@ -234,7 +234,7 @@ Recipe: ℞ **snow-pinyin**
 [Snow KeyTao](https://input.tansongchen.com/snow-jiandao/) and [Snow Three-Code](https://input.tansongchen.com/snow3/) now share **[Wufei KeyTao・Shenyun](https://input.tansongchen.com/snow-jiandao/)**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`.
 
 > [!NOTE]
-> Because the author also uses Snow Four-Code, Snow Three-Code's five tone auxiliary keys are arranged in an order similar to Snow Four-Code's.
+> Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Three-Code](https://input.tansongchen.com/snow3/)'s five tone auxiliary keys are arranged in an order similar to [Snow Four-Code](https://input.tansongchen.com/snow4/)'s.
 
 The adopted scheme's full name is **[`R8-21X21-M40-01`](https://github.com/more-14-different/shuangpin-layout-benchmark)**, referred to below as **[Shenyun R8](https://github.com/more-14-different/shuangpin-layout-benchmark)**. It comes from the discrete optimization and frozen review in [Shuangpin Layout Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark), balancing memory load, keystroke cost, key load, and rule consistency within a 21×21 domain with five fixed auxiliary keys.
 
@@ -320,7 +320,7 @@ bun scripts/验证神韵双拼.ts
 [冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)與[冰雪三拼](https://input.tansongchen.com/snow3/)現共用 **無[飛鍵](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道・神韻**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。
 
 > [!NOTE]
-> 由於作者也是冰雪四拼使用者，因此冰雪三拼的五調輔鍵按照與冰雪四拼相近的順序排列。
+> 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
 
 本倉庫採用的方案全名為 **[`R8-21X21-M40-01`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文稱 **[神韻 R8](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它來自[雙拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的離散最佳化與凍結複核：在 21×21 鍵域和固定五輔鍵約束下，兼顧記憶量、擊鍵成本、鍵位負載與規則一致性，因而被選作神韻的現行聲韻布局。
 
