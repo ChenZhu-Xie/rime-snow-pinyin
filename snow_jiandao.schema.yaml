@@ -111,7 +111,7 @@ speller:
       - xform/~{1,2}v/qy/
       - xform/~{1,2}i/qk/
       - xform/~{1,2}u/qj/
-      - xform/~{1,2}o/qq/
+      - xform/~{1,2}o/qe/
       - xform/~{1,2}a/qw/
       - xform/[viuoa]$// # 无声调
 

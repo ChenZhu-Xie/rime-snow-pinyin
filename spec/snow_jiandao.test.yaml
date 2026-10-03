@@ -79,6 +79,11 @@ deploy:
         assert: cand[1].text == "哥" and has("G") and has("g")
       - send: ge
         assert: not has("G") and not has("g")
+      # 元音字母 o 跟随 R9 的零声母 o 码 qe；qq 已改为 en，不能再承载字母。
+      - send: qe
+        assert: has("O") and has("o")
+      - send: qq
+        assert: not has("O") and not has("o")
       - send: wx
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
