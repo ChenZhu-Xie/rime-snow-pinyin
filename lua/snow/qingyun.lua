@@ -69,7 +69,6 @@ function this.func(translation, env)
     end
     if env.engine.context:get_option("buffered") and not is_pinyin(candidate) then
       local result = env.lookup_pinyin:lookup(candidate.text)
-      snow.comment(candidate, result)
       ---@type Candidate[]
       local candidates = {}
       for pinyin in result:gmatch("[^%s]+") do

@@ -23,6 +23,17 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
+      # 笔画反查按三拼声调键序映射：横竖撇捺折 → ivuao。
+      - send: ui
+        assert: has("一")
+      - send: uv
+        assert: has("丨")
+      - send: uu
+        assert: has("丿")
+      - send: ua
+        assert: has("丶")
+      - send: uo
+        assert: has("乙")
       # 组词规则
       - send: bdi
         assert: cand[1].text == "冰"

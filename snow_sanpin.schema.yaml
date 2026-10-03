@@ -14,7 +14,8 @@ schema:
     双拼编码：无飞键道·神韵
   dependencies:
     - snow_pinyin
-    - snow_bihua
+    - snow_sanpin_bihua
+    - snow_jiandao_jianpin
 
 engine:
   processors:
@@ -215,3 +216,5 @@ patch:
     - { when: always, accept: v, toggle: buffered }
     - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: "_23890"
+  stroke/prism: snow_sanpin_bihua
+  stroke/preedit_format: [xlit/ivuao/一丨丿丶乙/]
