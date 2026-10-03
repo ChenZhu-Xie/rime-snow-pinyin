@@ -2,7 +2,6 @@
 # 仓库根目录故意不提供 default.yaml，以免安装时覆盖用户的全局配置。
 schema_list:
   - schema: snow_sipin
-  - schema: snow_shenyun
   - schema: snow_sanpin
   - schema: snow_yipin
   - schema: snow_jiandao

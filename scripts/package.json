@@ -20,11 +20,10 @@
 		"deploy": "tsx scripts/tasks.ts deploy",
 		"retrieve": "tsx scripts/tasks.ts retrieve",
 		"test-sipin": "mira spec/snow_sipin.test.yaml",
-		"test-shenyun": "mira spec/snow_shenyun.test.yaml",
 		"test-sanpin": "mira spec/snow_sanpin.test.yaml",
 		"test-yipin": "mira spec/snow_yipin.test.yaml",
 		"test-jiandao": "mira spec/snow_jiandao.test.yaml",
-		"test": "npm run test-sipin && npm run test-shenyun && npm run test-sanpin && npm run test-jiandao && npm run test-yipin"
+		"test": "npm run test-sipin && npm run test-sanpin && npm run test-jiandao && npm run test-yipin"
 	},
 	"author": "",
 	"license": "ISC",

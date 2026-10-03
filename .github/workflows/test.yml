@@ -31,8 +31,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: 神韵双拼 R9
-            schema: snow_shenyun
           - name: 冰雪四拼
             schema: snow_sipin
           - name: 冰雪三拼
