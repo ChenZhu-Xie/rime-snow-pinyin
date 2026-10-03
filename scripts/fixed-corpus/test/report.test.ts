@@ -101,6 +101,7 @@ test("report renders every cutoff, layout mode, metric class, delta, and example
 	}
 	assert.match(markdown, /实际二字 487、四字 450/u);
 	assert.match(markdown, /神韵规范码/u);
+	assert.match(markdown, /shenyun-collision-design-notes\.md/u);
 	assert.match(markdown, /原键道规范码/u);
 	assert.match(markdown, /原键道可接受码/u);
 	assert.match(markdown, /二字内部/u);
