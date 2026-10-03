@@ -1,0 +1,36 @@
+# Rime schema
+# encoding: utf-8
+
+__include: snow_pinyin.schema.yaml:/
+
+schema:
+  schema_id: snow_shenyun
+  name: 神韵双拼 R9
+  version: "0.1"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    无飞键道・神韵纯双拼方案
+    声韵布局：R9-21X21-M40-02
+  dependencies:
+    - snow_pinyin
+    - snow_bihua
+
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  initials: bpmfdtnlgkhjqxzcsrwye
+  delimiter: " '"
+  algebra:
+    # 与冰雪三拼、冰雪键道共用同一份冻结的神韵 R9 声韵映射。
+    __include: snow_sanpin.schema.yaml:/sanpin_algebra
+    __append:
+      # 纯双拼不编码声调；三拼映射最后生成的 I/V/U/A/O 在此移除。
+      - xform/[ivuao]$//
+
+__patch:
+  - patch
+  - snow_shenyun.custom:/patch?
+
+patch:
+  translator/prism: snow_shenyun
+  translator/preedit_format: null

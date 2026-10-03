@@ -22,6 +22,8 @@
 
 本仓库采用的方案全名为 **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文称 **[神韵 R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它来自[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的离散优化与冻结复核：在 21×21 键域和固定五辅键约束下，兼顾记忆量、击键成本、键位负载与规则一致性，因而被选作神韵的现行声韵布局。
 
+仓库同时提供独立的 `snow_shenyun`（**神韵双拼 R9**）方案：每个音节固定输入两键，不追加三拼声调或键道形码；它与冰雪三拼、冰雪键道共用下述 R9 映射及冰雪拼音词库。
+
 **声韵映射**
 
 [![无飞键道・神韵声韵映射图](docs/shenyun-r9-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
@@ -238,6 +240,8 @@ Recipe: ℞ **snow-pinyin**
 
 The adopted scheme's full name is **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**, referred to below as **[Shenyun R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**. It comes from the discrete optimization and frozen review in [Shuangpin Layout Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark), balancing memory load, keystroke cost, key load, and rule consistency within a 21×21 domain with five fixed auxiliary keys.
 
+The repository also provides the standalone `snow_shenyun` (**Shenyun Double Pinyin R9**) schema. Each syllable always uses two keys, without the Three-Code tone key or KeyTao shape code, while sharing the R9 mapping below and the Snow Pinyin dictionaries.
+
 **Initial/final mapping**
 
 ![Shenyun initial/final mapping](docs/shenyun-r9-keyboard.svg)
@@ -323,6 +327,8 @@ bun scripts/验证神韵双拼.ts
 > 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
 
 本倉庫採用的方案全名為 **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文稱 **[神韻 R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它來自[雙拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的離散最佳化與凍結複核：在 21×21 鍵域和固定五輔鍵約束下，兼顧記憶量、擊鍵成本、鍵位負載與規則一致性，因而被選作神韻的現行聲韻布局。
+
+倉庫同時提供獨立的 `snow_shenyun`（**神韻雙拼 R9**）方案：每個音節固定輸入兩鍵，不追加三拼聲調或鍵道形碼；它與冰雪三拼、冰雪鍵道共用下述 R9 映射及冰雪拼音詞庫。
 
 **聲韻映射**
 

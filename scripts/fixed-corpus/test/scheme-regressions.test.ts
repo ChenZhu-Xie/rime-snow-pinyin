@@ -128,12 +128,26 @@ test("reported phrase codes follow the frozen Shenyun mapping", () => {
 	);
 });
 
+test("the standalone Shenyun schema reuses R9 without tone keys", () => {
+	const schema = read("snow_shenyun.schema.yaml");
+	assert.match(schema, /schema_id: snow_shenyun/u);
+	assert.match(
+		schema,
+		/__include: snow_sanpin\.schema\.yaml:\/sanpin_algebra/u,
+	);
+	assert.match(schema, /- xform\/\[ivuao\]\$\/\//u);
+	assert.match(schema, /translator\/prism: snow_shenyun/u);
+	assert.match(schema, /initials: bpmfdtnlgkhjqxzcsrwye/u);
+	assert.doesNotMatch(schema, /abbrev/u);
+});
+
 test("all current schemes keep the legacy two-position jump on Ctrl+P", () => {
 	assert.match(
 		read("snow_pinyin.schema.yaml"),
 		/\{ accept: "Control\+p", send_sequence: "\{Home\}\{Right\}\{Right\}", when: composing \}/u,
 	);
 	for (const schema of [
+		"snow_shenyun.schema.yaml",
 		"snow_jiandao.schema.yaml",
 		"snow_sanpin.schema.yaml",
 		"snow_sipin.schema.yaml",
