@@ -14,16 +14,18 @@ schema:
     基于键道双拼改编
   dependencies:
     - snow_pinyin
-    - snow_bihua
+    - snow_jiandao_bihua
+    - snow_jiandao_jianpin
 
 engine:
   processors:
     - ascii_composer
+    - lua_processor@*snow.popping
     - recognizer
+    - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor
     - key_binder
     - lua_processor@*snow.select_character
-    - lua_processor@*snow.popping
     - speller
     - punctuator
     - selector
@@ -48,6 +50,7 @@ engine:
     - lua_translator@*snow.calculator
     - history_translator
   filters:
+    - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
@@ -190,3 +193,5 @@ patch:
   key_binder/bindings/+:
     - { when: always, accept: "Control+j", toggle: buffered }
   menu/alternative_select_keys: null
+  stroke/prism: snow_jiandao_bihua
+  stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]
