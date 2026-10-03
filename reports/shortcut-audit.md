@@ -1,14 +1,14 @@
 # 当前方案快捷键审计与上游对照
 
-审计日期：2026-09-29
+审计日期：2026-10-03
 
 ## 范围与口径
 
 | 项目 | 本次口径 |
 |---|---|
 | 当前启用方案 | `snow_jiandao`（冰雪键道）、`snow_sipin`（冰雪四拼）、`snow_qingyun`（冰雪清韵）、`snow_sanpin`（冰雪三拼）；来自本机 `default.custom.yaml` 的 `schema_list` |
-| 当前版本 | 当前分支 `feat/logical-code-navigation`；审计起点 `6ea5c68`，表中本地行为已按本次工作区修改更新 |
-| 上游基准 | `upstream/main` = `rimeinn/rime-snow-pinyin@3658e22`（2026-09-25） |
+| 当前版本 | `main@ccb37ba`；表中本地行为已按本次工作区修改更新 |
+| 上游基准 | `upstream/main` = `rimeinn/rime-snow-pinyin@ad78362`（2026-10-03） |
 | 纳入的按键来源 | 方案 YAML、当前 `default.custom.yaml`、Lua processor，以及四个方案都使用的 librime 1.13.1 `express_editor` / `selector` / `navigator` 内建键 |
 | “相同 / 新增 / 未包含” | 均指相对上述上游提交；“引擎内建”表示不是本仓库 YAML 新增，但当前确实可用 |
 
@@ -48,7 +48,6 @@
 | `Ctrl+H` | 上移 2 个候选 | **改动** | 上游为删除光标前输入码（`BackSpace`） |
 | `Ctrl+L` | 下移 2 个候选 | **新增/改动** | 上游仅键道另有 `Ctrl+L` 光标定位；其他三方案没有此绑定 |
 | `Ctrl+P` | 将输入码光标移到开头后右移两位 | **改动** | 保留上游键道 `Home → Right → Right` 功能，但由 `Ctrl+L` 迁至 `Ctrl+P`，并扩展到四个当前方案 |
-| `Ctrl+B` / `Ctrl+F` | 输入码光标左移/右移 1 位 | 相同 | Emacs 风格 |
 | `Ctrl+A` / `Ctrl+E` | 输入码光标移到开头/结尾 | 相同 | Emacs 风格；四拼另把裸键 `e` 用作缓冲切换，不影响 `Ctrl+E` |
 | `Ctrl+D` | 删除光标后的一个输入码 | 相同 | **不是删用户词**；删用户词是 `Ctrl+Delete` |
 | `Ctrl+G` / `Ctrl+[` | 清空当前输入 | 相同，但 `Ctrl+[` 有上下文重载 | 四方案在高亮“已固定候选”时，前置 Lua 会把 `Ctrl+[` 用作上移固定候选；未命中时才清空 |
@@ -163,7 +162,7 @@
 | 候选导航 | `Ctrl+J/K/H/L` 分别下 1、上 1、上 2、下 2 |
 | 翻页 | 新增 `Ctrl+M` 上一页；移除公共 `Ctrl+Y` 上一页 |
 | 缓冲开关 | 四方案由 `Ctrl+J` 改为 `Ctrl+.`；键道/三拼新增裸 `v`，四拼新增裸 `e` |
-| 编码导航 | 四方案统一 `Ctrl+Y/U/I/O`；键道/三拼另由处理器实现 `1/4/5/6/7` 字位直达 |
+| 编码导航 | 删除与方向键重复的上游 `Ctrl+B/F` 别名；四方案统一 `Ctrl+Y/U/I/O`，其中 `Ctrl+Y/O` 逐码循环；键道/三拼另由处理器实现 `1/4/5/6/7` 字位直达 |
 | 键道旧定位 | `Home → Right → Right` 从上游键道 `Ctrl+L` 迁至公共 `Ctrl+P`，四方案均可用 |
 | 候选键布局 | 键道、三拼从上游的默认/禁用替代选择键，改为 `_23890` 布局 |
 | 历史 | 四方案新增历史面板 `Ctrl/Alt+2/3/8/9/0` 快选 |
@@ -176,7 +175,7 @@
 | 类别 | 相同内容 |
 |---|---|
 | 引擎基本编辑 | `Space`、`BackSpace`、`Ctrl+BackSpace`、`Enter`、`Ctrl+Enter`、`Delete`、`Ctrl+Delete`、`Escape`、方向键、翻页键、`Home/End` |
-| Emacs 编辑子集 | `Ctrl+B/F/A/E/D/G/[`、`Alt+V`、`Ctrl+V` |
+| Emacs 编辑子集 | `Ctrl+A/E/D/G/[`、`Alt+V`、`Ctrl+V` |
 | 翻页与切换 | `Tab`、`Shift+Tab`、`Ctrl+Shift+1～5` 及其符号键名兼容写法 |
 | 以词定字 | `[` 取首字、`]` 取末字 |
 | 四拼/清韵字位键 | `1/4/5/6/7` |
@@ -187,6 +186,7 @@
 
 | 上游按键 | 上游功能 | 当前状态 |
 |---|---|---|
+| `Ctrl+B` / `Ctrl+F` | 输入码光标左移/右移 1 位 | **未包含**；不循环的逐码移动保留在 `Left` / `Right`，循环逐码移动使用 `Ctrl+Y` / `Ctrl+O` |
 | `Ctrl+P` | 上移 1 个候选 | **原功能未包含**；四方案均将 `Ctrl+P` 改作 `Home → Right → Right`，上移候选请用 `Ctrl+K` 或 `Up` |
 | `Ctrl+N` | 下移 1 个候选 | **未包含**；可用当前 `Ctrl+J` 或 `Down` |
 | `Ctrl+K` | 发送 `Shift+Delete`，作为删词别名 | **原功能未包含**；当前改为上移候选。直接 `Ctrl+Delete` 仍可删普通用户词 |

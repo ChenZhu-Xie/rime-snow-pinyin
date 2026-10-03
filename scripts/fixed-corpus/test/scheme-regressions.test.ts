@@ -3,9 +3,21 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { load } from "js-yaml";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
+
+test("the shared key binder does not alias Ctrl+B/F to arrow keys", () => {
+	const schema = load(read("snow_pinyin.schema.yaml")) as {
+		key_binder: { bindings: Array<{ accept?: string }> };
+	};
+	const acceptedKeys = schema.key_binder.bindings.flatMap((binding) =>
+		binding.accept ? [binding.accept] : [],
+	);
+	assert.ok(!acceptedKeys.includes("Control+b"));
+	assert.ok(!acceptedKeys.includes("Control+f"));
+});
 
 test("Three-Code and KeyTao share the Four-Code 23890 selection layout", () => {
 	for (const schema of [
