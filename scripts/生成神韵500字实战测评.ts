@@ -27,7 +27,7 @@ const toneKeys: Readonly<Record<string, string>> = {
 	"5": "o",
 };
 const mapping = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-r8-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-r9-mapping.json"), "utf8"),
 ) as { scheme: string; codes: Record<string, string | null> };
 const shapeElementKeys = new Map<string, string>();
 for (const line of readFileSync(
@@ -768,7 +768,7 @@ ${replay.map((line, index) => `[${String(index + 1).padStart(2, "0")}]\n${render
 
 核验说明
 ====================================================================================================
-1. 新增两轨直接读取当前仓库 snow_sanpin.fixed.txt、snow_jiandao.fixed.txt、神韵 R8 映射和现行五部词典。
+1. 新增两轨直接读取当前仓库 snow_sanpin.fixed.txt、snow_jiandao.fixed.txt、神韵 R9 映射和现行五部词典。
 2. 固顶简码按码表首选；普通码按现行权重逐码比较首选；三拼追加声调、键道追加形码消歧。
 3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
 4. 原冰雪三拼/键道与神韵三拼/键道分列；前者是指定旧回放，后者是本仓库当前布局的新回放。

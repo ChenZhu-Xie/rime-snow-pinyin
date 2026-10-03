@@ -38,7 +38,7 @@ const sipinRules = parseAlgebraRules(
 	"sipin_algebra",
 );
 const shenyun = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-r8-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-r9-mapping.json"), "utf8"),
 ) as { codes: Record<string, string | null> };
 
 const elementKeys = new Map<string, string>();

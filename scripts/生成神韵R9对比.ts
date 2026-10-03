@@ -29,7 +29,7 @@ const loadSummaries = roundScoped("LoadSummaries");
 const eligibilityByScheme = roundScoped("Eligibility");
 const pairMetrics = roundScoped("PairMetrics");
 
-const ids = ["R8-21X21-M40-01", "S005", "B04"] as const;
+const ids = ["R9-21X21-M40-02", "S005", "B04"] as const;
 const benchmarkUrl =
 	"https://github.com/more-14-different/shuangpin-layout-benchmark";
 const common399Url =
@@ -42,12 +42,12 @@ const shoudaoUrl = "https://sspai.com/post/108949";
 const mx34Url = "https://macroxue.github.io/shuangpin/eval.html";
 const markdownLink = (text: string, url: string) => `[${text}](${url})`;
 const labels: Record<(typeof ids)[number], string> = {
-	"R8-21X21-M40-01": "神韵 R8（21×21）",
+	"R9-21X21-M40-02": "神韵 R9（21×21）",
 	S005: "原键道 S005（21×21）",
 	B04: "首道 B04（26×26）",
 };
 const markdownLabels: Record<(typeof ids)[number], string> = {
-	"R8-21X21-M40-01": labels["R8-21X21-M40-01"],
+	"R9-21X21-M40-02": labels["R9-21X21-M40-02"],
 	S005: markdownLink(labels.S005, s005Url),
 	B04: markdownLink(labels.B04, shoudaoUrl),
 };
@@ -57,8 +57,8 @@ const entries = Object.fromEntries(
 for (const id of ids) if (!entries[id]) throw new Error(`payload 缺少 ${id}`);
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const reportPath = join(root, "reports", "shenyun-r8-comparison.md");
-const jsonPath = join(root, "reports", "shenyun-r8-comparison.json");
+const reportPath = join(root, "reports", "shenyun-r9-comparison.md");
+const jsonPath = join(root, "reports", "shenyun-r9-comparison.json");
 const number = (value: unknown, digits = 4) =>
 	typeof value === "number" && Number.isFinite(value)
 		? value
@@ -556,7 +556,6 @@ const json = {
 		macroxuePolicy,
 		fairCKTPolicy: data.fairCKT.policy,
 		ensembleV6: {
-			version: data.ensembleV6.version,
 			tauMs: data.ensembleV6.tauMs,
 			status: data.ensembleV6.status,
 			exclusions: data.ensembleV6.exclusions,
@@ -565,11 +564,11 @@ const json = {
 	schemes: snapshots,
 };
 
-const report = `# 神韵 R8：公平对比
+const report = `# 神韵 R9：公平对比
 
-数据取自 ${markdownLink("双拼布局 Benchmark", benchmarkUrl)} 的 HTML payload。目标方案为 ${markdownLink("R8-21X21-M40-01", benchmarkUrl)}；${markdownLink("S005", s005Url)} 是同为 21×21 的原键道基线，${markdownLink("B04 首道", shoudaoUrl)}是 26×26 的同环境基线。三者共用 ${markdownLink("Common399", common399Url)}、冻结 20 合同、字词与形码资料及模型；${markdownLink("B04", shoudaoUrl)} 不能被称为“同键域”比较。
+数据取自 ${markdownLink("双拼布局 Benchmark", benchmarkUrl)} 的 HTML payload。目标方案为 ${markdownLink("R9-21X21-M40-02", benchmarkUrl)}；${markdownLink("S005", s005Url)} 是同为 21×21 的原键道基线，${markdownLink("B04 首道", shoudaoUrl)}是 26×26 的同环境基线。三者共用 ${markdownLink("Common399", common399Url)}、冻结 20 合同、字词与形码资料及模型；${markdownLink("B04", shoudaoUrl)} 不能被称为“同键域”比较。
 
-完整原始字段保存在 [shenyun-r8-comparison.json](shenyun-r8-comparison.json)。报告没有把 ${markdownLink("MX34", mx34Url)} 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
+完整原始字段保存在 [shenyun-r9-comparison.json](shenyun-r9-comparison.json)。报告没有把 ${markdownLink("MX34", mx34Url)} 当作端到端输入速度：它不含声调、形辅、空格和选重；v6-CW150 也排除抽象 S2，150ms 是工程情景而非实测校准。
 
 ## 总览
 
@@ -589,9 +588,9 @@ ${v6Table}
 
 ## 结论
 
-- 对同键域 ${markdownLink("S005", s005Url)}，神韵 R8 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
-- 对 26×26 的 ${markdownLink("B04 首道", shoudaoUrl)}，神韵 R8 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 ${markdownLink("B04", shoudaoUrl)} 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
-- 补充指标把“快”拆成了不同边界：冻结合同 ${markdownLink("CKT", cktUrl)}、v4/v5/v6、20 合同峰值、${markdownLink("MX34", mx34Url)} 文稿移动手回放与选重敏感性必须分开读。神韵 R8 是综合折中前沿，不是每一列都最优。
+- 对同键域 ${markdownLink("S005", s005Url)}，神韵 R9 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对 26×26 的 ${markdownLink("B04 首道", shoudaoUrl)}，神韵 R9 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 ${markdownLink("B04", shoudaoUrl)} 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
+- 补充指标把“快”拆成了不同边界：冻结合同 ${markdownLink("CKT", cktUrl)}、v4/v5/v6、20 合同峰值、${markdownLink("MX34", mx34Url)} 文稿移动手回放与选重敏感性必须分开读。神韵 R9 是综合折中前沿，不是每一列都最优。
 - 日常八场景 ${markdownLink("MX34", mx34Url)} 曾参与来源报告的搜索目标；原站默认说明轨道是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。
 
 ## 冻结 20 合同逐项对比

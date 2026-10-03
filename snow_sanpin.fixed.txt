@@ -20,7 +20,7 @@ js	猥琐
 jz	文字
 kb	恐怖
 kk	可靠
-le	来说
+lq	恋爱
 mr	默认
 my	没有
 pr	骗人
@@ -39,7 +39,7 @@ sc	三次
 sd	速度
 st	三天
 sx	思想
-te	同时
+tq	天气
 tt	探讨
 tx	同学
 wb	成本
@@ -48,8 +48,8 @@ wx	出现
 xh	喜欢
 xj	希望
 xm	下面
-xq	需求
 xs	迅速
+xw	形成
 xx	学习
 xz	现在
 yb	一般
@@ -621,7 +621,7 @@ xva	幸福
 xvi	心情
 xvo	小萝卜
 xvu	小时
-xvv	形成
+xvv	行为
 ya	因为
 yaa	要是
 yai	一定
@@ -683,7 +683,7 @@ b	不
 bb	别
 bc	表
 bd	并
-be	本
+be	波
 bg	宾
 bh	白
 bj	部
@@ -692,12 +692,12 @@ bl	办
 bm	帮
 bn	蹦
 bp	变
-bq	波
+bq	本
 bw	吧
 bx	被
 bz	报
 c	才
-ce	参
+ce	窜
 cf	凑
 cg	村
 ch	菜
@@ -707,7 +707,7 @@ cl	惨
 cm	沧
 cn	曾
 cp	从
-cq	窜
+cq	参
 cr	崔
 cs	测
 cw	嚓
@@ -717,7 +717,7 @@ d	的
 db	爹
 dc	掉
 dd	顶
-de	扽
+de	断
 df	都
 dg	顿
 dh	带
@@ -727,7 +727,7 @@ dl	但
 dm	当
 dn	等
 dp	点
-dq	断
+dq	扽
 dr	对
 ds	地
 dt	丢
@@ -738,7 +738,7 @@ dz	到
 e	是
 ec	刷
 ed	双
-ee	神
+ee	闩
 ef	手
 eg	顺
 eh	晒
@@ -747,7 +747,7 @@ ek	时
 el	删
 em	上
 en	生
-eq	闩
+eq	神
 er	说
 es	设
 et	帅
@@ -758,7 +758,7 @@ ez	少
 f	这
 fc	抓
 fd	装
-fe	真
+fe	转
 ff	周
 fg	准
 fh	翟
@@ -768,7 +768,7 @@ fl	站
 fm	放
 fn	正
 fp	中
-fq	转
+fq	真
 fr	追
 fs	者
 ft	拽
@@ -779,7 +779,7 @@ fz	着
 g	个
 gc	挂
 gd	光
-ge	跟
+ge	关
 gf	够
 gg	滚
 gh	该
@@ -788,7 +788,7 @@ gl	干
 gm	刚
 gn	更
 gp	宫
-gq	关
+gq	跟
 gr	鬼
 gs	哥
 gt	怪
@@ -799,7 +799,7 @@ gz	搞
 h	和
 hc	话
 hd	黄
-he	很
+he	缓
 hf	后
 hg	混
 hh	还
@@ -808,7 +808,7 @@ hl	含
 hm	行
 hn	横
 hp	红
-hq	缓
+hq	很
 hr	回
 hs	喝
 ht	坏
@@ -820,7 +820,7 @@ j	我
 jb	姐
 jc	叫
 jd	经
-je	问
+je	握
 jf	将
 jg	进
 jh	外
@@ -830,7 +830,7 @@ jl	加
 jm	忘
 jn	嗡
 jp	见
-jq	握
+jq	问
 jr	举
 jt	就
 jw	娃
@@ -839,7 +839,7 @@ jy	觉
 k	可
 kc	夸
 kd	狂
-ke	啃
+ke	款
 kf	口
 kg	困
 kh	开
@@ -848,7 +848,7 @@ kl	看
 km	抗
 kn	坑
 kp	空
-kq	款
+kq	啃
 kr	亏
 ks	克
 kt	会
@@ -860,6 +860,7 @@ l	了
 lb	咧
 lc	聊
 ld	令
+le	乱
 lf	两
 lg	论
 lh	来
@@ -869,7 +870,6 @@ ll	俩
 lm	狼
 ln	冷
 lp	连
-lq	乱
 lr	绿
 ls	乐
 lt	流
@@ -881,7 +881,7 @@ m	没
 mb	咩
 mc	秒
 md	名
-me	们
+me	末
 mf	某
 mg	民
 mh	买
@@ -891,7 +891,7 @@ ml	满
 mm	忙
 mn	梦
 mp	面
-mq	末
+mq	们
 ms	么
 mt	谬
 mw	吗
@@ -901,7 +901,7 @@ n	你
 nb	捏
 nc	鸟
 nd	拧
-ne	嫩
+ne	暖
 nf	娘
 ng	您
 nh	乃
@@ -911,7 +911,7 @@ nl	难
 nm	囊
 nn	能
 np	年
-nq	暖
+nq	嫩
 nr	女
 ns	呢
 nt	牛
@@ -923,7 +923,7 @@ p	平
 pb	撇
 pc	票
 pd	瓶
-pe	喷
+pe	破
 pf	剖
 pg	拼
 ph	拍
@@ -933,7 +933,7 @@ pl	盘
 pm	胖
 pn	碰
 pp	骗
-pq	破
+pq	喷
 pw	怕
 px	陪
 pz	跑
@@ -951,7 +951,7 @@ ql	安
 qm	昂
 qn	穷
 qp	前
-qq	哦
+qq	恩
 qr	区
 qs	额
 qt	求
@@ -960,7 +960,7 @@ qx	诶
 qy	却
 qz	奥
 r	人
-re	任
+re	软
 rf	肉
 rg	润
 rj	如
@@ -969,13 +969,13 @@ rl	染
 rm	让
 rn	扔
 rp	容
-rq	软
+rq	任
 rr	瑞
 rs	热
 ry	若
 rz	绕
 s	三 3
-se	森
+se	酸
 sf	搜
 sg	孙
 sh	塞
@@ -985,7 +985,7 @@ sl	伞
 sm	丧
 sn	僧
 sp	送
-sq	酸
+sq	森
 sr	碎
 ss	色
 sw	撒
@@ -995,6 +995,7 @@ t	他
 tb	贴
 tc	条
 td	听
+te	团
 tf	头
 tg	臀
 th	太
@@ -1004,7 +1005,6 @@ tl	谈
 tm	躺
 tn	疼
 tp	天
-tq	团
 tr	腿
 ts	特
 tw	她
@@ -1012,7 +1012,7 @@ ty	拖
 tz	套
 w	吃
 wd	床
-we	沉
+we	传
 wf	抽
 wg	纯
 wh	拆
@@ -1022,7 +1022,7 @@ wl	产
 wm	长
 wn	成
 wp	重
-wq	传
+wq	沉
 wr	吹
 ws	车
 wt	踹
@@ -1040,9 +1040,9 @@ xk	系
 xl	下
 xn	兄
 xp	先
+xq	寻
 xr	需
 xt	秀
-xw	寻
 xy	学
 y	一 1
 yd	应
@@ -1053,14 +1053,14 @@ yk	已
 yl	眼
 ym	样
 yp	用
-yq	哟
+yq	晕
 yr	与
 ys	射
 yw	呀
 yy	越
 yz	要
 z	在
-ze	怎
+ze	钻
 zf	走
 zg	尊
 zh	再
@@ -1070,7 +1070,7 @@ zl	赞
 zm	藏
 zn	赠
 zp	总
-zq	钻
+zq	怎
 zr	最
 zs	则
 zw	扎

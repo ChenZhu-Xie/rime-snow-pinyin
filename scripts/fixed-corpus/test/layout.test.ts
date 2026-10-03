@@ -35,6 +35,17 @@ test("layout encodes representative zero initials, initials, and ju/jue", () => 
 	assert.deepEqual(encodeSyllable("jue2", original, "canonical"), ["jh"]);
 });
 
+test("Shenyun R9 moves en/vn to Q and o/uan/van to E", () => {
+	assert.deepEqual(encodeSyllable("ben1", shenyun, "canonical"), ["bq"]);
+	assert.deepEqual(encodeSyllable("bo1", shenyun, "canonical"), ["be"]);
+	assert.deepEqual(encodeSyllable("duan1", shenyun, "canonical"), ["de"]);
+	assert.deepEqual(encodeSyllable("jun1", shenyun, "canonical"), ["jq"]);
+	assert.deepEqual(encodeSyllable("yun1", shenyun, "canonical"), ["yq"]);
+	assert.deepEqual(encodeSyllable("en1", shenyun, "canonical"), ["qq"]);
+	assert.deepEqual(encodeSyllable("o1", shenyun, "canonical"), ["qe"]);
+	assert.deepEqual(encodeSyllable("yo1", shenyun, "canonical"), ["ye"]);
+});
+
 test("original accepted mode exposes derived spellings without changing canonical", () => {
 	assert.deepEqual(encodeSyllable("zhao3", original, "canonical"), ["fz"]);
 	assert.deepEqual(encodeSyllable("zhao3", original, "accepted"), ["fz", "qz"]);

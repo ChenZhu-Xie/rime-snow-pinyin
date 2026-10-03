@@ -11,7 +11,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     带调拼音词顶功输入方案
-    双拼编码：无飞键道·神韵
+    双拼编码：无飞键道·神韵（R9-21X21-M40-02）
   dependencies:
     - snow_pinyin
     - snow_sanpin_bihua
@@ -66,7 +66,7 @@ engine:
     - lua_filter@*snow.hint
 
 sanpin_algebra:
-  # 无飞键道·神韵
+  # 无飞键道·神韵（R9-21X21-M40-02）
   # 目标布局的 421 音节码表中不编码这 5 个扩展音节。
   - erase/^(hng|m|n|ng|ê)\d$/
   # j/q/x 与零声母 YU 系列统一按 v/van/ve/vn 韵尾编码。
@@ -90,9 +90,9 @@ sanpin_algebra:
   - xform/(ian|ong)(?=\d)/P/
   - xform/(iao|ua)(?=\d)/C/
   - xform/(uai|iu)(?=\d)/T/
-  - xform/(van|en)(?=\d)/E/
+  - xform/(uan|van)(?=\d)/E/
   - xform/(un|in)(?=\d)/G/
-  - xform/uan(?=\d)/Q/
+  - xform/(vn|en)(?=\d)/Q/
   - xform/ui(?=\d)/R/
   - xform/(uo|ve)(?=\d)/Y/
   - xform/(an|ia)(?=\d)/L/
@@ -101,9 +101,8 @@ sanpin_algebra:
   - xform/ao(?=\d)/Z/
   - xform/ei(?=\d)/X/
   - xform/ie(?=\d)/B/
-  - xform/vn(?=\d)/W/
   - xform/a(?=\d)/W/
-  - xform/o(?=\d)/Q/
+  - xform/o(?=\d)/E/
   - xform/v(?=\d)/R/
   - xform/i(?=\d)/K/
   - xform/(u|er)(?=\d)/J/

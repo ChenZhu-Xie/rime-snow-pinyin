@@ -1,10 +1,10 @@
-import { createHash } from "crypto";
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
-import { dirname, join, resolve } from "path";
-import { fileURLToPath } from "url";
-import { gunzipSync } from "zlib";
+import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { gunzipSync } from "node:zlib";
 
-const targetScheme = "R8-21X21-M40-01";
+const targetScheme = "R9-21X21-M40-02";
 const benchmarkPath = process.argv[2];
 if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
 const html = readFileSync(resolve(benchmarkPath), "utf8");
@@ -32,7 +32,7 @@ const payloadMapping = Object.fromEntries(
 	]),
 );
 
-// R8 的公开评分域是 Common399；报告对规则可推导的扩展音节保留 null。
+// R9 的公开评分域是 Common399；报告对规则可推导的扩展音节保留 null。
 // Rime 实现仍按同一声韵规则补齐这些扩展音节，只排除独立鼻音等无声韵拆分项。
 const unencoded = new Set(["hng", "m", "n", "ng", "ê"]);
 const initials = [
@@ -100,7 +100,7 @@ const mappingSha256 = createHash("sha256")
 	.digest("hex");
 const output = {
 	scheme: scheme.id,
-	release: "R8",
+	release: "R9",
 	mappingSha256,
 	payloadMappingSha256: createHash("sha256")
 		.update(JSON.stringify(payloadMapping))
@@ -110,7 +110,7 @@ const output = {
 	codes: mapping,
 };
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const outputPath = join(root, "docs", "shenyun-r8-mapping.json");
+const outputPath = join(root, "docs", "shenyun-r9-mapping.json");
 mkdirSync(dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`, "utf8");
 console.log(

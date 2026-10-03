@@ -211,7 +211,7 @@ function makeOptimizedCandidate(
 }
 
 const fixture = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-r8-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-r9-mapping.json"), "utf8"),
 ) as {
 	scheme: string;
 	codes: Record<string, string | null>;
@@ -241,7 +241,7 @@ const layout: FixedLayout = {
 };
 assertLayout(layout);
 
-// 一码只保留一个冠军。R8 保持普通声母原键，但重新安排 zh/sh 与零声母 Y。
+// 一码只保留一个冠军。R9 保持普通声母原键，并使用现行 zh/sh 与零声母 Y 映射。
 const seedOneKeyWords = new Map<string, string>([
 	["b", "不"],
 	["c", "才"],
@@ -266,7 +266,7 @@ const seedOneKeyWords = new Map<string, string>([
 	["z", "在"],
 ]);
 
-// 旧版候选只作肌肉记忆偏好；R8 的二简槽位会按新音码空间重新计算。
+// 旧版候选只作肌肉记忆偏好；R9 的二简槽位按现行音码空间重新计算。
 const legacySeedErjianWords = new Map<string, string>([
 	["bf", "不要"],
 	["bm", "部门"],
@@ -547,7 +547,7 @@ const occupiedGiveUpCodes = allMainPairsForErjian
 const erjianCodeSet = new Set([...naturalEmptyCodes, ...occupiedGiveUpCodes]);
 if (erjianCodeSet.size !== 64) {
 	throw new Error(
-		`R8 二简槽位不足 64：天然空位 ${naturalEmptyCodes.length}，冷音码 ${occupiedGiveUpCodes.length}`,
+		`R9 二简槽位不足 64：天然空位 ${naturalEmptyCodes.length}，冷音码 ${occupiedGiveUpCodes.length}`,
 	);
 }
 const seedErjianWords = new Map<string, string>();

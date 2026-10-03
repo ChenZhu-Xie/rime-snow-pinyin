@@ -1,7 +1,7 @@
 神韵双拼加持的键道、三拼：500 字赛文八方案最短键码实战测评
 ====================================================================================================
 口径：500 个汉字；中文逗号/句号 43 个；标点计键；均码 = 总实际按键 / 500。
-新增轨：R8-21X21-M40-01 神韵三拼、神韵键道；其余六轨逐键沿用两份指定冻结回放。
+新增轨：R9-21X21-M40-02 神韵三拼、神韵键道；其余六轨逐键沿用两份指定冻结回放。
 优化目标：先最少实际按键，再少分词段、少 Space；禁用数字选重，只使用首选、各级简码、630、尾字键和原生结构略码。
 记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。
 
@@ -9,8 +9,8 @@ Benchmark 排名表
 ----------------------------------------------------------------------------------------------------
 排名  方案                 总按键   平均码长   Space  Shift  非标点分词段   相对第一名
  1    四拼                    919     1.8380      49      0           264   +  0
- 2    神韵三拼                  923     1.8460      11      0           229   +  4
- 3    神韵键道                  931     1.8620      28      1           237   + 12
+ 2    神韵三拼                  922     1.8440      10      0           229   +  3
+ 3    神韵键道                  930     1.8600      26      1           236   + 11
  4    三拼（原冰雪）               943     1.8860      55      0           257   + 24
  5    键道（原冰雪）               944     1.8880      55      0           256   + 25
  6    声笔小鹤                  960     1.9200      29      0           238   + 41
@@ -19,10 +19,10 @@ Benchmark 排名表
 
 新增两轨简码使用统计
 ----------------------------------------------------------------------------------------------------
-神韵三拼：总实际按键 923；平均码长 1.8460；Space 11；Shift 0；标点 43；非标点编码动作 229（1字 35；2字 142；3字 33；4字 15；5字以上 4）。
-  简码命中：一简 6；二简单字 5；二简词 6；630 28；结构略码 0；尾字键 17；普通码 167。
-神韵键道：总实际按键 931；平均码长 1.8620；Space 28；Shift 1；标点 43；非标点编码动作 237（1字 40；2字 151；3字 32；4字 10；5字以上 4）。
-  简码命中：一简 5；二简单字 33；二简词 7；630 33；结构略码 2；尾字键 18；普通码 139。
+神韵三拼：总实际按键 922；平均码长 1.8440；Space 10；Shift 0；标点 43；非标点编码动作 229（1字 35；2字 142；3字 33；4字 15；5字以上 4）。
+  简码命中：一简 6；二简单字 5；二简词 5；630 27；结构略码 0；尾字键 18；普通码 168。
+神韵键道：总实际按键 930；平均码长 1.8600；Space 26；Shift 1；标点 43；非标点编码动作 236（1字 38；2字 152；3字 32；4字 10；5字以上 4）。
+  简码命中：一简 5；二简单字 31；二简词 6；630 32；结构略码 2；尾字键 19；普通码 141。
 
 完整方案-specific 分词 / 键码对齐回放
 ====================================================================================================
@@ -31,8 +31,8 @@ Benchmark 排名表
 四拼　　　　 qyeo  ;  yvi   ggxiea   l  ,
 三拼　　　　 qgjn  d_ jrek  ggxu     lh ,
 键道　　　　 qgjn  d_ jrek  gia   xglh  ,
-神韵三拼　　 qdwe;    wav   ggxu     lh ,
-神韵键道　　 qdwe;    wnek  ggxi     lh ,
+神韵三拼　　 qdwq;    wav   ggxu     lh ,
+神韵键道　　 qdwq;    wnek  ggxi     lh ,
 声笔小鹤　　 qci   dcsiui   ggxki    ld ,
 清韵　　　　 qc.   e  csi   ggx/⇧,_  k_ ,
 小鹤　　　　 qkif  d_ igui  gg;   xkld  ,
@@ -64,8 +64,8 @@ Benchmark 排名表
 四拼　　　　 fr_   nwe   zcao   gqaa    vbao   ,  fr_   fweou  hbuoe    pbuaa  ,
 三拼　　　　 yr_   nsfe  zzcf   gfql    epbf   ,  yr_   yffe   hebm     pzbj   ,
 键道　　　　 yr_   nsfe  zzcf   gfql    epbf   ,  yr_   yffe   hebm     pzbj   ,
-神韵三拼　　 yfre  nwfs  zzcl   glqr    eia    ,  yfre  yov    hsbp     pau    ,
-神韵键道　　 yfre  nwfs  zzcl   glqr    embl   ,  yfre  ylfs   hsbp     pzbj   ,
+神韵三拼　　 yfrq  nwfs  zzcl   glqr    eia    ,  yfrq  yov    hsbp     pau    ,
+神韵键道　　 yfrq  nwfs  zzcl   glqr    embl   ,  yfrq  ylfs   hsbp     pzbj   ,
 声笔小鹤　　 yzr_  naze  zccj   gjqu    sbe    ,  yzr_  yjze   hebm     pcbu   ,
 清韵　　　　 yr.   nze   zc;⇧o_ tzg; t_ s, wd_ ,  yr.   yze⇧;_ kk_ lhzi pbu⇧o_ ,
 小鹤　　　　 yzrf  nave  zccj   gjqu    uhbj   ,  yzrf  yjve   hebm     pcbu   ,
@@ -75,7 +75,7 @@ Benchmark 排名表
 四拼　　　　 ffreo      zz_     yquoi  wliu   jt    ;  jhi    .
 三拼　　　　 yyr_       zvu     wmqm   qrlk   jtda     jva    .
 键道　　　　 yyr_       zvu     wmqm   qrlk   jtdi     jva    .
-神韵三拼　　 yyrv       zzwqvaa        fnlk   jtdjh           .
+神韵三拼　　 yyrv       zzwqva         fnlk   jtdjh           .
 神韵键道　　 yyra       zzwqiv         fnlk   jtdjh           .
 声笔小鹤　　 yeyz    r_ zozd    clqm   zgli   jtd⇥     jhe    .
 清韵　　　　 yyr.       rrtu ;  cq;⇧,_ zli⇧/_ jtde     jha⇧i_ .
@@ -108,8 +108,8 @@ Benchmark 排名表
 四拼　　　　 sd_   h_   wqoa   ss_   lz_   yqi   xy    ;  xgio   .
 三拼　　　　 sov   h_   qwqh   wuu   lui   jpqk  xgjr  d_ xkgt   .
 键道　　　　 sov   h_   qwqh   wuu   lui   jpqk  xgjr  d_ xkgt   .
-神韵三拼　　 sd_   h_   fgqy   jmjm  lhzk  wmqk  xvv   dxgao     .
-神韵键道　　 sd_   h_   fgqy   jmu[  lhzk  wmqk  xvu   dxgua     .
+神韵三拼　　 sd_   h_   fgqy   jmjm  lhzk  wmqk  xw;      xkge   .
+神韵键道　　 sd_   h_   fgqy   jmu[  lhzk  wmqk  xw;      xkge   .
 声笔小鹤　　 sudu  h_   zqeu   whwh  lz'   cqe   xcd⇥     xgo    .
 清韵　　　　 sdu   /    zqe⇧._ ww,   k_ hi z, c, xc/   e  xg;⇧i_ .
 小鹤　　　　 sd;   hoh_ vyqt   whwh  ldzi  ihqi  xkig  d_ xg     .
@@ -119,8 +119,8 @@ Benchmark 排名表
 四拼　　　　 hde   bma   b_ wfu   diou ,  hfu    rae  vwiuo  fdo     zr    ,
 三拼　　　　 hu    bmms  b_ fvi   dt   ,  hvi    rp_  edfk   ykdy    zkrf  ,
 键道　　　　 hu    bmms  b_ fvi   dt   ,  hvi    rp_  edfk   ykdy    zkrf  ,
-神韵三拼　　 hz;   bpmw  b_ fkyz  dqu  ,  hhv yzrm    efydauu        zva   ,
-神韵键道　　 hz;   bpmw  b_ fvi   dquv ,  hvi    rm_  effk   ykdpu   zkrl  ,
+神韵三拼　　 hz;   bpmw  b_ fkyz  deu  ,  hev yzrm    efydauu        zva   ,
+神韵键道　　 hz;   bpmw  b_ fvi   deuv ,  hvi    rm_  effk   ykdpu   zkrl  ,
 声笔小鹤　　 hcd_  bmma  b_ ziyc  drue ,  hdyc   rh_  szzi   yidsu   zr'   ,
 清韵　　　　 x_ e  bma   u  zy.   zdk_ ,  dm_ yr,     na nb_ hpjg vu zr;   ,
 小鹤　　　　 hcde  bmma  b_ viyc  dru  ,  hdyc   rhy_ uzvi   yids    zr    ,
@@ -163,8 +163,8 @@ Benchmark 排名表
 四拼　　　　 ffuu    k_ pt_    jzi   li  wwe   xf_   dva   rjuoa  .
 三拼　　　　 ye_  yzkf  pa     jlzk  lk_ qnqr  xvi   di    xfjm   .
 键道　　　　 ye_  yzkf  pa     jlzk  lk_ qnqr  xvi   di    xfjm   .
-神韵三拼　　 yykaua     pi     jrzk  lku fefn  xai   dui   qljp   .
-神韵键道　　 ysa  yzkl  pa     jrzk  lk_ fefn  xv    diu   qljp   .
+神韵三拼　　 yykaua     pi     jrzk  lku fqfn  xai   dui   qljp   .
+神韵键道　　 ysa  yzkl  pa     jrzk  lk_ fqfn  xv    diu   qljp   .
 声笔小鹤　　 yykja      pt'    juz'  lizf   zgxu  ydsce    vjjme  .
 清韵　　　　 yyo     n_ pt/⇧u_ ju l; jvi zzo   xye   dso   vj;⇧;_ .
 小鹤　　　　 yev_ yckj  puts   juzi  li_ vv;   xy_   douc  aj;    .
@@ -174,8 +174,8 @@ Benchmark 排名表
 四拼　　　　 ckuai     kdaa    ,  kxz      ;  fciee    jkdo     ,
 三拼　　　　 ckkj      yhds    ,  kxz_     d_ fncki    jydv     ,
 键道　　　　 ckkj      yhds    ,  kxz_     d_ fncku    jydovu   ,
-神韵三拼　　 ckkj      yydw    ,  kxz;        feckv    jydi     ,
-神韵键道　　 ckkj      yydw    ,  kxz;        fecku    jtyyo dy ,
+神韵三拼　　 ckkj      yydw    ,  kxz;        fqckv    jydi     ,
+神韵键道　　 ckkj      yydw    ,  kxz;        fqcku    jtyyo dy ,
 声笔小鹤　　 cikuo     ytda    ,  kxze     d_ ffciu    jydoo    ,
 清韵　　　　 jlk_ gdsi tzk_ da ,  kxze     e  bo  jlk_ jydo     ,
 小鹤　　　　 c;        ytda    ,  k_ xz;   d_ ff_ ciy_ j_ ytdo  ,
@@ -185,8 +185,8 @@ Benchmark 排名表
 四拼　　　　 dao  zdiou   ;  fciee    sbiaui zvi    zrf_       foe  ,
 三拼　　　　 df_  zbdt    d_ fncki    wwbk   zo     zry_       yy   ,
 键道　　　　 df_  zbdt    d_ fncku    wwbk   zo     zry_       yy   ,
-神韵三拼　　 dla  zrdq;      feckv    jxbk   zpek   zrya       yp   ,
-神韵键道　　 dl_  zrdq;      fecku    jxbk   zoi    zryo       yp   ,
+神韵三拼　　 dla  zrde;      fqckv    jxbk   zpek   zrya       yp   ,
+神韵键道　　 dl_  zrde;      fqcku    jxbk   zoi    zryo       yp   ,
 声笔小鹤　　 dj_  zvdr    d_ ffciu    wbo    zssi   zryii      ys   ,
 清韵　　　　 lr_  re zdk_ e  bo  jlk_ we bi  df_ i  zryi       n/   ,
 小鹤　　　　 djra zvdr    d_ ff_ ciy_ wwbi   zsui   zvo_ ry_   yskl ,
@@ -196,8 +196,8 @@ Benchmark 排名表
 四拼　　　　 fe   sbiaui fheeue wviee   vf_    xgio   .
 三拼　　　　 ye_  wwbk   fh_    qneki   ey_    xkgt   .
 键道　　　　 ye_  wwbk   fh_    qneku   eki yxgu      .
-神韵三拼　　 ysu  jxbk   fvv    feekv   eyxgau        .
-神韵键道　　 yjbavo      fjhsu  fe_ eko eki yxgu      .
+神韵三拼　　 ysu  jxbk   fvv    fqekv   eyxgau        .
+神韵键道　　 yjbavo      fjhsu  fq_ eko eki yxgu      .
 声笔小鹤　　 ywbi        fuhe   zfsie   siys   xgo    .
 清韵　　　　 d_   we bi  fhe    z.  bu  sy/    xg;⇧i_ .
 小鹤　　　　 yev_ wwbi   fuhe   vfui    uiys   xg     .
@@ -218,8 +218,8 @@ Benchmark 排名表
 四拼　　　　 bmge      kge   h_   mc_    rxua  hdjuoi     d_  ddue  szoaio
 三拼　　　　 bmgo      kyge  h_   mov    xfxs  hdjoou     dd_ dfdj  stzl
 键道　　　　 bmgi      kyge  h_   mov    xfxs  hdjiii     dd_ dfdj  stzl
-神韵三拼　　 bmga      kpgs  h_   mau    qlxl  hdjaau     dfi dldj  sqzy
-神韵键道　　 bmgiu     kpgs  h_   mov    qlxl  hqdm  jpio df_ dldj  sqzy
+神韵三拼　　 bmga      kpgs  h_   mau    qlxl  hdjaau     dfi dldj  sezy
+神韵键道　　 bmgiu     kpgs  h_   mov    qlxl  hedm  jpio df_ dldj  sezy
 声笔小鹤　　 bmgee     ksge  h_   mwci   vxe   hdjme      du_ ddsro     zo_
 清韵　　　　 nm_ mg;   kge   /    mci⇧e_ vxa   hdj;⇧;_    s_  ddu   zm_ lz_
 小鹤　　　　 ba_ mwge  ksge  hoh_ mwci   anxx  hrdh  jmj_ dz_ djdu  srzo
@@ -269,23 +269,23 @@ Benchmark 排名表
 小鹤　　　　 ze_  yskl ksge  mkqt  uhpk    .
 
 [23]
-原文       这 样 得 到 的 结 果 更  接 近 连 续 跟  打  时  的 理 论
-四拼　　　　 wf_   dd    ;  jgo   gjjio     lxa   gdaueo  vi  ;  ll_
-三拼　　　　 fv    dedz  d_ ji    gjjo      laa   gnds    ek_ d_ loa
-键道　　　　 fv    dedz  d_ ji    gjjv      laa   gnds    ekdeo  loa
-神韵三拼　　 faa   dddjg          gjjaa     lpxr  gedwu   ek;    lklg
-神韵键道　　 fvo   dddjg          gjjv      laa   ge_ dwi ek;    loa
-声笔小鹤　　 zy'   dddg           gjjbe     lxa   gfda    si_ dll'
-清韵　　　　 za    do ko e  jgo   gjj.⇧/_   lxu   f.  nk_ ru  e  wi jl.
-小鹤　　　　 vy_   dedc  d_ jg_   gg_ jpjb  lmxu  gfda    u;  d_ lily
+原文       这 样 得 到 的 结 果 更  接 近 连 续 跟 打  时  的 理 论
+四拼　　　　 wf_   dd    ;  jgo   gjjio     lxa   gdaueo vi  ;  ll_
+三拼　　　　 fv    dedz  d_ ji    gjjo      laa   gnds   ek_ d_ loa
+键道　　　　 fv    dedz  d_ ji    gjjv      laa   gnds   ekdeo  loa
+神韵三拼　　 faa   dddjg          gjjaa     lpxr  gqdwu  ek;    lklg
+神韵键道　　 fvo   dddjg          gjjv      laa   gqdwo  ek;    loa
+声笔小鹤　　 zy'   dddg           gjjbe     lxa   gfda   si_ dll'
+清韵　　　　 za    do ko e  jgo   gjj.⇧/_   lxu   f. nk_ ru  e  wi jl.
+小鹤　　　　 vy_   dedc  d_ jg_   gg_ jpjb  lmxu  gfda   u;  d_ lily
 
 [24]
 原文       底 线  ， 同 时 保 留 了 可 以 人 工 检 查  的 编 码 路 径  。
 四拼　　　　 dxuoiu ,  tv_   blo   /  kf_   rgo   jya    ;  bma   ljieu  .
 三拼　　　　 dkxm   ,  toi   bzlq  l_ ka    rg_   jmws   d_ bmms  ljjg   .
 键道　　　　 dkxm   ,  toi   bzlq  l_ ka    rg_   jmws   d_ bmms  ljjg   .
-神韵三拼　　 dkxp   ,  te_   bzlt/    ku    rgjw;           bpmw  ljjd   .
-神韵键道　　 dkxp   ,  te_   bzlt/    ka    rgjw;           bpmw  ljjd   .
+神韵三拼　　 dkxp   ,  tpek  bzlt/    ku    rgjw;           bpmw  ljjd   .
+神韵键道　　 dkxp   ,  tpek  bzlt/    ka    rgjw;           bpmw  ljjd   .
 声笔小鹤　　 dix'   ,  ts'   bclq  lky'     rfgs  jcd_      bmma  lujk   .
 清韵　　　　 dx;⇧i_ ,  ts;   bla   a  k/    rg/   jca⇧;_ e  bma   lj/⇧u_ .
 小鹤　　　　 dixm   ,  tsui  bclq  l_ k;    rfgs  jmia   d_ bmma  lujk   .
@@ -296,7 +296,7 @@ Benchmark 排名表
 三拼　　　　 skfy     foo   ey_   ty_ ykdt    wnzk   ,
 键道　　　　 skfy     foo   ey_   ty_ ykdt    wnzk   ,
 神韵三拼　　 skfp     fmql  eau   tpv ydjza          ,
-神韵键道　　 skfp     foo   ekyp  tpi ykdq    jz     ,
+神韵键道　　 skfp     foo   ekyp  tpi ykde    jz     ,
 声笔小鹤　　 sizsia   fvo   siys  ts_ ydwzee         ,
 清韵　　　　 ni  h/   fv;   sy/   t/  ke jksu w. bl_ ,
 小鹤　　　　 si_ vsh_ fhan  uiys  ts_ yidr    wz     ,
@@ -318,7 +318,7 @@ Benchmark 排名表
 三拼　　　　 df_  tsmnav    hb_  xiu   bt_   jpdj  deck    ,
 键道　　　　 df_  tsmno     hb_  xiu   bt_   jpdj  deck    ,
 神韵三拼　　 dla  toi       hra  xzbtv       wmdj  dsck    ,
-神韵键道　　 dl_  twmeo     kt_  xzbtu       wmdj  dsck    ,
+神韵键道　　 dl_  twmqo     kt_  xzbtu       wmdj  dsck    ,
 声笔小鹤　　 dtoo      mfhv;     xze   b_ tcdui    deciu   ,
 清韵　　　　 lr_  ta   lgne r_   xze   u  tcdu     e  jlk_ ,
 小鹤　　　　 djra tab_ mfrm hvr_ xz;   bt_   ihdu  d_ ciy  ,
@@ -350,8 +350,8 @@ Benchmark 排名表
 四拼　　　　 kf_   wgioi  ky_   nli      jvee   /  rjuoa  ,
 三拼　　　　 ka    fkgt   kai   nslku    jder   l_ xfjm   ,
 键道　　　　 ka    fkgt   kai   nslko    jder   l_ xfjm   ,
-神韵三拼　　 ku    fkgq   kia   nuu      jben/     qljp   ,
-神韵键道　　 ka    fkgq   kai   nwlko    jben/     qljp   ,
+神韵三拼　　 ku    fkge   kia   nuu      jben/     qljp   ,
+神韵键道　　 ka    fkge   kai   nwlko    jben/     qljp   ,
 声笔小鹤　　 ky'   zig'   kc'   nli      jpsg   l_ vjjme  ,
 清韵　　　　 k/    sn_ gk;   cu nli⇧a_   js/⇧e_ a  vj;⇧;_ ,
 小鹤　　　　 k;    vigr   kjiu  nak_ li_ jpug   l_ aj;    ,
@@ -361,8 +361,8 @@ Benchmark 排名表
 四拼　　　　 nli      fs_   bma   ytu    xf_   dfci      qr    .
 三拼　　　　 nslku    yo    bmms  wytj   xvi   dycov     qhrn  .
 键道　　　　 nslko    yo    bmms  wytj   xvi   dycuvo    qhrn  .
-神韵三拼　　 nuu      ya    bpmw  wptj   xai   dycai     qyre  .
-神韵键道　　 nwlko    you   bpmw  wptj   xv    dy_ yov   qyre  .
+神韵三拼　　 nuu      ya    bpmw  wptj   xai   dycai     qyrq  .
+神韵键道　　 nwlko    you   bpmw  wptj   xv    dy_ yov   qyrq  .
 声笔小鹤　　 nli      yw'   bmma  cto    xy'   dyciua    qtrf  .
 清韵　　　　 nli⇧a_   y;    bma   ctu⇧/_ xye   je  yci   qr.   .
 小鹤　　　　 nak_ li_ yw_   bmma  istu   xy_   do_ yici  qr;   .
@@ -383,8 +383,8 @@ Benchmark 排名表
 四拼　　　　 wwe   fxuei vgao   ;  hf_   zfvo     fbuaeo ,  lxa   rjuoa  ,
 三拼　　　　 qnqr  ygxx  edgf   d_ hv    zyeuu    fnbj   ,  laa   xfjm   ,
 键道　　　　 qnqr  ygxx  edgf   d_ hv    zyevvi   fnbj   ,  laa   xfjm   ,
-神韵三拼　　 ffyxui      efgl;     huv   zyeuu    febj   ,  lpxr  qljp   ,
-神韵键道　　 fefn  ydxf  efgl;     hv    zyevvi   febj   ,  laa   qljp   ,
+神韵三拼　　 ffyxui      efgl;     huv   zyeuu    fqbj   ,  lpxr  qljp   ,
+神韵键道　　 fqfn  ydxf  efgl;     hv    zyevvi   fqbj   ,  laa   qljp   ,
 声笔小鹤　　 zfzg  yxsz     gj_ dhy'     zysze    fb     ,  lxa   vjjme  ,
 清韵　　　　 zzo   yx,   sg;    e  hyi   zysa     bo qro ,  lxu   vj;⇧;_ ,
 小鹤　　　　 vv;   ykxl  uzgj   d_ hdyz  zyu_     ffbu   ,  lmxu  aj;    ,
@@ -416,8 +416,8 @@ Benchmark 排名表
 四拼　　　　 zjui   fciee    knh_       fvbh        ,
 三拼　　　　 zbjs   fncki    knh_       febho       ,
 键道　　　　 zbjs   fncku    knh_       febh        ,
-神韵三拼　　 zrjl   feckv    knhfebh                ,
-神韵键道　　 zrjl   fecku    knhfebh                ,
+神韵三拼　　 zrjl   fqckv    knhfebh                ,
+神韵键道　　 zrjl   fqcku    knhfebh                ,
 声笔小鹤　　 zvjx   ffciu    knhv       fsbha       ,
 清韵　　　　 re lt_ bo  jlk_ knhe       fsbh        ,
 小鹤　　　　 zvjx   ff_ ciy_ kn_   hvr_ faug  bmhx  ,
@@ -427,15 +427,15 @@ Benchmark 排名表
 四拼　　　　 bg_   bci    xuo  bst_      xdieu  z_   zvau   rjuoa  .
 三拼　　　　 bv    bnck   xmbs     wo    xmdg   z_   zbez   xfjm   .
 键道　　　　 bv    bnck   xmbs     wo    xmdg   z_   zbez   xfjm   .
-神韵三拼　　 ba    beck   xpbw     jetk  xpdd   z_   zrez   qljp   .
-神韵键道　　 bv    beck   xpbw     joi   xpdd   z_   zrez   qljp   .
+神韵三拼　　 ba    bqck   xpbw     jqtk  xpdd   z_   zrez   qljp   .
+神韵键道　　 bv    bqck   xpbw     joi   xpdd   z_   zrez   qljp   .
 声笔小鹤　　 bg'   bfci   xmba     wt'   xaoo   z_   zvsc   vjjme  .
 清韵　　　　 u  c_ b. dbo h.   bwti      vg. b/ ;    re xhe vj;⇧;_ .
 小鹤　　　　 bugo  bfci   xmne ba_ wt_   xmdk   zdut zvuc   aj;    .
 
 核验说明
 ====================================================================================================
-1. 新增两轨直接读取当前仓库 snow_sanpin.fixed.txt、snow_jiandao.fixed.txt、神韵 R8 映射和现行五部词典。
+1. 新增两轨直接读取当前仓库 snow_sanpin.fixed.txt、snow_jiandao.fixed.txt、神韵 R9 映射和现行五部词典。
 2. 固顶简码按码表首选；普通码按现行权重逐码比较首选；三拼追加声调、键道追加形码消歧。
 3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
 4. 原冰雪三拼/键道与神韵三拼/键道分列；前者是指定旧回放，后者是本仓库当前布局的新回放。

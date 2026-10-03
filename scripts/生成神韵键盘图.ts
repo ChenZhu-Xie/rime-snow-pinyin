@@ -3,7 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { chromium } from "playwright-core";
 
-const schemeId = "R8-21X21-M40-01";
+const schemeId = "R9-21X21-M40-02";
 const cropWidth = 1040;
 const cropHeight = 590;
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
@@ -11,7 +11,7 @@ const outputPath = join(
 	scriptDirectory,
 	"..",
 	"docs",
-	"shenyun-r8-keyboard.svg",
+	"shenyun-r9-keyboard.svg",
 );
 
 const args = process.argv.slice(2);

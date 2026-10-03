@@ -84,11 +84,48 @@ test("default traditional source entries are postponed before conversion and ded
 });
 
 test("reported phrase codes follow the frozen Shenyun mapping", () => {
-	const fixture = JSON.parse(read("docs/shenyun-r8-mapping.json")) as {
+	const fixture = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
+		scheme: string;
+		payloadCodes: Record<string, string | null>;
 		codes: Record<string, string>;
 	};
+	assert.equal(fixture.scheme, "R9-21X21-M40-02");
 	assert.equal(fixture.codes.na + fixture.codes.yang, "nwym");
 	assert.notEqual(fixture.codes.na + fixture.codes.yang, "nnff");
+	assert.equal(fixture.codes.ben, "bq");
+	assert.equal(fixture.codes.bo, "be");
+	assert.equal(fixture.codes.duan, "de");
+	assert.equal(fixture.codes.jun, "jq");
+	assert.equal(fixture.codes.yun, "yq");
+	assert.equal(fixture.codes.yo, "ye");
+
+	const summarize = (values: Array<string | null>) => {
+		const codes = values.filter((code): code is string => code !== null);
+		const unique = new Set(codes).size;
+		const collisionBuckets = new Map<string, number>();
+		for (const code of codes)
+			collisionBuckets.set(code, (collisionBuckets.get(code) ?? 0) + 1);
+		return {
+			encoded: codes.length,
+			unique,
+			collisionBuckets: [...collisionBuckets.values()].filter(
+				(count) => count > 1,
+			).length,
+			vacant: 21 * 21 - unique,
+		};
+	};
+	const expectedR9Space = {
+		common: { encoded: 399, unique: 373, collisionBuckets: 26, vacant: 68 },
+		extended: { encoded: 416, unique: 382, collisionBuckets: 34, vacant: 59 },
+	};
+	assert.deepEqual(
+		summarize(Object.values(fixture.payloadCodes)),
+		expectedR9Space.common,
+	);
+	assert.deepEqual(
+		summarize(Object.values(fixture.codes)),
+		expectedR9Space.extended,
+	);
 });
 
 test("all current schemes keep the legacy two-position jump on Ctrl+P", () => {

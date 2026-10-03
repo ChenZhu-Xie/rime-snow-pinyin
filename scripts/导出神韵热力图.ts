@@ -3,7 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 
-const targetScheme = "R8-21X21-M40-01";
+const targetScheme = "R9-21X21-M40-02";
 const track = "daily|native-punctuation";
 const benchmarkPath = process.argv[2];
 if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
@@ -65,7 +65,7 @@ const keys = visibleKeys
 	.join("\n");
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc">
-<title id="title">神韵 R8 日常八场景文稿 纯双拼键频图（含标点）</title>
+<title id="title">神韵 R9 日常八场景文稿 纯双拼键频图（含标点）</title>
 <desc id="desc">双拼热力图基于日常八场景文稿的 ${sample.hits} 次击键。只包含双拼部分，5 辅键未参与评估。</desc>
 <rect width="790" height="304" fill="#fbfcfa"/>
 ${keys}
@@ -74,7 +74,7 @@ const output = join(
 	dirname(fileURLToPath(import.meta.url)),
 	"..",
 	"docs",
-	"shenyun-r8-keyboard-heat.svg",
+	"shenyun-r9-keyboard-heat.svg",
 );
 mkdirSync(dirname(output), { recursive: true });
 writeFileSync(output, svg, "utf8");

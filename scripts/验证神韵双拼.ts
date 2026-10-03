@@ -51,7 +51,7 @@ const finalMap: Record<string, string> = {
 	ao: "z",
 	e: "s",
 	ei: "x",
-	en: "e",
+	en: "q",
 	eng: "n",
 	er: "j",
 	i: "k",
@@ -64,13 +64,13 @@ const finalMap: Record<string, string> = {
 	ing: "d",
 	iong: "n",
 	iu: "t",
-	o: "q",
+	o: "e",
 	ong: "p",
 	ou: "f",
 	u: "j",
 	ua: "c",
 	uai: "t",
-	uan: "q",
+	uan: "e",
 	uang: "d",
 	ui: "r",
 	un: "g",
@@ -78,7 +78,7 @@ const finalMap: Record<string, string> = {
 	v: "r",
 	van: "e",
 	ve: "y",
-	vn: "w",
+	vn: "q",
 };
 
 const zeroCodes: Record<string, string> = {
@@ -89,10 +89,10 @@ const zeroCodes: Record<string, string> = {
 	ao: "qz",
 	e: "qs",
 	ei: "qx",
-	en: "qe",
+	en: "qq",
 	eng: "qn",
 	er: "qj",
-	o: "qq",
+	o: "qe",
 	ou: "qf",
 	ya: "yw",
 	yan: "yl",
@@ -102,21 +102,21 @@ const zeroCodes: Record<string, string> = {
 	yi: "yk",
 	yin: "yg",
 	ying: "yd",
-	yo: "yq",
+	yo: "ye",
 	yong: "yp",
 	you: "yf",
 	yu: "yr",
 	yuan: "ye",
 	yue: "yy",
-	yun: "yw",
+	yun: "yq",
 	wa: "jw",
 	wai: "jh",
 	wan: "jl",
 	wang: "jm",
 	wei: "jx",
-	wen: "je",
+	wen: "jq",
 	weng: "jn",
-	wo: "jq",
+	wo: "je",
 	wu: "jj",
 };
 
@@ -415,7 +415,7 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 
 const fixture = JSON.parse(
 	readFileSync(
-		join(scriptDirectory, "..", "docs", "shenyun-r8-mapping.json"),
+		join(scriptDirectory, "..", "docs", "shenyun-r9-mapping.json"),
 		"utf8",
 	),
 ) as {
@@ -427,7 +427,7 @@ const fixtureHash = createHash("sha256")
 	.update(JSON.stringify(fixture.codes))
 	.digest("hex");
 if (
-	fixture.scheme !== "R8-21X21-M40-01" ||
+	fixture.scheme !== "R9-21X21-M40-02" ||
 	fixtureHash !== fixture.mappingSha256
 ) {
 	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
@@ -462,9 +462,9 @@ if (benchmarkPath) {
 		entries: Array<{ id: string; codeList: Array<string | null> }>;
 	};
 	const target = payload.entries.find(
-		(entry) => entry.id === "R8-21X21-M40-01",
+		(entry) => entry.id === "R9-21X21-M40-02",
 	);
-	if (!target) throw new Error("Benchmark payload 中未找到 R8-21X21-M40-01。");
+	if (!target) throw new Error("Benchmark payload 中未找到 R9-21X21-M40-02。");
 
 	const sourceFailures: string[] = [];
 	const unencoded = new Set(["hng", "m", "n", "ng", "ê"]);
