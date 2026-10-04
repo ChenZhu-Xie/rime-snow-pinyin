@@ -2,13 +2,21 @@
 
 **Goal:** Add the historical 21x28 performance and collision extremes to the
 R11 atlas, calculate one reproducible AUAU/AAAU/AAAA collision contract for
-every declared 21x26 and 21x28 scheme, and expose both summary and full-cut
-metrics in the offline HTML.
+every declared 21x28 scheme and the three comparable R11 21x26 extremes, and
+expose both summary and full-cut metrics in the offline HTML.
 
-**Spec:** The user-approved design in the 2026-10-04 session: declared-capacity
-cohort; five sortable summary columns in the main benchmark; a dedicated table
-for Top 500/1k/2k/5k/10k affected rate, first-choice loss, cross buckets, all
-collision buckets, and maximum bucket; no README or release changes.
+**Spec:** The user-approved design in the 2026-10-04 session, narrowed on
+2026-10-05 to all 21x28 schemes plus `R11-21X26-M36-01`,
+`R11-21X26-M37-02`, and `R11-21X26-M38-03`. All use one Y onset class (YU
+spellings share the Y key). Five sortable summary columns appear in the main
+benchmark, with a dedicated table for Top 500/1k/2k/5k/10k affected rate,
+first-choice loss, cross buckets, all collision buckets, and maximum bucket;
+no README or release changes.
+
+The collision engine treats `pure-y` (ØY includes the YU spellings) and
+`split-y-yu` (ØY and ØYU use different onset keys) as explicit, independently
+selectable scopes. The current 21x28 comparison activates `pure-y`; later
+comparisons may activate either scope without inferring it from capacity.
 
 **Global constraints:**
 
@@ -46,7 +54,7 @@ collision buckets, and maximum bucket; no README or release changes.
 
 **Steps:**
 
-1. Add failing tests for declared-capacity cohort selection, all five cuts,
+1. Add failing tests for the 20-scheme comparison cohort, all five cuts,
    missing-code coverage, deterministic winners, and known frontier metrics.
 2. Implement a codeList-based engine that parses and sorts the corpus once,
    encodes only the Top 10,000 of each word length, and evaluates every layout.
@@ -65,7 +73,8 @@ collision buckets, and maximum bucket; no README or release changes.
 **Steps:**
 
 1. Add failing integration assertions for a 484-entry catalogue, ten new IDs,
-   and complete collision coverage for 219 declared 21x26/21x28 entries.
+   and complete collision coverage for all 17 declared 21x28 entries plus the
+   three comparable 21x26 extremes.
 2. Generalize the integrator to consume both tracked frontier sources, score
    only missing entries with the frozen R11 engine, preserve existing entries,
    and attach collision results plus corpus/method provenance.
