@@ -23,6 +23,7 @@ local strategies = {
 ---@field popping PoppingConfig[]
 ---@field auto_select_pattern string
 ---@field processing boolean
+---@field period_is_code boolean
 
 ---@param env PoppingEnv
 function this.init(env)
@@ -38,6 +39,8 @@ function this.init(env)
     end
   end)
   local config = env.engine.schema.config
+  local alphabet = config:get_string("speller/alphabet") or ""
+  env.period_is_code = alphabet:find(".", 1, true) ~= nil
   local popping_config = config:get_list("speller/popping")
   if not popping_config then
     return
@@ -106,7 +109,7 @@ function this.func(key_event, env)
   end
   -- Rime 有一个 bug，在按句号键之后的那个字词的编码的会有一个隐藏的 "."
   -- 这导致顶功判断失败，所以先屏蔽了。但是这个对用 "." 作为编码的方案会有影响
-  if input == "." then
+  if input == "." and not env.period_is_code then
     context:pop_input(1)
     input = snow.current(context)
     if not input then

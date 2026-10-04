@@ -9,6 +9,7 @@ const FILE_PATTERNS = [
 	"snow_*.schema.yaml",
 	"snow_*.dict.yaml",
 	"snow_*.fixed.txt",
+	"snow_shenyun_common.yaml",
 ];
 
 function resolveFiles(folder: string): string[] {

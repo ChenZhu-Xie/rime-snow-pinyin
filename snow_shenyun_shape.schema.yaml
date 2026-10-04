@@ -1,0 +1,24 @@
+# Rime schema
+# encoding: utf-8
+
+__include: snow_shenyun_common.yaml:/
+
+schema:
+  schema_id: snow_shenyun_shape
+  name: 冰雪神韵·形
+  version: "0.1"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    AUBB 飞花式 21×28 顶功方案
+    共用神韵均衡声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
+  dependencies:
+    - snow_pinyin
+    - snow_bihua
+    - snow_jiandao_chaifen
+
+shenyun_options:
+  auxiliary: shape
+
+__patch:
+  - snow_shenyun_shape.custom:/patch?
