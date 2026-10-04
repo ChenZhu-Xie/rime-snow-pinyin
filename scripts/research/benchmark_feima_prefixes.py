@@ -28,6 +28,8 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--layouts", type=Path, required=True)
     parser.add_argument("--stems", type=Path, required=True)
     parser.add_argument("--pinyin", type=Path, required=True)
+    parser.add_argument("--ids", nargs="*", help="optional layout IDs to retain")
+    parser.add_argument("--output", type=Path, help="write JSON here instead of stdout")
     return parser.parse_args()
 
 
@@ -311,7 +313,14 @@ def main() -> None:
     words = read_words(dictionary_paths)
     words[1] = read_single_pinyin(args.pinyin)
     stems = read_stems(args.stems)
-    layouts = json.loads(args.layouts.read_text(encoding="utf-8"))
+    layout_payload = json.loads(args.layouts.read_text(encoding="utf-8"))
+    layouts = layout_payload.get("candidates", []) if isinstance(layout_payload, dict) else layout_payload
+    if args.ids:
+        requested = set(args.ids)
+        layouts = [layout for layout in layouts if layout["id"] in requested]
+        missing = requested - {layout["id"] for layout in layouts}
+        if missing:
+            raise ValueError(f"layout IDs not found: {sorted(missing)}")
     output = {
         "inputs": {
             path.name: sha256(path) for path in [*dictionary_paths, args.layouts, args.stems, args.pinyin]
@@ -369,7 +378,12 @@ def main() -> None:
                 "tripleResidualAAAUBB": stage_metrics(triple_residual, "AAAUBB"),
             }
         output["layouts"].append(result)
-    print(json.dumps(output, ensure_ascii=False, indent=2))
+    rendered = json.dumps(output, ensure_ascii=False, indent=2)
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered)
 
 
 if __name__ == "__main__":
