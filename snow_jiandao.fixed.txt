@@ -1,5 +1,5 @@
 # 二简词
-be	表示
+be	表示 B b
 bq	并且
 bt	不同
 bx	不行
@@ -27,7 +27,7 @@ mt	明天
 mx	梦想
 my	满意
 np	哪怕
-pe	平时
+pe	平时 P p
 pq	脾气
 pt	平台
 px	平安
@@ -774,7 +774,7 @@ bs	把
 bsa	巴
 bsi	拔
 bso	吧
-bsu	八
+bsu	八 8
 bsv	霸
 bw	被
 bwa	贝
@@ -798,7 +798,7 @@ cbv	璀
 cd	凑
 cdu	腠
 cdv	辏
-ce	测
+ce	测 C c
 cei	侧
 ceo	恻
 ceu	册
@@ -884,7 +884,7 @@ ddi	抖
 ddo	斗
 ddu	兜
 ddv	豆
-de	得
+de	得 D d
 dei	锝
 deo	嘚
 deu	德
@@ -985,7 +985,7 @@ edi	手
 edo	首
 edu	受
 edv	寿
-ee	设
+ee	设 E e
 eea	涉
 eei	舍
 eeo	社
@@ -1014,7 +1014,7 @@ ek	时
 eka	始
 eki	使
 eko	试
-eku	十
+eku	十 10
 ekv	事
 el	说
 ela	妁
@@ -1082,7 +1082,7 @@ fdi	胄
 fdo	州
 fdu	皱
 fdv	否
-fe	着
+fe	着 F f
 fea	浙
 fei	折
 feo	遮
@@ -1192,7 +1192,7 @@ gdi	钩
 gdo	诟
 gdu	狗
 gdv	构
-ge	各
+ge	各 G g
 gea	隔
 gei	葛
 geo	割
@@ -1297,7 +1297,7 @@ hdi	候
 hdo	喉
 hdu	猴
 hdv	厚
-he	合
+he	合 H h
 hea	河
 hei	何
 heo	喝
@@ -1407,7 +1407,7 @@ jdi	节
 jdo	竭
 jdu	解
 jdv	杰
-je	车
+je	车 J j
 jea	澈
 jei	撤
 jeo	㬚
@@ -1471,7 +1471,7 @@ jq	久
 jqa	酒
 jqi	旧
 jqo	究
-jqu	九
+jqu	九 9
 jqv	救
 jr	成
 jra	承
@@ -1526,7 +1526,7 @@ kda	𫸩
 kdi	扣
 kdo	叩
 kdu	筘
-ke	克
+ke	克 K k
 kea	渴
 kei	颗
 keo	客
@@ -1631,7 +1631,7 @@ ldi	搂
 ldo	咧
 ldu	猎
 ldv	列
-le	乐
+le	乐 L l
 lea	泐
 lei	仂
 leo	嘞
@@ -1648,7 +1648,7 @@ lga	灵
 lgi	令
 lgo	另
 lgu	鲮
-lgv	零
+lgv	零 0
 lh	来
 lha	濑
 lhi	略
@@ -1687,7 +1687,7 @@ lpv	琅
 lq	刘
 lqa	流
 lqi	镏
-lqo	六
+lqo	六 6
 lqu	留
 lqv	柳
 lr	冷
@@ -1747,7 +1747,7 @@ mdi	眸
 mdo	谋
 mdu	篾
 mdv	灭
-me	么
+me	么 M m
 meo	麽
 mev	末
 mf	满
@@ -1840,7 +1840,7 @@ ndi	孽
 ndo	蹑
 ndu	臬
 ndv	聂
-ne	呢
+ne	呢 N n
 nea	那
 neo	讷
 nf	难
@@ -2029,7 +2029,7 @@ qdi	茄
 qdo	窃
 qdu	箧
 qdv	切
-qe	着
+qe	着 Q q
 qea	浙
 qei	折
 qeo	遮
@@ -2064,7 +2064,7 @@ qka	汽
 qki	企
 qko	齐
 qku	气
-qkv	其
+qkv	其 七 7
 ql	区
 qla	屈
 qli	曲
@@ -2144,7 +2144,7 @@ rda	柔
 rdi	揉
 rdo	蹂
 rdv	鞣
-re	热
+re	热 R r
 rei	惹
 reo	喏
 rf	然
@@ -2193,7 +2193,7 @@ rza	娆
 rzi	扰
 rzu	饶
 rzv	桡
-s	三
+s	三 3
 sb	随
 sba	隋
 sbi	岁
@@ -2205,7 +2205,7 @@ sda	溲
 sdi	薮
 sdo	嗖
 sdu	馊
-se	色
+se	色 S s
 sea	涩
 sei	铯
 seo	塞
@@ -2226,7 +2226,7 @@ sji	俗
 sjo	诉
 sju	稣
 sjv	速
-sk	四
+sk	四 4
 ska	司
 ski	似
 sko	嗣
@@ -2290,7 +2290,7 @@ tda	贴
 tdi	偷
 tdu	透
 tdv	餮
-te	特
+te	特 T t
 tei	铽
 tev	忒
 tf	谈
@@ -2387,7 +2387,7 @@ wdi	仇
 wdo	踌
 wdu	愁
 wdv	酬
-we	车
+we	车 W w
 wea	澈
 wei	撤
 weo	㬚
@@ -2410,7 +2410,7 @@ wja	屋
 wji	伍
 wjo	误
 wju	物
-wjv	五
+wjv	五 5
 wk	吃
 wka	迟
 wki	持
@@ -2494,7 +2494,7 @@ xdi	斜
 xdo	写
 xdu	协
 xdv	欧
-xe	额
+xe	额 X x
 xea	阿
 xei	俄
 xeo	呃
@@ -2511,25 +2511,25 @@ xgi	省
 xgo	性
 xgu	腥
 xgv	形
-xh	学
+xh	学 V v
 xha	隘
 xhi	艾
 xho	哀
 xhu	爱
 xhv	雪
-xj	二
+xj	二 2 U u
 xja	洱
 xji	铒
 xjo	咡
 xju	儿
 xjv	耳
-xk	西
+xk	西 I i
 xka	戏
 xki	锡
 xko	席
 xku	系
 xkv	喜
-xl	哦
+xl	哦 O o
 xla	续
 xli	虚
 xlo	许
@@ -2555,7 +2555,7 @@ xqu	秀
 xqv	朽
 xr	嗯
 xro	唔
-xs	下
+xs	下 A a
 xsa	阿
 xsi	侠
 xso	啊
@@ -2591,7 +2591,7 @@ xzi	傲
 xzo	噢
 xzu	翱
 xzv	熬
-y	一
+y	一 1
 yb	因
 yba	引
 ybi	银
@@ -2604,7 +2604,7 @@ ydi	由
 ydo	忧
 ydu	犹
 ydv	右
-ye	也
+ye	也 Y y
 yea	液
 yei	业
 yeo	夜
@@ -2687,7 +2687,7 @@ zdi	揍
 zdo	诹
 zdu	邹
 zdv	奏
-ze	则
+ze	则 Z z
 zea	泽
 zei	择
 zeo	咋

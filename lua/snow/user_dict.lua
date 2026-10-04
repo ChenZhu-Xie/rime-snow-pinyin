@@ -115,6 +115,10 @@ function this.func(key_event, env)
   if not config:get_bool("translator/enable_schema_user_dict") then
     return snow.kNoop
   end
+  -- 用户词典没能打开，所有读写都无从进行
+  if not env.user_dict then
+    return snow.kNoop
+  end
 
   if env.add_input:len() > 0 then
     if key_event:eq(env.add_key) then

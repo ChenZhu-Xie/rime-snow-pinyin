@@ -50,14 +50,16 @@ engine:
     - lua_translator@*snow.calculator
     - history_translator
   filters:
+    - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sipin
     - lua_filter@*snow.fix
+    - lua_filter@*snow.shape_filter
     - lua_filter@*snow.postpone
     - uniquifier
-    - lua_filter@*snow.shape_filter
     - simplifier
     - lua_filter@*snow.special
+    - lua_filter@*snow.unicode
 
 sipin_algebra:
   # 无理音节

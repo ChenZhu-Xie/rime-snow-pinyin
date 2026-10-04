@@ -144,7 +144,9 @@ function this.func(translation, env)
         snow.comment(candidate, "~ " .. chaifen:gsub("-", " "))
       end
     end
-    prettify_preedit(candidate)
+    if segment and segment:has_tag("abc") then
+      prettify_preedit(candidate)
+    end
     yield(candidate)
     ::continue::
   end

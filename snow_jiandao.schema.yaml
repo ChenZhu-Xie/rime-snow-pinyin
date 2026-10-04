@@ -62,6 +62,7 @@ engine:
     - uniquifier
     - simplifier
     - lua_filter@*snow.hint
+    - lua_filter@*snow.unicode
 
 speller:
   alphabet: bpmfdtnlgkhjqxzcsrwye
@@ -124,6 +125,7 @@ lookup_jiandao:
   comment_format:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
+      - xform/q([zhe])/f$1/
       - xform/[viuoa]( |$)/$1/ # 无声调
 
 __patch:

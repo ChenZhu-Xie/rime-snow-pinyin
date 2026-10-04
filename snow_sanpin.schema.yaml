@@ -59,6 +59,7 @@ engine:
     - uniquifier
     - simplifier
     - lua_filter@*snow.hint
+    - lua_filter@*snow.unicode
 
 sanpin_algebra:
   # 全拼还原
@@ -169,6 +170,8 @@ lookup_sanpin:
   dictionary: snow_pinyin
   comment_format:
     __include: /sanpin_algebra
+    __append:
+      - xform/q([zhe])/f$1/
 
 __patch:
   - patch

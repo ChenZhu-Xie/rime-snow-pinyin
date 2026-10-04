@@ -176,12 +176,15 @@ snow.db_pool = snow.db_pool or {}
 snow.ref_counter = snow.ref_counter or {}
 
 ---@param name string
+---@return LevelDb|nil
 function snow.get_db(name)
   local db = snow.db_pool[name]
   if not db then
     db = LevelDb(name)
-    if not db:loaded() then
-      db:open()
+    -- 用户词典是独占锁，被其他 rime 实例占着时打不开。此时返回 nil 退化成没有
+    -- 用户词典，否则调用方会拿着未加载的 db 去 query，得到 nil 而报错
+    if not db:loaded() and not db:open() then
+      return nil
     end
     snow.db_pool[name] = db
     snow.ref_counter[name] = 1
