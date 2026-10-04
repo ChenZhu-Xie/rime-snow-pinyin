@@ -1,4 +1,6 @@
 node_modules
+__pycache__/
+*.py[cod]
 diff
 cache
 # 固顶候选语料、公共仓库缓存与详细测量报告（均可重建）
