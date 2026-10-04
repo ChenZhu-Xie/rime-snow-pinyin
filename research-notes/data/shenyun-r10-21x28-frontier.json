@@ -1,0 +1,1677 @@
+{
+  "status": "research frontier; not a released schema mapping",
+  "method": {
+    "performance": "frozen R11 original 20-track JS engine; lower v4/v5/v6/CKT is better, higher dailyMX is better",
+    "collision": "real Snow dictionaries; exact AUAU/AAAU/AAAA cross-family replay at Top 500/1k/2k/5k/10k",
+    "constraints": [
+      "Common399 399/399 unique",
+      "integral one-key finals",
+      "comma and period only as U keys",
+      "fixed IEUAO auxiliary order",
+      "V unrestricted"
+    ]
+  },
+  "inputSha256": {
+    "refined": "7eea6336e097246f698d811ba8f0d7ef8dafd5fe05bb69a511d5fd03fa7a706e",
+    "d1": "49937ec7c719bb564759d12cf1f9e5732b3dfca15d72f6950ae4a1adcc3f4d35",
+    "refinedCollisions": "f3645c34e5aba8cb8757c55384308f9fd04ddaa0e572d3621fa94667a53fd0c6",
+    "d1Collisions": "a369bc14580a224768aa7d133a9fa720f7bce1f3963c3ef75c1851e201375f5e",
+    "source": "4f6a099fd4be49a38c4b711bfe53c74a1a3225427b7ebb0b6f7311b7ab6943c4",
+    "exact/SHENYUN-R10X28-D1-M39.json": "2a6665801e9f4d4c0ca9cbd37c29bf63a2f96be33b64a813c45cc51a1a80a0cd",
+    "exact/SHENYUN-R10X28-D2-M38.json": "503804d295a83a5ce860e88862d998597220b31f98e8fd727fdd21ba8a162013",
+    "exact/SHENYUN-R10X28-D3-M38.json": "163aff067edf29f96405bf01e11ad75b69524e2045634f6f0ba9d9df49202cb1",
+    "exact/SHENYUN-R10X28-D4-M38.json": "2b148dbc1b89ce9b87d92e19f92802817bad16d3fd7d20b5bfe806ae5603a759",
+    "exact/SHENYUN-R10X27-D5-M41-COLL.json": "e34e9138f3b99cd1a4767071fc7e2fe6cefeaaa1684004cc2606a4c6debd7f99",
+    "exact/SHENYUN-R10X28-D5-M39-BAL.json": "c26adc028c577e3d0e92c38958d343c0bd74acd34b646924d75e42fbf2d53b88",
+    "exact/SHENYUN-R10X28-D5-M39-PERF.json": "45af1441e184fe1ddad47a86408e9102228186c79b5453037ad5697ec8f711b8"
+  },
+  "schemes": [
+    {
+      "id": "R10-21X26-M39-08",
+      "label": "R10 21×26 嵌入基线",
+      "sourceCandidate": "R10X28-CAND-032",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        26
+      ],
+      "common399Unique": 399,
+      "M": 39,
+      "D": 5,
+      "V": 0,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "R",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "W",
+        "x": "X",
+        "zh": "F",
+        "ch": "V",
+        "sh": "D",
+        "r": "Z",
+        "z": "Q",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "W",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "W",
+        "e": "E",
+        "ei": "Q",
+        "en": "M",
+        "eng": "N",
+        "er": "Q",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "V",
+        "iao": "C",
+        "ie": "Z",
+        "in": "G",
+        "ing": "D",
+        "iong": "H",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "S",
+        "u": "U",
+        "ua": "D",
+        "uai": "R",
+        "uan": "X",
+        "uang": "K",
+        "ui": "O",
+        "un": "F",
+        "uo": "H",
+        "v": "R",
+        "van": "F",
+        "ve": "T",
+        "vn": "X"
+      },
+      "performance": {
+        "v5": 9.916736803807137,
+        "v4": 10.569091724249855,
+        "v6": 9.01947599943618,
+        "dailyMX": 142.4467975486753,
+        "tracks": {
+          "S2": {
+            "upperMs": 67.32406517718019,
+            "sfb": 0.020059315637005817,
+            "repeat": 0.02237948514704063,
+            "alt": 0.5891226440467081,
+            "crossRow": 0.12372246752696904,
+            "home": 0.3529387063357846,
+            "rightPinky": 0.029186550619427185,
+            "maxFinger": 0.25672486031144903,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 62.99698766274599,
+            "sfb": 0.012532074688159893,
+            "repeat": 0.010179185920583476,
+            "alt": 0.6089243904010718,
+            "crossRow": 0.1084445732043251,
+            "home": 0.30803561729385565,
+            "rightPinky": 0.016601043894173013,
+            "maxFinger": 0.2099988613950311,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 308.16850642184676,
+            "sfb": 0.016829518383220856,
+            "repeat": 0.045194345933064456,
+            "alt": 0.5431835038741806,
+            "crossRow": 0.061198916283697696,
+            "home": 0.22110428188787992,
+            "rightPinky": 0.00832883210392262,
+            "maxFinger": 0.23990581511219014,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 360.8671536901742,
+            "sfb": 0.052652414014287593,
+            "repeat": 0.02086300066337403,
+            "alt": 0.5814954069780277,
+            "crossRow": 0.15694454455349316,
+            "home": 0.37199044728933595,
+            "rightPinky": 0.03310464472488062,
+            "maxFinger": 0.25830395386523686,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 669.9065382498751,
+            "sfb": 0.045940242039733195,
+            "repeat": 0.07252663126598143,
+            "alt": 0.5386380567769816,
+            "crossRow": 0.11895863711184647,
+            "home": 0.2976574656932216,
+            "rightPinky": 0.022069763149920416,
+            "maxFinger": 0.22972871863253044,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "frozen R11 source entry"
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.00808542402488385,
+            "crossFirstChoiceLossRate": 0.0033703147387271885,
+            "crossBuckets": 7,
+            "collisionBuckets": 48,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.01772582313254273,
+            "crossFirstChoiceLossRate": 0.00707840717373366,
+            "crossBuckets": 28,
+            "collisionBuckets": 143,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.042764774687075,
+            "crossFirstChoiceLossRate": 0.015292749671122919,
+            "crossBuckets": 119,
+            "collisionBuckets": 425,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.08376601566921163,
+            "crossFirstChoiceLossRate": 0.028189905091864843,
+            "crossBuckets": 521,
+            "collisionBuckets": 1667,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.14210243411009726,
+            "crossFirstChoiceLossRate": 0.045425389610785204,
+            "crossBuckets": 1609,
+            "collisionBuckets": 4483,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.058888894324762096,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.019871353257246763,
+        "relativeCrossAffectedVsBaseline": 0.0,
+        "relativeCrossFirstChoiceLossVsBaseline": 0.0
+      },
+      "performanceRelativeToBaseline": {
+        "S2": -2.220446049250313e-16,
+        "v5": 1.3322676295501878e-15,
+        "v4": -6.661338147750939e-16,
+        "v6": 6.661338147750939e-16,
+        "dailyMX": 0.0
+      }
+    },
+    {
+      "id": "SHENYUN-R10X28-D1-M39",
+      "label": "D1 低位移性能点",
+      "sourceCandidate": "R10X28-CAND-000",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "common399Unique": 399,
+      "M": 39,
+      "D": 1,
+      "V": 3,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "D",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "Q",
+        "x": "X",
+        "zh": "F",
+        "ch": "V",
+        "sh": "W",
+        "r": "R",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "Q",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "P",
+        "ai": "H",
+        "an": "L",
+        "ang": "U",
+        "ao": "S",
+        "e": "W",
+        "ei": "E",
+        "en": ".",
+        "eng": "N",
+        "er": "E",
+        "i": "I",
+        "ia": "C",
+        "ian": "K",
+        "iang": "F",
+        "iao": "Z",
+        "ie": ",",
+        "in": "V",
+        "ing": "D",
+        "iong": "Y",
+        "iu": "B",
+        "o": "O",
+        "ong": "Y",
+        "ou": "Q",
+        "u": "J",
+        "ua": "X",
+        "uai": "D",
+        "uan": "A",
+        "uang": "K",
+        "ui": "F",
+        "un": "M",
+        "uo": "O",
+        "v": "R",
+        "van": "T",
+        "ve": "G",
+        "vn": "A"
+      },
+      "performance": {
+        "v5": 9.999994991656273,
+        "v4": 10.65890013700609,
+        "v6": 9.136504736855942,
+        "dailyMX": 149.06823999244872,
+        "tracks": {
+          "S2": {
+            "upperMs": 66.98009970980411,
+            "sfb": 0.02287685122551844,
+            "repeat": 0.01833495021524003,
+            "alt": 0.6072977499560855,
+            "crossRow": 0.1326753217113906,
+            "home": 0.37293533594625056,
+            "rightPinky": 0.027140183726204962,
+            "maxFinger": 0.24122503224440559,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 63.91116994892535,
+            "sfb": 0.010515428275300146,
+            "repeat": 0.020099957660651833,
+            "alt": 0.6250264988847304,
+            "crossRow": 0.11839557266798834,
+            "home": 0.32358597399126166,
+            "rightPinky": 0.031015451500541573,
+            "maxFinger": 0.21369287266556375,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 317.48892847907587,
+            "sfb": 0.015842113022900107,
+            "repeat": 0.04841747749478491,
+            "alt": 0.5394483926672146,
+            "crossRow": 0.06349657421278934,
+            "home": 0.2289059786314361,
+            "rightPinky": 0.015560617140831555,
+            "maxFinger": 0.23419992924525831,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 363.81344532872237,
+            "sfb": 0.05197649588189823,
+            "repeat": 0.024948320587266485,
+            "alt": 0.5929638754686415,
+            "crossRow": 0.15427591163843557,
+            "home": 0.3904531971708666,
+            "rightPinky": 0.026334783489802772,
+            "maxFinger": 0.2517265692955153,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 673.9259918107813,
+            "sfb": 0.04863153917170586,
+            "repeat": 0.07201297257837161,
+            "alt": 0.5446736417476724,
+            "crossRow": 0.11887095548500717,
+            "home": 0.309965965614242,
+            "rightPinky": 0.017556522326535182,
+            "maxFinger": 0.22534379558604936,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.01618161940849957,
+            "crossFirstChoiceLossRate": 0.007698319938006814,
+            "crossBuckets": 13,
+            "collisionBuckets": 53,
+            "maxBucket": 4
+          },
+          "1000": {
+            "crossAffectedRate": 0.027727230405819762,
+            "crossFirstChoiceLossRate": 0.010738302602223705,
+            "crossBuckets": 39,
+            "collisionBuckets": 154,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.0442994610084417,
+            "crossFirstChoiceLossRate": 0.01611196902415142,
+            "crossBuckets": 116,
+            "collisionBuckets": 429,
+            "maxBucket": 7
+          },
+          "5000": {
+            "crossAffectedRate": 0.08663527798191646,
+            "crossFirstChoiceLossRate": 0.02961829025326347,
+            "crossBuckets": 520,
+            "collisionBuckets": 1657,
+            "maxBucket": 12
+          },
+          "10000": {
+            "crossAffectedRate": 0.14756075376099326,
+            "crossFirstChoiceLossRate": 0.04941328277284593,
+            "crossBuckets": 1626,
+            "collisionBuckets": 4447,
+            "maxBucket": 17
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.06448086851313414,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.022716032918098268,
+        "relativeCrossAffectedVsBaseline": 0.09495804349005565,
+        "relativeCrossFirstChoiceLossVsBaseline": 0.14315480299833605
+      },
+      "performanceRelativeToBaseline": {
+        "S2": -0.005109101277096961,
+        "v5": 0.008395724268610794,
+        "v4": 0.008497268743554276,
+        "v6": 0.012975114898812645,
+        "dailyMX": 0.04648361744679308
+      }
+    },
+    {
+      "id": "SHENYUN-R10X28-D2-M38",
+      "label": "D2 低位移均衡点",
+      "sourceCandidate": "R10X28-CAND-003",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "common399Unique": 399,
+      "M": 38,
+      "D": 2,
+      "V": 1,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "F",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "Q",
+        "x": "X",
+        "zh": "W",
+        "ch": "V",
+        "sh": "D",
+        "r": "R",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "Q",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": ".",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "S",
+        "e": "E",
+        "ei": "M",
+        "en": ",",
+        "eng": "N",
+        "er": "Q",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "G",
+        "iao": "A",
+        "ie": "C",
+        "in": "V",
+        "ing": "D",
+        "iong": "H",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "W",
+        "u": "U",
+        "ua": "V",
+        "uai": "A",
+        "uan": "Q",
+        "uang": "K",
+        "ui": "O",
+        "un": "X",
+        "uo": "H",
+        "v": "F",
+        "van": "T",
+        "ve": "R",
+        "vn": "Z"
+      },
+      "performance": {
+        "v5": 9.973624495254533,
+        "v4": 10.607455494282348,
+        "v6": 9.060748926662447,
+        "dailyMX": 148.6390902869561,
+        "tracks": {
+          "S2": {
+            "upperMs": 67.58643205940385,
+            "sfb": 0.022101038640150623,
+            "repeat": 0.019650969998056007,
+            "alt": 0.6206602230723361,
+            "crossRow": 0.15857500013563067,
+            "home": 0.35939231181024833,
+            "rightPinky": 0.029186550619427185,
+            "maxFinger": 0.2494896925498168,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 64.94950561713456,
+            "sfb": 0.011974449852350305,
+            "repeat": 0.01575806277638329,
+            "alt": 0.6292845693344107,
+            "crossRow": 0.12543957688196303,
+            "home": 0.3554696648297164,
+            "rightPinky": 0.016601043894173013,
+            "maxFinger": 0.2110105523641441,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 310.7120820799578,
+            "sfb": 0.022741399170576923,
+            "repeat": 0.043436759257457,
+            "alt": 0.541236014626303,
+            "crossRow": 0.08165588276829118,
+            "home": 0.2449021960705139,
+            "rightPinky": 0.00832883210392262,
+            "maxFinger": 0.2404133858575307,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 360.0726490420226,
+            "sfb": 0.05415122898003567,
+            "repeat": 0.020884834063495672,
+            "alt": 0.6051241456001935,
+            "crossRow": 0.17427775112825877,
+            "home": 0.3640456522803073,
+            "rightPinky": 0.03310464472488062,
+            "maxFinger": 0.25626202104405355,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 669.9893448135307,
+            "sfb": 0.04849094042725045,
+            "repeat": 0.07215643306106874,
+            "alt": 0.5498624846550142,
+            "crossRow": 0.13703587235025372,
+            "home": 0.29236093568720245,
+            "rightPinky": 0.022069763149920416,
+            "maxFinger": 0.2283674300850749,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.006441751312807838,
+            "crossFirstChoiceLossRate": 0.002822012343512737,
+            "crossBuckets": 5,
+            "collisionBuckets": 46,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.0159549004617633,
+            "crossFirstChoiceLossRate": 0.0066367696459113685,
+            "crossBuckets": 23,
+            "collisionBuckets": 138,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.03453716091135175,
+            "crossFirstChoiceLossRate": 0.012959399220039334,
+            "crossBuckets": 93,
+            "collisionBuckets": 408,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.07131620065423402,
+            "crossFirstChoiceLossRate": 0.024489417431597573,
+            "crossBuckets": 449,
+            "collisionBuckets": 1623,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.12152139016853512,
+            "crossFirstChoiceLossRate": 0.04053502024472633,
+            "crossBuckets": 1372,
+            "collisionBuckets": 4313,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.04995428070173841,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.01748852377715747,
+        "relativeCrossAffectedVsBaseline": -0.15171983997102811,
+        "relativeCrossFirstChoiceLossVsBaseline": -0.11991279351950102
+      },
+      "performanceRelativeToBaseline": {
+        "S2": 0.0038970742710375816,
+        "v5": 0.005736533354961049,
+        "v4": 0.003629807653619199,
+        "v6": 0.004575978385978452,
+        "dailyMX": 0.0434709157723594
+      }
+    },
+    {
+      "id": "SHENYUN-R10X28-D3-M38",
+      "label": "D3 碰撞优先点",
+      "sourceCandidate": "R10X28-CAND-014",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "common399Unique": 399,
+      "M": 38,
+      "D": 3,
+      "V": 0,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "V",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "F",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "Q",
+        "x": "X",
+        "zh": "W",
+        "ch": "B",
+        "sh": "D",
+        "r": "R",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "Q",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "S",
+        "e": "E",
+        "ei": ",",
+        "en": ".",
+        "eng": "N",
+        "er": "Q",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "F",
+        "iao": "C",
+        "ie": "Z",
+        "in": "V",
+        "ing": "D",
+        "iong": "H",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "W",
+        "u": "U",
+        "ua": "D",
+        "uai": "Q",
+        "uan": "M",
+        "uang": "K",
+        "ui": "O",
+        "un": "R",
+        "uo": "H",
+        "v": "G",
+        "van": "R",
+        "ve": "T",
+        "vn": "X"
+      },
+      "performance": {
+        "v5": 9.955949787655909,
+        "v4": 10.6163622585368,
+        "v6": 9.037706676015972,
+        "dailyMX": 143.69284652857493,
+        "tracks": {
+          "S2": {
+            "upperMs": 67.59223023568478,
+            "sfb": 0.02124084690953009,
+            "repeat": 0.015977562093729383,
+            "alt": 0.6063395615020426,
+            "crossRow": 0.1465645090454231,
+            "home": 0.3754060853442126,
+            "rightPinky": 0.029186550619427185,
+            "maxFinger": 0.24194761531052922,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 64.99049827070895,
+            "sfb": 0.012413477419363406,
+            "repeat": 0.009489848707642294,
+            "alt": 0.6153707673298058,
+            "crossRow": 0.10827618507016869,
+            "home": 0.3808540733781002,
+            "rightPinky": 0.016601043894173013,
+            "maxFinger": 0.20126226894084837,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 308.8104715929668,
+            "sfb": 0.013358779098365546,
+            "repeat": 0.044963520745464725,
+            "alt": 0.5454946529264841,
+            "crossRow": 0.06247093254301785,
+            "home": 0.25763768898316597,
+            "rightPinky": 0.00832883210392262,
+            "maxFinger": 0.23552262016522502,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 361.32929480810225,
+            "sfb": 0.05156184401055322,
+            "repeat": 0.019301039871554133,
+            "alt": 0.5969528740933348,
+            "crossRow": 0.17178391427757433,
+            "home": 0.37308786537396105,
+            "rightPinky": 0.03310464472488062,
+            "maxFinger": 0.25023364059860326,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 671.1199257708395,
+            "sfb": 0.04663477389068811,
+            "repeat": 0.07158945479088949,
+            "alt": 0.5460294846172998,
+            "crossRow": 0.13334608142595142,
+            "home": 0.29838907774963835,
+            "rightPinky": 0.022069763149920416,
+            "maxFinger": 0.22434850978810805,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.005839590681792022,
+            "crossFirstChoiceLossRate": 0.0024889280123430745,
+            "crossBuckets": 5,
+            "collisionBuckets": 46,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.010943699255011919,
+            "crossFirstChoiceLossRate": 0.004706225103542105,
+            "crossBuckets": 16,
+            "collisionBuckets": 131,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.029343356987831342,
+            "crossFirstChoiceLossRate": 0.011018498613107249,
+            "crossBuckets": 80,
+            "collisionBuckets": 396,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.06739387726846406,
+            "crossFirstChoiceLossRate": 0.02322722843915815,
+            "crossBuckets": 427,
+            "collisionBuckets": 1599,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.11845281113562849,
+            "crossFirstChoiceLossRate": 0.03976705044927339,
+            "crossBuckets": 1351,
+            "collisionBuckets": 4297,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.04639466706574556,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.016241586123484794,
+        "relativeCrossAffectedVsBaseline": -0.2121661036818424,
+        "relativeCrossFirstChoiceLossVsBaseline": -0.18266330867215863
+      },
+      "performanceRelativeToBaseline": {
+        "S2": 0.00398319765449151,
+        "v5": 0.0039542225053033064,
+        "v4": 0.004472525692863494,
+        "v6": 0.0020212567316479912,
+        "dailyMX": 0.00874746924004266
+      }
+    },
+    {
+      "id": "SHENYUN-R10X28-D4-M38",
+      "label": "D4 综合均衡点",
+      "sourceCandidate": "R10X28-CAND-022",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "common399Unique": 399,
+      "M": 38,
+      "D": 4,
+      "V": 0,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "R",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "W",
+        "x": "X",
+        "zh": "F",
+        "ch": "V",
+        "sh": "D",
+        "r": "Q",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "W",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "S",
+        "e": "E",
+        "ei": "M",
+        "en": ".",
+        "eng": "N",
+        "er": "X",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "G",
+        "iao": ",",
+        "ie": "C",
+        "in": "V",
+        "ing": "D",
+        "iong": "H",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "W",
+        "u": "U",
+        "ua": "F",
+        "uai": "D",
+        "uan": "Q",
+        "uang": "K",
+        "ui": "O",
+        "un": "X",
+        "uo": "H",
+        "v": "F",
+        "van": "T",
+        "ve": "R",
+        "vn": "Z"
+      },
+      "performance": {
+        "v5": 9.878908467080109,
+        "v4": 10.566276807471963,
+        "v6": 9.001004331593874,
+        "dailyMX": 147.5352474970455,
+        "tracks": {
+          "S2": {
+            "upperMs": 66.67887651632276,
+            "sfb": 0.01809701379697406,
+            "repeat": 0.01889442345637445,
+            "alt": 0.602526374842607,
+            "crossRow": 0.14113417916854745,
+            "home": 0.35542842845178807,
+            "rightPinky": 0.029186550619427185,
+            "maxFinger": 0.2494896925498168,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 63.62732759789599,
+            "sfb": 0.009817589515097893,
+            "repeat": 0.016362466657267052,
+            "alt": 0.6127871594382505,
+            "crossRow": 0.10769265857990186,
+            "home": 0.3131759457358696,
+            "rightPinky": 0.016601043894173013,
+            "maxFinger": 0.2110105523641441,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 308.7933417909283,
+            "sfb": 0.012163923078905547,
+            "repeat": 0.04726482306563813,
+            "alt": 0.5435392514534407,
+            "crossRow": 0.06281013596200864,
+            "home": 0.22368321203380767,
+            "rightPinky": 0.00832883210392262,
+            "maxFinger": 0.2404133858575307,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 359.42033242142423,
+            "sfb": 0.05146010369130919,
+            "repeat": 0.020454532712478102,
+            "alt": 0.5943492729401951,
+            "crossRow": 0.1658735521732194,
+            "home": 0.37181531714612187,
+            "rightPinky": 0.03310464472488062,
+            "maxFinger": 0.25626202104405355,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 668.6418489414827,
+            "sfb": 0.04672035251251982,
+            "repeat": 0.07228155049544392,
+            "alt": 0.5438984285789881,
+            "crossRow": 0.12876638207345578,
+            "home": 0.2975407122644122,
+            "rightPinky": 0.022069763149920416,
+            "maxFinger": 0.2283674300850749,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.007512667227471472,
+            "crossFirstChoiceLossRate": 0.0031693522485295718,
+            "crossBuckets": 6,
+            "collisionBuckets": 47,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.022342156422108676,
+            "crossFirstChoiceLossRate": 0.009221325703919326,
+            "crossBuckets": 31,
+            "collisionBuckets": 146,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.04007735327669418,
+            "crossFirstChoiceLossRate": 0.015421666789609966,
+            "crossBuckets": 104,
+            "collisionBuckets": 416,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.07104784435803813,
+            "crossFirstChoiceLossRate": 0.024516801407871613,
+            "crossBuckets": 438,
+            "collisionBuckets": 1614,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.12557515524080246,
+            "crossFirstChoiceLossRate": 0.0413862079916385,
+            "crossBuckets": 1418,
+            "collisionBuckets": 4344,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.05331103530502298,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.018743070828313797,
+        "relativeCrossAffectedVsBaseline": -0.09471835196935752,
+        "relativeCrossFirstChoiceLossVsBaseline": -0.056779345338320186
+      },
+      "performanceRelativeToBaseline": {
+        "S2": -0.009583328920490297,
+        "v5": -0.00381459521165195,
+        "v4": -0.0002663347855559328,
+        "v6": -0.0020479757187064074,
+        "dailyMX": 0.035721757427585654
+      }
+    },
+    {
+      "id": "SHENYUN-R10X27-D5-M41-COLL",
+      "label": "21×27 碰撞过渡点",
+      "sourceCandidate": "R10X28-CAND-037",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        27
+      ],
+      "common399Unique": 399,
+      "M": 41,
+      "D": 5,
+      "V": 1,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "R",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "D",
+        "x": "X",
+        "zh": "F",
+        "ch": "V",
+        "sh": "W",
+        "r": "Z",
+        "z": "Q",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "D",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": ".",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "W",
+        "e": "E",
+        "ei": "S",
+        "en": ",",
+        "eng": "N",
+        "er": "S",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "G",
+        "iao": "C",
+        "ie": "Z",
+        "in": "V",
+        "ing": "A",
+        "iong": "H",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "Q",
+        "u": "U",
+        "ua": "A",
+        "uai": "F",
+        "uan": "D",
+        "uang": "K",
+        "ui": "O",
+        "un": "M",
+        "uo": "H",
+        "v": "R",
+        "van": "T",
+        "ve": "F",
+        "vn": "D"
+      },
+      "performance": {
+        "v5": 9.878930931807933,
+        "v4": 10.571835255520563,
+        "v6": 9.047292608948684,
+        "dailyMX": 153.8018482496,
+        "tracks": {
+          "S2": {
+            "upperMs": 65.91949117980622,
+            "sfb": 0.018347140102218013,
+            "repeat": 0.016227003107201148,
+            "alt": 0.6121602065760131,
+            "crossRow": 0.14002323294855834,
+            "home": 0.3316509351104749,
+            "rightPinky": 0.029186550619427185,
+            "maxFinger": 0.2390779248648697,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 62.79759313603688,
+            "sfb": 0.011194470538901036,
+            "repeat": 0.010195928903353661,
+            "alt": 0.6246778533064734,
+            "crossRow": 0.11958839040205708,
+            "home": 0.2901813207535624,
+            "rightPinky": 0.016601043894173013,
+            "maxFinger": 0.200259709263238,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 311.28895822843066,
+            "sfb": 0.023924854434539518,
+            "repeat": 0.04163477060446803,
+            "alt": 0.5392025085806155,
+            "crossRow": 0.07701460632521978,
+            "home": 0.21214668625921318,
+            "rightPinky": 0.00832883210392262,
+            "maxFinger": 0.23501963063744535,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 358.5450477950734,
+            "sfb": 0.04915717901484105,
+            "repeat": 0.018340881056355816,
+            "alt": 0.599131991973282,
+            "crossRow": 0.16669705182842187,
+            "home": 0.3563437132209229,
+            "rightPinky": 0.03310464472488062,
+            "maxFinger": 0.2455597921993388,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 667.8843819476883,
+            "sfb": 0.045098830524185826,
+            "repeat": 0.07170094043808004,
+            "alt": 0.5476681542508156,
+            "crossRow": 0.12873354109316928,
+            "home": 0.2872263096476129,
+            "rightPinky": 0.022069763149920416,
+            "maxFinger": 0.22123261085526508,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.007456520312287662,
+            "crossFirstChoiceLossRate": 0.003114334530545797,
+            "crossBuckets": 6,
+            "collisionBuckets": 47,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.018831820025638983,
+            "crossFirstChoiceLossRate": 0.007315779971655586,
+            "crossBuckets": 29,
+            "collisionBuckets": 145,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.03373462541162775,
+            "crossFirstChoiceLossRate": 0.012364425949733157,
+            "crossBuckets": 91,
+            "collisionBuckets": 404,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.06509725844718614,
+            "crossFirstChoiceLossRate": 0.021906400478339475,
+            "crossBuckets": 406,
+            "collisionBuckets": 1606,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.10798411135036459,
+            "crossFirstChoiceLossRate": 0.0358042100165046,
+            "crossBuckets": 1242,
+            "collisionBuckets": 4277,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.046620867109421024,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.01610103018935572,
+        "relativeCrossAffectedVsBaseline": -0.2083249712192764,
+        "relativeCrossFirstChoiceLossVsBaseline": -0.1897366031936485
+      },
+      "performanceRelativeToBaseline": {
+        "S2": -0.020862881551752643,
+        "v5": -0.0038123298769690006,
+        "v4": 0.00025958060941100314,
+        "v6": 0.00308406048358556,
+        "dailyMX": 0.07971432770922471
+      }
+    },
+    {
+      "id": "SHENYUN-R10X28-D5-M39-BAL",
+      "label": "D5 全面均衡点",
+      "sourceCandidate": "R10X28-CAND-044",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "common399Unique": 399,
+      "M": 39,
+      "D": 5,
+      "V": 0,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "R",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "W",
+        "x": "X",
+        "zh": "F",
+        "ch": "V",
+        "sh": "D",
+        "r": "Z",
+        "z": "Q",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "W",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "W",
+        "e": "E",
+        "ei": ",",
+        "en": ".",
+        "eng": "N",
+        "er": "Q",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "V",
+        "iao": "Z",
+        "ie": "C",
+        "in": "F",
+        "ing": "D",
+        "iong": "M",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "S",
+        "u": "U",
+        "ua": "D",
+        "uai": "G",
+        "uan": "M",
+        "uang": "K",
+        "ui": "O",
+        "un": "Q",
+        "uo": "H",
+        "v": "R",
+        "van": "G",
+        "ve": "T",
+        "vn": "X"
+      },
+      "performance": {
+        "v5": 9.8428057936268,
+        "v4": 10.558112568249424,
+        "v6": 8.9890955910176,
+        "dailyMX": 144.02588438920293,
+        "tracks": {
+          "S2": {
+            "upperMs": 66.19228929594888,
+            "sfb": 0.01756396063029918,
+            "repeat": 0.015007692529932906,
+            "alt": 0.6063395615020424,
+            "crossRow": 0.12497940166085125,
+            "home": 0.35072542936320017,
+            "rightPinky": 0.029186550619427185,
+            "maxFinger": 0.2419476153105292,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 62.706553855893226,
+            "sfb": 0.00920664177013878,
+            "repeat": 0.009695460202511786,
+            "alt": 0.6153707673298056,
+            "crossRow": 0.09967348171777862,
+            "home": 0.30862806972424206,
+            "rightPinky": 0.016601043894173013,
+            "maxFinger": 0.20126226894084837,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 308.39531426881285,
+            "sfb": 0.012209218963533535,
+            "repeat": 0.04503236994000251,
+            "alt": 0.5454946529264847,
+            "crossRow": 0.06198125015339679,
+            "home": 0.22140151842635936,
+            "rightPinky": 0.00832883210392262,
+            "maxFinger": 0.23552262016522504,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 358.95475977704723,
+            "sfb": 0.04979447800441238,
+            "repeat": 0.018130404010825708,
+            "alt": 0.5969528740933342,
+            "crossRow": 0.15828303983980627,
+            "home": 0.3692434072052853,
+            "rightPinky": 0.03310464472488062,
+            "maxFinger": 0.2502336405986033,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 668.4921176233796,
+            "sfb": 0.045557824729314945,
+            "repeat": 0.07088707327445244,
+            "alt": 0.5460294846172996,
+            "crossRow": 0.12474015500280396,
+            "home": 0.29582610563718786,
+            "rightPinky": 0.022069763149920416,
+            "maxFinger": 0.22434850978810805,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.005912413085129078,
+            "crossFirstChoiceLossRate": 0.0025712094251756903,
+            "crossBuckets": 5,
+            "collisionBuckets": 46,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.013191408590555677,
+            "crossFirstChoiceLossRate": 0.005250446412573838,
+            "crossBuckets": 22,
+            "collisionBuckets": 138,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.035853521743830316,
+            "crossFirstChoiceLossRate": 0.012613781516216444,
+            "crossBuckets": 101,
+            "collisionBuckets": 414,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.07241841912523454,
+            "crossFirstChoiceLossRate": 0.02484413057049477,
+            "crossBuckets": 451,
+            "collisionBuckets": 1613,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.12305957198457551,
+            "crossFirstChoiceLossRate": 0.04056884879043953,
+            "crossBuckets": 1403,
+            "collisionBuckets": 4326,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.05008706690586503,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.017169683342980056,
+        "relativeCrossAffectedVsBaseline": -0.14946498010909337,
+        "relativeCrossFirstChoiceLossVsBaseline": -0.13595802355742692
+      },
+      "performanceRelativeToBaseline": {
+        "S2": -0.01681086663814446,
+        "v5": -0.007455175189477803,
+        "v4": -0.0010387984404797157,
+        "v6": -0.0033683119086378444,
+        "dailyMX": 0.011085449920262613
+      }
+    },
+    {
+      "id": "SHENYUN-R10X28-D5-M39-PERF",
+      "label": "D5 性能优先点",
+      "sourceCandidate": "R10X28-CAND-048",
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "common399Unique": 399,
+      "M": 39,
+      "D": 5,
+      "V": 0,
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "R",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "W",
+        "x": "X",
+        "zh": "F",
+        "ch": "V",
+        "sh": "D",
+        "r": "Z",
+        "z": "Q",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "W",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "W",
+        "e": "E",
+        "ei": ",",
+        "en": ".",
+        "eng": "N",
+        "er": "X",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "F",
+        "iao": "D",
+        "ie": "C",
+        "in": "V",
+        "ing": "Q",
+        "iong": "H",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "S",
+        "u": "U",
+        "ua": "Q",
+        "uai": "D",
+        "uan": "M",
+        "uang": "K",
+        "ui": "O",
+        "un": "X",
+        "uo": "H",
+        "v": "R",
+        "van": "T",
+        "ve": "G",
+        "vn": "Z"
+      },
+      "performance": {
+        "v5": 9.824813617295394,
+        "v4": 10.568811008997372,
+        "v6": 8.984293457383979,
+        "dailyMX": 144.97729191078568,
+        "tracks": {
+          "S2": {
+            "upperMs": 65.86539237443864,
+            "sfb": 0.017430853086760505,
+            "repeat": 0.013714474273355148,
+            "alt": 0.6063395615020424,
+            "crossRow": 0.13756201793195705,
+            "home": 0.335829226536356,
+            "rightPinky": 0.029186550619427185,
+            "maxFinger": 0.24194761531052922,
+            "miss": 0
+          },
+          "C2": {
+            "upperMs": 62.62920355576515,
+            "sfb": 0.009085060061240987,
+            "repeat": 0.0094847970636176,
+            "alt": 0.6153707673298056,
+            "crossRow": 0.09932880626626192,
+            "home": 0.3120850918085648,
+            "rightPinky": 0.016601043894173013,
+            "maxFinger": 0.20126226894084837,
+            "miss": 0.1212893432886041
+          },
+          "C4-Snow": {
+            "upperMs": 308.39127873535926,
+            "sfb": 0.012182007510122758,
+            "repeat": 0.044961829197905964,
+            "alt": 0.5454946529264837,
+            "crossRow": 0.05893662499258853,
+            "home": 0.223135924810887,
+            "rightPinky": 0.00832883210392262,
+            "maxFinger": 0.23552262016522502,
+            "miss": 0.013013418330187418
+          },
+          "W4-Snow": {
+            "upperMs": 358.22517411219485,
+            "sfb": 0.049584190447087347,
+            "repeat": 0.016733521993215147,
+            "alt": 0.5969528740933342,
+            "crossRow": 0.17082829566068014,
+            "home": 0.35029253394674603,
+            "rightPinky": 0.03310464472488062,
+            "maxFinger": 0.25023364059860326,
+            "miss": 0.1597994688334588
+          },
+          "WX-Snow-12": {
+            "upperMs": 668.4061544534585,
+            "sfb": 0.04529289492177676,
+            "repeat": 0.0700489440638862,
+            "alt": 0.5460294846173003,
+            "crossRow": 0.13129154683492295,
+            "home": 0.283192190131495,
+            "rightPinky": 0.022069763149920416,
+            "maxFinger": 0.22434850978810805,
+            "miss": 0.029590903623035333
+          }
+        },
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null
+        }
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.012906441336552764,
+            "crossFirstChoiceLossRate": 0.005338088679343218,
+            "crossBuckets": 9,
+            "collisionBuckets": 50,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.022442006451706117,
+            "crossFirstChoiceLossRate": 0.00863536936079253,
+            "crossBuckets": 33,
+            "collisionBuckets": 149,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.040153906621270316,
+            "crossFirstChoiceLossRate": 0.014203516763232964,
+            "crossBuckets": 111,
+            "collisionBuckets": 426,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.07092142241809307,
+            "crossFirstChoiceLossRate": 0.02445903671200365,
+            "crossBuckets": 440,
+            "collisionBuckets": 1613,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.12029810144739554,
+            "crossFirstChoiceLossRate": 0.039396817257703054,
+            "crossBuckets": 1384,
+            "collisionBuckets": 4344,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.053344375655003565,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.018406565754615085,
+        "relativeCrossAffectedVsBaseline": -0.09415219513515516,
+        "relativeCrossFirstChoiceLossVsBaseline": -0.07371352537842346
+      },
+      "performanceRelativeToBaseline": {
+        "S2": -0.02166643976270144,
+        "v5": -0.0092694994664414,
+        "v4": -2.6560016680110543e-05,
+        "v6": -0.003900730159312471,
+        "dailyMX": 0.017764487553647346
+      }
+    }
+  ]
+}
