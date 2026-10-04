@@ -5,6 +5,10 @@
 > 本文接续[《神韵 21×28 六种标点韵排列：真实词表阶段测量》](shenyun-21x28-six-layout-benchmark.md)和[《冰雪神韵·形 / ·调：原型方案与 R11 全量测评》](shenyun-21x28-schemas-and-r11-benchmark.md)。上一阶段从空桶结构出发；本阶段改为把 `R10-21X26-M39-08` 原样嵌入 21×28，再在性能护栏内逐步开放 `,.`。
 >
 > 可复算的精选映射和逐档数据见 [`data/shenyun-r10-21x28-frontier.json`](data/shenyun-r10-21x28-frontier.json)。
+>
+> 与旧 180 空桶极端方案的同口径四码碰撞比较见[《R10 演化 21×28 与 180 空桶极端方案的碰撞对比》](shenyun-r10-vs-180-vacancy-collision.md)。
+>
+> 以两端为种子继续相向搜索得到的新前沿见[《神韵 21×28 两极之间的盆地搜索》](shenyun-21x28-hybrid-basin-search.md)。
 
 ## 结论
 

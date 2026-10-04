@@ -1,0 +1,869 @@
+{
+  "status": "research frontier; not a released schema mapping",
+  "method": {
+    "search": "multi-start bounded annealing between the R10-derived and old 180-vacancy extremes",
+    "performance": "frozen R11 factor replay used during search; lower S2/v4/v5/v6 is better, higher dailyMX is better",
+    "collision": "real Snow dictionaries; exact AUAU/AAAU/AAAA cross-family replay at Top 500/1k/2k/5k/10k",
+    "constraints": [
+      "Common399 399/399 unique",
+      "integral one-key finals",
+      "comma and period only as U keys",
+      "fixed IEUAO auxiliary order",
+      "V unrestricted"
+    ]
+  },
+  "inputSha256": {
+    "initialLayouts": "76b2f6bbf4fbde1b7309530564a283fd67eb3f98952cfc5cc50d4245f2944d40",
+    "initialCollisions": "1cd928034c78d69c30dadbbf06bd96e25b1f1cdd5786fe56e9e21f236bd2f4d6",
+    "refinedLayouts": "4b52f661c2c4da2cb1b2ce96187beb7ab6d02ae079a663be49e74e155fad2b6d",
+    "refinedCollisions": "c3281bc2d04d69f702617044b271cd27e7871af06f1d862f7d93ef1996462b39"
+  },
+  "schemes": [
+    {
+      "id": "SHENYUN-OLD-180",
+      "label": "旧 180 空桶极端基线",
+      "sourceCandidate": "OB-R10X28-CAND-000",
+      "common399Unique": 399,
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "M": 36,
+      "D": 1,
+      "V": 0,
+      "performanceProxy": {
+        "S2": 80.76674438444904,
+        "v5": 11.40421880010707,
+        "v4": 10.866052313015267,
+        "v6": 9.875949935076491,
+        "dailyMX": 118.16477031448547
+      },
+      "vacancyProxy": {
+        "aaVacancies": 180,
+        "weightedAAHotspotSeparation": 0.4849911494650157
+      },
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "F",
+        "d": "D",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "Q",
+        "x": "F",
+        "zh": "W",
+        "ch": "V",
+        "sh": "X",
+        "r": "R",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "Q",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "Q",
+        "an": ".",
+        "ang": "N",
+        "ao": "V",
+        "e": "E",
+        "ei": "J",
+        "en": "K",
+        "eng": "T",
+        "er": "U",
+        "i": "I",
+        "ia": "P",
+        "ian": "S",
+        "iang": "H",
+        "iao": "L",
+        "ie": "M",
+        "in": ",",
+        "ing": "R",
+        "iong": "Y",
+        "iu": "G",
+        "o": "O",
+        "ong": "P",
+        "ou": "C",
+        "u": "U",
+        "ua": "B",
+        "uai": "F",
+        "uan": "W",
+        "uang": "R",
+        "ui": ",",
+        "un": "D",
+        "uo": "O",
+        "v": "B",
+        "van": "X",
+        "ve": "Z",
+        "vn": "D"
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.0,
+            "crossFirstChoiceLossRate": 0.0,
+            "crossBuckets": 0,
+            "collisionBuckets": 41,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.0020691270791345627,
+            "crossFirstChoiceLossRate": 0.000713805905895786,
+            "crossBuckets": 3,
+            "collisionBuckets": 121,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.006749078065719828,
+            "crossFirstChoiceLossRate": 0.0020503984428431577,
+            "crossBuckets": 24,
+            "collisionBuckets": 358,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.03170603332991663,
+            "crossFirstChoiceLossRate": 0.009080282029704791,
+            "crossBuckets": 217,
+            "collisionBuckets": 1497,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.06667243539122733,
+            "crossFirstChoiceLossRate": 0.019779781337162593,
+            "crossBuckets": 807,
+            "collisionBuckets": 4064,
+            "maxBucket": 17
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.02143933477319967,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.006324853543121266
+      }
+    },
+    {
+      "id": "SHENYUN-R10X28-D3-M38",
+      "label": "上一轮 R10 端 D3",
+      "sourceCandidate": "D3-R10X28-CAND-000",
+      "common399Unique": 399,
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "M": 38,
+      "D": 3,
+      "V": 0,
+      "performanceProxy": {
+        "S2": 67.59223023568478,
+        "v5": 9.955949787655838,
+        "v4": 10.616362258536807,
+        "v6": 9.037706676015972,
+        "dailyMX": 143.69284652857493
+      },
+      "vacancyProxy": {
+        "aaVacancies": 163,
+        "weightedAAHotspotSeparation": 0.33045732928321586
+      },
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "V",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "F",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "Q",
+        "x": "X",
+        "zh": "W",
+        "ch": "B",
+        "sh": "D",
+        "r": "R",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "Q",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "J",
+        "an": "L",
+        "ang": "Y",
+        "ao": "S",
+        "e": "E",
+        "ei": ",",
+        "en": ".",
+        "eng": "N",
+        "er": "Q",
+        "i": "I",
+        "ia": "P",
+        "ian": "K",
+        "iang": "F",
+        "iao": "C",
+        "ie": "Z",
+        "in": "V",
+        "ing": "D",
+        "iong": "H",
+        "iu": "B",
+        "o": "O",
+        "ong": "P",
+        "ou": "W",
+        "u": "U",
+        "ua": "D",
+        "uai": "Q",
+        "uan": "M",
+        "uang": "K",
+        "ui": "O",
+        "un": "R",
+        "uo": "H",
+        "v": "G",
+        "van": "R",
+        "ve": "T",
+        "vn": "X"
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.005839590681792022,
+            "crossFirstChoiceLossRate": 0.0024889280123430745,
+            "crossBuckets": 5,
+            "collisionBuckets": 46,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.010943699255011919,
+            "crossFirstChoiceLossRate": 0.004706225103542105,
+            "crossBuckets": 16,
+            "collisionBuckets": 131,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.029343356987831342,
+            "crossFirstChoiceLossRate": 0.011018498613107249,
+            "crossBuckets": 80,
+            "collisionBuckets": 396,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.06739387726846406,
+            "crossFirstChoiceLossRate": 0.02322722843915815,
+            "crossBuckets": 427,
+            "collisionBuckets": 1599,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.11845281113562849,
+            "crossFirstChoiceLossRate": 0.03976705044927339,
+            "crossBuckets": 1351,
+            "collisionBuckets": 4297,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.04639466706574556,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.016241586123484794
+      }
+    },
+    {
+      "id": "SHENYUN-HYBRID-D4-M38",
+      "label": "第一轮性能侧 D4",
+      "sourceCandidate": "D4-R10X28-CAND-004",
+      "common399Unique": 399,
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "M": 38,
+      "D": 4,
+      "V": 0,
+      "performanceProxy": {
+        "S2": 67.58105724824745,
+        "v5": 9.995981125836764,
+        "v4": 10.629375038324039,
+        "v6": 9.09428589878389,
+        "dailyMX": 144.8295191274772
+      },
+      "vacancyProxy": {
+        "aaVacancies": 179,
+        "weightedAAHotspotSeparation": 0.5401624691391599
+      },
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "R",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "D",
+        "x": "X",
+        "zh": "W",
+        "ch": "V",
+        "sh": "F",
+        "r": "Q",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "D",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "H",
+        "an": ".",
+        "ang": ",",
+        "ao": "W",
+        "e": "E",
+        "ei": "Z",
+        "en": "M",
+        "eng": "N",
+        "er": "X",
+        "i": "I",
+        "ia": "P",
+        "ian": "L",
+        "iang": "F",
+        "iao": "J",
+        "ie": "C",
+        "in": "K",
+        "ing": "D",
+        "iong": "Y",
+        "iu": "G",
+        "o": "O",
+        "ong": "P",
+        "ou": "S",
+        "u": "U",
+        "ua": "R",
+        "uai": "C",
+        "uan": "Q",
+        "uang": "L",
+        "ui": "K",
+        "un": "T",
+        "uo": "O",
+        "v": "V",
+        "van": "Q",
+        "ve": "B",
+        "vn": "T"
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.0062373868095899395,
+            "crossFirstChoiceLossRate": 0.002250249181950709,
+            "crossBuckets": 6,
+            "collisionBuckets": 47,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.01606302029292142,
+            "crossFirstChoiceLossRate": 0.0063893718895046536,
+            "crossBuckets": 23,
+            "collisionBuckets": 139,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.024226198123946472,
+            "crossFirstChoiceLossRate": 0.008965900666339685,
+            "crossBuckets": 63,
+            "collisionBuckets": 384,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.05618327565786597,
+            "crossFirstChoiceLossRate": 0.018956235769367766,
+            "crossBuckets": 364,
+            "collisionBuckets": 1575,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.09786688641324189,
+            "crossFirstChoiceLossRate": 0.03236678221296192,
+            "crossBuckets": 1160,
+            "collisionBuckets": 4244,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.040115353459513135,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.013785707944024946
+      }
+    },
+    {
+      "id": "SHENYUN-HYBRID-D4-M39",
+      "label": "局部加密性能前沿",
+      "sourceCandidate": "D4R-R10X28-CAND-001",
+      "common399Unique": 399,
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "M": 39,
+      "D": 4,
+      "V": 0,
+      "performanceProxy": {
+        "S2": 67.60548448938951,
+        "v5": 9.998039530635753,
+        "v4": 10.621152477800162,
+        "v6": 9.096167064545508,
+        "dailyMX": 142.88830974787976
+      },
+      "vacancyProxy": {
+        "aaVacancies": 179,
+        "weightedAAHotspotSeparation": 0.545559733452421
+      },
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "M",
+        "f": "X",
+        "d": "R",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "G",
+        "k": "K",
+        "h": "H",
+        "j": "J",
+        "q": "D",
+        "x": "X",
+        "zh": "W",
+        "ch": "V",
+        "sh": "F",
+        "r": "Q",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "J",
+        "E": "J",
+        "O": "J",
+        "W": "D",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "H",
+        "an": ".",
+        "ang": ",",
+        "ao": "W",
+        "e": "E",
+        "ei": "Z",
+        "en": "M",
+        "eng": "N",
+        "er": "X",
+        "i": "I",
+        "ia": "P",
+        "ian": "L",
+        "iang": "J",
+        "iao": "C",
+        "ie": "V",
+        "in": "K",
+        "ing": "D",
+        "iong": "Y",
+        "iu": "G",
+        "o": "O",
+        "ong": "P",
+        "ou": "S",
+        "u": "U",
+        "ua": "R",
+        "uai": "C",
+        "uan": "Q",
+        "uang": "L",
+        "ui": "K",
+        "un": "T",
+        "uo": "O",
+        "v": "F",
+        "van": "Q",
+        "ve": "B",
+        "vn": "T"
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.005272608221019409,
+            "crossFirstChoiceLossRate": 0.0017055781003373885,
+            "crossBuckets": 5,
+            "collisionBuckets": 46,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.0147036241972864,
+            "crossFirstChoiceLossRate": 0.005826655591836926,
+            "crossBuckets": 21,
+            "collisionBuckets": 138,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.024317649088170343,
+            "crossFirstChoiceLossRate": 0.008796685276755378,
+            "crossBuckets": 66,
+            "collisionBuckets": 389,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.05507224307895309,
+            "crossFirstChoiceLossRate": 0.01874884171817878,
+            "crossBuckets": 358,
+            "collisionBuckets": 1570,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.09610060294306784,
+            "crossFirstChoiceLossRate": 0.03135323183022047,
+            "crossBuckets": 1156,
+            "collisionBuckets": 4245,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.039093345505699414,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.013286198503465787
+      }
+    },
+    {
+      "id": "SHENYUN-HYBRID-D5-M41-FAST",
+      "label": "局部加密折中前沿",
+      "sourceCandidate": "OBR-R10X28-CAND-001",
+      "common399Unique": 399,
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "M": 41,
+      "D": 5,
+      "V": 1,
+      "performanceProxy": {
+        "S2": 67.94859311986767,
+        "v5": 10.040775255205007,
+        "v4": 10.708076920041517,
+        "v6": 9.127859493289739,
+        "dailyMX": 140.2014152599147
+      },
+      "vacancyProxy": {
+        "aaVacancies": 183,
+        "weightedAAHotspotSeparation": 0.5359830770076407
+      },
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "V",
+        "f": "F",
+        "d": "J",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "M",
+        "k": "K",
+        "h": "H",
+        "j": "D",
+        "q": "Q",
+        "x": "F",
+        "zh": "X",
+        "ch": "W",
+        "sh": "G",
+        "r": "R",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "D",
+        "E": "D",
+        "O": "D",
+        "W": "Q",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "K",
+        "an": "E",
+        "ang": ".",
+        "ao": "C",
+        "e": "V",
+        "ei": "M",
+        "en": "N",
+        "eng": ",",
+        "er": "U",
+        "i": "I",
+        "ia": "P",
+        "ian": "L",
+        "iang": "Y",
+        "iao": "J",
+        "ie": "H",
+        "in": "S",
+        "ing": "W",
+        "iong": "D",
+        "iu": "F",
+        "o": "O",
+        "ong": "P",
+        "ou": "Q",
+        "u": "U",
+        "ua": "Z",
+        "uai": "X",
+        "uan": "T",
+        "uang": "R",
+        "ui": "S",
+        "un": "B",
+        "uo": "O",
+        "v": "R",
+        "van": "T",
+        "ve": "G",
+        "vn": "B"
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.0055386242955035294,
+            "crossFirstChoiceLossRate": 0.0019595421939777235,
+            "crossBuckets": 3,
+            "collisionBuckets": 44,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.014794246575038774,
+            "crossFirstChoiceLossRate": 0.005663008404033184,
+            "crossBuckets": 18,
+            "collisionBuckets": 134,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.02808820159248957,
+            "crossFirstChoiceLossRate": 0.008944437132439849,
+            "crossBuckets": 75,
+            "collisionBuckets": 398,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.052207880828511063,
+            "crossFirstChoiceLossRate": 0.016468876770869244,
+            "crossBuckets": 320,
+            "collisionBuckets": 1542,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.09136734255297049,
+            "crossFirstChoiceLossRate": 0.029177435188475973,
+            "crossBuckets": 1042,
+            "collisionBuckets": 4153,
+            "maxBucket": 17
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.03839925916890269,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.012442659937959195
+      }
+    },
+    {
+      "id": "SHENYUN-HYBRID-D5-M41-COLL",
+      "label": "第一轮碰撞侧前沿",
+      "sourceCandidate": "OB-R10X28-CAND-002",
+      "common399Unique": 399,
+      "capacity": [
+        21,
+        28
+      ],
+      "actual": [
+        21,
+        28
+      ],
+      "M": 41,
+      "D": 5,
+      "V": 1,
+      "performanceProxy": {
+        "S2": 69.53747714667652,
+        "v5": 10.149023233017411,
+        "v4": 10.71013757363623,
+        "v6": 9.16720213587645,
+        "dailyMX": 140.8025264087047
+      },
+      "vacancyProxy": {
+        "aaVacancies": 183,
+        "weightedAAHotspotSeparation": 0.5412929436002183
+      },
+      "toneKeys": "IEUAO",
+      "initialMap": {
+        "b": "B",
+        "p": "P",
+        "m": "V",
+        "f": "F",
+        "d": "J",
+        "t": "T",
+        "n": "N",
+        "l": "L",
+        "g": "M",
+        "k": "K",
+        "h": "H",
+        "j": "G",
+        "q": "Q",
+        "x": "F",
+        "zh": "D",
+        "ch": "W",
+        "sh": "X",
+        "r": "R",
+        "z": "Z",
+        "c": "C",
+        "s": "S",
+        "A": "G",
+        "E": "G",
+        "O": "G",
+        "W": "Q",
+        "Y": "Y",
+        "YU": "Y"
+      },
+      "finalMap": {
+        "a": "A",
+        "ai": "K",
+        "an": "E",
+        "ang": ".",
+        "ao": "D",
+        "e": "V",
+        "ei": "J",
+        "en": "N",
+        "eng": ",",
+        "er": "U",
+        "i": "I",
+        "ia": "P",
+        "ian": "L",
+        "iang": "Q",
+        "iao": "S",
+        "ie": "H",
+        "in": "C",
+        "ing": "W",
+        "iong": "F",
+        "iu": "M",
+        "o": "O",
+        "ong": "P",
+        "ou": "R",
+        "u": "U",
+        "ua": "X",
+        "uai": "Z",
+        "uan": "T",
+        "uang": "S",
+        "ui": "C",
+        "un": "B",
+        "uo": "O",
+        "v": "Y",
+        "van": "T",
+        "ve": "G",
+        "vn": "B"
+      },
+      "fourCodeCollision": {
+        "families": [
+          "AUAU",
+          "AAAU",
+          "AAAA"
+        ],
+        "cuts": {
+          "500": {
+            "crossAffectedRate": 0.0037329038534415445,
+            "crossFirstChoiceLossRate": 0.0014844184111787557,
+            "crossBuckets": 3,
+            "collisionBuckets": 44,
+            "maxBucket": 3
+          },
+          "1000": {
+            "crossAffectedRate": 0.013198021545626345,
+            "crossFirstChoiceLossRate": 0.005463549160305284,
+            "crossBuckets": 17,
+            "collisionBuckets": 131,
+            "maxBucket": 4
+          },
+          "2000": {
+            "crossAffectedRate": 0.026653781378555456,
+            "crossFirstChoiceLossRate": 0.00879193929868187,
+            "crossBuckets": 68,
+            "collisionBuckets": 389,
+            "maxBucket": 6
+          },
+          "5000": {
+            "crossAffectedRate": 0.051470467489856446,
+            "crossFirstChoiceLossRate": 0.0164505590772571,
+            "crossBuckets": 328,
+            "collisionBuckets": 1549,
+            "maxBucket": 11
+          },
+          "10000": {
+            "crossAffectedRate": 0.0925679388092305,
+            "crossFirstChoiceLossRate": 0.029491500705570012,
+            "crossBuckets": 1078,
+            "collisionBuckets": 4176,
+            "maxBucket": 18
+          }
+        },
+        "fiveCutAverageCrossAffectedRate": 0.037524622615342056,
+        "fiveCutAverageCrossFirstChoiceLossRate": 0.012336393330598603
+      }
+    }
+  ]
+}

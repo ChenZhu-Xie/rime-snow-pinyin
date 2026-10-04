@@ -314,7 +314,10 @@ def main() -> None:
     words[1] = read_single_pinyin(args.pinyin)
     stems = read_stems(args.stems)
     layout_payload = json.loads(args.layouts.read_text(encoding="utf-8"))
-    layouts = layout_payload.get("candidates", []) if isinstance(layout_payload, dict) else layout_payload
+    if isinstance(layout_payload, dict):
+        layouts = layout_payload.get("candidates") or layout_payload.get("schemes", [])
+    else:
+        layouts = layout_payload
     if args.ids:
         requested = set(args.ids)
         layouts = [layout for layout in layouts if layout["id"] in requested]
@@ -335,7 +338,11 @@ def main() -> None:
         doubles = build_items(words[2], layout, stems, 2)
         triples = build_items(words[3], layout, stems, 3)
         quadruples = build_items(words[4], layout, stems, 4)
-        result = {"id": layout["id"], "name": layout["name"], "cuts": {}}
+        result = {
+            "id": layout["id"],
+            "name": layout.get("name", layout.get("label", layout["id"])),
+            "cuts": {},
+        }
         for cut in CUTS:
             single_cut = singles[:cut]
             double_cut = doubles[:cut]

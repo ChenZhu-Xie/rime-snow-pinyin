@@ -13,6 +13,7 @@ import argparse
 import json
 import os
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 
@@ -30,12 +31,18 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--resume", type=Path, help="candidate JSON to use as additional roots")
     parser.add_argument("--resume-ids", nargs="*", help="candidate IDs retained from --resume")
     parser.add_argument("--tolerance", type=float, help="override per-D performance guard")
+    parser.add_argument("--repo", type=Path, help="Snow Pinyin repo; enables weighted AA-hotspot scoring")
+    parser.add_argument("--aa-weight", type=float, default=0.0)
+    parser.add_argument("--hotspot-weight", type=float, default=0.0)
+    parser.add_argument("--max-d", type=int, help="override the resumed root's D ceiling")
+    parser.add_argument("--max-m", type=int, default=42)
     return parser.parse_args()
 
 
 ARGS = arguments()
 REPLAY = ARGS.replay.resolve()
 OUTPUT = ARGS.output.resolve()
+PROJECT_REPO = ARGS.repo.resolve() if ARGS.repo else None
 os.chdir(REPLAY)
 sys.path.insert(0, str(REPLAY))
 
@@ -47,6 +54,9 @@ import r10_search  # noqa: E402
 import r9_search  # noqa: E402
 import search_engine  # noqa: E402
 from macroxue.engine import LAYOUT, SPEED, distance, pair  # noqa: E402
+
+if ARGS.repo:
+    from benchmark_feima_prefixes import read_words, split_pinyin  # noqa: E402
 
 
 DATA = json.loads(Path("source.json").read_text(encoding="utf-8"))
@@ -80,12 +90,78 @@ for key in KEYS:
 FIRST_COST_NP = np.array(FIRST_COST)
 
 
+def build_hotspots(repo: Path | None) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Return head-pair weights averaged over 3/4-char Top 500..10k cuts."""
+    if repo is None:
+        return (
+            np.empty(0, dtype=np.int32),
+            np.empty(0, dtype=np.int32),
+            np.empty(0, dtype=np.float64),
+        )
+    paths = [repo / f"snow_pinyin.{name}.dict.yaml" for name in ("base", "ext", "tencent")]
+    words = read_words(paths)
+    accumulated: dict[tuple[int, int], float] = defaultdict(float)
+    component_count = 0
+    for length in (3, 4):
+        for cut in (500, 1000, 2000, 5000, 10000):
+            rows = words[length][:cut]
+            total = sum(row["weight"] for row in rows)
+            if not total:
+                continue
+            component_count += 1
+            for row in rows:
+                pairs = set()
+                for reading in row["readings"]:
+                    try:
+                        first, _ = split_pinyin(reading[0])
+                        second, _ = split_pinyin(reading[1])
+                        pairs.add((opt.HEADS.index(first), opt.HEADS.index(second)))
+                    except (ValueError, IndexError):
+                        continue
+                for pair_value in pairs:
+                    accumulated[pair_value] += row["weight"] / total / max(1, len(pairs))
+    rows = sorted(accumulated.items())
+    return (
+        np.array([pair_value[0] for pair_value, _ in rows], dtype=np.int32),
+        np.array([pair_value[1] for pair_value, _ in rows], dtype=np.int32),
+        np.array([weight / component_count for _, weight in rows], dtype=np.float64),
+    )
+
+
+HOT_FIRST, HOT_SECOND, HOT_WEIGHT = build_hotspots(PROJECT_REPO)
+AA_OBJECTIVE_WEIGHT = float(ARGS.aa_weight)
+HOTSPOT_OBJECTIVE_WEIGHT = float(ARGS.hotspot_weight)
+
+
 @njit(cache=True)
 def daily_mx(state: np.ndarray) -> float:
     total = FIRST_COST_NP[state[TOKENS_NP[0]]]
     for index in range(1, len(TOKENS_NP)):
         total += PAIR_COST[state[TOKENS_NP[index - 1]], state[TOKENS_NP[index]]]
     return 200 * NCHAR / total
+
+
+@njit(cache=True)
+def vacancy_metrics(state: np.ndarray) -> tuple[int, float]:
+    occupied = np.zeros(len(KEYS) * len(KEYS), dtype=np.uint8)
+    initial_key = np.zeros(len(KEYS), dtype=np.uint8)
+    for token in range(27):
+        initial_key[state[token]] = 1
+    occupied_aa = 0
+    for index in range(len(opt.PARAMS[-2])):
+        first = state[opt.PARAMS[-2][index]]
+        second = state[opt.PARAMS[-1][index]]
+        code = first * len(KEYS) + second
+        if not occupied[code]:
+            occupied[code] = 1
+            if initial_key[second]:
+                occupied_aa += 1
+    separated = 0.0
+    for index in range(len(HOT_WEIGHT)):
+        code = state[HOT_FIRST[index]] * len(KEYS) + state[HOT_SECOND[index]]
+        if not occupied[code]:
+            separated += HOT_WEIGHT[index]
+    return 21 * 21 - occupied_aa, separated
 
 
 @njit(cache=True)
@@ -177,12 +253,15 @@ def propose(state: np.ndarray) -> np.ndarray:
 def score(values: np.ndarray, state: np.ndarray, profile: np.ndarray) -> float:
     metrics = opt.metrics(values, opt.PARAMS)
     v6 = 10 * r9_search.cw26(values)
+    aa_empty, hotspot = vacancy_metrics(state)
     return (
         profile[0] * metrics[0] / BASE_METRICS[0]
         + profile[1] * metrics[1] / BASE_METRICS[1]
         + profile[2] * metrics[2] / BASE_METRICS[2]
         + profile[3] * v6 / BASE_V6
         + profile[4] * BASE_MX / daily_mx(state)
+        + AA_OBJECTIVE_WEIGHT * (189 - aa_empty) / 189
+        + HOTSPOT_OBJECTIVE_WEIGHT * (1 - hotspot)
     )
 
 
@@ -261,6 +340,7 @@ def summary(state: np.ndarray, values: np.ndarray | None = None) -> dict:
         _, values = opt.initialize(state, opt.PARAMS)
     unique, memory, displaced, vowel_displaced, actual_r = state_stats(state)
     metrics = opt.metrics(values, opt.PARAMS)
+    aa_empty, hotspot = vacancy_metrics(state)
     return {
         "U": int(unique),
         "M": int(memory),
@@ -272,6 +352,8 @@ def summary(state: np.ndarray, values: np.ndarray | None = None) -> dict:
         "v4": float(metrics[2]),
         "v6": float(10 * r9_search.cw26(values)),
         "dailyMX": float(daily_mx(state)),
+        "aaVacancies": int(aa_empty),
+        "weightedAAHotspotSeparation": float(hotspot),
     }
 
 
@@ -323,11 +405,11 @@ def main() -> None:
     shenyun_mapping = json.loads(mapping_path.read_text(encoding="utf-8"))
     roots = {
         "R10-21X26-M39-08": BASE_STATE,
-        "R11-21X26-M36-01": opt.state(BY_ID["R11-21X26-M36-01"], DATA),
-        "R11-21X26-M37-02": opt.state(BY_ID["R11-21X26-M37-02"], DATA),
-        "R11-21X26-M38-03": opt.state(BY_ID["R11-21X26-M38-03"], DATA),
         "R21X28-in-ui-an": state_from_mapping(shenyun_mapping),
     }
+    for entry_id in ("R11-21X26-M36-01", "R11-21X26-M37-02", "R11-21X26-M38-03"):
+        if entry_id in BY_ID:
+            roots[entry_id] = opt.state(BY_ID[entry_id], DATA)
     profiles = (
         (1.0, 1.0, 1.0, 1.0, 0.5),
         (2.0, 0.7, 0.7, 1.0, 0.4),
@@ -338,12 +420,16 @@ def main() -> None:
     tolerances = {5: 0.005, 4: 0.012, 3: 0.025, 2: 0.04, 1: 0.07}
     root_specs = [
         ("R10-21X26-M39-08", 5, 42),
-        ("R11-21X26-M37-02", 4, 42),
-        ("R11-21X26-M38-03", 4, 42),
-        ("R11-21X26-M36-01", 3, 42),
         ("R21X28-in-ui-an", 2, 42),
         ("R21X28-in-ui-an", 1, 42),
     ]
+    for entry_id, max_d in (
+        ("R11-21X26-M37-02", 4),
+        ("R11-21X26-M38-03", 4),
+        ("R11-21X26-M36-01", 3),
+    ):
+        if entry_id in roots:
+            root_specs.append((entry_id, max_d, 42))
     if ARGS.resume:
         resume_payload = json.loads(ARGS.resume.resolve().read_text(encoding="utf-8"))
         requested = set(ARGS.resume_ids or ())
@@ -358,7 +444,11 @@ def main() -> None:
             name = "resume:" + candidate["id"]
             state = np.array(candidate["state"], dtype=np.int32)
             roots[name] = state
-            root_specs.append((name, int(state_stats(state)[2]), 42))
+            root_specs.append((
+                name,
+                ARGS.max_d if ARGS.max_d is not None else int(state_stats(state)[2]),
+                ARGS.max_m,
+            ))
         # A focused continuation should not rerun every built-in root.
         if requested:
             root_specs = [spec for spec in root_specs if spec[0].startswith("resume:")]
@@ -442,6 +532,12 @@ def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps({
         "method": "R10 embedded baseline; exact 26/27/28-final domains; Common399 unique; fixed IEUAO; V unrestricted",
+        "vacancyObjective": {
+            "aaWeight": ARGS.aa_weight,
+            "hotspotWeight": ARGS.hotspot_weight,
+            "hotspotCuts": [500, 1000, 2000, 5000, 10000] if ARGS.repo else [],
+            "hotspotWordLengths": [3, 4] if ARGS.repo else [],
+        },
         "base": summary(BASE_STATE, BASE_VALUES),
         "allowedFinalKeys": "ABCDEFGHIJKLMNOPQRSTUVWXYZ,.",
         "candidates": rows,
