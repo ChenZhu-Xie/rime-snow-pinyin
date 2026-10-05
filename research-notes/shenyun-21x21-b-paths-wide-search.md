@@ -2,6 +2,8 @@
 
 延续[正式 B 集合基准和 D=0 搜索](shenyun-21x21-b-sets-benchmark.md)：锁定实体辅助键 **AVUIO** 及引擎中的 **IVUAO** 顺序，21×21 格局，四条单字加权非首选率各自严格小于 S005。再联合改善四条二字词路径、R11 `S2` 上界和 v5 系综；词路径额外严格小于 S005 的布局另行筛出。B 指辅助集合而不是一笔／两笔：单字键道为形码首、次键；三拼为声调、纯笔画首键。二字词 B1/B2 按次字、首字的形码或声调输入。三拼单字第二 B 按运行时映射允许的**所有首笔编码**判断首选。
 
+[13 套代表与 R9 的全维度总表](shenyun-21x21-b-paths-wide-comparison.md)按 M 降序集中列出本轮结果与结论。
+
 ## 搜索范围与可复现数据
 
 用 [快速桶评估器](../scripts/research/b_path_fast.py)逐方案计算八条加权非首选率；它与[独立基准计算](../scripts/research/benchmark_shenyun_21x21_b_sets.py)共享冻结字词语料和仓库字形／笔画映射。[验证脚本](../scripts/research/verify_shenyun_21x21_b_paths_wide.py)在最后一档随机抽取 150 个状态复算，八项最大绝对误差 **5.6×10⁻¹⁷**。21×21、AVUIO/IVUAO 锁和每档 M/D 上限由[搜索脚本](../scripts/research/search_shenyun_21x21_b_paths_wide.py)逐次检查；同码的多个布局仍分别留存，方便评估速度与 M/D。
