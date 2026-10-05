@@ -192,7 +192,7 @@ function this.func(key_event, env)
     return snow.kAccepted
   elseif key_event:eq(env.up_key) then
     if not this.is_fixed(candidate) or index <= 1 then
-      return snow.kNoop
+      return snow.kAccepted
     end
     local value = snow.format(snow.encode(epoch, index - 1))
     snow.errorf("时间戳 %d：「%s」在 %s 候选 %d → %d", epoch, word, input, index, index - 1)
@@ -202,7 +202,7 @@ function this.func(key_event, env)
     return snow.kAccepted
   elseif key_event:eq(env.down_key) then
     if not this.is_fixed(candidate) or index >= snow.MAX_INDEX then
-      return snow.kNoop
+      return snow.kAccepted
     end
     local value = snow.format(snow.encode(epoch, index + 1))
     snow.errorf("时间戳 %d：「%s」在 %s 候选 %d → %d", epoch, word, input, index, index + 1)

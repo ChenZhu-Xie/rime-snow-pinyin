@@ -21,12 +21,12 @@ schema:
 engine:
   processors:
     - ascii_composer
+    - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor
     - key_binder
-    - lua_processor@*snow.select_character
     - speller
     - punctuator
     - selector

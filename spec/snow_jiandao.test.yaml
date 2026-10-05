@@ -1,13 +1,24 @@
 schema: snow_jiandao
 source_dir: ..
 script: |
-  function has(something)
-    for _, v in ipairs(cand) do
+  -- 候选在整个候选列表中的位置，不存在时返回 math.huge
+  function rank(something)
+    for i, v in ipairs(cand) do
       if v.text == something then
-        return true
+        return i
       end
     end
-    return false
+    return math.huge
+  end
+  function has(something)
+    return rank(something) < math.huge
+  end
+  -- 是否出现在首页（page_size 为 6）
+  function page(something)
+    return rank(something) <= 6
+  end
+  function pinned(index)
+    return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
 deploy:
   sentence:
@@ -29,22 +40,53 @@ deploy:
         assert: has("中文输入法")
       - send: fhrmGHG
         assert: has("中华人民共和国")
-      # 固顶词
+      # 五字及以上词：前四字声母 + 前两字笔画
+      - send: sxwjvv
+        assert: cand[1].text == "三下五除二"
+      # 这种取码方式会与四字词重码：
+      # 「科学发展观」与「科学发展」的编码都是 kxfquo
+      - send: kxfq
+        assert: has("科学发展") and has("科学发展观")
+      - send: kxfquo
+        assert: page("科学发展") and page("科学发展观")
+      # 「中华人民共和国」与「中华人民」的编码都是 fhrmii
+      - send: fhrm
+        assert: has("中华人民") and has("中华人民共和国")
+      - send: fhrmii
+        assert: page("中华人民") and page("中华人民共和国")
+      # 用大写字母补完其余声母则重码更低，且不影响顶功
+      - send: kxfqG
+        assert: cand[1].text == "科学发展观"
+      # 固顶词：一至三码的一字词
       - send: p
         assert: cand[1].text == "平"
       - send: xh
         assert: cand[1].text == "学"
       - send: bgov
         assert: cand[1].text == "冰"
+      - send: bb
+        assert: cand[1].text == "宾"
+      - send: bba
+        assert: cand[1].text == "滨"
+      # 固顶词：声声简词
       - send: be
         assert: cand[1].text == "表示"
+      # 固顶词：630 简词
       - send: yi
         assert: cand[1].text == "一个"
+      - send: ba
+        assert: cand[1].text == "不能"
+      - send: baa
+        assert: cand[1].text == "步骤"
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"
       - send: ekekv
         assert: cand[2].text == "事实"
+      - send: bgxh
+        assert: cand[1].text == "冰雪"
+      - send: bgxho
+        assert: cand[1].text ~= "冰雪" and has("冰雪")
       # 顶功
       - send: yiyi
         assert: commit == "一个" and cand[1].text == "一个"
@@ -52,9 +94,112 @@ deploy:
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pbyberf
         assert: commit == "拼音" and cand[1].text == "输入法"
+      # 大写补码也能顶功
+      - send: kxfqGbgxh
+        assert: commit == "科学发展观" and cand[1].text == "冰雪"
+      # 选择键为 1 ~ 6
+      - send: be2
+        assert: commit == "B"
       # 动态码长
       - send: "ekekiiekek"
         assert: cand[1].text == "誓师"
-      # 缓冲造词
+      - send: ekekio
+        assert: cand[1].text == "史诗"
+      - send: ekekioekek
+        assert: commit == "史诗" and cand[1].text == "史诗"
+  # 自动造词
+  encoding:
+    tests:
+      # 选择造词：「星猫」不在词库中，补「星」的形码 oi 把它提到首选，
+      # 空格确认后再补「猫」的形码 ua，再次空格即造好词
+      - send: xgmz
+        assert: not has("星猫")
+      - send: xgmzoi
+        assert: cand[1].text == "星"
+      - send: "xgmzoi ua"
+        assert: cand[1].text == "猫"
+      - send: "xgmzoi ua  xgmz"
+        assert: cand[1].text == "星猫"
+      # 缓冲造词（拆分输入的片段不能使用 630 简码）
       - send: "{Control+j}jp mzua  jpmz"
         assert: cand[1].text == "长猫"
+      - send: "{Control+j}bgxherf  bxero"
+        assert: cand[1].text == "冰雪输入法"
+      # 英数混输造词：bpmfdtnlgkhjqxzcsrywe 加后缀 e，
+      # 大写字母固定在二码的次选、小写字母在三选
+      - send: be
+        assert: cand[2].text == "B" and cand[3].text == "b"
+      # viuoa 的音节码是 x 加对应的韵母，v 被占用故规定为 xh
+      - send: xk
+        assert: cand[2].text == "I" and cand[3].text == "i"
+      - send: xh
+        assert: cand[2].text == "V" and cand[3].text == "v"
+      # 阿拉伯数字与相应中文数字同码
+      - send: xj
+        assert: cand[1].text == "二" and cand[2].text == "2"
+      - send: "{Control+j}wjv2ge2tyxb  wgtx"
+        assert: commit == "5G通信"
+      - send: "{Control+j}dlou lso xs2mr  dlxm"
+        assert: commit == "哆啦A梦"
+  # 高级功能
+  advanced:
+    tests:
+      # 拼音反查（`a` 引导）
+      - send: azhe
+        assert: cand[1].text == "着"
+      # 笔画反查（`u` 引导，横竖撇点折为 viuoa）
+      - send: uviuoa
+        assert: cand[1].text == "札"
+      # 重复上屏（`i` 引导）
+      - send: "wyfj i"
+        assert: cand[1].text == "重复"
+      # 符号（`i` 引导）
+      - send: ia
+        assert: cand[1].text == "ā"
+      # Lua 脚本：数字转中文数字
+      - send: o123
+        assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Lua 脚本：计算表达式
+      - send: o1234*5678
+        assert: has("7006652")
+      # Lua 脚本：日期与时间（只检查格式）
+      - send: orq
+        assert: cand[1].text:match("^%d+年%d+月%d+日$") ~= nil
+      - send: osj
+        assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
+      - send: ors
+        assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
+      # 以词定字：`[` 取首字、`]` 取末字
+      - send: "xxrr["
+        assert: commit == "熙"
+      # 词不在首选时先用方向键选中再定字
+      - send: "chww{Down}{Down}]"
+        assert: commit == "薇"
+  # 方案码用户词典：这些操作会写入 snow_jiandao.userdb，故单独部署并按顺序执行
+  schema_userdb:
+    tests:
+      # 固定：Control+; 把当前候选固定到当前位置
+      - send: bmms
+        assert: not pinned(1)
+      - send: "bmms{Control+semicolon}bmms"
+        assert: cand[1].text == "编码" and pinned(1)
+      # 取消固定：对已固定的候选再按一次 Control+;
+      - send: "bmms{Control+semicolon}bmms"
+        assert: not pinned(1)
+      # 自由加词：Control+' → 任意方式输入 → Control+'
+      - send: "kfc{Control+apostrophe}fkxqS  {Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四"
+      # 加词时若第一候选已是固顶词，新词加到第二候选
+      - send: "gc{Control+apostrophe}ljhev {Control+apostrophe}gc"
+        assert: cand[1].text == "刚才" and cand[2].text == "垃圾回收"
+      # 后移：Control+] 把已固定的候选往后移一位，与另一个已固定的候选交换位置
+      - send: "jmdz{Control+semicolon}{Down}{Control+semicolon}{Up}"
+        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+      - send: "jmdz{Control+bracketright}jmdz"
+        assert: cand[1].text == "剪刀" and cand[2].text == "见到"
+      # 前移：Control+[
+      - send: "jmdz{Down}{Control+bracketleft}jmdz"
+        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+      # 重置：Control+\ 取消当前编码上的所有自定义
+      - send: "jmdz{Control+backslash}jmdz"
+        assert: not pinned(1) and not pinned(2)
