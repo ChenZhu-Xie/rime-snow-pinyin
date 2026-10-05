@@ -1,0 +1,24 @@
+schema: snow_shenyun_tone
+source_dir: ..
+script: |
+  function has(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return true end
+    end
+    return false
+  end
+deploy:
+  popping:
+    tests:
+      # 冰 bing1 首 B=i（阴平），后续的 o/o 为前两笔（丶丶）。
+      - send: bdi
+        assert: has("冰")
+      - send: bdio
+        assert: has("冰")
+      - send: bdioo
+        assert: has("冰")
+      # 部首冫的三拼部首码以 b 开头；数字 1 与声调、笔画互不混淆。
+      - send: "bdi1b"
+        assert: has("冰")
+      - send: "bdi1x"
+        assert: not has("冰")

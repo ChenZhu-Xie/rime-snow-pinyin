@@ -10,8 +10,8 @@ schema:
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
-    AUBB 飞花式 21×28 顶功方案
-    共用神韵均衡声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
+    AUBB 飞花式 21×26 顶功方案
+    共用 R10-21X26-M39-08 声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
   dependencies:
     - snow_pinyin
     - snow_bihua

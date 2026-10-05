@@ -22,6 +22,8 @@
 
 本仓库采用的方案全名为 **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文称 **[神韵 R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它来自[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的离散优化与冻结复核：在 21×21 键域和固定五辅键约束下，兼顾记忆量、击键成本、键位负载与规则一致性，因而被选作神韵的现行声韵布局。
 
+另有两套飞花式 `AUBB` 原型：[冰雪神韵·形](snow_shenyun_shape.schema.yaml)与[冰雪神韵·调](snow_shenyun_tone.schema.yaml)，共用 [R10 21×26 声韵映射](config/shenyun-21x26-mapping.json)，不占用逗号、句号。两者的 B 辅码分别为形码与声调；调方案单字首 B 筛声调，后续 B 筛笔画，数字 `1` 独立进入部首筛选。这不改变下文键道、三拼使用的 R9 21×21 布局。
+
 **声韵映射**
 
 [![无飞键道・神韵声韵映射图](docs/shenyun-r9-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
@@ -252,6 +254,8 @@ Recipe: ℞ **snow-pinyin**
 
 The adopted scheme's full name is **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**, referred to below as **[Shenyun R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**. It comes from the discrete optimization and frozen review in [Shuangpin Layout Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark), balancing memory load, keystroke cost, key load, and rule consistency within a 21×21 domain with five fixed auxiliary keys.
 
+Two separate AUBB prototypes, [Shenyun Shape](snow_shenyun_shape.schema.yaml) and [Shenyun Tone](snow_shenyun_tone.schema.yaml), share the [R10 21×26 mapping](config/shenyun-21x26-mapping.json); comma and period remain punctuation. In the tone prototype, the first single-character auxiliary key filters tone, later ones filter strokes, and `1` independently opens radical filtering. The KeyTao and Three-Code layouts below remain R9 21×21.
+
 **Initial/final mapping**
 
 ![Shenyun initial/final mapping](docs/shenyun-r9-keyboard.svg)
@@ -351,6 +355,8 @@ bun scripts/验证神韵双拼.ts
 > 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
 
 本倉庫採用的方案全名為 **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文稱 **[神韻 R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它來自[雙拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的離散最佳化與凍結複核：在 21×21 鍵域和固定五輔鍵約束下，兼顧記憶量、擊鍵成本、鍵位負載與規則一致性，因而被選作神韻的現行聲韻布局。
+
+另有兩套飛花式 `AUBB` 原型：[冰雪神韻·形](snow_shenyun_shape.schema.yaml)與[冰雪神韻·調](snow_shenyun_tone.schema.yaml)，共用 [R10 21×26 聲韻映射](config/shenyun-21x26-mapping.json)，不佔用逗號、句號。兩者的 B 輔碼分別為形碼與聲調；調方案單字首 B 篩聲調，後續 B 篩筆畫，數字 `1` 獨立進入部首篩選。這不改變下文鍵道、三拼使用的 R9 21×21 布局。
 
 **聲韻映射**
 

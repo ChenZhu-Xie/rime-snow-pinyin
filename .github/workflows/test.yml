@@ -41,6 +41,10 @@ jobs:
             schema: snow_jiandao
           - name: 冰雪清韵
             schema: snow_qingyun
+          - name: 冰雪神韵·形
+            schema: snow_shenyun_shape
+          - name: 冰雪神韵·调
+            schema: snow_shenyun_tone
     steps:
       - name: 获取代码
         uses: actions/checkout@v4

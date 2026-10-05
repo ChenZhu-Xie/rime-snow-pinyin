@@ -1,0 +1,29 @@
+{
+  "id": "R10-21X26-M39-08",
+  "name": "冰雪神韵·形/调共用声韵布局",
+  "source": "research-notes/data/shenyun-r10-21x28-frontier.json",
+  "capacity": [21, 26],
+  "commonSyllables": 399,
+  "collisions": 0,
+  "vacantCodes": 147,
+  "memory": 39,
+  "ordinaryInitialDisplacements": 5,
+  "auxiliaryKeys": "AEUIO",
+  "toneKeys": "IEUAO",
+  "initialMap": {
+    "b": "B", "p": "P", "m": "M", "f": "X", "d": "R", "t": "T",
+    "n": "N", "l": "L", "g": "G", "k": "K", "h": "H", "j": "J",
+    "q": "W", "x": "X", "zh": "F", "ch": "V", "sh": "D", "r": "Z",
+    "z": "Q", "c": "C", "s": "S", "A": "J", "E": "J", "O": "J",
+    "W": "W", "Y": "Y", "YU": "Y"
+  },
+  "finalMap": {
+    "a": "A", "ai": "J", "an": "L", "ang": "Y", "ao": "W",
+    "e": "E", "ei": "Q", "en": "M", "eng": "N", "er": "Q",
+    "i": "I", "ia": "P", "ian": "K", "iang": "V", "iao": "C",
+    "ie": "Z", "in": "G", "ing": "D", "iong": "H", "iu": "B",
+    "o": "O", "ong": "P", "ou": "S", "u": "U", "ua": "D",
+    "uai": "R", "uan": "X", "uang": "K", "ui": "O", "un": "F",
+    "uo": "H", "v": "R", "van": "F", "ve": "T", "vn": "X"
+  }
+}
