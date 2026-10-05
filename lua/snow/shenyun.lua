@@ -53,7 +53,8 @@ end
 
 local function encode_radical(character, env)
   -- 键道的五部物理键 avuio 迁移到神韵的 aeuio，小集合仍与 A 键互斥。
-  return encode_elements(character, env):gsub("v", "e")
+  local code = encode_elements(character, env):gsub("v", "e")
+  return code
 end
 
 local function first_or_empty(value)
