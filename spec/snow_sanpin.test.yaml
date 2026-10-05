@@ -1,13 +1,21 @@
 schema: snow_sanpin
 source_dir: ..
 script: |
-  function has(something)
-    for _, v in ipairs(cand) do
-      if v.text == something then
-        return true
-      end
+  -- 与上游相同：候选在完整列表中的名次，以及首页（page_size = 6）判定。
+  function rank(something)
+    for i, v in ipairs(cand) do
+      if v.text == something then return i end
     end
-    return false
+    return math.huge
+  end
+  function has(something)
+    return rank(something) < math.huge
+  end
+  function page(something)
+    return rank(something) <= 6
+  end
+  function pinned(index)
+    return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
   function eq(left, right)
     print("Left  = " .. tostring(left))
@@ -19,7 +27,11 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
+      # 上游 bgxhpbyb：两字词连输；R9 双拼为 bd xy pg yg。
       - send: bdxypgyg
+        assert: cand[1].text == "冰雪拼音"
+      # 上游 bgvxhupbvybv：四字逐音节打满声韵调；R9 调码 1=i、3=u。
+      - send: bdixyupgiygi
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
@@ -74,6 +86,50 @@ deploy:
         assert: has("中文输入法")
       - send: fhrmGHG
         assert: has("中华人民共和国")
+      # 上游 p/xh/bg：单字 1、2、3 键构词（并：bg→bd，宾：bb→bg）。
+      - send: bd
+        assert: cand[1].text == "并"
+      - send: bg
+        assert: cand[1].text == "宾"
+      # 上游 bgxhu/bg xhuv：双字简码（4/5）与全码（6），末字调在前。
+      - send: bdxyu
+        assert: has("冰雪")
+      - send: bdxyui
+        assert: page("冰雪")
+      # 上游 erf / erfu / erfuv / erfuvo：三字简码 3/4/5 与全码 6。
+      - send: erfu
+        assert: page("输入法")
+      - send: erfui
+        assert: page("输入法")
+      - send: erfuia
+        assert: page("输入法")
+      # 上游 wmxw / wmxwo / wmxwov：四字简码 4/5 与全码 6。
+      - send: wmxja
+        assert: page("充满希望")
+      - send: wmxjai
+        assert: page("充满希望")
+      # 上游 b/d/s/y：一码固顶；本地三码 630 与两简词取本地固顶词表。
+      - send: b
+        assert: cand[1].text == "不"
+      - send: s
+        assert: cand[1].text == "三"
+      - send: y
+        assert: cand[1].text == "一"
+      # 上游 be/fg/gc/yo：两声母固顶；本地使用 br/hb/by/ykgs 等实际固顶。
+      - send: br
+        assert: cand[1].text == "别人"
+      # 上游 ba/bi：声母 + 末字声调的两键 630 固顶词。
+      - send: ba
+        assert: cand[1].text == "不过"
+      - send: bi
+        assert: cand[1].text == "北京"
+      # 上游 bai/biu（双字）、bia（多字）：630 三键不同词长。
+      - send: bai
+        assert: cand[1].text == "帮助"
+      - send: biu
+        assert: cand[1].text == "本身"
+      - send: bui
+        assert: cand[1].text == "保险公司"
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
@@ -130,6 +186,7 @@ deploy:
         assert: cand[1].text == "事实"
       - send: ekekv
         assert: cand[2].text == "事实"
+      # 上游 ekeki：首选后置的触发调键因本地 R9 映射变为 v。
       # 顶功
       - send: ykgsykgs
         assert: commit == "一个" and cand[1].text == "一个"
@@ -146,9 +203,100 @@ deploy:
         assert: cand[1].text == "的"
       - send: l
         assert: cand[1].text == "了"
-      # 动态码长
+      # 上游 pbg / xhbg / erf b：短码不能被后续声母顶出。
+      - send: pbd
+        assert: commit == nil or commit == ""
+      - send: xybd
+        assert: commit == nil or commit == ""
+      - send: "xy "
+        assert: commit == "学"
+      - send: erfb
+        assert: commit == nil or commit == ""
+      - send: "erf "
+        assert: commit == "输入法"
+      # 上游 bja2：选字键 2 选择小写拉丁字母。
+      - send: bjo2
+        assert: commit == "b"
+      # 上游 ekekvo / ekekvu / ekekvuekek：动态码长、组词及顶功。
       - send: "ekekiaekek"
         assert: cand[1].text == "誓师"
-      # 缓冲造词
-      - send: "vwm mzi  wmmz"
+      - send: ekekiu
+        assert: cand[1].text == "史诗"
+      - send: ekekiuekek
+        assert: commit == "史诗" and cand[1].text == "史诗"
+  # 上游 buffered：分片组词、字母候选与英数混输；本地缓冲键 Ctrl+.。
+  buffered:
+    tests:
+      - send: "{Control+period}wm mzi  wmmz"
         assert: cand[1].text == "长猫"
+      - send: "{Control+period}bdxyerf  bxerF"
+        assert: cand[1].text == "冰雪输入法"
+      # 上游 bja/kka：R9 辅音字母走 u 的轻声槽 jo，元音仍走 kk。
+      - send: bjo
+        assert: cand[1].text == "B" and cand[2].text == "b"
+      - send: kka
+        assert: cand[1].text == "A" and cand[2].text == "a"
+      # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
+      - send: "{Control+period}jju gjo tpi xga  jgtx"
+        assert: commit == "五G通信"
+      - send: "{Control+period}dyi lwi kka mna  dlkm"
+        assert: commit == "哆啦A梦"
+  # 上游 advanced：反查、重复上屏、数字日期、笔画/部首辅助码、以词定字。
+  advanced:
+    tests:
+      - send: azhe
+        assert: cand[1].text == "着"
+      # 本地横竖撇点折依次为 i/v/u/a/o（上游为 v/i/u/o/a）。
+      - send: uivuao
+        assert: cand[1].text == "札"
+      - send: "wpfj i"
+        assert: cand[1].text == "重复"
+      - send: ia
+        assert: cand[1].text == "ā"
+      - send: o123
+        assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      - send: o1234*5678
+        assert: has("7006652")
+      - send: orq
+        assert: cand[1].text:match("^%d+年%d+月%d+日$") ~= nil
+      - send: osj
+        assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
+      - send: ors
+        assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
+      # 芫 yuan2：上游 ytivi → 本地 ye + v + iv。
+      - send: yeviv
+        assert: page("芫")
+      # 嶅 ao2：上游 xzivv / xzi1e → 本地 qzv + 笔画 / 山部首。
+      - send: qzvvv
+        assert: not page("嶅")
+      - send: qzv1e
+        assert: cand[1].text == "嶅"
+      - send: "xkrm["
+        assert: commit == "熙"
+      - send: "qmjx{Down}{Down}]"
+        assert: commit == "薇"
+  # 上游 schema_userdb：按顺序操作同一次部署的方案码用户词典。
+  schema_userdb:
+    tests:
+      # 上游 bmms → 本地 bian/ma = bp/mw；固定键 Ctrl+; → Ctrl+,。
+      - send: bpmw
+        assert: not pinned(1)
+      - send: "bpmw{Control+comma}bpmw"
+        assert: cand[1].text == "编码" and pinned(1)
+      - send: "bpmw{Control+comma}bpmw"
+        assert: not pinned(1)
+      # 上游自由加词的键仍为 Ctrl+'，造词输入保持同一声母/简码目的。
+      - send: "kfc{Control+apostrophe}fkxqS  {Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四"
+      # 本地 hb 固顶好吧：新词不得挤掉已有的首选。
+      - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
+        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
+      # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
+      - send: "jpdz{Control+comma}{Down}{Control+comma}{Up}"
+        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+      - send: "jpdz{Control+bracketright}jpdz"
+        assert: cand[1].text == "剪刀" and cand[2].text == "见到"
+      - send: "jpdz{Down}{Control+bracketleft}jpdz"
+        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+      - send: "jpdz{Control+backslash}jpdz"
+        assert: not pinned(1) and not pinned(2)
