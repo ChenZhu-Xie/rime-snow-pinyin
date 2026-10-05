@@ -19,16 +19,16 @@ schema:
 engine:
   processors:
     - ascii_composer
-    - recognizer
-    - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor
     - lua_processor@*snow.history
     - lua_processor@*snow.code_navigator
-    - key_binder
     - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
-    - lua_processor@*snow.editor
     - lua_processor@*snow.popping
+    - recognizer
+    - lua_processor@*snow.user_dict
+    - key_binder
+    - lua_processor@*snow.editor
     - speller
     - punctuator
     - selector
@@ -52,14 +52,16 @@ engine:
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history
   filters:
+    - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sipin
     - lua_filter@*snow.fix
+    - lua_filter@*snow.shape_filter
     - lua_filter@*snow.postpone
     - uniquifier
-    - lua_filter@*snow.shape_filter
     - simplifier
     - lua_filter@*snow.special
+    - lua_filter@*snow.unicode
 
 sipin_algebra:
   # 无理音节

@@ -33,6 +33,7 @@ end
 function t12.func(input, segment, env)
   -- 一字词
   if rime_api.regex_match(input, env.pattern) or env.engine.context:get_option("fluid") == true then
+    -- 代理码不是合法拼写时 query 返回 nil，这一路当作没有候选
     local translation = env.translator:query(input, segment)
     if translation then
       for candidate in translation:iter() do
@@ -58,9 +59,11 @@ function t12.func(input, segment, env)
       proxy = ("%s%s %s"):format(input:sub(1, 2), input:sub(-1, -1), input:sub(3, -2))
     end
     local translation = env.translator:query(proxy, segment)
-    for candidate in translation:iter() do
-      if utf8.len(candidate.text) <= 2 then
-        yield(snow.prepare(candidate, proxy, not is_sanding))
+    if translation then
+      for candidate in translation:iter() do
+        if utf8.len(candidate.text) <= 2 then
+          yield(snow.prepare(candidate, proxy, not is_sanding))
+        end
       end
     end
   end
@@ -163,9 +166,11 @@ function lianxiang.func(input, segment, env)
   if env.engine.context:get_option("popping1") and input:len() == 3 then
     local proxy = ("%s %s %s ~"):format(input:sub(1,1), input:sub(2,2), input:sub(3,3))
     local translation = env.translator:query(proxy, segment)
-    for candidate in translation:iter() do
-      if candidate.type ~= "sentence" then
-        yield(snow.prepare(candidate, proxy, true))
+    if translation then
+      for candidate in translation:iter() do
+        if candidate.type ~= "sentence" then
+          yield(snow.prepare(candidate, proxy, true))
+        end
       end
     end
   end

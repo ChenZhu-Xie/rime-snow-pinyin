@@ -225,6 +225,58 @@ export function renderFixedTable(sections: FixedSections) {
 	return `${lines.join("\n")}\n`;
 }
 
+// 键道字母按现行 R9 神韵键位编码；数字放在对应汉字的本地固顶码后。
+// 与上游一样，这些候选不参与固顶选优，也不新增占用的码位。
+export const jiandaoSupplementalCandidates = new Map<string, string[]>();
+for (const key of "bpmfdtnlgkhjqxzcsrywe") {
+	jiandaoSupplementalCandidates.set(key + "s", [key.toUpperCase(), key]);
+}
+for (const [code, letter] of [
+	["qy", "v"],
+	["qk", "i"],
+	["qj", "u"],
+	["qe", "o"],
+	["qw", "a"],
+] as const) {
+	jiandaoSupplementalCandidates.set(code, [letter.toUpperCase(), letter]);
+}
+for (const [code, words] of [
+	["y", "1"],
+	["qj", "2"],
+	["s", "3"],
+	["ski", "4"],
+	["jjv", "5"],
+	["lto", "6"],
+	["qkv", "七 7"],
+	["bwu", "8"],
+	["jtu", "九 9"],
+	["eku", "10"],
+	["ldv", "0"],
+] as const) {
+	jiandaoSupplementalCandidates.set(code, [
+		...words.split(" "),
+		...(jiandaoSupplementalCandidates.get(code) ?? []),
+	]);
+}
+
+export function renderJiandaoFixedTable(sections: FixedSections) {
+	const found = new Set<string>();
+	const lines = renderFixedTable(sections)
+		.trimEnd()
+		.split("\n")
+		.map((line) => {
+			const [code] = line.split("\t", 1);
+			const aliases = jiandaoSupplementalCandidates.get(code);
+			if (!aliases) return line;
+			found.add(code);
+			return `${line} ${aliases.join(" ")}`;
+		});
+	for (const code of jiandaoSupplementalCandidates.keys()) {
+		if (!found.has(code)) throw new Error(`键道字母或数字码位不存在：${code}`);
+	}
+	return `${lines.join("\n")}\n`;
+}
+
 // 三拼上游表中还保留了数字备选和拉丁字母入口。它们不参与
 // 神韵固顶选优，但必须由同一生成器输出，避免下次生成时被覆盖。
 export const sanpinSingleAliases = new Map([

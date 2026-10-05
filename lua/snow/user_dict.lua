@@ -115,6 +115,10 @@ function this.func(key_event, env)
   if not config:get_bool("translator/enable_schema_user_dict") then
     return snow.kNoop
   end
+  -- 用户词典没能打开，所有读写都无从进行
+  if not env.user_dict then
+    return snow.kNoop
+  end
 
   if env.add_input:len() > 0 then
     if key_event:eq(env.add_key) then
@@ -188,7 +192,7 @@ function this.func(key_event, env)
     return snow.kAccepted
   elseif key_event:eq(env.up_key) then
     if not this.is_fixed(candidate) or index <= 1 then
-      return snow.kNoop
+      return snow.kAccepted
     end
     local value = snow.format(snow.encode(epoch, index - 1))
     snow.errorf("时间戳 %d：「%s」在 %s 候选 %d → %d", epoch, word, input, index, index - 1)
@@ -198,7 +202,7 @@ function this.func(key_event, env)
     return snow.kAccepted
   elseif key_event:eq(env.down_key) then
     if not this.is_fixed(candidate) or index >= snow.MAX_INDEX then
-      return snow.kNoop
+      return snow.kAccepted
     end
     local value = snow.format(snow.encode(epoch, index + 1))
     snow.errorf("时间戳 %d：「%s」在 %s 候选 %d → %d", epoch, word, input, index, index + 1)

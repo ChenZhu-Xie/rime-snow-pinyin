@@ -1,13 +1,21 @@
 schema: snow_yipin
 source_dir: ..
 script: |
-  function has(something)
-    for _, v in ipairs(cand) do
+  -- 候选在整个候选列表中的位置，不存在时返回 math.huge
+  function rank(something)
+    for i, v in ipairs(cand) do
       if v.text == something then
-        return true
+        return i
       end
     end
-    return false
+    return math.huge
+  end
+  function has(something)
+    return rank(something) < math.huge
+  end
+  -- 是否出现在首页（page_size 为 6）
+  function page(something)
+    return rank(something) <= 6
   end
 deploy:
   syllable:
@@ -850,22 +858,73 @@ deploy:
         assert: cand[1].text == "冰雪"
       - send: sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}f{Release+f}
         assert: commit == "冰雪的"
+      # 整句模式下逐音节并击，后续音节不需要带空格
+      - send: sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}xg,{Release+x}{Release+g}{Release+comma}d,{Release+d}{Release+comma}
+        assert: cand[1].text == "冰雪拼音"
+      - send: dvi{Release+d}{Release+v}{Release+i}cm,{Release+c}{Release+m}{Release+comma}r;{Release+r}{Release+semicolon}euo{Release+e}{Release+u}{Release+o}
+        assert: cand[1].text == "充满希望"
   popping:
     tests:
-      # 固顶词
+      # 单音节词的简码：左手单手并击打出声介，打完自动上屏
       - send: f{Release+f}
         assert: commit == "的"
-      # 顶功
+      - send: d{Release+d}
+        assert: commit == "一"
+      - send: s{Release+s}
+        assert: commit == "是"
+      - send: z{Release+z}
+        assert: commit == "和"
+      - send: t{Release+t}
+        assert: commit == "法"
+      - send: w{Release+w}
+        assert: commit == "不"
+      - send: b{Release+b}
+        assert: commit == "了"
+      - send: e{Release+e}
+        assert: commit == "我"
+      - send: a{Release+a}
+        assert: commit == "就"
+      - send: g{Release+g}
+        assert: commit == "这"
+      - send: q{Release+q}
+        assert: commit == "在"
+      - send: v{Release+v}
+        assert: commit == "过"
+      - send: x{Release+x}
+        assert: commit == "两"
+      - send: c{Release+c}
+        assert: commit == "们"
+      - send: r{Release+r}
+        assert: commit == "小"
+      # 单音节词的音节码：左手声介右手韵调双手并击，可由后续编码顶屏
+      - send: sgi{Release+s}{Release+g}{Release+i}
+        assert: cand[1].text == "冰"
       - send: sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
         assert: commit == "冰" and cand[1].text == "雪"
-      # 辅助码
+      # 单音节词的音节码 + 辅助码：第二击左手带空格或右手带空格
       - send: dj{Release+d}{Release+j}f {Release+f}{Release+space}
         assert: cand[1].text == "奕"
       - send: dj{Release+d}{Release+j}k {Release+k}{Release+space}
         assert: cand[1].text == "抑"
-      # 词
+      # 带辅助码的单音节词同样可由后续编码顶屏
+      - send: dj{Release+d}{Release+j}f {Release+f}{Release+space}sgi{Release+s}{Release+g}{Release+i}
+        assert: commit == "奕" and cand[1].text == "冰"
+      # 多音节词：首音节的音节码直接打，后续音节的音节码需要双手带空格并击
       - send: dj{Release+d}{Release+j}dj {Release+d}{Release+j}{Release+space}
         assert: has("意义")
+      - send: sgi{Release+s}{Release+g}{Release+i}drm {Release+d}{Release+r}{Release+m}{Release+space}
+        assert: cand[1].text == "冰雪"
+      - send: ag;{Release+a}{Release+g}{Release+semicolon}qgj {Release+q}{Release+g}{Release+j}{Release+space}tmk {Release+t}{Release+m}{Release+k}{Release+space}
+        assert: cand[1].text == "输入法"
+      - send: dvi{Release+d}{Release+v}{Release+i}cm, {Release+c}{Release+m}{Release+comma}{Release+space}r; {Release+r}{Release+semicolon}{Release+space}euo {Release+e}{Release+u}{Release+o}{Release+space}
+        assert: cand[1].text == "充满希望"
+      - send: sgi{Release+s}{Release+g}{Release+i}drm {Release+d}{Release+r}{Release+m}{Release+space}xg, {Release+x}{Release+g}{Release+comma}{Release+space}d, {Release+d}{Release+comma}{Release+space}
+        assert: cand[1].text == "冰雪拼音"
+      # 最多只需要打前四个音节，后面的可以联想
+      - send: wei{Release+w}{Release+e}{Release+i}ejl {Release+e}{Release+j}{Release+l}{Release+space}ag; {Release+a}{Release+g}{Release+semicolon}{Release+space}qgj {Release+q}{Release+g}{Release+j}{Release+space}
+        assert: page("中文输入法")
+      - send: wei{Release+w}{Release+e}{Release+i}erul {Release+e}{Release+r}{Release+u}{Release+l}{Release+space}wrjl {Release+w}{Release+r}{Release+j}{Release+l}{Release+space}qfjl {Release+q}{Release+f}{Release+j}{Release+l}{Release+space}
+        assert: page("中华人民共和国")
       # 第一击带空格容错
       - send: dj {Release+d}{Release+j}{Release+space}
         assert: has("亿")

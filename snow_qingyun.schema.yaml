@@ -47,13 +47,13 @@ switches:
 engine:
   processors:
     - ascii_composer
+    - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.history
     - lua_processor@*snow.code_navigator
     - key_binder
-    - lua_processor@*snow.select_character
-    - lua_processor@*snow.popping
     - lua_processor@*snow.editor
     - speller
     - punctuator
@@ -78,6 +78,7 @@ engine:
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history
   filters:
+    - lua_filter@*snow.placeholder
     - lua_filter@*snow.fix
     - lua_filter@*snow.qingyun
     - lua_filter@*snow.postpone

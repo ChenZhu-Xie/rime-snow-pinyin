@@ -188,3 +188,40 @@ test("Clear Rhyme history only changes the trigger key", () => {
 		/if candidate\.type == "history" then[\s\S]+yield\(candidate\)[\s\S]+goto continue/u,
 	);
 });
+
+test("R9 KeyTao letter and number candidates follow the active schema", () => {
+	const lines = new Map(
+		read("snow_jiandao.fixed.txt")
+			.split(/\r?\n/u)
+			.filter((line) => line.includes("\t"))
+			.map((line) => line.split("\t", 2) as [string, string]),
+	);
+	for (const key of "bpmfdtnlgkhjqxzcsrywe") {
+		assert.deepEqual(lines.get(`${key}s`)?.split(" ").slice(1), [key.toUpperCase(), key]);
+	}
+	for (const [key, code] of Object.entries({ a: "qw", i: "qk", o: "qe", u: "qj", v: "qy" })) {
+		const aliases = lines.get(code)?.split(" ") ?? [];
+		assert.ok(aliases.includes(key.toUpperCase()) && aliases.includes(key), `${key}: ${code}`);
+	}
+	for (const [number, code] of Object.entries({
+		0: "ldv", 1: "y", 2: "qj", 3: "s", 4: "ski", 5: "jjv",
+		6: "lto", 7: "qkv", 8: "bwu", 9: "jtu", 10: "eku",
+	})) {
+		assert.ok(lines.get(code)?.split(" ").includes(number), `${number}: ${code}`);
+	}
+	assert.deepEqual(lines.get("qj")?.split(" "), ["二", "2", "U", "u"]);
+});
+
+test("R9 KeyTao and Three-Code keep their processors in a compatible order", () => {
+	for (const file of ["snow_jiandao.schema.yaml", "snow_sanpin.schema.yaml"]) {
+		const schema = load(read(file)) as { engine: { processors: string[] } };
+		const processors = schema.engine.processors;
+		const position = (name: string) => processors.indexOf(`lua_processor@*snow.${name}`);
+		for (const name of ["shape_processor", "abbreviation", "select_character", "popping", "code_navigator", "user_dict", "history"]) {
+			assert.ok(position(name) >= 0, `${file}: ${name}`);
+		}
+		assert.ok(position("abbreviation") < position("popping"), file);
+		assert.ok(position("select_character") < position("popping"), file);
+		assert.ok(position("code_navigator") < position("user_dict"), file);
+	}
+});

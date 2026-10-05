@@ -23,7 +23,7 @@ import {
 	readDictionary,
 	readLegacyFixed,
 	readShapeCodes,
-	renderFixedTable,
+	renderJiandaoFixedTable,
 	renderSanpinFixedTable,
 	sortCandidates,
 	soundCode,
@@ -947,7 +947,7 @@ assertNoReplaceableFixed("冰雪键道", jiandao);
 
 const outputs = new Map([
 	["snow_sanpin.fixed.txt", renderSanpinFixedTable(sanpin)],
-	["snow_jiandao.fixed.txt", renderFixedTable(jiandao)],
+	["snow_jiandao.fixed.txt", renderJiandaoFixedTable(jiandao)],
 ]);
 for (const [file, output] of outputs) {
 	const path = join(root, file);

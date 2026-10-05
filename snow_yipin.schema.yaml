@@ -44,6 +44,7 @@ engine:
     - uniquifier
     - lua_filter@*snow.shape_filter
     - simplifier
+    - lua_filter@*snow.unicode
 
 chord_composer:
   alphabet: "qazwsxedcrfvtgbyhnujmik,ol.p;/' "

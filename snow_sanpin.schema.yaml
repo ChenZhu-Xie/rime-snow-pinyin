@@ -20,15 +20,15 @@ schema:
 engine:
   processors:
     - ascii_composer
-    - recognizer
-    - lua_processor@*snow.code_navigator
-    - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor
-    - lua_processor@*snow.history
-    - key_binder
     - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
+    - recognizer
+    - lua_processor@*snow.code_navigator
+    - lua_processor@*snow.user_dict
+    - lua_processor@*snow.history
+    - key_binder
     - speller
     - punctuator
     - selector
@@ -64,6 +64,7 @@ engine:
     - simplifier
     - uniquifier
     - lua_filter@*snow.hint
+    - lua_filter@*snow.unicode
 
 sanpin_algebra:
   # 无飞键道·神韵（R9-21X21-M40-02）
@@ -182,6 +183,8 @@ lookup_sanpin:
   dictionary: snow_pinyin
   comment_format:
     __include: /sanpin_algebra
+    __append:
+      - xform/q([zhe])/f$1/
 
 __patch:
   - patch
