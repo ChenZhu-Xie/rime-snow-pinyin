@@ -240,7 +240,7 @@ deploy:
       - send: "{Control+period}jju gjo tpi xga  jgtx"
         assert: commit == "五G通信"
       - send: "{Control+period}dyi lwi kka mna  dlkm"
-        assert: commit == "哆啦A梦"
+        assert: eq(commit, "哆啦A梦")
   # 上游 advanced：反查、重复上屏、数字日期、笔画/部首辅助码、以词定字。
   advanced:
     tests:
@@ -274,7 +274,7 @@ deploy:
       - send: "xkrm["
         assert: commit == "熙"
       - send: "qmjx{Down}{Down}]"
-        assert: commit == "薇"
+        assert: eq(commit, "薇")
   # 上游 schema_userdb：按顺序操作同一次部署的方案码用户词典。
   schema_userdb:
     tests:
