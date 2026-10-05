@@ -239,8 +239,9 @@ deploy:
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
       - send: "{Control+period}jju gjo tpi xga  jgtx"
         assert: commit == "五G通信"
-      - send: "{Control+period}dyi lwi kka mna  dlkm"
-        assert: eq(commit, "哆啦A梦")
+      # 啦读轻声 la5（lwo），梦的二码固顶为 mn；la1/meng4 的首选会组成「垃/孟」。
+      - send: "{Control+period}dyi lwo kka mn  dlkm"
+        assert: commit == "哆啦A梦"
   # 上游 advanced：反查、重复上屏、数字日期、笔画/部首辅助码、以词定字。
   advanced:
     tests:
@@ -273,8 +274,9 @@ deploy:
         assert: cand[1].text == "嶅"
       - send: "xkrm["
         assert: commit == "熙"
-      - send: "qmjx{Down}{Down}]"
-        assert: eq(commit, "薇")
+      # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。
+      - send: "jpdz{Down}]"
+        assert: commit == "刀"
   # 上游 schema_userdb：按顺序操作同一次部署的方案码用户词典。
   schema_userdb:
     tests:
