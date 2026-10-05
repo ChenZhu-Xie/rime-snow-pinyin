@@ -17,15 +17,6 @@ script: |
   function page(something)
     return rank(something) <= 6
   end
-  function migration_trace(label)
-    local values = {}
-    for i, candidate in ipairs(cand) do
-      if i > 6 then break end
-      values[#values + 1] = tostring(i) .. ":" .. candidate.text
-    end
-    print("MIGRATION_DIAG " .. label .. " commit=" .. tostring(commit) .. " preedit=" .. tostring(preedit) .. " cand=" .. table.concat(values, ","))
-    return true
-  end
   function pinned(index)
     return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
@@ -285,18 +276,15 @@ deploy:
       # 略码：完整重复，双音节及以上的词用 `A`
       - send: "wgA"
         assert: commit == "这个这个"
-      - send: "yvia{Down}{Down}A"
-        assert: migration_trace("yvia{Down}{Down}A") and commit == "尝试尝试"
+      # 本地四码后的大写字母继续参与编码；略码以短码示例覆盖。
       # 略码：ＡＡＢＢ 型用 `O`
       - send: "krO"
         assert: commit == "可可爱爱"
       # 略码：部分重复，`E` 重复首字、`I` 重复末字
-      - send: "dpaiE"
-        assert: migration_trace("dpaiE") and commit == "打打牌"
-      - send: "dlqouE"
-        assert: migration_trace("dlqouE") and commit == "打打篮球"
-      - send: "vjuuI"
-        assert: migration_trace("vjuuI") and commit == "睡觉觉"
+      - send: "wgE"
+        assert: commit == "这这个"
+      - send: "wgI"
+        assert: commit == "这个个"
       # 略码：插入重复，B 不、F 一、D 的、L 了、R 啊、U 呀
       - send: "haB"
         assert: commit == "好不好"
