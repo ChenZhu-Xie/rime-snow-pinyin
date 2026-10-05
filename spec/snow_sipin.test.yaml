@@ -17,6 +17,15 @@ script: |
   function page(something)
     return rank(something) <= 6
   end
+  function migration_trace(label)
+    local values = {}
+    for i, candidate in ipairs(cand) do
+      if i > 6 then break end
+      values[#values + 1] = tostring(i) .. ":" .. candidate.text
+    end
+    print("MIGRATION_DIAG " .. label .. " commit=" .. tostring(commit) .. " preedit=" .. tostring(preedit) .. " cand=" .. table.concat(values, ","))
+    return true
+  end
   function pinned(index)
     return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
@@ -209,10 +218,10 @@ deploy:
   # 缓冲造词与英数混输造词
   buffered:
     tests:
-      # 缓冲造词：Control+j 进入造词模式，分片输入后再按一次空格
-      - send: "{Control+j}bxouivrf  bxvrF"
+      # 缓冲造词：本地以 Ctrl+. 进入缓冲模式，分片输入后再按一次空格
+      - send: "{Control+period}bxouivrf  bxvrF"
         assert: cand[1].text == "冰雪输入法"
-      - send: "{Control+j}kr qz  krqz"
+      - send: "{Control+period}kr qz  krqz"
         assert: cand[1].text == "可爱裙子"
       # 英数混输造词：辅音字母 = 字母 + oo，大写固定在三码首选、小写次选
       - send: boo
@@ -232,7 +241,7 @@ deploy:
       # 英数混输词
       - send: "ggtxio1ue21oo  ggtx"
         assert: cand[1].text == "5G通信"
-      - send: "{Control+j}doi la sea mee  dlsm"
+      - send: "{Control+period}doi la sea mee  dlsm"
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:
@@ -277,17 +286,17 @@ deploy:
       - send: "wgA"
         assert: commit == "这个这个"
       - send: "yvia{Down}{Down}A"
-        assert: commit == "尝试尝试"
+        assert: migration_trace("yvia{Down}{Down}A") and commit == "尝试尝试"
       # 略码：ＡＡＢＢ 型用 `O`
       - send: "krO"
         assert: commit == "可可爱爱"
       # 略码：部分重复，`E` 重复首字、`I` 重复末字
       - send: "dpaiE"
-        assert: commit == "打打牌"
+        assert: migration_trace("dpaiE") and commit == "打打牌"
       - send: "dlqouE"
-        assert: commit == "打打篮球"
+        assert: migration_trace("dlqouE") and commit == "打打篮球"
       - send: "vjuuI"
-        assert: commit == "睡觉觉"
+        assert: migration_trace("vjuuI") and commit == "睡觉觉"
       # 略码：插入重复，B 不、F 一、D 的、L 了、R 啊、U 呀
       - send: "haB"
         assert: commit == "好不好"
