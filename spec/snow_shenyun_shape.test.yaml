@@ -1,0 +1,21 @@
+schema: snow_shenyun_shape
+source_dir: ..
+script: |
+  function has(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return true end
+    end
+    return false
+  end
+deploy:
+  popping:
+    tests:
+      # bing 的 R10 21×26 声韵码为 bd，键道式首形码为 o（丶）。
+      - send: bd
+        assert: has("冰")
+      - send: bdo
+        assert: has("冰")
+      - send: "bd,"
+        assert: commit and commit:find("，", 1, true)
+      - send: "bd."
+        assert: commit and commit:find("。", 1, true)

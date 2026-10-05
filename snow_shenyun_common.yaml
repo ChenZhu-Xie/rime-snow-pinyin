@@ -1,5 +1,5 @@
 # 冰雪神韵·形 / 冰雪神韵·调共用配置
-# 21×28 均衡主案：, = in+ui；. = an。
+# 21×26 R10-21X26-M39-08；,/. 只作普通标点。
 
 __include: snow_pinyin.schema.yaml:/
 
@@ -12,6 +12,7 @@ engine:
     - recognizer
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
+    - lua_processor@*snow.shape_processor
     - lua_processor@*snow.history
     - key_binder
     - speller
@@ -58,45 +59,56 @@ shenyun_algebra:
   - xform/(^| )yue(?=\d)/$1Yve/
   - xform/(^| )yun(?=\d)/$1Yvn/
   - xform/(^| )yu(?=\d)/$1Yv/
-  # 零声母载体 A/E/O、W、Y 分别映射到 J、Q、Y。
+  # 零声母载体 A/E/O、W、Y 分别映射到 J、W、Y。
   - xform/(^| )(?=[aoe])/$1J/
-  - xform/(^| )w/$1Q/
+  - xform/(^| )w/$1W/
   - xform/(^| )y/$1Y/
-  # 复声母与唯一普通声母移位 x -> F；f 与 x 共键但合法韵集合互斥。
-  - xform/(^| )zh/$1W/
+  # R10 21×26 的声母宿主键；合键依靠互斥的合法韵集合消歧。
+  - xform/(^| )zh/$1F/
   - xform/(^| )ch/$1V/
-  - xform/(^| )sh/$1X/
-  - xform/(^| )x/$1F/
-  # 28 韵键；长韵母必须先变换。
-  - xform/(uang|ing)(?=\d)/R/
-  - xform/iang(?=\d)/H/
-  - xform/iong(?=\d)/Y/
-  - xform/ian(?=\d)/S/
-  - xform/iao(?=\d)/L/
-  - xform/uai(?=\d)/F/
-  - xform/uan(?=\d)/W/
-  - xform/van(?=\d)/X/
-  - xform/(un|vn)(?=\d)/D/
-  - xform/(in|ui)(?=\d)/,/
-  - xform/uo(?=\d)/O/
-  - xform/ve(?=\d)/Z/
-  - xform/(ia|ong)(?=\d)/P/
-  - xform/ie(?=\d)/M/
-  - xform/iu(?=\d)/G/
-  - xform/(ua|v)(?=\d)/B/
-  - xform/ou(?=\d)/C/
-  - xform/eng(?=\d)/T/
-  - xform/ang(?=\d)/N/
-  - xform/ai(?=\d)/Q/
-  - xform/ao(?=\d)/V/
-  - xform/ei(?=\d)/J/
-  - xform/en(?=\d)/K/
-  - xform/an(?=\d)/./
-  - xform/(u|er)(?=\d)/U/
+  - xform/(^| )sh/$1D/
+  - xform/(^| )f/$1X/
+  - xform/(^| )d/$1R/
+  - xform/(^| )q/$1W/
+  - xform/(^| )x/$1X/
+  - xform/(^| )r/$1Z/
+  - xform/(^| )z/$1Q/
+  # 26 个纯字母韵键；较长韵尾先行，保留 a/e/i/o/u 的原键。
+  - xform/iang(?=\d)/V/
+  - xform/iong(?=\d)/H/
+  - xform/uang(?=\d)/K/
+  - xform/ian(?=\d)/K/
+  - xform/iao(?=\d)/C/
+  - xform/ing(?=\d)/D/
+  - xform/uai(?=\d)/R/
+  - xform/uan(?=\d)/X/
+  - xform/van(?=\d)/F/
+  - xform/eng(?=\d)/N/
+  - xform/ang(?=\d)/Y/
+  - xform/ong(?=\d)/P/
+  - xform/ai(?=\d)/J/
+  - xform/an(?=\d)/L/
+  - xform/ao(?=\d)/W/
+  - xform/ei(?=\d)/Q/
+  - xform/en(?=\d)/M/
+  - xform/er(?=\d)/Q/
+  - xform/ia(?=\d)/P/
+  - xform/ie(?=\d)/Z/
+  - xform/in(?=\d)/G/
+  - xform/iu(?=\d)/B/
+  - xform/ou(?=\d)/S/
+  - xform/ua(?=\d)/D/
+  - xform/ui(?=\d)/O/
+  - xform/un(?=\d)/F/
+  - xform/uo(?=\d)/H/
+  - xform/ve(?=\d)/T/
+  - xform/vn(?=\d)/X/
+  - xform/v(?=\d)/R/
   - xform/a(?=\d)/A/
   - xform/e(?=\d)/E/
   - xform/i(?=\d)/I/
   - xform/o(?=\d)/O/
+  - xform/u(?=\d)/U/
   - xform/\d//
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
 
@@ -114,15 +126,17 @@ shenyun:
   preedit_format: null
 
 speller:
-  alphabet: abcdefghijklmnopqrstuvwxyz,.
+  alphabet: abcdefghijklmnopqrstuvwxyz
   initials: bpmfdtnlgkhjqwvxrzcsy
   delimiter: " "
   popping:
-    # 所有编码键都先尝试追加；无候选时顶出当前首选，再重放该键。
-    # 因而 ,/. 在合法 U 位不顶功，在其他位置恢复为普通标点。
-    - match: ".+"
-      accept: "[abcdefghijklmnopqrstuvwxyz,.]"
+    # 字母先尝试追加；无候选时顶出当前首选，再重放该键。
+    - match: "^[a-z]+$"
+      accept: "[a-z]"
       strategy: conditional
+    # 标点先顶出候选，再由 punctuator 输出；逗号和句号不参与编码。
+    - match: ".*[a-z0-9]"
+      accept: "[^a-z0-9 ]"
   algebra:
     __include: /shenyun_algebra
     __append:
@@ -142,7 +156,7 @@ translator:
   shape_elements: snow_jiandao_chaifen
   shape_mapping: "radical_jiandao.txt"
   shenyun_initial_keys: bpmfdtnlgkhjqwvxrzcsy
-  shenyun_final_keys: abcdefghijklmnopqrstuvwxyz,.
+  shenyun_final_keys: abcdefghijklmnopqrstuvwxyz
   shenyun_auxiliary_keys: aeuio
 
 switches:

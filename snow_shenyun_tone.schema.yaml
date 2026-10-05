@@ -10,15 +10,25 @@ schema:
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
-    AUBB 飞花式 21×28 顶功方案
-    共用神韵均衡声韵布局，B 使用四拼式 aeuio 声调与笔画辅码
+    AUBB 飞花式 21×26 顶功方案
+    共用 R10-21X26-M39-08 声韵布局；单字首 B 为声调，后续 B 为笔画，1 独立进入部首码
   dependencies:
     - snow_pinyin
     - snow_bihua
-    - snow_jiandao_chaifen
+    - snow_bushou
 
 shenyun_options:
   auxiliary: tone
 
 __patch:
+  - patch
   - snow_shenyun_tone.custom:/patch?
+
+patch:
+  translator/shape_elements: snow_bushou
+  translator/shape_mapping: "radical_sanpin.txt"
+  speller/shape:
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]?$"
+      accept: "1"
+    - match_shape: "1"
+      accept: "[a-z]"

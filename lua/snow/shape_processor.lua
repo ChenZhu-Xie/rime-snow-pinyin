@@ -20,6 +20,8 @@ local processor = {}
 
 ---@param env ShapeEnv
 function processor.init(env)
+  local shape_config = env.engine.schema.config:get_list("speller/shape")
+  if not shape_config then return end
   local function clear()
     env.engine.context:set_property("shape_input", "")
     env.engine.context:set_property("shape_status", "")
@@ -28,10 +30,6 @@ function processor.init(env)
   local context = env.engine.context
   context.select_notifier:connect(clear)
   context.commit_notifier:connect(clear)
-  local shape_config = env.engine.schema.config:get_list("speller/shape")
-  if not shape_config then
-    return
-  end
   env.config = {}
   for i = 1, shape_config.size do
     local item = shape_config:get_at(i - 1)
@@ -54,13 +52,14 @@ end
 ---@param key KeyEvent
 ---@param env ShapeEnv
 function processor.func(key, env)
+  if not env.config then return snow.kNoop end
   local input = snow.current(env.engine.context) or ""
   if input:len() == 0 then
     env.engine.context:set_property("shape_input", "")
   end
   -- 追加编码
   local context = env.engine.context
-  local shape_input = context:get_property("shape_input")
+  local shape_input = context:get_property("shape_input") or ""
   if key.modifier ~= 0 then
     return snow.kNoop
   end

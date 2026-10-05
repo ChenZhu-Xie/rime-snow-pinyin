@@ -1,9 +1,9 @@
 -- 冰雪神韵·形 / 冰雪神韵·调的飞码式翻译器
 --
 -- 主码族：单字 AU、二字 AUAU、三字 AAA / AAAU、四字 AAAA。
--- 两个方案共用 21×28 声韵映射，只在 B 辅码语义上不同：
+-- 两个方案共用 R10-21X26-M39-08 声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
---   tone:  四拼式声调键 12345 -> ieuao，单字可继续追加四拼式笔画。
+--   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
 
 local snow = require "snow.snow"
 
@@ -41,15 +41,19 @@ local function characters(text)
   return result
 end
 
-local function encode_radical(character, env)
+local function encode_elements(character, env)
   local radicals = env.shape_elements:lookup(character) or ""
   local result = ""
   for _, codepoint in utf8.codes(radicals) do
     local radical = utf8.char(codepoint)
     result = result .. (env.shape_mapping[radical] or "")
   end
+  return result
+end
+
+local function encode_radical(character, env)
   -- 键道的五部物理键 avuio 迁移到神韵的 aeuio，小集合仍与 A 键互斥。
-  return result:gsub("v", "e")
+  return encode_elements(character, env):gsub("v", "e")
 end
 
 local function first_or_empty(value)
@@ -156,6 +160,18 @@ local function auxiliary_codes(text, env)
 end
 
 local function auxiliary_match(text, suffix, env)
+  local radical_input = env.engine.context:get_property("shape_input") or ""
+  if radical_input ~= "" then
+    if env.auxiliary_mode ~= "tone" or utf8.len(text) ~= 1
+        or radical_input:sub(1, 1) ~= "1" then
+      return false, ""
+    end
+    local radical_code = encode_elements(text, env)
+    local prefix = radical_input:sub(2)
+    if radical_code:sub(1, #prefix) ~= prefix then
+      return false, radical_code
+    end
+  end
   local codes = auxiliary_codes(text, env)
   if suffix == "" then return true, table.concat(codes, "/") end
   for _, code in ipairs(codes) do
@@ -208,7 +224,7 @@ function this.init(env)
   local shape_mapping = config:get_string("translator/shape_mapping") or "radical_jiandao.txt"
   env.shape_mapping = snow.table_from_tsv(rime_api.get_user_data_dir() .. "/lua/snow/" .. shape_mapping)
   env.initial_keys = config:get_string("translator/shenyun_initial_keys") or "bpmfdtnlgkhjqwvxrzcsy"
-  env.final_keys = config:get_string("translator/shenyun_final_keys") or "abcdefghijklmnopqrstuvwxyz,."
+  env.final_keys = config:get_string("translator/shenyun_final_keys") or "abcdefghijklmnopqrstuvwxyz"
   env.auxiliary_keys = config:get_string("translator/shenyun_auxiliary_keys") or "aeuio"
   env.auxiliary_mode = config:get_string("shenyun_options/auxiliary") or "shape"
 end

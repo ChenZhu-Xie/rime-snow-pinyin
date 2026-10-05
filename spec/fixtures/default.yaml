@@ -6,6 +6,8 @@ schema_list:
   - schema: snow_yipin
   - schema: snow_jiandao
   - schema: snow_qingyun
+  - schema: snow_shenyun_shape
+  - schema: snow_shenyun_tone
 
 ascii_composer:
   good_old_caps_lock: true
