@@ -49,6 +49,13 @@ deploy:
       # 组词规则
       - send: bdi
         assert: cand[1].text == "冰"
+      # 单字 IR+B1+B2：冰首笔捺 → o；当有折/竖两条首笔码，运行时都接受。
+      - send: bdio
+        assert: has("冰")
+      - send: dmia
+        assert: has("当")
+      - send: dmii
+        assert: has("当")
       - send: bdxy
         assert: has("冰雪")
       - send: jgekaa

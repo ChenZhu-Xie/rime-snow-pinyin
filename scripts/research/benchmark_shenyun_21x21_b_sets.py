@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Compare 21x21 layouts on the repository's four single-character B paths.
+"""Compare 21x21 layouts on character and two-character word B paths.
 
 Keytao: IR+shape1, IR+shape1+shape2 (R11 snowshape).
 Sanpin: IR+tone, IR+tone+first pure stroke (runtime shape_filter.lua).
-The sanpin two-B track is diagnostic until candidate ordering is checked in Rime.
+The sanpin two-B path accepts every first stroke allowed by shape_filter.lua.
 """
 from __future__ import annotations
 
@@ -36,6 +36,7 @@ import search_engine as se
 
 DATA = r5.D
 COMMON = [row for row in DATA['characters'] if row[4]]
+WORDS = [row for row in DATA['words'] if row[6] & 1 and row[7]]
 SHAPE = DATA['shapes']['snowshape']
 TONE = 'IVUAO'
 # Shape filter's runtime stroke mapping: 一=v, 丨=i, 丿=u, 丶=o, 乙=a.
@@ -89,7 +90,7 @@ assert all(row[0] in STROKE for row in COMMON if row[3] > 0)
 TOTAL = sum(row[3] for row in COMMON)
 
 
-def losses(codes: list[str | None], alternate: bool = False) -> dict[str, float]:
+def losses(codes: list[str | None], alternate: bool = True) -> dict[str, float]:
     """Frequency weighted rank >1; duplicate codes keep one maximal weight."""
     buckets: dict[str, dict[str, int]] = {name: {} for name in ('j1', 'j2', 's1', 's2')}
     masses = {name: 0 for name in buckets}
@@ -110,7 +111,7 @@ def losses(codes: list[str | None], alternate: bool = False) -> dict[str, float]
             if not paths or any(not path for path in paths):
                 continue
             if name == 's2' and alternate:
-                alternative_rows.append((row_index, weight, paths))
+                alternative_rows.append((row_index, character, weight, paths))
                 continue
             path = paths[0]
             slot = buckets[name]
@@ -120,15 +121,44 @@ def losses(codes: list[str | None], alternate: bool = False) -> dict[str, float]
               for name in buckets if name != 's2' or not alternate}
     if alternate:
         winners = {}
-        for row_index, weight, paths in alternative_rows:
+        for row_index, character, weight, paths in alternative_rows:
             for path in paths:
                 old = winners.get(path)
-                if old is None or weight > old[1]:
-                    winners[path] = row_index, weight
-        numerator = sum(weight for index, weight, paths in alternative_rows
+                if old is None or weight > old[2] or (weight == old[2] and character < old[1]):
+                    winners[path] = row_index, character, weight
+        numerator = sum(weight for index, character, weight, paths in alternative_rows
                         if all(winners[path][0] != index for path in paths))
-        result['s2'] = numerator / sum(row[1] for row in alternative_rows)
+        result['s2'] = numerator / sum(row[2] for row in alternative_rows)
     return result
+
+
+def word_losses(codes: list[str | None]) -> dict[str, float]:
+    """Snow common words; match CKT's cohort filtering before ranking."""
+    names = ('wj1', 'wj2', 'ws1', 'ws2')
+    winners: dict[str, dict[str, tuple[int, str]]] = {name: {} for name in names}
+    masses = {name: 0 for name in names}
+    for word, p1, p2, t1, t2, weight, _lexicon, common in WORDS:
+        if weight <= 0 or len(word) != 2:
+            continue
+        a, b = codes[p1], codes[p2]
+        if a is None or b is None:
+            continue
+        x1 = SHAPE.get(word[0], '').translate(KEYTAO_SHAPE)[:1]
+        x2 = SHAPE.get(word[1], '').translate(KEYTAO_SHAPE)[:1]
+        base = a + b
+        paths = (base + x2 if x1 and x2 else None,
+                 base + x2 + x1 if x1 and x2 else None,
+                 base + TONE[t2 - 1], base + TONE[t2 - 1] + TONE[t1 - 1])
+        for name, path in zip(names, paths):
+            if path is None:
+                continue
+            old = winners[name].get(path)
+            if old is None or weight > old[0] or (weight == old[0] and word < old[1]):
+                winners[name][path] = (weight, word)
+            if common:
+                masses[name] += weight
+    return {name: 1 - sum(weight for weight, word in winners[name].values()) / masses[name]
+            for name in names}
 
 
 def state_codes(state: np.ndarray) -> list[str | None]:
@@ -137,7 +167,7 @@ def state_codes(state: np.ndarray) -> list[str | None]:
 
 def report(entry: dict, source: str, state: np.ndarray | None = None) -> dict:
     codes = entry['codeList']
-    result = {'id': source, **losses(codes)}
+    result = {'id': source, **losses(codes), **word_losses(codes)}
     if state is not None:
         unique, memory, displaced = se.stats(state, opt.PARAMS[-2], opt.PARAMS[-1], 21, 10, 1)
         factors = opt.metrics(opt.initialize(state, opt.PARAMS)[1], opt.PARAMS)
@@ -152,7 +182,8 @@ def main() -> None:
     s005 = report(entries['S005'], 'S005')
     r9state = opt.state(entries['R9-21X21-M40-02'], DATA)
     r9 = report(entries['R9-21X21-M40-02'], 'R9-21X21-M40-02', r9state)
-    for item, track in (('j2', 'C4-Snow'), ('s1', 'C3')):
+    for item, track in (('j2', 'C4-Snow'), ('s1', 'C3'),
+                        ('wj2', 'WX-Snow-21'), ('ws2', 'W6-21')):
         reference = DATA['ckt']['tracks']['S005'][track]['miss']
         assert abs(s005[item] - reference) < 1e-12, (item, s005[item], reference)
         baseline = DATA['ckt']['tracks']['R9-21X21-M40-02'][track]['miss']
@@ -176,21 +207,23 @@ def main() -> None:
         row['origin'] = label
         row['passesKeytaoB'] = row['j1'] < s005['j1'] and row['j2'] < s005['j2']
         row['passesAllFour'] = row['passesKeytaoB'] and row['s1'] < s005['s1'] and row['s2'] < s005['s2']
+        row['passesAllEight'] = all(row[name] < s005[name] for name in ('j1', 'j2', 's1', 's2', 'wj1', 'wj2', 'ws1', 'ws2'))
         results.append(row)
     results.sort(key=lambda row: (not row['passesAllFour'],
                                   max(row[k] / s005[k] for k in ('j1', 'j2', 's1', 's2')),
                                   row['S2ms']))
-    sensitivity = {'S005': losses(entries['S005']['codeList'], alternate=True)['s2'],
-                   'R9': losses(entries['R9-21X21-M40-02']['codeList'], alternate=True)['s2']}
+    sensitivity = {'S005': losses(entries['S005']['codeList'], alternate=False)['s2'],
+                   'R9': losses(entries['R9-21X21-M40-02']['codeList'], alternate=False)['s2']}
     counts = {'recorded': len(results), 'passesKeytaoB': sum(r['passesKeytaoB'] for r in results),
-              'passesAllFour': sum(r['passesAllFour'] for r in results)}
+              'passesAllFour': sum(r['passesAllFour'] for r in results),
+              'passesAllEight': sum(r['passesAllEight'] for r in results)}
     payload = {'standard': {'cohort': 'R11 Common8095', 'mass': TOTAL,
-                            'sanpinStrokeSource': 'rime-stroke/stroke.dict.yaml first entry per character',
+                            'sanpinStrokeSource': 'rime-stroke/stroke.dict.yaml all accepted first strokes',
                             'sanpinRuntimeMap': 'hspnz -> viuoa (shape_filter.lua)',
-                            'sanpinSecondBStatus': 'diagnostic; needs live Rime candidate-order check',
-                            'strict': 'each nonfirst rate < corresponding S005 rate'},
+                            'sanpinSecondBStatus': 'formal frozen frequency-ranked gate; live Rime ordering is a separate integration check',
+                            'strict': 'four character paths are formal gates; each nonfirst rate < corresponding S005 rate; word paths are optimization objectives'},
                'counts': counts, 'reference': {'S005': s005, 'R9': r9},
-               'allAcceptedFirstStrokeSensitivity': sensitivity, 'results': results}
+               'firstDictionaryEntryStrokeSensitivity': sensitivity, 'results': results}
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
     print(json.dumps({'counts': counts, 'reference': {'S005': s005,
