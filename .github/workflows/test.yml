@@ -29,6 +29,7 @@ jobs:
     needs: validate-shenyun
     runs-on: ubuntu-24.04
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: 冰雪四拼
