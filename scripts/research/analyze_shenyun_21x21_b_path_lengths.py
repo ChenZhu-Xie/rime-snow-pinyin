@@ -41,6 +41,10 @@ representatives = {
     'bestWordObjective': min(rows, key=lambda r: (max(r[k] / base[k] for k in names[4:]), r['S2ms'])),
     'bestAllEight': min(rows, key=lambda r: (max(r[k] / base[k] for k in names), r['S2ms'])),
 }
+if 'selection' in search:
+    selected_by_id = {r['id']: r for r in rows}
+    representatives.update({f'wide_{label}': selected_by_id[scheme_id]
+                            for label, scheme_id in search['selection'].items()})
 entries = {entry['id']: entry for entry in b.DATA['entries']}
 
 

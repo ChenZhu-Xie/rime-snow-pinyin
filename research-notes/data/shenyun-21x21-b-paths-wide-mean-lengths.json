@@ -1,0 +1,445 @@
+{
+  "definition": "fixed phonetic base length + base weighted miss + first B weighted miss; stops after two B keys, excludes unresolved selection and commits",
+  "representatives": {
+    "S005": {
+      "name": "S005",
+      "id": "S005",
+      "characterBareMiss": 0.1269745647806744,
+      "wordBareMiss": 0.16446947988243227,
+      "keytaoCharacterKeys": 2.177455848870801,
+      "sanpinCharacterKeys": 2.180759856794517,
+      "keytaoWordKeys": 4.244144021081886,
+      "sanpinWordKeys": 4.2515130498745695,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013474021482520073,
+        "s2": 0.01940419979446517,
+        "wj2": 0.030006196004485952,
+        "ws2": 0.03838938908323242
+      },
+      "S2ms": null,
+      "v5": null,
+      "M": null,
+      "D": null
+    },
+    "R9": {
+      "name": "R9",
+      "id": "R9-21X21-M40-02",
+      "characterBareMiss": 0.12621409384862128,
+      "wordBareMiss": 0.17876521003989357,
+      "keytaoCharacterKeys": 2.1766943785620168,
+      "sanpinCharacterKeys": 2.18166920747933,
+      "keytaoWordKeys": 4.264994619071271,
+      "sanpinWordKeys": 4.2743632108702725,
+      "unresolvedAfterTwoB": {
+        "j2": 0.014742901368895594,
+        "s2": 0.01972809368601037,
+        "wj2": 0.031910479658801894,
+        "ws2": 0.0427102652115644
+      },
+      "S2ms": 70.18906735229086,
+      "v5": 10.397759585862813,
+      "M": 40,
+      "D": 0
+    },
+    "bestWordM41AfterGate": {
+      "name": "bestWordM41AfterGate",
+      "id": "BPW-55cd6d32fbb9",
+      "characterBareMiss": 0.12316531031393613,
+      "wordBareMiss": 0.16314615250355785,
+      "keytaoCharacterKeys": 2.1718243062302776,
+      "sanpinCharacterKeys": 2.1760696585842965,
+      "keytaoWordKeys": 4.242348808113731,
+      "sanpinWordKeys": 4.249591820492789,
+      "unresolvedAfterTwoB": {
+        "j2": 0.01317329122699053,
+        "s2": 0.0190856039686044,
+        "wj2": 0.029965542076220878,
+        "ws2": 0.03828274186651071
+      },
+      "S2ms": 71.47713833919762,
+      "v5": 10.586727548630776,
+      "M": 41,
+      "D": 1
+    },
+    "bestWordAfterGate": {
+      "name": "bestWordAfterGate",
+      "id": "BPW-6c6d2197309f",
+      "characterBareMiss": 0.12272177870658665,
+      "wordBareMiss": 0.16242779567529406,
+      "keytaoCharacterKeys": 2.170989662378642,
+      "sanpinCharacterKeys": 2.1752294291750403,
+      "keytaoWordKeys": 4.241374779256817,
+      "sanpinWordKeys": 4.248548549447942,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013111754262516307,
+        "s2": 0.01898932155010669,
+        "wj2": 0.029854874207207678,
+        "ws2": 0.038196670727621604
+      },
+      "S2ms": 73.12692722338744,
+      "v5": 10.77488239503384,
+      "M": 46,
+      "D": 5
+    },
+    "bestCharacterGate": {
+      "name": "bestCharacterGate",
+      "id": "BPW-6c6d2197309f",
+      "characterBareMiss": 0.12272177870658665,
+      "wordBareMiss": 0.16242779567529406,
+      "keytaoCharacterKeys": 2.170989662378642,
+      "sanpinCharacterKeys": 2.1752294291750403,
+      "keytaoWordKeys": 4.241374779256817,
+      "sanpinWordKeys": 4.248548549447942,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013111754262516307,
+        "s2": 0.01898932155010669,
+        "wj2": 0.029854874207207678,
+        "ws2": 0.038196670727621604
+      },
+      "S2ms": 73.12692722338744,
+      "v5": 10.77488239503384,
+      "M": 46,
+      "D": 5
+    },
+    "bestWordObjective": {
+      "name": "bestWordObjective",
+      "id": "BPW-6c6d2197309f",
+      "characterBareMiss": 0.12272177870658665,
+      "wordBareMiss": 0.16242779567529406,
+      "keytaoCharacterKeys": 2.170989662378642,
+      "sanpinCharacterKeys": 2.1752294291750403,
+      "keytaoWordKeys": 4.241374779256817,
+      "sanpinWordKeys": 4.248548549447942,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013111754262516307,
+        "s2": 0.01898932155010669,
+        "wj2": 0.029854874207207678,
+        "ws2": 0.038196670727621604
+      },
+      "S2ms": 73.12692722338744,
+      "v5": 10.77488239503384,
+      "M": 46,
+      "D": 5
+    },
+    "bestAllEight": {
+      "name": "bestAllEight",
+      "id": "BPW-6c6d2197309f",
+      "characterBareMiss": 0.12272177870658665,
+      "wordBareMiss": 0.16242779567529406,
+      "keytaoCharacterKeys": 2.170989662378642,
+      "sanpinCharacterKeys": 2.1752294291750403,
+      "keytaoWordKeys": 4.241374779256817,
+      "sanpinWordKeys": 4.248548549447942,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013111754262516307,
+        "s2": 0.01898932155010669,
+        "wj2": 0.029854874207207678,
+        "ws2": 0.038196670727621604
+      },
+      "S2ms": 73.12692722338744,
+      "v5": 10.77488239503384,
+      "M": 46,
+      "D": 5
+    },
+    "wide_fastest": {
+      "name": "wide_fastest",
+      "id": "BPW-0d35ee424ef1",
+      "characterBareMiss": 0.12282986198456751,
+      "wordBareMiss": 0.1628507524787098,
+      "keytaoCharacterKeys": 2.1711037008467335,
+      "sanpinCharacterKeys": 2.1754506747552114,
+      "keytaoWordKeys": 4.242032987046856,
+      "sanpinWordKeys": 4.24934228965219,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013106031803973432,
+        "s2": 0.01901797491309769,
+        "wj2": 0.029939189701235235,
+        "ws2": 0.03837627642330208
+      },
+      "S2ms": 69.47730572065412,
+      "v5": 10.411877527834331,
+      "M": 47,
+      "D": 6
+    },
+    "wide_lowestV5": {
+      "name": "wide_lowestV5",
+      "id": "BPW-c1924db8d054",
+      "characterBareMiss": 0.1226942616212489,
+      "wordBareMiss": 0.1625883302539592,
+      "keytaoCharacterKeys": 2.1709844327634187,
+      "sanpinCharacterKeys": 2.175334336351629,
+      "keytaoWordKeys": 4.24167350898249,
+      "sanpinWordKeys": 4.248941329088835,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013101815255573418,
+        "s2": 0.019015921399266514,
+        "wj2": 0.02990391520130591,
+        "ws2": 0.038335563107472985
+      },
+      "S2ms": 70.06958922224698,
+      "v5": 10.35760721721009,
+      "M": 48,
+      "D": 7
+    },
+    "wide_bestWord": {
+      "name": "wide_bestWord",
+      "id": "BPW-6c6d2197309f",
+      "characterBareMiss": 0.12272177870658665,
+      "wordBareMiss": 0.16242779567529406,
+      "keytaoCharacterKeys": 2.170989662378642,
+      "sanpinCharacterKeys": 2.1752294291750403,
+      "keytaoWordKeys": 4.241374779256817,
+      "sanpinWordKeys": 4.248548549447942,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013111754262516307,
+        "s2": 0.01898932155010669,
+        "wj2": 0.029854874207207678,
+        "ws2": 0.038196670727621604
+      },
+      "S2ms": 73.12692722338744,
+      "v5": 10.77488239503384,
+      "M": 46,
+      "D": 5
+    },
+    "wide_lowestM": {
+      "name": "wide_lowestM",
+      "id": "BPW-55cd6d32fbb9",
+      "characterBareMiss": 0.12316531031393613,
+      "wordBareMiss": 0.16314615250355785,
+      "keytaoCharacterKeys": 2.1718243062302776,
+      "sanpinCharacterKeys": 2.1760696585842965,
+      "keytaoWordKeys": 4.242348808113731,
+      "sanpinWordKeys": 4.249591820492789,
+      "unresolvedAfterTwoB": {
+        "j2": 0.01317329122699053,
+        "s2": 0.0190856039686044,
+        "wj2": 0.029965542076220878,
+        "ws2": 0.03828274186651071
+      },
+      "S2ms": 71.47713833919762,
+      "v5": 10.586727548630776,
+      "M": 41,
+      "D": 1
+    },
+    "wide_M42D2Fast": {
+      "name": "wide_M42D2Fast",
+      "id": "BPW-d40a43ee96b0",
+      "characterBareMiss": 0.12308590777913068,
+      "wordBareMiss": 0.16318255108444665,
+      "keytaoCharacterKeys": 2.171612438363269,
+      "sanpinCharacterKeys": 2.175983657425047,
+      "keytaoWordKeys": 4.242432587692098,
+      "sanpinWordKeys": 4.249711305130924,
+      "unresolvedAfterTwoB": {
+        "j2": 0.01311983141691893,
+        "s2": 0.019062029629822508,
+        "wj2": 0.02995797101835882,
+        "ws2": 0.03830553698351456
+      },
+      "S2ms": 71.431275531441,
+      "v5": 10.581557315727421,
+      "M": 42,
+      "D": 2
+    },
+    "wide_M43D3Fast": {
+      "name": "wide_M43D3Fast",
+      "id": "BPW-20283840f4f3",
+      "characterBareMiss": 0.12300682011644601,
+      "wordBareMiss": 0.16296778595224215,
+      "keytaoCharacterKeys": 2.171564427209896,
+      "sanpinCharacterKeys": 2.175905500688632,
+      "keytaoWordKeys": 4.242169877666075,
+      "sanpinWordKeys": 4.24944173441367,
+      "unresolvedAfterTwoB": {
+        "j2": 0.0131131369618293,
+        "s2": 0.019124511210659074,
+        "wj2": 0.029924793641784207,
+        "ws2": 0.038380834418841166
+      },
+      "S2ms": 71.18733509445363,
+      "v5": 10.615500934693392,
+      "M": 43,
+      "D": 3
+    },
+    "wide_M44D4Fast": {
+      "name": "wide_M44D4Fast",
+      "id": "BPW-8889cbcc311c",
+      "characterBareMiss": 0.12308590777913068,
+      "wordBareMiss": 0.16333660385311877,
+      "keytaoCharacterKeys": 2.1717228900272016,
+      "sanpinCharacterKeys": 2.1759981415426024,
+      "keytaoWordKeys": 4.2426743133507845,
+      "sanpinWordKeys": 4.249879327681964,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013115765459533203,
+        "s2": 0.019104468915666802,
+        "wj2": 0.02998856246624404,
+        "ws2": 0.038327881554479776
+      },
+      "S2ms": 70.55008731085773,
+      "v5": 10.47740047860622,
+      "M": 44,
+      "D": 4
+    },
+    "wide_M45D5Fast": {
+      "name": "wide_M45D5Fast",
+      "id": "BPW-7e735ac58000",
+      "characterBareMiss": 0.12619483188888486,
+      "wordBareMiss": 0.1632754871973236,
+      "keytaoCharacterKeys": 2.1747220880479103,
+      "sanpinCharacterKeys": 2.179128942419705,
+      "keytaoWordKeys": 4.242621703106985,
+      "sanpinWordKeys": 4.249870596567984,
+      "unresolvedAfterTwoB": {
+        "j2": 0.01320431297593349,
+        "s2": 0.019162460146259195,
+        "wj2": 0.029966582500659894,
+        "ws2": 0.03834511308459597
+      },
+      "S2ms": 70.14417534869645,
+      "v5": 10.45056135016904,
+      "M": 45,
+      "D": 5
+    },
+    "wide_M46D5Fast": {
+      "name": "wide_M46D5Fast",
+      "id": "BPW-b5f7db827b08",
+      "characterBareMiss": 0.12606217489539093,
+      "wordBareMiss": 0.16311418172239467,
+      "keytaoCharacterKeys": 2.1743361095882023,
+      "sanpinCharacterKeys": 2.1786829876660345,
+      "keytaoWordKeys": 4.24239294049725,
+      "sanpinWordKeys": 4.249677371419459,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013106086564342263,
+        "s2": 0.01901797491309769,
+        "wj2": 0.029939189701235235,
+        "ws2": 0.03837627642330208
+      },
+      "S2ms": 69.98252842111944,
+      "v5": 10.446443313953957,
+      "M": 46,
+      "D": 5
+    },
+    "wide_M46D5LowestV5": {
+      "name": "wide_M46D5LowestV5",
+      "id": "BPW-57bdb76d4b17",
+      "characterBareMiss": 0.12297259488592642,
+      "wordBareMiss": 0.16303653647966904,
+      "keytaoCharacterKeys": 2.171304041656103,
+      "sanpinCharacterKeys": 2.1757407267388187,
+      "keytaoWordKeys": 4.242284429710189,
+      "sanpinWordKeys": 4.2496267038342435,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013182436208585366,
+        "s2": 0.019018632037523665,
+        "wj2": 0.029942864306759413,
+        "ws2": 0.03837446481708212
+      },
+      "S2ms": 70.14813927445414,
+      "v5": 10.407153356831447,
+      "M": 46,
+      "D": 5
+    },
+    "wide_M47D6Fast": {
+      "name": "wide_M47D6Fast",
+      "id": "BPW-0d35ee424ef1",
+      "characterBareMiss": 0.12282986198456751,
+      "wordBareMiss": 0.1628507524787098,
+      "keytaoCharacterKeys": 2.1711037008467335,
+      "sanpinCharacterKeys": 2.1754506747552114,
+      "keytaoWordKeys": 4.242032987046856,
+      "sanpinWordKeys": 4.24934228965219,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013106031803973432,
+        "s2": 0.01901797491309769,
+        "wj2": 0.029939189701235235,
+        "ws2": 0.03837627642330208
+      },
+      "S2ms": 69.47730572065412,
+      "v5": 10.411877527834331,
+      "M": 47,
+      "D": 6
+    },
+    "wide_M47D6LowestV5": {
+      "name": "wide_M47D6LowestV5",
+      "id": "BPW-4d2eac0e4048",
+      "characterBareMiss": 0.12636409618894254,
+      "wordBareMiss": 0.16284279226099307,
+      "keytaoCharacterKeys": 2.1748195204341534,
+      "sanpinCharacterKeys": 2.179116046352845,
+      "keytaoWordKeys": 4.241940453227621,
+      "sanpinWordKeys": 4.249181891265198,
+      "unresolvedAfterTwoB": {
+        "j2": 0.01328389348193764,
+        "s2": 0.019025504463812,
+        "wj2": 0.02988458569128361,
+        "ws2": 0.03830249137223823
+      },
+      "S2ms": 69.96356224823217,
+      "v5": 10.389242489574606,
+      "M": 47,
+      "D": 6
+    },
+    "wide_M48D7Fast": {
+      "name": "wide_M48D7Fast",
+      "id": "BPW-0edaea7940b0",
+      "characterBareMiss": 0.12620490779674984,
+      "wordBareMiss": 0.1632999657233539,
+      "keytaoCharacterKeys": 2.174536450397572,
+      "sanpinCharacterKeys": 2.178973039649642,
+      "keytaoWordKeys": 4.242644383160584,
+      "sanpinWordKeys": 4.2499617856015135,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013182490968954198,
+        "s2": 0.019018632037523665,
+        "wj2": 0.029942864306759413,
+        "ws2": 0.03837446481708212
+      },
+      "S2ms": 69.79268609246785,
+      "v5": 10.42483683713212,
+      "M": 48,
+      "D": 7
+    },
+    "wide_lowestMDdouble": {
+      "name": "wide_lowestMDdouble",
+      "id": "BPW-4d2eac0e4048",
+      "characterBareMiss": 0.12636409618894254,
+      "wordBareMiss": 0.16284279226099307,
+      "keytaoCharacterKeys": 2.1748195204341534,
+      "sanpinCharacterKeys": 2.179116046352845,
+      "keytaoWordKeys": 4.241940453227621,
+      "sanpinWordKeys": 4.249181891265198,
+      "unresolvedAfterTwoB": {
+        "j2": 0.01328389348193764,
+        "s2": 0.019025504463812,
+        "wj2": 0.02988458569128361,
+        "ws2": 0.03830249137223823
+      },
+      "S2ms": 69.96356224823217,
+      "v5": 10.389242489574606,
+      "M": 47,
+      "D": 6
+    },
+    "wide_M46D5Balanced": {
+      "name": "wide_M46D5Balanced",
+      "id": "BPW-559a5d47a968",
+      "characterBareMiss": 0.12300065957495249,
+      "wordBareMiss": 0.16357395053551033,
+      "keytaoCharacterKeys": 2.1715292162927375,
+      "sanpinCharacterKeys": 2.1758704677426723,
+      "keytaoWordKeys": 4.242846841362212,
+      "sanpinWordKeys": 4.250123936778196,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013127032405420253,
+        "s2": 0.0190810588579914,
+        "wj2": 0.029926511883901108,
+        "ws2": 0.03837260781363773
+      },
+      "S2ms": 70.54809036028628,
+      "v5": 10.460037386210653,
+      "M": 46,
+      "D": 5
+    }
+  }
+}
