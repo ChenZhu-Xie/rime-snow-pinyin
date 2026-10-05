@@ -84,6 +84,15 @@ deploy:
         assert: has("O") and has("o")
       - send: qq
         assert: not has("O") and not has("o")
+      # 上游新增的字母和数字候选按当前声韵映射落在原有固顶码后。
+      - send: bs
+        assert: cand[1].text == "比赛" and cand[2].text == "B" and cand[3].text == "b"
+      - send: qy
+        assert: cand[1].text == "却" and cand[2].text == "V" and cand[3].text == "v"
+      - send: qj
+        assert: cand[1].text == "二" and cand[2].text == "2" and cand[3].text == "U" and cand[4].text == "u"
+      - send: ski
+        assert: cand[1].text == "四" and cand[2].text == "4"
       - send: wx
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd

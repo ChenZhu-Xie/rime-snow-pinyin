@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 import { SpellingAlgebra, 获取大字集拼音 } from "./utils";
 import {
+	jiandaoSupplementalCandidates,
 	readShapeCodes,
 	sanpinLetterEntries,
 	sanpinSingleAliases,
@@ -282,6 +283,9 @@ function isSupplementalCandidate(
 	code: string,
 	word: string,
 ) {
+	if (file === "snow_jiandao.fixed.txt") {
+		return jiandaoSupplementalCandidates.get(code)?.includes(word) ?? false;
+	}
 	if (file !== "snow_sanpin.fixed.txt") return false;
 	if (section === "# 单字") return sanpinSingleAliases.get(code) === word;
 	if (section !== "# 字母") return false;

@@ -1,21 +1,38 @@
 schema: snow_sipin
 source_dir: ..
 script: |
-  function has(something)
-    for _, v in ipairs(cand) do
+  -- 候选在整个候选列表中的位置，不存在时返回 math.huge
+  function rank(something)
+    for i, v in ipairs(cand) do
       if v.text == something then
-        return true
+        return i
       end
     end
-    return false
+    return math.huge
+  end
+  function has(something)
+    return rank(something) < math.huge
+  end
+  -- 是否出现在首页（page_size 为 6）
+  function page(something)
+    return rank(something) <= 6
+  end
+  function pinned(index)
+    return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
 deploy:
+  # 整句模式
   sentence:
     options:
       popping: false
     tests:
       - send: bieixou
         assert: cand[1].text == "冰雪"
+      # 《拼写规则》中的整句示例
+      - send: hioifieeviufoeabieixoupioifioi
+        assert: cand[1].text == "欢迎使用冰雪拼音"
+  # 构词规则、固顶词、首选后置与顶功
+  # 注意：这里的断言依赖词频未被本部署内的上屏改变，故上屏类测试一律放在最后
   popping:
     tests:
       # 组词规则
@@ -31,13 +48,56 @@ deploy:
         assert: has("中文输入法")
       - send: whrmGHG
         assert: has("中华人民共和国")
-      # 固顶词
+      # 构词规则：先打各音节声母，不中则补末音节至三码，再补首音节至三码
+      # 单音节词
+      - send: f
+        assert: cand[1].text == "有"
+      - send: fo
+        assert: cand[1].text == "又"
+      - send: fou
+        assert: cand[1].text == "由"
+      # 双音节词
+      - send: nh
+        assert: cand[1].text == "你好"
+      - send: xsi
+        assert: cand[1].text == "希望"
+      - send: vjii
+        assert: cand[1].text == "手机"
+      - send: bxoui
+        assert: cand[1].text == "冰雪"
+      - send: kqiaoo
+        assert: cand[1].text == "元气"
+      # 三音节词
+      - send: svm
+        assert: cand[1].text == "为什么"
+      - send: bfqi
+        assert: cand[1].text == "变压器"
+      # 文档称「最低点」的编码为 zdduo，实际词库中该编码的首选是「再大点」
+      - send: zdduo
+        assert: page("最低点")
+      # 四音节词
+      - send: gtvv
+        assert: cand[1].text == "感同身受"
+      - send: jjjji
+        assert: cand[1].text == "将计就计"
+      - send: ffffuu
+        assert: cand[1].text == "附庸风雅"
+      # 五音节及以上词：第五个声母起用大写
+      - send: kxfwG
+        assert: cand[1].text == "科学发展观"
+      - send: rmdkXS
+        assert: cand[1].text == "哀莫大于心死"
+      # 固顶词：每类只取一例
+      # 单音节词一码
       - send: d
         assert: cand[1].text == "都"
+      # 单音节词二码
       - send: vu
         assert: cand[1].text == "数"
+      # 单音节词三码
       - send: jie
         assert: cand[1].text == "及"
+      # 双音节词二码
       - send: xq
         assert: cand[1].text == "下去"
       # 以词定字：[ 取词首，] 取词尾
@@ -46,19 +106,66 @@ deploy:
       - send: "xq]"
         assert: commit == "去"
       # 首选后置
+      # 语义集中的区块（「事物代词」），码长成组
+      - send: wg
+        assert: cand[1].text == "这个"
+      # 可选的无理音节：未强制使用时，常规音节码依然有效
+      - send: wheu
+        assert: cand[1].text == "周三"
+      # 未强制时 rlrs 上同时存在「二零二四」和「二零二五」
+      - send: rlrs
+        assert: has("二零二四") and has("二零二五")
+      - send: rlrg
+        assert: cand[1].text == "二零二五"
+      # 首选后置：已在首选出现过的词在后续编码中不再位于首选
       - send: jieo
         assert: cand[2].text == "及"
-      # 顶功
+      - send: bxoui
+        assert: cand[1].text == "冰雪"
+      - send: bxouie
+        assert: cand[1].text ~= "冰雪" and has("冰雪")
+      # 顶功：元音之后出现辅音即把前一个词顶上屏
       - send: fisu
         assert: commit == "以" and cand[1].text == "为"
       - send: xsin
         assert: commit == "希望" and cand[1].text == "你"
       - send: mmmmmm
         assert: commit == "密密麻麻" and cand[1].text == "慢慢"
-      # 动态码长
+      - send: bxouivrf
+        assert: commit == "冰雪" and cand[1].text == "输入法"
+      # 只有辅音的编码不可顶，需空格上屏
+      - send: "nh "
+        assert: commit == "你好"
+      # 四音节及更长的词即使只有辅音也可以被顶
+      - send: gtvvsvm
+        assert: commit == "感同身受" and cand[1].text == "为什么"
+      # 顶标点：`;` 是「的」、`/` 是「了」
+      - send: "wg;"
+        assert: commit == "这个的"
+      - send: "wg/"
+        assert: commit == "这个了"
+      # 分号与顿号的替代键位
+      - send: "|"
+        assert: commit == "；"
+      - send: "\\"
+        assert: commit == "、"
+  # 动态码长与自动造词：这些测试会改变词频并写入音节码用户词典
+  encoding:
+    tests:
+      # 动态码长：第一次需要多打几码，上屏之后下一次只需较少码
+      - send: vvi
+        assert: cand[1].text == "事实"
+      - send: vviii
+        assert: cand[1].text == "史诗"
+      - send: vviiivvi
+        assert: commit == "史诗" and cand[1].text == "史诗"
       - send: "bxoui bxo"
         assert: cand[1].text == "冰雪"
-      # 自动造词
+      # 选择造词：选 4 号候选「冰」，再空格确认「四」
+      - send: bsiaie
+        assert: not has("冰四")
+      - send: "bsiaie8 bsiaie"
+        assert: has("冰四")
       - send: "spioia22spi"
         assert: cand[1].text == "四拼"
       # 缓冲造词
@@ -85,6 +192,170 @@ deploy:
         assert: commit == "可爱爱"
       - send: "dG"
         assert: commit == "都个"
+      # 定位造词：`1` 定位到第一个音节后，补码确认「谱」再确认「方法」
+      - send: pffau
+        assert: not has("谱方法")
+      - send: "pffau1uu22pffau"
+        assert: has("谱方法")
+      # 定位造词：`4` 定位到第二个音节后（2 + 2）
+      - send: "sfdvua4eoui3ai sfdvua"
+        assert: has("微分代数")
+      # 定位造词：`5` 定位到第三个音节后（3 + 2）
+      - send: "tdjkL5ui2i tdjkL"
+        assert: has("态叠加原理")
+      # 组句造词：词库中没有「密度矩阵」，但可由「密度」「矩阵」组合猜出
+      - send: "jweoa mdjweoia"
+        assert: cand[1].text == "密度矩阵"
+  # 缓冲造词与英数混输造词
+  buffered:
+    tests:
+      # 缓冲造词：Control+j 进入造词模式，分片输入后再按一次空格
+      - send: "{Control+j}bxouivrf  bxvrF"
+        assert: cand[1].text == "冰雪输入法"
+      - send: "{Control+j}kr qz  krqz"
+        assert: cand[1].text == "可爱裙子"
+      # 英数混输造词：辅音字母 = 字母 + oo，大写固定在三码首选、小写次选
+      - send: boo
+        assert: cand[1].text == "B" and cand[2].text == "b"
+      # 元音字母 = se + 字母
+      - send: sea
+        assert: cand[1].text == "A" and cand[2].text == "a"
+      # j, q, x, k 的三码首选被 `*oo` 的高频字占据，故大写退到次选、小写到三选
+      - send: joo
+        assert: cand[2].text == "J" and cand[3].text == "j"
+      # 阿拉伯数字与中文数字同码，中文数字首选、阿拉伯数字次选
+      - send: fii
+        assert: cand[1].text == "一" and cand[2].text == "1"
+      # 选择键为空格与 2, 3, 8, 9, 0
+      - send: fii2
+        assert: commit == "1"
+      # 英数混输词
+      - send: "ggtxio1ue21oo  ggtx"
+        assert: cand[1].text == "5G通信"
+      - send: "{Control+j}doi la sea mee  dlsm"
+        assert: cand[1].text == "哆啦A梦"
+  # 高级功能
+  advanced:
+    tests:
+      # 以词定字：`[` 取首字、`]` 取末字
+      - send: "xxrr["
+        assert: commit == "熙"
+      - send: "xxrr]"
+        assert: commit == "攘"
+      # 词不在首选时先用方向键选中再定字
+      - send: "csuiai{Down}{Down}]"
+        assert: commit == "薇"
+      # 拼音反查（`a` 引导）
+      - send: azhe
+        assert: cand[1].text == "着"
+      # 笔画反查（`u` 引导，横竖撇点折为 eiuoa）
+      - send: ueiuoa
+        assert: cand[1].text == "札"
+      # 重复上屏（`i` 引导）
+      - send: "yfu i"
+        assert: cand[1].text == "重复"
+      # 符号（`i` 引导）
+      - send: ia
+        assert: cand[1].text == "ā"
+      # Lua 脚本：数字转中文数字
+      - send: o123
+        assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Lua 脚本：计算表达式
+      - send: o1234*5678
+        assert: has("7006652")
+      # Lua 脚本：日期与时间（只检查格式）
+      - send: orq
+        assert: cand[1].text:match("^%d+年%d+月%d+日$") ~= nil
+      - send: osj
+        assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
+      - send: ors
+        assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
+      # 略码：完整重复，一字词用 `[`
+      - send: "yi["
+        assert: commit == "吃吃"
+      # 略码：完整重复，双音节及以上的词用 `A`
+      - send: "wgA"
+        assert: commit == "这个这个"
+      - send: "yvia{Down}{Down}A"
+        assert: commit == "尝试尝试"
+      # 略码：ＡＡＢＢ 型用 `O`
+      - send: "krO"
+        assert: commit == "可可爱爱"
+      # 略码：部分重复，`E` 重复首字、`I` 重复末字
+      - send: "dpaiE"
+        assert: commit == "打打牌"
+      - send: "dlqouE"
+        assert: commit == "打打篮球"
+      - send: "vjuuI"
+        assert: commit == "睡觉觉"
+      # 略码：插入重复，B 不、F 一、D 的、L 了、R 啊、U 呀
+      - send: "haB"
+        assert: commit == "好不好"
+      - send: "krB"
+        assert: commit == "可爱不可爱"
+      - send: "haF"
+        assert: commit == "好一好"
+      - send: "haD"
+        assert: commit == "好的好"
+      - send: "haL"
+        assert: commit == "好了好"
+      - send: "haR"
+        assert: commit == "好啊好"
+      - send: "haU"
+        assert: commit == "好呀好"
+      # 略码：Ａ着Ａ着 用 `W`、Ａ来Ａ去 用 `Q`
+      - send: "haW"
+        assert: commit == "好着好着"
+      - send: "haQ"
+        assert: commit == "好来好去"
+      # TODO: 文档中「Ａ了一Ａ」的略码 `K` 在 lua/snow/abbreviation.lua 中尚无对应分支，
+      # 实现后补充：
+      # - send: "haK"
+      #   assert: commit == "好了一好"
+      # 笔画辅助码：音节码之后直接加笔画
+      - send: kooeei
+        assert: page("芫")
+      # 无韵尾音节先补一个 `o` 补全 4 码，再加笔画
+      - send: fiaooe
+        assert: page("翊")
+      # 部首辅助码：`1` 引导，再打部首的音节码；「嶅」用笔画筛选没有效率
+      - send: raueee
+        assert: not page("嶅")
+      - send: raue1v
+        assert: page("嶅")
+      - send: wia1m
+        assert: cand[1].text == "桎"
+      # 只打 2 码（不打声调）也可以接部首辅助码
+      - send: fa1s
+        assert: cand[1].text == "罚"
+  # 方案码用户词典：这些操作会写入 snow_sipin.userdb，故单独部署并按顺序执行
+  schema_userdb:
+    tests:
+      # 固定：Control+, 把当前候选固定到当前位置
+      - send: bma
+        assert: not pinned(1)
+      - send: "bma{Control+comma}bma"
+        assert: cand[1].text == "编码" and pinned(1)
+      # 取消固定：对已固定的候选再按一次 Control+,
+      - send: "bma{Control+comma}bma"
+        assert: not pinned(1)
+      # 自由加词：Control+' → 任意方式输入 → Control+'
+      - send: "kfc{Control+apostrophe}fkxqS  {Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四"
+      # 加词时若第一候选已固定，新词加到第二候选
+      - send: "dna{Control+comma}{Control+apostrophe}tfhtHS {Control+apostrophe}dna"
+        assert: cand[1].text == "电脑" and cand[2].text == "脱氧核糖核酸"
+      # 后移：Control+] 把已固定的候选往后移一位，与另一个已固定的候选交换位置
+      - send: "kooe{Control+comma}{Down}{Control+comma}{Up}"
+        assert: cand[1].text == "圆" and cand[2].text == "原"
+      - send: "kooe{Control+bracketright}kooe"
+        assert: cand[1].text == "原" and cand[2].text == "圆"
+      # 前移：Control+[
+      - send: "kooe{Down}{Control+bracketleft}kooe"
+        assert: cand[1].text == "圆" and cand[2].text == "原"
+      # 重置：Control+\ 取消当前编码上的所有自定义
+      - send: "kooe{Control+backslash}kooe"
+        assert: not pinned(1) and not pinned(2)
   # 无理音节
   special:
     patch:
@@ -94,3 +365,8 @@ deploy:
         assert: cand[1].text == "三"
       - send: "sao"
         assert: not has("三")
+      # 强制无理音节后，「二零二四」与「二零二五」完全分离
+      - send: "rlrs"
+        assert: has("二零二四") and not has("二零二五")
+      - send: "rlrg"
+        assert: cand[1].text == "二零二五"
