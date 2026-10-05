@@ -47,11 +47,11 @@ switches:
 engine:
   processors:
     - ascii_composer
+    - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.user_dict
     - key_binder
-    - lua_processor@*snow.select_character
-    - lua_processor@*snow.popping
     - lua_processor@*snow.editor
     - speller
     - punctuator
