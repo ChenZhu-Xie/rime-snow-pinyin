@@ -68,4 +68,4 @@ for ident in a.ids:
                                 'S2completionUpperMs': exact['fair']['S2Completion']['upperMs']}}
 a.output.parent.mkdir(parents=True, exist_ok=True)
 a.output.write_text(json.dumps({'source': 'R11 original eval_full.js, frozen 20 contracts', 'results': results}, ensure_ascii=False, indent=2), encoding='utf8')
-print(json.dumps(results, ensure_ascii=False, indent=2))
+print(json.dumps({'replayed': len(results), 'ids': list(results)}, ensure_ascii=False))
