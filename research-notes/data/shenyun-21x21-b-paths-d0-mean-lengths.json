@@ -1,0 +1,185 @@
+{
+  "definition": "fixed phonetic base length + base weighted miss + first B weighted miss; stops after two B keys, excludes unresolved selection and commits",
+  "representatives": {
+    "S005": {
+      "name": "S005",
+      "id": "S005",
+      "characterBareMiss": 0.1269745647806744,
+      "wordBareMiss": 0.16446947988243227,
+      "keytaoCharacterKeys": 2.177455848870801,
+      "sanpinCharacterKeys": 2.180759856794517,
+      "keytaoWordKeys": 4.244144021081886,
+      "sanpinWordKeys": 4.2515130498745695,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013474021482520073,
+        "s2": 0.01940419979446517,
+        "wj2": 0.030006196004485952,
+        "ws2": 0.03838938908323242
+      },
+      "S2ms": null,
+      "v5": null,
+      "M": null,
+      "D": null
+    },
+    "R9": {
+      "name": "R9",
+      "id": "R9-21X21-M40-02",
+      "characterBareMiss": 0.12621409384862128,
+      "wordBareMiss": 0.17876521003989357,
+      "keytaoCharacterKeys": 2.1766943785620168,
+      "sanpinCharacterKeys": 2.18166920747933,
+      "keytaoWordKeys": 4.264994619071271,
+      "sanpinWordKeys": 4.2743632108702725,
+      "unresolvedAfterTwoB": {
+        "j2": 0.014742901368895594,
+        "s2": 0.01972809368601037,
+        "wj2": 0.031910479658801894,
+        "ws2": 0.0427102652115644
+      },
+      "S2ms": 70.18906735229086,
+      "v5": 10.397759585862813,
+      "M": 40,
+      "D": 0
+    },
+    "fastM40AfterGate": {
+      "name": "fastM40AfterGate",
+      "id": "BP0-66a7227e9790",
+      "characterBareMiss": 0.12552219658843725,
+      "wordBareMiss": 0.1720375874959372,
+      "keytaoCharacterKeys": 2.1743119465754557,
+      "sanpinCharacterKeys": 2.179162798017735,
+      "keytaoWordKeys": 4.255538099986488,
+      "sanpinWordKeys": 4.2636699623246175,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013428515616021224,
+        "s2": 0.019219027607261976,
+        "wj2": 0.031848429647493126,
+        "ws2": 0.04047957351501563
+      },
+      "S2ms": 72.92307419898066,
+      "v5": 10.664514602357771,
+      "M": 40,
+      "D": 0
+    },
+    "bestWordM40AfterGate": {
+      "name": "bestWordM40AfterGate",
+      "id": "BP0-058160896e5f",
+      "characterBareMiss": 0.12438427612412188,
+      "wordBareMiss": 0.16817522533291368,
+      "keytaoCharacterKeys": 2.1741575360254433,
+      "sanpinCharacterKeys": 2.178085100269042,
+      "keytaoWordKeys": 4.249813224754928,
+      "sanpinWordKeys": 4.257125699170112,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013456402333848587,
+        "s2": 0.019383171812833933,
+        "wj2": 0.031017770364619723,
+        "ws2": 0.03944085047260737
+      },
+      "S2ms": 73.5563554725083,
+      "v5": 10.696052366672777,
+      "M": 40,
+      "D": 0
+    },
+    "bestWordM41AfterGate": {
+      "name": "bestWordM41AfterGate",
+      "id": "BP0-e8df76b2cef0",
+      "characterBareMiss": 0.12403149613801814,
+      "wordBareMiss": 0.1659723464314948,
+      "keytaoCharacterKeys": 2.1729320948016433,
+      "sanpinCharacterKeys": 2.1770964428800688,
+      "keytaoWordKeys": 4.246586901118499,
+      "sanpinWordKeys": 4.253964377221131,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013471338224447337,
+        "s2": 0.01930441271236225,
+        "wj2": 0.030521158991470787,
+        "ws2": 0.03895976751986585
+      },
+      "S2ms": 73.58866067061822,
+      "v5": 10.722437955406468,
+      "M": 41,
+      "D": 0
+    },
+    "bestWordAfterGate": {
+      "name": "bestWordAfterGate",
+      "id": "BP0-e8df76b2cef0",
+      "characterBareMiss": 0.12403149613801814,
+      "wordBareMiss": 0.1659723464314948,
+      "keytaoCharacterKeys": 2.1729320948016433,
+      "sanpinCharacterKeys": 2.1770964428800688,
+      "keytaoWordKeys": 4.246586901118499,
+      "sanpinWordKeys": 4.253964377221131,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013471338224447337,
+        "s2": 0.01930441271236225,
+        "wj2": 0.030521158991470787,
+        "ws2": 0.03895976751986585
+      },
+      "S2ms": 73.58866067061822,
+      "v5": 10.722437955406468,
+      "M": 41,
+      "D": 0
+    },
+    "bestCharacterGate": {
+      "name": "bestCharacterGate",
+      "id": "BP0-09837a0cb82e",
+      "characterBareMiss": 0.12526192055538185,
+      "wordBareMiss": 0.17160901999530656,
+      "keytaoCharacterKeys": 2.173985437876299,
+      "sanpinCharacterKeys": 2.1788165208254298,
+      "keytaoWordKeys": 4.254961515263897,
+      "sanpinWordKeys": 4.263027753201708,
+      "unresolvedAfterTwoB": {
+        "j2": 0.01340665253876531,
+        "s2": 0.019180996531108607,
+        "wj2": 0.031840609333172454,
+        "ws2": 0.04042617809909543
+      },
+      "S2ms": 74.58837389486781,
+      "v5": 10.746046625523194,
+      "M": 41,
+      "D": 0
+    },
+    "bestWordObjective": {
+      "name": "bestWordObjective",
+      "id": "B21-bf5c1a6f2d4f",
+      "characterBareMiss": 0.1243698193867504,
+      "wordBareMiss": 0.16470283960355425,
+      "keytaoCharacterKeys": 2.1739069662677633,
+      "sanpinCharacterKeys": 2.1784156475453997,
+      "keytaoWordKeys": 4.244985268767701,
+      "sanpinWordKeys": 4.252522796639523,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013783239595218473,
+        "s2": 0.01976067610546502,
+        "wj2": 0.03033577271588017,
+        "ws2": 0.03894814697248161
+      },
+      "S2ms": 70.79610350327296,
+      "v5": 10.473562611464855,
+      "M": 41,
+      "D": 0
+    },
+    "bestAllEight": {
+      "name": "bestAllEight",
+      "id": "B21-5f8f64959916",
+      "characterBareMiss": 0.1243345263290386,
+      "wordBareMiss": 0.16579999743931104,
+      "keytaoCharacterKeys": 2.1737565258444915,
+      "sanpinCharacterKeys": 2.178725413261787,
+      "keytaoWordKeys": 4.24666077610746,
+      "sanpinWordKeys": 4.254030584647438,
+      "unresolvedAfterTwoB": {
+        "j2": 0.013632142047520583,
+        "s2": 0.01971113166176486,
+        "wj2": 0.030445951494041612,
+        "ws2": 0.03890980230680241
+      },
+      "S2ms": 70.31059400627684,
+      "v5": 10.543921575148412,
+      "M": 41,
+      "D": 0
+    }
+  }
+}

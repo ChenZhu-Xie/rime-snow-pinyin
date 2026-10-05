@@ -1,0 +1,104 @@
+{
+  "source": "R11 original eval_full.js, frozen 20 contracts",
+  "results": {
+    "BP0-66a7227e9790": {
+      "search": {
+        "M": 40,
+        "D": 0,
+        "unique399": 369,
+        "j1": 0.04878974998701837,
+        "j2": 0.013428515616021224,
+        "s1": 0.05364060142929765,
+        "s2": 0.019219027607261976,
+        "wj1": 0.08350051249055135,
+        "wj2": 0.031848429647493126,
+        "ws1": 0.0916323748286807,
+        "ws2": 0.04047957351501563,
+        "S2ms": 72.92307419898066,
+        "v5": 10.664514602357771,
+        "v4": 10.899794297043293
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.875
+        },
+        "S2upperMs": 72.92307419898063,
+        "S2miss": 0.017655208268086763,
+        "charShapeMiss": 0.013428515616021224,
+        "wordShapeMiss": 0.031848429647493175,
+        "sanpinWordTwoBMiss": 0.04047957351501567,
+        "v5": 10.66451460235774,
+        "v4": 10.899794297043295,
+        "S2completionUpperMs": 87.11358695406366
+      }
+    },
+    "BP0-058160896e5f": {
+      "search": {
+        "M": 40,
+        "D": 0,
+        "unique399": 371,
+        "j1": 0.04977325990132154,
+        "j2": 0.013456402333848587,
+        "s1": 0.05370082414491992,
+        "s2": 0.019383171812833933,
+        "wj1": 0.08163799942201455,
+        "wj2": 0.031017770364619723,
+        "ws1": 0.08895047383719878,
+        "ws2": 0.03944085047260737,
+        "S2ms": 73.5563554725083,
+        "v5": 10.696052366672777,
+        "v4": 10.915810910817257
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.698
+        },
+        "S2upperMs": 73.55635547250824,
+        "S2miss": 0.01443799182825903,
+        "charShapeMiss": 0.013456402333848587,
+        "wordShapeMiss": 0.031017770364619775,
+        "sanpinWordTwoBMiss": 0.03944085047260739,
+        "v5": 10.696052366672761,
+        "v4": 10.915810910817257,
+        "S2completionUpperMs": 84.29305311170472
+      }
+    },
+    "BP0-39fb55934929": {
+      "search": {
+        "M": 40,
+        "D": 0,
+        "unique399": 370,
+        "j1": 0.04882374248597043,
+        "j2": 0.013407118001900377,
+        "s1": 0.05365033508485742,
+        "s2": 0.0191811608122151,
+        "wj1": 0.08337600789015409,
+        "wj2": 0.03184617491868014,
+        "ws1": 0.09151730828268956,
+        "ws2": 0.040440034245644685,
+        "S2ms": 73.72278832922,
+        "v5": 10.697998910281948,
+        "v4": 10.915215064453198
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.591
+        },
+        "S2upperMs": 73.72278832921992,
+        "S2miss": 0.017014429311465813,
+        "charShapeMiss": 0.013407118001900377,
+        "wordShapeMiss": 0.03184617491868009,
+        "sanpinWordTwoBMiss": 0.04044003424564464,
+        "v5": 10.697998910281921,
+        "v4": 10.915215064453196,
+        "S2completionUpperMs": 87.94604603613767
+      }
+    }
+  }
+}
