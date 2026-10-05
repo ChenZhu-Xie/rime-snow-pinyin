@@ -188,19 +188,17 @@ deploy:
       - send: "bsi1/83bsi"
         assert: page("冰四")
       # 缓冲造词
-      - send: "{Control+j}bxe? srfa2 bxsrF"
+      - send: "{Control+period}bxe? srfa2 bxsrF"
         assert: cand[1].text == "冰雪输入法"
       # 缓冲造词中的形音替换法：用形码输入单字参与造词，再从候选中选取正确的读音
-      - send: "{Control+j}ppjg"
+      - send: "{Control+period}ppjg"
         assert: cand[1].text == "梦"
-      - send: "{Control+j}ppjgkvna"
+      - send: "{Control+period}ppjgkvna"
         assert: cand[1].text == "泽"
-      - send: "{Control+j}ppjgkvnagnpa"
+      - send: "{Control+period}ppjgkvnagnpa"
         assert: cand[1].text == "闲"
-      - send: "{Control+j}ppjgkvnagnpabw"
+      - send: "{Control+period}ppjgkvnagnpabw"
         assert: cand[1].text == "客"
-      - send: "{Control+j}ppjgkvnagnpabw  mzxk"
-        assert: cand[1].text == "梦泽闲客"
       - send: "{Control+period}ppjgkvnagnpabw  mzxk"
         assert: cand[1].text == "梦泽闲客"
       # 英数混输造词：阿拉伯数字固定在二码的次选，中文数字固定在二码的三选
@@ -230,18 +228,18 @@ deploy:
       # 元音字母加前缀 `m`
       - send: ma
         assert: cand[2].text == "A" and cand[3].text == "a"
-      - send: "{Control+j}wu2g.2lg lwo  wgtx"
+      - send: "{Control+period}wu2g.2lg lwo  wgtx"
         assert: cand[1].text == "5G通信"
-      - send: "{Control+j}fjggfnlkma2ppjg  dlmm"
+      - send: "{Control+period}fjggfnlkma2ppjg  dlmm"
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:
     tests:
-      # Unicode 注解：Control+u 显示汉字的 Unicode 编码和所属区块，
+      # Unicode 注解：Control+q 显示汉字的 Unicode 编码和所属区块，
       # 用于分辨字形相同的不同汉字（「行」分属中日韩统一表意文字基本区和康熙部首）
       - send: dvme
         assert: cand[1].text == "行" and not annotated(1, "CJK")
-      - send: dvme{Control+u}
+      - send: dvme{Control+q}
         assert: annotated(1, "CJK") and annotated(2, "部首")
       # 不需要引导键，直接用拼音输入单个汉字并显示相应的形码
       - send: yi
