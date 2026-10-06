@@ -45,6 +45,7 @@ if 'selection' in search:
     selected_by_id = {r['id']: r for r in rows}
     representatives.update({f'wide_{label}': selected_by_id[scheme_id]
                             for label, scheme_id in search['selection'].items()})
+    representatives.update({f'wide_state_{row["id"]}': row for row in rows})
 entries = {entry['id']: entry for entry in b.DATA['entries']}
 
 
