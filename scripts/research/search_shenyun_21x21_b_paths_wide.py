@@ -22,9 +22,12 @@ p.add_argument('--max-d', type=int, default=3)
 p.add_argument('--max-s2', type=float, default=76.0)
 p.add_argument('--max-v5', type=float, default=11.2)
 p.add_argument('--gate-slack', type=float, default=.025)
-p.add_argument('--strategy', choices=('word', 'speed', 'speed_frontier', 'v5_frontier'), default='speed')
+p.add_argument('--proposal-steps', type=int, default=1,
+               help='maximum successive mutations before validating a candidate')
+p.add_argument('--strategy', choices=('word', 'word_bridge', 'speed', 'speed_frontier', 'v5_frontier'), default='speed')
 p.add_argument('--seed', type=int, default=20261011)
 args = p.parse_args()
+assert args.proposal_steps >= 1
 args.replay, args.benchmark, args.output = (x.resolve() for x in (args.replay, args.benchmark, args.output))
 args.prior = [path.resolve() for path in args.prior]
 
@@ -53,6 +56,8 @@ benchmark = json.loads(args.benchmark.read_text(encoding='utf8'))
 fast = FastBuckets(b)
 objectives = (('word', 'wj1', 'word', 'wj2', 'word', 'ws1', 'word', 'ws2',
                'balanced', 'gate', 'speed') if args.strategy == 'word' else
+              ('word', 'wj1', 'word', 'wj2', 'word', 'ws1', 'word', 'ws2',
+               'word', 'balanced', 'gate', 'speed') if args.strategy == 'word_bridge' else
               ('word', 'wj1', 'word', 'wj2', 'word', 'ws1', 'word', 'ws2',
                'balanced', 'gate', 'speed', 'speed', 'speed') if args.strategy == 'speed' else
               ('speed', 'speed', 'speed', 'speed', 'speed', 'speed', 'speed',
@@ -109,7 +114,9 @@ def build_elites():
     nearby = [row for row in values if gate_ratio(row) < 1 + args.gate_slack]
     result = {}
     for focus in set(objectives):
-        pool = (nearby if focus == 'gate' or
+        bridge_word = args.strategy == 'word_bridge' and focus in (
+            'word', 'wj1', 'wj2', 'ws1', 'ws2', 'balanced')
+        pool = (nearby if bridge_word or focus == 'gate' or
                 (focus == 'speed' and args.strategy == 'word') else
                 all_eight if focus in ('speed', 'v5') and all_eight else gated)
         if not pool:
@@ -136,7 +143,10 @@ for trial_index in range(args.trials):
     pool = elites[focus]
     parent = rng.choice(pool[:min(len(pool), 45)])
     state = np.array(parent['state'], np.int32)
-    candidate_state = b.r5.proposal(state, keys, 21, args.max_d)
+    candidate_state = state
+    steps = 1 if args.proposal_steps == 1 else rng.randint(1, args.proposal_steps)
+    for _ in range(steps):
+        candidate_state = b.r5.proposal(candidate_state, keys, 21, args.max_d)
     unique, memory, displaced = b.se.stats(candidate_state, b.opt.PARAMS[-2],
                                            b.opt.PARAMS[-1], 21, args.max_d, 1)
     if unique < 0 or memory > args.max_memory or displaced > args.max_d:
@@ -181,6 +191,7 @@ out = {'purpose': 'AVUIO-locked 21x21 bounded M/D-expanded B-path search',
        'newPassingCharacterGate': gated_new, 'maxMemory': args.max_memory,
        'maxD': args.max_d, 'maxS2': args.max_s2, 'maxV5': args.max_v5,
        'gateSlack': args.gate_slack, 'strategy': args.strategy,
+       'proposalSteps': args.proposal_steps,
        'prior': [path.name for path in args.prior],
        'baseline': baseline, 'results': list(rows.values())}
 args.output.parent.mkdir(parents=True, exist_ok=True)
