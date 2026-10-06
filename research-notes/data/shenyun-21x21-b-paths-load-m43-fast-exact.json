@@ -1,0 +1,71 @@
+{
+  "source": "R11 original eval_full.js, frozen 20 contracts",
+  "results": {
+    "BPL-07efc5133241": {
+      "search": {
+        "M": 43,
+        "D": 1,
+        "unique399": 371,
+        "j1": 0.049025849317234714,
+        "j2": 0.013342843018984585,
+        "s1": 0.053361857461853894,
+        "s2": 0.019006119293245704,
+        "wj1": 0.07949171401394219,
+        "wj2": 0.030054333051335577,
+        "ws1": 0.08673447599447265,
+        "ws2": 0.0384700159813962,
+        "S2ms": 71.91781121708658,
+        "v5": 10.616093065119536,
+        "v4": 10.794837868584931
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.489
+        },
+        "S2upperMs": 71.91781121708655,
+        "S2miss": 0.006316406946709246,
+        "charShapeMiss": 0.013342843018984585,
+        "wordShapeMiss": 0.030054333051335577,
+        "sanpinWordTwoBMiss": 0.0384700159813962,
+        "v5": 10.61609306511957,
+        "v4": 10.794837868584935,
+        "S2completionUpperMs": 80.13646684763003
+      }
+    },
+    "BPL-c1a703aee7f4": {
+      "search": {
+        "M": 43,
+        "D": 1,
+        "unique399": 371,
+        "j1": 0.049025849317234714,
+        "j2": 0.013342843018984585,
+        "s1": 0.053361857461853894,
+        "s2": 0.019006119293245704,
+        "wj1": 0.07949171401394219,
+        "wj2": 0.030054333051335577,
+        "ws1": 0.08673447599447265,
+        "ws2": 0.0384700159813962,
+        "S2ms": 71.80936102078796,
+        "v5": 10.628936786107406,
+        "v4": 10.799787794975098
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.183
+        },
+        "S2upperMs": 71.80936102078795,
+        "S2miss": 0.006316406946709246,
+        "charShapeMiss": 0.013342843018984585,
+        "wordShapeMiss": 0.030054333051335577,
+        "sanpinWordTwoBMiss": 0.0384700159813962,
+        "v5": 10.628936786107435,
+        "v4": 10.7997877949751,
+        "S2completionUpperMs": 79.84597999005409
+      }
+    }
+  }
+}
