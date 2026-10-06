@@ -1,0 +1,1 @@
+{"purpose":"Optimize final-key placement while preserving all eight B-path collision rates.","source":"research-notes\\data\\shenyun-21x21-b-paths-basins-keys-finalists.json","maxMemory":41,"pCap":0.051044914723866866,"homeMin":0.5,"counts":{"proposals":24360,"legal":23602,"bridge":20585,"endpoint":0},"results":[]}

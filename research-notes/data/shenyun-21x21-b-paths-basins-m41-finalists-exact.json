@@ -1,0 +1,170 @@
+{
+  "source": "R11 original eval_full.js, frozen 20 contracts",
+  "results": {
+    "BPK-44ce2a7cd3b7": {
+      "search": {
+        "M": 41,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 77.60995178768765,
+        "v5": 11.164031553443587,
+        "v4": 10.839976325078066
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.852
+        },
+        "S2upperMs": 77.60995178768769,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 11.164031553443582,
+        "v4": 10.83997632507807,
+        "S2completionUpperMs": 87.57748598585246
+      }
+    },
+    "BPK-5f5625e994b7": {
+      "search": {
+        "M": 41,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 77.63131508825462,
+        "v5": 11.1517126283878,
+        "v4": 10.856991323360148
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.574
+        },
+        "S2upperMs": 77.63131508825467,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 11.151712628387804,
+        "v4": 10.856991323360157,
+        "S2completionUpperMs": 87.59789775428406
+      }
+    },
+    "BPK-3bfccad676b4": {
+      "search": {
+        "M": 41,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 78.80475295566818,
+        "v5": 11.111243970092058,
+        "v4": 10.850482039997138
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.501
+        },
+        "S2upperMs": 78.80475295566835,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 11.111243970092083,
+        "v4": 10.850482039997138,
+        "S2completionUpperMs": 88.93737455676617
+      }
+    },
+    "BPK-2c76ad7289d7": {
+      "search": {
+        "M": 41,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 78.78118737923442,
+        "v5": 11.262885462324725,
+        "v4": 10.861865907914463
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.409
+        },
+        "S2upperMs": 78.7811873792345,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 11.26288546232474,
+        "v4": 10.861865907914465,
+        "S2completionUpperMs": 88.74430791802631
+      }
+    },
+    "BPK-5d32332c509d": {
+      "search": {
+        "M": 41,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 77.65231596167378,
+        "v5": 11.16237896837659,
+        "v4": 10.838598970414285
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 2.357
+        },
+        "S2upperMs": 77.65231596167382,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 11.16237896837659,
+        "v4": 10.83859897041429,
+        "S2completionUpperMs": 87.61039679825745
+      }
+    }
+  }
+}

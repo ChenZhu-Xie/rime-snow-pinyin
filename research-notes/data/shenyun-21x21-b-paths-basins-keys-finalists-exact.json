@@ -1,0 +1,137 @@
+{
+  "source": "R11 original eval_full.js, frozen 20 contracts",
+  "results": {
+    "BPK-4d4b7403b486": {
+      "search": {
+        "M": 42,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 73.20689029271033,
+        "v5": 10.780823658327026,
+        "v4": 10.839479870927427
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 3.294
+        },
+        "S2upperMs": 73.20689029271034,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 10.780823658327048,
+        "v4": 10.839479870927434,
+        "S2completionUpperMs": 83.20685401931985
+      }
+    },
+    "BPK-1172088be4e5": {
+      "search": {
+        "M": 42,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 74.09846596871303,
+        "v5": 10.724242453396817,
+        "v4": 10.829611257099296
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 3.991
+        },
+        "S2upperMs": 74.09846596871316,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 10.724242453396817,
+        "v4": 10.829611257099298,
+        "S2completionUpperMs": 85.37558149318977
+      }
+    },
+    "BPK-4a11a3c91795": {
+      "search": {
+        "M": 42,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 74.31175150023536,
+        "v5": 10.93069941784767,
+        "v4": 10.875180050892519
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 3.989
+        },
+        "S2upperMs": 74.3117515002354,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 10.930699417847698,
+        "v4": 10.875180050892524,
+        "S2completionUpperMs": 84.22598017858644
+      }
+    },
+    "BPK-df81cb2975bf": {
+      "search": {
+        "M": 42,
+        "D": 1,
+        "unique399": 368,
+        "j1": 0.04815014887906825,
+        "j2": 0.013283496469263615,
+        "s1": 0.053160722627136364,
+        "s2": 0.019234073018598388,
+        "wj1": 0.07963011387673613,
+        "wj2": 0.029822894289496187,
+        "ws1": 0.08691358546137294,
+        "ws2": 0.03834797425180325,
+        "S2ms": 73.95524579739136,
+        "v5": 10.732522405757807,
+        "v4": 10.811154052534295
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 3.916
+        },
+        "S2upperMs": 73.95524579739143,
+        "S2miss": 0.014100039152484091,
+        "charShapeMiss": 0.013283496469263615,
+        "wordShapeMiss": 0.029822894289496187,
+        "sanpinWordTwoBMiss": 0.03834797425180325,
+        "v5": 10.732522405757816,
+        "v4": 10.811154052534302,
+        "S2completionUpperMs": 85.22010624059891
+      }
+    }
+  }
+}
