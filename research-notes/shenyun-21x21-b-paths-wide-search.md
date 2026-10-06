@@ -4,6 +4,8 @@
 
 [13 套代表与 R9 的全维度总表](shenyun-21x21-b-paths-wide-comparison.md)按 M 降序集中列出本轮结果与结论。
 
+[后续 M41/D0、D1 回缩搜索](shenyun-21x21-b-paths-low-m-contraction.md)记录了以 M41/D1 为参照继续降低 D 的尝试、D0 的词路径缺口和更快的 D1 方案。
+
 ## 搜索范围与可复现数据
 
 用 [快速桶评估器](../scripts/research/b_path_fast.py)逐方案计算八条加权非首选率；它与[独立基准计算](../scripts/research/benchmark_shenyun_21x21_b_sets.py)共享冻结字词语料和仓库字形／笔画映射。[验证脚本](../scripts/research/verify_shenyun_21x21_b_paths_wide.py)在最后一档随机抽取 150 个状态复算，八项最大绝对误差 **5.6×10⁻¹⁷**。21×21、AVUIO/IVUAO 锁和每档 M/D 上限由[搜索脚本](../scripts/research/search_shenyun_21x21_b_paths_wide.py)逐次检查；同码的多个布局仍分别留存，方便评估速度与 M/D。
