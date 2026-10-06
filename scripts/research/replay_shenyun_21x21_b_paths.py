@@ -55,9 +55,18 @@ for ident in a.ids:
     if exact['entry']['codeList'] != entries[first + a.ids.index(ident)]['codeList']:
         raise RuntimeError('stale R11 exact file for ' + ident)
     row = by_id[ident]
+    exact_pmax = max(track['rightPinky'] for track in exact['tracks'].values())
+    exact_home_s2 = exact['tracks']['S2']['home']
+    if 'Pmax' in row and abs(row['Pmax'] - exact_pmax) > 1e-11:
+        raise RuntimeError('Pmax differs from R11 exact replay for ' + ident)
+    if 'homeS2' in row and abs(row['homeS2'] - exact_home_s2) > 1e-11:
+        raise RuntimeError('S2 home share differs from R11 exact replay for ' + ident)
     results[ident] = {'search': {k: row[k] for k in ('M', 'D', 'unique399', 'j1', 'j2', 's1', 's2',
-                                                    'wj1', 'wj2', 'ws1', 'ws2', 'S2ms', 'v5', 'v4')},
+                                                    'wj1', 'wj2', 'ws1', 'ws2', 'S2ms', 'v5', 'v4')}
+                      | {k: row[k] for k in ('Pmax', 'homeS2') if k in row},
                       'exact': {'verification': exact['verification'],
+                                'Pmax': exact_pmax,
+                                'homeS2': exact_home_s2,
                                 'S2upperMs': exact['tracks']['S2']['upperMs'],
                                 'S2miss': exact['tracks']['S2']['miss'],
                                 'charShapeMiss': exact['tracks']['C4-Snow']['miss'],

@@ -1,0 +1,1 @@
+{"purpose":"Optimize final-key placement while preserving all eight B-path collision rates.","source":"research-notes\\data\\shenyun-21x21-b-paths-between-key-01.json","maxMemory":40,"pCap":0.051044914723866866,"homeMin":0.5,"bridgeHome":0.43,"bridgeP":0.11,"memoryPenalty":10.0,"homeWeight":300.0,"counts":{"proposals":34440,"legal":33519,"bridge":32329,"endpoint":0},"results":[]}
