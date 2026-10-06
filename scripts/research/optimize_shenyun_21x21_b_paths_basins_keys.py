@@ -24,6 +24,7 @@ parser.add_argument('--p-cap', type=float)
 parser.add_argument('--bridge-home', type=float, default=.47)
 parser.add_argument('--bridge-p', type=float, default=.07)
 parser.add_argument('--memory-penalty', type=float, default=3.0)
+parser.add_argument('--home-weight', type=float, default=70.0)
 args = parser.parse_args()
 args.replay, args.input, args.output = (p.resolve() for p in (args.replay, args.input, args.output))
 for key in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'NUMBA_NUM_THREADS'):
@@ -39,6 +40,10 @@ data = json.loads(args.input.read_text(encoding='utf8'))
 seeds = [r for r in data['results'] if r['M'] <= args.max_memory + int(args.allow_bridge_seeds)
          and (not args.seed_ids or r['id'] in args.seed_ids)]
 assert seeds
+for seed in seeds:
+    state = np.array(seed['state'], np.int32)
+    seed.setdefault('Pmax', float(r5.rp(state)[1]))
+    seed.setdefault('homeS2', float(r5.home(state)[0]))
 baseline = json.loads((ROOT / 'research-notes/data/shenyun-21x21-b-sets-benchmark.json').read_text(encoding='utf8'))['reference']
 p_cap = float(args.p_cap if args.p_cap is not None else r5.rp(np.array(baseline['R9']['state'], np.int32))[1])
 aux = set(int(i) for i in seeds[0]['state'][62:])
@@ -63,7 +68,7 @@ def rank(row, name):
         return (row['S2ms'] + row['v5'] * 4 + penalty, row['Pmax'])
     if name == 'load':
         return (row['S2ms'] + row['v5'] * 4 + 130 * row['Pmax'] + penalty, row['homeS2'])
-    return (row['S2ms'] + row['v5'] * 4 - 70 * row['homeS2'] + penalty, row['Pmax'])
+    return (row['S2ms'] + row['v5'] * 4 - args.home_weight * row['homeS2'] + penalty, row['Pmax'])
 
 
 def select(rows, size):
@@ -148,6 +153,7 @@ for row in saved:
 out = {'purpose': __doc__, 'source': str(args.input.relative_to(ROOT)),
        'maxMemory': args.max_memory, 'pCap': p_cap, 'homeMin': args.home_min,
        'bridgeHome': args.bridge_home, 'bridgeP': args.bridge_p, 'memoryPenalty': args.memory_penalty,
+       'homeWeight': args.home_weight,
        'counts': counts, 'results': saved}
 args.output.parent.mkdir(parents=True, exist_ok=True)
 args.output.write_text(json.dumps(out, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf8')
