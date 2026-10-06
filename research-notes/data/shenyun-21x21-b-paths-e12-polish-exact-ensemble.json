@@ -1,0 +1,42 @@
+{
+  "source": "R11 original eval_full.js, frozen 20 contracts",
+  "results": {
+    "BKP-3d3b0364453d": {
+      "search": {
+        "M": 41,
+        "D": 1,
+        "unique399": 378,
+        "j1": 0.04820952280897364,
+        "j2": 0.013062935393703163,
+        "s1": 0.05249749242003552,
+        "s2": 0.018963200854174137,
+        "wj1": 0.07896255968329197,
+        "wj2": 0.029802034693148783,
+        "ws1": 0.0859378777637059,
+        "ws2": 0.03811687611190562,
+        "S2ms": 72.99339904654732,
+        "v5": 10.763887399327686,
+        "v4": 10.876244231083096,
+        "Pmax": 0.033759385949270665,
+        "homeS2": 0.5090677703463711
+      },
+      "exact": {
+        "verification": {
+          "engine": "original JS row/path engines; no candidate score cache; complete common corpus",
+          "maxFactorDifference": null,
+          "seconds": 3.5
+        },
+        "Pmax": 0.033759385949270665,
+        "homeS2": 0.5090677703463711,
+        "S2upperMs": 72.99339904654737,
+        "S2miss": 0.005343775449406687,
+        "charShapeMiss": 0.013062935393703163,
+        "wordShapeMiss": 0.029802034693148783,
+        "sanpinWordTwoBMiss": 0.03811687611190562,
+        "v5": 10.763887399327698,
+        "v4": 10.876244231083096,
+        "S2completionUpperMs": 83.04602013974386
+      }
+    }
+  }
+}
