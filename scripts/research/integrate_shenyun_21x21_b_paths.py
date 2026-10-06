@@ -67,7 +67,7 @@ def new_entry(helper, exact: dict, row: dict, cohort: str) -> dict:
         "zeroOnsetScope": helper.zero_onset_scope(entry),
         "rhymes": helper.inverse(entry["finalMap"]),
         "reservedKeys": "AVUIO",
-        "auxiliaryClass": "IVUAO",
+        "auxiliaryClass": "AVUIO",
         "defaultAuxOrder": False,
         "auxiliaryMappingMatchesReservation": True,
         "topgongReserve": "AVUIO",
