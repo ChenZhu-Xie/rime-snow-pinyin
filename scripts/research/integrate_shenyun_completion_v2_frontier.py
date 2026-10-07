@@ -10,6 +10,7 @@ from pathlib import Path
 from integrate_shenyun_21x21_b_paths import DATA, DEFAULT_HTML, DEFAULT_REPLAY, load_benchmark, load_module, new_entry, score_missing_exact
 from integrate_shenyun_21x21_completion_fixed_frontier import pack, ensemble, write_payload
 from correct_shenyun_completion_word_order import PATHS
+from completion_counterpoles import fixed_composite
 
 SCORER=Path(__file__).with_name('score_shenyun_completion_ckt.js')
 SOURCE='shenyun-21x21-completion-v2-face-search.json'
@@ -31,17 +32,21 @@ def composite(modes,reference,penalties):
     return 10*(sum(weighted)/6)**.25
 
 
-def select_rows(document,existing,baseline,penalties):
+def select_rows(document,existing,baseline,fixed_baseline,penalties):
     pool=document['results']
+    objective=document.get('objective','v2')
+    score_key='fixed12' if objective=='fixed' else 'ckt12'
     chosen=[]
-    for cap_m,cap_d in ((48,7),(45,3),(44,3),(43,2),(42,1),(41,0),(40,0),(39,0)):
+    for cap_m,cap_d in ((48,7),(45,3),(44,3),(43,2),(42,2),(42,1),(41,1),(42,0),(41,0),(40,0),(39,0),(38,0)):
         candidates=[r for r in pool if r['M']<=cap_m and r['D']<=cap_d and r['id'] not in existing and not r.get('atlasId') and r['id'] not in {c['id'] for c in chosen}]
-        old_scores=(composite(row['modes'],baseline['S005']['modes'],penalties) for row in baseline.values() if row.get('tone')=='IVUAO' and row.get('capacity')==[21,21] and row.get('memory') is not None and row['memory']<=cap_m and row.get('displaced') is not None and row['displaced']<=cap_d)
-        chosen_scores=(row['ckt12'] for row in chosen if row['M']<=cap_m and row['D']<=cap_d)
+        source=fixed_baseline if objective=='fixed' else baseline
+        scorer=(lambda modes:fixed_composite(modes,source['S005']['modes'],penalties[0])) if objective=='fixed' else (lambda modes:composite(modes,source['S005']['modes'],penalties))
+        old_scores=(scorer(row['modes']) for row in source.values() if row.get('tone')=='IVUAO' and row.get('capacity')==[21,21] and row.get('memory') is not None and row['memory']<=cap_m and row.get('displaced') is not None and row['displaced']<=cap_d)
+        chosen_scores=(row[score_key] for row in chosen if row['M']<=cap_m and row['D']<=cap_d)
         previous=min((*old_scores,*chosen_scores),default=float('inf'))
         if candidates:
-            best=min(candidates,key=lambda r:r['ckt12'])
-            if best['ckt12']+1e-9<previous:chosen.append(best)
+            best=min(candidates,key=lambda r:r[score_key])
+            if best[score_key]+1e-9<previous:chosen.append(best)
     return chosen
 
 
@@ -60,12 +65,13 @@ def main():
     existing={e['id'] for e in data['entries']}
     doc=json.loads(args.search.read_text(encoding='utf-8'))
     penalties=(doc['tauMs'],doc['firstAuxiliaryExtraMs'],doc['secondAuxiliaryExtraMs'])
+    objective=doc.get('objective','v2')
     source_name=args.search.name
     if set(data['completionBV2']['schemes'])!=existing:raise ValueError('Incomplete v2 atlas catalogue')
     if args.ids:
         lookup={r['id']:r for r in doc['results']}
         chosen=[lookup[i] for i in args.ids if i not in existing]
-    else:chosen=select_rows(doc,existing,data['completionBV2']['schemes'],penalties)
+    else:chosen=select_rows(doc,existing,data['completionBV2']['schemes'],data['completionBFixed']['schemes'],penalties)
     if not chosen:
         print(json.dumps({'alreadyIntegrated':True,'catalogue':len(existing)}))
         return
@@ -84,9 +90,9 @@ def main():
         expected=benchmark.opt.toentry(np.asarray(r['state'],dtype=np.int32),benchmark.DATA,ident)
         if scored['entry']['codeList']!=expected['codeList']:raise ValueError('Code mismatch '+ident)
         prepared={**r,'S2ms':scored['tracks']['S2']['upperMs'],'v5':scored['scores']['ensembleV5']['score']}
-        entry=new_entry(helper,scored,prepared,'固定 IVUAO · CKT v2 字词 1:2 前沿')
-        entry['subfamily']='AVUIO 锁定·CKT v2 补全面搜索'
-        entry['source']='upstream role v5 CKT: '+data['cktV2']['upstreamCommit']+f'; staged {penalties[0]}/{penalties[1]}/{penalties[2]} ms search'
+        entry=new_entry(helper,scored,prepared,'固定 IVUAO · 字词 1:2 前沿')
+        entry['subfamily']='AVUIO 锁定·补全面搜索'
+        entry['source']='upstream role v5 CKT: '+data['cktV2']['upstreamCommit']+f'; {objective} objective, staged {penalties[0]}/{penalties[1]}/{penalties[2]} ms search'
         entry['notes'].append(f'First auxiliary +{penalties[1]}ms, second auxiliary +{penalties[2]}ms on top of their modelled IVUAO CKT; selection +{penalties[0]}ms.')
         entry['bPathMetrics']=historical_fast.score(entry['codeList'])
         entry['bPathMetricsNative']=current_fast.score(entry['codeList'])
@@ -98,7 +104,7 @@ def main():
     helper.integrate_macroxue(data,entries,args.replay)
     if before!=helper.preservation_snapshot(data,existing):raise ValueError('Original catalogue changed')
     data['r11Research']['counts']['postR11ResearchExtensions']+=len(entries)
-    data['r11Research']['scopeRows'].append(['Snow Shenyun fixed IVUAO 21x21 CKT v2 frontier',f'{len(entries)} verified {penalties[0]}/{penalties[1]}/{penalties[2]} ms search representatives'])
+    data['r11Research']['scopeRows'].append(['Snow Shenyun fixed IVUAO 21x21 CKT frontier',f'{len(entries)} verified {objective} {penalties[0]}/{penalties[1]}/{penalties[2]} ms search representatives'])
     data['fourCodeCollisionBenchmark']['catalogueCount']=len(data['entries'])
     data['bPathBenchmark']['schemeCount']=len(data['entries'])
     if source_name not in data['bPathBenchmark']['selectedSources']:data['bPathBenchmark']['selectedSources'].append(source_name)
@@ -118,6 +124,9 @@ def main():
             ident=r['id'];v2=result['v2'][ident]
             score=composite(v2['modes'],reference,penalties)
             if abs(score-r['ckt12'])>1e-9:raise ValueError(f'Fast/exact v2 mismatch: {ident} {score} {r["ckt12"]}')
+            if objective=='fixed':
+                old_score=fixed_composite(result['fixed'][ident]['modes'],data['completionBFixed']['schemes']['S005']['modes'],penalties[0])
+                if abs(old_score-r['fixed12'])>1e-9:raise ValueError(f'Fast/exact fixed mismatch: {ident} {old_score} {r["fixed12"]}')
             parts=[v2['modes'][mode][kind] for mode,kind in (('keytao','character'),('sanpin','character'),('keytao','word'),('sanpin','word'))]
             if max(abs(r['times'][i]-parts[i]['completionUpperMs']) for i in range(4))>1e-8:raise ValueError('Time mismatch '+ident)
             if max(abs(r['firstAuxCounts'][i]-(1-parts[i]['stageWeight'][0])) for i in range(4))>1e-12:raise ValueError('Aux mismatch '+ident)
@@ -135,9 +144,10 @@ def main():
         all_ids={e['id'] for e in data['entries']}
         if len(all_ids)!=len(existing)+len(ids) or any(set(data[name]['schemes'])!=all_ids for name in ('completionB','completionBFixed','completionBV2')):raise ValueError('Catalogue mismatch')
         for name in ('completionB','completionBFixed','completionBV2'):
-            data[name]['source'].setdefault('extensions',[]).append({'ids':ids,'source':source_name,'searchPenaltiesMs':{'selection':penalties[0],'firstAux':penalties[1],'secondAux':penalties[2]}})
+            data[name]['source'].setdefault('extensions',[]).append({'ids':ids,'source':source_name,'searchObjective':objective,'searchPenaltiesMs':{'selection':penalties[0],'firstAux':penalties[1],'secondAux':penalties[2]}})
         write_payload(html_path,html,body,end,data)
         (DATA/'shenyun-completion-ckt-fixed-v2.json').write_text(json.dumps(data['completionBV2'],ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
-    print(json.dumps({'added':ids,'catalogue':len(data['entries']),'scores':{r['id']:r['ckt12'] for r in chosen}},ensure_ascii=False))
+    score_key='fixed12' if objective=='fixed' else 'ckt12'
+    print(json.dumps({'added':ids,'catalogue':len(data['entries']),'objective':objective,'scores':{r['id']:r[score_key] for r in chosen}},ensure_ascii=False))
 
 if __name__=='__main__':main()
