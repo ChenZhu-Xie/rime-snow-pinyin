@@ -109,6 +109,8 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
                 wkeys[track, pos] = key
                 wwinner[track, pos] = i
     total = np.zeros(4, np.float64)
+    aux_first = np.zeros(4, np.float64)
+    aux_total = np.zeros(4, np.float64)
     missed = np.zeros(4, np.float64)
     mass_char = 0.0
     mass_word = 0.0
@@ -133,6 +135,10 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
             total[0] += weight * value
             total[1] += weight * value
         else:
+            aux_first[0] += weight
+            aux_first[1] += weight
+            aux_total[0] += weight * (1 if cwinner[1, x * 5 + sh1] == i or sh2 == 5 else 2)
+            aux_total[1] += weight * (1 if cwinner[3, x * 5 + tone] == i else 2)
             if cwinner[1, x * 5 + sh1] == i:
                 value = _cost(3, k0, k1, aux[sh1], 0, 0, 0, t2, t31, t32, t41, t42, t43, long_guard)
             else:
@@ -179,6 +185,12 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
             total[2] += weight * value
             total[3] += weight * value
         else:
+            aux_first[2] += weight
+            aux_first[3] += weight
+            pos = _slot(1, base * 5 + first_shape, wstamp, wkeys, epoch)
+            aux_total[2] += weight * (1 if wwinner[1, pos] == i else 2)
+            pos = _slot(3, base * 5 + tone2, wstamp, wkeys, epoch)
+            aux_total[3] += weight * (1 if wwinner[3, pos] == i else 2)
             pos = _slot(1, base * 5 + first_shape, wstamp, wkeys, epoch)
             if wwinner[1, pos] == i:
                 value = _cost(5, k0, k1, k2, k3, aux[first_shape], 0, t2, t31, t32, t41, t42, t43, long_guard)
@@ -196,16 +208,21 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
     for track in range(2):
         total[track] /= mass_char
         missed[track] /= mass_char
+        aux_first[track] /= mass_char
+        aux_total[track] /= mass_char
     for track in range(2, 4):
         total[track] /= mass_word
         missed[track] /= mass_word
-    return total, missed
+        aux_first[track] /= mass_word
+        aux_total[track] /= mass_word
+    return total, missed, aux_first, aux_total - aux_first
 
 
 class FastCompletion:
-    def __init__(self, benchmark, html: Path, first_word: bool = False):
+    def __init__(self, benchmark, html: Path, first_word: bool = False, v2: bool = False):
         self.b = benchmark
         self.first_word = first_word
+        self.v2 = v2
         text = html.read_text(encoding='utf-8')
         match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', text)
         if not match:
@@ -215,6 +232,25 @@ class FastCompletion:
         self.tables = [np.frombuffer(base64.b64decode(ckt['tables'][key]), dtype='<f8')
                        for key in ('L2i1', 'L3i1', 'L3i2', 'L4i1', 'L4i2', 'L4i3')]
         self.long_guard = ckt['calibration']['long_code']['guard_per_extra_segment_ms']
+        if v2:
+            model = data['cktV2']
+            old_keys = ckt['keys']
+            new_keys = model['keys']
+            donors = ckt['calibration']['extension_maps']
+            projector = np.array([new_keys.index(max(donors[key]['donors'], key=donors[key]['donors'].get))
+                                  if key in donors else new_keys.index(key) for key in old_keys], dtype=np.int32)
+            old_projector = np.array([old_keys.index(new_keys[j]) for j in projector], dtype=np.int32)
+            replacement = []
+            for name, old in zip(('L2i1', 'L3i1', 'L3i2', 'L4i1', 'L4i2', 'L4i3'), self.tables):
+                new = np.frombuffer(base64.b64decode(model['tables'][name]), dtype='<f8')
+                dims = 2 if name == 'L2i1' else 4 if name == 'L4i2' else 3
+                new = new.reshape((30,) * dims)
+                old = old.reshape((34,) * dims)
+                native_ix = np.ix_(*([old_projector] * dims))
+                new_ix = np.ix_(*([projector] * dims))
+                replacement.append(np.ascontiguousarray((old - old[native_ix] + new[new_ix]).ravel()))
+            self.tables = replacement
+            self.long_guard = model['longGuardMs']
         self.aux = np.array([ckt['keys'].index(k) for k in 'IVUAO'], dtype=np.int32)
         from b_path_fast import FastBuckets
         fast = FastBuckets(benchmark)
@@ -240,7 +276,8 @@ class FastCompletion:
 
     def score(self, state):
         self.epoch += 1
-        return _evaluate(np.asarray(state, dtype=np.int32), self.char_rows, self.word_rows,
+        result = _evaluate(np.asarray(state, dtype=np.int32), self.char_rows, self.word_rows,
                          self.heads, self.finals, self.cstamp, self.cwinner,
                          self.wstamp, self.wkeys, self.wwinner, self.epoch, self.aux,
                          *self.tables, self.long_guard, self.first_word)
+        return result if self.v2 else result[:2]
