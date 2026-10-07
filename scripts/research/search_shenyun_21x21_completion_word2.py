@@ -30,9 +30,11 @@ p.add_argument('--output', type=Path, default=DATA / 'shenyun-21x21-completion-w
 p.add_argument('--trials', type=int, nargs=5, default=[5000, 3500, 3500, 3500, 5000],
                metavar=('BROAD', 'D3', 'D2', 'D1', 'D0'))
 p.add_argument('--seed', type=int, default=20261007)
+p.add_argument('--d0-max-m', type=int, default=41, choices=range(38, 42))
 p.add_argument('--prior', type=Path, nargs='*', default=[])
 args = p.parse_args()
 args.output = args.output.resolve()
+args.prior = [path.resolve() for path in args.prior]
 for key in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'NUMBA_NUM_THREADS'):
     os.environ[key] = '1'
 os.chdir(args.replay.resolve())
@@ -53,11 +55,11 @@ text = args.html.read_text(encoding='utf-8')
 match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', text)
 assert match
 page = json.loads(gzip.decompress(base64.b64decode(match[1])))
-frozen = json.loads((DATA / 'shenyun-completion-ckt-r11.json').read_text(encoding='utf-8'))['schemes']
+frozen = json.loads((DATA / 'shenyun-completion-ckt-fixed-r11.json').read_text(encoding='utf-8'))['schemes']
 baseline = frozen['S005']['modes']
-b_baseline = json.loads((DATA / 'shenyun-21x21-b-sets-benchmark.json').read_text(encoding='utf-8'))['reference']['S005']
-ckt = FastCompletion(b, args.html)
-bfast = FastBuckets(b)
+b_baseline = {key: frozen['S005']['modes'][mode][kind][stage] for key, mode, kind, stage in (('j1','keytao','character','p1'),('j2','keytao','character','p2'),('s1','sanpin','character','p1'),('s2','sanpin','character','p2'),('wj1','keytao','word','p1'),('wj2','keytao','word','p2'),('ws1','sanpin','word','p1'),('ws2','sanpin','word','p2'))}
+ckt = FastCompletion(b, args.html, first_word=True)
+bfast = FastBuckets(b, first_word=True)
 aux = np.array([b.opt.META['keys'].index(k) for k in 'IVUAO'], dtype=np.int32)
 physical = [k for k in range(26) if k not in aux]
 allowed = set(physical)
@@ -199,6 +201,8 @@ for entry in page['entries']:
                                       ('keytao', 'word'), ('sanpin', 'word'))):
         assert abs(row['times'][j] - expected[mode][kind]['completionUpperMs']) < 1e-8
         assert abs(row['p2'][j] - expected[mode][kind]['p2']) < 1e-12
+    for key, mode, kind, stage in (('j1','keytao','character','p1'),('j2','keytao','character','p2'),('s1','sanpin','character','p1'),('s2','sanpin','character','p2'),('wj1','keytao','word','p1'),('wj2','keytao','word','p2'),('ws1','sanpin','word','p1'),('ws2','sanpin','word','p2')):
+        assert abs(row[key] - expected[mode][kind][stage]) < 1e-12, (ident, key, row[key], expected[mode][kind][stage])
     row['atlasId'] = ident
     seeds.append(row)
 assert len(seeds) >= 60, len(seeds)
@@ -207,7 +211,10 @@ for path in args.prior:
     for prior_row in payload['results']:
         st = np.asarray(prior_row['state'], np.int32)
         row = score_state(st, 'prior:' + path.name + ':' + prior_row['id'], 'prior')
-        if row is not None and 'ckt12' in prior_row:
+        # Historical records used second-character-first Keytao words; only
+        # compare archived scores from runs declaring the corrected contract.
+        if row is not None and payload.get('wordBOrder') == (
+                '21x21 Keytao first character, then second; Sanpin second, then first'):
             assert abs(row['ckt12'] - prior_row['ckt12']) < 1e-9
 
 
@@ -223,6 +230,8 @@ def diverse_elites(pool, cap_m, cap_d, limit=60):
         lambda r: r['ckt12'] + .08 * (r['M'] - 40) + .03 * r['D'],
         lambda r: r['ckt12tau600'],
         lambda r: r['eightWorstRatio'],
+        lambda r: -r['homeS2'],
+        lambda r: r['Pmax'],
     )
     for objective in objectives:
         for row in sorted(pool, key=objective)[:12]:
@@ -243,10 +252,27 @@ def diverse_elites(pool, cap_m, cap_d, limit=60):
         group = [row for row in pool if row['D'] == displaced]
         for row in sorted(group, key=lambda r: r['ckt12'])[:3]:
             selected[tuple(row['state'])] = row
-    return sorted(selected.values(), key=lambda r: r['ckt12'])[:limit]
+    # Preserve high-home/low-pinky and low-M/D poles even when their raw CKT
+    # is slower than the high-speed basin. They serve as face/line parents.
+    poles = {}
+    for objective in objectives:
+        for row in sorted(pool, key=objective)[:min(5, max(1, limit // 12))]:
+            poles[tuple(row['state'])] = row
+    for memory in sorted({r['M'] for r in pool}):
+        group = [r for r in pool if r['M'] == memory]
+        for row in sorted(group, key=lambda r: r['ckt12'])[:2]:
+            poles[tuple(row['state'])] = row
+    for displaced in sorted({r['D'] for r in pool}):
+        group = [r for r in pool if r['D'] == displaced]
+        for row in sorted(group, key=lambda r: r['ckt12'])[:2]:
+            poles[tuple(row['state'])] = row
+    retained = list(poles.values())
+    retained.extend(r for r in sorted(selected.values(), key=lambda r: r['ckt12'])
+                    if tuple(r['state']) not in poles)
+    return retained[:limit]
 
 
-stages = [('broad', 48, 7), ('D3', 44, 3), ('D2', 43, 2), ('D1', 42, 1), ('D0', 41, 0)]
+stages = [('broad', 48, 7), ('D3', 44, 3), ('D2', 43, 2), ('D1', 42, 1), ('D0', args.d0_max_m, 0)]
 stage_summaries = {}
 for (phase, cap_m, cap_d), trials in zip(stages, args.trials):
     stage_rows = [row for row in rows.values() if row['M'] <= cap_m and row['D'] <= cap_d]
@@ -306,8 +332,10 @@ for row in seeds:
     selected[tuple(row['state'])] = row
 output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': 150,
           'wordWeight': 2, 'characterWeight': 1, 'baselineId': 'S005',
+          'wordBOrder': '21x21 Keytao first character, then second; Sanpin second, then first',
           'pCap': p_cap, 'homeFloor': .5, 'trials': args.trials,
           'seedCount': len(seeds), 'scoredTotal': len(rows), 'stages': stage_summaries,
+          'd0MaxM': args.d0_max_m,
           'results': list(selected.values())}
 args.output.parent.mkdir(parents=True, exist_ok=True)
 args.output.write_text(json.dumps(output, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')

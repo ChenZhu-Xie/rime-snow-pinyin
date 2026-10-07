@@ -31,8 +31,8 @@ match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', text)
 assert match
 data = json.loads(gzip.decompress(base64.b64decode(match[1])))
 by_id = {e['id']: e for e in data['entries']}
-scores = json.loads((ROOT / 'research-notes/data/shenyun-completion-ckt-r11.json').read_text(encoding='utf-8'))['schemes']
-fast = FastCompletion(b, HTML)
+scores = json.loads((ROOT / 'research-notes/data/shenyun-completion-ckt-fixed-r11.json').read_text(encoding='utf-8'))['schemes']
+fast = FastCompletion(b, HTML, first_word=True)
 ids = ['R9-21X21-M40-02', 'EXPERIMENT-21X21-110d170fca',
        'EXPERIMENT-21X21-e11ce783d7', 'LOWM-21X21-f8b4a909fa',
        'BPW-c1924db8d054', 'BPK-e12a551b29f1', 'BPC-d9492d2a5588']

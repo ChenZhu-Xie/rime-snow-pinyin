@@ -14,7 +14,7 @@ TABLE_SIZE = 1 << 17
 
 @njit(cache=True)
 def _score(codes, chars, words, char_stamps, char_max, stroke_stamps,
-           stroke_winners, word_stamps, word_keys, word_max, epoch):
+           stroke_winners, word_stamps, word_keys, word_max, epoch, first_word):
     char_mass = 0
     char_wins = np.zeros(3, np.int64)
     missed_stroke = 0
@@ -66,7 +66,9 @@ def _score(codes, chars, words, char_stamps, char_max, stroke_stamps,
             continue
         word_mass += weight
         base = c1 * 676 + c2
-        paths = (base * 5 + shape2, base * 25 + shape2 * 5 + shape1,
+        first_shape = shape1 if first_word else shape2
+        second_shape = shape2 if first_word else shape1
+        paths = (base * 5 + first_shape, base * 25 + first_shape * 5 + second_shape,
                  base * 5 + tone2, base * 25 + tone2 * 5 + tone1)
         for track in range(4):
             path = paths[track]
@@ -91,8 +93,9 @@ def _score(codes, chars, words, char_stamps, char_max, stroke_stamps,
 
 
 class FastBuckets:
-    def __init__(self, benchmark):
+    def __init__(self, benchmark, first_word: bool = False):
         self.b = benchmark
+        self.first_word = first_word
         aux = 'IVUAO'
         char_rows = []
         for char, py, tone, weight, common in sorted(
@@ -129,5 +132,5 @@ class FastBuckets:
         values = _score(code_ids, self.chars, self.words,
                         self.char_stamps, self.char_max, self.stroke_stamps,
                         self.stroke_winners, self.word_stamps, self.word_keys,
-                        self.word_max, self.epoch)
+                        self.word_max, self.epoch, self.first_word)
         return dict(zip(NAMES, map(float, values)))
