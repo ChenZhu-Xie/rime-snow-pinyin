@@ -80,13 +80,22 @@ def recolor(html: str) -> str:
            '<pattern id="nf4-ronly" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#f6ebd6"/><circle cx="3" cy="3" r="1.15" fill="#b39253" fill-opacity=".3"/></pattern>')
     change('<pattern id="nf4-multi" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#eee6ed"/><path d="M-2 2L2-2M0 9L9 0M7 11L11 7" stroke="#806f86" stroke-width="1.6" stroke-opacity=".27"/></pattern>',
            '<pattern id="nf4-multi" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#f8efe2"/><path d="M-2 2L2-2M0 9L9 0M7 11L11 7" stroke="#9a784e" stroke-width="1.6" stroke-opacity=".27"/></pattern>')
-    change('stroke-opacity=".38"/>`:\'\'}<g clip-path="url(#${clip})">',
-           'stroke-opacity=".38"/>`:\'\'}${k===\'F\'||k===\'J\'?`<rect x="${x+33}" y="${y+124}" width="26" height="4" rx="2" fill="#a05b37"/>`:\'\'}<g clip-path="url(#${clip})">')
-    change('}/><text x="${x+10}" y="${y+23}" font-family="sans-serif" font-size="18"',
-           '}/>${k===\'F\'||k===\'J\'?`<rect x="${x+33}" y="${y+124}" width="26" height="4" rx="2" fill="#a05b37"/>`:\'\'}<text x="${x+10}" y="${y+23}" font-family="sans-serif" font-size="18"')
-    change('<span class="legenditem"><i class="legmulti"></i>粗边框＝多韵键</span>',
-           '<span class="legenditem"><i class="legmulti"></i>粗边框＝多韵键</span><span class="legenditem"><span style="color:#a05b37;font-weight:750">F / J</span>键帽底部短横＝定位键</span><span class="legenditem"><i class="legkey" style="background:#e4f1e9;border:2px solid #77a08c"></i>辅键专用</span>')
+    # The two keyboard renderers keep their semantic/heat base fill; the hatch
+    # is a transparent overlay so F/J remain visible in either display mode.
+    anchor_pattern = '<pattern id="nf4-anchor" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M-3 3L3-3M0 12L12 0M9 15L15 9" stroke="#a05b37" stroke-width="2.5" stroke-opacity=".48"/></pattern>'
+    change('stroke-opacity=".27"/></pattern></defs>`;',
+           'stroke-opacity=".27"/></pattern>' + anchor_pattern + '</defs>`;')
+    change('viewBox="0 0 1380 575" role="img"><rect width="1380"',
+           'viewBox="0 0 1380 575" role="img"><defs>' + anchor_pattern + '</defs><rect width="1380"')
+    change('stroke-opacity=".38"/>`:\'\'}${k===\'F\'||k===\'J\'?`<rect x="${x+33}" y="${y+124}" width="26" height="4" rx="2" fill="#a05b37"/>`:\'\'}<g clip-path="url(#${clip})">',
+           'stroke-opacity=".38"/>`:\'\'}${k===\'F\'||k===\'J\'?`<rect x="${x+2}" y="${y+2}" width="88" height="126" rx="8" fill="url(#nf4-anchor)" pointer-events="none"/>`:\'\'}<g clip-path="url(#${clip})">')
+    change('}/>${k===\'F\'||k===\'J\'?`<rect x="${x+33}" y="${y+124}" width="26" height="4" rx="2" fill="#a05b37"/>`:\'\'}<text x="${x+10}" y="${y+23}" font-family="sans-serif" font-size="18"',
+           '}/>${k===\'F\'||k===\'J\'?`<rect x="${x+2}" y="${y+2}" width="88" height="126" rx="8" fill="url(#nf4-anchor)" pointer-events="none"/>`:\'\'}<text x="${x+10}" y="${y+23}" font-family="sans-serif" font-size="18"')
+    change('<span class="legenditem"><span style="color:#a05b37;font-weight:750">F / J</span>键帽底部短横＝定位键</span>',
+           '<span class="legenditem"><i class="legkey" style="background:repeating-linear-gradient(135deg,#fbfaf7 0,#fbfaf7 7px,#d5a081 7px,#d5a081 9px)"></i>F / J 斜线键帽＝定位键</span>')
     assert html.count("k==='F'||k==='J'") == 2
+    assert html.count(anchor_pattern) == 2
+    assert '键帽底部短横＝定位键' not in html
     assert '.legkey.both{border-color:#b8b7af!important;background:#fbfaf7!important}' in html
     return html
 

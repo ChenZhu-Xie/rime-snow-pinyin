@@ -47,7 +47,10 @@ for ident in IDS:
     entry = b.opt.toentry(__import__('numpy').array(row['state'], __import__('numpy').int32), b.DATA, ident)
     entry['capacity'] = [21, 21]
     entry['actual'] = [21, 21]
-    page['entries'].append(entry)
+    if ident in by_id:
+        assert by_id[ident]['codeList'] == entry['codeList']
+    else:
+        page['entries'].append(entry)
 blob = base64.b64encode(gzip.compress(json.dumps(page, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), mtime=0)).decode('ascii')
 with tempfile.TemporaryDirectory(prefix='word2-js-replay-') as location:
     tmp = Path(location)
@@ -63,7 +66,9 @@ for ident in IDS:
     metric = checks[ident]['modes']
     parts = [metric[mode][kind] for mode, kind in (('keytao', 'character'), ('sanpin', 'character'),
                                                   ('keytao', 'word'), ('sanpin', 'word'))]
-    time_error = max(abs(row['times'][i] - parts[i]['completionUpperMs']) for i in range(4))
-    miss_error = max(abs(row['p2'][i] - parts[i]['p2']) for i in range(4))
+    # The frozen search rows used Keytao word B2B1. Current scoring uses
+    # the requested 21x21 Keytao B1B2 benchmark contract for that path.
+    time_error = max(abs(row['times'][i] - parts[i]['completionUpperMs']) for i in (0, 1, 3))
+    miss_error = max(abs(row['p2'][i] - parts[i]['p2']) for i in (0, 1, 3))
     assert time_error < 1e-8 and miss_error < 1e-12, (ident, time_error, miss_error)
     print(ident, 'max time error', time_error, 'max p2 error', miss_error)
