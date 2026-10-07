@@ -12,7 +12,7 @@ from pathlib import Path
 HTML = Path(r'D:\C2D\Desktop\Code\Lua\inputMethod\shuangpin-layout-benchmark\a7_CKT_R11.html')
 
 
-def adjusted(row, kind, selection=500, first=100, second=150):
+def adjusted(row, kind, selection=600, first=300, second=300):
     base = 2 if kind == 'character' else 4
     first_share = 1 - row['stageWeight'][0]
     second_share = row['meanKeys'] - base - first_share
@@ -40,9 +40,9 @@ class CompletionCKTv2Tests(unittest.TestCase):
         d=self.data
         self.assertEqual(d['cktV2']['upstreamCommit'],'a551021c1cd6df0c3e25e2111b81d062dbe9f574')
         self.assertEqual(set(d['completionBV2']['schemes']),{x['id'] for x in d['entries']})
-        self.assertEqual(d['completionBV2']['penaltyDefinition']['defaultSelectionMs'],500)
-        self.assertEqual(d['completionBV2']['penaltyDefinition']['defaultFirstAuxiliaryMs'],100)
-        self.assertEqual(d['completionBV2']['penaltyDefinition']['defaultSecondAuxiliaryMs'],150)
+        self.assertEqual(d['completionBV2']['penaltyDefinition']['defaultSelectionMs'],600)
+        self.assertEqual(d['completionBV2']['penaltyDefinition']['defaultFirstAuxiliaryMs'],300)
+        self.assertEqual(d['completionBV2']['penaltyDefinition']['defaultSecondAuxiliaryMs'],300)
         self.assertEqual(d['cktV2']['sourceSha256'], d['completionBV2']['modelSource']['sourceSha256'])
         self.assertEqual(d['cktV2']['keys'],'ABCDEFGHIJKLMNOPQRSTUVWXYZ;,./')
         self.assertEqual(len(d['cktV2']['tables']),6)
@@ -57,7 +57,7 @@ class CompletionCKTv2Tests(unittest.TestCase):
                 ['wj1','', 'keytao','word'],['ws1','', 'sanpin','word']]
         for ident in ('S005','BCW-553dbe07fc7c'):
             payload=json.dumps({'m':block[ident]['modes'],'base':block['S005']['modes'],'tracks':tracks})
-            js='const B_COMPLETION_TRACKS='+json.dumps(tracks)+';'+source+';const x='+payload+';console.log(bCompletionScoreV2(x.m,500,100,150,x.base))'
+            js='const B_COMPLETION_TRACKS='+json.dumps(tracks)+';'+source+';const x='+payload+';console.log(bCompletionScoreV2(x.m,600,300,300,x.base))'
             actual=float(subprocess.check_output(['node','-e',js],text=True).strip())
             self.assertAlmostEqual(actual,composite(block[ident]['modes'],block['S005']['modes']),places=10)
 
@@ -70,7 +70,7 @@ class CompletionCKTv2Tests(unittest.TestCase):
                     self.assertGreaterEqual(adjusted(row,kind),row['completionUpperMs'])
                     self.assertAlmostEqual(adjusted(row,kind,0,0,0),row['completionUpperMs'])
         row={'completionUpperMs':300,'p2':.05,'meanKeys':3,'stageWeight':[.2,.6,.2]}
-        self.assertAlmostEqual(adjusted(row,'character'),300+25+80+30)
+        self.assertAlmostEqual(adjusted(row,'character'),300+30+240+60)
         self.assertEqual(len(re.findall(r'id="ux(?:Tau|FirstAuxPenalty|SecondAuxPenalty)" type="range"',self.html)),3)
         self.assertNotIn('id="uxAuxPenalty"',self.html)
         self.assertIn("function bCompletionScoreV2(m,tau,firstAux,secondAux,reference)",self.html)

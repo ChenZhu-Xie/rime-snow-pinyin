@@ -7,17 +7,33 @@ const {chromium}=require('../node_modules/playwright-core');
   await page.goto('file:///D:/C2D/Desktop/Code/Lua/inputMethod/shuangpin-layout-benchmark/a7_CKT_R11.html',{waitUntil:'domcontentloaded',timeout:120000});
   page.on('pageerror',e=>console.error('PAGE ERROR',e.message));
   await page.waitForFunction(()=>typeof D!=='undefined'&&D.completionBV2&&typeof uxRenderFair==='function',null,{timeout:120000});
-  const result=await page.evaluate(()=>{
+  const inspect=()=>page.evaluate(()=>{
    uxRenderFair();
    const ids=['uxTau','uxFirstAuxPenalty','uxSecondAuxPenalty'];
    const sliders=ids.map(id=>[id,document.getElementById(id)?.type,document.getElementById(id)?.value]);
+   const geometry=()=>ids.map(id=>{const box=document.getElementById(id).getBoundingClientRect();return [box.x,box.y,box.width]});
+   const before=geometry();
    const base=bCompletionV2Row({id:'S005'});
    const score=bCompletionScoreV2(base,bCompletionTau(),bCompletionFirstAuxPenalty(),bCompletionSecondAuxPenalty(),base);
-   document.getElementById('uxFirstAuxPenalty').value='125';
-   document.getElementById('uxFirstAuxPenalty').dispatchEvent(new Event('change',{bubbles:true}));
-   return {sliders,score,firstAfter:UX.firstAuxPenalty,selectionAfter:UX.tau,secondAfter:UX.secondAuxPenalty,schemes:Object.keys(D.completionBV2.schemes).length};
+   const frontier=bCompletionV2Row({id:'BCW-f2ecfe8202ef'});
+   const frontierScore=bCompletionScoreV2(frontier,bCompletionTau(),bCompletionFirstAuxPenalty(),bCompletionSecondAuxPenalty(),base);
+   const after=[];
+   for(const id of ids){
+    const slider=document.getElementById(id);
+    slider.value=slider.min;
+    slider.dispatchEvent(new Event('change',{bubbles:true}));
+    after.push(geometry());
+    slider.value=slider.max;
+    slider.dispatchEvent(new Event('change',{bubbles:true}));
+    after.push(geometry());
+   }
+   return {sliders,before,after,score,frontierScore,schemes:Object.keys(D.completionBV2.schemes).length};
   });
-  if(JSON.stringify(result.sliders)!==JSON.stringify([['uxTau','range','500'],['uxFirstAuxPenalty','range','100'],['uxSecondAuxPenalty','range','150']])||result.score!==10||result.firstAfter!=='125'||result.schemes!==577)throw Error(JSON.stringify(result));
-  console.log(JSON.stringify(result));
+  const desktop=await inspect();
+  await page.setViewportSize({width:390,height:844});
+  const mobile=await inspect();
+  const expected=[['uxTau','range','600'],['uxFirstAuxPenalty','range','300'],['uxSecondAuxPenalty','range','300']];
+  if(JSON.stringify(desktop.sliders)!==JSON.stringify(expected)||desktop.score!==10||Math.abs(desktop.frontierScore-9.342498799188776)>1e-9||desktop.schemes!==585||desktop.after.some(box=>JSON.stringify(box)!==JSON.stringify(desktop.before))||mobile.after.some(box=>JSON.stringify(box)!==JSON.stringify(mobile.before)))throw Error(JSON.stringify({desktop,mobile}));
+  console.log(JSON.stringify({desktop,mobile}));
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
