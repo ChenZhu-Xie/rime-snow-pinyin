@@ -11,11 +11,12 @@ const vm = require('vm');
 function argumentsFrom(argv) {
   const args = {};
   for (let i = 0; i < argv.length; i += 2) {
-    if (!['--html', '--output', '--ids'].includes(argv[i]) || !argv[i + 1])
-      throw Error('usage: node score_shenyun_completion_ckt.js --html R11.html --output result.json [--ids ID,ID]');
+    if (!['--html', '--output', '--ids', '--mapping'].includes(argv[i]) || !argv[i + 1])
+      throw Error('usage: node score_shenyun_completion_ckt.js --html R11.html --output result.json [--ids ID,ID] [--mapping native|fixed]');
     args[argv[i].slice(2)] = argv[i + 1];
   }
   if (!args.html || !args.output) throw Error('--html and --output are required');
+  if (args.mapping && !['native', 'fixed'].includes(args.mapping)) throw Error('unknown B mapping: ' + args.mapping);
   return args;
 }
 
@@ -42,14 +43,13 @@ function loadPage(file) {
 function strokeOptions(file) {
   const alternatives = new Map();
   const primary = new Map();
-  const mapping = {h:'V', s:'I', p:'U', n:'O', z:'A'};
   let started = false;
   for (const line of fs.readFileSync(file, 'utf8').split(/\r?\n/)) {
     if (!started) { started = line.trim() === '...'; continue; }
     const fields = line.split('\t');
-    if (fields.length < 2 || !fields[1] || !mapping[fields[1][0]] || /[^hspnz]/.test(fields[1])) continue;
+    if (fields.length < 2 || !fields[1] || !/[hspnz]/.test(fields[1][0]) || /[^hspnz]/.test(fields[1])) continue;
     const [character, spelling] = fields;
-    const key = mapping[spelling[0]];
+    const key = spelling[0];
     if (!primary.has(character)) primary.set(character, key);
     if (!alternatives.has(character)) alternatives.set(character, new Set());
     alternatives.get(character).add(key);
@@ -59,8 +59,12 @@ function strokeOptions(file) {
 
 const TONE = 'IVUAO';
 const SHAPE_FROM = 'IEUAO';
-function physicalShape(abstract) {
-  return [...(abstract || '')].map(key => TONE[SHAPE_FROM.indexOf(key)] || '').join('');
+const STROKE_SLOT = {s:0, h:1, p:2, z:3, n:4};
+function physicalShape(abstract, toneKeys) {
+  return [...(abstract || '')].map(key => toneKeys[SHAPE_FROM.indexOf(key)] || '').join('');
+}
+function physicalStroke(stroke, toneKeys) {
+  return stroke && toneKeys[STROKE_SLOT[stroke]] || null;
 }
 function winnerBeats(a, b) {
   return !b || a.weight > b.weight || (a.weight === b.weight && Engine7.lex(a.text, b.text) < 0);
@@ -76,32 +80,38 @@ function first(row, bucket, stage) {
   return row.codes[stage].some(code => bucket.get(code) === row);
 }
 
-function makeRows(data, entry, stroke) {
+function makeRows(data, entry, stroke, mappingMode) {
   const chars = [];
   const words = [];
   const codes = entry.codeList;
   const shape = data.shapes.snowshape;
+  const keytaoWordFirstCharacterFirst = Array.isArray(entry.capacity) && entry.capacity[0] === 21 && entry.capacity[1] === 21;
+  const toneKeys = mappingMode === 'native' ? entry.tone : TONE;
+  if (!toneKeys || [...toneKeys].length !== 5 || new Set([...toneKeys]).size !== 5)
+    throw Error('invalid five-key order: ' + entry.id + ' ' + toneKeys);
   for (const [text, py, tone, weight, common] of data.characters) {
     if (!common || weight <= 0) continue;
-    const base = codes[py], aux = physicalShape(shape[text]);
-    const toneKey = TONE[tone - 1], possible = [...(stroke.alternatives.get(text) || [])];
+    const base = codes[py], aux = physicalShape(shape[text], toneKeys);
+    const toneKey = toneKeys[tone - 1], possible = [...(stroke.alternatives.get(text) || [])].map(s => physicalStroke(s, toneKeys));
     chars.push({text, weight, common:true, keytao:[
       base ? [base] : [], base && aux ? [base + aux[0]] : [],
       base && aux ? [base + aux.slice(0, 2)] : []
     ], sanpin:[
       base ? [base] : [], base && toneKey ? [base + toneKey] : [],
       base && toneKey ? possible.map(key => base + toneKey + key) : []
-    ], primaryStroke:stroke.primary.get(text)});
+    ], primaryStroke:physicalStroke(stroke.primary.get(text), toneKeys)});
   }
   for (const [text, py1, py2, tone1, tone2, weight, lexicon, common] of data.words) {
     if (!(lexicon & 1) || weight <= 0 || [...text].length !== 2) continue;
     const [ch1, ch2] = [...text];
     const base = codes[py1] && codes[py2] ? codes[py1] + codes[py2] : null;
-    const x1 = physicalShape(shape[ch1]), x2 = physicalShape(shape[ch2]);
-    const t1 = TONE[tone1 - 1], t2 = TONE[tone2 - 1];
+    const x1 = physicalShape(shape[ch1], toneKeys), x2 = physicalShape(shape[ch2], toneKeys);
+    const t1 = toneKeys[tone1 - 1], t2 = toneKeys[tone2 - 1];
+    const keytaoB1 = keytaoWordFirstCharacterFirst ? x1 : x2;
+    const keytaoB2 = keytaoWordFirstCharacterFirst ? x2 : x1;
     words.push({text, weight, common:!!common, keytao:[
-      base ? [base] : [], base && x2 ? [base + x2[0]] : [],
-      base && x1 && x2 ? [base + x2[0] + x1[0]] : []
+      base ? [base] : [], base && keytaoB1 ? [base + keytaoB1[0]] : [],
+      base && keytaoB1 && keytaoB2 ? [base + keytaoB1[0] + keytaoB2[0]] : []
     ], sanpin:[base ? [base] : [], base && t2 ? [base + t2] : [],
       base && t1 && t2 ? [base + t2 + t1] : []]});
   }
@@ -172,17 +182,20 @@ function main() {
   const requested = args.ids ? new Set(args.ids.split(',')) : null;
   const entries = requested ? data.entries.filter(entry => requested.has(entry.id)) : data.entries;
   if (requested && entries.length !== requested.size) throw Error('unknown scheme ID in --ids');
-  const output = {version:'B-completion-CKT-v0', source:{html:path.resolve(args.html), htmlSha256,
+  const mappingMode = args.mapping || 'fixed';
+  const output = {version:mappingMode === 'native' ? 'B-completion-CKT-native-v2' : 'B-completion-CKT-fixed-v1', source:{html:path.resolve(args.html), htmlSha256,
     strokeSha256:crypto.createHash('sha256').update(fs.readFileSync(strokeFile)).digest('hex'),
     entries:data.entries.length, characterRows:data.characters.length, wordRows:data.words.length},
-    policy:{cohort:'R11 Common8095 and Snow common two-character words', toneKeys:TONE,
-      shapeKeys:TONE, wordBOrder:'second character, first character',
+    policy:{cohort:'R11 Common8095 and Snow common two-character words', mappingMode,
+      toneKeys:mappingMode === 'native' ? 'entry.tone' : TONE,
+      shapeKeys:mappingMode === 'native' ? 'entry.tone by IEUAO class' : TONE,
+      wordBOrder:'keytao: 21x21 first character then second; other domains second then first; sanpin: second then first',
     ranking:'frequency descending, text lexicographic; common cohort filtered before ranking as in frozen CKT',
       sanpinStroke:'all accepted first strokes; at B2 choose a first-choice code if available, then least upper CKT; optimistic bound',
       selection:'completion upper CKT + tauMs * p2; tauMs = 0,150,300,600; no commit or boundary cost',
       modes:['keytao','sanpin'], classes:['character','word']}, schemes:{}};
   for (const entry of entries) {
-    const rows = makeRows(data, entry, stroke), cache = new Map();
+    const rows = makeRows(data, entry, stroke, mappingMode), cache = new Map();
     const modes = {};
     for (const mode of ['keytao', 'sanpin']) {
       modes[mode] = {
@@ -197,7 +210,7 @@ function main() {
       for (const tau of [0, 150, 300, 600]) {
         const character = modes[mode].character.timeMs[tau];
         const word = modes[mode].word.timeMs[tau];
-        scenario[mode][tau] = Object.fromEntries([0, .25, .5, .75, 1].map(q => {
+        scenario[mode][tau] = Object.fromEntries([0, .25, .5, 2/3, .75, 1].map(q => {
           const msPerHanzi = ((1 - q) * character + q * word) / (1 + q);
           return [q, {msPerHanzi, hanziPerMinute:60000 / msPerHanzi}];
         }));
@@ -219,7 +232,11 @@ function main() {
       wj1:modes.keytao.word.p1 - b.wj1, wj2:modes.keytao.word.p2 - b.wj2,
       ws1:modes.sanpin.word.p1 - b.ws1, ws2:modes.sanpin.word.p2 - b.ws2
     } : null;
-    if (bPathDeltas && Math.max(...Object.values(bPathDeltas).map(Math.abs)) > 1e-10)
+    const compatibleDeltas = bPathDeltas && (mappingMode === 'fixed' || entry.tone === TONE)
+      ? (entry.capacity?.[0] === 21 && entry.capacity?.[1] === 21
+          ? Object.entries(bPathDeltas).filter(([key]) => key !== 'wj1' && key !== 'wj2').map(([, value]) => value)
+          : Object.values(bPathDeltas)) : null;
+    if (compatibleDeltas && Math.max(...compatibleDeltas.map(Math.abs)) > 1e-10)
       throw Error('B path audit failed: ' + entry.id + ' ' + JSON.stringify(bPathDeltas));
     output.schemes[entry.id] = {capacity:entry.capacity, actual:entry.actual, tone:entry.tone,
       memory:entry.searchMemoryNoTone ?? null,
@@ -235,4 +252,5 @@ function main() {
     out:path.resolve(args.output), sourceEntries:output.source.entries}));
 }
 
-main();
+if (require.main === module) main();
+module.exports = {makeRows};
