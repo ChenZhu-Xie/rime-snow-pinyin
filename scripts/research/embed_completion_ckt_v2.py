@@ -25,10 +25,11 @@ def main():
     ap.add_argument('--html', type=Path, required=True)
     ap.add_argument('--model', type=Path)
     ap.add_argument('--scores', type=Path)
+    ap.add_argument('--defaults', type=int, nargs=3, metavar=('SELECTION', 'FIRST_AUX', 'SECOND_AUX'))
     ap.add_argument('--upstream-commit')
     args = ap.parse_args()
-    if bool(args.model) == bool(args.scores):
-        ap.error('exactly one of --model and --scores is required')
+    if sum(bool(x) for x in (args.model, args.scores, args.defaults)) != 1:
+        ap.error('exactly one of --model, --scores, and --defaults is required')
     html = args.html.read_text(encoding='utf-8')
     found = PAYLOAD.search(html)
     if not found:
@@ -51,7 +52,7 @@ def main():
                        for name in ROLE_NAMES},
         }
         data['cktV2'] = model
-    else:
+    elif args.scores:
         scores = json.loads(args.scores.read_text(encoding='utf-8'))
         if len(scores['schemes']) != len(data['entries']):
             raise ValueError('scheme count differs from atlas')
@@ -59,18 +60,25 @@ def main():
             raise ValueError('scheme IDs differ from atlas')
         scores['modelSource'] = {key: data['cktV2'][key] for key in ('version', 'upstreamCommit', 'sourceSha256', 'extension')}
         scores['penaltyDefinition'] = {
-            'defaultSelectionMs': 500,
-            'defaultFirstAuxiliaryMs': 100,
-            'defaultSecondAuxiliaryMs': 150,
+            'defaultSelectionMs': 600,
+            'defaultFirstAuxiliaryMs': 300,
+            'defaultSecondAuxiliaryMs': 300,
             'formula': 'completionUpperMs + selectionMs*p2 + firstAuxiliaryMs*(1-stageWeight[0]) + secondAuxiliaryMs*(meanKeys-baseCodeLength-(1-stageWeight[0]))',
             'baseCodeLength': {'character': 2, 'word': 4},
             'normalization': 'Each of four groups divides by S005 at the same three penalties; fourth-power mean with character:word weights 1:2.',
         }
         data['completionBV2'] = scores
+    else:
+        selection, first_aux, second_aux = args.defaults
+        if min(args.defaults) < 0:
+            ap.error('defaults must be nonnegative')
+        policy = data['completionBV2']['penaltyDefinition']
+        policy.update(defaultSelectionMs=selection, defaultFirstAuxiliaryMs=first_aux,
+                      defaultSecondAuxiliaryMs=second_aux)
     encoded = base64.b64encode(gzip.compress(json.dumps(data, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), mtime=0)).decode('ascii')
     html = html[:found.start(2)] + encoded + html[found.end(2):]
     args.html.write_text(html, encoding='utf-8')
-    print('Embedded', 'model' if args.model else 'scores', 'in', args.html)
+    print('Embedded', 'model' if args.model else 'scores' if args.scores else 'defaults', 'in', args.html)
 
 
 if __name__ == '__main__':

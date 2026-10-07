@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Search IVUAO-locked 21x21 line/face basins under upstream CKT v2.
 
-The broad stage seeks raw τ=150 performance. Subsequent stages tighten M/D.
+The broad stage seeks the requested selection/auxiliary scenario. Subsequent
+stages tighten M/D while diverse parents preserve home-row and pinky poles.
 Eight B miss rates, Pmax, and home-row share remain independent diagnostics.
 """
 from __future__ import annotations
@@ -30,14 +31,15 @@ p.add_argument('--cohort', type=Path, help='Precomputed fixed-IVUAO CKT v2 score
 p.add_argument('--output', type=Path, default=DATA / 'shenyun-21x21-completion-v2-face-search.json')
 p.add_argument('--trials', type=int, nargs=5, default=[25000, 20000, 20000, 20000, 25000],
                metavar=('BROAD', 'D3', 'D2', 'D1', 'D0'))
-p.add_argument('--tau', type=float, default=500)
-p.add_argument('--first-aux', type=float, default=100)
-p.add_argument('--second-aux', type=float, default=150)
+p.add_argument('--tau', type=float, default=600)
+p.add_argument('--first-aux', type=float, default=300)
+p.add_argument('--second-aux', type=float, default=300)
 p.add_argument('--seed', type=int, default=20261007)
 p.add_argument('--d0-max-m', type=int, default=41, choices=range(38, 42))
 p.add_argument('--prior', type=Path, nargs='*', default=[])
 args = p.parse_args()
 args.output = args.output.resolve()
+args.cohort = args.cohort.resolve() if args.cohort else None
 args.prior = [path.resolve() for path in args.prior]
 for key in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'NUMBA_NUM_THREADS'):
     os.environ[key] = '1'
@@ -71,7 +73,7 @@ allowed = set(physical)
 p_cap = frozen['R9-21X21-M40-02']['rightPinkyMax']
 
 
-def ensemble(times, misses, first_counts, second_counts, tau=500, first_aux=100, second_aux=150, word_weight=2):
+def ensemble(times, misses, first_counts, second_counts, tau=600, first_aux=300, second_aux=300, word_weight=2):
     norm = 0.0
     for index, (mode, kind) in enumerate((('keytao', 'character'), ('sanpin', 'character'),
                                          ('keytao', 'word'), ('sanpin', 'word'))):
