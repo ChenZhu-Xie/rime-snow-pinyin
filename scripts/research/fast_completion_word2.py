@@ -57,7 +57,7 @@ def _cost(n, k0, k1, k2, k3, k4, k5, t2, t31, t32, t41, t42, t43, long_guard):
 @njit(cache=True)
 def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
               cstamp, cwinner, wstamp, wkeys, wwinner, epoch, aux,
-              t2, t31, t32, t41, t42, t43, long_guard):
+              t2, t31, t32, t41, t42, t43, long_guard, first_word):
     a = np.full(len(pinyin_heads), -1, np.int32)
     z = np.full(len(pinyin_heads), -1, np.int32)
     code = np.full(len(pinyin_heads), -1, np.int32)
@@ -93,10 +93,12 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
         if code[p1] < 0 or code[p2] < 0:
             continue
         base = code[p1] * 1156 + code[p2]
+        first_shape = sh1 if first_word else sh2
+        second_shape = sh2 if first_word else sh1
         paths = np.empty(5, np.int64)
         paths[0] = base
-        paths[1] = base * 5 + sh2
-        paths[2] = base * 25 + sh2 * 5 + sh1
+        paths[1] = base * 5 + first_shape
+        paths[2] = base * 25 + first_shape * 5 + second_shape
         paths[3] = base * 5 + t2_index
         paths[4] = base * 25 + t2_index * 5 + t1
         for track in range(5):
@@ -163,7 +165,9 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
         mass_word += weight
         k0, k1, k2, k3 = a[p1], z[p1], a[p2], z[p2]
         base = code[p1] * 1156 + code[p2]
-        pos = _slot(2, base * 25 + sh2 * 5 + sh1, wstamp, wkeys, epoch)
+        first_shape = sh1 if first_word else sh2
+        second_shape = sh2 if first_word else sh1
+        pos = _slot(2, base * 25 + first_shape * 5 + second_shape, wstamp, wkeys, epoch)
         if wwinner[2, pos] != i:
             missed[2] += weight
         pos = _slot(4, base * 25 + tone2 * 5 + tone1, wstamp, wkeys, epoch)
@@ -175,12 +179,12 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
             total[2] += weight * value
             total[3] += weight * value
         else:
-            pos = _slot(1, base * 5 + sh2, wstamp, wkeys, epoch)
+            pos = _slot(1, base * 5 + first_shape, wstamp, wkeys, epoch)
             if wwinner[1, pos] == i:
-                value = _cost(5, k0, k1, k2, k3, aux[sh2], 0, t2, t31, t32, t41, t42, t43, long_guard)
+                value = _cost(5, k0, k1, k2, k3, aux[first_shape], 0, t2, t31, t32, t41, t42, t43, long_guard)
             else:
-                pos = _slot(2, base * 25 + sh2 * 5 + sh1, wstamp, wkeys, epoch)
-                value = _cost(6, k0, k1, k2, k3, aux[sh2], aux[sh1], t2, t31, t32, t41, t42, t43, long_guard)
+                pos = _slot(2, base * 25 + first_shape * 5 + second_shape, wstamp, wkeys, epoch)
+                value = _cost(6, k0, k1, k2, k3, aux[first_shape], aux[second_shape], t2, t31, t32, t41, t42, t43, long_guard)
             total[2] += weight * value
             pos = _slot(3, base * 5 + tone2, wstamp, wkeys, epoch)
             if wwinner[3, pos] == i:
@@ -199,8 +203,9 @@ def _evaluate(st, char_rows, word_rows, pinyin_heads, pinyin_finals,
 
 
 class FastCompletion:
-    def __init__(self, benchmark, html: Path):
+    def __init__(self, benchmark, html: Path, first_word: bool = False):
         self.b = benchmark
+        self.first_word = first_word
         text = html.read_text(encoding='utf-8')
         match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', text)
         if not match:
@@ -238,4 +243,4 @@ class FastCompletion:
         return _evaluate(np.asarray(state, dtype=np.int32), self.char_rows, self.word_rows,
                          self.heads, self.finals, self.cstamp, self.cwinner,
                          self.wstamp, self.wkeys, self.wwinner, self.epoch, self.aux,
-                         *self.tables, self.long_guard)
+                         *self.tables, self.long_guard, self.first_word)

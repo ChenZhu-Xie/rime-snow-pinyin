@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Independently replay selected new word-2 layouts with the frozen JS scorer."""
+"""Independently replay fixed-IVUAO 21x21 first-character-first layouts with frozen JS."""
 from __future__ import annotations
 
+import argparse
 import base64
 import gzip
 import importlib.util
@@ -16,8 +17,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 REPLAY = Path(os.environ['TEMP']) / 'rime-21x21-search/R11_integrated_replay'
 HTML = Path(r'D:\C2D\Desktop\Code\Lua\inputMethod\shuangpin-layout-benchmark\a7_CKT_R11.html')
-IDS = ('BCW-728ebe1b8ae6', 'BCW-062294ac76a9', 'BCW-fcde88067f0c',
-       'BCW-eb540e052854', 'BCW-d3f836f32da1', 'BCW-3245b61eed72')
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--files', type=Path, nargs='+', default=[ROOT / 'research-notes/data/shenyun-21x21-completion-fixed-face-search-r2.json', ROOT / 'research-notes/data/shenyun-21x21-completion-fixed-local-polish.json'])
+parser.add_argument('--ids', nargs='+', default=['BCW-553dbe07fc7c', 'BCW-2a915aa92474', 'BCL-0b818d71385f', 'BCL-cff9677af1ba'])
+args = parser.parse_args()
+args.files = [path.resolve() for path in args.files]
+IDS = tuple(args.ids)
 for key in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'NUMBA_NUM_THREADS'):
     os.environ[key] = '1'
 os.chdir(REPLAY)
@@ -36,9 +41,8 @@ by_id = {e['id']: e for e in page['entries']}
 known = b.opt.state(by_id['R9-21X21-M40-02'], b.DATA)
 assert b.opt.toentry(known, b.DATA, 'R9-21X21-M40-02')['codeList'] == by_id['R9-21X21-M40-02']['codeList']
 results = {}
-for name in ('shenyun-21x21-completion-word2-face-search-r1.json',
-             'shenyun-21x21-completion-word2-face-search-r2.json'):
-    for row in json.loads((ROOT / 'research-notes/data' / name).read_text(encoding='utf-8'))['results']:
+for path in args.files:
+    for row in json.loads(path.read_text(encoding='utf-8'))['results']:
         if row['id'] in IDS:
             results[row['id']] = row
 assert set(results) == set(IDS), set(IDS) - set(results)
@@ -66,9 +70,10 @@ for ident in IDS:
     metric = checks[ident]['modes']
     parts = [metric[mode][kind] for mode, kind in (('keytao', 'character'), ('sanpin', 'character'),
                                                   ('keytao', 'word'), ('sanpin', 'word'))]
-    # The frozen search rows used Keytao word B2B1. Current scoring uses
-    # the requested 21x21 Keytao B1B2 benchmark contract for that path.
-    time_error = max(abs(row['times'][i] - parts[i]['completionUpperMs']) for i in (0, 1, 3))
-    miss_error = max(abs(row['p2'][i] - parts[i]['p2']) for i in (0, 1, 3))
-    assert time_error < 1e-8 and miss_error < 1e-12, (ident, time_error, miss_error)
-    print(ident, 'max time error', time_error, 'max p2 error', miss_error)
+    time_error = max(abs(row['times'][i] - parts[i]['completionUpperMs']) for i in range(4))
+    miss_error = max(abs(row['p2'][i] - parts[i]['p2']) for i in range(4))
+    path_error = max(abs(row[key] - parts[i][stage])
+                     for i, keys in enumerate((('j1','j2'), ('s1','s2'), ('wj1','wj2'), ('ws1','ws2')))
+                     for key, stage in zip(keys, ('p1','p2')))
+    assert time_error < 1e-8 and miss_error < 1e-12 and path_error < 1e-12, (ident, time_error, miss_error, path_error)
+    print(ident, 'max time error', time_error, 'max p2 error', miss_error, 'max eight-path error', path_error)
