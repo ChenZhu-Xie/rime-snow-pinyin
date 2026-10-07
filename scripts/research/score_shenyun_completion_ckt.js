@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Static frequency-weighted B completion CKT + fixed nonfirst selection time. */
+/* Frequency-weighted B completion CKT; optionally use the regenerated upstream role table. */
 'use strict';
 
 const fs = require('fs');
@@ -11,12 +11,13 @@ const vm = require('vm');
 function argumentsFrom(argv) {
   const args = {};
   for (let i = 0; i < argv.length; i += 2) {
-    if (!['--html', '--output', '--ids', '--mapping'].includes(argv[i]) || !argv[i + 1])
-      throw Error('usage: node score_shenyun_completion_ckt.js --html R11.html --output result.json [--ids ID,ID] [--mapping native|fixed]');
+    if (!['--html', '--output', '--ids', '--mapping', '--model'].includes(argv[i]) || !argv[i + 1])
+      throw Error('usage: node score_shenyun_completion_ckt.js --html R11.html --output result.json [--ids ID,ID] [--mapping native|fixed] [--model v2]');
     args[argv[i].slice(2)] = argv[i + 1];
   }
   if (!args.html || !args.output) throw Error('--html and --output are required');
   if (args.mapping && !['native', 'fixed'].includes(args.mapping)) throw Error('unknown B mapping: ' + args.mapping);
+  if (args.model && args.model !== 'v2') throw Error('unknown model: ' + args.model);
   return args;
 }
 
@@ -38,6 +39,45 @@ function loadPage(file) {
   Engine7.init(data);
   CKTEngine.init(data);
   return {data, htmlSha256: crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex')};
+}
+
+function useV2Model(data) {
+  const model = data.cktV2;
+  if (!model || model.keys !== 'ABCDEFGHIJKLMNOPQRSTUVWXYZ;,./')
+    throw Error('CKT v2 native 30-key model missing');
+  const roles = ['L2i1', 'L3i1', 'L3i2', 'L4i1', 'L4i2', 'L4i3'];
+  const tables = Object.fromEntries(roles.map(role => {
+    const buf = Buffer.from(model.tables[role], 'base64');
+    return [role, new Float64Array(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength))];
+  }));
+  const index = Object.fromEntries([...model.keys].map((key, i) => [key, i]));
+  const donors = data.ckt.calibration.extension_maps;
+  const oldCost = CKTEngine.codeCost;
+  function nativeCost(code) {
+    const a = [...code].map(key => index[key]);
+    if (a.some(value => value === undefined) || a.length < 2) return null;
+    function role(name, part) {
+      let at = 0;
+      for (const key of part) at = at * 30 + key;
+      return tables[name][at];
+    }
+    if (a.length === 2) return role('L2i1', a);
+    if (a.length === 3) return role('L3i1', a) + role('L3i2', a);
+    let total = role('L4i1', a.slice(0, 3)) + role('L4i3', a.slice(-3));
+    for (let j = 0; j <= a.length - 4; j++) total += role('L4i2', a.slice(j, j + 4));
+    return Math.max(total, 0) + (a.length - 4) * model.longGuardMs;
+  }
+  CKTEngine.codeCost = code => {
+    const old = oldCost(code);
+    if (!old) return null;
+    const projected = [...code].map(key => donors[key]
+      ? Object.entries(donors[key].donors).sort((a, b) => b[1] - a[1])[0][0] : key).join('');
+    const native = nativeCost(projected);
+    const oldProjected = oldCost(projected);
+    if (native === null || !oldProjected) return null;
+    const upperMs = Math.max(0, old.upperMs + native - oldProjected.upperMs);
+    return {...old, centerMs: upperMs, upperMs};
+  };
 }
 
 function strokeOptions(file) {
@@ -176,6 +216,7 @@ function scoreCohort(rows, mode, type, costCache, strokePrimary = false) {
 function main() {
   const args = argumentsFrom(process.argv.slice(2));
   const {data, htmlSha256} = loadPage(args.html);
+  if (args.model === 'v2') useV2Model(data);
   const repo = path.resolve(__dirname, '../..');
   const strokeFile = path.join(repo, 'rime-stroke/stroke.dict.yaml');
   const stroke = strokeOptions(strokeFile);
@@ -183,7 +224,7 @@ function main() {
   const entries = requested ? data.entries.filter(entry => requested.has(entry.id)) : data.entries;
   if (requested && entries.length !== requested.size) throw Error('unknown scheme ID in --ids');
   const mappingMode = args.mapping || 'fixed';
-  const output = {version:mappingMode === 'native' ? 'B-completion-CKT-native-v2' : 'B-completion-CKT-fixed-v1', source:{html:path.resolve(args.html), htmlSha256,
+  const output = {version:args.model === 'v2' ? 'B-completion-CKT-fixed-upstream-v2' : mappingMode === 'native' ? 'B-completion-CKT-native-v2' : 'B-completion-CKT-fixed-v1', source:{html:path.resolve(args.html), htmlSha256,
     strokeSha256:crypto.createHash('sha256').update(fs.readFileSync(strokeFile)).digest('hex'),
     entries:data.entries.length, characterRows:data.characters.length, wordRows:data.words.length},
     policy:{cohort:'R11 Common8095 and Snow common two-character words', mappingMode,
@@ -192,8 +233,8 @@ function main() {
       wordBOrder:'keytao: 21x21 first character then second; other domains second then first; sanpin: second then first',
     ranking:'frequency descending, text lexicographic; common cohort filtered before ranking as in frozen CKT',
       sanpinStroke:'all accepted first strokes; at B2 choose a first-choice code if available, then least upper CKT; optimistic bound',
-      selection:'completion upper CKT + tauMs * p2; tauMs = 0,150,300,600; no commit or boundary cost',
-      modes:['keytao','sanpin'], classes:['character','word']}, schemes:{}};
+      selection:args.model === 'v2' ? 'Actual IVUAO keystroke costs included in CKT; separately add selectionMs*p2 + firstAuxExtraMs*(1-stageWeight[0]) + secondAuxExtraMs*(meanKeys-base-(1-stageWeight[0])); defaults 500/100/150 ms. timeMs and scenario below are historical selection-only diagnostics.' : 'completion upper CKT + tauMs * p2; tauMs = 0,150,300,600; no commit or boundary cost',
+      modes:['keytao','sanpin'], classes:['character','word']}, modelSource:args.model === 'v2' ? {upstreamCommit:data.cktV2.upstreamCommit,sourceSha256:data.cktV2.sourceSha256} : null, schemes:{}};
   for (const entry of entries) {
     const rows = makeRows(data, entry, stroke, mappingMode), cache = new Map();
     const modes = {};
