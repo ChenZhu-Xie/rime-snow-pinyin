@@ -40,12 +40,16 @@ p.add_argument('--prior', type=Path, nargs='*', default=[])
 p.add_argument('--objective', choices=('v2', 'fixed'), default='v2')
 p.add_argument('--counterpole-share', type=float, default=0,
                help='Fraction of proposals that explicitly cross a slow fixed-CKT pole with frontier points')
+p.add_argument('--pole-strategy', choices=('slow', 'attribute'), default='slow')
+p.add_argument('--pole-exclude-from', type=Path, nargs='*', default=[],
+               help='Saved searches whose pole IDs should be excluded from attribute selection')
 args = p.parse_args()
 if not 0 <= args.counterpole_share <= 1:
     p.error('--counterpole-share must be between 0 and 1')
 args.output = args.output.resolve()
 args.cohort = args.cohort.resolve() if args.cohort else None
 args.prior = [path.resolve() for path in args.prior]
+args.pole_exclude_from = [path.resolve() for path in args.pole_exclude_from]
 for key in ('OPENBLAS_NUM_THREADS', 'OMP_NUM_THREADS', 'NUMBA_NUM_THREADS'):
     os.environ[key] = '1'
 os.chdir(args.replay.resolve())
@@ -59,7 +63,9 @@ spec.loader.exec_module(b)
 import numpy as np
 from b_path_fast import FastBuckets, NAMES
 from fast_completion_word2 import FastCompletion
-from completion_counterpoles import choose_cross_parents, fixed_composite, select_counterpoles
+from completion_counterpoles import (choose_attribute_parents, choose_cross_parents,
+                                     fixed_composite, select_attribute_poles,
+                                     select_counterpoles)
 
 rng = random.Random(args.seed)
 np.random.seed(args.seed)
@@ -245,9 +251,6 @@ for entry in page['entries']:
             raise ValueError('Fast/archived fixed-CKT mismatch '+ident)
     seeds.append(row)
 assert len(seeds) >= 60, len(seeds)
-counterpole_threshold, counterpoles = select_counterpoles(seeds)
-print('COUNTERPOLES', {'threshold': counterpole_threshold,
-                       'ids': [row['atlasId'] for row in counterpoles]}, flush=True)
 for path in args.prior:
     payload = json.loads(path.read_text(encoding='utf-8'))
     for prior_row in payload['results']:
@@ -256,6 +259,19 @@ for path in args.prior:
         # Historical records used second-character-first Keytao words; only
         # compare archived scores from runs declaring the corrected contract.
         # Prior rows were scored under a different model and penalty policy.
+
+if args.pole_strategy == 'attribute':
+    excluded = set()
+    for path in args.pole_exclude_from:
+        excluded.update(json.loads(path.read_text(encoding='utf-8')).get('counterpoleIds', []))
+    counterpoles, pole_provenance = select_attribute_poles(list(rows.values()), excluded)
+    counterpole_threshold = None
+else:
+    counterpole_threshold, counterpoles = select_counterpoles(seeds)
+    pole_provenance = []
+print('COUNTERPOLES', {'strategy': args.pole_strategy, 'threshold': counterpole_threshold,
+                       'axes': pole_provenance,
+                       'ids': [row.get('atlasId', row['id']) for row in counterpoles]}, flush=True)
 
 
 def diverse_elites(pool, cap_m, cap_d, limit=60):
@@ -326,7 +342,10 @@ for (phase, cap_m, cap_d), trials in zip(stages, args.trials):
         draw = rng.random()
         kind = 'line' if draw < .32 else 'face' if draw < .68 else 'mutate'
         if rng.random() < args.counterpole_share:
-            parents = choose_cross_parents(kind, rng.choice(counterpoles), elite, bridges, rng)
+            pole = rng.choice(counterpoles)
+            parents = (choose_attribute_parents(kind, pole, counterpoles, elite, bridges, rng)
+                       if args.pole_strategy == 'attribute'
+                       else choose_cross_parents(kind, pole, elite, bridges, rng))
             counts[phase]['counterpoleCrosses'] += 1
         elif kind == 'face':
             source = bridges if rng.random() < .3 else elite
@@ -375,8 +394,9 @@ for row in seeds:
     selected[tuple(row['state'])] = row
 output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'objective': args.objective, 'counterpoleShare': args.counterpole_share,
+          'poleStrategy': args.pole_strategy, 'poleProvenance': pole_provenance,
           'counterpoleThreshold': counterpole_threshold,
-          'counterpoleIds': [row['atlasId'] for row in counterpoles],
+          'counterpoleIds': [row.get('atlasId', row['id']) for row in counterpoles],
           'firstAuxiliaryExtraMs': args.first_aux, 'secondAuxiliaryExtraMs': args.second_aux,
           'wordWeight': 2, 'characterWeight': 1, 'baselineId': 'S005',
           'wordBOrder': '21x21 Keytao first character, then second; Sanpin second, then first',

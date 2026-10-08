@@ -4,7 +4,9 @@ from __future__ import annotations
 import random
 import unittest
 
-from completion_counterpoles import choose_cross_parents, fixed_composite, select_counterpoles
+from completion_counterpoles import (choose_attribute_parents, choose_cross_parents,
+                                     fixed_composite, select_attribute_poles,
+                                     select_counterpoles, state_distance)
 from integrate_shenyun_completion_v2_frontier import select_rows
 
 
@@ -63,6 +65,39 @@ class CounterpoleTests(unittest.TestCase):
             self.assertTrue({'fast1', 'fast2'} & set(ids))
             self.assertEqual(len(ids), len(set(ids)))
             self.assertGreaterEqual(len(ids), 3 if kind == 'face' else 2)
+
+    def test_attribute_poles_cover_distinct_axes_and_states(self):
+        axes = ('homeS2', 'Pmax', 'eightWorstRatio', 'M', 'v4', 'v5', 'S2ms',
+                'ckt12tau0', 'j1', 'j2', 's1', 's2', 'wj1', 'wj2', 'ws1', 'ws2')
+        rows = []
+        for index in range(16):
+            row = {key: 100.0 for key in axes}
+            row.update(id=str(index), state=[index] * 62, fixed12=10.0,
+                       M=40, D=0, homeS2=.5)
+            if index == 0:
+                row['homeS2'] = .9
+            if index == 1:
+                row['Pmax'] = .001
+            if index == 2:
+                row['eightWorstRatio'] = .5
+            rows.append(row)
+        poles, labels = select_attribute_poles(rows, excluded={'0'}, top_share=.25)
+        self.assertNotIn('0', {r['id'] for r in poles})
+        self.assertEqual(len(poles), len({r['id'] for r in poles}))
+        self.assertTrue(all(state_distance(a, b) >= 8 for i, a in enumerate(poles)
+                            for b in poles[i + 1:]))
+        self.assertEqual([item['id'] for item in labels], [r['id'] for r in poles])
+
+    def test_attribute_face_uses_two_poles_and_fast_parent(self):
+        poles = [{'id': 'home'}, {'id': 'pinky'}, {'id': 'B'}]
+        parents = choose_attribute_parents('face', poles[0], poles,
+                                            [{'id': 'fast'}], [{'id': 'bridge'}],
+                                            random.Random(4))
+        self.assertEqual(len(parents), 4)
+        self.assertEqual(parents[0]['id'], 'home')
+        self.assertIn(parents[1]['id'], {'pinky', 'B'})
+        self.assertEqual(parents[2]['id'], 'fast')
+        self.assertEqual(parents[3]['id'], 'bridge')
 
 
 if __name__ == '__main__':
