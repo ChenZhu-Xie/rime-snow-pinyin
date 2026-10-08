@@ -28,6 +28,7 @@ def main():
     parser.add_argument('--html', type=Path, default=DEFAULT_HTML)
     parser.add_argument('--replay', type=Path, default=DEFAULT_REPLAY)
     parser.add_argument('--ids', nargs='+', required=True)
+    parser.add_argument('--objective', choices=('fixed', 'v2'), default='fixed')
     parser.add_argument('--require-eight-b', action='store_true',
                         help='Keep all eight B miss ratios below the frozen S005 baseline')
     parser.add_argument('--max-steps', type=int, default=12)
@@ -41,6 +42,8 @@ def main():
     args.html = args.html.resolve()
     source = json.loads(args.search.read_text(encoding='utf-8'))
     tau = source.get('tauMs', 600)
+    first_aux = source.get('firstAuxiliaryExtraMs', 300)
+    second_aux = source.get('secondAuxiliaryExtraMs', 300)
     seeds = {row['id']: row for row in source['results'] if row['id'] in args.ids}
     if set(seeds) != set(args.ids):
         raise ValueError('Requested IDs missing from saved search')
@@ -81,19 +84,33 @@ def main():
     match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', html)
     assert match
     page = json.loads(gzip.decompress(base64.b64decode(match[1])))
-    reference = page['completionBFixed']['schemes']['S005']['modes']
+    reference_key = 'completionBV2' if args.objective == 'v2' else 'completionBFixed'
+    reference = page[reference_key]['schemes']['S005']['modes']
     paths = (('keytao', 'character'), ('sanpin', 'character'),
              ('keytao', 'word'), ('sanpin', 'word'))
-    denominators = [reference[mode][kind]['completionUpperMs']
-                    + tau * reference[mode][kind]['p2']
-                    for mode, kind in paths]
-    scorer = FastCompletion(bench, args.html, first_word=True, v2=False)
+    denominators = []
+    for mode, kind in paths:
+        row = reference[mode][kind]
+        value = row['completionUpperMs'] + tau * row['p2']
+        if args.objective == 'v2':
+            first_count = 1 - row['stageWeight'][0]
+            value += first_aux * first_count + second_aux * (
+                row['meanKeys'] - (4 if kind == 'word' else 2) - first_count)
+        denominators.append(value)
+    scorer = FastCompletion(bench, args.html, first_word=True,
+                            v2=args.objective == 'v2')
     auxiliary = {bench.opt.META['keys'].index(key) for key in 'IVUAO'}
     physical = [key for key in range(26) if key not in auxiliary]
 
     def score(state):
-        times, misses = scorer.score(state)
-        return float(10 * (sum(weight * ((times[i] + tau * misses[i])
+        if args.objective == 'v2':
+            times, misses, first_counts, second_counts = scorer.score(state)
+        else:
+            times, misses = scorer.score(state)
+            first_counts = second_counts = (0,) * 4
+        return float(10 * (sum(weight * ((times[i] + tau * misses[i]
+                                         + first_aux * first_counts[i]
+                                         + second_aux * second_counts[i])
                                          / denominators[i])**4
                                for i, weight in enumerate((1, 1, 2, 2))) / 6)**.25)
 
@@ -120,9 +137,9 @@ def main():
         seed = seeds[ident]
         state = np.asarray(seed['state'], dtype=np.int32)
         value = score(state)
-        archived = seed.get('fixed12', seed.get('fixedScore'))
+        archived = seed.get('ckt12') if args.objective == 'v2' else seed.get('fixed12', seed.get('fixedScore'))
         if archived is None or abs(value - archived) > 1e-9:
-            raise ValueError(f'Archived fixed score mismatch: {ident}')
+            raise ValueError(f'Archived {args.objective} score mismatch: {ident}')
         if not qualifies_b(state):
             raise ValueError(f'Seed fails eight B gate: {ident}')
         path = []
@@ -210,13 +227,16 @@ def main():
         unique, memory, displaced = bench.se.stats(
             state, bench.opt.PARAMS[-2], bench.opt.PARAMS[-1], 21, 7, 1)
         results.append({'id': ident + '-descent', 'parent': ident,
-                        'state': list(map(int, state)), 'fixedScore': value,
+                        'state': list(map(int, state)),
+                        'ckt12' if args.objective == 'v2' else 'fixedScore': value,
                         'M': int(memory), 'D': int(displaced),
                         'initialScore': archived, 'status': status,
                         'oneStepBarrier': barrier, 'twoStepEscape': two_step_escape,
                         'escapeCounts': escape_counts, 'path': path, 'scans': scans})
         print('END', ident, status, f'{value:.9f}', len(path), flush=True)
-    args.output.write_text(json.dumps({'source': args.search.name, 'tauMs': tau,
+    args.output.write_text(json.dumps({'source': args.search.name, 'objective': args.objective,
+                                        'tauMs': tau, 'firstAuxiliaryExtraMs': first_aux,
+                                        'secondAuxiliaryExtraMs': second_aux,
                                         'requireEightB': args.require_eight_b,
                                         'maxSteps': args.max_steps,
                                         'neighborhoods': ['final-slot swap',

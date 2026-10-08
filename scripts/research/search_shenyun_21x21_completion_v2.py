@@ -264,7 +264,8 @@ if args.pole_strategy == 'attribute':
     excluded = set()
     for path in args.pole_exclude_from:
         excluded.update(json.loads(path.read_text(encoding='utf-8')).get('counterpoleIds', []))
-    counterpoles, pole_provenance = select_attribute_poles(list(rows.values()), excluded)
+    counterpoles, pole_provenance = select_attribute_poles(list(rows.values()), excluded,
+                                                        score_key='ckt12' if args.objective == 'v2' else 'fixed12')
     counterpole_threshold = None
 else:
     counterpole_threshold, counterpoles = select_counterpoles(seeds)
