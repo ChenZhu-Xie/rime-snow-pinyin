@@ -88,6 +88,25 @@ class CounterpoleTests(unittest.TestCase):
                             for b in poles[i + 1:]))
         self.assertEqual([item['id'] for item in labels], [r['id'] for r in poles])
 
+    def test_v2_poles_use_v2_score_without_old_column(self):
+        axes = ('homeS2', 'Pmax', 'eightWorstRatio', 'M', 'v4', 'v5', 'S2ms',
+                'ckt12tau0', 'j1', 'j2', 's1', 's2', 'wj1', 'wj2', 'ws1', 'ws2')
+        rows = []
+        for index in range(15):
+            row = {key: 100.0 for key in axes}
+            row.update(id=str(index), state=[index] * 62, ckt12=9.0 + index / 10,
+                       fixed12=None, M=40, D=0, homeS2=.5)
+            if index == 0:
+                row['homeS2'] = .9
+            if index == 1:
+                row['Pmax'] = .001
+            rows.append(row)
+        poles, labels = select_attribute_poles(rows, score_key='ckt12', limit=3)
+        self.assertTrue(poles)
+        self.assertEqual({item['scoreKey'] for item in labels}, {'ckt12'})
+        self.assertTrue(all(item['score'] == poles[index]['ckt12']
+                            for index, item in enumerate(labels)))
+
     def test_attribute_face_uses_two_poles_and_fast_parent(self):
         poles = [{'id': 'home'}, {'id': 'pinky'}, {'id': 'B'}]
         parents = choose_attribute_parents('face', poles[0], poles,

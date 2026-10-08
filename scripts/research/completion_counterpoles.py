@@ -56,10 +56,10 @@ def state_distance(left: dict, right: dict) -> int:
 
 def select_attribute_poles(rows: list[dict], excluded: set[str] | None = None,
                            top_share: float = .08, min_distance: int = 8,
-                           limit: int = 18) -> tuple[list[dict], list[dict]]:
+                           limit: int = 18, score_key: str = 'fixed12') -> tuple[list[dict], list[dict]]:
     """Choose strong but mutually distant points across secondary attributes."""
     excluded = excluded or set()
-    eligible = [row for row in rows if row.get('fixed12') is not None
+    eligible = [row for row in rows if row.get(score_key) is not None
                 and row.get('atlasId', row['id']) not in excluded]
     if not eligible:
         raise ValueError('No eligible attribute poles')
@@ -67,17 +67,17 @@ def select_attribute_poles(rows: list[dict], excluded: set[str] | None = None,
     selected: list[dict] = []
     provenance: list[dict] = []
     for label, key, direction in ATTRIBUTE_AXES:
-        candidates = sorted(eligible, key=lambda row: (direction * row[key], row['fixed12']))[:width]
+        candidates = sorted(eligible, key=lambda row: (direction * row[key], row[score_key]))[:width]
         distinct = [row for row in candidates if all(state_distance(row, old) >= min_distance
                                                      for old in selected)]
         if not distinct:
             continue
         chosen = max(distinct, key=lambda row: (
             min((state_distance(row, old) for old in selected), default=62)
-            - .3 * candidates.index(row), -row['fixed12']))
+            - .3 * candidates.index(row), -row[score_key]))
         selected.append(chosen)
         provenance.append({'axis': label, 'id': chosen['id'], 'value': chosen[key],
-                           'fixed12': chosen['fixed12'], 'M': chosen['M'], 'D': chosen['D']})
+                           'scoreKey': score_key, 'score': chosen[score_key], 'M': chosen['M'], 'D': chosen['D']})
         if len(selected) >= limit:
             break
     return selected, provenance
