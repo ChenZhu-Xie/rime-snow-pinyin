@@ -1,5 +1,30 @@
 on:
   push:
+    branches:
+      - '**'
+    # 只有已实装的 Rime 方案、候选测试或其生成输入变化时才运行。
+    paths:
+      - 'snow_*'
+      - 'lua/**'
+      - 'opencc/**'
+      - 'spec/**'
+      - 'recipe.yaml'
+      - '.gitmodules'
+      - 'ice'
+      - 'pinyin-data'
+      - 'rime-easy-en'
+      - 'rime-stroke'
+      - 'config/shenyun-fixed-evidence.json'
+      - 'docs/shenyun-r9-mapping.json'
+      - 'scripts/生成神韵固顶词.ts'
+      - 'scripts/生成三拼简词.ts'
+      - 'scripts/验证神韵双拼.ts'
+      - 'scripts/固顶*.ts'
+      - 'scripts/utils.ts'
+      - 'scripts/fixed-corpus/evidence.ts'
+      - 'scripts/fixed-corpus/types.ts'
+      - 'scripts/package.json'
+      - 'scripts/bun.lock'
   workflow_dispatch:
 
 name: 测试
