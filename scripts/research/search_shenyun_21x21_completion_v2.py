@@ -36,7 +36,7 @@ p.add_argument('--tau', type=float, default=600)
 p.add_argument('--first-aux', type=float, default=300)
 p.add_argument('--second-aux', type=float, default=300)
 p.add_argument('--seed', type=int, default=20261007)
-p.add_argument('--d0-max-m', type=int, default=41, choices=range(38, 42))
+p.add_argument('--d0-max-m', type=int, default=41, choices=range(38, 43))
 p.add_argument('--prior', type=Path, nargs='*', default=[])
 p.add_argument('--objective', choices=('v2', 'fixed'), default='v2')
 p.add_argument('--counterpole-share', type=float, default=0,
@@ -54,6 +54,10 @@ p.add_argument('--motif-share', type=float, default=0,
                help='Fraction of proposals receiving motif soft pins')
 p.add_argument('--motif-locks', type=int, nargs=2, default=[5, 7],
                metavar=('MIN', 'MAX'), help='Number of motif assignments retained per guided proposal')
+p.add_argument('--onset-mutation-share', type=float, default=0,
+               help='Fraction of proposals receiving forced onset-coordinate mutations')
+p.add_argument('--onset-mutation-count', type=int, nargs=2, default=[1, 3],
+               metavar=('MIN', 'MAX'), help='Number of onset coordinates changed per forced mutation')
 p.add_argument('--selection-focus', choices=('none', 'eight', 'load-buffer'), default='none',
                help='Prefer gate-feasible rows when retaining parents; reporting still uses raw CKT')
 p.add_argument('--buffer-pmax', type=float, default=.065,
@@ -81,8 +85,12 @@ if not 0 <= args.anchor_low_md_share <= 1:
     p.error('--anchor-low-md-share must be between 0 and 1')
 if not 0 <= args.motif_share <= 1:
     p.error('--motif-share must be between 0 and 1')
+if not 0 <= args.onset_mutation_share <= 1:
+    p.error('--onset-mutation-share must be between 0 and 1')
 if not 0 <= args.motif_locks[0] <= args.motif_locks[1]:
     p.error('--motif-locks must be nonnegative and ordered')
+if not 1 <= args.onset_mutation_count[0] <= args.onset_mutation_count[1] <= 27:
+    p.error('--onset-mutation-count must be between 1 and 27 and ordered')
 if not 0 <= args.buffer_pmax <= 1 or not 0 <= args.buffer_home <= 1:
     p.error('--buffer-pmax and --buffer-home must be between 0 and 1')
 if args.checkpoint_every < 0:
@@ -124,6 +132,7 @@ from completion_counterpoles import (choose_anchored_parents, choose_attribute_p
 from analyze_completion_v2_patterns import analyze_population
 from completion_motifs import apply_soft_motif
 from completion_coordinate_faces import coordinate_face_spec, iter_coordinate_face
+from completion_onset_strata import mutate_onsets, select_onset_representatives
 
 rng = random.Random(args.seed)
 np.random.seed(args.seed)
@@ -421,6 +430,11 @@ def diverse_elites(pool, cap_m, cap_d, limit=60):
     for objective in objectives:
         for row in sorted(pool, key=objective)[:12]:
             selected[tuple(row['state'])] = row
+    if args.onset_mutation_share:
+        for row in select_onset_representatives(
+                pool, limit=min(30, limit),
+                metric_keys=('eightWorstRatio', 'wj1', 'wj2', 'ws1', 'ws2')):
+            selected[tuple(row['state'])] = row
     for subset in ([r for r in pool if r['eightWorstRatio'] < 1],
                    [r for r in pool if r['eightWorstRatio'] < 1 and r['Pmax'] <= p_cap and r['homeS2'] >= .5]):
         for row in sorted(subset, key=objective_score)[:12]:
@@ -526,6 +540,10 @@ for (phase, cap_m, cap_d), trials in zip(stages, args.trials):
             anchor = rng.choice(elite[:min(25, len(elite))])
             parents = [anchor, *rng.sample(bridges, min(3, len(bridges)))]
         st = proposal([np.array(row['state'], np.int32) for row in parents], kind)
+        if args.onset_mutation_share and rng.random() < args.onset_mutation_share:
+            positions = mutate_onsets(st, physical, *args.onset_mutation_count, rng)
+            counts[phase]['onsetMutationProposals'] += 1
+            counts[phase]['onsetMutations'] += len(positions)
         if args.motif_profile != 'none' and rng.random() < args.motif_share:
             applied, labels = apply_soft_motif(
                 st, b.opt.META['finals'], b.opt.META['keys'], allowed,
@@ -591,6 +609,8 @@ output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'anchorLowMdShare': args.anchor_low_md_share,
           'motifProfile': args.motif_profile, 'motifShare': args.motif_share,
           'motifLocks': args.motif_locks,
+          'onsetMutationShare': args.onset_mutation_share,
+          'onsetMutationCount': args.onset_mutation_count,
           'selectionFocus': args.selection_focus, 'bufferPmax': args.buffer_pmax,
           'bufferHome': args.buffer_home,
           'coordinateFace': face_metadata,
