@@ -18,6 +18,7 @@ import random
 import re
 import sys
 from collections import Counter, defaultdict
+from itertools import islice
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -61,6 +62,18 @@ p.add_argument('--buffer-home', type=float, default=.48,
                help='Home-row floor used by load-buffer parent selection')
 p.add_argument('--checkpoint-every', type=int, default=5000,
                help='Write a reusable elite snapshot every N proposals; zero disables checkpoints')
+p.add_argument('--coordinate-face-ids', nargs='*', default=[],
+               help='Exhaustively combine coordinate values observed in these endpoint IDs')
+p.add_argument('--coordinate-face-max', type=int, default=100000,
+               help='Reject coordinate faces larger than this many combinations')
+p.add_argument('--coordinate-face-cap', type=int, nargs=2, metavar=('M', 'D'),
+               help='Before full scoring, discard face states above these M/D caps')
+p.add_argument('--coordinate-face-progress', type=int, default=100000,
+               help='Print face enumeration progress every N combinations; zero disables it')
+p.add_argument('--coordinate-face-eight-max', type=float,
+               help='Before full CKT scoring, discard face states above this worst 8B ratio')
+p.add_argument('--coordinate-face-range', type=int, nargs=2, metavar=('START', 'STOP'),
+               help='Enumerate only the zero-based half-open slice [START, STOP)')
 args = p.parse_args()
 if not 0 <= args.counterpole_share <= 1:
     p.error('--counterpole-share must be between 0 and 1')
@@ -74,6 +87,19 @@ if not 0 <= args.buffer_pmax <= 1 or not 0 <= args.buffer_home <= 1:
     p.error('--buffer-pmax and --buffer-home must be between 0 and 1')
 if args.checkpoint_every < 0:
     p.error('--checkpoint-every must be nonnegative')
+if args.coordinate_face_ids and len(args.coordinate_face_ids) < 2:
+    p.error('--coordinate-face-ids requires at least two IDs')
+if args.coordinate_face_max < 1:
+    p.error('--coordinate-face-max must be positive')
+if args.coordinate_face_cap and min(args.coordinate_face_cap) < 0:
+    p.error('--coordinate-face-cap must be nonnegative')
+if args.coordinate_face_progress < 0:
+    p.error('--coordinate-face-progress must be nonnegative')
+if args.coordinate_face_eight_max is not None and args.coordinate_face_eight_max <= 0:
+    p.error('--coordinate-face-eight-max must be positive')
+if (args.coordinate_face_range
+        and not 0 <= args.coordinate_face_range[0] < args.coordinate_face_range[1]):
+    p.error('--coordinate-face-range must be nonnegative and ordered')
 args.output = args.output.resolve()
 args.cohort = args.cohort.resolve() if args.cohort else None
 args.prior = [path.resolve() for path in args.prior]
@@ -97,6 +123,7 @@ from completion_counterpoles import (choose_anchored_parents, choose_attribute_p
                                      select_counterpoles)
 from analyze_completion_v2_patterns import analyze_population
 from completion_motifs import apply_soft_motif
+from completion_coordinate_faces import coordinate_face_spec, iter_coordinate_face
 
 rng = random.Random(args.seed)
 np.random.seed(args.seed)
@@ -162,12 +189,14 @@ def bmetrics(st):
     return bfast.score(entry['codeList'])
 
 
-def score_state(st, origin, phase):
+def score_state(st, origin, phase, pre_score_cap=None, track_visited=True,
+                pre_score_eight_max=None):
     sig = tuple(map(int, st))
-    if sig in visited:
+    if sig in visited or (not track_visited and sig in rows):
         counts[phase]['duplicate'] += 1
         return None
-    visited.add(sig)
+    if track_visited:
+        visited.add(sig)
     if not np.array_equal(st[62:], aux) or set(map(int, st[27:62])) != allowed:
         counts[phase]['invalidDomain'] += 1
         return None
@@ -176,6 +205,18 @@ def score_state(st, origin, phase):
         counts[phase]['invalidStructure'] += 1
         return None
     counts[phase]['legal'] += 1
+    if pre_score_cap and (memory > pre_score_cap[0] or displaced > pre_score_cap[1]):
+        counts[phase]['outsidePreScoreCap'] += 1
+        return None
+    bm = None
+    worst = None
+    if pre_score_eight_max is not None:
+        bm = bmetrics(st)
+        worst = max(bm[key] / b_baseline[key] for key in NAMES)
+        counts[phase]['preScoredEight'] += 1
+        if worst > pre_score_eight_max:
+            counts[phase]['outsidePreScoreEight'] += 1
+            return None
     times, misses, first_counts, second_counts = ckt.score(st)
     score2 = ensemble(times, misses, first_counts, second_counts, args.tau, args.first_aux, args.second_aux, 2)
     score1 = ensemble(times, misses, first_counts, second_counts, args.tau, args.first_aux, args.second_aux, 1)
@@ -188,8 +229,9 @@ def score_state(st, origin, phase):
             raise ValueError('Old/new completion miss rates diverged')
         fixed_score = float(10 * (sum(weight * ((old_times[i] + args.tau * old_misses[i]) / old_denominators[i])**4
                                       for i, weight in enumerate((1, 1, 2, 2))) / 6)**.25)
-    bm = bmetrics(st)
-    worst = max(bm[key] / b_baseline[key] for key in NAMES)
+    if bm is None:
+        bm = bmetrics(st)
+        worst = max(bm[key] / b_baseline[key] for key in NAMES)
     p_load = float(b.r5.rp(st)[1])
     home = float(b.r5.home(st)[0])
     factors = b.opt.metrics(b.opt.initialize(st, b.opt.PARAMS)[1], b.opt.PARAMS)
@@ -310,6 +352,35 @@ for path in args.prior:
         # Historical records used second-character-first Keytao words; only
         # compare archived scores from runs declaring the corrected contract.
         # Prior rows were scored under a different model and penalty policy.
+
+face_metadata = None
+if args.coordinate_face_ids:
+    endpoints = resolve_endpoint_rows(list(rows.values()), args.coordinate_face_ids)
+    base, varying, face_combinations = coordinate_face_spec(
+        [np.asarray(row['state'], np.int32) for row in endpoints], args.coordinate_face_max)
+    face_start, face_stop = args.coordinate_face_range or (0, face_combinations)
+    if face_stop > face_combinations:
+        p.error('--coordinate-face-range STOP exceeds the face size')
+    before = len(rows)
+    face_iterator = islice(iter_coordinate_face(base, varying), face_start, face_stop)
+    for index, state in enumerate(face_iterator, face_start + 1):
+        score_state(state, 'coordinate-face:' + ','.join(args.coordinate_face_ids), 'face',
+                    args.coordinate_face_cap, track_visited=False,
+                    pre_score_eight_max=args.coordinate_face_eight_max)
+        if (args.coordinate_face_progress and index % args.coordinate_face_progress == 0):
+            print('COORDINATE_FACE_PROGRESS', index, '/', face_stop,
+                  dict(counts['face']), flush=True)
+    face_metadata = {
+        'endpointIds': args.coordinate_face_ids,
+        'varying': [{'position': position, 'values': list(values)}
+                    for position, values in varying],
+        'combinations': face_combinations, 'newScored': len(rows) - before,
+        'range': [face_start, face_stop],
+        'preScoreCap': args.coordinate_face_cap,
+        'preScoreEightMax': args.coordinate_face_eight_max,
+        'counts': dict(counts['face']),
+    }
+    print('COORDINATE_FACE', face_metadata, flush=True)
 
 if args.pole_strategy == 'attribute':
     excluded = set()
@@ -522,6 +593,7 @@ output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'motifLocks': args.motif_locks,
           'selectionFocus': args.selection_focus, 'bufferPmax': args.buffer_pmax,
           'bufferHome': args.buffer_home,
+          'coordinateFace': face_metadata,
           'firstAuxiliaryExtraMs': args.first_aux, 'secondAuxiliaryExtraMs': args.second_aux,
           'wordWeight': 2, 'characterWeight': 1, 'baselineId': 'S005',
           'wordBOrder': '21x21 Keytao first character, then second; Sanpin second, then first',

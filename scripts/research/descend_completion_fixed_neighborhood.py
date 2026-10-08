@@ -28,12 +28,16 @@ def main():
     parser.add_argument('--html', type=Path, default=DEFAULT_HTML)
     parser.add_argument('--replay', type=Path, default=DEFAULT_REPLAY)
     parser.add_argument('--ids', nargs='+', required=True)
-    parser.add_argument('--objective', choices=('fixed', 'v2'), default='fixed')
+    parser.add_argument('--objective', choices=('fixed', 'v2', 'eight', 'eight-excess'),
+                        default='fixed', help='Optimize fixed/v2 CKT, the worst B ratio, or a '
+                        'soft boundary combining the worst ratio with all above-baseline excesses')
     parser.add_argument('--require-eight-b', action='store_true',
                         help='Keep all eight B miss ratios below the frozen S005 baseline')
     parser.add_argument('--require-load-home', action='store_true',
                         help='Keep Pmax at or below frozen R9 and home-row share at or above 50%%')
     parser.add_argument('--max-steps', type=int, default=12)
+    parser.add_argument('--target-cap', type=int, nargs=2, metavar=('M', 'D'),
+                        help='Project into this M/D cap on the first step, then remain inside it')
     parser.add_argument('--escape-width', type=int, default=0,
                         help='At a local minimum, scan all second moves from this many cheapest first moves')
     parser.add_argument('--escape-rounds', type=int, default=0,
@@ -46,6 +50,8 @@ def main():
     args = parser.parse_args()
     if min(args.max_steps, args.escape_width, args.escape_rounds, args.third_width) < 0:
         parser.error('step and width arguments must be nonnegative')
+    if args.target_cap and min(args.target_cap) < 0:
+        parser.error('--target-cap values must be nonnegative')
     args.output = args.output.resolve()
     args.html = args.html.resolve()
     source = json.loads(args.search.read_text(encoding='utf-8'))
@@ -70,7 +76,7 @@ def main():
     import numpy as np
     from fast_completion_word2 import FastCompletion
     from completion_motifs import motif_final_positions
-    if args.require_eight_b:
+    if args.require_eight_b or args.objective.startswith('eight'):
         from b_path_fast import FastBuckets, NAMES
         frozen = json.loads((DATA / 'shenyun-completion-ckt-fixed-r11.json').read_text(encoding='utf-8'))['schemes']
         base_b = {key: frozen['S005']['modes'][mode][kind][stage]
@@ -81,10 +87,18 @@ def main():
                       ('ws1', 'sanpin', 'word', 'p1'), ('ws2', 'sanpin', 'word', 'p2'))}
         buckets = FastBuckets(bench, first_word=True)
 
-        def qualifies_b(candidate):
+        def eight_ratios(candidate):
             codes = bench.opt.toentry(candidate, bench.DATA, 'proposal')['codeList']
             metrics = buckets.score(codes)
-            return max(metrics[key] / base_b[key] for key in NAMES) < 1
+            return [metrics[key] / base_b[key] for key in NAMES]
+
+        def eight_ratio(candidate):
+            return max(eight_ratios(candidate))
+
+    if args.require_eight_b:
+
+        def qualifies_b(candidate):
+            return eight_ratio(candidate) < 1
     else:
         def qualifies_b(candidate):
             return True
@@ -107,26 +121,32 @@ def main():
     match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', html)
     assert match
     page = json.loads(gzip.decompress(base64.b64decode(match[1])))
-    reference_key = 'completionBV2' if args.objective == 'v2' else 'completionBFixed'
-    reference = page[reference_key]['schemes']['S005']['modes']
-    paths = (('keytao', 'character'), ('sanpin', 'character'),
-             ('keytao', 'word'), ('sanpin', 'word'))
-    denominators = []
-    for mode, kind in paths:
-        row = reference[mode][kind]
-        value = row['completionUpperMs'] + tau * row['p2']
-        if args.objective == 'v2':
-            first_count = 1 - row['stageWeight'][0]
-            value += first_aux * first_count + second_aux * (
-                row['meanKeys'] - (4 if kind == 'word' else 2) - first_count)
-        denominators.append(value)
-    scorer = FastCompletion(bench, args.html, first_word=True,
-                            v2=args.objective == 'v2')
+    if not args.objective.startswith('eight'):
+        reference_key = 'completionBV2' if args.objective == 'v2' else 'completionBFixed'
+        reference = page[reference_key]['schemes']['S005']['modes']
+        paths = (('keytao', 'character'), ('sanpin', 'character'),
+                 ('keytao', 'word'), ('sanpin', 'word'))
+        denominators = []
+        for mode, kind in paths:
+            row = reference[mode][kind]
+            value = row['completionUpperMs'] + tau * row['p2']
+            if args.objective == 'v2':
+                first_count = 1 - row['stageWeight'][0]
+                value += first_aux * first_count + second_aux * (
+                    row['meanKeys'] - (4 if kind == 'word' else 2) - first_count)
+            denominators.append(value)
+        scorer = FastCompletion(bench, args.html, first_word=True,
+                                v2=args.objective == 'v2')
     auxiliary = {bench.opt.META['keys'].index(key) for key in 'IVUAO'}
     physical = [key for key in range(26) if key not in auxiliary]
     cycle_positions = motif_final_positions(bench.opt.META['finals'])
 
     def score(state):
+        if args.objective.startswith('eight'):
+            ratios = eight_ratios(state)
+            if args.objective == 'eight-excess':
+                return max(ratios) + .25 * sum(max(0, ratio - 1) for ratio in ratios)
+            return max(ratios)
         if args.objective == 'v2':
             times, misses, first_counts, second_counts = scorer.score(state)
         else:
@@ -172,7 +192,15 @@ def main():
         seed = seeds[ident]
         state = np.asarray(seed['state'], dtype=np.int32)
         value = score(state)
-        archived = seed.get('ckt12') if args.objective == 'v2' else seed.get('fixed12', seed.get('fixedScore'))
+        cap_m, cap_d = args.target_cap or (seed['M'], seed['D'])
+        if args.objective == 'v2':
+            archived = seed.get('ckt12')
+        elif args.objective == 'fixed':
+            archived = seed.get('fixed12', seed.get('fixedScore'))
+        elif args.objective == 'eight':
+            archived = seed.get('eightWorstRatio')
+        else:
+            archived = value
         if archived is None or abs(value - archived) > 1e-9:
             raise ValueError(f'Archived {args.objective} score mismatch: {ident}')
         if not qualifies(state):
@@ -186,6 +214,9 @@ def main():
         three_step_escape = None
         escape_counts = None
         while True:
+            _, current_memory, current_displaced = bench.se.stats(
+                state, bench.opt.PARAMS[-2], bench.opt.PARAMS[-1], 21, 7, 1)
+            needs_projection = current_memory > cap_m or current_displaced > cap_d
             best = None
             counts = {'generated': 0, 'legal': 0, 'underCap': 0,
                       'underB': 0, 'underGates': 0, 'improving': 0}
@@ -203,7 +234,7 @@ def main():
                 if unique < 0 or memory > 48 or displaced > 7:
                     continue
                 counts['legal'] += 1
-                if memory > seed['M'] or displaced > seed['D']:
+                if memory > cap_m or displaced > cap_d:
                     continue
                 counts['underCap'] += 1
                 if not qualifies_b(candidate):
@@ -216,7 +247,7 @@ def main():
                 nearest_score = min(nearest_score, candidate_score)
                 if args.escape_width:
                     first_neighbors.append((candidate_score, candidate.copy(), mutation))
-                if candidate_score + 1e-9 < value:
+                if needs_projection or candidate_score + 1e-9 < value:
                     counts['improving'] += 1
                     if best is None or candidate_score < best['score']:
                         best = {'score': candidate_score, 'M': int(memory),
@@ -244,7 +275,7 @@ def main():
                             escape_counts['generated'] += 1
                             unique2, memory2, displaced2 = bench.se.stats(
                                 second_state, bench.opt.PARAMS[-2], bench.opt.PARAMS[-1], 21, 7, 1)
-                            if unique2 < 0 or memory2 > seed['M'] or displaced2 > seed['D']:
+                            if unique2 < 0 or memory2 > cap_m or displaced2 > cap_d:
                                 continue
                             escape_counts['underCap'] += 1
                             if not qualifies_b(second_state):
@@ -279,7 +310,7 @@ def main():
                                 escape_counts['thirdGenerated'] += 1
                                 unique3, memory3, displaced3 = bench.se.stats(
                                     third_state, bench.opt.PARAMS[-2], bench.opt.PARAMS[-1], 21, 7, 1)
-                                if unique3 < 0 or memory3 > seed['M'] or displaced3 > seed['D']:
+                                if unique3 < 0 or memory3 > cap_m or displaced3 > cap_d:
                                     continue
                                 if not qualifies(third_state):
                                     continue
@@ -321,9 +352,15 @@ def main():
                   best['mutation'], flush=True)
         unique, memory, displaced = bench.se.stats(
             state, bench.opt.PARAMS[-2], bench.opt.PARAMS[-1], 21, 7, 1)
+        score_key = {'v2': 'ckt12', 'fixed': 'fixedScore',
+                     'eight': 'eightWorstRatio',
+                     'eight-excess': 'objectiveScore'}[args.objective]
+        final_eight = eight_ratio(state) if args.objective.startswith('eight') else None
         results.append({'id': ident + '-descent', 'parent': ident,
                         'state': list(map(int, state)),
-                        'ckt12' if args.objective == 'v2' else 'fixedScore': value,
+                        score_key: value,
+                        **({'eightWorstRatio': final_eight}
+                           if args.objective == 'eight-excess' else {}),
                         'M': int(memory), 'D': int(displaced),
                         'initialScore': archived, 'status': status,
                         'oneStepBarrier': barrier, 'twoStepEscape': two_step_escape,
@@ -337,6 +374,7 @@ def main():
                                         'requireEightB': args.require_eight_b,
                                         'requireLoadHome': args.require_load_home,
                                         'maxSteps': args.max_steps,
+                                        'targetCap': args.target_cap,
                                         'escapeWidth': args.escape_width,
                                         'escapeRounds': args.escape_rounds,
                                         'includeMotifCycles': args.include_motif_cycles,
