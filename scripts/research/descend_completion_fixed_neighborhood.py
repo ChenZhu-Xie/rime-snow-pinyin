@@ -31,13 +31,17 @@ def main():
     parser.add_argument('--objective', choices=('fixed', 'v2'), default='fixed')
     parser.add_argument('--require-eight-b', action='store_true',
                         help='Keep all eight B miss ratios below the frozen S005 baseline')
+    parser.add_argument('--require-load-home', action='store_true',
+                        help='Keep Pmax at or below frozen R9 and home-row share at or above 50%%')
     parser.add_argument('--max-steps', type=int, default=12)
     parser.add_argument('--escape-width', type=int, default=0,
                         help='At a local minimum, scan all second moves from this many cheapest first moves')
+    parser.add_argument('--escape-rounds', type=int, default=0,
+                        help='Follow this many improving two-step escapes, descending again after each')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    if args.max_steps < 0 or args.escape_width < 0:
-        parser.error('--max-steps and --escape-width must be nonnegative')
+    if args.max_steps < 0 or args.escape_width < 0 or args.escape_rounds < 0:
+        parser.error('--max-steps, --escape-width, and --escape-rounds must be nonnegative')
     args.output = args.output.resolve()
     args.html = args.html.resolve()
     source = json.loads(args.search.read_text(encoding='utf-8'))
@@ -79,6 +83,20 @@ def main():
     else:
         def qualifies_b(candidate):
             return True
+
+    if args.require_load_home:
+        frozen = json.loads((DATA / 'shenyun-completion-ckt-fixed-r11.json').read_text(encoding='utf-8'))['schemes']
+        p_cap = frozen['R9-21X21-M40-02']['rightPinkyMax']
+
+        def qualifies_load_home(candidate):
+            return (float(bench.r5.rp(candidate)[1]) <= p_cap + 1e-12
+                    and float(bench.r5.home(candidate)[0]) >= .5)
+    else:
+        def qualifies_load_home(candidate):
+            return True
+
+    def qualifies(candidate):
+        return qualifies_b(candidate) and qualifies_load_home(candidate)
 
     html = args.html.read_text(encoding='utf-8')
     match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', html)
@@ -140,18 +158,19 @@ def main():
         archived = seed.get('ckt12') if args.objective == 'v2' else seed.get('fixed12', seed.get('fixedScore'))
         if archived is None or abs(value - archived) > 1e-9:
             raise ValueError(f'Archived {args.objective} score mismatch: {ident}')
-        if not qualifies_b(state):
-            raise ValueError(f'Seed fails eight B gate: {ident}')
+        if not qualifies(state):
+            raise ValueError(f'Seed fails requested diagnostic gates: {ident}')
         path = []
+        escapes = []
         status = 'step_limit'
         scans = []
         barrier = None
         two_step_escape = None
         escape_counts = None
-        for step in range(args.max_steps + 1):
+        while True:
             best = None
             counts = {'generated': 0, 'legal': 0, 'underCap': 0,
-                      'underB': 0, 'improving': 0}
+                      'underB': 0, 'underGates': 0, 'improving': 0}
             nearest_score = float('inf')
             first_neighbors = []
             seen = set()
@@ -172,6 +191,9 @@ def main():
                 if not qualifies_b(candidate):
                     continue
                 counts['underB'] += 1
+                if not qualifies_load_home(candidate):
+                    continue
+                counts['underGates'] += 1
                 candidate_score = score(candidate)
                 nearest_score = min(nearest_score, candidate_score)
                 if args.escape_width:
@@ -188,7 +210,8 @@ def main():
                 barrier = nearest_score - value if nearest_score < float('inf') else None
                 if args.escape_width:
                     escape_counts = {'first': min(args.escape_width, len(first_neighbors)),
-                                     'generated': 0, 'underCap': 0, 'underB': 0}
+                                     'generated': 0, 'underCap': 0,
+                                     'underB': 0, 'underGates': 0}
                     seen2 = set()
                     for first_score, first_state, first_move in sorted(
                             first_neighbors, key=lambda item: item[0])[:args.escape_width]:
@@ -206,6 +229,9 @@ def main():
                             if not qualifies_b(second_state):
                                 continue
                             escape_counts['underB'] += 1
+                            if not qualifies_load_home(second_state):
+                                continue
+                            escape_counts['underGates'] += 1
                             second_score = score(second_state)
                             if second_score + 1e-9 < value and (
                                     two_step_escape is None or second_score < two_step_escape['score']):
@@ -216,13 +242,26 @@ def main():
                                                    'firstScore': first_score,
                                                    'barrier': first_score - value,
                                                    'state': list(signature)}
+                if two_step_escape is not None and len(escapes) < args.escape_rounds:
+                    escapes.append(two_step_escape)
+                    state = np.asarray(two_step_escape['state'], dtype=np.int32)
+                    value = two_step_escape['score']
+                    print(ident, 'ESCAPE', len(escapes), f'{value:.9f}',
+                          two_step_escape['M'], two_step_escape['D'],
+                          two_step_escape['firstMove'], two_step_escape['secondMove'],
+                          flush=True)
+                    status = 'step_limit'
+                    barrier = None
+                    two_step_escape = None
+                    escape_counts = None
+                    continue
                 break
-            if step >= args.max_steps:
+            if len(path) >= args.max_steps:
                 break
             state = np.asarray(best['state'], dtype=np.int32)
             value = best['score']
             path.append({key: best[key] for key in ('score', 'M', 'D', 'mutation')})
-            print(ident, step + 1, f'{value:.9f}', best['M'], best['D'],
+            print(ident, len(path), f'{value:.9f}', best['M'], best['D'],
                   best['mutation'], flush=True)
         unique, memory, displaced = bench.se.stats(
             state, bench.opt.PARAMS[-2], bench.opt.PARAMS[-1], 21, 7, 1)
@@ -232,13 +271,17 @@ def main():
                         'M': int(memory), 'D': int(displaced),
                         'initialScore': archived, 'status': status,
                         'oneStepBarrier': barrier, 'twoStepEscape': two_step_escape,
-                        'escapeCounts': escape_counts, 'path': path, 'scans': scans})
+                        'escapeCounts': escape_counts, 'escapes': escapes,
+                        'path': path, 'scans': scans})
         print('END', ident, status, f'{value:.9f}', len(path), flush=True)
     args.output.write_text(json.dumps({'source': args.search.name, 'objective': args.objective,
                                         'tauMs': tau, 'firstAuxiliaryExtraMs': first_aux,
                                         'secondAuxiliaryExtraMs': second_aux,
                                         'requireEightB': args.require_eight_b,
+                                        'requireLoadHome': args.require_load_home,
                                         'maxSteps': args.max_steps,
+                                        'escapeWidth': args.escape_width,
+                                        'escapeRounds': args.escape_rounds,
                                         'neighborhoods': ['final-slot swap',
                                                           'physical final-key swap',
                                                           'one-onset remap'],
