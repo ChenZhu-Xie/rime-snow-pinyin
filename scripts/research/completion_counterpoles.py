@@ -54,6 +54,26 @@ def state_distance(left: dict, right: dict) -> int:
     return sum(a != b for a, b in zip(left['state'][:62], right['state'][:62]))
 
 
+def resolve_endpoint_rows(rows: list[dict], requested: list[str]) -> list[dict]:
+    """Resolve explicit endpoint IDs while preserving request order."""
+    lookup = {}
+    for row in rows:
+        lookup[row['id']] = row
+        if row.get('atlasId'):
+            lookup[row['atlasId']] = row
+    missing = [ident for ident in requested if ident not in lookup]
+    if missing:
+        raise ValueError('Missing endpoint IDs: ' + ', '.join(missing))
+    selected = []
+    seen = set()
+    for ident in requested:
+        row = lookup[ident]
+        if row['id'] not in seen:
+            selected.append(row)
+            seen.add(row['id'])
+    return selected
+
+
 def select_attribute_poles(rows: list[dict], excluded: set[str] | None = None,
                            top_share: float = .08, min_distance: int = 8,
                            limit: int = 18, score_key: str = 'fixed12') -> tuple[list[dict], list[dict]]:
@@ -122,3 +142,29 @@ def choose_attribute_parents(kind: str, pole: dict, poles: list[dict],
     if kind == 'mutate':
         return [pole, second, speed] if rng.random() < .5 else [speed, pole, second]
     raise ValueError(f'Unknown proposal kind: {kind}')
+
+
+def choose_anchored_parents(kind: str, endpoint: dict, endpoints: list[dict],
+                            low_md: list[dict], bridges: list[dict],
+                            rng: random.Random, low_md_share: float = .7) -> list[dict]:
+    """Cross an explicit high-dimensional endpoint with low-M/D basins."""
+    others = [row for row in endpoints if row['id'] != endpoint['id']]
+    compact = [row for row in low_md if row['id'] != endpoint['id']]
+    if not others or not compact:
+        raise ValueError('Distinct endpoint and low-M/D parents are required')
+    if kind == 'line':
+        second = rng.choice(compact if rng.random() < low_md_share else others)
+        return [endpoint, second]
+    if kind == 'face':
+        second = rng.choice(others)
+        compact_pool = [row for row in compact if row['id'] != second['id']]
+        if not compact_pool:
+            raise ValueError('A low-M/D parent distinct from both endpoints is required')
+        low = rng.choice(compact_pool)
+        parents = [endpoint, second, low]
+        bridge_pool = [row for row in bridges if row['id'] not in
+                       {parent['id'] for parent in parents}]
+        if bridge_pool:
+            parents.append(rng.choice(bridge_pool))
+        return parents
+    raise ValueError(f'Unknown anchored proposal kind: {kind}')

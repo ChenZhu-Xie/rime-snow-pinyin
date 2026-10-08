@@ -35,6 +35,20 @@ M39 链从 9.608208 开始又经过 11 个下降步和 2 次二步越谷，降�
 
 其中 D3 点的 Pmax 为 3.1622%，主行占比 52.7525%，同时满足联合门槛。D2、D1 点只要求八项 B，分别用更高小指负载换取更紧的 M/D，不应视为联合门槛候选。
 
+## 定向高维端点搜索
+
+第三轮不再把新方案只作为普通 seed，而将前两轮加入图谱的十三个代表与排除旧极点后重新选择的十六个属性极点组成端点池。90% 的提案显式经过极点策略；其中线段和面片强制包含高维端点，线段有 75% 直接连接当前阶段的低 M/D 父代。预算向紧边界倾斜为 10,000／30,000／35,000／35,000／40,000，共 **150,000** 个提案；其中 135,040 个经过极点策略，91,927 个是显式定向线段或面片，109,525 个新状态得到合法评分。三轮累计提出 **350,000** 个状态。
+
+宽边界和 D3 纯速度前沿没有变化，但定向端点在更紧边界找到了三个新盆地：
+
+| 约束 | 上一轮 | 本轮下降后 | 新方案 | 改善 |
+| --- | ---: | ---: | --- | ---: |
+| M38/D0 | 9.833685 | **9.797237** | `BCW-6cb12649c8bb` | 0.036448 |
+| M≤43/D≤2、八项 B | 9.543560 | **9.540116** | `BCW-d3abc4976719` | 0.003444 |
+| M≤42/D≤1、八项 B | 9.569188 | **9.557776** | `BCW-0c02d8019468` | 0.011412 |
+
+M38/D0 随机种子为 9.812093，经 3 个下降步和 1 次双步越谷降到 9.797237；最终最小单步障碍为 0.000272，最便宜 20 个首步生成的 25,656 个二步状态中，14,736 个保持 M38/D0，没有更优出口。D2 八项 B 点通过 1 次双步越谷收敛，最终 5,136 个二步状态通过八项 B 门槛；D1 点经 2 个下降步和 1 次越谷收敛，最终有 4,868 个合门槛二步状态。三条链都只证明指定邻域内的局部极小值。
+
 ## 八项 B、主行和小指的联合前沿
 
 主搜索还产生了同时满足以下条件的新区域：
@@ -49,13 +63,15 @@ M39 链从 9.608208 开始又经过 11 个下降步和 2 次二步越谷，降�
 
 ## 精确复核与产物
 
-两轮共十三个非支配代表均由页面实际使用的 JS 评分器重新计算 native、fixed 和 v2 三套映射；fast/exact v2、编码和八项 B 逐项一致。HTML 目录由 629 增至 **642**，静态档案同步更新。
+三轮共十六个非支配代表均由页面实际使用的 JS 评分器重新计算 native、fixed 和 v2 三套映射；fast/exact v2、编码和八项 B 逐项一致。HTML 目录由 629 增至 **645**，静态档案同步更新。
 
 - 完整指标与最终代表：[`attribute-reviewed.json`](data/shenyun-21x21-completion-v2-attribute-reviewed.json)、[`attribute-gated-reviewed.json`](data/shenyun-21x21-completion-v2-attribute-gated-reviewed.json)。
 - 第二轮复搜与规范复核：[`attribute-face-b.json`](data/shenyun-21x21-completion-v2-attribute-face-b.json)、[`attribute-face-b-reviewed.json`](data/shenyun-21x21-completion-v2-attribute-face-b-reviewed.json)。
 - 各边界下降：[`attribute-descent-seeds.json`](data/shenyun-21x21-completion-v2-attribute-descent-seeds.json)。
 - 自动越谷链：[`attribute-chain-m39.json`](data/shenyun-21x21-completion-v2-attribute-chain-m39.json)、[`attribute-chain-m38.json`](data/shenyun-21x21-completion-v2-attribute-chain-m38.json)、[`attribute-eight-load-chain-2.json`](data/shenyun-21x21-completion-v2-attribute-eight-load-chain-2.json)。
 - 第二轮局部链：[`attribute-face-b-global-chain.json`](data/shenyun-21x21-completion-v2-attribute-face-b-global-chain.json)、[`attribute-face-b-d3-gated-chain.json`](data/shenyun-21x21-completion-v2-attribute-face-b-d3-gated-chain.json)、[`attribute-face-b-tight-eight-chain.json`](data/shenyun-21x21-completion-v2-attribute-face-b-tight-eight-chain.json)。
+- 定向端点搜索与复核：[`attribute-anchored-face-c.json`](data/shenyun-21x21-completion-v2-attribute-anchored-face-c.json)、[`attribute-anchored-reviewed.json`](data/shenyun-21x21-completion-v2-attribute-anchored-reviewed.json)。
+- 定向端点局部链：[`attribute-anchored-m38-chain.json`](data/shenyun-21x21-completion-v2-attribute-anchored-m38-chain.json)、[`attribute-anchored-tight-eight-chain.json`](data/shenyun-21x21-completion-v2-attribute-anchored-tight-eight-chain.json)。
 - 可复算工具：[`search_shenyun_21x21_completion_v2.py`](../scripts/research/search_shenyun_21x21_completion_v2.py)、[`descend_completion_fixed_neighborhood.py`](../scripts/research/descend_completion_fixed_neighborhood.py)、[`integrate_shenyun_completion_v2_frontier.py`](../scripts/research/integrate_shenyun_completion_v2_frontier.py)。
 
 模型分数仍不是人体实测连续输入速度。选重、候选阅读、上屏动作和训练域外键序列沿用既有冻结假设；本轮只扩展了离散编码空间的可复算证据。

@@ -4,6 +4,7 @@ from __future__ import annotations
 import random
 import unittest
 
+import completion_counterpoles as counterpoles
 from completion_counterpoles import (choose_attribute_parents, choose_cross_parents,
                                      fixed_composite, select_attribute_poles,
                                      select_counterpoles, state_distance)
@@ -117,6 +118,43 @@ class CounterpoleTests(unittest.TestCase):
         self.assertIn(parents[1]['id'], {'pinky', 'B'})
         self.assertEqual(parents[2]['id'], 'fast')
         self.assertEqual(parents[3]['id'], 'bridge')
+
+    def test_anchored_line_connects_high_dimensional_and_low_md_endpoints(self):
+        choose = getattr(counterpoles, 'choose_anchored_parents', None)
+        self.assertIsNotNone(choose, 'anchored endpoint selection is not implemented')
+        endpoint = {'id': 'new-global', 'M': 48, 'D': 7}
+        low_md = [{'id': 'm39d0', 'M': 39, 'D': 0}]
+        parents = choose('line', endpoint, [endpoint, {'id': 'home-pole', 'M': 46, 'D': 5}],
+                         low_md, [], random.Random(2), low_md_share=1)
+        self.assertEqual([row['id'] for row in parents], ['new-global', 'm39d0'])
+
+    def test_anchored_face_combines_two_endpoints_with_low_md_parent(self):
+        choose = getattr(counterpoles, 'choose_anchored_parents', None)
+        self.assertIsNotNone(choose, 'anchored endpoint selection is not implemented')
+        endpoint = {'id': 'new-global', 'M': 48, 'D': 7}
+        endpoints = [endpoint, {'id': 'home-pole', 'M': 46, 'D': 5},
+                     {'id': 'pinky-pole', 'M': 43, 'D': 2}]
+        low_md = [{'id': 'm39d0', 'M': 39, 'D': 0}]
+        parents = choose('face', endpoint, endpoints, low_md,
+                         [{'id': 'bridge', 'M': 41, 'D': 1}], random.Random(3))
+        ids = [row['id'] for row in parents]
+        self.assertEqual(ids[0], 'new-global')
+        self.assertIn(ids[1], {'home-pole', 'pinky-pole'})
+        self.assertEqual(ids[2], 'm39d0')
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_explicit_endpoints_resolve_ids_and_atlas_ids_without_duplicates(self):
+        resolve = getattr(counterpoles, 'resolve_endpoint_rows', None)
+        self.assertIsNotNone(resolve, 'explicit endpoint resolution is not implemented')
+        rows = [{'id': 'hash-a', 'atlasId': 'atlas-a'}, {'id': 'hash-b'}]
+        resolved = resolve(rows, ['atlas-a', 'hash-b', 'atlas-a'])
+        self.assertEqual([row['id'] for row in resolved], ['hash-a', 'hash-b'])
+
+    def test_explicit_endpoints_reject_missing_ids(self):
+        resolve = getattr(counterpoles, 'resolve_endpoint_rows', None)
+        self.assertIsNotNone(resolve, 'explicit endpoint resolution is not implemented')
+        with self.assertRaisesRegex(ValueError, 'missing'):
+            resolve([{'id': 'present'}], ['missing'])
 
 
 if __name__ == '__main__':

@@ -35,7 +35,7 @@ const {chromium}=require('../node_modules/playwright-core');
   await page.setViewportSize({width:390,height:844});
   const mobile=await inspect();
   const expected=[['uxTau','range','600'],['uxFirstAuxPenalty','range','300'],['uxSecondAuxPenalty','range','300']];
-  if(JSON.stringify(desktop.sliders)!==JSON.stringify(expected)||desktop.score!==10||Math.abs(desktop.frontierScore-9.327230884856213)>1e-9||Math.abs(desktop.fixedScore-9.13099980253348)>1e-9||desktop.schemes<642||desktop.after.some(box=>JSON.stringify(box)!==JSON.stringify(desktop.before))||mobile.after.some(box=>JSON.stringify(box)!==JSON.stringify(mobile.before)))throw Error(JSON.stringify({desktop,mobile}));
+  if(JSON.stringify(desktop.sliders)!==JSON.stringify(expected)||desktop.score!==10||Math.abs(desktop.frontierScore-9.327230884856213)>1e-9||Math.abs(desktop.fixedScore-9.13099980253348)>1e-9||desktop.schemes<645||desktop.after.some(box=>JSON.stringify(box)!==JSON.stringify(desktop.before))||mobile.after.some(box=>JSON.stringify(box)!==JSON.stringify(mobile.before)))throw Error(JSON.stringify({desktop,mobile}));
   console.log(JSON.stringify({desktop,mobile}));
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
