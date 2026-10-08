@@ -38,6 +38,51 @@ def select_counterpoles(rows: list[dict], quantile: float = .65,
     return threshold, list(selected.values())
 
 
+ATTRIBUTE_AXES = (
+    ('home', 'homeS2', -1), ('pinky', 'Pmax', 1),
+    ('eight', 'eightWorstRatio', 1), ('memory', 'M', 1),
+    ('v4', 'v4', 1), ('v5', 'v5', 1), ('S2', 'S2ms', 1),
+    ('v2-no-selection', 'ckt12tau0', 1),
+    ('j1', 'j1', 1), ('j2', 'j2', 1),
+    ('s1', 's1', 1), ('s2', 's2', 1),
+    ('wj1', 'wj1', 1), ('wj2', 'wj2', 1),
+    ('ws1', 'ws1', 1), ('ws2', 'ws2', 1),
+)
+
+
+def state_distance(left: dict, right: dict) -> int:
+    return sum(a != b for a, b in zip(left['state'][:62], right['state'][:62]))
+
+
+def select_attribute_poles(rows: list[dict], excluded: set[str] | None = None,
+                           top_share: float = .08, min_distance: int = 8,
+                           limit: int = 18) -> tuple[list[dict], list[dict]]:
+    """Choose strong but mutually distant points across secondary attributes."""
+    excluded = excluded or set()
+    eligible = [row for row in rows if row.get('fixed12') is not None
+                and row.get('atlasId', row['id']) not in excluded]
+    if not eligible:
+        raise ValueError('No eligible attribute poles')
+    width = min(len(eligible), max(12, round(len(eligible) * top_share)))
+    selected: list[dict] = []
+    provenance: list[dict] = []
+    for label, key, direction in ATTRIBUTE_AXES:
+        candidates = sorted(eligible, key=lambda row: (direction * row[key], row['fixed12']))[:width]
+        distinct = [row for row in candidates if all(state_distance(row, old) >= min_distance
+                                                     for old in selected)]
+        if not distinct:
+            continue
+        chosen = max(distinct, key=lambda row: (
+            min((state_distance(row, old) for old in selected), default=62)
+            - .3 * candidates.index(row), -row['fixed12']))
+        selected.append(chosen)
+        provenance.append({'axis': label, 'id': chosen['id'], 'value': chosen[key],
+                           'fixed12': chosen['fixed12'], 'M': chosen['M'], 'D': chosen['D']})
+        if len(selected) >= limit:
+            break
+    return selected, provenance
+
+
 def choose_cross_parents(kind: str, pole: dict, elite: list[dict],
                          bridges: list[dict], rng: random.Random) -> list[dict]:
     frontier = [row for row in elite if row['id'] != pole['id']]
@@ -55,4 +100,25 @@ def choose_cross_parents(kind: str, pole: dict, elite: list[dict],
         return [pole, speed, bridge, rng.choice(extras)] if extras else [pole, speed, bridge]
     if kind == 'mutate':
         return [speed, pole, bridge]
+    raise ValueError(f'Unknown proposal kind: {kind}')
+
+
+def choose_attribute_parents(kind: str, pole: dict, poles: list[dict],
+                             elite: list[dict], bridges: list[dict],
+                             rng: random.Random) -> list[dict]:
+    """Connect distinct attribute poles directly and through a fast parent."""
+    others = [row for row in poles if row['id'] != pole['id']]
+    fast = [row for row in elite if row['id'] != pole['id']]
+    if not others or not fast:
+        raise ValueError('Two poles and a distinct frontier point are required')
+    second = rng.choice(others)
+    speed = rng.choice([row for row in fast if row['id'] != second['id']] or fast)
+    if kind == 'line':
+        return [pole, second] if rng.random() < .5 else [pole, speed]
+    bridge_pool = [row for row in bridges if row['id'] not in
+                   {pole['id'], second['id'], speed['id']}]
+    if kind == 'face':
+        return [pole, second, speed, rng.choice(bridge_pool)] if bridge_pool else [pole, second, speed]
+    if kind == 'mutate':
+        return [pole, second, speed] if rng.random() < .5 else [speed, pole, second]
     raise ValueError(f'Unknown proposal kind: {kind}')
