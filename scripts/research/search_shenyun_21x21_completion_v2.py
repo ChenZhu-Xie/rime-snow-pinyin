@@ -43,9 +43,15 @@ p.add_argument('--counterpole-share', type=float, default=0,
 p.add_argument('--pole-strategy', choices=('slow', 'attribute'), default='slow')
 p.add_argument('--pole-exclude-from', type=Path, nargs='*', default=[],
                help='Saved searches whose pole IDs should be excluded from attribute selection')
+p.add_argument('--anchor-ids', nargs='*', default=[],
+               help='Explicit new/frontier endpoints to cross with attribute and low-M/D parents')
+p.add_argument('--anchor-low-md-share', type=float, default=.7,
+               help='For anchored lines, fraction that directly connect to a low-M/D parent')
 args = p.parse_args()
 if not 0 <= args.counterpole_share <= 1:
     p.error('--counterpole-share must be between 0 and 1')
+if not 0 <= args.anchor_low_md_share <= 1:
+    p.error('--anchor-low-md-share must be between 0 and 1')
 args.output = args.output.resolve()
 args.cohort = args.cohort.resolve() if args.cohort else None
 args.prior = [path.resolve() for path in args.prior]
@@ -63,8 +69,9 @@ spec.loader.exec_module(b)
 import numpy as np
 from b_path_fast import FastBuckets, NAMES
 from fast_completion_word2 import FastCompletion
-from completion_counterpoles import (choose_attribute_parents, choose_cross_parents,
-                                     fixed_composite, select_attribute_poles,
+from completion_counterpoles import (choose_anchored_parents, choose_attribute_parents,
+                                     choose_cross_parents, fixed_composite,
+                                     resolve_endpoint_rows, select_attribute_poles,
                                      select_counterpoles)
 
 rng = random.Random(args.seed)
@@ -273,6 +280,11 @@ else:
 print('COUNTERPOLES', {'strategy': args.pole_strategy, 'threshold': counterpole_threshold,
                        'axes': pole_provenance,
                        'ids': [row.get('atlasId', row['id']) for row in counterpoles]}, flush=True)
+explicit_endpoints = resolve_endpoint_rows(list(rows.values()), args.anchor_ids)
+anchored_endpoints = {row['id']: row for row in [*explicit_endpoints, *counterpoles]}
+print('ENDPOINTS', {'explicit': args.anchor_ids,
+                    'combined': [row.get('atlasId', row['id'])
+                                 for row in anchored_endpoints.values()]}, flush=True)
 
 
 def diverse_elites(pool, cap_m, cap_d, limit=60):
@@ -343,10 +355,19 @@ for (phase, cap_m, cap_d), trials in zip(stages, args.trials):
         draw = rng.random()
         kind = 'line' if draw < .32 else 'face' if draw < .68 else 'mutate'
         if rng.random() < args.counterpole_share:
-            pole = rng.choice(counterpoles)
-            parents = (choose_attribute_parents(kind, pole, counterpoles, elite, bridges, rng)
-                       if args.pole_strategy == 'attribute'
-                       else choose_cross_parents(kind, pole, elite, bridges, rng))
+            if args.anchor_ids and kind in ('line', 'face'):
+                endpoint = rng.choice(list(anchored_endpoints.values()))
+                low_md = sorted(elite, key=lambda row: (row['M'], row['D'],
+                                                        objective_score(row)))[:24]
+                parents = choose_anchored_parents(
+                    kind, endpoint, list(anchored_endpoints.values()), low_md,
+                    bridges, rng, args.anchor_low_md_share)
+                counts[phase]['anchoredCrosses'] += 1
+            else:
+                pole = rng.choice(counterpoles)
+                parents = (choose_attribute_parents(kind, pole, counterpoles, elite, bridges, rng)
+                           if args.pole_strategy == 'attribute'
+                           else choose_cross_parents(kind, pole, elite, bridges, rng))
             counts[phase]['counterpoleCrosses'] += 1
         elif kind == 'face':
             source = bridges if rng.random() < .3 else elite
@@ -398,6 +419,10 @@ output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'poleStrategy': args.pole_strategy, 'poleProvenance': pole_provenance,
           'counterpoleThreshold': counterpole_threshold,
           'counterpoleIds': [row.get('atlasId', row['id']) for row in counterpoles],
+          'anchorIds': args.anchor_ids,
+          'anchorEndpointIds': [row.get('atlasId', row['id'])
+                                for row in anchored_endpoints.values()],
+          'anchorLowMdShare': args.anchor_low_md_share,
           'firstAuxiliaryExtraMs': args.first_aux, 'secondAuxiliaryExtraMs': args.second_aux,
           'wordWeight': 2, 'characterWeight': 1, 'baselineId': 'S005',
           'wordBOrder': '21x21 Keytao first character, then second; Sanpin second, then first',
