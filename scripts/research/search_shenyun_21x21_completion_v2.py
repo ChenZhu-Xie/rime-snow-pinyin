@@ -73,6 +73,7 @@ from completion_counterpoles import (choose_anchored_parents, choose_attribute_p
                                      choose_cross_parents, fixed_composite,
                                      resolve_endpoint_rows, select_attribute_poles,
                                      select_counterpoles)
+from analyze_completion_v2_patterns import analyze_population
 
 rng = random.Random(args.seed)
 np.random.seed(args.seed)
@@ -414,6 +415,9 @@ for phase, cap_m, cap_d in stages:
             selected[tuple(row['state'])] = row
 for row in seeds:
     selected[tuple(row['state'])] = row
+proposal_rows = [row for row in rows.values()
+                 if row['phase'] in {phase for phase, _, _ in stages}]
+pattern_analysis = analyze_population(proposal_rows, b.opt.META['finals'], b.opt.META['keys'])
 output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'objective': args.objective, 'counterpoleShare': args.counterpole_share,
           'poleStrategy': args.pole_strategy, 'poleProvenance': pole_provenance,
@@ -428,6 +432,7 @@ output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'wordBOrder': '21x21 Keytao first character, then second; Sanpin second, then first',
           'pCap': p_cap, 'homeFloor': .5, 'trials': args.trials,
           'seedCount': len(seeds), 'scoredTotal': len(rows), 'stages': stage_summaries,
+          'proposalPatternAnalysis': pattern_analysis,
           'd0MaxM': args.d0_max_m,
           'results': list(selected.values())}
 args.output.parent.mkdir(parents=True, exist_ok=True)

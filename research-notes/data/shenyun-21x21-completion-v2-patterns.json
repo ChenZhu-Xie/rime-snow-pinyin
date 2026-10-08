@@ -1,0 +1,1550 @@
+{
+  "purpose": "Summarize structural patterns among saved 21x21 completion-v2 states.",
+  "sources": [
+    {
+      "file": "shenyun-21x21-completion-v2-600-300-300-search.json",
+      "rows": 426
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-anchored-face-c.json",
+      "rows": 476
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-anchored-reviewed.json",
+      "rows": 475
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-face-a.json",
+      "rows": 480
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-face-b-reviewed.json",
+      "rows": 142
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-face-b.json",
+      "rows": 468
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-gated-reviewed.json",
+      "rows": 139
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-pattern-face-d.json",
+      "rows": 488
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-pattern-reviewed.json",
+      "rows": 176
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-reviewed.json",
+      "rows": 139
+    },
+    {
+      "file": "shenyun-21x21-completion-v2-attribute-tradeoffs-reviewed.json",
+      "rows": 406
+    }
+  ],
+  "uniqueStates": 1402,
+  "selectionBias": "Saved search outputs emphasize speed, attribute extremes, and diverse elites; they are not a uniform sample.",
+  "conditionalAnalyses": {
+    "all": {
+      "n": 1402,
+      "spearmanWithCkt12": {
+        "M": -0.6667044110644215,
+        "D": -0.6292257757372696,
+        "eightWorstRatio": 0.3608504047212558,
+        "Pmax": -0.35048676977579324,
+        "homeS2": 0.1608522912003607,
+        "S2ms": 0.7552597796861245,
+        "v4": 0.40874973756841776,
+        "v5": 0.8120014530676163
+      },
+      "iOnPComparison": {
+        "iOnP": {
+          "ckt12": {
+            "n": 771,
+            "mean": 9.493485670794279,
+            "median": 9.444766473270313,
+            "min": 9.327230884856213,
+            "max": 10.539307777830604
+          },
+          "eightWorstRatio": {
+            "n": 771,
+            "mean": 1.0280276577704928,
+            "median": 1.0133173296755646,
+            "min": 0.9960999657031513,
+            "max": 1.2556682113802138
+          },
+          "Pmax": {
+            "n": 771,
+            "mean": 0.10115976234295963,
+            "median": 0.09987227159400756,
+            "min": 0.09987227159400756,
+            "max": 0.11598931362296619
+          },
+          "homeS2": {
+            "n": 771,
+            "mean": 0.4266411972476836,
+            "median": 0.4243771210461747,
+            "min": 0.3633708147265152,
+            "max": 0.47290140621612076
+          },
+          "S2ms": {
+            "n": 771,
+            "mean": 70.20062329063214,
+            "median": 70.80441799650112,
+            "min": 65.60984508982934,
+            "max": 90.93149519333585
+          },
+          "v4": {
+            "n": 771,
+            "mean": 10.810003429176634,
+            "median": 10.816957937562666,
+            "min": 10.68988396282082,
+            "max": 11.064037858887534
+          },
+          "v5": {
+            "n": 771,
+            "mean": 10.413290137482699,
+            "median": 10.410960765017936,
+            "min": 10.107378929106432,
+            "max": 12.283283120280736
+          }
+        },
+        "iNotOnP": {
+          "ckt12": {
+            "n": 631,
+            "mean": 10.178518189489932,
+            "median": 9.535599324270919,
+            "min": 9.342404362986818,
+            "max": 13.674921724027818
+          },
+          "eightWorstRatio": {
+            "n": 631,
+            "mean": 1.2921455683773666,
+            "median": 1.019607530037416,
+            "min": 0.9929446280561867,
+            "max": 3.135652740189999
+          },
+          "Pmax": {
+            "n": 631,
+            "mean": 0.03574370487192096,
+            "median": 0.033876917424425,
+            "min": 0.0008109257668850826,
+            "max": 0.09101947820655462
+          },
+          "homeS2": {
+            "n": 631,
+            "mean": 0.5268534894178849,
+            "median": 0.5039566332830068,
+            "min": 0.35872798373636494,
+            "max": 0.742116503391143
+          },
+          "S2ms": {
+            "n": 631,
+            "mean": 73.05110901637671,
+            "median": 72.29253669649613,
+            "min": 67.00286027807576,
+            "max": 91.31058477341584
+          },
+          "v4": {
+            "n": 631,
+            "mean": 10.794733051992225,
+            "median": 10.791837912979803,
+            "min": 10.589447622356351,
+            "max": 11.141425894274201
+          },
+          "v5": {
+            "n": 631,
+            "mean": 10.661351169194237,
+            "median": 10.528011621794583,
+            "min": 10.183178882513824,
+            "max": 12.523362010484027
+          }
+        }
+      }
+    },
+    "eightB": {
+      "n": 385,
+      "spearmanWithCkt12": {
+        "M": -0.7895859562552212,
+        "D": -0.792483888833803,
+        "eightWorstRatio": 0.23459545268849658,
+        "Pmax": -0.11844388071371288,
+        "homeS2": 0.076410233841287,
+        "S2ms": 0.6472091380122468,
+        "v4": 0.6415014551510666,
+        "v5": 0.8885802183567726
+      },
+      "iOnPComparison": {
+        "iOnP": {
+          "ckt12": {
+            "n": 233,
+            "mean": 9.491534709327881,
+            "median": 9.540454667738153,
+            "min": 9.327230884856213,
+            "max": 9.64501260987814
+          },
+          "eightWorstRatio": {
+            "n": 233,
+            "mean": 0.9983875951244336,
+            "median": 0.998605300681572,
+            "min": 0.9960999657031513,
+            "max": 0.9999977639109383
+          },
+          "Pmax": {
+            "n": 233,
+            "mean": 0.1024332444510713,
+            "median": 0.09987227159400756,
+            "min": 0.09987227159400756,
+            "max": 0.11598931362296619
+          },
+          "homeS2": {
+            "n": 233,
+            "mean": 0.4218823687780468,
+            "median": 0.41918861609921176,
+            "min": 0.4061346800285756,
+            "max": 0.45354070919962924
+          },
+          "S2ms": {
+            "n": 233,
+            "mean": 71.28362349257158,
+            "median": 71.55273273961083,
+            "min": 69.2795928989394,
+            "max": 72.96331681945658
+          },
+          "v4": {
+            "n": 233,
+            "mean": 10.871633330894682,
+            "median": 10.88261639253528,
+            "min": 10.761552458016915,
+            "max": 10.949774860172006
+          },
+          "v5": {
+            "n": 233,
+            "mean": 10.490150764919777,
+            "median": 10.526647150263486,
+            "min": 10.280886679237371,
+            "max": 10.646873575058361
+          }
+        },
+        "iNotOnP": {
+          "ckt12": {
+            "n": 152,
+            "mean": 9.554978342234138,
+            "median": 9.571974287114246,
+            "min": 9.342404362986818,
+            "max": 10.052243562186483
+          },
+          "eightWorstRatio": {
+            "n": 152,
+            "mean": 0.9972002288930434,
+            "median": 0.9979329212103837,
+            "min": 0.9929446280561867,
+            "max": 0.9999597979732544
+          },
+          "Pmax": {
+            "n": 152,
+            "mean": 0.03404998800328586,
+            "median": 0.033759385949270665,
+            "min": 0.01365068720560976,
+            "max": 0.07057877753418085
+          },
+          "homeS2": {
+            "n": 152,
+            "mean": 0.5162575885731794,
+            "median": 0.5128835086793371,
+            "min": 0.464670081202143,
+            "max": 0.549491992430537
+          },
+          "S2ms": {
+            "n": 152,
+            "mean": 72.86852138740848,
+            "median": 72.64266805936052,
+            "min": 70.53214106108362,
+            "max": 81.1856046202805
+          },
+          "v4": {
+            "n": 152,
+            "mean": 10.827755470590558,
+            "median": 10.837588203081616,
+            "min": 10.720054175411457,
+            "max": 11.002205703251516
+          },
+          "v5": {
+            "n": 152,
+            "mean": 10.625677050816867,
+            "median": 10.636795538402545,
+            "min": 10.348427875726319,
+            "max": 11.528036049539388
+          }
+        }
+      }
+    },
+    "compact": {
+      "n": 1093,
+      "spearmanWithCkt12": {
+        "M": -0.6008821359078226,
+        "D": -0.5792654746360272,
+        "eightWorstRatio": 0.35950036746755315,
+        "Pmax": -0.33779206255728234,
+        "homeS2": 0.26195903145859667,
+        "S2ms": 0.7017833296796484,
+        "v4": 0.20275301587072853,
+        "v5": 0.7890802218516725
+      },
+      "iOnPComparison": {
+        "iOnP": {
+          "ckt12": {
+            "n": 586,
+            "mean": 9.535888029665852,
+            "median": 9.499835239979182,
+            "min": 9.356413613962067,
+            "max": 10.539307777830604
+          },
+          "eightWorstRatio": {
+            "n": 586,
+            "mean": 1.0307516730467667,
+            "median": 1.0132953458879292,
+            "min": 0.9965598293127563,
+            "max": 1.2556682113802138
+          },
+          "Pmax": {
+            "n": 586,
+            "mean": 0.10137454023679798,
+            "median": 0.09987227159400756,
+            "min": 0.09987227159400756,
+            "max": 0.11598931362296619
+          },
+          "homeS2": {
+            "n": 586,
+            "mean": 0.41966004331888307,
+            "median": 0.4154732107116192,
+            "min": 0.3633708147265152,
+            "max": 0.47290140621612076
+          },
+          "S2ms": {
+            "n": 586,
+            "mean": 70.94793975318274,
+            "median": 71.20531120609861,
+            "min": 65.92078892603226,
+            "max": 90.93149519333585
+          },
+          "v4": {
+            "n": 586,
+            "mean": 10.832520685352247,
+            "median": 10.822207084398844,
+            "min": 10.691535581374193,
+            "max": 11.064037858887534
+          },
+          "v5": {
+            "n": 586,
+            "mean": 10.472240183536941,
+            "median": 10.434037911282061,
+            "min": 10.13416823927299,
+            "max": 12.283283120280736
+          }
+        },
+        "iNotOnP": {
+          "ckt12": {
+            "n": 507,
+            "mean": 10.246236051645935,
+            "median": 9.60898831124312,
+            "min": 9.360975965274164,
+            "max": 13.674921724027818
+          },
+          "eightWorstRatio": {
+            "n": 507,
+            "mean": 1.3157427415131688,
+            "median": 1.0269855156308425,
+            "min": 0.9929446280561867,
+            "max": 3.135652740189999
+          },
+          "Pmax": {
+            "n": 507,
+            "mean": 0.03612221598413043,
+            "median": 0.033876917424425,
+            "min": 0.0008109257668850826,
+            "max": 0.09101947820655462
+          },
+          "homeS2": {
+            "n": 507,
+            "mean": 0.5218379440451936,
+            "median": 0.49129399362268517,
+            "min": 0.35872798373636494,
+            "max": 0.742116503391143
+          },
+          "S2ms": {
+            "n": 507,
+            "mean": 73.37919873531264,
+            "median": 72.30499679480535,
+            "min": 67.20943019518397,
+            "max": 91.31058477341584
+          },
+          "v4": {
+            "n": 507,
+            "mean": 10.80453393181541,
+            "median": 10.802346219127678,
+            "min": 10.589447622356351,
+            "max": 11.141425894274201
+          },
+          "v5": {
+            "n": 507,
+            "mean": 10.696464390532311,
+            "median": 10.572869768806703,
+            "min": 10.183178882513824,
+            "max": 12.523362010484027
+          }
+        }
+      }
+    },
+    "compactEightB": {
+      "n": 251,
+      "spearmanWithCkt12": {
+        "M": -0.7373131152822697,
+        "D": -0.7417780560901919,
+        "eightWorstRatio": 0.008782077295787389,
+        "Pmax": -0.41771270849142844,
+        "homeS2": 0.33126332971285866,
+        "S2ms": 0.31762929235439197,
+        "v4": 0.1765881236956934,
+        "v5": 0.8537939669891861
+      },
+      "iOnPComparison": {
+        "iOnP": {
+          "ckt12": {
+            "n": 168,
+            "mean": 9.541907180220303,
+            "median": 9.564935310574732,
+            "min": 9.40683531529372,
+            "max": 9.64501260987814
+          },
+          "eightWorstRatio": {
+            "n": 168,
+            "mean": 0.9986462275639089,
+            "median": 0.9988700804090014,
+            "min": 0.9965598293127563,
+            "max": 0.9999977639109383
+          },
+          "Pmax": {
+            "n": 168,
+            "mean": 0.10342269778630288,
+            "median": 0.09987227159400756,
+            "min": 0.09987227159400756,
+            "max": 0.11598931362296619
+          },
+          "homeS2": {
+            "n": 168,
+            "mean": 0.417286461575749,
+            "median": 0.4154732107116192,
+            "min": 0.4061346800285756,
+            "max": 0.45354070919962924
+          },
+          "S2ms": {
+            "n": 168,
+            "mean": 71.86785494230006,
+            "median": 71.7417548457669,
+            "min": 71.15373934966021,
+            "max": 72.96331681945658
+          },
+          "v4": {
+            "n": 168,
+            "mean": 10.903516137496187,
+            "median": 10.925562250879794,
+            "min": 10.83409979540595,
+            "max": 10.949774860172006
+          },
+          "v5": {
+            "n": 168,
+            "mean": 10.554204727021757,
+            "median": 10.560562874511412,
+            "min": 10.427968168603254,
+            "max": 10.646873575058361
+          }
+        },
+        "iNotOnP": {
+          "ckt12": {
+            "n": 83,
+            "mean": 9.633331044984581,
+            "median": 9.626900738879279,
+            "min": 9.460620358634554,
+            "max": 10.052243562186483
+          },
+          "eightWorstRatio": {
+            "n": 83,
+            "mean": 0.997595923209609,
+            "median": 0.9979329212103837,
+            "min": 0.9929446280561867,
+            "max": 0.9997035707126151
+          },
+          "Pmax": {
+            "n": 83,
+            "mean": 0.034125812257989475,
+            "median": 0.033759385949270665,
+            "min": 0.01365068720560976,
+            "max": 0.04675701592910705
+          },
+          "homeS2": {
+            "n": 83,
+            "mean": 0.5130966141231909,
+            "median": 0.5128835086793371,
+            "min": 0.4667227169575994,
+            "max": 0.5298119468524043
+          },
+          "S2ms": {
+            "n": 83,
+            "mean": 73.22999288709731,
+            "median": 72.62561982253175,
+            "min": 71.61627655828369,
+            "max": 81.1856046202805
+          },
+          "v4": {
+            "n": 83,
+            "mean": 10.86734889243644,
+            "median": 10.853313134578668,
+            "min": 10.80352000015758,
+            "max": 11.002205703251516
+          },
+          "v5": {
+            "n": 83,
+            "mean": 10.70289386973473,
+            "median": 10.641428094724652,
+            "min": 10.512381315874448,
+            "max": 11.528036049539388
+          }
+        }
+      }
+    }
+  },
+  "matchedIOnP": {
+    "strata": 19,
+    "rows": 1299,
+    "ckt12MedianDeltaIOnPMinusOffP": -0.39734459098731617,
+    "eightWorstRatioMedianDeltaIOnPMinusOffP": -0.14626708822587514,
+    "PmaxMedianDeltaIOnPMinusOffP": 0.06870988718117386,
+    "homeS2MedianDeltaIOnPMinusOffP": -0.09069805324704595,
+    "S2msMedianDeltaIOnPMinusOffP": -1.9988840257351281,
+    "v4MedianDeltaIOnPMinusOffP": 0.027266242335280303,
+    "v5MedianDeltaIOnPMinusOffP": -0.16233382122715
+  },
+  "quartileSizes": {
+    "bestCkt": 350,
+    "highHome": 350,
+    "lowPmax": 350,
+    "bestEight": 350
+  },
+  "pairEnrichments": {
+    "bestCkt": [
+      {
+        "final": "ie",
+        "key": "C",
+        "selectedCount": 237,
+        "otherCount": 210,
+        "selectedRate": 0.6771428571428572,
+        "otherRate": 0.19961977186311788,
+        "rateDelta": 0.4775230852797393,
+        "rateRatio": 3.3921632533225234
+      },
+      {
+        "final": "uan",
+        "key": "T",
+        "selectedCount": 181,
+        "otherCount": 57,
+        "selectedRate": 0.5171428571428571,
+        "otherRate": 0.05418250950570342,
+        "rateDelta": 0.4629603476371537,
+        "rateRatio": 9.544460995184433
+      },
+      {
+        "final": "uo",
+        "key": "N",
+        "selectedCount": 178,
+        "otherCount": 55,
+        "selectedRate": 0.5085714285714286,
+        "otherRate": 0.05228136882129278,
+        "rateDelta": 0.4562900597501358,
+        "rateRatio": 9.72758424864953
+      },
+      {
+        "final": "eng",
+        "key": "Z",
+        "selectedCount": 168,
+        "otherCount": 37,
+        "selectedRate": 0.48,
+        "otherRate": 0.03517110266159696,
+        "rateDelta": 0.44482889733840303,
+        "rateRatio": 13.647567207966468
+      },
+      {
+        "final": "ou",
+        "key": "M",
+        "selectedCount": 160,
+        "otherCount": 40,
+        "selectedRate": 0.45714285714285713,
+        "otherRate": 0.03802281368821293,
+        "rateDelta": 0.4191200434546442,
+        "rateRatio": 12.022856852956009
+      },
+      {
+        "final": "uang",
+        "key": "C",
+        "selectedCount": 168,
+        "otherCount": 69,
+        "selectedRate": 0.48,
+        "otherRate": 0.0655893536121673,
+        "rateDelta": 0.41441064638783265,
+        "rateRatio": 7.318260773234632
+      },
+      {
+        "final": "ua",
+        "key": "R",
+        "selectedCount": 156,
+        "otherCount": 45,
+        "selectedRate": 0.44571428571428573,
+        "otherRate": 0.04277566539923954,
+        "rateDelta": 0.4029386203150462,
+        "rateRatio": 10.419809303595317
+      },
+      {
+        "final": "o",
+        "key": "E",
+        "selectedCount": 168,
+        "otherCount": 89,
+        "selectedRate": 0.48,
+        "otherRate": 0.08460076045627377,
+        "rateDelta": 0.39539923954372624,
+        "rateRatio": 5.673707809924263
+      },
+      {
+        "final": "ing",
+        "key": "R",
+        "selectedCount": 148,
+        "otherCount": 29,
+        "selectedRate": 0.4228571428571429,
+        "otherRate": 0.027566539923954372,
+        "rateDelta": 0.3952906029331885,
+        "rateRatio": 15.339506868984591
+      },
+      {
+        "final": "in",
+        "key": "G",
+        "selectedCount": 247,
+        "otherCount": 327,
+        "selectedRate": 0.7057142857142857,
+        "otherRate": 0.3108365019011407,
+        "rateDelta": 0.39487778381314503,
+        "rateRatio": 2.270371337110085
+      },
+      {
+        "final": "ve",
+        "key": "N",
+        "selectedCount": 151,
+        "otherCount": 43,
+        "selectedRate": 0.43142857142857144,
+        "otherRate": 0.0408745247148289,
+        "rateDelta": 0.39055404671374255,
+        "rateRatio": 10.554949932349997
+      },
+      {
+        "final": "iang",
+        "key": "J",
+        "selectedCount": 165,
+        "otherCount": 93,
+        "selectedRate": 0.4714285714285714,
+        "otherRate": 0.08840304182509506,
+        "rateDelta": 0.38302552960347636,
+        "rateRatio": 5.332718844998246
+      },
+      {
+        "final": "e",
+        "key": "J",
+        "selectedCount": 168,
+        "otherCount": 120,
+        "selectedRate": 0.48,
+        "otherRate": 0.11406844106463879,
+        "rateDelta": 0.3659315589353612,
+        "rateRatio": 4.207999971876534
+      },
+      {
+        "final": "u",
+        "key": "D",
+        "selectedCount": 168,
+        "otherCount": 122,
+        "selectedRate": 0.48,
+        "otherRate": 0.11596958174904944,
+        "rateDelta": 0.36403041825095056,
+        "rateRatio": 4.1390163663750394
+      },
+      {
+        "final": "van",
+        "key": "H",
+        "selectedCount": 158,
+        "otherCount": 103,
+        "selectedRate": 0.4514285714285714,
+        "otherRate": 0.0979087452471483,
+        "rateDelta": 0.3535198261814231,
+        "rateRatio": 4.610707314023233
+      },
+      {
+        "final": "iu",
+        "key": "B",
+        "selectedCount": 168,
+        "otherCount": 184,
+        "selectedRate": 0.48,
+        "otherRate": 0.17490494296577946,
+        "rateDelta": 0.3050950570342205,
+        "rateRatio": 2.7443478161138377
+      },
+      {
+        "final": "en",
+        "key": "E",
+        "selectedCount": 277,
+        "otherCount": 520,
+        "selectedRate": 0.7914285714285715,
+        "otherRate": 0.49429657794676807,
+        "rateDelta": 0.2971319934818034,
+        "rateRatio": 1.6011208779047652
+      },
+      {
+        "final": "er",
+        "key": "Y",
+        "selectedCount": 109,
+        "otherCount": 19,
+        "selectedRate": 0.31142857142857144,
+        "otherRate": 0.01806083650190114,
+        "rateDelta": 0.2933677349266703,
+        "rateRatio": 17.243307371310415
+      }
+    ],
+    "highHome": [
+      {
+        "final": "i",
+        "key": "K",
+        "selectedCount": 186,
+        "otherCount": 32,
+        "selectedRate": 0.5314285714285715,
+        "otherRate": 0.030418250950570342,
+        "rateDelta": 0.5010103204780011,
+        "rateRatio": 17.47071374423957
+      },
+      {
+        "final": "e",
+        "key": "S",
+        "selectedCount": 128,
+        "otherCount": 7,
+        "selectedRate": 0.3657142857142857,
+        "otherRate": 0.006653992395437262,
+        "rateDelta": 0.3590602933188485,
+        "rateRatio": 54.96162454339994
+      },
+      {
+        "final": "ia",
+        "key": "S",
+        "selectedCount": 132,
+        "otherCount": 47,
+        "selectedRate": 0.37714285714285717,
+        "otherRate": 0.04467680608365019,
+        "rateDelta": 0.33246605105920696,
+        "rateRatio": 8.441580380547729
+      },
+      {
+        "final": "uo",
+        "key": "L",
+        "selectedCount": 141,
+        "otherCount": 79,
+        "selectedRate": 0.40285714285714286,
+        "otherRate": 0.07509505703422054,
+        "rateDelta": 0.3277620858229223,
+        "rateRatio": 5.364629236634485
+      },
+      {
+        "final": "a",
+        "key": "W",
+        "selectedCount": 108,
+        "otherCount": 36,
+        "selectedRate": 0.30857142857142855,
+        "otherRate": 0.034220532319391636,
+        "rateDelta": 0.2743508962520369,
+        "rateRatio": 9.017142622864133
+      },
+      {
+        "final": "ei",
+        "key": "G",
+        "selectedCount": 86,
+        "otherCount": 2,
+        "selectedRate": 0.24571428571428572,
+        "otherRate": 0.0019011406844106464,
+        "rateDelta": 0.24381314502987508,
+        "rateRatio": 129.24564682850405
+      },
+      {
+        "final": "iang",
+        "key": "F",
+        "selectedCount": 191,
+        "otherCount": 323,
+        "selectedRate": 0.5457142857142857,
+        "otherRate": 0.3070342205323194,
+        "rateDelta": 0.23868006518196633,
+        "rateRatio": 1.7773728413425147
+      },
+      {
+        "final": "ve",
+        "key": "T",
+        "selectedCount": 90,
+        "otherCount": 24,
+        "selectedRate": 0.2571428571428571,
+        "otherRate": 0.022813688212927757,
+        "rateDelta": 0.23432916892992936,
+        "rateRatio": 11.271428121197639
+      },
+      {
+        "final": "an",
+        "key": "P",
+        "selectedCount": 79,
+        "otherCount": 10,
+        "selectedRate": 0.2257142857142857,
+        "otherRate": 0.009505703422053232,
+        "rateDelta": 0.21620858229223247,
+        "rateRatio": 23.74514046435408
+      },
+      {
+        "final": "e",
+        "key": "J",
+        "selectedCount": 128,
+        "otherCount": 160,
+        "selectedRate": 0.3657142857142857,
+        "otherRate": 0.1520912547528517,
+        "rateDelta": 0.213623030961434,
+        "rateRatio": 2.4045714193363716
+      },
+      {
+        "final": "ia",
+        "key": "Z",
+        "selectedCount": 80,
+        "otherCount": 21,
+        "selectedRate": 0.22857142857142856,
+        "otherRate": 0.019961977186311788,
+        "rateDelta": 0.20860945138511677,
+        "rateRatio": 11.45033961254217
+      },
+      {
+        "final": "en",
+        "key": "L",
+        "selectedCount": 75,
+        "otherCount": 8,
+        "selectedRate": 0.21428571428571427,
+        "otherRate": 0.0076045627376425855,
+        "rateDelta": 0.20668115154807168,
+        "rateRatio": 28.178567854589755
+      },
+      {
+        "final": "uai",
+        "key": "E",
+        "selectedCount": 72,
+        "otherCount": 1,
+        "selectedRate": 0.2057142857142857,
+        "otherRate": 0.0009505703422053232,
+        "rateDelta": 0.20476371537208038,
+        "rateRatio": 216.41120195884412
+      },
+      {
+        "final": "ie",
+        "key": "G",
+        "selectedCount": 71,
+        "otherCount": 0,
+        "selectedRate": 0.20285714285714285,
+        "otherRate": 0.0,
+        "rateDelta": 0.20285714285714285,
+        "rateRatio": 202857143.85714284
+      },
+      {
+        "final": "u",
+        "key": "D",
+        "selectedCount": 125,
+        "otherCount": 165,
+        "selectedRate": 0.35714285714285715,
+        "otherRate": 0.15684410646387834,
+        "rateDelta": 0.20029875067897882,
+        "rateRatio": 2.277056268914076
+      },
+      {
+        "final": "er",
+        "key": "M",
+        "selectedCount": 82,
+        "otherCount": 39,
+        "selectedRate": 0.2342857142857143,
+        "otherRate": 0.0370722433460076,
+        "rateDelta": 0.1972134709397067,
+        "rateRatio": 6.319706816211279
+      },
+      {
+        "final": "un",
+        "key": "W",
+        "selectedCount": 70,
+        "otherCount": 4,
+        "selectedRate": 0.2,
+        "otherRate": 0.0038022813688212928,
+        "rateDelta": 0.1961977186311787,
+        "rateRatio": 52.599986429203575
+      },
+      {
+        "final": "in",
+        "key": "X",
+        "selectedCount": 69,
+        "otherCount": 2,
+        "selectedRate": 0.19714285714285715,
+        "otherRate": 0.0019011406844106464,
+        "rateDelta": 0.1952417164584465,
+        "rateRatio": 103.69708883847413
+      }
+    ],
+    "lowPmax": [
+      {
+        "final": "ia",
+        "key": "S",
+        "selectedCount": 132,
+        "otherCount": 47,
+        "selectedRate": 0.37714285714285717,
+        "otherRate": 0.04467680608365019,
+        "rateDelta": 0.33246605105920696,
+        "rateRatio": 8.441580380547729
+      },
+      {
+        "final": "i",
+        "key": "L",
+        "selectedCount": 173,
+        "otherCount": 178,
+        "selectedRate": 0.4942857142857143,
+        "otherRate": 0.16920152091254753,
+        "rateDelta": 0.32508419337316674,
+        "rateRatio": 2.9212840977942727
+      },
+      {
+        "final": "e",
+        "key": "S",
+        "selectedCount": 105,
+        "otherCount": 30,
+        "selectedRate": 0.3,
+        "otherRate": 0.028517110266159697,
+        "rateDelta": 0.27148288973384027,
+        "rateRatio": 10.519999666165345
+      },
+      {
+        "final": "i",
+        "key": "K",
+        "selectedCount": 122,
+        "otherCount": 96,
+        "selectedRate": 0.3485714285714286,
+        "otherRate": 0.09125475285171103,
+        "rateDelta": 0.25731667571971756,
+        "rateRatio": 3.8197618738620145
+      },
+      {
+        "final": "a",
+        "key": "W",
+        "selectedCount": 92,
+        "otherCount": 52,
+        "selectedRate": 0.26285714285714284,
+        "otherRate": 0.049429657794676805,
+        "rateDelta": 0.21342748506246603,
+        "rateRatio": 5.31780211044974
+      },
+      {
+        "final": "ei",
+        "key": "C",
+        "selectedCount": 157,
+        "otherCount": 257,
+        "selectedRate": 0.44857142857142857,
+        "otherRate": 0.24429657794676807,
+        "rateDelta": 0.2042748506246605,
+        "rateRatio": 1.8361756497178447
+      },
+      {
+        "final": "ia",
+        "key": "P",
+        "selectedCount": 78,
+        "otherCount": 35,
+        "selectedRate": 0.22285714285714286,
+        "otherRate": 0.03326996197718631,
+        "rateDelta": 0.18958718087995655,
+        "rateRatio": 6.698448808312747
+      },
+      {
+        "final": "ui",
+        "key": "G",
+        "selectedCount": 150,
+        "otherCount": 252,
+        "selectedRate": 0.42857142857142855,
+        "otherRate": 0.23954372623574144,
+        "rateDelta": 0.1890277023356871,
+        "rateRatio": 1.7891156429642587
+      },
+      {
+        "final": "an",
+        "key": "P",
+        "selectedCount": 71,
+        "otherCount": 18,
+        "selectedRate": 0.20285714285714285,
+        "otherRate": 0.017110266159695818,
+        "rateDelta": 0.18574687669744702,
+        "rateRatio": 11.855872381407584
+      },
+      {
+        "final": "iao",
+        "key": "Z",
+        "selectedCount": 151,
+        "otherCount": 262,
+        "selectedRate": 0.43142857142857144,
+        "otherRate": 0.24904942965779467,
+        "rateDelta": 0.18237914177077677,
+        "rateRatio": 1.732300978520903
+      },
+      {
+        "final": "ao",
+        "key": "P",
+        "selectedCount": 78,
+        "otherCount": 44,
+        "selectedRate": 0.22285714285714286,
+        "otherRate": 0.04182509505703422,
+        "rateDelta": 0.18103204780010865,
+        "rateRatio": 5.328311584825694
+      },
+      {
+        "final": "van",
+        "key": "R",
+        "selectedCount": 140,
+        "otherCount": 243,
+        "selectedRate": 0.4,
+        "otherRate": 0.23098859315589354,
+        "rateDelta": 0.16901140684410648,
+        "rateRatio": 1.7316872396307204
+      },
+      {
+        "final": "ian",
+        "key": "N",
+        "selectedCount": 66,
+        "otherCount": 33,
+        "selectedRate": 0.18857142857142858,
+        "otherRate": 0.03136882129277566,
+        "rateDelta": 0.15720260727865293,
+        "rateRatio": 6.011428411670309
+      },
+      {
+        "final": "ou",
+        "key": "F",
+        "selectedCount": 216,
+        "otherCount": 484,
+        "selectedRate": 0.6171428571428571,
+        "otherRate": 0.4600760456273764,
+        "rateDelta": 0.1570668115154807,
+        "rateRatio": 1.3413931515602067
+      },
+      {
+        "final": "in",
+        "key": "X",
+        "selectedCount": 58,
+        "otherCount": 13,
+        "selectedRate": 0.1657142857142857,
+        "otherRate": 0.012357414448669201,
+        "rateDelta": 0.1533568712656165,
+        "rateRatio": 13.410108885845695
+      },
+      {
+        "final": "iong",
+        "key": "P",
+        "selectedCount": 55,
+        "otherCount": 4,
+        "selectedRate": 0.15714285714285714,
+        "otherRate": 0.0038022813688212928,
+        "rateDelta": 0.15334057577403584,
+        "rateRatio": 41.328560822159936
+      },
+      {
+        "final": "ua",
+        "key": "D",
+        "selectedCount": 181,
+        "otherCount": 383,
+        "selectedRate": 0.5171428571428571,
+        "otherRate": 0.36406844106463876,
+        "rateDelta": 0.15307441607821837,
+        "rateRatio": 1.4204550529294175
+      },
+      {
+        "final": "ie",
+        "key": "M",
+        "selectedCount": 61,
+        "otherCount": 32,
+        "selectedRate": 0.1742857142857143,
+        "otherRate": 0.030418250950570342,
+        "rateDelta": 0.14386746333514394,
+        "rateRatio": 5.7296427016558535
+      }
+    ],
+    "bestEight": [
+      {
+        "final": "iang",
+        "key": "F",
+        "selectedCount": 291,
+        "otherCount": 223,
+        "selectedRate": 0.8314285714285714,
+        "otherRate": 0.21197718631178708,
+        "rateDelta": 0.6194513851167843,
+        "rateRatio": 3.92225495098047
+      },
+      {
+        "final": "van",
+        "key": "R",
+        "selectedCount": 253,
+        "otherCount": 130,
+        "selectedRate": 0.7228571428571429,
+        "otherRate": 0.12357414448669202,
+        "rateDelta": 0.5992829983704508,
+        "rateRatio": 5.849582378338105
+      },
+      {
+        "final": "ei",
+        "key": "C",
+        "selectedCount": 260,
+        "otherCount": 154,
+        "selectedRate": 0.7428571428571429,
+        "otherRate": 0.14638783269961977,
+        "rateDelta": 0.5964693101575231,
+        "rateRatio": 5.074582532462685
+      },
+      {
+        "final": "eng",
+        "key": "R",
+        "selectedCount": 225,
+        "otherCount": 116,
+        "selectedRate": 0.6428571428571429,
+        "otherRate": 0.11026615969581749,
+        "rateDelta": 0.5325909831613254,
+        "rateRatio": 5.8300492172801945
+      },
+      {
+        "final": "ua",
+        "key": "D",
+        "selectedCount": 274,
+        "otherCount": 290,
+        "selectedRate": 0.7828571428571428,
+        "otherRate": 0.27566539923954375,
+        "rateDelta": 0.507191743617599,
+        "rateRatio": 2.8398817667246843
+      },
+      {
+        "final": "ui",
+        "key": "G",
+        "selectedCount": 230,
+        "otherCount": 172,
+        "selectedRate": 0.6571428571428571,
+        "otherRate": 0.1634980988593156,
+        "rateDelta": 0.49364475828354154,
+        "rateRatio": 4.019269084523341
+      },
+      {
+        "final": "ou",
+        "key": "F",
+        "selectedCount": 289,
+        "otherCount": 411,
+        "selectedRate": 0.8257142857142857,
+        "otherRate": 0.3906844106463878,
+        "rateDelta": 0.4350298750678979,
+        "rateRatio": 2.1135071226277837
+      },
+      {
+        "final": "v",
+        "key": "T",
+        "selectedCount": 219,
+        "otherCount": 204,
+        "selectedRate": 0.6257142857142857,
+        "otherRate": 0.19391634980988592,
+        "rateDelta": 0.43179793590439974,
+        "rateRatio": 3.226722677592727
+      },
+      {
+        "final": "ve",
+        "key": "B",
+        "selectedCount": 223,
+        "otherCount": 219,
+        "selectedRate": 0.6371428571428571,
+        "otherRate": 0.20817490494296578,
+        "rateDelta": 0.42896795219989137,
+        "rateRatio": 3.0606131668790897
+      },
+      {
+        "final": "uai",
+        "key": "X",
+        "selectedCount": 165,
+        "otherCount": 66,
+        "selectedRate": 0.4714285714285714,
+        "otherRate": 0.06273764258555133,
+        "rateDelta": 0.4086909288430201,
+        "rateRatio": 7.51428561045195
+      },
+      {
+        "final": "ing",
+        "key": "D",
+        "selectedCount": 316,
+        "otherCount": 525,
+        "selectedRate": 0.9028571428571428,
+        "otherRate": 0.4990494296577947,
+        "rateDelta": 0.4038077131993481,
+        "rateRatio": 1.8091537398752084
+      },
+      {
+        "final": "ia",
+        "key": "S",
+        "selectedCount": 148,
+        "otherCount": 31,
+        "selectedRate": 0.4228571428571429,
+        "otherRate": 0.029467680608365018,
+        "rateDelta": 0.39338946224877785,
+        "rateRatio": 14.349861298118073
+      },
+      {
+        "final": "er",
+        "key": "J",
+        "selectedCount": 324,
+        "otherCount": 563,
+        "selectedRate": 0.9257142857142857,
+        "otherRate": 0.535171102661597,
+        "rateDelta": 0.39054318305268876,
+        "rateRatio": 1.7297538682126599
+      },
+      {
+        "final": "ia",
+        "key": "W",
+        "selectedCount": 166,
+        "otherCount": 166,
+        "selectedRate": 0.4742857142857143,
+        "otherRate": 0.15779467680608364,
+        "rateDelta": 0.3164910374796307,
+        "rateRatio": 3.005714273003374
+      },
+      {
+        "final": "iao",
+        "key": "X",
+        "selectedCount": 151,
+        "otherCount": 124,
+        "selectedRate": 0.43142857142857144,
+        "otherRate": 0.11787072243346007,
+        "rateDelta": 0.31355784899511135,
+        "rateRatio": 3.6601843092285753
+      },
+      {
+        "final": "iu",
+        "key": "Y",
+        "selectedCount": 118,
+        "otherCount": 36,
+        "selectedRate": 0.33714285714285713,
+        "otherRate": 0.034220532319391636,
+        "rateDelta": 0.3029223248234655,
+        "rateRatio": 9.852063233386534
+      },
+      {
+        "final": "u",
+        "key": "J",
+        "selectedCount": 342,
+        "otherCount": 724,
+        "selectedRate": 0.9771428571428571,
+        "otherRate": 0.688212927756654,
+        "rateDelta": 0.2889299293862031,
+        "rateRatio": 1.419826360873796
+      },
+      {
+        "final": "ie",
+        "key": "N",
+        "selectedCount": 100,
+        "otherCount": 22,
+        "selectedRate": 0.2857142857142857,
+        "otherRate": 0.02091254752851711,
+        "rateDelta": 0.2648017381857686,
+        "rateRatio": 13.66233705684773
+      }
+    ],
+    "bestCktWithinCompactEightB": [
+      {
+        "final": "iu",
+        "key": "K",
+        "selectedCount": 59,
+        "otherCount": 9,
+        "selectedRate": 0.9516129032258065,
+        "otherRate": 0.047619047619047616,
+        "rateDelta": 0.9039938556067588,
+        "rateRatio": 19.983870569080654
+      },
+      {
+        "final": "en",
+        "key": "M",
+        "selectedCount": 51,
+        "otherCount": 0,
+        "selectedRate": 0.8225806451612904,
+        "otherRate": 0.0,
+        "rateDelta": 0.8225806451612904,
+        "rateRatio": 822580646.1612903
+      },
+      {
+        "final": "ang",
+        "key": "Y",
+        "selectedCount": 52,
+        "otherCount": 6,
+        "selectedRate": 0.8387096774193549,
+        "otherRate": 0.031746031746031744,
+        "rateDelta": 0.8069636456733231,
+        "rateRatio": 26.419354038000026
+      },
+      {
+        "final": "ian",
+        "key": "S",
+        "selectedCount": 43,
+        "otherCount": 0,
+        "selectedRate": 0.6935483870967742,
+        "otherRate": 0.0,
+        "rateDelta": 0.6935483870967742,
+        "rateRatio": 693548388.0967742
+      },
+      {
+        "final": "o",
+        "key": "Q",
+        "selectedCount": 43,
+        "otherCount": 0,
+        "selectedRate": 0.6935483870967742,
+        "otherRate": 0.0,
+        "rateDelta": 0.6935483870967742,
+        "rateRatio": 693548388.0967742
+      },
+      {
+        "final": "ong",
+        "key": "Q",
+        "selectedCount": 43,
+        "otherCount": 1,
+        "selectedRate": 0.6935483870967742,
+        "otherRate": 0.005291005291005291,
+        "rateDelta": 0.6882573818057689,
+        "rateRatio": 131.08062057605304
+      },
+      {
+        "final": "ao",
+        "key": "K",
+        "selectedCount": 42,
+        "otherCount": 0,
+        "selectedRate": 0.6774193548387096,
+        "otherRate": 0.0,
+        "rateDelta": 0.6774193548387096,
+        "rateRatio": 677419355.8387096
+      },
+      {
+        "final": "uo",
+        "key": "N",
+        "selectedCount": 41,
+        "otherCount": 0,
+        "selectedRate": 0.6612903225806451,
+        "otherRate": 0.0,
+        "rateDelta": 0.6612903225806451,
+        "rateRatio": 661290323.5806451
+      },
+      {
+        "final": "ui",
+        "key": "T",
+        "selectedCount": 49,
+        "otherCount": 27,
+        "selectedRate": 0.7903225806451613,
+        "otherRate": 0.14285714285714285,
+        "rateDelta": 0.6474654377880185,
+        "rateRatio": 5.532258032790323
+      },
+      {
+        "final": "ua",
+        "key": "S",
+        "selectedCount": 40,
+        "otherCount": 1,
+        "selectedRate": 0.6451612903225806,
+        "otherRate": 0.005291005291005291,
+        "rateDelta": 0.6398702850315754,
+        "rateRatio": 121.9354610141656
+      },
+      {
+        "final": "uan",
+        "key": "G",
+        "selectedCount": 41,
+        "otherCount": 5,
+        "selectedRate": 0.6612903225806451,
+        "otherRate": 0.026455026455026454,
+        "rateDelta": 0.6348352961256187,
+        "rateRatio": 24.996773286470358
+      },
+      {
+        "final": "ie",
+        "key": "Z",
+        "selectedCount": 39,
+        "otherCount": 1,
+        "selectedRate": 0.6290322580645161,
+        "otherRate": 0.005291005291005291,
+        "rateDelta": 0.6237412527735109,
+        "rateRatio": 118.88707449353646
+      },
+      {
+        "final": "an",
+        "key": "E",
+        "selectedCount": 37,
+        "otherCount": 0,
+        "selectedRate": 0.5967741935483871,
+        "otherRate": 0.0,
+        "rateDelta": 0.5967741935483871,
+        "rateRatio": 596774194.548387
+      },
+      {
+        "final": "vn",
+        "key": "N",
+        "selectedCount": 36,
+        "otherCount": 0,
+        "selectedRate": 0.5806451612903226,
+        "otherRate": 0.0,
+        "rateDelta": 0.5806451612903226,
+        "rateRatio": 580645162.2903225
+      },
+      {
+        "final": "a",
+        "key": "L",
+        "selectedCount": 36,
+        "otherCount": 1,
+        "selectedRate": 0.5806451612903226,
+        "otherRate": 0.005291005291005291,
+        "rateDelta": 0.5753541559993174,
+        "rateRatio": 109.74191493164905
+      },
+      {
+        "final": "un",
+        "key": "B",
+        "selectedCount": 61,
+        "otherCount": 84,
+        "selectedRate": 0.9838709677419355,
+        "otherRate": 0.4444444444444444,
+        "rateDelta": 0.5394265232974911,
+        "rateRatio": 2.213709674688508
+      },
+      {
+        "final": "iong",
+        "key": "Q",
+        "selectedCount": 30,
+        "otherCount": 1,
+        "selectedRate": 0.4838709677419355,
+        "otherRate": 0.005291005291005291,
+        "rateDelta": 0.4785799624509302,
+        "rateRatio": 91.4515958078742
+      },
+      {
+        "final": "ve",
+        "key": "B",
+        "selectedCount": 61,
+        "otherCount": 97,
+        "selectedRate": 0.9838709677419355,
+        "otherRate": 0.5132275132275133,
+        "rateDelta": 0.47064345451442224,
+        "rateRatio": 1.9170269353598732
+      }
+    ]
+  },
+  "representatives": [
+    {
+      "role": "fastest",
+      "id": "BCW-dcfeac16a87b",
+      "M": 48,
+      "D": 7,
+      "ckt12": 9.327230884856213,
+      "eightWorstRatio": 0.99638328294489,
+      "Pmax": 0.09987227159400756,
+      "homeS2": 0.44095802024606284,
+      "S2ms": 69.50122785565601,
+      "v4": 10.764510466790377,
+      "v5": 10.287776066050654,
+      "iKey": "P"
+    },
+    {
+      "role": "fastestEight",
+      "id": "BCW-dcfeac16a87b",
+      "M": 48,
+      "D": 7,
+      "ckt12": 9.327230884856213,
+      "eightWorstRatio": 0.99638328294489,
+      "Pmax": 0.09987227159400756,
+      "homeS2": 0.44095802024606284,
+      "S2ms": 69.50122785565601,
+      "v4": 10.764510466790377,
+      "v5": 10.287776066050654,
+      "iKey": "P"
+    },
+    {
+      "role": "fastestEightIOnP",
+      "id": "BCW-dcfeac16a87b",
+      "M": 48,
+      "D": 7,
+      "ckt12": 9.327230884856213,
+      "eightWorstRatio": 0.99638328294489,
+      "Pmax": 0.09987227159400756,
+      "homeS2": 0.44095802024606284,
+      "S2ms": 69.50122785565601,
+      "v4": 10.764510466790377,
+      "v5": 10.287776066050654,
+      "iKey": "P"
+    },
+    {
+      "role": "fastestEightINotOnP",
+      "id": "BCW-2e945b60f4cb",
+      "M": 48,
+      "D": 7,
+      "ckt12": 9.342404362986818,
+      "eightWorstRatio": 0.99638328294489,
+      "Pmax": 0.03319233466990309,
+      "homeS2": 0.5013617578170051,
+      "S2ms": 70.64282379760354,
+      "v4": 10.756787711473315,
+      "v5": 10.354731824201542,
+      "iKey": "L"
+    },
+    {
+      "role": "highHomeUnder9_65",
+      "id": "BCW-2a915aa92474",
+      "M": 46,
+      "D": 5,
+      "ckt12": 9.543112755546904,
+      "eightWorstRatio": 0.9991678593772638,
+      "Pmax": 0.033759385949270665,
+      "homeS2": 0.549491992430537,
+      "S2ms": 73.01350638898177,
+      "v4": 10.782388903111146,
+      "v5": 10.626184941551358,
+      "iKey": "K"
+    },
+    {
+      "role": "lowPmaxUnder9_65",
+      "id": "BCW-d334d326f7e0",
+      "M": 48,
+      "D": 7,
+      "ckt12": 9.353961942817122,
+      "eightWorstRatio": 0.99638328294489,
+      "Pmax": 0.026028661238134815,
+      "homeS2": 0.5013617578170051,
+      "S2ms": 70.84911420417374,
+      "v4": 10.749641642705349,
+      "v5": 10.393000199517253,
+      "iKey": "L"
+    },
+    {
+      "role": "fastestCompactEight",
+      "id": "BCW-27ccf7edd435",
+      "M": 44,
+      "D": 3,
+      "ckt12": 9.40683531529372,
+      "eightWorstRatio": 0.99786852377483,
+      "Pmax": 0.09987227159400756,
+      "homeS2": 0.41381933429770845,
+      "S2ms": 71.46573956120362,
+      "v4": 10.850203298505834,
+      "v5": 10.427968168603254,
+      "iKey": "P"
+    }
+  ]
+}
