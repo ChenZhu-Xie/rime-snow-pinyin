@@ -124,3 +124,21 @@ D3 点经过 9 个下降步和 2 次二步越谷，最终 5,210 个二步状态�
 四个终点均由页面 JS 对 native、fixed、v2 映射独立重算，fast/exact CKT、编码和八项 B 一致，已加入本机 R11 图谱；目录由 645 增至 **649**。局部链分别保存在 [`pattern-eight-chains.json`](data/shenyun-21x21-completion-v2-attribute-pattern-eight-chains.json)、[`pattern-load-chain.json`](data/shenyun-21x21-completion-v2-attribute-pattern-load-chain.json) 和 [`pattern-load-chain-2.json`](data/shenyun-21x21-completion-v2-attribute-pattern-load-chain-2.json)，完整复算行在 [`pattern-reviewed.json`](data/shenyun-21x21-completion-v2-attribute-pattern-reviewed.json)。结构统计脚本为 [`analyze_completion_v2_patterns.py`](../scripts/research/analyze_completion_v2_patterns.py)。
 
 模型分数仍不是人体实测连续输入速度。选重、候选阅读、上屏动作和训练域外键序列沿用既有冻结假设；本轮只扩展了离散编码空间的可复算证据。
+### Motif 软约束与低维联合前沿（2026-10-08）
+
+本轮把上一轮前沿和属性极点作为线段/多面端点，加入三类实验：motif 软钉扎、扩大到已知 motif 韵母的双向三循环邻域，以及严格门槛下的二步/三步越谷。搜索器现在支持阶段检查点和 `eight` / `load-buffer` 父代保留，避免长实验中断后丢失前沿。
+
+| 口径 | 上轮前沿 | 本轮前沿 | 改善 | 8B 最坏比 | Pmax | 主行 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| M≤43/D≤2、8B+Pmax+主行 | 9.581854 (`BCW-ebdbf38c9a07`) | **9.576130 (`BCW-d6f3dd3a4c89`)** | **0.005723** | 0.998212 | 4.6757% | 50.0942% |
+| M≤42/D≤1、8B+Pmax+主行 | 9.623532 | **9.590853 (`BCW-8467ad5c0fc2`)** | **0.032679** | 0.998212 | 3.3877% | 50.0942% |
+
+D3 的 fast motif 软引导共做 50,000 次提案，得到 41,161 个合法状态和 974 次 8B 命中，没有低于 `BCW-27ccf7edd435` 的 9.406835；强锁定 pilot 的 8B 命中率约 1.36%，改成 45% 提案只锁 3–5 位后约为 2.37%，但仍未形成新 D3 沟壑。当前 D3 纪录进一步扫描了 1,350 个合法一步邻居、27,215 个两步候选和 13,640 个三步候选，无出口。
+
+D2 `load-buffer` 搜索的 25,000 次提案产生 20,934 个合法状态、984 次 8B 和 365 次严格联合命中；新点来自 `BCW-bba4e6d85cee` 与旧联合点的线段。其后 1,382 个合法一步邻居、27,658 个两步候选、13,911 个三步候选均无更优出口，最薄一步势垒为 +0.000130。
+
+D1 新端点先由高维 D3 搜索的切片偶然产生，再经两步直接下降从 9.594497 到 9.590853；随后 1,382 个合法一步邻居、27,646 个两步候选和 13,913 个三步候选无出口。弱 mixed motif 的前 10,000 次提案有 8,476 个合法状态、472 次 8B 命中，未刷新；消融后构造的 joint motif 又做 10,000 次提案，8,404 个合法状态、310 次 8B 命中，也未刷新。
+
+单换消融显示：纯 8B 高速点完整携带 fast motif，但同时有 Pmax 9.9872%、主行 42.2026%；D1 联合点只稳定保留 `er→J, in→G, ai→H, e→S, ing→D`。对联合点补 `i→P` 会令 CKT +0.082083、8B 最坏比 +0.053197、Pmax +7.3095 pct、主行 −6.7316 pct；`iang→F` 和 `ia→Z` 也会破坏 8B。由此可见 motif 更适合作为群体分层和端点筛选信号，而不是跨盆地之后的硬修复模板。
+
+两个新前沿都通过 exact/native/fixed/v2 独立复算并加入本机 R11 图谱，目录由 649 增至 **651**。本轮主要证据见 [`motif-fast-loose-d3-search.json`](data/shenyun-21x21-completion-v2-motif-fast-loose-d3-search.json)、[`motif-mixed-buffer-d2-search.json`](data/shenyun-21x21-completion-v2-motif-mixed-buffer-d2-search.json)、[`motif-reviewed.json`](data/shenyun-21x21-completion-v2-motif-reviewed.json) 和 [`motif-d1-ablation.json`](data/shenyun-21x21-completion-v2-motif-d1-ablation.json)。

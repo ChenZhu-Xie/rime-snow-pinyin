@@ -38,10 +38,14 @@ def main():
                         help='At a local minimum, scan all second moves from this many cheapest first moves')
     parser.add_argument('--escape-rounds', type=int, default=0,
                         help='Follow this many improving two-step escapes, descending again after each')
+    parser.add_argument('--include-motif-cycles', action='store_true',
+                        help='Add both three-cycles over final coordinates appearing in known motifs')
+    parser.add_argument('--third-width', type=int, default=0,
+                        help='If no two-step exit exists, scan third moves from this many cheapest second states')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    if args.max_steps < 0 or args.escape_width < 0 or args.escape_rounds < 0:
-        parser.error('--max-steps, --escape-width, and --escape-rounds must be nonnegative')
+    if min(args.max_steps, args.escape_width, args.escape_rounds, args.third_width) < 0:
+        parser.error('step and width arguments must be nonnegative')
     args.output = args.output.resolve()
     args.html = args.html.resolve()
     source = json.loads(args.search.read_text(encoding='utf-8'))
@@ -65,6 +69,7 @@ def main():
     spec.loader.exec_module(bench)
     import numpy as np
     from fast_completion_word2 import FastCompletion
+    from completion_motifs import motif_final_positions
     if args.require_eight_b:
         from b_path_fast import FastBuckets, NAMES
         frozen = json.loads((DATA / 'shenyun-completion-ckt-fixed-r11.json').read_text(encoding='utf-8'))['schemes']
@@ -119,6 +124,7 @@ def main():
                             v2=args.objective == 'v2')
     auxiliary = {bench.opt.META['keys'].index(key) for key in 'IVUAO'}
     physical = [key for key in range(26) if key not in auxiliary]
+    cycle_positions = motif_final_positions(bench.opt.META['finals'])
 
     def score(state):
         if args.objective == 'v2':
@@ -149,6 +155,17 @@ def main():
                     new = state.copy()
                     new[i] = key
                     yield new, f'onset:{i}:{key}'
+        if args.include_motif_cycles:
+            for left_index, left in enumerate(cycle_positions):
+                for middle_index in range(left_index + 1, len(cycle_positions)):
+                    middle = cycle_positions[middle_index]
+                    for right in cycle_positions[middle_index + 1:]:
+                        new = state.copy()
+                        new[left], new[middle], new[right] = state[right], state[left], state[middle]
+                        yield new, f'final-cycle:{left}:{middle}:{right}:right'
+                        new = state.copy()
+                        new[left], new[middle], new[right] = state[middle], state[right], state[left]
+                        yield new, f'final-cycle:{left}:{middle}:{right}:left'
 
     results = []
     for ident in args.ids:
@@ -166,6 +183,7 @@ def main():
         scans = []
         barrier = None
         two_step_escape = None
+        three_step_escape = None
         escape_counts = None
         while True:
             best = None
@@ -211,8 +229,11 @@ def main():
                 if args.escape_width:
                     escape_counts = {'first': min(args.escape_width, len(first_neighbors)),
                                      'generated': 0, 'underCap': 0,
-                                     'underB': 0, 'underGates': 0}
+                                     'underB': 0, 'underGates': 0,
+                                     'thirdSeeds': 0, 'thirdGenerated': 0,
+                                     'thirdUnderGates': 0}
                     seen2 = set()
+                    second_neighbors = []
                     for first_score, first_state, first_move in sorted(
                             first_neighbors, key=lambda item: item[0])[:args.escape_width]:
                         for second_state, second_move in neighbors(first_state):
@@ -233,6 +254,9 @@ def main():
                                 continue
                             escape_counts['underGates'] += 1
                             second_score = score(second_state)
+                            if args.third_width:
+                                second_neighbors.append((second_score, second_state.copy(),
+                                                         first_move, second_move, first_score))
                             if second_score + 1e-9 < value and (
                                     two_step_escape is None or second_score < two_step_escape['score']):
                                 two_step_escape = {'score': second_score,
@@ -242,17 +266,49 @@ def main():
                                                    'firstScore': first_score,
                                                    'barrier': first_score - value,
                                                    'state': list(signature)}
-                if two_step_escape is not None and len(escapes) < args.escape_rounds:
-                    escapes.append(two_step_escape)
-                    state = np.asarray(two_step_escape['state'], dtype=np.int32)
-                    value = two_step_escape['score']
+                    if two_step_escape is None and args.third_width:
+                        third_seeds = sorted(second_neighbors, key=lambda item: item[0])[:args.third_width]
+                        escape_counts['thirdSeeds'] = len(third_seeds)
+                        seen3 = set()
+                        for second_score, second_state, first_move, second_move, first_score in third_seeds:
+                            for third_state, third_move in neighbors(second_state):
+                                signature = tuple(map(int, third_state))
+                                if signature in seen3 or np.array_equal(third_state, state):
+                                    continue
+                                seen3.add(signature)
+                                escape_counts['thirdGenerated'] += 1
+                                unique3, memory3, displaced3 = bench.se.stats(
+                                    third_state, bench.opt.PARAMS[-2], bench.opt.PARAMS[-1], 21, 7, 1)
+                                if unique3 < 0 or memory3 > seed['M'] or displaced3 > seed['D']:
+                                    continue
+                                if not qualifies(third_state):
+                                    continue
+                                escape_counts['thirdUnderGates'] += 1
+                                third_score = score(third_state)
+                                if third_score + 1e-9 < value and (
+                                        three_step_escape is None
+                                        or third_score < three_step_escape['score']):
+                                    three_step_escape = {
+                                        'score': third_score, 'M': int(memory3), 'D': int(displaced3),
+                                        'firstMove': first_move, 'secondMove': second_move,
+                                        'thirdMove': third_move, 'firstScore': first_score,
+                                        'secondScore': second_score,
+                                        'barrier': max(first_score, second_score) - value,
+                                        'state': list(signature)}
+                chosen_escape = two_step_escape or three_step_escape
+                if chosen_escape is not None and len(escapes) < args.escape_rounds:
+                    escapes.append(chosen_escape)
+                    state = np.asarray(chosen_escape['state'], dtype=np.int32)
+                    value = chosen_escape['score']
                     print(ident, 'ESCAPE', len(escapes), f'{value:.9f}',
-                          two_step_escape['M'], two_step_escape['D'],
-                          two_step_escape['firstMove'], two_step_escape['secondMove'],
+                          chosen_escape['M'], chosen_escape['D'],
+                          chosen_escape['firstMove'], chosen_escape['secondMove'],
+                          chosen_escape.get('thirdMove', ''),
                           flush=True)
                     status = 'step_limit'
                     barrier = None
                     two_step_escape = None
+                    three_step_escape = None
                     escape_counts = None
                     continue
                 break
@@ -271,6 +327,7 @@ def main():
                         'M': int(memory), 'D': int(displaced),
                         'initialScore': archived, 'status': status,
                         'oneStepBarrier': barrier, 'twoStepEscape': two_step_escape,
+                        'threeStepEscape': three_step_escape,
                         'escapeCounts': escape_counts, 'escapes': escapes,
                         'path': path, 'scans': scans})
         print('END', ident, status, f'{value:.9f}', len(path), flush=True)
@@ -282,9 +339,13 @@ def main():
                                         'maxSteps': args.max_steps,
                                         'escapeWidth': args.escape_width,
                                         'escapeRounds': args.escape_rounds,
+                                        'includeMotifCycles': args.include_motif_cycles,
+                                        'thirdWidth': args.third_width,
                                         'neighborhoods': ['final-slot swap',
                                                           'physical final-key swap',
-                                                          'one-onset remap'],
+                                                          'one-onset remap',
+                                                          *(['motif final three-cycle']
+                                                            if args.include_motif_cycles else [])],
                                         'results': results},
                                        ensure_ascii=False, separators=(',', ':')) + '\n',
                            encoding='utf-8')

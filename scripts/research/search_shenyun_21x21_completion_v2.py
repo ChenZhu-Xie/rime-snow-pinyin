@@ -47,11 +47,33 @@ p.add_argument('--anchor-ids', nargs='*', default=[],
                help='Explicit new/frontier endpoints to cross with attribute and low-M/D parents')
 p.add_argument('--anchor-low-md-share', type=float, default=.7,
                help='For anchored lines, fraction that directly connect to a low-M/D parent')
+p.add_argument('--motif-profile', choices=('none', 'fast', 'balanced', 'joint', 'mixed'), default='none',
+               help='Soft-pin a random subset of an observed final-key motif after proposal crossover')
+p.add_argument('--motif-share', type=float, default=0,
+               help='Fraction of proposals receiving motif soft pins')
+p.add_argument('--motif-locks', type=int, nargs=2, default=[5, 7],
+               metavar=('MIN', 'MAX'), help='Number of motif assignments retained per guided proposal')
+p.add_argument('--selection-focus', choices=('none', 'eight', 'load-buffer'), default='none',
+               help='Prefer gate-feasible rows when retaining parents; reporting still uses raw CKT')
+p.add_argument('--buffer-pmax', type=float, default=.065,
+               help='Pmax ceiling used by load-buffer parent selection')
+p.add_argument('--buffer-home', type=float, default=.48,
+               help='Home-row floor used by load-buffer parent selection')
+p.add_argument('--checkpoint-every', type=int, default=5000,
+               help='Write a reusable elite snapshot every N proposals; zero disables checkpoints')
 args = p.parse_args()
 if not 0 <= args.counterpole_share <= 1:
     p.error('--counterpole-share must be between 0 and 1')
 if not 0 <= args.anchor_low_md_share <= 1:
     p.error('--anchor-low-md-share must be between 0 and 1')
+if not 0 <= args.motif_share <= 1:
+    p.error('--motif-share must be between 0 and 1')
+if not 0 <= args.motif_locks[0] <= args.motif_locks[1]:
+    p.error('--motif-locks must be nonnegative and ordered')
+if not 0 <= args.buffer_pmax <= 1 or not 0 <= args.buffer_home <= 1:
+    p.error('--buffer-pmax and --buffer-home must be between 0 and 1')
+if args.checkpoint_every < 0:
+    p.error('--checkpoint-every must be nonnegative')
 args.output = args.output.resolve()
 args.cohort = args.cohort.resolve() if args.cohort else None
 args.prior = [path.resolve() for path in args.prior]
@@ -74,6 +96,7 @@ from completion_counterpoles import (choose_anchored_parents, choose_attribute_p
                                      resolve_endpoint_rows, select_attribute_poles,
                                      select_counterpoles)
 from analyze_completion_v2_patterns import analyze_population
+from completion_motifs import apply_soft_motif
 
 rng = random.Random(args.seed)
 np.random.seed(args.seed)
@@ -101,6 +124,26 @@ old_denominators = [old_baseline[mode][kind]['completionUpperMs'] + args.tau * o
 
 def objective_score(row):
     return row['fixed12'] if args.objective == 'fixed' else row['ckt12']
+
+
+def selection_penalty(row):
+    """Distance outside the requested parent-retention gate."""
+    if args.selection_focus == 'none':
+        return 0.0
+    penalty = 5 * max(0, row['eightWorstRatio'] - 1)
+    if args.selection_focus == 'load-buffer':
+        penalty += 8 * max(0, row['Pmax'] - args.buffer_pmax)
+        penalty += 2 * max(0, args.buffer_home - row['homeS2'])
+    return penalty
+
+
+def selection_key(row):
+    if args.selection_focus == 'none':
+        return (0, objective_score(row))
+    feasible = row['eightWorstRatio'] < 1
+    if args.selection_focus == 'load-buffer':
+        feasible = feasible and row['Pmax'] <= args.buffer_pmax and row['homeS2'] >= args.buffer_home
+    return (0 if feasible else 1, selection_penalty(row), objective_score(row))
 
 
 def ensemble(times, misses, first_counts, second_counts, tau=600, first_aux=300, second_aux=300, word_weight=2):
@@ -294,6 +337,7 @@ def diverse_elites(pool, cap_m, cap_d, limit=60):
         return []
     selected = {}
     objectives = (
+        lambda r: objective_score(r) + selection_penalty(r),
         objective_score,
         lambda r: objective_score(r) + .6 * max(0, r['eightWorstRatio'] - 1),
         lambda r: objective_score(r) + 1.2 * max(0, r['Pmax'] - p_cap) + .3 * max(0, .5 - r['homeS2']),
@@ -337,9 +381,40 @@ def diverse_elites(pool, cap_m, cap_d, limit=60):
         for row in sorted(group, key=objective_score)[:2]:
             poles[tuple(row['state'])] = row
     retained = list(poles.values())
-    retained.extend(r for r in sorted(selected.values(), key=objective_score)
+    retained.extend(r for r in sorted(selected.values(), key=selection_key)
                     if tuple(r['state']) not in poles)
-    return retained[:limit]
+    if args.selection_focus == 'none':
+        return retained[:limit]
+    return sorted(retained, key=selection_key)[:limit]
+
+
+def write_checkpoint(phase, completed, cap_m, cap_d):
+    """Persist enough frontier rows to resume a long stage after interruption."""
+    pool = [row for row in rows.values() if row['M'] <= cap_m and row['D'] <= cap_d]
+    chosen = {tuple(row['state']): row for row in diverse_elites(pool, cap_m, cap_d, 120)}
+    for subset in (pool, [row for row in pool if row['eightWorstRatio'] < 1],
+                   [row for row in pool if row['eightWorstRatio'] < 1
+                    and row['Pmax'] <= p_cap and row['homeS2'] >= .5]):
+        for row in sorted(subset, key=objective_score)[:20]:
+            chosen[tuple(row['state'])] = row
+    for row in seeds:
+        chosen[tuple(row['state'])] = row
+    payload = {
+        'partial': True, 'seed': args.seed, 'phase': phase, 'completedTrials': completed,
+        'trials': args.trials, 'objective': args.objective,
+        'tauMs': args.tau, 'firstAuxiliaryExtraMs': args.first_aux,
+        'secondAuxiliaryExtraMs': args.second_aux,
+        'motifProfile': args.motif_profile, 'motifShare': args.motif_share,
+        'motifLocks': args.motif_locks, 'selectionFocus': args.selection_focus,
+        'bufferPmax': args.buffer_pmax, 'bufferHome': args.buffer_home,
+        'counts': dict(counts[phase]), 'scoredTotal': len(rows),
+        'results': list(chosen.values()),
+    }
+    checkpoint = args.output.with_name(args.output.stem + '.partial' + args.output.suffix)
+    checkpoint.parent.mkdir(parents=True, exist_ok=True)
+    checkpoint.write_text(json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + '\n',
+                          encoding='utf-8')
+    print('CHECKPOINT', checkpoint, len(chosen), flush=True)
 
 
 stages = [('broad', 48, 7), ('D3', 44, 3), ('D2', 43, 2), ('D1', 42, 1), ('D0', args.d0_max_m, 0)]
@@ -380,6 +455,15 @@ for (phase, cap_m, cap_d), trials in zip(stages, args.trials):
             anchor = rng.choice(elite[:min(25, len(elite))])
             parents = [anchor, *rng.sample(bridges, min(3, len(bridges)))]
         st = proposal([np.array(row['state'], np.int32) for row in parents], kind)
+        if args.motif_profile != 'none' and rng.random() < args.motif_share:
+            applied, labels = apply_soft_motif(
+                st, b.opt.META['finals'], b.opt.META['keys'], allowed,
+                args.motif_profile, *args.motif_locks, rng)
+            if applied:
+                counts[phase]['motifProposals'] += 1
+                counts[phase]['motifPins'] += len(labels)
+            else:
+                counts[phase]['motifRepairFailed'] += 1
         counts[phase]['proposals'] += 1
         # A broad line/face crossing may propose a high-D bridge; preserve it
         # for the next trial even if it does not yet pass this stage's cap.
@@ -389,8 +473,15 @@ for (phase, cap_m, cap_d), trials in zip(stages, args.trials):
         if (trial + 1) % 1000 == 0:
             valid = [r for r in rows.values() if r['M'] <= cap_m and r['D'] <= cap_d]
             best = min(valid, key=objective_score)
+            gated = [r for r in valid if r['eightWorstRatio'] < 1]
+            best_gated = min(gated, key=objective_score) if gated else None
             print(phase, trial + 1, dict(counts[phase]), 'best', best['id'],
-                  round(objective_score(best), 7), 'M/D', best['M'], best['D'], flush=True)
+                  round(objective_score(best), 7), 'M/D', best['M'], best['D'],
+                  'best8', (best_gated['id'], round(objective_score(best_gated), 7),
+                            best_gated['M'], best_gated['D']) if best_gated else None,
+                  flush=True)
+        if args.checkpoint_every and (trial + 1) % args.checkpoint_every == 0:
+            write_checkpoint(phase, trial + 1, cap_m, cap_d)
     valid = [r for r in rows.values() if r['M'] <= cap_m and r['D'] <= cap_d]
     best = min(valid, key=objective_score)
     gated = [r for r in valid if r['eightWorstRatio'] < 1]
@@ -427,6 +518,10 @@ output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'anchorEndpointIds': [row.get('atlasId', row['id'])
                                 for row in anchored_endpoints.values()],
           'anchorLowMdShare': args.anchor_low_md_share,
+          'motifProfile': args.motif_profile, 'motifShare': args.motif_share,
+          'motifLocks': args.motif_locks,
+          'selectionFocus': args.selection_focus, 'bufferPmax': args.buffer_pmax,
+          'bufferHome': args.buffer_home,
           'firstAuxiliaryExtraMs': args.first_aux, 'secondAuxiliaryExtraMs': args.second_aux,
           'wordWeight': 2, 'characterWeight': 1, 'baselineId': 'S005',
           'wordBOrder': '21x21 Keytao first character, then second; Sanpin second, then first',
