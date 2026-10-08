@@ -74,4 +74,53 @@ M38/D0 随机种子为 9.812093，经 3 个下降步和 1 次双步越谷降到 
 - 定向端点局部链：[`attribute-anchored-m38-chain.json`](data/shenyun-21x21-completion-v2-attribute-anchored-m38-chain.json)、[`attribute-anchored-tight-eight-chain.json`](data/shenyun-21x21-completion-v2-attribute-anchored-tight-eight-chain.json)。
 - 可复算工具：[`search_shenyun_21x21_completion_v2.py`](../scripts/research/search_shenyun_21x21_completion_v2.py)、[`descend_completion_fixed_neighborhood.py`](../scripts/research/descend_completion_fixed_neighborhood.py)、[`integrate_shenyun_completion_v2_frontier.py`](../scripts/research/integrate_shenyun_completion_v2_frontier.py)。
 
+## 结构归因与 pattern 定向搜索
+
+保存下来的前沿点有强烈的幸存者偏差，因此先用它们提出假说，再让新搜索器对**全部新评分状态**写出紧凑结构统计。本轮连接三类端点：`i→P` 快速盆地、`i→K/L` 高主行／低小指盆地，以及 D3／D2／D1／M38-D0 紧边界盆地；同时加入主行、Pmax、八项 B、M、S2、v4、v5 和八条分项 B 的反极点。五阶段提出 15,000／30,000／35,000／35,000／45,000，共 **160,000** 次，得到 **114,761** 个不含旧种子的不同新评分状态；前三轮加本轮累计提出 **510,000** 次状态。原始结果和总体统计保存在 [`attribute-pattern-face-d.json`](data/shenyun-21x21-completion-v2-attribute-pattern-face-d.json)。
+
+### `i` 的速度捷径及其代价
+
+在相同 M、D、是否过八项 B 的 37 个可比层内，以各层中位数差再按两组较小样本数加权，`i→P` 相对 `i` 不在 P 上与下列变化共现：
+
+| 指标 | `i→P` 减 `i≠P` | 方向 |
+| --- | ---: | --- |
+| CKT v2 | **−0.221912** | 更快 |
+| S2 | **−2.270451 ms** | 更快 |
+| v5 | **−0.209143** | 更好 |
+| 八项最差比 | **−0.060414** | 本轮样本中更好 |
+| Pmax | **+6.707210 pct** | 明显更差 |
+| 主行占比 | **−8.024602 pct** | 明显更差 |
+| v4 | +0.013462 | 略差 |
+
+这支持用户观察到的结构：`i→P` 不是偶然标签，而是非常强的速度捷径；但它几乎把高频 `i` 的代价直接变成右小指负担，并拉低主行占比。上述仍是定向提案分布内的条件共现，不是把其余 66 个坐标全部随机化后的因果效应。
+
+### 常见韵母落键 pattern
+
+以下为本轮全部新状态中，相应前 25% 相对其余 75% 的出现率增量；只列信号最清楚者：
+
+| 目标属性 | 富集 pattern（出现率增量） | 大致解释／代价 |
+| --- | --- | --- |
+| 低 CKT | `e→W` +25.4、`iong→N` +24.2、`ei→X` +23.5、`er→J` +23.5、`ang→M` +22.4 pct | 速度盆地的常见骨架；不保证低 M/D 或低负担 |
+| 高主行 | `i→K` +42.3、`e→J/S` +27.9/+27.7、`er→M` +27.0、`i→L` +22.3、`ing→D` +20.7 pct | 把高频韵母放到主行；通常牺牲部分 CKT |
+| 低 Pmax | `i→L` +46.1、`ei→C` +25.8、`iong→P` +22.1、`ia→S` +20.1、`ing→D` +17.3、`i→K` +17.2 pct | 把 `i` 移离 P，再用较低频韵母占 P |
+| 八项 B 好 | `er→J` +16.3、`un→B` +14.4、`ang→M` +14.2、`ua→D` +13.3、`ui→G` +12.7 pct | 对消歧有帮助，但单项效应比 `i` 的负担效应弱 |
+| 紧 M/D + 8B 内低 CKT | `i→P` +57.6、`ia→W` +55.1、`er→J` +52.2、`v→T` +51.9、`in→G` +51.1、`ou→F` +50.7、`ai→H` +50.0、`iang→F` +48.9 pct | 新 D3/D2/D1 快盆地最稳定的联合骨架 |
+
+总体 Spearman 相关中，CKT 与八项最差比为 **+0.871**、v5 为 **+0.637**、S2 为 **+0.580**；进入八项 B 门槛后，CKT 与 v5／S2／v4 的相关进一步升到 **+0.974／+0.903／+0.797**。也就是说，未过门槛时消歧失败主导坏分；一旦锁住八项 B，v5、S2 和 v4 所描述的路径速度重新成为主要梯度。Pmax 与 CKT 为 −0.195、主行与 CKT 为 +0.269，反映“把高频项推向边缘换速度”和“提高主行但牺牲部分模型速度”的总体张力。
+
+### 沿 pattern 找到的新沟壑
+
+随机搜索先得到三个 8B 种子和一个联合门槛种子；再在每一步保持相应门槛，做三类合法单步最陡下降及宽度 20 的二步越谷。最终结果：
+
+| 约束 | 此前 | 新局部底部 | 改善 | `i` 键 | 8B 最差 | Pmax | 主行 |
+| --- | ---: | --- | ---: | --- | ---: | ---: | ---: |
+| M≤44/D≤3、8B | 9.440387 | **`BCW-27ccf7edd435` · 9.406835** | **0.033551** | P | 0.997869 | 9.9872% | 41.3819% |
+| M≤43/D≤2、8B | 9.540116 | **`BCW-ad3d5675952a` · 9.534770** | 0.005346 | P | 0.998605 | 11.5989% | 42.6492% |
+| M≤42/D≤1、8B | 9.557776 | **`BCW-88bdd1d4edb9` · 9.556549** | 0.001227 | P | 0.999215 | 9.9872% | 42.2026% |
+| M≤43/D≤2、8B+负担+主行 | 9.623532 | **`BCW-ebdbf38c9a07` · 9.581854**（M42/D2） | **0.041679** | K | 0.998573 | 4.6757% | 50.0942% |
+
+D3 点经过 9 个下降步和 2 次二步越谷，最终 5,210 个二步状态保持 M/D 与 8B 门槛而无更优出口；D2 纯 8B 点经过 1 步和 1 次越谷；D1 种子本身即为局部极小值。联合 D2 点经过 8 步和 5 次二步越谷，最终扫描无出口。D0 的 45,000 次提案没有刷新纯速度边界，汇总池中仍没有 M≤41/D0 且八项全胜的状态。
+
+四个终点均由页面 JS 对 native、fixed、v2 映射独立重算，fast/exact CKT、编码和八项 B 一致，已加入本机 R11 图谱；目录由 645 增至 **649**。局部链分别保存在 [`pattern-eight-chains.json`](data/shenyun-21x21-completion-v2-attribute-pattern-eight-chains.json)、[`pattern-load-chain.json`](data/shenyun-21x21-completion-v2-attribute-pattern-load-chain.json) 和 [`pattern-load-chain-2.json`](data/shenyun-21x21-completion-v2-attribute-pattern-load-chain-2.json)，完整复算行在 [`pattern-reviewed.json`](data/shenyun-21x21-completion-v2-attribute-pattern-reviewed.json)。结构统计脚本为 [`analyze_completion_v2_patterns.py`](../scripts/research/analyze_completion_v2_patterns.py)。
+
 模型分数仍不是人体实测连续输入速度。选重、候选阅读、上屏动作和训练域外键序列沿用既有冻结假设；本轮只扩展了离散编码空间的可复算证据。
