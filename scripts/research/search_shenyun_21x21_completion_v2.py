@@ -490,6 +490,8 @@ def write_checkpoint(phase, completed, cap_m, cap_d):
             chosen[tuple(row['state'])] = row
     for row in seeds:
         chosen[tuple(row['state'])] = row
+    for row in anchored_endpoints.values():
+        chosen[tuple(row['state'])] = row
     payload = {
         'partial': True, 'seed': args.seed, 'phase': phase, 'completedTrials': completed,
         'trials': args.trials, 'objective': args.objective,
@@ -605,6 +607,11 @@ for phase, cap_m, cap_d in stages:
             selected[tuple(row['state'])] = row
 for row in seeds:
     selected[tuple(row['state'])] = row
+for row in anchored_endpoints.values():
+    selected[tuple(row['state'])] = row
+for row in rows.values():
+    if row['phase'] == 'face':
+        selected[tuple(row['state'])] = row
 proposal_rows = [row for row in rows.values()
                  if row['phase'] in {phase for phase, _, _ in stages}]
 pattern_analysis = analyze_population(proposal_rows, b.opt.META['finals'], b.opt.META['keys'])
