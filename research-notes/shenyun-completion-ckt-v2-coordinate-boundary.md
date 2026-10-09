@@ -117,3 +117,50 @@ D0 韵母面的最好近门槛点为 `BCW-5d4b57eba3b0`（CKT 9.922072，8B 最�
 - [`low-md-descents-reviewed.json`](data/shenyun-21x21-completion-v2-low-md-descents-reviewed.json)
 - [`m41d2-v2-reviewed.json`](data/shenyun-21x21-completion-v2-m41d2-v2-reviewed.json)
 - [`low-md-focused-search.json`](data/shenyun-21x21-completion-v2-low-md-focused-search.json)
+
+## 属性端点高维线段与新低 M 盆地（2026-10-09）
+
+进一步把上一轮速度、8B、负载/主行突出的前沿当作高维超立方体的两个端点，穷举端点之间每个差异位取左值或右值的全部组合。这个方法在 D1 找到了随机交叉没有命中的窄入口，但在 D3 的远端点之间也给出了很强的负面证据。
+
+| 层与口径 | 新代表前沿 | CKT v2 | 最坏 8B | Pmax | 主行 | S2 ms | v5 | v4 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| M41/D1，纯速度盆底 | `BCW-179ce0db1934` | **9.440602** | 1.009513 | 9.9872% | 42.4249% | 71.256 | 10.4250 | 10.8281 |
+| M41/D1，8B 速度盆底 | `BCW-f921a7d16044` | **9.541136** | **0.993585** | 9.9872% | 42.0284% | 71.159 | 10.5180 | 10.9234 |
+| M41/D1，综合 | `BCW-832393ee6991` | **9.583183** | **0.993585** | **4.3004%** | **51.3922%** | 72.944 | 10.6336 | 10.8835 |
+| M40/D1，8B 速度盆底 | `BCW-ede7b2a9282b` | **9.789885** | 0.993826 | 9.9872% | 42.0508% | 77.475 | 11.1026 | 10.8875 |
+
+其中，M41/D1 综合点相对 `BCW-d6125a9dcd59` 同时改善 CKT（9.592746→9.583183）与最坏 8B（0.997938→0.993585），并保持原有 Pmax/主行门槛。M41/D1 的 8B 速度端点再经局部下降，由 9.560576 降到 9.541136；M40/D1 则由这个新端点与旧 M40 端点的 8 维面进入 9.789885，超过旧 `BCW-dab69fa32d98` 的 9.800331。三个点的局部一至三步下降均未再找到出口。
+
+### 线段面穷举的正负证据
+
+| 端点面 | 组合数 | 合法状态 | 8B 合格 | 8B+负载/主行 | 结论 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| M41/D1 综合 ↔ 旧 8B | 524,288 | 48,958 | 44 | 14 | 找到新的综合点及 8B 速度入口 |
+| 新 M41/D1 8B ↔ 旧 M40/D1 8B | 256 | 134 | 3 | 0 | 找到新的 M40/D1 8B 盆底入口 |
+| 新 M41/D1 8B ↔ 新综合 | 64 | 33 | 1 个新 8B | 0 | 两个新盆地之间仍无兼得点 |
+| M43/D3 速度 ↔ 综合 | **8,388,608** | **385,526** | **2** | 1 | 仅复现两端邻域，无更优混合点 |
+
+M43/D3 的 23 个差异位全量扫描尤其有区分力：838 万个组合中只有 38.55 万个结构合法，保持 8B 的仅 2 个，分别贴近速度端和综合端，CKT 为 9.422146 与 9.471529，均劣于原端点。这说明两个 M43/D3 前沿不是同一条平滑沟槽上的两点，而更像被大面积 8B/结构禁区隔开的两个孤立盆地。
+
+### 新端点引导的 48,000 个补充提案
+
+面扫描产生新端点后，又分别投放 24,000 个属性极点、mixed motif、强制声母变异提案：
+
+| 目标层 | 提案 | 层内状态 | 层内 8B | 层内 8B+负载/主行 | 结果 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| M41/D1 | 24,000 | 8,465 | 490 | 155 | 发现 `BCW-6eaaf80f961d` 速度入口；8B 与综合前沿未动 |
+| M40/D1 | 24,000 | 7,075 | 148 | 0 | 8B 最佳仍为 `BCW-ede7b2a9282b`，综合门槛仍无解 |
+
+M41/D1 的微小速度入口（9.454007）随后沿无 8B 门槛的原始速度口径下降 6 步，闭合于 `BCW-179ce0db1934` 的 **9.440601575**。终点扫描了 1,250 个合法一阶层内邻居；再从 16 个最低一阶邻居生成 27,866 个二阶状态，并从 8 个最低二阶种子生成 13,968 个三阶状态，均无更低出口。它把旧纯速度端点 `BCW-0fb75a028854` 的 9.454034 改善约 0.01343，但最坏 8B 为 1.009513，因此没有消除速度与 8B/负载之间的盆地分裂。
+
+这轮还修正了面扫描的证据保留策略：显式指定的属性端点和所有 `face` 阶段结果现在不会再被通用精英裁剪丢弃。因此后续即使某个面没有产生新纪录，输出仍能完整复核端点与合格面点。
+
+新增三个前沿均通过 exact/native/fixed/v2 复算；R11 图谱由 666 项增至 **669** 项。主要证据：
+
+- [`face-m41d1-524k.json`](data/shenyun-21x21-completion-v2-face-m41d1-524k.json)
+- [`m41d1-face-descents-reviewed.json`](data/shenyun-21x21-completion-v2-m41d1-face-descents-reviewed.json)
+- [`face-m40d1-new-256.json`](data/shenyun-21x21-completion-v2-face-m40d1-new-256.json)
+- [`m40d1-new-eight-descent.json`](data/shenyun-21x21-completion-v2-m40d1-new-eight-descent.json)
+- [`face-m43d3-8m-part1.json`](data/shenyun-21x21-completion-v2-face-m43d3-8m-part1.json)、[`part2`](data/shenyun-21x21-completion-v2-face-m43d3-8m-part2.json)、[`part3`](data/shenyun-21x21-completion-v2-face-m43d3-8m-part3.json)
+
+补充定向搜索与纯速度下降又加入 `BCW-179ce0db1934`，图谱最终增至 **670** 项。对应证据为 [`m41d1-triple-search.json`](data/shenyun-21x21-completion-v2-m41d1-triple-search.json)、[`m40d1-bridge-search.json`](data/shenyun-21x21-completion-v2-m40d1-bridge-search.json)、[`m41d1-raw-speed-descent.json`](data/shenyun-21x21-completion-v2-m41d1-raw-speed-descent.json) 与 [`m41d1-raw-speed-reviewed.json`](data/shenyun-21x21-completion-v2-m41d1-raw-speed-reviewed.json)。
