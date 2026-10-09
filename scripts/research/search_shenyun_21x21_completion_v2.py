@@ -36,6 +36,12 @@ p.add_argument('--tau', type=float, default=600)
 p.add_argument('--first-aux', type=float, default=300)
 p.add_argument('--second-aux', type=float, default=300)
 p.add_argument('--seed', type=int, default=20261007)
+p.add_argument('--d3-max-m', type=int, default=44, choices=range(40, 45),
+               help='M ceiling for the D3 stage (default: 44)')
+p.add_argument('--d2-max-m', type=int, default=43, choices=range(40, 44),
+               help='M ceiling for the D2 stage (default: 43)')
+p.add_argument('--d1-max-m', type=int, default=42, choices=range(39, 43),
+               help='M ceiling for the D1 stage (default: 42)')
 p.add_argument('--d0-max-m', type=int, default=41, choices=range(38, 43))
 p.add_argument('--prior', type=Path, nargs='*', default=[])
 p.add_argument('--objective', choices=('v2', 'fixed'), default='v2')
@@ -492,6 +498,8 @@ def write_checkpoint(phase, completed, cap_m, cap_d):
         'motifProfile': args.motif_profile, 'motifShare': args.motif_share,
         'motifLocks': args.motif_locks, 'selectionFocus': args.selection_focus,
         'bufferPmax': args.buffer_pmax, 'bufferHome': args.buffer_home,
+        'd3MaxM': args.d3_max_m, 'd2MaxM': args.d2_max_m,
+        'd1MaxM': args.d1_max_m, 'd0MaxM': args.d0_max_m,
         'counts': dict(counts[phase]), 'scoredTotal': len(rows),
         'results': list(chosen.values()),
     }
@@ -502,7 +510,9 @@ def write_checkpoint(phase, completed, cap_m, cap_d):
     print('CHECKPOINT', checkpoint, len(chosen), flush=True)
 
 
-stages = [('broad', 48, 7), ('D3', 44, 3), ('D2', 43, 2), ('D1', 42, 1), ('D0', args.d0_max_m, 0)]
+stages = [('broad', 48, 7), ('D3', args.d3_max_m, 3),
+          ('D2', args.d2_max_m, 2), ('D1', args.d1_max_m, 1),
+          ('D0', args.d0_max_m, 0)]
 stage_summaries = {}
 for (phase, cap_m, cap_d), trials in zip(stages, args.trials):
     stage_rows = [row for row in rows.values() if row['M'] <= cap_m and row['D'] <= cap_d]
@@ -620,6 +630,8 @@ output = {'purpose': __doc__, 'seed': args.seed, 'tauMs': args.tau,
           'pCap': p_cap, 'homeFloor': .5, 'trials': args.trials,
           'seedCount': len(seeds), 'scoredTotal': len(rows), 'stages': stage_summaries,
           'proposalPatternAnalysis': pattern_analysis,
+          'd3MaxM': args.d3_max_m, 'd2MaxM': args.d2_max_m,
+          'd1MaxM': args.d1_max_m,
           'd0MaxM': args.d0_max_m,
           'results': list(selected.values())}
 args.output.parent.mkdir(parents=True, exist_ok=True)
