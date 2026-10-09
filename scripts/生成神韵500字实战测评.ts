@@ -97,6 +97,7 @@ interface PathResult {
 	keys: number;
 	spaces: number;
 	shifts: number;
+	fixedCount: number;
 }
 
 interface ReplayToken {
@@ -242,6 +243,10 @@ function soundCode(syllable: string) {
 	return mapping.codes[plainSyllable(syllable)] ?? null;
 }
 
+function countUpper(str: string): number {
+	return [...str].filter((c) => /[A-Z]/u.test(c)).length;
+}
+
 function pronunciationCodes(
 	scheme: SchemeId,
 	word: string,
@@ -287,18 +292,29 @@ function pronunciationCodes(
 			);
 		}
 	} else {
-		base = safeSounds.map((code) => code[0]).join("");
+		// 三字及以上词：5 字及以上词前 4 码小写，第 5 码及以后的码必须大写
+		base = safeSounds
+			.map((code, idx) => {
+				const initial = code[0];
+				return idx < 4 ? initial.toLowerCase() : initial.toUpperCase();
+			})
+			.join("");
+
 		if (scheme === "sanpin") {
-			const indexes = [syllables.length - 1, 0, 1];
-			suffixes = indexes
-				.map((index) => toneOf(syllables[index]))
-				.map((tone) => (tone ? toneKeys[tone] : undefined))
-				.filter((value): value is string => Boolean(value));
+			if ([...word].length <= 4) {
+				const indexes = [syllables.length - 1, 0, 1];
+				suffixes = indexes
+					.map((index) => toneOf(syllables[index]))
+					.map((tone) => (tone ? toneKeys[tone] : undefined))
+					.filter((value): value is string => Boolean(value));
+			}
 		} else {
-			const limit = syllables.length === 3 ? 3 : 2;
-			suffixes = [...word]
-				.slice(0, limit)
-				.map((character) => shapeCodes.get(character)?.[0] ?? "");
+			if ([...word].length <= 4) {
+				const limit = syllables.length === 3 ? 3 : 2;
+				suffixes = [...word]
+					.slice(0, limit)
+					.map((character) => shapeCodes.get(character)?.[0] ?? "");
+			}
 		}
 	}
 	const codes = [base];
@@ -400,15 +416,16 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 		}
 	};
 	for (const [code, value] of fixed) {
+		const upper = countUpper(code);
 		add({
 			word: value.word,
 			displayCode: code,
 			rawCode: code,
-			keyCost: code.length,
-			instant: false,
-			popppable: isPoppable(code),
+			keyCost: code.length + upper,
+			instant: upper > 0,
+			popppable: upper === 0 && isPoppable(code),
 			source: value.source,
-			shift: 0,
+			shift: upper,
 		});
 	}
 
@@ -467,15 +484,16 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 	for (const [code, owners] of targetCodeOwners) {
 		const winner = top.get(code)?.word;
 		if (!winner || !owners.has(winner) || fixed.has(code)) continue;
+		const upper = countUpper(code);
 		add({
 			word: winner,
 			displayCode: code,
 			rawCode: code,
-			keyCost: code.length,
-			instant: false,
-			popppable: isPoppable(code),
+			keyCost: code.length + upper,
+			instant: upper > 0,
+			popppable: upper === 0 && isPoppable(code),
 			source: "普通码",
-			shift: 0,
+			shift: upper,
 		});
 	}
 
@@ -536,7 +554,7 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
 	const characters = [...text];
 	const best: Array<PathResult | undefined> = new Array(characters.length + 1);
-	best[characters.length] = { tokens: [], keys: 0, spaces: 0, shifts: 0 };
+	best[characters.length] = { tokens: [], keys: 0, spaces: 0, shifts: 0, fixedCount: 0 };
 	for (let start = characters.length - 1; start >= 0; start -= 1) {
 		const character = characters[start];
 		if (!/\p{Script=Han}/u.test(character)) {
@@ -563,6 +581,7 @@ function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
 				keys: rest.keys + 1,
 				spaces: rest.spaces,
 				shifts: rest.shifts,
+				fixedCount: rest.fixedCount,
 			};
 			continue;
 		}
@@ -577,24 +596,29 @@ function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
 					end < characters.length && /\p{Script=Han}/u.test(characters[end]);
 				const separator =
 					followedByHan && !alternative.instant && !alternative.popppable;
+				const isFixed =
+					alternative.source === "一简" ||
+					alternative.source === "二简单字" ||
+					alternative.source === "二简词" ||
+					alternative.source === "630";
 				const candidate: PathResult = {
 					tokens: [{ ...alternative, start, end, separator }, ...rest.tokens],
 					keys: alternative.keyCost + Number(separator) + rest.keys,
 					spaces: Number(separator) + rest.spaces,
 					shifts: alternative.shift + rest.shifts,
+					fixedCount: rest.fixedCount + (isFixed ? 1 : 0),
 				};
 				const current = best[start];
-				if (
-					!current ||
-					candidate.keys < current.keys ||
-					(candidate.keys === current.keys &&
-						candidate.tokens.length < current.tokens.length) ||
-					(candidate.keys === current.keys &&
-						candidate.tokens.length === current.tokens.length &&
-						(candidate.spaces < current.spaces ||
-							(candidate.spaces === current.spaces &&
-								candidate.shifts < current.shifts)))
-				) {
+
+				const isBetter = (cand: PathResult, cur: PathResult) => {
+					if (cand.keys !== cur.keys) return cand.keys < cur.keys;
+					if (cand.tokens.length !== cur.tokens.length) return cand.tokens.length < cur.tokens.length;
+					if (cand.fixedCount !== cur.fixedCount) return cand.fixedCount > cur.fixedCount; // 固顶简码绝对优先！
+					if (cand.spaces !== cur.spaces) return cand.spaces < cur.spaces;
+					return cand.shifts < cur.shifts;
+				};
+
+				if (!current || isBetter(candidate, current)) {
 					best[start] = candidate;
 				}
 			}
