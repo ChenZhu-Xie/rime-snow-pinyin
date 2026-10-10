@@ -129,3 +129,37 @@ test("两个飞花原型都随部署带上共用配置", () => {
 	}
 	assert.match(read("scripts/tasks.ts"), /"snow_shenyun_common\.yaml"/u);
 });
+
+test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", () => {
+	const initialKeys = "bpmfdtnlgkhjqwvxrzcsy";
+	const auxiliaryKeys = "aeuio";
+	const expectedFirst = {
+		b: "不", p: "平", m: "没", f: "这", d: "是", t: "他", n: "你",
+		l: "了", g: "个", k: "可", h: "和", j: "就", q: "在", x: "下",
+		z: "人", c: "才", s: "三", r: "的", y: "一", w: "我", v: "出",
+	} as Record<string, string>;
+
+	for (const filename of ["snow_shenyun_shape.fixed.txt", "snow_shenyun_tone.fixed.txt"]) {
+		const content = read(filename);
+		const lines = content.split(/\r?\n/).filter((line) => line && !line.startsWith("#"));
+		assert.equal(lines.length, 21, `文件 ${filename} 应恰好包含 21 个声键条目`);
+		const keys = new Set<string>();
+
+		for (const line of lines) {
+			const [key, candidatesStr] = line.split("\t");
+			assert.ok(key && initialKeys.includes(key), `键 ${key} 必须属于 21 声母键`);
+			assert.equal(auxiliaryKeys.includes(key), false, `辅码键 ${key} 不能作为声键`);
+			assert.equal(keys.has(key), false, `键 ${key} 不能重复`);
+			keys.add(key);
+
+			const candidates = candidatesStr.trim().split(/\s+/);
+			assert.equal(candidates.length, 6, `键 ${key} 候选列表应为 1 首选 + 5 次选`);
+			assert.equal(candidates[0], expectedFirst[key], `键 ${key} 的首选字必须为 ${expectedFirst[key]}`);
+		}
+		assert.equal(keys.size, 21);
+	}
+
+	const lua = read("lua/snow/shenyun.lua");
+	assert.match(lua, /n == 1 and contains\(A, input\)/u, "shenyun.lua 必须支持单声母简拼路由");
+});
+
