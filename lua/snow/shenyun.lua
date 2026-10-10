@@ -1,6 +1,6 @@
 -- 冰雪神韵·形 / 冰雪神韵·调的飞码式翻译器
 --
--- 主码族：单字 AU、二字 AUAU、三字 AAA / AAAU、四字 AAAA。
+-- 主码族：一简 A、单字 AU、二字 AUAU、三字 AAA / AAAU、四字 AAAA。
 -- 两个方案共用 R10-21X26-M39-08 声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
@@ -192,6 +192,9 @@ local function routes_for(input, env)
   local n = input:len()
   local A, U, B = env.initial_keys, env.final_keys, env.auxiliary_keys
 
+  if n == 1 and contains(A, input) then
+    add_route(routes, "A", input, "", 1)
+  end
   if n >= 2 and contains(A, input:sub(1, 1)) and contains(U, input:sub(2, 2))
       and all_in(input, 3, B) then
     add_route(routes, "AU", input:sub(1, 2), input:sub(3), 1)
