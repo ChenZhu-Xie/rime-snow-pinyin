@@ -209,7 +209,7 @@ function makeRowsForScheme(entry, data, stroke, multiwords) {
   const codes = entry.codeList;
   const toneKeys = entry.tone;
   const shape = data.shapes.snowshape;
-  const keytaoWordFirstCharFirst = Array.isArray(entry.capacity) && entry.capacity[0] === 21 && entry.capacity[1] === 21;
+  const is21x21 = Array.isArray(entry.capacity) && entry.capacity[0] === 21 && entry.capacity[1] === 21;
 
   const chars_kt = [];
   const chars_sp = [];
@@ -249,8 +249,8 @@ function makeRowsForScheme(entry, data, stroke, multiwords) {
     const [ch1, ch2] = [...text];
     const x1 = physicalShape(shape[ch1], toneKeys), x2 = physicalShape(shape[ch2], toneKeys);
     const t1 = toneKeys[tone1 - 1], t2 = toneKeys[tone2 - 1];
-    const b1 = keytaoWordFirstCharFirst ? x1 : x2;
-    const b2 = keytaoWordFirstCharFirst ? x2 : x1;
+    const b1 = is21x21 ? x1 : x2;
+    const b2 = is21x21 ? x2 : x1;
 
     w2_kt.push({
       text, weight,
@@ -281,8 +281,8 @@ function makeRowsForScheme(entry, data, stroke, multiwords) {
     const chars = [...text];
     const x0 = physicalShape(shape[chars[0]], toneKeys);
     const x1 = physicalShape(shape[chars[1]], toneKeys);
-    const t_last = toneKeys[tones[2] - 1];
-    const t_first = toneKeys[tones[0] - 1];
+    const t_aux1 = is21x21 ? toneKeys[tones[2] - 1] : toneKeys[tones[0] - 1];
+    const t_aux2 = is21x21 ? toneKeys[tones[0] - 1] : toneKeys[tones[1] - 1];
 
     w3_kt.push({
       text, weight,
@@ -297,8 +297,8 @@ function makeRowsForScheme(entry, data, stroke, multiwords) {
       text, weight,
       codes: [
         [base],
-        t_last ? [base + t_last] : [base],
-        t_last && t_first ? [base + t_last + t_first] : (t_last ? [base + t_last] : [base])
+        t_aux1 ? [base + t_aux1] : [base],
+        t_aux1 && t_aux2 ? [base + t_aux1 + t_aux2] : (t_aux1 ? [base + t_aux1] : [base])
       ]
     });
   }
@@ -313,8 +313,8 @@ function makeRowsForScheme(entry, data, stroke, multiwords) {
     const chars = [...text];
     const x0 = physicalShape(shape[chars[0]], toneKeys);
     const x1 = physicalShape(shape[chars[1]], toneKeys);
-    const t_last = toneKeys[tones[3] - 1];
-    const t_first = toneKeys[tones[0] - 1];
+    const t_aux1 = is21x21 ? toneKeys[tones[3] - 1] : toneKeys[tones[0] - 1];
+    const t_aux2 = is21x21 ? toneKeys[tones[0] - 1] : toneKeys[tones[1] - 1];
 
     w4_kt.push({
       text, weight,
@@ -329,8 +329,8 @@ function makeRowsForScheme(entry, data, stroke, multiwords) {
       text, weight,
       codes: [
         [base],
-        t_last ? [base + t_last] : [base],
-        t_last && t_first ? [base + t_last + t_first] : (t_last ? [base + t_last] : [base])
+        t_aux1 ? [base + t_aux1] : [base],
+        t_aux1 && t_aux2 ? [base + t_aux1 + t_aux2] : (t_aux1 ? [base + t_aux1] : [base])
       ]
     });
   }
