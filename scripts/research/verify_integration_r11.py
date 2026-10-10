@@ -10,18 +10,17 @@ match = re.search(r'<script id="payload"[^>]*>([^<]+)</script>', text)
 data = json.loads(gzip.decompress(base64.b64decode(match.group(1))))
 
 print("Total schemes:", len(data["entries"]))
-target_ids = [
-    "BCW-52efebf27ff1",
-    "BCW-45ead2c51d37",
-    "BCW-d976864e1f53",
-    "BCW-b77e2d88ac94",
-    "BCW-511d69ea162d",
-    "BCW-72a9341d2fdc",
-    "BCW-5ec69bbb9ec9"
+round2_ids = [
+    "BCW-40d7168c0550",
+    "BCW-12d72973b5b5",
+    "BCW-e3a5ec0586d5",
+    "BCW-4e12e84ed877",
+    "BCW-9d3ffcc750b2",
+    "BCW-106d38018322"
 ]
 
 entries_map = {e["id"]: e for e in data["entries"]}
-for tid in target_ids:
+for tid in round2_ids:
     e = entries_map.get(tid)
     assert e is not None, f"Missing entry: {tid}"
     assert len(e["initialMap"]) > 0, f"Empty initialMap: {tid}"
@@ -34,7 +33,6 @@ for tid in target_ids:
     assert tid in data["completionBV3"]["schemes"], f"Missing completionBV3: {tid}"
     v3_modes = data["completionBV3"]["schemes"][tid]["modes"]
     assert "keytao" in v3_modes and "sanpin" in v3_modes, f"Incomplete v3 modes: {tid}"
-    print(f"Verified {tid}: {e['name']} | 20-tracks OK | LoadSummary keys: {list(data['r11LoadSummaries'][tid].keys())} | CKT v3 OK")
+    print(f"Verified {tid}: {e['name']} | 20-tracks OK | Heatmap OK | CKT v3 OK")
 
-print("\nAll 7 schemes verified successfully in a7_CKT_R11.html!")
-
+print("\nAll 6 Round 2 breakthrough schemes verified successfully in a7_CKT_R11.html!")
