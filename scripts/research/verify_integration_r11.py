@@ -11,13 +11,13 @@ data = json.loads(gzip.decompress(base64.b64decode(match.group(1))))
 
 print("Total schemes in HTML:", len(data["entries"]))
 target_ids = [
-    # Round 3 (5 schemes)
+    # 21x21 Round 3 (5 schemes)
     "BCW-e806ff772afe",
     "BCW-a430bb64e17b",
     "BCW-121d11f6b6c4",
     "BCW-3c47744cf2f7",
     "BCW-4119add30591",
-    # Round 4 (27 schemes: high-value seeds + frontier & basin champions)
+    # 21x21 Round 4 (27 schemes: high-value seeds + frontier & basin champions)
     "BCW-f420619c19db",
     "BCW-d18a30c7ca84",
     "BCW-ee2924bf75d6",
@@ -45,11 +45,52 @@ target_ids = [
     "BCW-2dd583d61844",
     "BCW-1a11061c8293",
     "BCW-2662bd325b7d",
+    # 21x26 IEUAO 399-unique pure-y CKT v3 Frontier & Seeds (40 schemes)
+    "SY26-V3-M42-D8-ULTIMATE-01",
+    "SY26-V3-M41-D8-SPEED-HOME-01",
+    "SY26-V3-M40-D7-SPEED-01",
+    "SY26-V3-M40-D7-ALLROUND-01",
+    "SY26-V3-M40-D6-LOW-S2-01",
+    "SY26-V3-M41-D7-ULTRALOW-PINKY-01",
+    "SY26-V3-M40-D7-LOW-PINKY-01",
+    "SY26-V3-M39-D6-SPEED-01",
+    "SY26-V3-M39-D5-LOW-PINKY-01",
+    "SY26-V3-M39-D5-BALANCED-01",
+    "SY26-V3-M38-D5-ULTRALOW-PINKY-01",
+    "SY26-V3-M38-D4-SPEED-01",
+    "SY26-V3-M38-D4-BALANCED-01",
+    "SY26-V3-M38-D3-V1-NO-DE-01",
+    "SY26-V3-M38-D3-V1-LOW-PINKY-01",
+    "SY26-V3-M37-D4-V0-NO-DE-01",
+    "SY26-V3-M37-D4-V0-NO-DE-LP-01",
+    "SY26-V3-M37-D3-V0-SPEED-01",
+    "SY26-V3-M37-D3-V0-NO-DE-LP-01",
+    "SY26-V3-M37-D2-V1-ULTRALOW-PINKY-01",
+    "SY26-V3-M37-D2-V1-SPEED-01",
+    "SY26-V3-M36-D3-V0-SPEED-01",
+    "SY26-V3-M36-D3-V0-NO-DE-LP-01",
+    "SY26-V3-M36-D2-V0-SPEED-01",
+    "SY26-V3-M36-D2-V0-NO-DE-01",
+    "SY26-V3-M36-D2-V1-NO-DE-01",
+    "SY26-V3-M36-D1-V1-SPEED-01",
+    "SY26-V3-M36-D1-V1-BALANCED-01",
+    "SY26-V3-M35-D2-V0-MINMEM-01",
+    "SY26-V3-M35-D1-V0-MINMEM-01",
+    "SY26-V3-M38-D1-V3-HIGH-HOME-45-01",
+    "SY26-V3-M38-D2-V1-HIGH-HOME-46-01",
+    "SY26-V3-M40-D3-V3-HIGH-HOME-47-01",
+    "SY26-V3-M39-D2-V1-HIGH-HOME-48-01",
+    "SY26-V3-M40-D2-V4-HIGH-HOME-51-01",
+    "SY26-V3-M42-HIGH-HOME-52-01",
+    "SY26-V3-M46-D8-V4-HIGH-HOME-55-01",
+    "SY26-V3-M40-D5-V1-CANYON-34-01",
+    "SY26-V3-M38-D5-V0-CANYON-38-01",
+    "SY26-V3-M38-D5-V0-CANYON-45-01",
 ]
 
 entries_map = {e["id"]: e for e in data["entries"]}
 all_ids = set(entries_map.keys())
-assert len(all_ids) == 715, f"Expected 715 schemes, got {len(all_ids)}"
+assert len(all_ids) == 755, f"Expected 755 schemes, got {len(all_ids)}"
 assert set(data["completionB"]["schemes"].keys()) == all_ids
 assert set(data["completionBFixed"]["schemes"].keys()) == all_ids
 assert set(data["completionBV2"]["schemes"].keys()) == all_ids
@@ -62,6 +103,8 @@ for tid in target_ids:
     assert len(e["finalMap"]) > 0, f"Empty finalMap: {tid}"
     assert "bPathMetrics" in e and "bPathMetricsNative" in e, f"Missing 8B metrics: {tid}"
     assert "memoryAuditR2" in e and "logicAudit" in e and "sound" in e, f"Missing entry audit/sound: {tid}"
+    if tid.startswith("SY26-"):
+        assert "fourCodeCollision" in e and e["fourCodeCollision"].get("fiveCutAverageCrossAffectedRate") is not None, f"Missing fourCodeCollision: {tid}"
     assert len(data["ckt"]["tracks"][tid]) == 20, f"Incomplete 20-tracks: {tid}"
     assert tid in data["r11LoadSummaries"], f"Missing load summary (heatmap): {tid}"
     assert tid in data["ensembleV5"]["values"] and tid in data["ensembleV6"]["values"], f"Missing ensemble V5/V6: {tid}"
@@ -75,4 +118,4 @@ for tid in target_ids:
     assert "keytao" in v3_modes and "sanpin" in v3_modes, f"Incomplete v3 modes: {tid}"
     print(f"Verified {tid}: {e['name']} | 20-tracks OK | V5/V6/Pair OK | Heatmap OK | 8B OK | CKT v1/v2/v3 OK")
 
-print(f"\nAll {len(target_ids)} Round 3 + Round 4 schemes (715 total in catalogue) verified successfully in a7_CKT_R11.html!")
+print(f"\nAll {len(target_ids)} integrated 21x21 + 21x26 schemes (755 total in catalogue) verified successfully in a7_CKT_R11.html!")
