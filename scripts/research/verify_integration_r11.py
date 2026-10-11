@@ -45,6 +45,47 @@ target_ids = [
     "BCW-2dd583d61844",
     "BCW-1a11061c8293",
     "BCW-2662bd325b7d",
+    # 21x21 Round 5 (40 schemes: super-initial seeds, Triple-Crown basin, D=0..5 frontiers)
+    "BCW-c006bc0bcfc0",
+    "BCW-cdf451dbb5af",
+    "BCW-2992c2dd117a",
+    "BCW-de550fbc54f2",
+    "BCW-2183a74ed802",
+    "BCW-6437d508508e",
+    "BCW-25fd28a07cb2",
+    "BCW-a091aefd7c62",
+    "BCW-d47f52c1935a",
+    "BCW-ef5f9e313e42",
+    "BCW-ccf01e81bdff",
+    "BCW-9072021c0d2e",
+    "BCW-ef1f08e90cbf",
+    "BCW-4111530f86f1",
+    "BCW-b14ed148fe1a",
+    "BCW-07a2469133f4",
+    "BCW-f52619067db6",
+    "BCW-6e3d331b343c",
+    "BCW-03a5dd877fec",
+    "BCW-183af75dd6ef",
+    "BCW-46888b0ed91c",
+    "BCW-ac815a99a0f2",
+    "BCW-16b0d2563e9d",
+    "BCW-1c10aa7eb448",
+    "BCW-a589dc815187",
+    "BCW-2076db7bcc07",
+    "BCW-342a964e819b",
+    "BCW-f54b4fba49fa",
+    "BCW-1a040659d24b",
+    "BCW-930ec5a423bf",
+    "BCW-2d7139ba68aa",
+    "BCW-504b91337b40",
+    "BCW-ac739660ba29",
+    "BCW-2278a7a6d745",
+    "BCW-b51182f30d14",
+    "BCW-ed7d5ba01a64",
+    "BCW-46ff90c789bf",
+    "BCW-8a3bc6ddb1fe",
+    "BCW-6a2c3cb77e53",
+    "BCW-3f9c225a709d",
     # 21x26 IEUAO 399-unique pure-y CKT v3 Frontier & Seeds (40 schemes)
     "SY26-V3-M42-D8-ULTIMATE-01",
     "SY26-V3-M41-D8-SPEED-HOME-01",
@@ -90,7 +131,7 @@ target_ids = [
 
 entries_map = {e["id"]: e for e in data["entries"]}
 all_ids = set(entries_map.keys())
-assert len(all_ids) == 755, f"Expected 755 schemes, got {len(all_ids)}"
+assert len(all_ids) == 795, f"Expected 795 schemes, got {len(all_ids)}"
 assert set(data["completionB"]["schemes"].keys()) == all_ids
 assert set(data["completionBFixed"]["schemes"].keys()) == all_ids
 assert set(data["completionBV2"]["schemes"].keys()) == all_ids
@@ -118,4 +159,4 @@ for tid in target_ids:
     assert "keytao" in v3_modes and "sanpin" in v3_modes, f"Incomplete v3 modes: {tid}"
     print(f"Verified {tid}: {e['name']} | 20-tracks OK | V5/V6/Pair OK | Heatmap OK | 8B OK | CKT v1/v2/v3 OK")
 
-print(f"\nAll {len(target_ids)} integrated 21x21 + 21x26 schemes (755 total in catalogue) verified successfully in a7_CKT_R11.html!")
+print(f"\nAll {len(target_ids)} integrated 21x21 + 21x26 schemes ({len(all_ids)} total in catalogue) verified successfully in a7_CKT_R11.html!")
