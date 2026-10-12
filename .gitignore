@@ -68,6 +68,9 @@ program/generate_dict_code/jdh.dict.yaml
 
 # 临时垃圾桶
 trash/
+/research-notes/data/
+.verysync/
+.verysyncignore
 # 上游生成文件（任意层级）
 build
 *.userdb
