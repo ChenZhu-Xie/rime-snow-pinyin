@@ -185,10 +185,10 @@ deploy:
       - send: "{Control+period}bdxyerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
       # 本地键道使用 jjv/gc/tp/xg；数字和字母取第二候选。
-      - send: "{Control+period}jjv2 gc2 tp xg  jgtx"
+      - send: "{Control+period}jjv2gc2tpxg  jgtx"
         assert: trace() and cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
-      - send: "{Control+period}dy lw xw2 mn  dlxm"
+      - send: "{Control+period}dyou lwo xw2 mn  dlxm"
         assert: trace() and cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:
@@ -196,7 +196,7 @@ deploy:
       # 拼音反查（`a` 引导）
       - send: ashi
         assert: cand[1].text == "是"
-      # 本地笔画顺序为横竖撇点折 → ivuao。
+      # 键道笔画顺序为横竖撇点折 → viuoa。
       - send: uviuoa
         assert: cand[1].text == "札"
       # 重复上屏（`i` 引导）
@@ -236,7 +236,7 @@ deploy:
         assert: not pinned(1)
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
-      - send: "kfc{Control+apostrophe}fkxqS Vw 50{Control+apostrophe}kfc"
+      - send: "kfc{Control+apostrophe}fkxqS Vj 50{Control+apostrophe}kfc"
         assert: trace() and cand[1].text == "疯狂星期四V我50"
       # 本地 hb 固顶好吧：新词不得挤掉已有首选。
       - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"

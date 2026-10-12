@@ -190,6 +190,17 @@ test("Clear Rhyme keeps history separate from the double-backtick Lua trigger", 
 	);
 });
 
+test("Three-Code keeps two-syllable full codes ahead of colliding initial abbreviations", () => {
+	const schema = read("snow_sanpin.schema.yaml");
+	assert.match(schema, /translator\/t12_preserve_proxy_quality: true/u);
+	const translator = read("lua/snow/table_like.lua");
+	assert.match(
+		translator,
+		/get_bool\("translator\/t12_preserve_proxy_quality"\)/u,
+	);
+	assert.match(translator, /candidate\.quality = candidate\.quality \+ proxy_bonus/u);
+});
+
 test("R9 KeyTao letter and number candidates follow the active schema", () => {
 	const lines = new Map(
 		read("snow_jiandao.fixed.txt")

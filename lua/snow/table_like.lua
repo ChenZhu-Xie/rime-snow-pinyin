@@ -7,6 +7,28 @@ local snow = require "snow.snow"
 ---@field translator Translator
 ---@field pattern string
 ---@field pattern2 string
+---@field preserve_t12_proxy_quality boolean
+
+---@param candidate Candidate
+---@param proxy string
+---@param normal boolean
+---@param preserve_proxy_quality boolean
+---@return Candidate
+local function prepare(candidate, proxy, normal, preserve_proxy_quality)
+  local proxy_bonus = 0
+  if preserve_proxy_quality then
+    local proxy_segment = proxy:sub(1, candidate._end - candidate._start)
+    local real_segment = proxy_segment:gsub("[ ?~]", "")
+    local real_input_length = proxy:gsub("[ ?~]", ""):len()
+    local filler_length = proxy_segment:len() - real_segment:len()
+    if filler_length > 0 and real_input_length > 0 then
+      proxy_bonus = filler_length / real_input_length
+    end
+  end
+  candidate = snow.prepare(candidate, proxy, normal)
+  candidate.quality = candidate.quality + proxy_bonus
+  return candidate
+end
 
 local t12 = {}
 ---@type Translator?
@@ -23,6 +45,8 @@ function t12.init(env)
   env.translator = T12Translator
   env.pattern = env.engine.schema.config:get_string("translator/t1_pattern") or "^.+$"
   env.pattern2 = env.engine.schema.config:get_string("translator/t2_pattern") or "^.+$"
+  env.preserve_t12_proxy_quality =
+      env.engine.schema.config:get_bool("translator/t12_preserve_proxy_quality") or false
 end
 
 ---@param input string
@@ -35,7 +59,7 @@ function t12.func(input, segment, env)
     local translation = env.translator:query(input, segment)
     if translation then
       for candidate in translation:iter() do
-        yield(snow.prepare(candidate, input, true))
+        yield(prepare(candidate, input, true, env.preserve_t12_proxy_quality))
       end
     end
     if input:len() == 2 then
@@ -43,7 +67,7 @@ function t12.func(input, segment, env)
       local translation2 = env.translator:query(proxy, segment)
       if translation2 then
         for candidate in translation2:iter() do
-          yield(snow.prepare(candidate, proxy, true))
+          yield(prepare(candidate, proxy, true, env.preserve_t12_proxy_quality))
         end
       end
     end
@@ -58,7 +82,7 @@ function t12.func(input, segment, env)
     if translation then
       for candidate in translation:iter() do
         if utf8.len(candidate.text) <= 2 then
-          yield(snow.prepare(candidate, proxy, true))
+          yield(prepare(candidate, proxy, true, env.preserve_t12_proxy_quality))
         end
       end
     end

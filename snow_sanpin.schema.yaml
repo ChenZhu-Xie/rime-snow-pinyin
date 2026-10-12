@@ -202,6 +202,8 @@ patch:
   translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[ivuao]?"
   translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[ivuao]{0,2}"
   translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywe]{3,}[ivuao]{0,3}"
+  # 神韵四声母简拼碰撞较多；显式保留双字代理码原有的长度质量，避免简拼压过双字全码。
+  translator/t12_preserve_proxy_quality: true
   # 与四拼一致：先顶出当前候选，再直接提交高频尾字。
   # 保留 d→的、l→了，;/ 只作为可选的强制上屏尾字键。
   punctuator/half_shape/+:

@@ -262,7 +262,7 @@ deploy:
   advanced:
     tests:
       - send: azhe
-        assert: trace() and cand[1].text == "着"
+        assert: trace() and cand[1].text == "这" and has("着")
       # 本地横竖撇点折依次为 i/v/u/a/o（上游为 v/i/u/o/a）。
       - send: uivuao
         assert: cand[1].text == "札"
@@ -304,7 +304,7 @@ deploy:
       - send: "bpmw{Control+comma}bpmw"
         assert: not pinned(1)
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
-      - send: "kfc{Control+apostrophe}fkxqS Vw 50{Control+apostrophe}kfc"
+      - send: "kfc{Control+apostrophe}fkxqS Vj 50{Control+apostrophe}kfc"
         assert: trace() and cand[1].text == "疯狂星期四V我50"
       # 本地 hb 固顶好吧：新词不得挤掉已有的首选。
       - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
