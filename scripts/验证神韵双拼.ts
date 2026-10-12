@@ -9,6 +9,7 @@ import {
 	readShapeCodes,
 	sanpinLetterEntries,
 	sanpinSingleAliases,
+	sanpinTemporaryNumberEntries,
 	wordLength,
 } from "./固顶编译器";
 
@@ -253,6 +254,11 @@ function codeBelongsToSection(file: string, section: string, code: string) {
 			file === "snow_sanpin.fixed.txt" &&
 			sanpinLetterEntries.some(([letterCode]) => letterCode === code)
 		);
+	if (section === "# 临时数字")
+		return (
+			file === "snow_sanpin.fixed.txt" &&
+			sanpinTemporaryNumberEntries.some(([numberCode]) => numberCode === code)
+		);
 	if (section === "# 二简词")
 		return code.length === 2 && [...code].every((key) => mainKeys.has(key));
 	if (section === "# 630")
@@ -276,6 +282,7 @@ function codeBelongsToSection(file: string, section: string, code: string) {
 }
 
 const sanpinLetterCandidates = new Map(sanpinLetterEntries);
+const sanpinTemporaryNumberCandidates = new Map(sanpinTemporaryNumberEntries);
 
 function isSupplementalCandidate(
 	file: string,
@@ -288,8 +295,14 @@ function isSupplementalCandidate(
 	}
 	if (file !== "snow_sanpin.fixed.txt") return false;
 	if (section === "# 单字") return sanpinSingleAliases.get(code) === word;
-	if (section !== "# 字母") return false;
-	return sanpinLetterCandidates.get(code)?.split(" ").includes(word) ?? false;
+	if (section === "# 字母")
+		return sanpinLetterCandidates.get(code)?.split(" ").includes(word) ?? false;
+	if (section === "# 临时数字")
+		return (
+			sanpinTemporaryNumberCandidates.get(code)?.split(" ").includes(word) ??
+			false
+		);
+	return false;
 }
 
 for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {

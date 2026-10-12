@@ -164,3 +164,70 @@ deploy:
       # 缓冲造词
       - send: "vwm mzu  wmmz"
         assert: cand[1].text == "长猫"
+      - send: "{Control+period}bdxyerf  bxerF"
+        assert: cand[1].text == "冰雪输入法"
+      # 本地键道使用 jjv/gs/tp/xg；数字和字母取第二候选。
+      - send: "{Control+period}jjv2 gs2 tp xg  jgtx"
+        assert: cand[1].text == "5G通信"
+      # 元音字母的简拼声母是本地零声母载体 q，使用独立键道棱镜。
+      - send: "{Control+period}dy lw qw2 mn  dlqm"
+        assert: cand[1].text == "哆啦A梦"
+  # 高级功能
+  advanced:
+    tests:
+      # 拼音反查（`a` 引导）
+      - send: ashi
+        assert: cand[1].text == "是"
+      # 本地笔画顺序为横竖撇点折 → ivuao。
+      - send: uivuao
+        assert: cand[1].text == "札"
+      # 重复上屏（`i` 引导）
+      - send: "wpfj i"
+        assert: cand[1].text == "重复"
+      # 符号（`i` 引导）
+      - send: ia
+        assert: cand[1].text == "ā"
+      # Lua 脚本：数字转中文数字
+      - send: o123
+        assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Lua 脚本：计算表达式
+      - send: o1234*5678
+        assert: has("7006652")
+      # Lua 脚本：日期与时间（只检查格式）
+      - send: orq
+        assert: cand[1].text:match("^%d+年%d+月%d+日$") ~= nil
+      - send: osj
+        assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
+      - send: ors
+        assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
+      # 以词定字：`[` 取首字、`]` 取末字
+      - send: "xkrm["
+        assert: commit == "熙"
+      # 词不在首选时先用方向键选中再定字
+      - send: "jpdz{Down}]"
+        assert: commit == "刀"
+  # 方案码用户词典：这些操作会写入 snow_jiandao.userdb，故单独部署并按顺序执行
+  schema_userdb:
+    tests:
+      # 固定：本地固定键为 Control+,，编码/剪刀使用当前神韵码。
+      - send: bpmw
+        assert: not pinned(1)
+      - send: "bpmw{Control+comma}bpmw"
+        assert: cand[1].text == "编码" and pinned(1)
+      - send: "bpmw{Control+comma}bpmw"
+        assert: not pinned(1)
+      # 自由加词：Control+' → 任意方式输入 → Control+'
+      # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
+      - send: "kfc{Control+apostrophe}fkxqS Vw 50{Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四V我50"
+      # 本地 hb 固顶好吧：新词不得挤掉已有首选。
+      - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
+        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
+      - send: "jpdz{Control+comma}{Down}{Control+comma}{Up}"
+        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+      - send: "jpdz{Control+bracketright}jpdz"
+        assert: cand[1].text == "剪刀" and cand[2].text == "见到"
+      - send: "jpdz{Down}{Control+bracketleft}jpdz"
+        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+      - send: "jpdz{Control+backslash}jpdz"
+        assert: not pinned(1) and not pinned(2)

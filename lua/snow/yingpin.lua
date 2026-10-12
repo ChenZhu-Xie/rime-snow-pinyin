@@ -1,22 +1,22 @@
 -- 冰雪英拼翻译器
 
-
 local snow = require "snow.snow"
 
----@class YingpinTranslatorEnv: Env
+---@class YingpinEnv: Env
 ---@field translator Translator
 ---@field connection Connection
 
 local translator = {}
 
----@param env YingpinTranslatorEnv
+---@param env YingpinEnv
 function translator.init(env)
   env.translator = Component.Translator(env.engine, "translator", "table_translator")
   env.connection = env.engine.context.commit_notifier:connect(function(ctx)
-    env.engine:commit_text(" ")
+    snow.commit_text(env.engine, " ")
   end)
 end
 
+---@type table<string, string>
 local initial_lookup = {
   ["a"] = "j",
   ["e"] = "q",
@@ -27,7 +27,7 @@ local initial_lookup = {
 
 ---@param input string
 ---@param segment Segment
----@param env YingpinTranslatorEnv
+---@param env YingpinEnv
 function translator.func(input, segment, env)
   local consonants = input:gsub("[aeiou]", "")
   local lookup_consonants = consonants
@@ -37,6 +37,9 @@ function translator.func(input, segment, env)
   local vowels = input:gsub("[^aeiou]", "")
   -- 一字词
   local translation = env.translator:query(lookup_consonants, segment)
+  if not translation then
+    return
+  end
   for candidate in translation:iter() do
     local text = candidate.text
     -- 如果以元音开头，尝试添加零声母
@@ -65,10 +68,11 @@ function translator.func(input, segment, env)
   end
 end
 
----@param env YingpinTranslatorEnv
+---@param env YingpinEnv
 function translator.fini(env)
   env.translator = nil
   env.connection:disconnect()
+  collectgarbage()
 end
 
 return translator

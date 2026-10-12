@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_jiandao
   name: 冰雪键道
-  version: "0.4"
+  version: "0.3.11"
   author:
     - 吅吅大山
     - 谭淞宸 <i@tansongchen.com>
@@ -21,6 +21,7 @@ schema:
 
 engine:
   processors:
+    - lua_processor@*snow.statistics*processor
     - ascii_composer
     # abbreviation 和 select_character 必须早于 popping；
     # 否则大写略码或 [/] 以词定字会先被顶功处理器吞掉。
@@ -54,6 +55,7 @@ engine:
     - table_translator@stroke
     - script_translator@pinyin
     - lua_translator@*snow.datetime
+    - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history

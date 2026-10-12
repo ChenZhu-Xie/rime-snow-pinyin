@@ -246,8 +246,8 @@ deploy:
       - send: "csuiai{Down}{Down}]"
         assert: commit == "薇"
       # 拼音反查（`a` 引导）
-      - send: azhe
-        assert: cand[1].text == "着"
+      - send: ashi
+        assert: cand[1].text == "是"
       # 笔画反查（`u` 引导，横竖撇点折为 eiuoa）
       - send: ueiuoa
         assert: cand[1].text == "札"
@@ -337,8 +337,9 @@ deploy:
       - send: "bma{Control+comma}bma"
         assert: not pinned(1)
       # 自由加词：Control+' → 任意方式输入 → Control+'
-      - send: "kfc{Control+apostrophe}fkxqS  {Control+apostrophe}kfc"
-        assert: cand[1].text == "疯狂星期四"
+      # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
+      - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四V我50"
       # 加词时若第一候选已固定，新词加到第二候选
       - send: "dna{Control+comma}{Control+apostrophe}tfhtHS {Control+apostrophe}dna"
         assert: cand[1].text == "电脑" and cand[2].text == "脱氧核糖核酸"

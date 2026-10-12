@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_jiandao_jianpin
   name: 冰雪键道简拼
-  version: "0.4"
+  version: "0.3.11"
   author:
     - 吅吅大山
     - 谭淞宸 <i@tansongchen.com>
@@ -45,6 +45,13 @@ speller:
   algebra:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
+      # 键道字母入口沿用本地神韵码位；三拼因入口声母不同，使用独立棱镜。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1s/
+      - xform/~{1,2}v/qy/
+      - xform/~{1,2}i/qk/
+      - xform/~{1,2}u/qj/
+      - xform/~{1,2}o/qe/
+      - xform/~{1,2}a/qw/
       - derive/.([viuoa])$/?$1/ # 无韵母
       - xform/^([a-z])[^?]+$/$1/ # 简拼
       - derive/^.+$/~/ # 通配符

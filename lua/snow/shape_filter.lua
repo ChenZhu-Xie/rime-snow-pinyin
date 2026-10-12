@@ -3,10 +3,18 @@
 
 local snow = require "snow.snow"
 
----@class AssistEnv: Env
----@field strokes ReverseLookup
----@field shape_elements ReverseLookup
+---@class ShapeFilterEnv: Env
+---@field strokes ReverseLookup|nil
+---@field shape_elements ReverseLookup|nil
 ---@field shape_mapping table<string, string>
+
+--- 反查库加载失败时为 nil，当作查不到
+---@param db ReverseLookup|nil
+---@param text string
+---@return string
+local function lookup(db, text)
+  return db and db:lookup(text) or ""
+end
 
 --- 将字符串中每一个字符替换为 map 中对应的值
 ---@param element string
@@ -31,7 +39,7 @@ local sanpin_stroke_map = { ["一"] = "v", ["丨"] = "i", ["丿"] = "u", ["丶"]
 --- 冰雪四拼和冰雪三拼的笔画匹配函数
 --- @param text string
 --- @param partial_code string
---- @param env AssistEnv
+--- @param env ShapeFilterEnv
 --- @param map table<string, string>
 local function stroke_match(text, partial_code, env, map)
   ---@type table<string, string>
@@ -49,7 +57,8 @@ local function stroke_match(text, partial_code, env, map)
   if partial_code:len() > 0 then
     prompt = " 笔画 [" .. partial_code:gsub(".", reverse_map) .. "]"
   end
-  local elements = snow.split(env.strokes:lookup(text), " ")
+  -- 预览安装包不含笔画反查库，此时 env.strokes 为 nil，不做笔画过滤
+  local elements = env.strokes and snow.split(env.strokes:lookup(text), " ") or {}
   local match = #elements == 0
   ---@type string[]
   local codes = {}
@@ -68,9 +77,9 @@ end
 
 --- @param text string
 --- @param partial_code string
---- @param env AssistEnv
+--- @param env ShapeFilterEnv
 local function radical_match(text, partial_code, env)
-  local element = env.shape_elements:lookup(text) or ""
+  local element = lookup(env.shape_elements, text)
   local code = encode(element, env.shape_mapping)
   local prompt = " 部首 [" .. partial_code .. "]"
   local comment = code .. " " .. element
@@ -81,7 +90,7 @@ end
 --- 键道的特殊处理
 ---@param text string
 ---@param current string
----@param radicals_map ReverseLookup
+---@param radicals_map ReverseLookup|nil
 ---@param map table<string, string>
 local function jiandao_encode(text, current, radicals_map, map)
   -- 把 UTF-8 编码的词语拆成单个字符的列表
@@ -89,7 +98,7 @@ local function jiandao_encode(text, current, radicals_map, map)
   local codes = {}
   for _, codepoint in utf8.codes(text) do
     local char = utf8.char(codepoint)
-    local radicals = radicals_map:lookup(char) or ""
+    local radicals = lookup(radicals_map, char)
     local code = ""
     for _, radical_codepoint in utf8.codes(radicals) do
       local r = utf8.char(radical_codepoint)
@@ -117,7 +126,7 @@ end
 
 local filter = {}
 
----@param env AssistEnv
+---@param env ShapeFilterEnv
 function filter.init(env)
   local config = env.engine.schema.config
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
@@ -130,7 +139,7 @@ end
 
 ---@param text string
 ---@param shape_input string
----@param env AssistEnv
+---@param env ShapeFilterEnv
 function filter.handle_candidate(text, shape_input, env)
   local segment = env.engine.context.composition:toSegmentation():back()
   local is_pinyin = segment and segment:has_tag("pinyin") or false
@@ -163,7 +172,7 @@ function filter.handle_candidate(text, shape_input, env)
       if not is_pinyin and current:len() == 1 then
         comment = "" -- 630 不需要提示
       elseif utf8.len(text) == 1 and (env.engine.context:get_option("chaifen") or is_pinyin) then
-        local chaifen = env.shape_elements:lookup(text) or ""
+        local chaifen = lookup(env.shape_elements, text)
         comment = comment .. " " .. chaifen
       end
       return match, prompt, comment
@@ -173,7 +182,7 @@ function filter.handle_candidate(text, shape_input, env)
   elseif id == "snow_yipin" then -- 冰雪一拼
     local partial_code = ""
     local prompt = ""
-    local element = env.shape_elements:lookup(text) or ""
+    local element = lookup(env.shape_elements, text)
     local code = encode(element, env.shape_mapping)
     local comment = (code .. " " .. element):gsub("rj", "'")
     if shape_input:sub(1, 1) == "v" then
@@ -190,7 +199,7 @@ function filter.handle_candidate(text, shape_input, env)
 end
 
 ---@param translation Translation
----@param env AssistEnv
+---@param env ShapeFilterEnv
 function filter.func(translation, env)
   local context = env.engine.context
   local shape_input = context:get_property("shape_input")
@@ -226,6 +235,14 @@ end
 ---@param env Env
 function filter.tags_match(segment, env)
   return segment:has_tag("abc") or segment:has_tag("pinyin")
+end
+
+---@param env ShapeFilterEnv
+function filter.fini(env)
+  env.strokes = nil
+  env.shape_elements = nil
+  env.shape_mapping = nil
+  collectgarbage()
 end
 
 return filter

@@ -4,7 +4,7 @@
 
 local snow = require "snow.snow"
 
-local this = {}
+local processor = {}
 
 local strategies = {
   pop = "pop",
@@ -22,18 +22,19 @@ local strategies = {
 ---@class PoppingEnv: Env
 ---@field popping PoppingConfig[]
 ---@field auto_select_pattern string
----@field processing boolean
 ---@field period_is_code boolean
+---@field option_connection Connection
+---@field commit_connection Connection
 
 ---@param env PoppingEnv
-function this.init(env)
-  env.engine.context.option_update_notifier:connect(function(ctx, name)
+function processor.init(env)
+  env.option_connection = env.engine.context.option_update_notifier:connect(function(ctx, name)
     if name == "buffered" then
       local buffered = ctx:get_option("buffered")
       ctx:set_option("_auto_commit", not buffered)
     end
   end)
-  env.engine.context.commit_notifier:connect(function(ctx)
+  env.commit_connection = env.engine.context.commit_notifier:connect(function(ctx)
     if ctx:get_option("buffered") then
       ctx:set_option("buffered", false)
     end
@@ -71,8 +72,8 @@ end
 
 ---@param key_event KeyEvent
 ---@param env PoppingEnv
-function this.func(key_event, env)
-  if env.processing then
+function processor.func(key_event, env)
+  if snow.redispatching then
     return snow.kNoop
   end
   local context = env.engine.context
@@ -147,10 +148,13 @@ function this.func(key_event, env)
     end
     -- 如果当前有候选，则执行顶屏；否则顶功失败，继续执行下一个规则
     if context:has_menu() then
+      -- 非缓冲时 _auto_commit 已开，confirm 这一步就会上屏
+      snow.handover = 1 + (rule.prefix and input:len() - rule.prefix or 0)
       context:confirm_current_selection()
       if not buffered then
         context:commit()
       end
+      snow.handover = nil
       success = true
     end
     if rule.prefix then
@@ -174,7 +178,7 @@ function this.func(key_event, env)
   elseif with_punct and map[key_event.keycode] then
     key_event = KeyEvent(utf8.char(map[key_event.keycode]))
   end
-  env.processing = true
+  snow.redispatching = true
   env.engine:process_key(key_event)
   if not buffered then
     local new_input = snow.current(context) or ""
@@ -183,8 +187,14 @@ function this.func(key_event, env)
       context:commit()
     end
   end
-  env.processing = false
+  snow.redispatching = false
   return snow.kAccepted
 end
 
-return this
+---@param env PoppingEnv
+function processor.fini(env)
+  env.option_connection:disconnect()
+  env.commit_connection:disconnect()
+end
+
+return processor

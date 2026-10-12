@@ -17,13 +17,13 @@
 		"fixed:verify": "tsx 验证神韵双拼.ts",
 		"keyboard:extract": "tsx 生成神韵键盘图.ts",
 		"research:sipin-ranking": "tsx 调研四拼二字排序.ts",
-		"link": "bun tasks.ts link",
-		"unlink": "bun tasks.ts unlink",
+		"link": "bun scripts/link.ts link",
+		"unlink": "bun scripts/link.ts unlink",
 		"test-sipin": "mira spec/snow_sipin.test.yaml",
 		"test-sanpin": "mira spec/snow_sanpin.test.yaml",
 		"test-yipin": "mira spec/snow_yipin.test.yaml",
 		"test-jiandao": "mira spec/snow_jiandao.test.yaml",
-		"test": "npm run test-sipin && npm run test-sanpin && npm run test-jiandao && npm run test-yipin"
+		"test": "bun scripts/test.ts"
 	},
 	"author": "",
 	"license": "ISC",

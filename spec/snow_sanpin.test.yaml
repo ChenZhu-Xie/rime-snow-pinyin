@@ -294,9 +294,9 @@ deploy:
         assert: cand[1].text == "编码" and pinned(1)
       - send: "bpmw{Control+comma}bpmw"
         assert: not pinned(1)
-      # 上游自由加词的键仍为 Ctrl+'，造词输入保持同一声母/简码目的。
-      - send: "kfc{Control+apostrophe}fkxqS  {Control+apostrophe}kfc"
-        assert: cand[1].text == "疯狂星期四"
+      # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
+      - send: "kfc{Control+apostrophe}fkxqS Vw 50{Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四V我50"
       # 本地 hb 固顶好吧：新词不得挤掉已有的首选。
       - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
         assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"

@@ -127,7 +127,7 @@ test("两个飞花原型都随部署带上共用配置", () => {
 		const schema = load(read(file)) as { schema: { name: string } };
 		assert.equal(schema.schema.name, name);
 	}
-	assert.match(read("scripts/tasks.ts"), /"snow_shenyun_common\.yaml"/u);
+	assert.match(read("scripts/link.ts"), /"snow_shenyun_common\.yaml"/u);
 });
 
 test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", () => {

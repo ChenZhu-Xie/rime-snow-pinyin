@@ -174,10 +174,11 @@ test("Three-Code supports the shared fixed-candidate controls", () => {
 	}
 });
 
-test("Clear Rhyme history only changes the trigger key", () => {
+test("Clear Rhyme keeps history separate from the double-backtick Lua trigger", () => {
 	const schema = read("snow_qingyun.schema.yaml");
 	assert.match(schema, /history\/input: "`"/u);
-	assert.doesNotMatch(schema, /history\/initial_quality:/u);
+	assert.match(schema, /history\/initial_quality: 100/u);
+	assert.match(schema, /lua\/input: "``"/u);
 	assert.match(schema, /recognizer\/patterns\/history: "\^`\$"/u);
 	assert.match(schema, /menu\/alternative_select_keys: "_23890"/u);
 	assert.match(schema, /menu\/page_size: 6/u);
@@ -210,6 +211,24 @@ test("R9 KeyTao letter and number candidates follow the active schema", () => {
 		assert.ok(lines.get(code)?.split(" ").includes(number), `${number}: ${code}`);
 	}
 	assert.deepEqual(lines.get("qj")?.split(" "), ["二", "2", "U", "u"]);
+});
+
+test("R9 KeyTao and Three-Code keep separate letter initials and prisms", () => {
+	const jiandao = read("snow_jiandao.schema.yaml");
+	const sanpin = read("snow_sanpin.schema.yaml");
+	assert.match(jiandao, /prism: snow_jiandao_jianpin/u);
+	assert.match(sanpin, /prism: snow_sanpin_jianpin/u);
+	assert.match(read("snow_jiandao_jianpin.schema.yaml"), /xform\/~\{1,2\}a\/qw\//u);
+	assert.match(read("snow_sanpin_jianpin.schema.yaml"), /xform\/~\{1,2\}\(\[aviou\]\)\/kk\$1\//u);
+
+	const fixed = read("snow_sanpin.fixed.txt");
+	for (const [code, candidates] of [
+		["jju", "五 5"], ["lta", "六 6"], ["qki", "七 7"],
+		["bwi", "八 8"], ["jtu", "九 9"], ["ekv", "十 10"],
+		["ldv", "零 0"],
+	]) {
+		assert.match(fixed, new RegExp(`^${code}\\t${candidates}$`, "mu"));
+	}
 });
 
 test("R9 KeyTao and Three-Code keep their processors in a compatible order", () => {

@@ -31,7 +31,33 @@ function snow.current(context)
   return context.input:sub(segment.start + 1, segment._end)
 end
 
+-- 冰雪拼音的版本号，是全仓库唯一的来源：用 `bun scripts/version.ts <版本号>` 修改，
+-- 它会同时改写所有 snow_*.schema.yaml、snow_*.dict.yaml 里的 version
+snow.version = "0.3.11"
+
 snow.debug = false
+
+-- popping 用 engine:process_key 重投按键期间为 true，排在它前面的处理器会再收到一次同一个键
+snow.redispatching = false
+
+-- 顶屏、略码上屏时为转给下一次上屏的有效按键数（触发顶屏的键加上推回输入框的编码，或略码键），供输入统计扣除
+---@type integer|nil
+snow.handover = nil
+
+--- 绕过 context 直接上屏。这条路径不触发 commit_notifier，所以同时写一次 context 属性
+--- `commit_text`，输入统计靠 property_update_notifier 补记
+---@param engine Engine
+---@param text string
+---@param counted string|nil 输入统计记作的上屏文字，默认为 text；为空串时不记，留给之后的上屏一起记
+function snow.commit_text(engine, text, counted)
+  if text ~= "" then
+    engine:commit_text(text)
+  end
+  counted = counted or text
+  if counted ~= "" then
+    engine.context:set_property("commit_text", counted)
+  end
+end
 
 ---格式化 Info 日志
 ---@param format string|number
@@ -102,8 +128,19 @@ end
 ---@param candidate Candidate
 ---@param proxy string
 function snow.prepare(candidate, proxy, normal)
-  local proxy_segment = proxy:sub(1, candidate._end - candidate._start);
-  candidate._end = candidate._start + proxy_segment:gsub("[ ?~]", ""):len()
+  local proxy_segment = proxy:sub(1, candidate._end - candidate._start)
+  local real_segment = proxy_segment:gsub("[ ?~]", "")
+  candidate._end = candidate._start + real_segment:len()
+  -- 代理码里补出来的 ` `、`?`、`~` 也被 librime 算进了「全码匹配长度积分」
+  -- （`quality_len / full_code_length`，见 script_translator.cc），于是带一个
+  -- 分隔符的二字词代理码（`dl km`）会比不带分隔符的多字词简拼（`dlkm`）凭空高出
+  -- 0.25，无论词频如何都稳压后者。这里把虚高减掉，让两路候选和键道直接查词
+  -- 一样按词频排序。
+  local real_input_length = proxy:gsub("[ ?~]", ""):len()
+  local filler_length = proxy_segment:len() - real_segment:len()
+  if filler_length > 0 and real_input_length > 0 then
+    candidate.quality = candidate.quality - filler_length / real_input_length
+  end
   if not normal then
     candidate.quality = candidate.quality + 1
   end
@@ -176,6 +213,12 @@ snow.db_pool = snow.db_pool or {}
 ---@type table<string, integer>
 snow.ref_counter = snow.ref_counter or {}
 
+-- 调用方必须在 init 时把 name 记在 env 里，fini 时用记下的 name 来 release。
+-- 不能在 fini 里现取 env.engine.schema.schema_id：librime 的
+-- ConcreteEngine::ApplySchema 先 schema_.reset(新方案)，再 InitializeComponents()
+-- 清空旧组件触发 fini，此时 engine.schema 已经是新方案，拿它去 release 会放掉别人
+-- 的计数，旧方案的词典则永远留在 db_pool 里独占 LOCK，同步时报
+-- "IO error: lock ...: already held by process"。
 ---@param name string
 ---@return LevelDb|nil
 function snow.get_db(name)
@@ -199,6 +242,7 @@ end
 function snow.release_db(name)
   local count = snow.ref_counter[name]
   if count == nil or count <= 0 then
+    snow.errorf("用户词典 %s 的引用计数异常，没有被释放", tostring(name))
     return
   end
   count = count - 1

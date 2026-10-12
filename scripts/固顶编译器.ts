@@ -315,6 +315,18 @@ export const sanpinLetterEntries = [
 	["kka", "A a"],
 ] as const;
 
+// 上游统计功能用这些三音节全码同时提供中文数字与阿拉伯数字候选。
+// 码位按当前 R9 神韵的声、韵、调键重新编码，均不占用固顶区已有条目。
+export const sanpinTemporaryNumberEntries = [
+	["jju", "五 5"],
+	["lta", "六 6"],
+	["qki", "七 7"],
+	["bwi", "八 8"],
+	["jtu", "九 9"],
+	["ekv", "十 10"],
+	["ldv", "零 0"],
+] as const;
+
 export function renderSanpinFixedTable(sections: FixedSections) {
 	const core = renderFixedTable(sections)
 		.trimEnd()
@@ -325,6 +337,8 @@ export function renderSanpinFixedTable(sections: FixedSections) {
 			return alias ? `${line} ${alias}` : line;
 		});
 	return `${core.join("\n")}\n# 字母\n${sanpinLetterEntries
+		.map(([code, candidates]) => `${code}\t${candidates}`)
+		.join("\n")}\n# 临时数字\n${sanpinTemporaryNumberEntries
 		.map(([code, candidates]) => `${code}\t${candidates}`)
 		.join("\n")}\n`;
 }

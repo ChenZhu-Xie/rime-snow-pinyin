@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_qingyun
   name: 冰雪清韵
-  version: "0.3"
+  version: "0.3.11"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
@@ -46,6 +46,7 @@ switches:
 
 engine:
   processors:
+    - lua_processor@*snow.statistics*processor
     - ascii_composer
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
@@ -74,6 +75,7 @@ engine:
     - table_translator@stroke
     - script_translator@pinyin
     - lua_translator@*snow.datetime
+    - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history
@@ -171,9 +173,11 @@ patch:
   stroke/tag: pinyin
   recognizer/patterns/stroke: "^`[a-z]*'?$"
   history/input: "`"
-  lua/input: "`"
+  history/initial_quality: 100
+  lua/input: "``"
   recognizer/patterns/history: "^`$"
-  recognizer/patterns/lua: null
+  # 单个 ` 引导反查和重复上屏，两个 ` 引导 lua（数字、计算、日期时间、输入统计）
+  recognizer/patterns/lua: "^``.*$"
   translator/prism: snow_qingyun
   translator/preedit_format:
     - xform/^(.+)$/[$1]/
