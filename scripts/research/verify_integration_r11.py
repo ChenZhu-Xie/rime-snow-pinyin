@@ -127,11 +127,57 @@ target_ids = [
     "SY26-V3-M40-D5-V1-CANYON-34-01",
     "SY26-V3-M38-D5-V0-CANYON-38-01",
     "SY26-V3-M38-D5-V0-CANYON-45-01",
+    # 21x26 IEUAO 399-unique pure-y CKT v3 Round 2 Frontier & Seeds (45 schemes)
+    "SY26-V3-R2-M44-D9-ULTIMATE-384",
+    "SY26-V3-R2-M44-D9-HOME-SPEED",
+    "SY26-V3-R2-M43-D9-ULTIMATE-387",
+    "SY26-V3-R2-M43-D9-HOME-SPEED",
+    "SY26-V3-R2-M42-D9-SUB940-01",
+    "SY26-V3-R2-M42-D8-SUB940-01",
+    "SY26-V3-R2-M41-D7-SPEED-01",
+    "SY26-V3-R2-M41-D8-SPEED-01",
+    "SY26-V3-R2-M40-D7-SPEED-01",
+    "SY26-V3-R2-M40-D7-BALANCED-01",
+    "SY26-V3-R2-M39-D6-SPEED-01",
+    "SY26-V3-R2-M42-D7-V1-LP-01",
+    "SY26-V3-R2-M42-D7-V0-ULP-01",
+    "SY26-V3-R2-M41-D6-V1-ULP-01",
+    "SY26-V3-R2-M41-D6-V0-ULP-01",
+    "SY26-V3-R2-M40-D6-V0-LP-01",
+    "SY26-V3-R2-M40-D6-V0-ULP-01",
+    "SY26-V3-R2-M39-D6-V0-LP-01",
+    "SY26-V3-R2-M39-D6-V0-ULP-01",
+    "SY26-V3-R2-M38-D3-V1-SPEED-01",
+    "SY26-V3-R2-M38-D4-V1-ULP-01",
+    "SY26-V3-R2-M38-D5-V0-ULP-01",
+    "SY26-V3-R2-M38-D4-V0-NODE-LP-01",
+    "SY26-V3-R2-M37-D3-V0-SPEED-01",
+    "SY26-V3-R2-M37-D3-V0-ULP-01",
+    "SY26-V3-R2-M37-D3-V0-NODE-LP-01",
+    "SY26-V3-R2-M36-D2-V1-TRIAD-LP-01",
+    "SY26-V3-R2-M36-D2-V1-TRIAD-ULP-01",
+    "SY26-V3-R2-M36-D3-V0-TRIAD-P244-01",
+    "SY26-V3-R2-M36-D2-V0-NODE-LP-01",
+    "SY26-V3-R2-M35-D1-V0-SPEED-01",
+    "SY26-V3-R2-M35-D1-V0-LP-01",
+    "SY26-V3-R2-M35-D1-V0-ULP-01",
+    "SY26-V3-R2-M44-D7-V2-HOME49-ULP-01",
+    "SY26-V3-R2-M43-D7-V1-HOME50-ULP-01",
+    "SY26-V3-R2-M42-D3-V4-HOME54-ULP-01",
+    "SY26-V3-R2-M42-D5-V2-HOME50-ULP-01",
+    "SY26-V3-R2-M42-D5-V2-HOME56-ULP-01",
+    "SY26-V3-R2-M44-D7-V2-HOME56-MAX-01",
+    "SY26-V3-R2-M38-D4-V1-CANYON-292-01",
+    "SY26-V3-R2-M43-D9-V1-CANYON-293-01",
+    "SY26-V3-R2-M36-D2-V1-CANYON-299-01",
+    "SY26-V3-R2-M38-D4-V1-CANYON-326-01",
+    "SY26-V3-R2-M38-D5-V0-CANYON-331-01",
+    "SY26-V3-R2-M43-D9-V1-CANYON-FAST-01",
 ]
 
 entries_map = {e["id"]: e for e in data["entries"]}
 all_ids = set(entries_map.keys())
-assert len(all_ids) == 795, f"Expected 795 schemes, got {len(all_ids)}"
+assert len(all_ids) == 840, f"Expected 840 schemes, got {len(all_ids)}"
 assert set(data["completionB"]["schemes"].keys()) == all_ids
 assert set(data["completionBFixed"]["schemes"].keys()) == all_ids
 assert set(data["completionBV2"]["schemes"].keys()) == all_ids
