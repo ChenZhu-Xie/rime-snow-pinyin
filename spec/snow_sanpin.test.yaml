@@ -22,6 +22,15 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
+  function trace()
+    print("Preedit = " .. tostring(preedit))
+    print("Commit  = " .. tostring(commit))
+    for i = 1, 10 do
+      if cand[i] == nil then break end
+      print(("Cand[%d] = %s | %s"):format(i, tostring(cand[i].text), tostring(cand[i].comment)))
+    end
+    return true
+  end
 deploy:
   sentence:
     patch:
@@ -178,34 +187,34 @@ deploy:
       - send: xov
         assert: cand[1].text == "行叭"
       - send: ykgs
-        assert: cand[1].text == "一个"
+        assert: trace() and cand[1].text == "一个"
       # 以词定字：[ 取词首，] 取词尾
       - send: "ykgs["
-        assert: commit == "一"
+        assert: trace() and commit == "一"
       - send: "ykgs]"
-        assert: commit == "个"
+        assert: trace() and commit == "个"
       - send: nwym
-        assert: cand[1].text == "那样"
+        assert: trace() and cand[1].text == "那样"
       - send: tpvvi
         assert: cand[1].text == "填" and cand[1].comment:find("vivv")
       # 首选后置
       - send: ekek
-        assert: cand[1].text == "事实"
+        assert: trace() and cand[1].text == "事实"
       - send: ekekv
-        assert: cand[2].text == "事实"
+        assert: trace() and cand[2].text == "事实"
       # 上游 ekeki：首选后置的触发调键因本地 R9 映射变为 v。
       # 顶功
       - send: ykgsykgs
-        assert: commit == "一个" and cand[1].text == "一个"
+        assert: trace() and commit == "一个" and cand[1].text == "一个"
       - send: bdixyu
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pgygerf
-        assert: commit == "拼音" and cand[1].text == "输入法"
+        assert: trace() and commit == "拼音" and cand[1].text == "输入法"
       # 强制上屏尾字；原 d/l 一码仍然保留
       - send: ykgs;
-        assert: commit == "一个的"
+        assert: trace() and commit == "一个的"
       - send: ykgs/
-        assert: commit == "一个了"
+        assert: trace() and commit == "一个了"
       - send: d
         assert: cand[1].text == "的"
       - send: l
@@ -237,7 +246,7 @@ deploy:
       - send: "{Control+period}wm mzi  wmmz"
         assert: cand[1].text == "长猫"
       - send: "{Control+period}bdxyerf  bxerF"
-        assert: cand[1].text == "冰雪输入法"
+        assert: trace() and cand[1].text == "冰雪输入法"
       # 键道与三拼共享二键基码；三拼统一追加轻声键 o。
       - send: bco
         assert: cand[1].text == "B" and cand[2].text == "b"
@@ -253,12 +262,12 @@ deploy:
   advanced:
     tests:
       - send: azhe
-        assert: cand[1].text == "着"
+        assert: trace() and cand[1].text == "着"
       # 本地横竖撇点折依次为 i/v/u/a/o（上游为 v/i/u/o/a）。
       - send: uivuao
         assert: cand[1].text == "札"
       - send: "wpfj i"
-        assert: cand[1].text == "重复"
+        assert: trace() and cand[1].text == "重复"
       - send: ia
         assert: cand[1].text == "ā"
       - send: o123
@@ -283,7 +292,7 @@ deploy:
         assert: commit == "熙"
       # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。
       - send: "jpdz{Down}]"
-        assert: commit == "刀"
+        assert: trace() and commit == "刀"
   # 上游 schema_userdb：按顺序操作同一次部署的方案码用户词典。
   schema_userdb:
     tests:
@@ -291,21 +300,21 @@ deploy:
       - send: bpmw
         assert: not pinned(1)
       - send: "bpmw{Control+comma}bpmw"
-        assert: cand[1].text == "编码" and pinned(1)
+        assert: trace() and cand[1].text == "编码" and pinned(1)
       - send: "bpmw{Control+comma}bpmw"
         assert: not pinned(1)
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
       - send: "kfc{Control+apostrophe}fkxqS Vw 50{Control+apostrophe}kfc"
-        assert: cand[1].text == "疯狂星期四V我50"
+        assert: trace() and cand[1].text == "疯狂星期四V我50"
       # 本地 hb 固顶好吧：新词不得挤掉已有的首选。
       - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
         assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jpdz{Control+comma}{Down}{Control+comma}{Up}"
-        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+        assert: trace() and cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdz{Control+bracketright}jpdz"
-        assert: cand[1].text == "剪刀" and cand[2].text == "见到"
+        assert: trace() and cand[1].text == "剪刀" and cand[2].text == "见到"
       - send: "jpdz{Down}{Control+bracketleft}jpdz"
-        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
+        assert: trace() and cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdz{Control+backslash}jpdz"
         assert: not pinned(1) and not pinned(2)

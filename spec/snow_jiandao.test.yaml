@@ -1,18 +1,34 @@
 schema: snow_jiandao
 source_dir: ..
 script: |
-  function has(something)
-    for _, v in ipairs(cand) do
-      if v.text == something then
-        return true
-      end
+  function rank(something)
+    for i, v in ipairs(cand) do
+      if v.text == something then return i end
     end
-    return false
+    return math.huge
+  end
+  function has(something)
+    return rank(something) < math.huge
+  end
+  function page(something)
+    return rank(something) <= 6
+  end
+  function pinned(index)
+    return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
   function eq(left, right)
     print("Left  = " .. tostring(left))
     print("Right = " .. tostring(right))
     return left == right
+  end
+  function trace()
+    print("Preedit = " .. tostring(preedit))
+    print("Commit  = " .. tostring(commit))
+    for i = 1, 10 do
+      if cand[i] == nil then break end
+      print(("Cand[%d] = %s | %s"):format(i, tostring(cand[i].text), tostring(cand[i].comment)))
+    end
+    return true
   end
 deploy:
   sentence:
@@ -170,10 +186,10 @@ deploy:
         assert: cand[1].text == "冰雪输入法"
       # 本地键道使用 jjv/gc/tp/xg；数字和字母取第二候选。
       - send: "{Control+period}jjv2 gc2 tp xg  jgtx"
-        assert: cand[1].text == "5G通信"
+        assert: trace() and cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
       - send: "{Control+period}dy lw xw2 mn  dlxm"
-        assert: cand[1].text == "哆啦A梦"
+        assert: trace() and cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:
     tests:
@@ -181,7 +197,7 @@ deploy:
       - send: ashi
         assert: cand[1].text == "是"
       # 本地笔画顺序为横竖撇点折 → ivuao。
-      - send: uivuao
+      - send: uviuoa
         assert: cand[1].text == "札"
       # 重复上屏（`i` 引导）
       - send: "wpfj i"
@@ -221,7 +237,7 @@ deploy:
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
       - send: "kfc{Control+apostrophe}fkxqS Vw 50{Control+apostrophe}kfc"
-        assert: cand[1].text == "疯狂星期四V我50"
+        assert: trace() and cand[1].text == "疯狂星期四V我50"
       # 本地 hb 固顶好吧：新词不得挤掉已有首选。
       - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
         assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
