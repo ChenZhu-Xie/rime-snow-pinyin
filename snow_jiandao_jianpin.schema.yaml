@@ -45,13 +45,13 @@ speller:
   algebra:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
-      # 键道字母入口沿用本地神韵码位；三拼因入口声母不同，使用独立棱镜。
-      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1s/
-      - xform/~{1,2}v/qy/
-      - xform/~{1,2}i/qk/
-      - xform/~{1,2}u/qj/
-      - xform/~{1,2}o/qe/
-      - xform/~{1,2}a/qw/
+      # 键道与三拼共享字母二键基码；三拼只在全码末尾追加轻声键 o。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1c/
+      - xform/~{1,2}v/xy/
+      - xform/~{1,2}i/xk/
+      - xform/~{1,2}u/xj/
+      - xform/~{1,2}o/xe/
+      - xform/~{1,2}a/xw/
       - derive/.([viuoa])$/?$1/ # 无韵母
       - xform/^([a-z])[^?]+$/$1/ # 简拼
       - derive/^.+$/~/ # 通配符

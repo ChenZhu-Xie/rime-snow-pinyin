@@ -133,7 +133,7 @@ function snow.prepare(candidate, proxy, normal)
   candidate._end = candidate._start + real_segment:len()
   -- 代理码里补出来的 ` `、`?`、`~` 也被 librime 算进了「全码匹配长度积分」
   -- （`quality_len / full_code_length`，见 script_translator.cc），于是带一个
-  -- 分隔符的二字词代理码（`dl km`）会比不带分隔符的多字词简拼（`dlkm`）凭空高出
+  -- 分隔符的二字词代理码（`dl xm`）会比不带分隔符的多字词简拼（`dlxm`）凭空高出
   -- 0.25，无论词频如何都稳压后者。这里把虚高减掉，让两路候选和键道直接查词
   -- 一样按词频排序。
   local real_input_length = proxy:gsub("[ ?~]", ""):len()

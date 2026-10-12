@@ -152,12 +152,12 @@ deploy:
         assert: not has("(sei3)")
       - send: gx
         assert: cand[1].text == "给"
-      # 字母入口按本方案的 u + 轻声槽迁移；不能占用 gu4。
-      - send: gj
-        assert: cand[1].text == "故" and has("G") and has("g")
-      - send: gjo
+      # 字母入口与键道共享 c 列，三拼统一追加轻声键 o。
+      - send: gc
+        assert: cand[1].text == "挂" and has("G") and has("g")
+      - send: gco
         assert: cand[1].text == "G" and cand[2].text == "g"
-      - send: gja
+      - send: gca
         assert: not has("G") and not has("g")
       - send: wx
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
@@ -222,7 +222,7 @@ deploy:
       - send: "erf "
         assert: commit == "输入法"
       # 上游 bja2：选字键 2 选择小写拉丁字母。
-      - send: bjo2
+      - send: bco2
         assert: commit == "b"
       # 上游 ekekvo / ekekvu / ekekvuekek：动态码长、组词及顶功。
       - send: "ekekiaekek"
@@ -238,16 +238,16 @@ deploy:
         assert: cand[1].text == "长猫"
       - send: "{Control+period}bdxyerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
-      # 上游 bja/kka：R9 辅音字母走 u 的轻声槽 jo，元音仍走 kk。
-      - send: bjo
+      # 键道与三拼共享二键基码；三拼统一追加轻声键 o。
+      - send: bco
         assert: cand[1].text == "B" and cand[2].text == "b"
-      - send: kka
+      - send: xwo
         assert: cand[1].text == "A" and cand[2].text == "a"
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
-      - send: "{Control+period}jju gjo tpi xga  jgtx"
+      - send: "{Control+period}jju gco tpi xga  jgtx"
         assert: commit == "五G通信"
       # 啦读轻声 la5（lwo），梦的二码固顶为 mn；la1/meng4 的首选会组成「垃/孟」。
-      - send: "{Control+period}dyi lwo kka mn  dlkm"
+      - send: "{Control+period}dyi lwo xwo mn  dlxm"
         assert: commit == "哆啦A梦"
   # 上游 advanced：反查、重复上屏、数字日期、笔画/部首辅助码、以词定字。
   advanced:

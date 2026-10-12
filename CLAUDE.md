@@ -83,13 +83,13 @@ mira -C cache -R '^popping$' spec/snow_sipin.test.yaml
 
 ## 简拼棱镜
 
-本地神韵布局的英数字母入口按空码位分别设计：键道使用 `辅音+s`、`q+元音韵键`，三拼使用 `辅音+jo`、`kk+元音字母`。两者的元音字母声母不同，因此不能共用一个简拼棱镜，否则兼容两套声母会给普通词引入额外碰撞。
+本地神韵布局的英数字母入口与上游保持同一结构：键道使用 `辅音+c`、`x+元音韵键`，三拼沿用同一二键基码并追加轻声键 `o`。这 26 个三拼全码均不与正常带调音节或核心固顶重合，键道和三拼共用 `snow_jiandao_jianpin` 棱镜。
 
-键道使用 `snow_jiandao_jianpin`，三拼使用 `snow_sanpin_jianpin`。改任一方案 `speller/algebra` 里的字母规则时，要同步修改对应棱镜；三拼还需同步更新 `snow_sanpin.fixed.txt` 的「字母」段及其生成器。英数混输回归分别以 `dlqm`（键道）和 `dlkm`（三拼）检查「哆啦A梦」。
+改字母规则时，要同步修改两个方案的 `speller/algebra`、共享棱镜、两个 fixed 表及其生成器。英数混输回归统一以 `dlxm` 检查「哆啦A梦」。
 
 ## lua 的三处坑
 
-- **代理码路径必须走 `snow.prepare`，不要自己 yield。** 冰雪三拼的 `table_like.lua` 把输入改写成代理码（`dlkm` → `dl km`、补 `?`）再查词，librime 会把补出来的 ` ` `?` `~` 算进 quality，`snow.prepare` 负责把这部分虚高和 `_end` 一起修正回来。
+- **代理码路径必须走 `snow.prepare`，不要自己 yield。** 冰雪三拼的 `table_like.lua` 把输入改写成代理码（`dlxm` → `dl xm`、补 `?`）再查词，librime 会把补出来的 ` ` `?` `~` 算进 quality，`snow.prepare` 负责把这部分虚高和 `_end` 一起修正回来。
 - **`fini` 里不能读 `env.engine.schema`。** librime 切换方案时先换 `schema_` 再销毁旧组件，`fini` 读到的是新方案的 `schema_id`。`snow.get_db` / `release_db` 按方案名引用计数，名字要在 `init` 里记到 `env` 上（如 `env.user_dict_name`），`fini` 用记下的那个。记错名字时旧方案的 LevelDB 会一直占着 `LOCK`，表现为同步时「刚切走的那个方案」报 `Error opening db ... already held by process`。
 - **`LevelDb(name)` 建的库会被 Rime 同步当成用户词典。** 键必须是 `编码 \t词` 形式（恰好一个 `\t`，前面带空格），否则快照导出时被丢掉；值必须是 `c=… d=… t=…`，否则合并时被改写成 0。合并对同一个键取 `c` 的最大值，所以要跨设备同步的计数应带上 installation_id 且只增不减，参见 `statistics.lua`。
 

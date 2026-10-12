@@ -225,18 +225,19 @@ export function renderFixedTable(sections: FixedSections) {
 	return `${lines.join("\n")}\n`;
 }
 
-// 键道字母按现行 R9 神韵键位编码；数字放在对应汉字的本地固顶码后。
+// 键道与三拼共享字母二键基码：辅音使用 c 列，元音使用 x 载体；
+// 三拼再统一追加轻声键 o。数字放在对应汉字的本地固顶码后。
 // 与上游一样，这些候选不参与固顶选优，也不新增占用的码位。
 export const jiandaoSupplementalCandidates = new Map<string, string[]>();
 for (const key of "bpmfdtnlgkhjqxzcsrywe") {
-	jiandaoSupplementalCandidates.set(key + "s", [key.toUpperCase(), key]);
+	jiandaoSupplementalCandidates.set(`${key}c`, [key.toUpperCase(), key]);
 }
 for (const [code, letter] of [
-	["qy", "v"],
-	["qk", "i"],
-	["qj", "u"],
-	["qe", "o"],
-	["qw", "a"],
+	["xy", "v"],
+	["xk", "i"],
+	["xj", "u"],
+	["xe", "o"],
+	["xw", "a"],
 ] as const) {
 	jiandaoSupplementalCandidates.set(code, [letter.toUpperCase(), letter]);
 }
@@ -287,32 +288,32 @@ export const sanpinSingleAliases = new Map([
 ]);
 
 export const sanpinLetterEntries = [
-	["bjo", "B b"],
-	["pjo", "P p"],
-	["mjo", "M m"],
-	["fjo", "F f"],
-	["djo", "D d"],
-	["tjo", "T t"],
-	["njo", "N n"],
-	["ljo", "L l"],
-	["gjo", "G g"],
-	["kjo", "K k"],
-	["hjo", "H h"],
-	["jjo", "J j"],
-	["qjo", "Q q"],
-	["xjo", "X x"],
-	["zjo", "Z z"],
-	["cjo", "C c"],
-	["sjo", "S s"],
-	["rjo", "R r"],
-	["yjo", "Y y"],
-	["wjo", "W w"],
-	["ejo", "E e"],
-	["kkv", "V v"],
-	["kki", "I i"],
-	["kku", "U u"],
-	["kko", "O o"],
-	["kka", "A a"],
+	["bco", "B b"],
+	["pco", "P p"],
+	["mco", "M m"],
+	["fco", "F f"],
+	["dco", "D d"],
+	["tco", "T t"],
+	["nco", "N n"],
+	["lco", "L l"],
+	["gco", "G g"],
+	["kco", "K k"],
+	["hco", "H h"],
+	["jco", "J j"],
+	["qco", "Q q"],
+	["xco", "X x"],
+	["zco", "Z z"],
+	["cco", "C c"],
+	["sco", "S s"],
+	["rco", "R r"],
+	["yco", "Y y"],
+	["wco", "W w"],
+	["eco", "E e"],
+	["xyo", "V v"],
+	["xko", "I i"],
+	["xjo", "U u"],
+	["xeo", "O o"],
+	["xwo", "A a"],
 ] as const;
 
 // 上游统计功能用这些三音节全码同时提供中文数字与阿拉伯数字候选。

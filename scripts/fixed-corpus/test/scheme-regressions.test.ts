@@ -198,9 +198,9 @@ test("R9 KeyTao letter and number candidates follow the active schema", () => {
 			.map((line) => line.split("\t", 2) as [string, string]),
 	);
 	for (const key of "bpmfdtnlgkhjqxzcsrywe") {
-		assert.deepEqual(lines.get(`${key}s`)?.split(" ").slice(1), [key.toUpperCase(), key]);
+		assert.deepEqual(lines.get(`${key}c`)?.split(" ").slice(1), [key.toUpperCase(), key]);
 	}
-	for (const [key, code] of Object.entries({ a: "qw", i: "qk", o: "qe", u: "qj", v: "qy" })) {
+	for (const [key, code] of Object.entries({ a: "xw", i: "xk", o: "xe", u: "xj", v: "xy" })) {
 		const aliases = lines.get(code)?.split(" ") ?? [];
 		assert.ok(aliases.includes(key.toUpperCase()) && aliases.includes(key), `${key}: ${code}`);
 	}
@@ -210,16 +210,78 @@ test("R9 KeyTao letter and number candidates follow the active schema", () => {
 	})) {
 		assert.ok(lines.get(code)?.split(" ").includes(number), `${number}: ${code}`);
 	}
-	assert.deepEqual(lines.get("qj")?.split(" "), ["二", "2", "U", "u"]);
+	assert.deepEqual(lines.get("qj")?.split(" "), ["二", "2"]);
+	assert.deepEqual(lines.get("xj")?.split(" "), ["希望", "U", "u"]);
 });
 
-test("R9 KeyTao and Three-Code keep separate letter initials and prisms", () => {
+test("R9 KeyTao and Three-Code share letter bases without occupying Three-Code full codes", () => {
 	const jiandao = read("snow_jiandao.schema.yaml");
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(jiandao, /prism: snow_jiandao_jianpin/u);
-	assert.match(sanpin, /prism: snow_sanpin_jianpin/u);
-	assert.match(read("snow_jiandao_jianpin.schema.yaml"), /xform\/~\{1,2\}a\/qw\//u);
-	assert.match(read("snow_sanpin_jianpin.schema.yaml"), /xform\/~\{1,2\}\(\[aviou\]\)\/kk\$1\//u);
+	assert.match(sanpin, /prism: snow_jiandao_jianpin/u);
+	assert.match(jiandao, /xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1c\//u);
+	assert.match(sanpin, /xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1co\//u);
+	const prism = read("snow_jiandao_jianpin.schema.yaml");
+	assert.match(prism, /xform\/~\{1,2\}a\/xw\//u);
+
+	const initials = [..."bpmfdtnlgkhjqxzcsrwye"];
+	const vowelBases = ["xy", "xk", "xj", "xe", "xw"];
+	const letterBaseCodes = [
+		...initials.map((initial) => `${initial}c`),
+		...vowelBases,
+	];
+	const letterFullCodes = [
+		...initials.map((initial) => `${initial}co`),
+		...vowelBases.map((base) => `${base}o`),
+	];
+	assert.equal(new Set(letterBaseCodes).size, 26);
+	assert.equal(new Set(letterFullCodes).size, 26);
+	const mapping = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
+		codes: Record<string, string>;
+	};
+	const occupiedBaseCodes = new Set(Object.values(mapping.codes));
+	assert.deepEqual(
+		letterBaseCodes.filter((code) => !occupiedBaseCodes.has(code)),
+		["zc", "cc", "sc", "yc", "xj", "xw"],
+	);
+	const toneKeys: Record<string, string> = {
+		"1": "i",
+		"2": "v",
+		"3": "u",
+		"4": "a",
+		"5": "o",
+	};
+	const occupiedFullCodes = new Set<string>();
+	for (const dictionary of [
+		"snow_pinyin.dict.yaml",
+		"snow_pinyin.base.dict.yaml",
+		"snow_pinyin.ext.dict.yaml",
+		"snow_pinyin.tencent.dict.yaml",
+		"snow_pinyin.user.dict.yaml",
+	]) {
+		for (const line of read(dictionary).split(/\r?\n/u)) {
+			if (line.startsWith("#") || !line.includes("\t")) continue;
+			for (const syllable of (line.split("\t")[1] ?? "").split(" ")) {
+				const matched = syllable.match(/^([a-z]+)([1-5])$/u);
+				if (!matched) continue;
+				const base = mapping.codes[matched[1]];
+				const tone = toneKeys[matched[2]];
+				if (base && tone) occupiedFullCodes.add(base + tone);
+			}
+		}
+	}
+	assert.deepEqual(
+		letterFullCodes.filter((code) => occupiedFullCodes.has(code)),
+		[],
+	);
+	const sanpinCore = read("snow_sanpin.fixed.txt").split("# 字母")[0];
+	for (const code of letterFullCodes) {
+		assert.doesNotMatch(sanpinCore, new RegExp(`^${code}\\t`, "mu"));
+	}
+	const jiandaoCore = read("snow_jiandao.fixed.txt");
+	for (const code of letterBaseCodes) {
+		assert.match(jiandaoCore, new RegExp(`^${code}\\t`, "mu"));
+	}
 
 	const fixed = read("snow_sanpin.fixed.txt");
 	for (const [code, candidates] of [

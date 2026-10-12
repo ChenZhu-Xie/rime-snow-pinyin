@@ -74,23 +74,25 @@ deploy:
         assert: not has("(sei3)")
       - send: gx
         assert: cand[1].text == "给"
-      # 辅音字母追加当前 e 韵键 s；旧布局的字面键 e 不再承载字母。
-      - send: gs
-        assert: cand[1].text == "哥" and has("G") and has("g")
+      # 辅音字母使用共享 c 列；三拼在同一基码后追加轻声键 o。
+      - send: gc
+        assert: cand[1].text == "挂" and has("G") and has("g")
       - send: ge
         assert: not has("G") and not has("g")
-      # 元音字母 o 跟随 R9 的零声母 o 码 qe；qq 已改为 en，不能再承载字母。
-      - send: qe
+      # 元音字母使用共享 x 载体；O 的二键基码为 xe。
+      - send: xe
         assert: has("O") and has("o")
       - send: qq
         assert: not has("O") and not has("o")
       # 上游新增的字母和数字候选按当前声韵映射落在原有固顶码后。
-      - send: bs
-        assert: cand[1].text == "比赛" and cand[2].text == "B" and cand[3].text == "b"
-      - send: qy
-        assert: cand[1].text == "却" and cand[2].text == "V" and cand[3].text == "v"
+      - send: bc
+        assert: cand[1].text == "表" and cand[2].text == "B" and cand[3].text == "b"
+      - send: xy
+        assert: cand[1].text == "学" and cand[2].text == "V" and cand[3].text == "v"
       - send: qj
-        assert: cand[1].text == "二" and cand[2].text == "2" and cand[3].text == "U" and cand[4].text == "u"
+        assert: cand[1].text == "二" and cand[2].text == "2"
+      - send: xj
+        assert: cand[1].text == "希望" and cand[2].text == "U" and cand[3].text == "u"
       - send: ski
         assert: cand[1].text == "四" and cand[2].text == "4"
       - send: wx
@@ -166,11 +168,11 @@ deploy:
         assert: cand[1].text == "长猫"
       - send: "{Control+period}bdxyerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
-      # 本地键道使用 jjv/gs/tp/xg；数字和字母取第二候选。
-      - send: "{Control+period}jjv2 gs2 tp xg  jgtx"
+      # 本地键道使用 jjv/gc/tp/xg；数字和字母取第二候选。
+      - send: "{Control+period}jjv2 gc2 tp xg  jgtx"
         assert: cand[1].text == "5G通信"
-      # 元音字母的简拼声母是本地零声母载体 q，使用独立键道棱镜。
-      - send: "{Control+period}dy lw qw2 mn  dlqm"
+      # 键道和三拼的元音字母简拼都使用共享载体 x。
+      - send: "{Control+period}dy lw xw2 mn  dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:

@@ -1,11 +1,11 @@
 # 二简词
 bf	标准
 br	别人
-bs	比赛 B b
+bs	比赛
 bt	不同
 by	不要
 cb	从不
-cc	从此
+cc	从此 C c
 cd	菜单
 ct	餐厅
 cx	才行
@@ -16,7 +16,7 @@ gb	根本
 gk	赶快
 hb	好吧
 hk	很快
-js	猥琐 J j
+js	猥琐
 jz	文字
 kb	恐怖
 kk	可靠
@@ -24,18 +24,18 @@ lq	恋爱
 mr	默认
 my	没有
 pr	骗人
-ps	配送 P p
+ps	配送
 pt	平台
 py	朋友
 rb	日本
-rc	如此
+rc	如此 R r
 rd	认定
 rh	然后
 rt	如同
 rw	日常
 rx	如下
 sb	随便
-sc	三次
+sc	三次 S s
 sd	速度
 st	三天
 sx	思想
@@ -43,24 +43,24 @@ tq	天气
 tt	探讨
 tx	同学
 wb	成本
-wc	尺寸
+wc	尺寸 W w
 wx	出现
 xh	喜欢
-xj	希望
+xj	希望 U u
 xm	下面
-xs	迅速 X x
-xw	形成
+xs	迅速
+xw	形成 A a
 xx	学习
 xz	现在
 yb	一般
-yc	因此
+yc	因此 Y y
 yh	以后
 yj	以及
 yn	一年
 yt	一天
 yx	也许
 zb	资本
-zc	再次
+zc	再次 Z z
 zd	自动
 zt	昨天
 # 630
@@ -699,7 +699,7 @@ b	不
 bb	别
 bbo	憋
 bbu	癿
-bc	表
+bc	表 B b
 bca	婊
 bci	彪
 bco	裱
@@ -844,7 +844,7 @@ cri	催
 cro	啐
 cru	脆
 crv	璀
-cs	测 C c
+cs	测
 csi	侧
 cso	恻
 csu	册
@@ -869,7 +869,7 @@ dbi	蝶
 dbo	跌
 dbu	迭
 dbv	碟
-dc	掉
+dc	掉 D d
 dca	刁
 dci	钓
 dco	叼
@@ -944,7 +944,7 @@ dr	对
 dra	队
 dro	敦
 drv	堆
-ds	地 D d
+ds	地
 dsi	锝
 dso	底
 dsu	德
@@ -971,7 +971,7 @@ dzo	道
 dzu	岛
 dzv	纛
 e	是
-ec	刷
+ec	刷 E e
 eco	唰
 ecv	耍
 ed	双
@@ -1036,7 +1036,7 @@ er	说
 era	水
 eri	睡
 eru	税
-es	设 E e
+es	设
 esa	涉
 esi	舍
 eso	社
@@ -1065,7 +1065,7 @@ ezo	烧
 ezu	稍
 ezv	梢
 f	这
-fc	抓
+fc	抓 F f
 fci	挝
 fcu	爪
 fcv	髽
@@ -1142,7 +1142,7 @@ fra	坠
 fri	揣
 fro	惴
 frv	赘
-fs	者 F f
+fs	者
 fsa	浙
 fsi	折
 fso	遮
@@ -1172,7 +1172,7 @@ fzo	照
 fzu	兆
 fzv	赵
 g	个
-gc	挂
+gc	挂 G g
 gci	括
 gco	寡
 gcu	刮
@@ -1244,7 +1244,7 @@ gri	归
 gro	跪
 gru	簋
 grv	规
-gs	哥 G g
+gs	哥
 gsa	隔
 gsi	葛
 gso	割
@@ -1274,7 +1274,7 @@ gzo	高
 gzu	告
 gzv	槁
 h	和
-hc	话
+hc	话 H h
 hca	滑
 hci	化
 hco	哗
@@ -1347,7 +1347,7 @@ hri	挥
 hro	恢
 hru	毁
 hrv	灰
-hs	喝 H h
+hs	喝
 hsa	河
 hsi	合
 hso	嗬
@@ -1381,7 +1381,7 @@ jbi	接
 jbo	竭
 jbu	解
 jbv	杰
-jc	叫
+jc	叫 J j
 jca	缴
 jci	焦
 jco	交
@@ -1487,7 +1487,7 @@ jyo	决
 jyu	角
 jyv	厥
 k	可
-kc	夸
+kc	夸 K k
 kca	姱
 kci	挎
 kco	跨
@@ -1553,7 +1553,7 @@ kri	葵
 kro	愧
 kru	魁
 krv	奎
-ks	克 K k
+ks	克
 ksa	渴
 ksi	颗
 kso	客
@@ -1587,7 +1587,7 @@ lbi	劣
 lbo	冽
 lbu	猎
 lbv	列
-lc	聊
+lc	聊 L l
 lca	辽
 lci	僚
 lco	料
@@ -1661,7 +1661,7 @@ lri	铝
 lro	旅
 lru	律
 lrv	榈
-ls	乐 L l
+ls	乐
 lsa	泐
 lsi	仂
 lso	嘞
@@ -1702,7 +1702,7 @@ mba	乜
 mbi	蔑
 mbu	篾
 mbv	灭
-mc	秒
+mc	秒 M m
 mca	妙
 mci	苗
 mco	庙
@@ -1775,7 +1775,7 @@ mqa	懑
 mqi	扪
 mqo	门
 mqv	鞔
-ms	么 M m
+ms	么
 mso	麽
 mt	谬
 mta	缪
@@ -1804,7 +1804,7 @@ nbi	孽
 nbo	蹑
 nbu	臬
 nbv	聂
-nc	鸟
+nc	鸟 N n
 nca	尿
 nci	茑
 ncu	袅
@@ -1859,7 +1859,7 @@ nr	女
 nri	钕
 nru	衄
 nrv	恧
-ns	呢 N n
+ns	呢
 nso	讷
 nt	牛
 nta	妞
@@ -1890,7 +1890,7 @@ pb	撇
 pbi	苤
 pbo	瞥
 pbu	氕
-pc	票
+pc	票 P p
 pca	漂
 pci	瞟
 pco	嘌
@@ -1985,7 +1985,7 @@ qbi	茄
 qbo	窃
 qbu	箧
 qbv	切
-qc	瞧
+qc	瞧 Q q
 qca	缲
 qci	撬
 qco	悄
@@ -1997,7 +1997,7 @@ qdi	倾
 qdo	请
 qdu	卿
 qdv	轻
-qe	全 O o
+qe	全
 qea	劝
 qei	圈
 qeo	拳
@@ -2020,13 +2020,13 @@ qhi	艾
 qho	哀
 qhu	矮
 qhv	霭
-qj	二 2 U u
+qj	二 2
 qja	洱
 qji	铒
 qjo	咡
 qju	儿
 qjv	而
-qk	起 I i
+qk	起
 qka	汽
 qki	企
 qko	齐
@@ -2063,7 +2063,7 @@ qri	曲
 qro	祛
 qru	躯
 qrv	取
-qs	额 Q q
+qs	额
 qsa	娥
 qsi	俄
 qso	呃
@@ -2075,14 +2075,14 @@ qti	囚
 qto	酋
 qtu	秋
 qtv	球
-qw	啊 A a
+qw	啊
 qwa	阿
 qwi	锕
 qwo	呵
 qwu	腌
 qx	诶
 qxa	欸
-qy	却 V v
+qy	却
 qya	汋
 qyi	雀
 qyo	阙
@@ -2142,7 +2142,7 @@ rra	汭
 rri	锐
 rro	兑
 rrv	枘
-rs	热 R r
+rs	热
 rsi	惹
 rso	喏
 ry	若
@@ -2207,7 +2207,7 @@ sri	岁
 sro	虽
 sru	穗
 srv	璲
-ss	色 S s
+ss	色
 ssa	涩
 ssi	铯
 ssu	啬
@@ -2234,7 +2234,7 @@ t	他
 tb	贴
 tbi	帖
 tbv	餮
-tc	条
+tc	条 T t
 tca	迢
 tci	挑
 tco	调
@@ -2306,7 +2306,7 @@ tri	推
 tro	褪
 tru	颓
 trv	忒
-ts	特 T t
+ts	特
 tsi	铽
 tsv	忑
 tw	她
@@ -2402,7 +2402,7 @@ wri	锤
 wro	炊
 wru	垂
 wrv	槌
-ws	车 W w
+ws	车
 wsa	澈
 wsi	撤
 wso	㬚
@@ -2435,7 +2435,7 @@ xbi	斜
 xbo	谢
 xbu	协
 xbv	鞋
-xc	小
+xc	小 X x
 xca	消
 xci	销
 xco	效
@@ -2447,7 +2447,7 @@ xdi	擤
 xdo	星
 xdu	腥
 xdv	形
-xe	选
+xe	选 O o
 xea	绚
 xei	悬
 xeo	宣
@@ -2464,7 +2464,7 @@ xgi	信
 xgo	心
 xgu	欣
 xgv	馨
-xk	系
+xk	系 I i
 xka	戏
 xki	锡
 xko	席
@@ -2506,7 +2506,7 @@ xti	修
 xto	羞
 xtu	臭
 xtv	朽
-xy	学
+xy	学 V v
 xyi	削
 xyo	穴
 xyu	血
@@ -2572,7 +2572,7 @@ yri	余
 yro	语
 yru	鱼
 yrv	于
-ys	射 Y y
+ys	射
 ysa	也
 ysi	业
 yso	夜
@@ -2657,7 +2657,7 @@ zr	最
 zri	罪
 zro	嘴
 zrv	醉
-zs	则 Z z
+zs	则
 zsa	泽
 zsi	择
 zso	啧

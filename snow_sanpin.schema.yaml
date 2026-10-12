@@ -15,7 +15,7 @@ schema:
   dependencies:
     - snow_pinyin
     - snow_sanpin_bihua
-    - snow_sanpin_jianpin
+    - snow_jiandao_jianpin
 
 engine:
   processors:
@@ -116,7 +116,7 @@ sanpin_algebra:
 
 jianpin:
   dictionary: snow_pinyin
-  prism: snow_sanpin_jianpin
+  prism: snow_jiandao_jianpin
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext
@@ -163,10 +163,13 @@ speller:
   algebra:
     __include: /sanpin_algebra
     __append:
-      # 辅音字母借用「u + 轻声」稀疏槽；当前 j 为 u、o 为轻声。
-      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1jo/
-      # 元音字母补 kk
-      - xform/~{1,2}([aviou])/kk$1/
+      # 与键道共享二键基码，并统一追加轻声键 o；这 26 个三码均为空槽。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1co/
+      - xform/~{1,2}v/xyo/
+      - xform/~{1,2}i/xko/
+      - xform/~{1,2}u/xjo/
+      - xform/~{1,2}o/xeo/
+      - xform/~{1,2}a/xwo/
       - abbrev/^([a-z]).+$/$1/ # 简拼
       - derive/[ivuao]$// # 无声调
 
