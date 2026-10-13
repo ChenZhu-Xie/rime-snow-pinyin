@@ -1,0 +1,95 @@
+// ==============================================================================
+// VerySync (微力同步) 过滤规则 - rime-snow-pinyin 专项目录
+// 目标: D:\C2D\Documents\rime-snow-pinyin\.verysyncignore
+// 策略: 保护双端 Rime 配置与核心词典；隔离 Weasel 单机二进制/LevelDB；过滤语料缓存与中间数据
+// ==============================================================================
+
+// ------------------------------------------------------------------------------
+// 1. 小狼毫（Weasel）单机运行态与编译二进制（极高危：防 LevelDB 坏库与机器 ID 覆盖）
+// ------------------------------------------------------------------------------
+(?d)build
+(?d)*.userdb
+(?d)*.userdb.*
+(?d)installation.yaml
+(?d)user.yaml
+// 说明：保留 /sync 目录，通过小狼毫自带的「用户资料同步」安全合并双端词频
+
+// ------------------------------------------------------------------------------
+// 2. 评测缓存、临时生成物与 Node.js 依赖 (包含 scripts/node_modules)
+// ------------------------------------------------------------------------------
+(?d)node_modules
+(?d)cache
+(?d)trash
+(?d)cn_dicts_temp
+(?d).worktrees
+
+// ------------------------------------------------------------------------------
+// 3. Python / Numba / Ruff 脚本与编译检查缓存
+// ------------------------------------------------------------------------------
+(?d)__pycache__
+(?d)*.py[cod]
+(?d)*.nbc
+(?d)*.nbi
+(?d).ruff_cache
+(?d).pytest_cache
+
+// ------------------------------------------------------------------------------
+// 4. 算法搜索过程产生的大体积中间 JSON（仅保留核心前沿/种子汇总）
+// ------------------------------------------------------------------------------
+(?d)/research-notes/data/*b-paths*
+(?d)/research-notes/data/*completion-v2*
+(?d)/research-notes/data/*completion-ckt*
+(?d)/research-notes/data/*constrained-continuation*
+(?d)/research-notes/data/*elites-meta*
+(?d)/research-notes/data/*all-historical-pools*
+
+// ------------------------------------------------------------------------------
+// 5. 主仓库及子 Git 仓库安全锁（保护 ice, pinyin-data, rime-easy-en, rime-stroke 等）
+// ------------------------------------------------------------------------------
+**/.git/*.lock
+**/.git/index.lock
+**/.git/COMMIT_EDITMSG
+**/.git/TAG_EDITMSG
+**/.git/FETCH_HEAD
+**/.git/ORIG_HEAD
+**/.git/rebase-apply
+**/.git/rebase-merge
+.git/*.lock
+.git/index.lock
+.git/COMMIT_EDITMSG
+
+// ------------------------------------------------------------------------------
+// 6. 通用现代编辑器单机状态与本地临时文件隔离
+// ------------------------------------------------------------------------------
+// Sublime Text
+(?d)*.sublime-workspace
+
+// VS Code / Cursor / Zed / Helix / JetBrains / Visual Studio
+(?d).vscode/chrome
+(?d).vscode/ipch
+(?d).vscode/.browse.*
+(?d).vscode/*.log
+(?d).cursor/cache
+(?d).cursor/state
+(?d).zed/settings.local.json
+(?d).helix/*.local.toml
+(?d).helix/*.log
+(?d).idea
+(?d)*.suo
+(?d)*.user
+(?d)*.userosv
+(?d)*.sln.docstates
+
+// Vim / Neovim / 交换文件 / 临时文本 / Office 锁
+(?d)*.swp
+(?d)*.swn
+(?d)*.swo
+(?d)*~
+(?d).netrwhist
+(?d)~$*
+(?d)*.tmp
+(?d)*.bak
+(?d)*.log
+(?d)npm-debug.log*
+(?d)yarn-debug.log*
+(?d)pnpm-debug.log*
