@@ -71,7 +71,7 @@ M43 点是记忆和综合分更接近 R9 的实验点，但 W 负载不适合直
 $env:PYTHONUTF8 = '1'
 python scripts/research/verify_shenyun_21x21_low_miss.py `
   --benchmark 'D:\C2D\Desktop\Code\Lua\inputMethod\shuangpin-layout-benchmark\a7_CKT_R11.html' `
-  --replay "$env:TEMP\rime-21x21-search\R11_integrated_replay"
+  --replay ".research-cache\R11_integrated_replay"
 ```
 
 把 `--exact research-notes/data/shenyun-21x21-low-miss-m43-exact.json` 加入命令可复核 M43 点。已对这两点分别运行成功。搜索脚本也以 100 步冒烟运行成功，但长期预算非穷举，任何性能优势仍属于模型预测，不是人手实验。暂不迁移仓库的 schema、生成器或码表；现用方案继续保持原样。若后续决定迁移，需按仓库规则同步生成物、文档和测试，在当前布局与候选上重测空码位及字词碰撞，然后使用 GitHub Actions 做 Mira 验证。

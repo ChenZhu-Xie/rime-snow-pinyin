@@ -18,7 +18,7 @@ WORKTREE = Path(__file__).resolve().parents[2]
 MAIN_REPO = Path(r"D:\C2D\Documents\rime-snow-pinyin")
 DATA = WORKTREE / "research-notes" / "data"
 DEFAULT_HTML = Path(r"D:\C2D\Desktop\Code\Lua\inputMethod\shuangpin-layout-benchmark\a7_CKT_R11.html")
-DEFAULT_REPLAY = Path(os.environ.get("TEMP", "")) / "rime-21x21-search" / "R11_integrated_replay"
+DEFAULT_REPLAY = Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay"))
 SCORER = WORKTREE / "scripts" / "research" / "score_shenyun_completion_ckt.js"
 
 # Exact 45 selected schemes from the 5 Round 2 tables (Categories A..E)

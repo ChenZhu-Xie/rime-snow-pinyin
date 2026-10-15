@@ -18,7 +18,7 @@ for k in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "NUMBA_NUM_THREADS"):
 import numpy as np
 
 WORKTREE = Path(__file__).resolve().parents[2]
-REPLAY_DIR = Path(os.environ.get("TEMP", "/tmp")) / "rime-21x21-search" / "R11_integrated_replay"
+REPLAY_DIR = Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay"))
 sys.path.insert(0, str(REPLAY_DIR))
 sys.path.insert(0, str(WORKTREE / "scripts" / "research"))
 

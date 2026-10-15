@@ -15,7 +15,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-REPLAY = Path(os.environ['TEMP']) / 'rime-21x21-search/R11_integrated_replay'
+REPLAY = Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay"))
 HTML = Path(r'D:\C2D\Desktop\Code\Lua\inputMethod\shuangpin-layout-benchmark\a7_CKT_R11.html')
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--files', type=Path, nargs='+', default=[ROOT / 'research-notes/data/shenyun-21x21-completion-fixed-face-search-r2.json', ROOT / 'research-notes/data/shenyun-21x21-completion-fixed-local-polish.json'])

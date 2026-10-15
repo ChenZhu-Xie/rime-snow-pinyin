@@ -926,7 +926,7 @@ class FastCKTv3_21x26:
 if __name__ == "__main__":
     import os, sys, importlib.util
     ROOT = Path(__file__).resolve().parents[2]
-    REPLAY = Path(os.environ["TEMP"]) / "rime-21x21-search/R11_integrated_replay"
+    REPLAY = Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay"))
     HTML_PATH = Path(r"D:\C2D\Desktop\Code\Lua\inputMethod\shuangpin-layout-benchmark\a7_CKT_R11.html")
     DATA = ROOT / "research-notes/data"
     os.chdir(REPLAY)

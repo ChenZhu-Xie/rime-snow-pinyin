@@ -22,7 +22,7 @@ a.files = [p.resolve() for p in a.files]
 a.output = a.output.resolve()
 for k in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','NUMBA_NUM_THREADS'):
     os.environ[k] = '1'
-replay = Path(os.environ['TEMP']) / 'rime-21x21-search/R11_integrated_replay'
+replay = Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay"))
 os.chdir(replay)
 sys.path[:0] = [str(replay), str(ROOT/'scripts/research')]
 sys.argv = ['benchmark_shenyun_21x21_b_sets.py', '--replay', str(replay),

@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "research-notes/data"
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--replay", type=Path, default=Path(os.environ.get("TEMP", "")) / "rime-21x21-search/R11_integrated_replay")
+parser.add_argument("--replay", type=Path, default=Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay")))
 parser.add_argument("--output", type=Path, default=DATA / "shenyun-21x21-b-paths-face-search-round1.json")
 parser.add_argument("--phase1", type=int, default=25000)
 parser.add_argument("--phase2", type=int, default=25000)

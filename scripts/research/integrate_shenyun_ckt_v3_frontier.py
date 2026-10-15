@@ -14,7 +14,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / 'research-notes/data'
 DEFAULT_HTML = Path(r'D:\C2D\Desktop\Code\Lua\inputMethod\shuangpin-layout-benchmark\a7_CKT_R11.html')
-DEFAULT_REPLAY = Path(os.environ.get('TEMP', '')) / 'rime-21x21-search/R11_integrated_replay'
+DEFAULT_REPLAY = Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay"))
 SCORER = ROOT / 'scripts/research/score_shenyun_completion_ckt.js'
 
 TARGET_IDS = [

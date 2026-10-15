@@ -19,8 +19,7 @@ p = argparse.ArgumentParser(description=__doc__)
 p.add_argument(
     "--replay",
     type=Path,
-    default=Path(os.environ.get("TEMP", ""))
-    / "rime-21x21-search/R11_integrated_replay",
+    default=Path(os.environ.get("RIME_RESEARCH_REPLAY_DIR", Path(__file__).resolve().parents[2] / ".research-cache" / "R11_integrated_replay")),
 )
 p.add_argument(
     "--search", type=Path, default=DATA / "shenyun-21x21-b-paths-e12-contract-01.json"
