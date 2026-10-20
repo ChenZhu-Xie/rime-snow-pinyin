@@ -44,14 +44,15 @@ snow.redispatching = false
 ---@type integer|nil
 snow.handover = nil
 
---- 绕过 context 直接上屏。这条路径不触发 commit_notifier，所以同时写一次 context 属性
---- `commit_text`，输入统计靠 property_update_notifier 补记
+--- 绕过 context 直接上屏。这条路径不触发 commit_notifier，所以用 `direct_commit_text`
+--- 通知自由加词实际发出的文字，用 `commit_text` 通知输入统计需要结算的文字
 ---@param engine Engine
 ---@param text string
 ---@param counted string|nil 输入统计记作的上屏文字，默认为 text；为空串时不记，留给之后的上屏一起记
 function snow.commit_text(engine, text, counted)
   if text ~= "" then
     engine:commit_text(text)
+    engine.context:set_property("direct_commit_text", text)
   end
   counted = counted or text
   if counted ~= "" then

@@ -321,6 +321,10 @@ end
 ---@param key_event KeyEvent
 ---@param env StatisticsEnv
 function processor.func(key_event, env)
+  -- 没有统计库时不积累按键，也无需接管并击的最后一次松开
+  if not env.db then
+    return snow.kNoop
+  end
   -- popping 重投的按键已经记过一次
   if snow.redispatching then
     return snow.kNoop
@@ -565,7 +569,7 @@ local function report(env, segment, title, s, installation, per_device)
   table.insert(lines, divider)
   table.insert(lines, "❄️ 冰雪统计 v" .. snow.version)
   table.insert(lines, "💬 冰雪拼音 QQ 群 1014366669")
-  env.reports[brief] = table.concat(lines, "\n")
+  env.reports[brief] = table.concat(lines, "\r\n")
   yield(Candidate("statistics", segment.start, segment._end, brief, ""))
 end
 

@@ -15,6 +15,7 @@ local processor = {}
 ---@field add_index integer
 ---@field connection Connection
 ---@field unhandled_connection Connection
+---@field property_connection Connection
 ---@field fix_key KeyEvent
 ---@field add_key KeyEvent
 ---@field up_key KeyEvent
@@ -52,6 +53,12 @@ function processor.init(env)
         env.add_word = env.add_word .. text
         snow.errorf("正在添加新词：%s", env.add_word)
       end
+    end
+  end)
+  -- 直接上屏不经过 commit_notifier；按实际发出的文字和顺序收集，略码的统计合并量不适用于加词
+  env.property_connection = env.engine.context.property_update_notifier:connect(function(ctx, name)
+    if name == "direct_commit_text" and env.add_input:len() > 0 then
+      env.add_word = env.add_word .. ctx:get_property(name)
     end
   end)
   -- 西文模式下的字母、无编码时的数字等按键不经 Rime 上屏，而是放行给应用自己插入，
@@ -200,6 +207,10 @@ function processor.func(key_event, env)
   local epoch = snow.epoch()
 
   if key_event:eq(env.fix_key) then -- 固定/取消固定
+    if index > snow.MAX_INDEX then
+      snow.errorf("无法固定：%s 候选 %d 超过上限 %d", input, index, snow.MAX_INDEX)
+      return snow.kAccepted
+    end
     local value = snow.format(snow.encode(epoch, index))
     if processor.is_fixed(candidate) then
       local found = false
@@ -282,6 +293,9 @@ function processor.fini(env)
   end
   if env.unhandled_connection then
     env.unhandled_connection:disconnect()
+  end
+  if env.property_connection then
+    env.property_connection:disconnect()
   end
 end
 

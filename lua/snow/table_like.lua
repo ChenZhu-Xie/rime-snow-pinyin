@@ -9,18 +9,11 @@ local snow = require "snow.snow"
 ---@field pattern2 string
 
 local t12 = {}
----@type Translator?
-T12Translator = T12Translator
----@type integer
-T12Reference = 0
 
 ---@param env TableLikeEnv
 function t12.init(env)
-  if not T12Translator then
-    T12Translator = Component.Translator(env.engine, "translator", "script_translator")
-    T12Reference = T12Reference + 1
-  end
-  env.translator = T12Translator
+  -- 翻译器持有 engine，不能跨会话共享，否则原会话销毁后会访问失效的引擎
+  env.translator = Component.Translator(env.engine, "translator", "script_translator")
   env.pattern = env.engine.schema.config:get_string("translator/t1_pattern") or "^.+$"
   env.pattern2 = env.engine.schema.config:get_string("translator/t2_pattern") or "^.+$"
 end
@@ -68,26 +61,14 @@ end
 ---@param env TableLikeEnv
 function t12.fini(env)
   env.translator = nil
-  T12Reference = T12Reference - 1
-  if T12Reference == 0 then
-    T12Translator = nil
-    collectgarbage()
-  end
+  collectgarbage()
 end
 
 local jianpin = {}
----@type Translator?
-JianpinTranslator = JianpinTranslator
----@type integer
-JianpinReference = 0
 
 ---@param env TableLikeEnv
 function jianpin.init(env)
-  if not JianpinTranslator then
-    JianpinTranslator = Component.Translator(env.engine, "jianpin", "script_translator")
-    JianpinReference = JianpinReference + 1
-  end
-  env.translator = JianpinTranslator
+  env.translator = Component.Translator(env.engine, "jianpin", "script_translator")
   env.pattern = env.engine.schema.config:get_string("translator/jianpin_pattern") or "^.+$"
 end
 
@@ -132,11 +113,7 @@ end
 ---@param env TableLikeEnv
 function jianpin.fini(env)
   env.translator = nil
-  JianpinReference = JianpinReference - 1
-  if JianpinReference == 0 then
-    JianpinTranslator = nil
-    collectgarbage()
-  end
+  collectgarbage()
 end
 
 return {

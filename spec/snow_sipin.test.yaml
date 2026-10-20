@@ -313,6 +313,17 @@ deploy:
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
       - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
+      # 自由加词也要捕获以词定字，以及略码前后两部分的直接上屏
+      - send: "kfc{Control+backslash}{Control+apostrophe}xxrr[{Control+apostrophe}kfc"
+        assert: cand[1].text == "熙"
+      - send: "kfc{Control+backslash}{Control+apostrophe}xxrr]{Control+apostrophe}kfc"
+        assert: cand[1].text == "攘"
+      - send: "kfc{Control+backslash}{Control+apostrophe}krO{Control+apostrophe}kfc"
+        assert: cand[1].text == "可可爱爱"
+      - send: "kfc{Control+backslash}{Control+apostrophe}dpaiE{Control+apostrophe}kfc"
+        assert: cand[1].text == "打打牌"
+      - send: "kfc{Control+backslash}{Control+apostrophe}wgA{Control+apostrophe}kfc"
+        assert: cand[1].text == "这个这个"
       # 加词时若第一候选已固定，新词加到第二候选
       - send: "dna{Control+semicolon}{Control+apostrophe}tfhtHS {Control+apostrophe}dna"
         assert: cand[1].text == "电脑" and cand[2].text == "脱氧核糖核酸"
@@ -327,6 +338,13 @@ deploy:
       # 重置：Control+\ 取消当前编码上的所有自定义
       - send: "kooe{Control+backslash}kooe"
         assert: not pinned(1) and not pinned(2)
+      # 位置编码只支持 1～18；超出的固定操作应保持候选不变，不能写成禁用或回绕到首位
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+        assert: not pinned(19) and not pinned(1)
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+        assert: not pinned(21) and not pinned(1)
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+        assert: pinned(18)
   # 无理音节
   special:
     patch:

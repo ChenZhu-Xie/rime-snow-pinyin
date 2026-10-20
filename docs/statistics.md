@@ -221,7 +221,9 @@ $$
 
 ### 识别键（`processor.func`）
 
-每个按键事件依次经过：
+库未打开时，处理器直接放行所有按键，不保存按键队列，也不接管并击。
+
+库打开后，每个按键事件依次经过：
 
 1. `snow.redispatching` 为真时跳过：popping 用 `engine:process_key()` 把同一个键重投到链顶，第一次已经记过了。`env.finishing` 为真时也跳过，这是并击的合成键（见「并击」）。
 2. **放弃检测**。processor 排在第一位，所以事件开始时看到的就是上一个事件处理完的状态。如果 `env.composing`（上一个事件开始时有编码）为真、现在没有编码、`env.committed`（期间有过上屏）为假，就清空 `env.steps`，然后把这两个字段换成当前的值。
@@ -261,6 +263,7 @@ $$
 | 绕过输入框：`snow.commit_text` | `property_update_notifier`，属性名 `commit_text` | 属性值，即 `counted` 参数，默认为上屏的文字 |
 
 - `engine:commit_text` 不触发 `commit_notifier`。**以后新写的直接上屏一律调用 `snow.commit_text`**，否则这次上屏的字数会漏记，它的按键也会被算进下一次上屏。
+- `snow.commit_text` 还会用 `direct_commit_text` 属性通知自由加词实际发出的文字。它与统计用的 `commit_text` 分开：略码可能先发出一个字、再上屏原词、最后发出另一个字，自由加词必须保留这个顺序，不能使用统计合并后的 `counted`。
 - 第一部分说的合并多次上屏，靠 `counted` 参数实现。略码重复出来的部分不管接在词前还是词后，词前的部分上屏时 `counted` 传空串不记，词后的部分上屏时 `counted` 传两部分之和；词本身用移交量 1 把略码键转给重复出来的部分。例如 `wgA` 记成「这个」2 码、重复的「这个」1 码。
 - `unhandled_key_notifier` 对 `kRejected` 的键也会触发，所以回调里要排除 `ascii_mode`；还要排除 `snow.redispatching`，因为顶屏后重投、最终没人处理的键（比如空格）并没有到达应用。空格在这里也被排除，并击时顺便置 `env.blank`。
 - 屏蔽只在 `commit_notifier` 的回调里做：`context.input` 是统计命令（和翻译器共用 `parse_command`，不用另配），或者与方案 `statistics/exclude` 列表里任一个正则**完全匹配**（`regex_match`）时，按移交量用 `take` 从 `env.steps` 里取出这次的键后丢掉，顶屏键仍留给下一个词。
