@@ -53,7 +53,7 @@ engine:
     - history_translator
   filters:
     - lua_filter@*snow.placeholder
-    - lua_filter@*snow.bihua*filter
+    - lua_filter@*snow.bihua
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
@@ -66,6 +66,7 @@ engine:
 
 sanpin_algebra:
   # 全拼还原
+  - xform/(^| )r5(?= |$)/$1er5/ # 儿化轻声并入 er5，避免占用单键 r
   - xform/(?<=[jqxy])u(e?\d)/v$1/
   - xform/(^| )([aoe]|[mn]g?\d)/$1X$2/
   # 声母飞键

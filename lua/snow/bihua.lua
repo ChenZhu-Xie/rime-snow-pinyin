@@ -13,10 +13,10 @@
 ---@type table<string, boolean>
 local default_shape_sources = { G = true }
 
-local bihua = {}
+local filter = {}
 
 ---@param env BihuaEnv
-function bihua.init(env)
+function filter.load_strokes(env)
   env.strokes = ReverseLookup("snow_bihua")
   env.shape_sources = default_shape_sources
   local sources = env.engine.schema.config:get_list("translator/shape_sources")
@@ -34,7 +34,7 @@ end
 ---@param text string
 ---@param env BihuaEnv
 ---@return string[], boolean
-function bihua.codes(text, env)
+function filter.codes(text, env)
   local raw = env.strokes and env.strokes:lookup(text) or ""
   ---@type string[]
   local codes = {}
@@ -53,16 +53,14 @@ function bihua.codes(text, env)
 end
 
 ---@param env BihuaEnv
-function bihua.fini(env)
+function filter.release_strokes(env)
   env.strokes = nil
   collectgarbage()
 end
 
-local filter = {}
-
 ---@param env BihuaFilterEnv
 function filter.init(env)
-  bihua.init(env)
+  filter.load_strokes(env)
   local config = env.engine.schema.config
   -- 反查使用 stroke 命名空间，独立笔画方案使用 translator 命名空间。
   local namespace = config:get_string("translator/dictionary") == "snow_bihua" and "translator" or "stroke"
@@ -89,7 +87,7 @@ function filter.func(translation, env)
     end
     -- affix_segmentor 已经去掉前后缀；首笔丿也使用 u，不能再按前缀剥掉一次。
     local code = input:sub(genuine.start + 1, genuine._end):gsub("[ ']+$", ""):gsub(".", env.stroke_mapping)
-    local codes = bihua.codes(candidate.text, env)
+    local codes = filter.codes(candidate.text, env)
     for _, strokes in ipairs(codes) do
       if strokes:sub(1, #code) == code then
         -- 原生翻译器已按汉字去重，补全提示可能来自被禁用的另一条笔顺。
@@ -112,9 +110,7 @@ end
 ---@param env BihuaFilterEnv
 function filter.fini(env)
   env.comment_format = nil
-  bihua.fini(env)
+  filter.release_strokes(env)
 end
 
-bihua.filter = filter
-
-return bihua
+return filter

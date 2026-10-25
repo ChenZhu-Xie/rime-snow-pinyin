@@ -1,6 +1,6 @@
 # Rime dictionary
 # encoding: utf-8
-# 由 scripts/bihua.ts 生成，请勿手改。
+# 由 scripts/generate-stroke-dict.ts 生成，请勿手改。
 # 两列依次为汉字、笔顺＋连续来源标签；12345 分别表示横、竖、撇、点、折。
 # 无标签记录为通用字形；棱镜去掉标签供原生翻译器查询，Lua filter 按来源筛选。
 

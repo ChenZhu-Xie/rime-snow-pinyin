@@ -1,10 +1,9 @@
 import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
+import { ROOT } from "./lib/paths";
 import { Glob } from "bun";
 
 // 版本号只写在 lua/snow/snow.lua 里，方案、词典的 version 和生成脚本都从这里取
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const LUA = join(ROOT, "lua", "snow", "snow.lua");
 const LUA_PATTERN = /^snow\.version = "([^"]*)"$/m;
 // 只改 YAML 头里的第一个 version：方案在 schema 下缩进两格，词典在顶层

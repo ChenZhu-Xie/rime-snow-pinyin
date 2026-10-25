@@ -1,349 +1,53 @@
-import { dump } from "js-yaml";
-import { mkdirSync, writeFileSync } from "fs";
-import { join } from "path";
-import { homedir } from "os";
+import type {
+	Action,
+	CandidateContextMenu,
+	CandidateStyle,
+	Cell,
+	Config,
+	GeometryStyle,
+	HamsterSkinConfig,
+	HorizontalCandidateStyle,
+	Keyboard,
+	KeyboardCollection,
+	KeyboardConfig,
+	KeyboardStyle,
+	Layout,
+	LayoutElement,
+	PreeditStyle,
+	SystemImageName,
+	SystemImageStyle,
+	TextStyle,
+	ToolbarStyle,
+	VerticalCandidateStyle,
+} from "./types";
 
 type Style = Record<string, any>;
 type Collection = Record<string, Style>;
 
-interface Config {
-	schema?: string;
-	colorful: boolean;
-	dark: boolean;
-	label: boolean;
-	symbol?: boolean;
-	keyInfos: KeyInfo[][];
-	specialCharacters?: string;
+// 保留 iOS 的 SF Symbols，为 Android 显式指定对应的 Material Icon。
+// https://ihsiao.com/apps/hamster/v3/docs/guides/skins/styles/#systemimage
+const materialIcons: Record<string, string> = {
+	globe: "language",
+	shift: "shift",
+	"delete.left": "backspace",
+	return: "keyboard_return",
+	"r.circle": "settings",
+	"chevron.down.circle": "expand_circle_down",
+	"characters.uppercase": "keyboard_capslock",
+	character: "translate",
+	function: "functions",
+	"doc.on.clipboard": "content_paste",
+	"text.quote": "format_quote",
+	"chevron.forward": "chevron_right",
+	"chevron.down": "expand_more",
+	"chevron.up": "expand_less",
+};
+
+function systemImageName(ios: string): SystemImageName {
+	const android = materialIcons[ios];
+	if (!android) throw new Error(`缺少 Android 图标映射：${ios}`);
+	return { ios, android };
 }
-
-interface KeyInfo {
-	action: string;
-	name?: string;
-	label?: string;
-	up?: string;
-	upLabel?: string;
-	down?: string;
-	downLabel?: string;
-	preedit?: string;
-	preeditLabel?: string;
-	width?: string;
-}
-
-const qpkr: KeyInfo[][] = [
-	[
-		{ action: "q", down: "~" },
-		{ action: "p", down: "!" },
-		{ action: "k", down: "@" },
-		{ action: "r", down: "#" },
-		{ action: "y", down: "$" },
-		{ action: "t", down: "%" },
-		{ action: "c", down: "_" },
-	],
-	[
-		{ action: "j", down: "|" },
-		{ action: "b", down: "^" },
-		{ action: "g", down: "&" },
-		{ action: "l", down: "*" },
-		{ action: "w", down: "(" },
-		{ action: "d", down: ")" },
-		{ action: "z", down: "+" },
-	],
-	[
-		{ action: "x", down: "`" },
-		{ action: "space", name: "lspace", up: "'", down: "1" },
-		{ action: "h", down: "2" },
-		{ action: "f", down: "3" },
-		{ action: "v", down: "4" },
-		{ action: "space", name: "rspace", up: '"', down: "5" },
-		{ action: "s", down: "-" },
-	],
-	[
-		{ action: "m", down: "\\" },
-		{ action: "o", down: "6" },
-		{ action: "a", down: "7" },
-		{ action: "i", down: "8" },
-		{ action: "e", down: "9" },
-		{ action: "u", down: "0" },
-		{ action: "n", down: "=" },
-	],
-	[
-		{
-			action: "#中英切换",
-			name: "ascii_mode",
-			label: "globe",
-			up: "shift",
-			upLabel: "上档",
-			preedit: "*Page_Down",
-			preeditLabel: "arrow.right.to.line",
-		},
-		{ action: ";", name: "semicolon", up: ":", down: "[" },
-		{ action: ",", name: "comma", up: "<", down: "{" },
-		{ action: "backspace", label: "delete.left", up: "#重输", upLabel: "清空" },
-		{ action: ".", name: "period", up: ">", down: "}" },
-		{ action: "/", name: "slash", up: "?", down: "]" },
-		{ action: "enter", label: "return", up: "#换行", upLabel: "换行" },
-	],
-];
-
-const qwrt = structuredClone(qpkr);
-const new_keys = [
-	["q", "w", "r", "t", "y", "l", "p"],
-	["s", "d", "f", "g", "h", "j", "k"],
-	["x", "space", "c", "v", "b", "space", "n"],
-	["z", "a", "e", "u", "i", "o", "m"],
-];
-for (const [rowIndex, row] of new_keys.entries()) {
-	for (const [colIndex, key] of row.entries()) {
-		qwrt[rowIndex][colIndex].action = key;
-	}
-}
-
-const jiandao: KeyInfo[][] = [
-	[
-		{ action: "q", down: "?" },
-		{ action: "w", down: "!" },
-		{ action: "e", down: "@" },
-		{ action: "r", down: "#" },
-		{ action: "t", down: "$" },
-		{ action: "y", down: "%" },
-		{ action: "p", down: "|" },
-	],
-	[
-		{ action: "s", down: ":" },
-		{ action: "d", down: "^" },
-		{ action: "f", down: "&" },
-		{ action: "g", down: "*" },
-		{ action: "h", down: "(" },
-		{ action: "j", down: ")" },
-		{ action: "k", down: '"' },
-	],
-	[
-		{ action: "z", down: "/" },
-		{ action: "x", down: "1" },
-		{ action: "c", down: "2" },
-		{ action: "b", down: "3" },
-		{ action: "n", down: "4" },
-		{ action: "m", down: "5" },
-		{ action: "l", down: "\\" },
-	],
-	[
-		{ action: "shift", label: "shift" },
-		{ action: "a", down: "6" },
-		{ action: "v", down: "7" },
-		{ action: "u", down: "8" },
-		{ action: "i", down: "9" },
-		{ action: "o", down: "0" },
-		{ action: "backspace", label: "delete.left", up: "#重输", upLabel: "清空" },
-	],
-	[
-		{
-			action: "#中英切换",
-			name: "ascii_mode",
-			label: "globe",
-      up: "!numeric",
-      upLabel: "数符",
-			preedit: "*Page_Down",
-			preeditLabel: "arrow.right.to.line",
-			width: "1/7",
-		},
-		{ action: ",", name: "comma", up: "<", down: ";", width: "1/7" },
-		{ action: "space", width: "3/7", up: "#RimeSwitcher", upLabel: "选单" },
-		{ action: ".", name: "period", up: ">", down: "'", width: "1/7" },
-		{
-			action: "enter",
-			label: "return",
-			up: "#换行",
-			upLabel: "换行",
-			width: "1/7",
-		},
-	],
-];
-
-const qwerty: KeyInfo[][] = [
-	[
-		{ action: "1", name: "k1", up: "!", down: "!" },
-		{ action: "2", name: "k2", up: "@", down: "@" },
-		{ action: "3", name: "k3", up: "#", down: "#" },
-		{ action: "4", name: "k4", up: "$", down: "$" },
-		{ action: "5", name: "k5", up: "%", down: "%" },
-		{ action: "6", name: "k6", up: "^", down: "^" },
-		{ action: "7", name: "k7", up: "&", down: "&" },
-		{ action: "8", name: "k8", up: "*", down: "*" },
-		{ action: "9", name: "k9", up: "(", down: "(" },
-		{ action: "0", name: "k0", up: ")", down: ")" },
-	],
-	[
-		{ action: "q", down: "_" },
-		{ action: "w", down: "-" },
-		{ action: "e", down: "+" },
-		{ action: "r", down: "=" },
-		{ action: "t", down: "|" },
-		{ action: "y", down: "\\" },
-		{ action: "u", down: "[" },
-		{ action: "i", down: "]" },
-		{ action: "o", down: "{" },
-		{ action: "p", down: "}" },
-	],
-	[
-		{ action: "a", down: "~" },
-		{ action: "s", down: "`" },
-		{ action: "d", down: '"' },
-		{ action: "f", down: "'" },
-		{ action: "g", down: "#方案切换", downLabel: "方案" },
-		{ action: "h", down: "*Left", downLabel: "←" },
-		{ action: "j", down: "*Down", downLabel: "↓" },
-		{ action: "k", down: "*Up", downLabel: "↑" },
-		{ action: "l", down: "*Right", downLabel: "→" },
-		{ action: ";", name: "semicolon", up: ":" },
-	],
-	[
-		{ action: "z", down: "#撤销", downLabel: "撤销" },
-		{ action: "x", down: "#剪切", downLabel: "剪切" },
-		{ action: "c", down: "#复制", downLabel: "复制" },
-		{ action: "v", down: "#粘贴", downLabel: "粘贴" },
-		{ action: "b", down: "#重做", downLabel: "重做" },
-		{ action: "n", down: "*Home", downLabel: "行首" },
-		{ action: "m", down: "*End", downLabel: "行尾" },
-		{ action: ",", name: "comma", up: "<" },
-		{ action: ".", name: "period", up: ">" },
-		{ action: "/", name: "slash", up: "?" },
-	],
-	[
-		{
-			action: "shift",
-			label: "shift",
-			up: "#capsLocked",
-			upLabel: "大写",
-			preedit: "*Page_Down",
-			preeditLabel: "arrow.right.to.line",
-			width: "15/100",
-		},
-		{
-			action: "#中英切换",
-			name: "ascii_mode",
-			label: "globe",
-			up: "#简繁切换",
-			upLabel: "简繁",
-			preedit: "*Page_Up",
-			preeditLabel: "arrow.left.to.line",
-			width: "15/100",
-		},
-		{
-			action: "space",
-			label: "space",
-			up: "#RimeSwitcher",
-			upLabel: "选单",
-			width: "40/100",
-		},
-		{
-			action: "backspace",
-			label: "delete.left",
-			up: "#重输",
-			upLabel: "清空",
-			width: "15/100",
-		},
-		{
-			action: "enter",
-			label: "return",
-			up: "#换行",
-			upLabel: "换行",
-			width: "15/100",
-		},
-	],
-];
-
-const shufu: KeyInfo[][] = [
-	[
-		{ action: "1", name: "k1" },
-		{ action: "2", name: "k2" },
-		{ action: "3", name: "k3" },
-		{ action: "4", name: "k4" },
-		{ action: "5", name: "k5" },
-		{ action: "6", name: "k6" },
-		{ action: "7", name: "k7" },
-		{ action: "8", name: "k8" },
-		{ action: "9", name: "k9" },
-		{ action: "0", name: "k0" },
-	],
-	[
-		{ action: "!", name: "exclamation" },
-		{ action: "@", name: "at" },
-		{ action: "#", name: "hash" },
-		{ action: "$", name: "dollar" },
-		{ action: "%", name: "percent" },
-		{ action: "^", name: "caret" },
-		{ action: "&", name: "ampersand" },
-		{ action: "*", name: "asterisk" },
-		{ action: "(", name: "leftParenthesis" },
-		{ action: ")", name: "rightParenthesis" },
-	],
-	[
-		{ action: "_", name: "underscore" },
-		{ action: "-", name: "hyphen" },
-		{ action: "+", name: "plus" },
-		{ action: "=", name: "equals" },
-		{ action: "|", name: "pipe" },
-		{ action: "\\", name: "backslash" },
-		{ action: "[", name: "leftBracket" },
-		{ action: "]", name: "rightBracket" },
-		{ action: "{", name: "leftBrace" },
-		{ action: "}", name: "rightBrace" },
-	],
-	[
-		{ action: "~", name: "tilde" },
-		{ action: "`", name: "grave" },
-		{ action: '"', name: "doubleQuote" },
-		{ action: "'", name: "singleQuote" },
-		{ action: "<", name: "lessThan" },
-		{ action: ">", name: "greaterThan" },
-		{ action: "?", name: "question" },
-		{ action: ",", name: "comma" },
-		{ action: ".", name: "period" },
-		{ action: ":", name: "colon" },
-	],
-	[
-		{
-			action: "shift",
-			label: "shift",
-			up: "#capsLocked",
-			upLabel: "大写",
-			preedit: "*Page_Down",
-			preeditLabel: "arrow.right.to.line",
-			width: "15/100",
-		},
-		{
-			action: "#中英切换",
-			name: "ascii_mode",
-			label: "globe",
-			up: "#简繁切换",
-			upLabel: "简繁",
-			preedit: "*Page_Up",
-			preeditLabel: "arrow.left.to.line",
-			width: "15/100",
-		},
-		{
-			action: "space",
-			label: "space",
-			up: "#RimeSwitcher",
-			upLabel: "选单",
-			width: "40/100",
-		},
-		{
-			action: "backspace",
-			label: "delete.left",
-			up: "#重输",
-			upLabel: "清空",
-			width: "15/100",
-		},
-		{
-			action: "enter",
-			label: "return",
-			up: "#换行",
-			upLabel: "换行",
-			width: "15/100",
-		},
-	],
-];
 
 function parseAction(raw: string, symbol?: boolean): Action {
 	if (raw.length === 1) {
@@ -352,8 +56,8 @@ function parseAction(raw: string, symbol?: boolean): Action {
 		return { shortcut: raw };
 	} else if (raw.startsWith("*")) {
 		return { sendKeys: raw.slice(1) };
-  } else if (raw.startsWith("!")) {
-    return { keyboardType: raw.slice(1) };
+	} else if (raw.startsWith("!")) {
+		return { keyboardType: raw.slice(1) };
 	} else {
 		return raw as Action;
 	}
@@ -435,8 +139,6 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 			let name = key.name ?? key.action;
 			const action = parseAction(key.action, config.symbol);
 			const foregroundStyle: string[] = [];
-			const uppercasedStateForegroundStyle: string[] = [];
-			const capsLockedStateForegroundStyle: string[] = [];
 			if (action !== "space") {
 				// label
 				const labelName = name + "Label";
@@ -449,7 +151,7 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 				} else {
 					styles[labelName] = {
 						...structuredClone(fnLabel),
-						systemImageName: key.label ?? key.action,
+						systemImageName: systemImageName(key.label ?? key.action),
 					};
 				}
 			}
@@ -459,8 +161,6 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 				const up = key.up ?? key.action.toUpperCase();
 				const swipeUpName = name + "SwipeUp";
 				if (!isAlphabet) foregroundStyle.push(swipeUpName);
-				uppercasedStateForegroundStyle.push(swipeUpName);
-				capsLockedStateForegroundStyle.push(swipeUpName);
 				styles[swipeUpName] = {
 					...structuredClone(upSwipe),
 					text: key.upLabel ?? up,
@@ -470,8 +170,6 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 			if (key.down) {
 				const swipeDownName = name + "SwipeDown";
 				foregroundStyle.push(swipeDownName);
-				uppercasedStateForegroundStyle.push(swipeDownName);
-				capsLockedStateForegroundStyle.push(swipeDownName);
 				styles[swipeDownName] = {
 					...structuredClone(downSwipe),
 					text: key.downLabel ?? key.down,
@@ -569,7 +267,7 @@ function makeToolbar(
 		...cellBase,
 	};
 	const hamsterImage: SystemImageStyle = {
-		systemImageName: "r.circle",
+		systemImageName: systemImageName("r.circle"),
 		...styleBase,
 	};
 	const dismiss: Cell = {
@@ -578,7 +276,7 @@ function makeToolbar(
 		...cellBase,
 	};
 	const dismissImage: SystemImageStyle = {
-		systemImageName: "chevron.down.circle",
+		systemImageName: systemImageName("chevron.down.circle"),
 		...styleBase,
 	};
 	const alphabetic: Cell = {
@@ -587,7 +285,7 @@ function makeToolbar(
 		...cellBase,
 	};
 	const alphabeticImage: SystemImageStyle = {
-		systemImageName: "characters.uppercase",
+		systemImageName: systemImageName("characters.uppercase"),
 		...styleBase,
 	};
 	const pinyin: Cell = {
@@ -596,7 +294,7 @@ function makeToolbar(
 		...cellBase,
 	};
 	const pinyinImage: SystemImageStyle = {
-		systemImageName: "character",
+		systemImageName: systemImageName("character"),
 		...styleBase,
 	};
 	const script: Cell = {
@@ -605,7 +303,7 @@ function makeToolbar(
 		...cellBase,
 	};
 	const scriptImage: SystemImageStyle = {
-		systemImageName: "function",
+		systemImageName: systemImageName("function"),
 		...styleBase,
 	};
 	const clipboard: Cell = {
@@ -614,7 +312,7 @@ function makeToolbar(
 		...cellBase,
 	};
 	const clipboardImage: SystemImageStyle = {
-		systemImageName: "doc.on.clipboard",
+		systemImageName: systemImageName("doc.on.clipboard"),
 		...styleBase,
 	};
 	const phrase: Cell = {
@@ -623,7 +321,7 @@ function makeToolbar(
 		...cellBase,
 	};
 	const phraseImage: SystemImageStyle = {
-		systemImageName: "text.quote",
+		systemImageName: systemImageName("text.quote"),
 		...styleBase,
 	};
 	const styles = {
@@ -673,7 +371,7 @@ function makeCandidates(config: Config): [any, Collection] {
 		fontSize: 20,
 		normalColor: textColor,
 		highlightColor: textColor,
-		systemImageName: "chevron.forward",
+		systemImageName: systemImageName("chevron.forward"),
 	};
 	const horizontalCandidatesStyle: HorizontalCandidateStyle = {
 		backgroundStyle: "background",
@@ -729,7 +427,7 @@ function makeCandidates(config: Config): [any, Collection] {
 		fontSize: 20,
 		highlightColor: textColor,
 		normalColor: textColor,
-		systemImageName: "chevron.down",
+		systemImageName: systemImageName("chevron.down"),
 	};
 	const verticalPageUpButtonStyle = {
 		action: { shortcut: "#verticalCandidatesPageUp" },
@@ -741,7 +439,7 @@ function makeCandidates(config: Config): [any, Collection] {
 		fontSize: 20,
 		normalColor: textColor,
 		highlightColor: textColor,
-		systemImageName: "chevron.up",
+		systemImageName: systemImageName("chevron.up"),
 	};
 	const verticalReturnButtonStyle = {
 		action: { shortcut: "#candidatesBarStateToggle" },
@@ -753,7 +451,7 @@ function makeCandidates(config: Config): [any, Collection] {
 		fontSize: 20,
 		normalColor: textColor,
 		highlightColor: textColor,
-		systemImageName: "return",
+		systemImageName: systemImageName("return"),
 	};
 	const verticalLastRowStyle = {
 		size: { height: 45 },
@@ -790,7 +488,7 @@ function makeCandidates(config: Config): [any, Collection] {
 		fontSize: 20,
 		highlightColor: textColor,
 		normalColor: textColor,
-		systemImageName: "delete.left",
+		systemImageName: systemImageName("delete.left"),
 	};
 	const candidateContextMenu: CandidateContextMenu = [
 		{ name: "固定", action: { sendKeys: "Control+semicolon" } },
@@ -841,7 +539,7 @@ function makeKeyboardLayout(
 	return [keyboardLayout, keyboardStyle, styles];
 }
 
-function makeHamsterSkin(config: Config): Keyboard {
+export function makeHamsterSkin(config: Config): Keyboard {
 	const styles = makeGeneralStyles(config);
 	const [preeditStyle, styles1] = makePreeditStyle(config);
 	const [toolbarStyle, toolbarLayout, styles2] = makeToolbar(config);
@@ -865,7 +563,7 @@ function makeHamsterSkin(config: Config): Keyboard {
 	};
 }
 
-function makeHamsterSkinConfig(
+export function makeHamsterSkinConfig(
 	name: string,
 	keyboards: KeyboardCollection,
 ): HamsterSkinConfig {
@@ -893,102 +591,3 @@ function makeHamsterSkinConfig(
 		),
 	};
 }
-
-type KeyboardType = "pinyin" | "alphabetic" | "numeric" | "symbolic" | string;
-type KeyboardCollection = Record<KeyboardType, Omit<Config, "dark">>;
-
-function generateSkinFolder(name: string, keyboards: KeyboardCollection) {
-	const prefix = join(
-		homedir(),
-		"Library/Mobile Documents/iCloud~com~ihsiao~apps~Hamster3/Documents/Skins",
-	);
-	const folder = join(prefix, name);
-	mkdirSync(folder, { recursive: true });
-	const skinConfig = makeHamsterSkinConfig(name, keyboards);
-	writeFileSync(join(folder, "config.yaml"), dump(skinConfig), "utf8");
-	for (const dark of [false, true]) {
-		const modeFolder = join(folder, dark ? "dark" : "light");
-		mkdirSync(modeFolder, { recursive: true });
-		for (const [key, config] of Object.entries(keyboards)) {
-			const content = dump(makeHamsterSkin({ ...config, dark }), {
-				flowLevel: 2,
-			});
-			const fileName = join(modeFolder, `${key}.yaml`);
-			writeFileSync(fileName, content, "utf8");
-		}
-	}
-}
-
-const snow_sipin = {
-	schema: "snow_sipin",
-	colorful: true,
-	label: true,
-	keyInfos: qpkr,
-};
-const snow_qingyun = {
-	schema: "snow_qingyun",
-	colorful: true,
-	label: true,
-	keyInfos: qwrt,
-};
-const snow_sipin_nolabel = {
-	schema: "snow_sipin",
-	colorful: true,
-	label: false,
-	keyInfos: qpkr,
-};
-const snow_qingyun_nolabel = {
-	schema: "snow_qingyun",
-	colorful: true,
-	label: false,
-	keyInfos: qwrt,
-};
-const general = {
-	schema: "snow_lingpin",
-	colorful: false,
-	label: true,
-	keyInfos: qwerty,
-	symbol: true,
-};
-const snow_jiandao = {
-	schema: "snow_jiandao",
-	colorful: true,
-	label: true,
-	keyInfos: jiandao,
-	specialCharacters: "avuio",
-};
-const snow_jiandao_nolabel = {
-	schema: "snow_jiandao",
-	colorful: true,
-	label: false,
-	keyInfos: jiandao,
-	specialCharacters: "avuio",
-};
-const snow_shufu = {
-  schema: "snow_shufu",
-  colorful: false,
-  label: true,
-  keyInfos: shufu,
-};
-
-generateSkinFolder("俏皮可爱・七色", {
-	pinyin: snow_sipin,
-	alphabetic: general,
-});
-generateSkinFolder("俏皮可爱・七色・无刻", {
-	pinyin: snow_sipin_nolabel,
-	alphabetic: general,
-});
-generateSkinFolder("直列 35 键", { pinyin: snow_qingyun, alphabetic: general });
-generateSkinFolder("直列 35 键・无刻", {
-	pinyin: snow_qingyun_nolabel,
-	alphabetic: general,
-});
-generateSkinFolder("键道 35 键", { pinyin: snow_jiandao, alphabetic: general, numeric: snow_shufu, symbolic: snow_shufu });
-generateSkinFolder("键道 35 键・无刻", {
-	pinyin: snow_jiandao_nolabel,
-	alphabetic: general,
-  numeric: snow_shufu,
-  symbolic: snow_shufu
-});
-generateSkinFolder("直列 45 键", { pinyin: { ...general, symbol: false } });

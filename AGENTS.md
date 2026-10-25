@@ -42,7 +42,7 @@ bun scripts/version.ts 0.3.12   # 改写 snow.lua 和所有 snow_*.schema.yaml�
 bun scripts/version.ts          # 查看当前版本
 ```
 
-词典生成脚本（`single.ts`、`multiple.ts`、`generateYingpinDict.ts`、`bihua.ts`）也从 `scripts/version.ts` 读取同一个版本号。Rime 的 `__include` 只在方案里生效，词典头不支持，所以没法靠 yaml 本身共用一份。
+词典生成脚本（`generate-pinyin-dict.ts`、`generate-word-dicts.ts`、`generate-english-dict.ts`、`generate-stroke-dict.ts`）也从 `scripts/version.ts` 读取同一个版本号。Rime 的 `__include` 只在方案里生效，词典头不支持，所以没法靠 yaml 本身共用一份。
 
 ## 笔画与地区字形
 
@@ -57,7 +57,7 @@ patch:
 
 - 多个标签取并集，区分大小写；省略或设为 `null` 时默认 `[G]`，`[]` 只保留无标签记录，无标签记录始终可用。全部来源为 `[G, H, T, J, K, N, V, M, S, B, U]`。
 - 配置只影响可用笔顺及辅助码提示，不影响普通拼音候选；原表未收录的字不做辅助码过滤。独立笔画方案也支持此配置。
-- 更新原表后运行 `bun scripts/bihua.ts /path/to/strokes.tsv [输出文件]`（输出默认 `snow_bihua.dict.yaml`），再运行 `bun scripts/test.ts`。
+- 更新原表后运行 `bun scripts/generate-stroke-dict.ts /path/to/strokes.tsv [输出文件]`（输出默认 `snow_bihua.dict.yaml`），再运行 `bun scripts/test.ts`。
 - 输入以制表符分三列：单字、空格分隔的 `1`～`5` 笔画、逗号分隔的来源标签（可空）；横、竖、撇、点、折对应 `12345`。脚本校验记录，合并同字同笔顺的标签，跳过并报告空笔画记录。输出为「汉字 + 制表符 + 数字笔顺及连续标签」，如 `令\t34154HNTV`。
 - 棱镜用 `xform/[A-Z]+$//` 去掉标签再映射按键，查询、排序、补全交给原生 table translator。`bihua.lua` 通过 `ReverseLookup("snow_bihua")` 读取完整编码，供反查和辅助码共用；filter 按候选的词典语言名识别笔画候选，须在反查过滤器之前筛选来源并修正补全提示，避免误筛冰雪清韵中共用段标签的拼音候选。
 
@@ -253,7 +253,7 @@ bun scripts/test.ts
 
   filters:
     - lua_filter@*snow.placeholder        # 冰雪一拼无
-    - lua_filter@*snow.bihua*filter       # 冰雪一拼无；按词典语言名筛选笔画，须在反查过滤器之前
+    - lua_filter@*snow.bihua              # 冰雪一拼无；按词典语言名筛选笔画，须在反查过滤器之前
     - lua_filter@*snow.enforce            # 仅冰雪键道
     - reverse_lookup_filter@lookup_pinyin # 冰雪一拼、冰雪清韵无
     - reverse_lookup_filter@lookup_<方案>  # 同上

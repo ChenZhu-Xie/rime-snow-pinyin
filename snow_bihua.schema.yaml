@@ -35,7 +35,7 @@ engine:
     - punct_translator
     - table_translator
   filters:
-    - lua_filter@*snow.bihua*filter
+    - lua_filter@*snow.bihua
 
 speller:
   alphabet: aeiou

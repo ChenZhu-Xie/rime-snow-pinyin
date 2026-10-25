@@ -79,7 +79,7 @@ engine:
     - history_translator
   filters:
     - lua_filter@*snow.placeholder
-    - lua_filter@*snow.bihua*filter
+    - lua_filter@*snow.bihua
     - lua_filter@*snow.fix
     - lua_filter@*snow.qingyun
     - lua_filter@*snow.postpone

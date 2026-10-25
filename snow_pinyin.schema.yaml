@@ -47,7 +47,7 @@ engine:
     - table_translator@stroke
     - script_translator
   filters:
-    - lua_filter@*snow.bihua*filter
+    - lua_filter@*snow.bihua
     - reverse_lookup_filter@lookup_pinyin
     - simplifier
     - uniquifier

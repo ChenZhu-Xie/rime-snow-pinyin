@@ -1,10 +1,8 @@
-// 从三列笔画表生成带字形来源的笔画词典：bun scripts/bihua.ts <输入文件> [输出文件]
+// 从三列笔画表生成带字形来源的笔画词典：bun scripts/generate-stroke-dict.ts <输入文件> [输出文件]
 import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
+import { ROOT } from "./lib/paths";
 import { VERSION } from "./version";
-
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export function generateBihua(input: string) {
 	const entries = new Map<
@@ -53,7 +51,7 @@ export function generateBihua(input: string) {
 	});
 	const dictionary = `# Rime dictionary
 # encoding: utf-8
-# 由 scripts/bihua.ts 生成，请勿手改。
+# 由 scripts/generate-stroke-dict.ts 生成，请勿手改。
 # 两列依次为汉字、笔顺＋连续来源标签；12345 分别表示横、竖、撇、点、折。
 # 无标签记录为通用字形；棱镜去掉标签供原生翻译器查询，Lua filter 按来源筛选。
 
@@ -73,7 +71,9 @@ ${rows.join("\n")}
 if (import.meta.main) {
 	const source = process.argv[2];
 	if (!source) {
-		console.error("用法：bun scripts/bihua.ts <输入文件> [输出文件]");
+		console.error(
+			"用法：bun scripts/generate-stroke-dict.ts <输入文件> [输出文件]",
+		);
 		process.exit(1);
 	}
 	const input = resolve(source);

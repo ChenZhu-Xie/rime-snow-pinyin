@@ -132,7 +132,7 @@ function filter.init(env)
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
   local id = env.engine.schema.schema_id
   if id == "snow_sipin" or id == "snow_sanpin" then
-    bihua.init(env)
+    bihua.load_strokes(env)
   end
   local shape_elements = config:get_string("translator/shape_elements") or "snow_bushou"
   env.shape_elements = ReverseLookup(shape_elements)
@@ -244,7 +244,7 @@ end
 function filter.fini(env)
   env.shape_elements = nil
   env.shape_mapping = nil
-  bihua.fini(env)
+  bihua.release_strokes(env)
 end
 
 return filter

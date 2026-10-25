@@ -19,11 +19,8 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
-// 仓库根目录由本文件位置推出，因此不依赖运行时的工作目录
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+import { dirname, join } from "node:path";
+import { ROOT } from "./lib/paths";
 
 const SCHEMAS = [
 	"snow_sipin",

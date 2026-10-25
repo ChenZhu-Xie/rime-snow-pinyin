@@ -1,4 +1,4 @@
-type HamsterSkinConfig = {
+export type HamsterSkinConfig = {
 	name: string; // 皮肤名称
 	author: string; // 作者名称
 	fontface?: FontFace; // 字体名称
@@ -8,13 +8,13 @@ type HamsterSkinConfig = {
 	symbolic: KeyboardConfig; // 符号键盘配置
 };
 
-type FontFaceConfig = {
+export type FontFaceConfig = {
 	url: string; // 字体文件的 URL
 	name: string; // 字体名称
 	ranges?: { location: number; length: number }[]; // 可选的字体范围
 };
 
-type KeyboardConfig = {
+export type KeyboardConfig = {
 	iPhone: {
 		portrait: string;
 		landscape: string;
@@ -26,7 +26,7 @@ type KeyboardConfig = {
 	};
 };
 
-type Keyboard = {
+export type Keyboard = {
 	preeditHeight: Height;
 	preeditStyle: PreeditStyle;
 	toolbarHeight: Height;
@@ -45,7 +45,7 @@ type Keyboard = {
 
 // 预编辑区 Preedit
 
-type PreeditStyle = {
+export type PreeditStyle = {
 	insets: Insets;
 	backgroundStyle: Ref<Style>;
 	foregroundStyle: Ref<Style>;
@@ -53,16 +53,16 @@ type PreeditStyle = {
 
 // 工具栏区 Toolbar
 
-type ToolbarStyle = {
+export type ToolbarStyle = {
 	backgroundStyle: Ref<Style>;
 };
 
-type HorizontalCandidateStyle = {
+export type HorizontalCandidateStyle = {
 	insets?: Insets;
 	backgroundStyle?: Ref<Style>;
 };
 
-type HorizontalCandidates = {
+export type HorizontalCandidates = {
 	type: "horizontalCandidates";
 	size: Size;
 	insets: Insets;
@@ -70,7 +70,7 @@ type HorizontalCandidates = {
 	candidateStyle: Ref<CandidateStyle>;
 };
 
-type CandidateStyle = {
+export type CandidateStyle = {
 	insets?: Insets;
 	highlightBackgroundColor?: Color;
 	preferredBackgroundColor?: Color;
@@ -85,27 +85,27 @@ type CandidateStyle = {
 	commentFontSize?: number;
 };
 
-type CandidateStateButtonStyle = {
+export type CandidateStateButtonStyle = {
 	backgroundStyle: Ref<CandidateStateButtonBackgroundStyle>;
 	foregroundStyle: Refs<CandidateStateButtonForegroundStyle>;
 };
 
-type CandidateStateButtonBackgroundStyle = {
+export type CandidateStateButtonBackgroundStyle = {
 	normalColor: string;
 	highlightColor: string;
 };
 
-type CandidateStateButtonForegroundStyle = {
+export type CandidateStateButtonForegroundStyle = {
 	normalImage: string;
 	highlightImage: string;
 };
 
-type VerticalCandidateStyle = {
+export type VerticalCandidateStyle = {
 	insets?: Insets;
 	backgroundStyle?: Ref<Style>;
 };
 
-type VerticalCandidates = {
+export type VerticalCandidates = {
 	type: "verticalCandidates";
 	maxRows: number;
 	separatorColor: "#33338888";
@@ -113,44 +113,44 @@ type VerticalCandidates = {
 	candidateStyle: Ref<CandidateStyle>;
 };
 
-type CandidateContextMenu = CandidateContextMenuItem[];
+export type CandidateContextMenu = CandidateContextMenuItem[];
 
-type CandidateContextMenuItem = {
+export type CandidateContextMenuItem = {
 	name: string;
 	action: Action;
 };
 
 // 键盘 Keyboard
 
-type KeyboardStyle = {
+export type KeyboardStyle = {
 	backgroundStyle: Ref<Style>;
 };
 
-type LayoutElement = CellReference | HStack | VStack;
+export type LayoutElement = CellReference | HStack | VStack;
 
-type CellReference = {
+export type CellReference = {
 	Cell: Ref<Cell>;
 };
 
-type HStack = {
+export type HStack = {
 	HStack: {
 		subviews: LayoutElement[];
 		style?: Ref<StackStyle>;
 	};
 };
 
-type VStack = {
+export type VStack = {
 	VStack: {
 		subviews: LayoutElement[];
 		style?: Ref<StackStyle>;
 	};
 };
 
-type StackStyle = {
+export type StackStyle = {
 	size: Size;
 };
 
-type Cell = {
+export type Cell = {
 	size?: Size;
 	bounds?: Bounds;
 	backgroundStyle?: BackgroundStyle;
@@ -169,7 +169,7 @@ type Cell = {
 	notification?: NotificationStyle;
 };
 
-type HintStyle = {
+export type HintStyle = {
 	insets?: Insets;
 	backgroundStyle?: string;
 	foregroundStyle?: string;
@@ -179,7 +179,7 @@ type HintStyle = {
 	swipeRightForegroundStyle?: string;
 };
 
-type HoldSymbolsStyle = {
+export type HoldSymbolsStyle = {
 	insets?: Insets;
 	backgroundStyle: string;
 	foregroundStyle: string[];
@@ -189,14 +189,14 @@ type HoldSymbolsStyle = {
 	symbolWidth?: number | string;
 };
 
-type CollectionCellStyle = {
+export type CollectionCellStyle = {
 	backgroundStyle: string;
 	foregroundStyle: string;
 };
 
 /*** 行为 ***/
 
-type Action =
+export type Action =
 	| PrimitiveAction
 	| {
 			character: string;
@@ -229,7 +229,7 @@ type Action =
 			switchRimeSchema: string;
 	  };
 
-type PrimitiveAction =
+export type PrimitiveAction =
 	| "space"
 	| "enter"
 	| "tab"
@@ -246,9 +246,9 @@ type PrimitiveAction =
 
 /*** 动画 ***/
 
-type AnimationConfig = BoundsAnimation | APNGAnimation | EmitAnimation;
+export type AnimationConfig = BoundsAnimation | APNGAnimation | EmitAnimation;
 
-type BoundsAnimation = {
+export type BoundsAnimation = {
 	type: "bounds";
 	duration: number;
 	fromScale: number;
@@ -256,7 +256,7 @@ type BoundsAnimation = {
 	repeatCount?: number;
 };
 
-type APNGAnimation = {
+export type APNGAnimation = {
 	type: "apng";
 	file: string;
 	targetScale?: number;
@@ -264,7 +264,7 @@ type APNGAnimation = {
 	zPosition?: number | "above" | "below";
 };
 
-type EmitAnimation = {
+export type EmitAnimation = {
 	type: "emit";
 	file: string[];
 	duration: number;
@@ -281,44 +281,44 @@ type EmitAnimation = {
 
 // 通用定义
 
-type Ref<_> = string;
+export type Ref<_> = string;
 
-type Refs<T> = Ref<T> | Ref<T>[];
+export type Refs<T> = Ref<T> | Ref<T>[];
 
-type Height = number | `${string}vh`;
+export type Height = number | `${string}vh`;
 
-type Color = string;
+export type Color = string;
 
-type FontSize = number | string;
+export type FontSize = number | string;
 
-type TargetScale = number | { x: number; y: number };
+export type TargetScale = number | { x: number; y: number };
 
-type Layout = LayoutElement[];
+export type Layout = LayoutElement[];
 
-type ContentMode =
+export type ContentMode =
 	| "center"
 	| "scaleToFill"
 	| "scaleAspectFit"
 	| "scaleAspectFill";
 
-type ExternalImage = {
+export type ExternalImage = {
 	file: string;
 	image: string;
 };
 
-type Insets = {
+export type Insets = {
 	top?: number;
 	bottom?: number;
 	left?: number;
 	right?: number;
 };
 
-type Size = {
+export type Size = {
 	width?: number | { percentage: number } | string;
 	height?: number | { percentage: number } | string;
 };
 
-type Bounds = Size & {
+export type Bounds = Size & {
 	alignment?:
 		| "center"
 		| "centerTop"
@@ -331,14 +331,14 @@ type Bounds = Size & {
 		| "rightBottom";
 };
 
-type Point = {
+export type Point = {
 	x: number;
 	y: number;
 };
 
-type Center = Partial<Point>;
+export type Center = Partial<Point>;
 
-type FontWeight =
+export type FontWeight =
 	| "ultralight"
 	| "thin"
 	| "light"
@@ -349,18 +349,18 @@ type FontWeight =
 	| "heavy"
 	| "black";
 
-type BackgroundStyle = Ref<Style>;
+export type BackgroundStyle = Ref<Style>;
 
-type ForegroundStyle = Ref<Style> | Refs<Style>;
+export type ForegroundStyle = Ref<Style> | Refs<Style>;
 
-type Style =
+export type Style =
 	| TextStyle
 	| GeometryStyle
 	| SystemImageStyle
 	| AssetImageStyle
 	| FileImageStyle;
 
-type TextStyle = {
+export type TextStyle = {
 	buttonStyleType: "text";
 	text: string;
 	fontSize?: number;
@@ -370,7 +370,7 @@ type TextStyle = {
 	center?: Center;
 };
 
-type GeometryStyle = {
+export type GeometryStyle = {
 	buttonStyleType: "geometry";
 	insets?: Insets;
 	normalColor: string;
@@ -393,10 +393,13 @@ type GeometryStyle = {
 	animation?: Ref<AnimationConfig>;
 };
 
-type SystemImageStyle = {
+// 平台映射中的 Android 图标名使用 Material Icon 名称，不加 material: 前缀。
+export type SystemImageName = string | { ios?: string; android?: string };
+
+export type SystemImageStyle = {
 	buttonStyleType: "systemImage";
-	systemImageName: string;
-	highlightSystemImageName?: string;
+	systemImageName: SystemImageName;
+	highlightSystemImageName?: SystemImageName;
 	contentMode?: ContentMode;
 	fontSize?: number;
 	fontWeight?: FontWeight;
@@ -404,7 +407,7 @@ type SystemImageStyle = {
 	highlightColor?: string;
 };
 
-type AssetImageStyle = {
+export type AssetImageStyle = {
 	buttonStyleType: "assetImage";
 	assetImageName: string;
 	contentMode?: ContentMode;
@@ -412,7 +415,7 @@ type AssetImageStyle = {
 	highlightColor?: string;
 };
 
-type FileImageStyle = {
+export type FileImageStyle = {
 	buttonStyleType: "fileImage";
 	insets?: Insets;
 	contentMode?: ContentMode;
@@ -422,13 +425,13 @@ type FileImageStyle = {
 
 /*** 通知 */
 
-type NotificationStyle = string | string[];
+export type NotificationStyle = string | string[];
 
-type NotificationType = "rime" | "keyboardAction" | "returnKeyType";
+export type NotificationType = "rime" | "keyboardAction" | "returnKeyType";
 
 /*** 图片描述文件 ***/
 
-type ImageDescriptionFile = Record<
+export type ImageDescriptionFile = Record<
 	string,
 	{
 		rect: {
@@ -443,5 +446,33 @@ type ImageDescriptionFile = Record<
 
 /*** 数据源 ***/
 
-type DataSourceValue = string | { label: string; value: string };
-type DataSource = Record<string, DataSourceValue[]>;
+export type DataSourceValue = string | { label: string; value: string };
+export type DataSource = Record<string, DataSourceValue[]>;
+
+export interface Config {
+	colorful: boolean;
+	dark: boolean;
+	label: boolean;
+	symbol?: boolean;
+	keyInfos: KeyInfo[][];
+	specialCharacters?: string;
+}
+
+export interface KeyInfo {
+	action: string;
+	name?: string;
+	label?: string;
+	up?: string;
+	upLabel?: string;
+	down?: string;
+	downLabel?: string;
+	width?: string;
+}
+
+export type KeyboardType =
+	| "pinyin"
+	| "alphabetic"
+	| "numeric"
+	| "symbolic"
+	| string;
+export type KeyboardCollection = Record<KeyboardType, Omit<Config, "dark">>;

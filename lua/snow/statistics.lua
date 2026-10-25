@@ -519,7 +519,7 @@ end
 
 ---@param env StatisticsEnv
 ---@param segment Segment
----@param title string 时段，如「2026 年 10 月 10 日」
+---@param title string 时段，如「10 月 10 日」
 ---@param s table<string, integer>
 ---@param installation string|nil 统计所属的安装，nil 表示所有设备合并
 ---@param per_device boolean 是否为 tjs 类命令，是则显示设备行，并在候选里写设备名；所有设备合并时设备行显示「全部」
@@ -607,12 +607,12 @@ function translator.func(input, segment, env)
   -- 不用 os.date 的 %G、%V，因为 Windows 上的 Lua 只支持 C89 的格式符
   local thursday = os.date("*t", ago(offset - 3))
   ---@cast thursday osdate
-  local week_title = ("%d 年 %d 周"):format(thursday.year, (thursday.yday - 1) // 7 + 1)
+  local week_title = ("%d 周"):format((thursday.yday - 1) // 7 + 1)
   -- 命令字母、日期范围和日期前缀，空前缀匹配所有日期
   local periods = {
-    { "r", date(now), { today } },
+    { "r", ("%d 月 %d 日"):format(now.month, now.day), { today } },
     { "z", week_title, week },
-    { "y", ("%d 年 %d 月"):format(now.year, now.month), { today:sub(1, 6) } },
+    { "y", ("%d 月"):format(now.month), { today:sub(1, 6) } },
     { "n", ("%d 年"):format(now.year), { today:sub(1, 4) } },
     { "q", "截至 " .. date(now) .. "累计", { "" } },
   }

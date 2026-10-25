@@ -35,6 +35,12 @@ deploy:
   # 注意：这里的断言依赖词频未被本部署内的上屏改变，故上屏类测试一律放在最后
   popping:
     tests:
+      # r5 不应占用单键 r，仍能查询其他 r 声母的字
+      - send: r
+        assert: page("人") and has("日")
+      # r5 并入 er5 后，原有字仍可按轻声儿输入
+      - send: rioo
+        assert: has("兒")
       # 组词规则
       - send: biei
         assert: has("冰")

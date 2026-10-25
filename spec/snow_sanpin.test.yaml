@@ -32,6 +32,12 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
+      # r5 不应占用单键 r，仍能查询其他 r 声母的字
+      - send: r
+        assert: page("人") and has("日")
+      # r5 并入 er5 后，原有字仍可按轻声儿输入
+      - send: xja
+        assert: has("兒")
       # 组词规则
       - send: bgv
         assert: cand[1].text == "冰"

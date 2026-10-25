@@ -55,7 +55,7 @@ engine:
     - history_translator
   filters:
     - lua_filter@*snow.placeholder
-    - lua_filter@*snow.bihua*filter
+    - lua_filter@*snow.bihua
     - lua_filter@*snow.enforce
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_jiandao

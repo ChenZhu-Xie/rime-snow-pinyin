@@ -53,7 +53,7 @@ engine:
     - history_translator
   filters:
     - lua_filter@*snow.placeholder
-    - lua_filter@*snow.bihua*filter
+    - lua_filter@*snow.bihua
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sipin
     - lua_filter@*snow.fix
@@ -70,6 +70,7 @@ sipin_algebra:
   - derive/wu3/gu2/ # 五
   - derive/ri4/ri1/ # 日
   # 还原
+  - xform/(^| )r5(?= |$)/$1er5/ # 儿化轻声并入 er5，避免占用单键 r
   - xform/(^| )(h?)([mn]g?\d)/$1$2e$3/
   - xform/(^| )wu?/$1u/
   - xform/(^| )yu/$1ü/
