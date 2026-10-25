@@ -2,9 +2,9 @@
 -- 本过滤器根据上下文中的形码输入，过滤候选词，并在候选词上显示形码提示。
 
 local snow = require "snow.snow"
+local bihua = require "snow.bihua"
 
----@class ShapeFilterEnv: Env
----@field strokes ReverseLookup|nil
+---@class ShapeFilterEnv: BihuaEnv
 ---@field shape_elements ReverseLookup|nil
 ---@field shape_mapping table<string, string>
 
@@ -32,7 +32,7 @@ local function encode(element, map)
 end
 
 
-local stroke_names = { ["h"] = "一", ["s"] = "丨", ["p"] = "丿", ["n"] = "丶", ["z"] = "乙" }
+local stroke_names = { ["1"] = "一", ["2"] = "丨", ["3"] = "丿", ["4"] = "丶", ["5"] = "乙" }
 local sipin_stroke_map = { ["一"] = "e", ["丨"] = "i", ["丿"] = "u", ["丶"] = "o", ["乙"] = "a" }
 local sanpin_stroke_map = { ["一"] = "v", ["丨"] = "i", ["丿"] = "u", ["丶"] = "o", ["乙"] = "a" }
 
@@ -57,9 +57,9 @@ local function stroke_match(text, partial_code, env, map)
   if partial_code:len() > 0 then
     prompt = " 笔画 [" .. partial_code:gsub(".", reverse_map) .. "]"
   end
-  -- 预览安装包不含笔画反查库，此时 env.strokes 为 nil，不做笔画过滤
-  local elements = env.strokes and snow.split(env.strokes:lookup(text), " ") or {}
-  local match = #elements == 0
+  -- 未收录的字不做笔画过滤；已收录但没有启用任何来源的字不能匹配。
+  local elements, known = bihua.codes(text, env)
+  local match = partial_code == "" or not known
   ---@type string[]
   local codes = {}
   for _, element in ipairs(elements) do
@@ -130,7 +130,10 @@ local filter = {}
 function filter.init(env)
   local config = env.engine.schema.config
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
-  env.strokes = ReverseLookup("stroke")
+  local id = env.engine.schema.schema_id
+  if id == "snow_sipin" or id == "snow_sanpin" then
+    bihua.init(env)
+  end
   local shape_elements = config:get_string("translator/shape_elements") or "snow_bushou"
   env.shape_elements = ReverseLookup(shape_elements)
   local shape_mapping = config:get_string("translator/shape_mapping") or "radical_sipin.txt"
@@ -239,10 +242,9 @@ end
 
 ---@param env ShapeFilterEnv
 function filter.fini(env)
-  env.strokes = nil
   env.shape_elements = nil
   env.shape_mapping = nil
-  collectgarbage()
+  bihua.fini(env)
 end
 
 return filter

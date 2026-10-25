@@ -4,7 +4,7 @@
 schema:
   schema_id: snow_pinyin
   name: 冰雪拼音
-  version: "0.3.11"
+  version: "0.3.12"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
@@ -39,6 +39,7 @@ engine:
     - ascii_segmentor
     - matcher
     - abc_segmentor
+    - affix_segmentor@stroke
     - punct_segmentor
     - fallback_segmentor
   translators:
@@ -46,6 +47,7 @@ engine:
     - table_translator@stroke
     - script_translator
   filters:
+    - lua_filter@*snow.bihua*filter
     - reverse_lookup_filter@lookup_pinyin
     - simplifier
     - uniquifier
@@ -88,7 +90,7 @@ recognizer:
 
 stroke:
   tag: stroke
-  dictionary: stroke
+  dictionary: snow_bihua
   prism: snow_bihua
   enable_user_dict: false
   enable_sentence: false
@@ -99,7 +101,8 @@ stroke:
   preedit_format:
     - xlit/eiuoa/一丨丿丶乙/
   comment_format:
-    - xlit/hspnz/eiuoa/
+    - xform/[A-Z]+$//
+    - xlit/12345/eiuoa/
 
 pinyin:
   tag: pinyin

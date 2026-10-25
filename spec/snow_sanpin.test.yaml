@@ -232,3 +232,35 @@ deploy:
       # 重置：Control+\ 取消当前编码上的所有自定义
       - send: "jmdz{Control+backslash}jmdz"
         assert: not pinned(1) and not pinned(2)
+  shape_g:
+    patch:
+      translator/shape_sources: [G]
+    tests:
+      - send: "uuooao"
+        assert: has("令")
+      - send: "uuovao"
+        assert: not has("令")
+      - send: lgouooao
+        assert: has("令")
+      - send: lgouovao
+        assert: not has("令")
+  shape_t:
+    patch:
+      translator/shape_sources: [T]
+    tests:
+      - send: "uuovao"
+        assert: has("令")
+      - send: "uuooao"
+        assert: not has("令")
+      - send: lgouovao
+        assert: has("令")
+      - send: lgouooao
+        assert: not has("令")
+  shape_none:
+    patch:
+      translator/shape_sources: []
+    tests:
+      - send: lgo
+        assert: has("令")
+      - send: lgou
+        assert: not has("令")

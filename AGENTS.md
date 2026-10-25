@@ -27,7 +27,7 @@ bun scripts/link.ts link      # 建立软链（幂等，仓库新增文件后重
 bun scripts/link.ts unlink    # 还原成独立副本
 ```
 
-手机上的仓输入法读的是 iCloud 里的 `RimeUserData/rime-snow-pinyin`。iCloud 不跟随软链，所以那边只能复制：`bun scripts/link.ts sync` 把同样的文件加上 `rime-stroke/stroke*` 单向镜像过去，只复制内容有变化的文件，并清理仓库里已删除的文件。这一步要手动跑，改完想在手机上用时再跑一次。
+手机上的仓输入法读的是 iCloud 里的 `RimeUserData/rime-snow-pinyin`。iCloud 不跟随软链，所以那边只能复制：`bun scripts/link.ts sync` 把同样的文件单向镜像过去，只复制内容有变化的文件，并清理仓库里已删除的文件。这一步要手动跑，改完想在手机上用时再跑一次。
 
 本机私有、已被 `.gitignore` 排除的 `*.custom.yaml`、`*.userdb`、`build/`、`user.yaml`、`installation.yaml` 仍各自独立，所以在仓库里跑 mira 不会污染实际词频。
 
@@ -42,7 +42,24 @@ bun scripts/version.ts 0.3.12   # 改写 snow.lua 和所有 snow_*.schema.yaml�
 bun scripts/version.ts          # 查看当前版本
 ```
 
-词典生成脚本（`single.ts`、`multiple.ts`、`generateYingpinDict.ts`）也从 `scripts/version.ts` 读取同一个版本号。Rime 的 `__include` 只在方案里生效，词典头不支持，所以没法靠 yaml 本身共用一份。
+词典生成脚本（`single.ts`、`multiple.ts`、`generateYingpinDict.ts`、`bihua.ts`）也从 `scripts/version.ts` 读取同一个版本号。Rime 的 `__include` 只在方案里生效，词典头不支持，所以没法靠 yaml 本身共用一份。
+
+## 笔画与地区字形
+
+笔画反查和冰雪四拼、冰雪三拼的笔画辅助码共用 `snow_bihua.dict.yaml`，由外部三列笔画表生成，不要手改。冰雪键道、冰雪一拼的部件辅助码及冰雪清韵的形码不使用此表。
+
+在所用方案的 `*.custom.yaml` 中选择字形来源，重新部署即可生效，无需重新生成词典：
+
+```yaml
+patch:
+  translator/shape_sources: [G, T]
+```
+
+- 多个标签取并集，区分大小写；省略或设为 `null` 时默认 `[G]`，`[]` 只保留无标签记录，无标签记录始终可用。全部来源为 `[G, H, T, J, K, N, V, M, S, B, U]`。
+- 配置只影响可用笔顺及辅助码提示，不影响普通拼音候选；原表未收录的字不做辅助码过滤。独立笔画方案也支持此配置。
+- 更新原表后运行 `bun scripts/bihua.ts /path/to/strokes.tsv [输出文件]`（输出默认 `snow_bihua.dict.yaml`），再运行 `bun scripts/test.ts`。
+- 输入以制表符分三列：单字、空格分隔的 `1`～`5` 笔画、逗号分隔的来源标签（可空）；横、竖、撇、点、折对应 `12345`。脚本校验记录，合并同字同笔顺的标签，跳过并报告空笔画记录。输出为「汉字 + 制表符 + 数字笔顺及连续标签」，如 `令\t34154HNTV`。
+- 棱镜用 `xform/[A-Z]+$//` 去掉标签再映射按键，查询、排序、补全交给原生 table translator。`bihua.lua` 通过 `ReverseLookup("snow_bihua")` 读取完整编码，供反查和辅助码共用；filter 按候选的词典语言名识别笔画候选，须在反查过滤器之前筛选来源并修正补全提示，避免误筛冰雪清韵中共用段标签的拼音候选。
 
 ## 测试
 
@@ -55,7 +72,7 @@ bun scripts/test.ts yipin qingyun    # 只跑指定方案，snow_ 前缀可省
 
 它为每个方案准备一份独立环境，这几步都是为了提速或者能并行，不要省掉：
 
-- **精简的源目录**：mira 的每个 deploy 都会把整个 `source_dir`（spec 里写的是 `..`，也就是整个仓库，带 `.git`、`node_modules`、`cache`，约 1 GB）复制一遍。脚本只复制 `git ls-files -co --exclude-standard` 列出的文件，再加上 `rime-stroke/stroke*`，相当于 CI 的全新 checkout。本机的 `*.userdb`、`user.yaml` 自然被排除在外，不用再 `rm -rf *.userdb`。
+- **精简的源目录**：mira 的每个 deploy 都会把整个 `source_dir`（spec 里写的是 `..`，也就是整个仓库，带 `.git`、`node_modules`、`cache`，约 1 GB）复制一遍。脚本只复制 `git ls-files -co --exclude-standard` 列出的文件，相当于 CI 的全新 checkout。本机的 `*.userdb`、`user.yaml` 自然被排除在外，不用再 `rm -rf *.userdb`。
 - **`default.custom.yaml` 只留被测方案**：否则每个 deploy 都要检查 `schema_list` 里的全部五个方案。这两项加起来，每个 deploy 从约 4 秒降到约 1.4 秒。
 - **独立的 `TMPDIR`**：mira 的工作目录写死为 `$TMPDIR/mira`，启动时整个删掉，两个 mira 同时跑会互相删目录然后崩溃。
 - **独立的缓存副本**：`-C` 指向的 staging 目录不能共用。带 `patch` 的 deploy（冰雪三拼、冰雪键道的 `sentence`，冰雪四拼的 `special`）会把改过的方案编译进缓存，改了词典后几个进程还会同时重建同一份 `.bin`。脚本先把仓库的 `cache/` 复制给每个方案，跑完再把更新过的文件写回去。
@@ -63,7 +80,6 @@ bun scripts/test.ts yipin qingyun    # 只跑指定方案，snow_ 前缀可省
 只调一个 deploy 时直接用 mira 的 `-R` 更快，但这会用仓库本身作 `source_dir`，所以要自己清词频，同时也不能有别的 mira 在跑：
 
 ```sh
-cp rime-stroke/stroke* .          # 笔画反查依赖
 rm -rf *.userdb                   # 清掉上次运行累积的词频，与 CI 的全新 checkout 对齐
 mira -C cache -R '^popping$' spec/snow_sipin.test.yaml
 ```
@@ -237,6 +253,7 @@ bun scripts/test.ts
 
   filters:
     - lua_filter@*snow.placeholder        # 冰雪一拼无
+    - lua_filter@*snow.bihua*filter       # 冰雪一拼无；按词典语言名筛选笔画，须在反查过滤器之前
     - lua_filter@*snow.enforce            # 仅冰雪键道
     - reverse_lookup_filter@lookup_pinyin # 冰雪一拼、冰雪清韵无
     - reverse_lookup_filter@lookup_<方案>  # 同上

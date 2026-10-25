@@ -140,10 +140,6 @@ function sync() {
 	// 目标目录里的相对路径 → 仓库里的源文件
 	const files = new Map<string, string>();
 	for (const file of scan(ROOT)) files.set(file, join(ROOT, file));
-	// 笔画反查依赖，fcitx5 那边由别处提供，手机上没有
-	for (const name of ["stroke.dict.yaml", "stroke.schema.yaml"]) {
-		files.set(name, join(ROOT, "rime-stroke", name));
-	}
 	let copied = 0;
 	for (const [file, src] of [...files].sort()) {
 		const dest = join(HAMSTER_DIR, file);

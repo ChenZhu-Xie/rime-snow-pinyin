@@ -223,7 +223,8 @@ deploy:
       # 元音字母加前缀 `m`
       - send: ma
         assert: cand[2].text == "A" and cand[3].text == "a"
-      - send: "{Control+j}wu2g.2lg lwo  wgtx"
+      # 缓冲模式展开「问」的 wen4、wen5 两个读音，G 位于第三项
+      - send: "{Control+j}wu2g.3lg lwo  wgtx"
         assert: cand[1].text == "5G通信"
       - send: "{Control+j}fjggfnlkma2ppjg  dlmm"
         assert: cand[1].text == "哆啦A梦"
@@ -300,3 +301,34 @@ deploy:
       # 重置：Control+\ 取消当前编码上的所有自定义
       - send: "fmje{Control+backslash}fmje"
         assert: cand[1].text == "吧" and cand[2].text == "邑"
+  shape_g:
+    patch:
+      translator/shape_sources: [G]
+    tests:
+      - send: "`uooao"
+        assert: has("令")
+      - send: "`uoeao"
+        assert: not has("令")
+      # 拼音与笔画共用标签，来源设置不能影响拼音反查。
+      - send: "`ling4"
+        assert: has("令")
+  shape_t:
+    patch:
+      translator/shape_sources: [T]
+    tests:
+      - send: "`uoeao"
+        assert: has("令")
+      - send: "`uooao"
+        assert: not has("令")
+      # 拼音与笔画共用标签，来源设置不能影响拼音反查。
+      - send: "`ling4"
+        assert: has("令")
+  shape_none:
+    patch:
+      translator/shape_sources: []
+    tests:
+      # a 同时是拼音和笔画编码，拼音「啊」必须保留，带来源的笔画「乙」应被筛掉。
+      - send: "`a"
+        assert: has("啊") and not has("乙")
+      - send: "`ling4"
+        assert: has("令")

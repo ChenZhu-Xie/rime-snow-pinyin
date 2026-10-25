@@ -359,3 +359,65 @@ deploy:
         assert: has("二零二四") and not has("二零二五")
       - send: "rlrg"
         assert: cand[1].text == "二零二五"
+  shape_g:
+    tests:
+      # 不配置来源时，反查和辅助码都默认只启用 G。
+      # 同一个字的不同地区笔顺必须分别筛选，反查和辅助码一致。
+      - send: uuooao
+        assert: has("令")
+      - send: uuoeao
+        assert: not has("令")
+      - send: uuoeai
+        assert: not has("令")
+      - send: lieauooao
+        assert: has("令")
+      - send: lieauoeao
+        assert: not has("令")
+      # 无标签的字形始终可用。
+      - send: uoo
+        assert: has("⺀")
+  shape_t:
+    patch:
+      translator/shape_sources: [T]
+    tests:
+      - send: uuoeao
+        assert: has("令")
+      - send: uuooao
+        assert: not has("令")
+      - send: lieauoeao
+        assert: has("令")
+      - send: lieauooao
+        assert: not has("令")
+  shape_j:
+    patch:
+      translator/shape_sources: [J]
+    tests:
+      - send: uuoeai
+        assert: has("令")
+      - send: uuoeao
+        assert: not has("令")
+  shape_union:
+    patch:
+      translator/shape_sources: [G, T]
+    tests:
+      - send: uuooao
+        assert: has("令")
+      - send: uuoeao
+        assert: has("令")
+      - send: uuoeai
+        assert: not has("令")
+  shape_none:
+    patch:
+      translator/shape_sources: []
+    tests:
+      - send: uuooao
+        assert: not has("令")
+      - send: lieau
+        assert: not has("令")
+      - send: uoo
+        assert: has("⺀")
+      # 来源设置不筛除普通拼音候选。
+      - send: liea
+        assert: has("令")
+      - send: aling4
+        assert: has("令")

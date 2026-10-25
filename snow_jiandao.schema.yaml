@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_jiandao
   name: 冰雪键道
-  version: "0.3.11"
+  version: "0.3.12"
   author:
     - 吅吅大山
     - 谭淞宸 <i@tansongchen.com>
@@ -55,6 +55,7 @@ engine:
     - history_translator
   filters:
     - lua_filter@*snow.placeholder
+    - lua_filter@*snow.bihua*filter
     - lua_filter@*snow.enforce
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_jiandao
