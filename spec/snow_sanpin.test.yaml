@@ -55,12 +55,10 @@ deploy:
       # 组词规则
       - send: bdi
         assert: cand[1].text == "冰"
-      # 单字 IR+B1+B2：冰首笔捺 → o；当有折/竖两条首笔码，运行时都接受。
-      - send: bdio
+      # 单字 IR+B1+B2：冰首笔丶 → a；当首笔丨 → v。
+      - send: bdia
         assert: has("冰")
-      - send: dmia
-        assert: has("当")
-      - send: dmii
+      - send: dmiv
         assert: has("当")
       - send: bdxy
         assert: has("冰雪")
@@ -192,8 +190,8 @@ deploy:
         assert: commit == "个"
       - send: nwym
         assert: cand[1].text == "那样"
-      - send: tpvvi
-        assert: cand[1].text == "填" and cand[1].comment:find("vivv")
+      - send: tpviv
+        assert: cand[1].text == "填" and cand[1].comment:find("ivii")
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"
@@ -335,9 +333,9 @@ deploy:
         assert: has("令")
       - send: "uuaioa"
         assert: not has("令")
-      - send: lgouaaoa
+      - send: ldauaaoa
         assert: has("令")
-      - send: lgouaioa
+      - send: ldauaioa
         assert: not has("令")
   shape_t:
     patch:
@@ -347,15 +345,15 @@ deploy:
         assert: has("令")
       - send: "uuaaoa"
         assert: not has("令")
-      - send: lgouaioa
+      - send: ldauaioa
         assert: has("令")
-      - send: lgouaaoa
+      - send: ldauaaoa
         assert: not has("令")
   shape_none:
     patch:
       translator/shape_sources: []
     tests:
-      - send: lgo
+      - send: lda
         assert: has("令")
-      - send: lgou
+      - send: ldau
         assert: not has("令")

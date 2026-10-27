@@ -34,7 +34,7 @@ deploy:
       - send: r
         assert: page("人") and has("日")
       # r5 并入 er5 后，原有字仍可按儿输入
-      - send: xj
+      - send: qj
         assert: has("兒")
       # 组词规则
       - send: bdxy

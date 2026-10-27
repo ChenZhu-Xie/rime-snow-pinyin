@@ -10,12 +10,12 @@ script: |
 deploy:
   popping:
     tests:
-      # 冰 bing1 首 B=i（阴平），后续的 o/o 为前两笔（丶丶）。
+      # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）。
       - send: bdi
         assert: has("冰")
       - send: bdio
         assert: has("冰")
-      - send: bdioo
+      - send: bdioe
         assert: has("冰")
       # 部首冫的三拼部首码以 b 开头；数字 1 与声调、笔画互不混淆。
       - send: "bdi1b"

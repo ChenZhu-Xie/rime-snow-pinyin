@@ -6,13 +6,13 @@
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
 
 local snow = require "snow.snow"
+local bihua = require "snow.bihua"
 
 local this = {}
 
----@class ShenyunEnv: Env
+---@class ShenyunEnv: BihuaEnv
 ---@field translator Translator
 ---@field pinyin ReverseLookup
----@field strokes ReverseLookup
 ---@field shape_elements ReverseLookup
 ---@field shape_mapping table<string, string>
 ---@field initial_keys string
@@ -80,7 +80,7 @@ local function shape_codes(text, env)
 end
 
 local tone_keys = { ["1"] = "i", ["2"] = "e", ["3"] = "u", ["4"] = "a", ["5"] = "o" }
-local stroke_keys = { h = "e", s = "i", p = "u", n = "o", z = "a" }
+local stroke_keys = { ["1"] = "e", ["2"] = "i", ["3"] = "u", ["4"] = "o", ["5"] = "a" }
 
 local function unique(values)
   local seen = {}
@@ -107,7 +107,7 @@ end
 
 local function stroke_options(character, env)
   local result = {}
-  for stroke in (env.strokes:lookup(character) or ""):gmatch("[^ ]+") do
+  for _, stroke in ipairs(bihua.codes(character, env)) do
     local code = ""
     for index = 1, stroke:len() do
       code = code .. (stroke_keys[stroke:sub(index, index)] or "")
@@ -222,7 +222,6 @@ function this.init(env)
   local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
   env.pinyin = ReverseLookup("snow_pinyin")
-  env.strokes = ReverseLookup("stroke")
   local shape_elements = config:get_string("translator/shape_elements") or "snow_jiandao_chaifen"
   env.shape_elements = ReverseLookup(shape_elements)
   local shape_mapping = config:get_string("translator/shape_mapping") or "radical_jiandao.txt"
@@ -231,6 +230,7 @@ function this.init(env)
   env.final_keys = config:get_string("translator/shenyun_final_keys") or "abcdefghijklmnopqrstuvwxyz"
   env.auxiliary_keys = config:get_string("translator/shenyun_auxiliary_keys") or "aeuio"
   env.auxiliary_mode = config:get_string("shenyun_options/auxiliary") or "shape"
+  if env.auxiliary_mode == "tone" then bihua.load_strokes(env) end
 end
 
 function this.func(input, segment, env)
@@ -270,8 +270,8 @@ end
 function this.fini(env)
   env.translator = nil
   env.pinyin = nil
-  env.strokes = nil
   env.shape_elements = nil
+  bihua.release_strokes(env)
   collectgarbage()
 end
 

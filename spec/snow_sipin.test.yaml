@@ -389,8 +389,9 @@ deploy:
         assert: cand[1].text == "攘"
       - send: "kfc{Control+backslash}{Control+apostrophe}krO{Control+apostrophe}kfc"
         assert: cand[1].text == "可可爱爱"
-      - send: "kfc{Control+backslash}{Control+apostrophe}dpaiE{Control+apostrophe}kfc"
-        assert: cand[1].text == "打打牌"
+      # 本地四码后的大写字母继续参与编码，以短码 wgE 覆盖“前段直接上屏”的捕获。
+      - send: "kfc{Control+backslash}{Control+apostrophe}wgE{Control+apostrophe}kfc"
+        assert: cand[1].text == "这这个"
       - send: "kfc{Control+backslash}{Control+apostrophe}wgA{Control+apostrophe}kfc"
         assert: cand[1].text == "这个这个"
       # 加词时若第一候选已固定，新词加到第二候选
@@ -408,11 +409,11 @@ deploy:
       - send: "kooe{Control+backslash}kooe"
         assert: not pinned(1) and not pinned(2)
       # 位置编码只支持 1～18；超出的固定操作应保持候选不变，不能写成禁用或回绕到首位
-      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+comma}"
         assert: not pinned(19) and not pinned(1)
-      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+comma}"
         assert: not pinned(21) and not pinned(1)
-      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+comma}"
         assert: pinned(18)
   # 无理音节
   special:
