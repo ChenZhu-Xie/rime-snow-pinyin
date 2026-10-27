@@ -847,7 +847,7 @@ if (jiandao630.size !== 630)
 	throw new Error(`键道 630 必须完整覆盖 630 槽，实际为 ${jiandao630.size}。`);
 
 const tygf = new Set(
-	readFileSync(join(scriptDirectory, "tygf.txt"), "utf8")
+	readFileSync(join(scriptDirectory, "data", "tygf-pinyin.tsv"), "utf8")
 		.split(/\r?\n/)
 		.map((line) => line.split("\t")[0])
 		.filter(Boolean),
