@@ -35,6 +35,12 @@ deploy:
   # 注意：这里的断言依赖词频未被本部署内的上屏改变，故上屏类测试一律放在最后
   popping:
     tests:
+      # r5 不应占用单键 r，仍能查询其他 r 声母的字
+      - send: r
+        assert: page("人") and has("日")
+      # r5 并入 er5 后，原有字仍可按轻声儿输入
+      - send: rioo
+        assert: has("兒")
       # 组词规则
       - send: biei
         assert: has("冰")
@@ -260,6 +266,25 @@ deploy:
       # Lua 脚本：数字转中文数字
       - send: o123
         assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Unicode 码点：十六进制不区分大小写，支持基本平面以外的字符
+      - send: o4e00
+        assert: cand[1].text == "一" and cand[1].comment:find("U+4E00 CJK", 1, true) ~= nil
+      - send: o4E00
+        assert: cand[1].text == "一"
+      - send: o20000
+        assert: has("𠀀") and cand[rank("𠀀")].comment:find("CJK-B", 1, true) ~= nil
+      - send: o1f600
+        assert: cand[1].text == "😀"
+      # 纯数字输入仍保留数字翻译的首选，同时提供对应的 Unicode 字符
+      - send: o41
+        assert: cand[1].text == "四十一" and has("A")
+      # 代理码点、超出 Unicode 范围及非法十六进制不产生字符候选
+      - send: od800
+        assert: not has(utf8.char(0xd800))
+      - send: o110000
+        assert: not has(utf8.char(0x110000))
+      - send: o4e00g
+        assert: not has("一")
       # Lua 脚本：计算表达式
       - send: o1234*5678
         assert: has("7006652")
@@ -270,6 +295,23 @@ deploy:
         assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
+      # 输入统计：相对日期、绝对日期与年份、ISO 周和全部设备
+      - send: otj
+        assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
+      - send: 'otj '
+        assert: commit:match("^📖 冰雪输入统计使用说明") ~= nil and commit:find("otjr-1", 1, true) ~= nil and commit:find("选择设备", 1, true) ~= nil and commit:find("均速", 1, true) == nil
+      - send: otjr-1
+        assert: cand[1].text:match("^📊 %d+ 月 %d+ 日$") ~= nil
+      - send: otjr+1
+        assert: cand[1] == nil or cand[1].text:match("^📊 ") == nil
+      - send: otj20261026
+        assert: cand[1].text == "📊 10 月 26 日"
+      - send: otj2026
+        assert: cand[1].text == "📊 2026 年"
+      - send: otj2026w44
+        assert: cand[1].text == "📊 44 周"
+      - send: otjhq
+        assert: cand[1].text == "📊 有史以来"
       # 略码：完整重复，一字词用 `[`
       - send: "yi["
         assert: commit == "吃吃"
@@ -340,6 +382,17 @@ deploy:
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
       - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
+      # 自由加词也要捕获以词定字，以及略码前后两部分的直接上屏
+      - send: "kfc{Control+backslash}{Control+apostrophe}xxrr[{Control+apostrophe}kfc"
+        assert: cand[1].text == "熙"
+      - send: "kfc{Control+backslash}{Control+apostrophe}xxrr]{Control+apostrophe}kfc"
+        assert: cand[1].text == "攘"
+      - send: "kfc{Control+backslash}{Control+apostrophe}krO{Control+apostrophe}kfc"
+        assert: cand[1].text == "可可爱爱"
+      - send: "kfc{Control+backslash}{Control+apostrophe}dpaiE{Control+apostrophe}kfc"
+        assert: cand[1].text == "打打牌"
+      - send: "kfc{Control+backslash}{Control+apostrophe}wgA{Control+apostrophe}kfc"
+        assert: cand[1].text == "这个这个"
       # 加词时若第一候选已固定，新词加到第二候选
       - send: "dna{Control+comma}{Control+apostrophe}tfhtHS {Control+apostrophe}dna"
         assert: cand[1].text == "电脑" and cand[2].text == "脱氧核糖核酸"
@@ -354,6 +407,13 @@ deploy:
       # 重置：Control+\ 取消当前编码上的所有自定义
       - send: "kooe{Control+backslash}kooe"
         assert: not pinned(1) and not pinned(2)
+      # 位置编码只支持 1～18；超出的固定操作应保持候选不变，不能写成禁用或回绕到首位
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+        assert: not pinned(19) and not pinned(1)
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+        assert: not pinned(21) and not pinned(1)
+      - send: "kooe{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Down}{Control+semicolon}"
+        assert: pinned(18)
   # 无理音节
   special:
     patch:
@@ -368,3 +428,65 @@ deploy:
         assert: has("二零二四") and not has("二零二五")
       - send: "rlrg"
         assert: cand[1].text == "二零二五"
+  shape_g:
+    tests:
+      # 不配置来源时，反查和辅助码都默认只启用 G。
+      # 同一个字的不同地区笔顺必须分别筛选，反查和辅助码一致。
+      - send: uuooao
+        assert: has("令")
+      - send: uuoeao
+        assert: not has("令")
+      - send: uuoeai
+        assert: not has("令")
+      - send: lieauooao
+        assert: has("令")
+      - send: lieauoeao
+        assert: not has("令")
+      # 无标签的字形始终可用。
+      - send: uoo
+        assert: has("⺀")
+  shape_t:
+    patch:
+      translator/shape_sources: [T]
+    tests:
+      - send: uuoeao
+        assert: has("令")
+      - send: uuooao
+        assert: not has("令")
+      - send: lieauoeao
+        assert: has("令")
+      - send: lieauooao
+        assert: not has("令")
+  shape_j:
+    patch:
+      translator/shape_sources: [J]
+    tests:
+      - send: uuoeai
+        assert: has("令")
+      - send: uuoeao
+        assert: not has("令")
+  shape_union:
+    patch:
+      translator/shape_sources: [G, T]
+    tests:
+      - send: uuooao
+        assert: has("令")
+      - send: uuoeao
+        assert: has("令")
+      - send: uuoeai
+        assert: not has("令")
+  shape_none:
+    patch:
+      translator/shape_sources: []
+    tests:
+      - send: uuooao
+        assert: not has("令")
+      - send: lieau
+        assert: not has("令")
+      - send: uoo
+        assert: has("⺀")
+      # 来源设置不筛除普通拼音候选。
+      - send: liea
+        assert: has("令")
+      - send: aling4
+        assert: has("令")

@@ -1,5 +1,6 @@
-import { readFileSync, writeFileSync } from "fs";
-import { resolve } from "path";
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { rootPath } from "./lib/paths";
 import { VERSION } from "./version";
 
 type Entry = {
@@ -8,8 +9,6 @@ type Entry = {
 	weight: number;
 };
 
-const sourcePath = resolve(process.cwd(), "rime-easy-en/easy_en.dict.yaml");
-const targetPath = resolve(process.cwd(), "snow_yingpin.dict.yaml");
 const latinWord = /^[a-z]+$/;
 
 function parseEntries(content: string) {
@@ -27,8 +26,9 @@ function parseEntries(content: string) {
 		const parts = line.split("\t");
 		if (parts.length < 2) continue;
 
-		const word = parts[0]!.toLowerCase();
-		const code = parts[1]!.toLowerCase();
+		const word = parts[0]?.toLowerCase();
+		const code = parts[1]?.toLowerCase();
+		if (!word || !code) continue;
 		if (!latinWord.test(word)) continue;
 
 		const weightText = parts[2];
@@ -79,8 +79,18 @@ function renderDictionary(entries: Entry[]) {
 	return `${header}${body}\n`;
 }
 
-const content = readFileSync(sourcePath, "utf8");
-const entries = parseEntries(content);
-writeFileSync(targetPath, renderDictionary(entries), "utf8");
+function main() {
+	const sourcePath = resolve(
+		process.argv[2] ?? rootPath("rime-easy-en/easy_en.dict.yaml"),
+	);
+	const targetPath = resolve(
+		process.argv[3] ?? rootPath("snow_yingpin.dict.yaml"),
+	);
+	const content = readFileSync(sourcePath, "utf8");
+	const entries = parseEntries(content);
+	writeFileSync(targetPath, renderDictionary(entries), "utf8");
 
-console.log(`已导出 ${entries.length} 条词条到 ${targetPath}`);
+	console.log(`已导出 ${entries.length} 条词条到 ${targetPath}`);
+}
+
+if (import.meta.main) main();

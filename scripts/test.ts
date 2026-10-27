@@ -19,11 +19,8 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
-// 仓库根目录由本文件位置推出，因此不依赖运行时的工作目录
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+import { dirname, join } from "node:path";
+import { ROOT } from "./lib/paths";
 
 const SCHEMAS = [
 	"snow_sipin",
@@ -53,11 +50,6 @@ function prepareSource(dest: string, schema: string) {
 		// 跳过子模块（目录）和已删除但仍在索引里的文件
 		if (!file || !existsSync(src) || !statSync(src).isFile()) continue;
 		clone(src, join(dest, file));
-	}
-	for (const file of readdirSync(join(ROOT, "rime-stroke"))) {
-		if (file.startsWith("stroke")) {
-			clone(join(ROOT, "rime-stroke", file), join(dest, file));
-		}
 	}
 	// 每个部署默认会检查 schema_list 里的全部方案，只留被测方案能把部署从约 4 秒降到约 1.4 秒
 	writeFileSync(

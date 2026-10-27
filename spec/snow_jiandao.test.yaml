@@ -30,6 +30,12 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
+      # r5 不应占用单键 r，仍能查询其他 r 声母的字
+      - send: r
+        assert: page("人") and has("日")
+      # r5 并入 er5 后，原有字仍可按儿输入
+      - send: xj
+        assert: has("兒")
       # 组词规则
       - send: bdxy
         assert: has("冰雪")
@@ -199,6 +205,9 @@ deploy:
       # Lua 脚本：数字转中文数字
       - send: o123
         assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Unicode 码点
+      - send: o4e00
+        assert: cand[1].text == "一"
       # Lua 脚本：计算表达式
       - send: o1234*5678
         assert: has("7006652")
@@ -240,3 +249,19 @@ deploy:
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdz{Control+backslash}jpdz"
         assert: not pinned(1) and not pinned(2)
+  shape_g:
+    patch:
+      translator/shape_sources: [G]
+    tests:
+      - send: "uuooao"
+        assert: has("令")
+      - send: "uuovao"
+        assert: not has("令")
+  shape_t:
+    patch:
+      translator/shape_sources: [T]
+    tests:
+      - send: "uuovao"
+        assert: has("令")
+      - send: "uuooao"
+        assert: not has("令")

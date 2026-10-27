@@ -1,12 +1,29 @@
 -- 计算器翻译器
--- 输入以 e 开头的表达式，输出表达式的值
+-- 输入以 lua/input 指定的前缀开头的表达式，输出表达式的值
 -- 基于 https://github.com/baopaau/rime-lua-collection/blob/master/calculator_translator.lua
 
 ---@diagnostic disable: lowercase-global
 ---@diagnostic disable: no-unknown
--- 表达式在 sandbox 里求值：下面定义的函数、常数都落在 sandbox 上，不污染全局；
--- 查不到的名字（math、string、yield、Candidate 等）回落到 _G
-local sandbox = setmetatable({}, { __index = _G })
+-- 运行组件需要的接口只保留为局部变量，不向表达式暴露加载器、Rime 对象或系统接口
+local load, Candidate, yield = load, Candidate, yield
+local os_date, os_time = os.date, os.time
+local source_path = debug.getinfo(1, "S").source:match("@?(.*/)")
+-- 只开放计算所需的函数。复制标准库，避免表达式修改其他组件使用的全局库
+---@type table<string, any>
+local sandbox = {
+  assert = assert, error = error, ipairs = ipairs, next = next, pairs = pairs,
+  pcall = pcall, select = select, tonumber = tonumber, tostring = tostring,
+  type = type, xpcall = xpcall,
+}
+for name, library in pairs({ math = math, string = string, table = table, utf8 = utf8 }) do
+  local copy = {}
+  for key, value in pairs(library) do
+    if name ~= "string" or key ~= "dump" then
+      copy[key] = value
+    end
+  end
+  sandbox[name] = copy
+end
 local _ENV = sandbox
 
 cos = math.cos
@@ -327,37 +344,56 @@ end
 
 
 -- # System
-date = os.date
-time = os.time
+date = os_date
+time = os_time
 path = function()
-  return debug.getinfo(1).source:match("@?(.*/)")
+  return source_path
 end
 
 
-local function serialize(obj)
+local function serialize(obj, seen)
   local type = type(obj)
   if type == "number" then
-    return isinteger(obj) and floor(obj) or obj
+    return tostring(isinteger(obj) and floor(obj) or obj)
   elseif type == "boolean" then
     return tostring(obj)
   elseif type == "string" then
-    return '"' .. obj .. '"'
+    return ("%q"):format(obj)
   elseif type == "table" then
+    seen = seen or {}
+    if seen[obj] then return '"<cycle>"' end
+    seen[obj] = true
     local str = "{"
     local i = 1
     for k, v in pairs(obj) do
       if i ~= k then
-        str = str .. "[" .. serialize(k) .. "]="
+        str = str .. "[" .. serialize(k, seen) .. "]="
       end
-      str = str .. serialize(v) .. ", "
+      str = str .. serialize(v, seen) .. ", "
       i = i + 1
     end
     str = str:len() > 3 and str:sub(0, -3) or str
+    seen[obj] = nil
     return str .. "}"
-  elseif pcall(obj) then -- function類型
+  elseif type == "function" then
     return "callable"
   end
-  return obj
+  return tostring(obj)
+end
+
+-- 每次求值使用独立环境；表达式内的赋值和标准库修改不会影响后续输入
+local function expression_environment()
+  local env = {}
+  for name, value in pairs(sandbox) do
+    if type(value) == "table" then
+      local copy = {}
+      for key, item in pairs(value) do copy[key] = item end
+      env[name] = copy
+    else
+      env[name] = value
+    end
+  end
+  return env
 end
 
 -- greedy：隨時求值（每次變化都會求值，否則結尾爲特定字符時求值）
@@ -402,10 +438,7 @@ function translator.func(input, segment, env)
   end
   --yield(Candidate("number", segment.start, segment._end, expe, "展開"))
 
-  -- 防止危險操作，禁用os和io命名空間
-  if expe:find("i?os?%.") then return end
-  -- return語句保證了只有合法的Lua表達式才可執行
-  local chunk, err = load("return " .. expe, "calculator", "t", sandbox)
+  local chunk = load("return " .. expe, "calculator", "t", expression_environment())
   if not chunk then
     -- 语法错误，直接忽略即可，不报错
     return
@@ -420,20 +453,19 @@ function translator.func(input, segment, env)
 
   if result == nil then return end
 
-  result = serialize(result)
-  ---@cast result string
-  yield(Candidate("number", segment.start, segment._end, result, "答案"))
-  yield(Candidate("number", segment.start, segment._end, exp .. " = " .. result, "等式"))
+  local serialized, answer = pcall(serialize, result)
+  if not serialized then return end
+  yield(Candidate("number", segment.start, segment._end, answer, "答案"))
+  yield(Candidate("number", segment.start, segment._end, exp .. " = " .. answer, "等式"))
 
-  local result = tostring(result)
-  if result:find("e") then
-    local base, symbol, exponent = result:match("(.*)e([+-])(.*)")
-    yield(Candidate("number", segment.start, segment._end, string.format("%.2f", round2(base, 0.01)).."e"..symbol..exponent, "答案"))
-    yield(Candidate("number", segment.start, segment._end, exp .. " ≈ " .. string.format("%.2f", round2(base, 0.01)).."e"..symbol..exponent, "答案"))
-  else
-    yield(Candidate("number", segment.start, segment._end, string.format("%.2f", round2(result, 0.01)), "答案"))
-    yield(Candidate("number", segment.start, segment._end, exp .. " ≈ " .. string.format("%.2f", round2(result, 0.01)), "答案"))
-  end
+  -- 布尔值、字符串、数组、函数和非有限数都有答案，但不参与数值舍入
+  if type(result) ~= "number" or result ~= result or abs(result) == inf then return end
+  local base, exponent = answer:match("^([%+%-]?[%d%.]+)[eE]([%+%-]?%d+)$")
+  local approximate = base
+      and ("%.2fe%s"):format(round2(tonumber(base), 0.01), exponent)
+      or ("%.2f"):format(round2(result, 0.01))
+  yield(Candidate("number", segment.start, segment._end, approximate, "答案"))
+  yield(Candidate("number", segment.start, segment._end, exp .. " ≈ " .. approximate, "答案"))
 end
 
 return translator

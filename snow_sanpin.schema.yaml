@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_sanpin
   name: 冰雪三拼
-  version: "0.3.11"
+  version: "0.3.12"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
@@ -52,11 +52,13 @@ engine:
     - lua_translator@*snow.datetime
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
+    - lua_translator@*snow.unicode*translator
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history
   filters:
     # 隐藏为补全音节而保留的 (sei1)、(zhei4) 一类占位候选。
     - lua_filter@*snow.placeholder
+    - lua_filter@*snow.bihua
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
@@ -66,12 +68,14 @@ engine:
     - simplifier
     - uniquifier
     - lua_filter@*snow.hint
-    - lua_filter@*snow.unicode
+    - lua_filter@*snow.unicode*filter
 
 sanpin_algebra:
   # 无飞键道·神韵（R9-21X21-M40-02）
   # 目标布局的 421 音节码表中不编码这 5 个扩展音节。
   - erase/^(hng|m|n|ng|ê)\d$/
+  # 儿化轻声并入 er5，避免占用单键 r。
+  - xform/(^| )r5(?= |$)/$1er5/
   # j/q/x 与零声母 YU 系列统一按 v/van/ve/vn 韵尾编码。
   - xform/([jqx])uan(?=\d)/$1van/
   - xform/([jqx])ue(?=\d)/$1ve/
@@ -163,7 +167,7 @@ speller:
   algebra:
     __include: /sanpin_algebra
     __append:
-      # 与键道共享二键基码，并统一追加轻声键 o；这 26 个三码均为空槽。
+      # 与键道共享二键基码，并统一追加轻声键 o；tco/hco/xko 的字母固顶覆盖新增的轻声读音。
       - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1co/
       - xform/~{1,2}v/xyo/
       - xform/~{1,2}i/xko/

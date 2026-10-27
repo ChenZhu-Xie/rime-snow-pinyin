@@ -46,6 +46,12 @@ deploy:
         assert: has("丶")
       - send: uo
         assert: has("乙")
+      # r5 不应占用单键 r，仍能查询其他 r 声母的字
+      - send: r
+        assert: page("人") and has("日")
+      # r5 并入 er5 后，按本地神韵零声母与 er 韵键输入轻声「兒」
+      - send: qjo
+        assert: has("兒")
       # 组词规则
       - send: bdi
         assert: cand[1].text == "冰"
@@ -243,6 +249,13 @@ deploy:
         assert: cand[1].text == "B" and cand[2].text == "b"
       - send: xwo
         assert: cand[1].text == "A" and cand[2].text == "a"
+      # 新大字集让 tco/hco/xko 与 tiao5/hua5/xi5 重合，字母固顶仍须优先。
+      - send: tco
+        assert: cand[1].text == "T" and cand[2].text == "t"
+      - send: hco
+        assert: cand[1].text == "H" and cand[2].text == "h"
+      - send: xko
+        assert: cand[1].text == "I" and cand[2].text == "i"
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
       - send: "{Control+period}jju gco tpi xga  jgtx"
         assert: commit == "五G通信"
@@ -263,6 +276,10 @@ deploy:
         assert: cand[1].text == "ā"
       - send: o123
         assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Unicode 码点
+      - send: o4e00
+        assert: cand[1].text == "一"
+      # Lua 脚本：计算表达式
       - send: o1234*5678
         assert: has("7006652")
       - send: orq
@@ -309,3 +326,36 @@ deploy:
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdz{Control+backslash}jpdz"
         assert: not pinned(1) and not pinned(2)
+  shape_g:
+    patch:
+      translator/shape_sources: [G]
+    tests:
+      # 本地三拼笔画键为 ivuao；令的 G/T/J 笔顺分别为 34454/34154/34152。
+      - send: "uuaaoa"
+        assert: has("令")
+      - send: "uuaioa"
+        assert: not has("令")
+      - send: lgouaaoa
+        assert: has("令")
+      - send: lgouaioa
+        assert: not has("令")
+  shape_t:
+    patch:
+      translator/shape_sources: [T]
+    tests:
+      - send: "uuaioa"
+        assert: has("令")
+      - send: "uuaaoa"
+        assert: not has("令")
+      - send: lgouaioa
+        assert: has("令")
+      - send: lgouaaoa
+        assert: not has("令")
+  shape_none:
+    patch:
+      translator/shape_sources: []
+    tests:
+      - send: lgo
+        assert: has("令")
+      - send: lgou
+        assert: not has("令")

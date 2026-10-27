@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_yipin
   name: 冰雪一拼
-  version: "0.3.11"
+  version: "0.3.12"
   author:
     - 张皓哲 <576440085@qq.com>
     - 谭淞宸 <i@tansongchen.com>
@@ -41,12 +41,13 @@ engine:
     - punct_translator
     - script_translator
     - lua_translator@*snow.statistics*translator
+    - lua_translator@*snow.unicode*translator
   filters:
     - lua_filter@*snow.fix
     - lua_filter@*snow.shape_filter
     - uniquifier
     - simplifier
-    - lua_filter@*snow.unicode
+    - lua_filter@*snow.unicode*filter
 
 chord_composer:
   alphabet: "qazwsxedcrfvtgbyhnujmik,ol.p;/' "
@@ -91,8 +92,10 @@ chord_composer:
     - xform/^hl$/{Page_Down}/
     # 右手并击，打出输入统计的命令；加方括号以免被 output_format 当成非法音节删掉
     - xform/^jkl$/[itj]/
-    - xform/^jkl;$/[itjq]/
-    - xform/^uio$/[itjs]/
+    - xform/^jkl;$/[itjh]/
+    - xform/^uio$/[itjf]/
+    # Unicode 输入：并击 uio; 后串击十六进制码点，字母用大写以避开并击
+    - xform/^uio;$/[i]/
     # 左手声介
     - xform/ zv /rj/
     - xform/ d /rji/
@@ -374,5 +377,6 @@ patch:
   menu/alternative_select_keys: null
   # combo_popping 会吞掉 o，所以 lua 翻译器的命令改用 i 引导，和符号一致
   lua/input: "i"
+  recognizer/patterns/unicode: "^i[0-9A-Fa-f]+$"
   translator/shape_elements: snow_xingpang
   translator/shape_mapping: "radical_shengjie.txt"

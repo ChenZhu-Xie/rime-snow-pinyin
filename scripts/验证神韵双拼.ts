@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
-import { SpellingAlgebra, 获取大字集拼音 } from "./utils";
+import { SpellingAlgebra } from "./lib/algebra";
 import {
 	jiandaoSupplementalCandidates,
 	readShapeCodes,
@@ -169,14 +169,6 @@ for (const dictionary of [
 		pronunciationMap.set(word, values);
 	}
 }
-for (const { 汉字, 拼音 } of 获取大字集拼音(
-	join(scriptDirectory, "..", "pinyin-data", "pinyin.txt"),
-)) {
-	const values = pronunciationMap.get(汉字) ?? [];
-	if (!values.some((value) => value[0] === 拼音)) values.push([拼音]);
-	pronunciationMap.set(汉字, values);
-}
-
 const unencodedSyllables = new Set(["hng", "m", "n", "ng", "ê"]);
 const getSoundCode = (syllable: string) => {
 	if (unencodedSyllables.has(syllable.replace(/[1-5]$/, ""))) return null;
@@ -281,8 +273,10 @@ function codeBelongsToSection(file: string, section: string, code: string) {
 	return false;
 }
 
-const sanpinLetterCandidates = new Map(sanpinLetterEntries);
-const sanpinTemporaryNumberCandidates = new Map(sanpinTemporaryNumberEntries);
+const sanpinLetterCandidates = new Map<string, string>(sanpinLetterEntries);
+const sanpinTemporaryNumberCandidates = new Map<string, string>(
+	sanpinTemporaryNumberEntries,
+);
 
 function isSupplementalCandidate(
 	file: string,

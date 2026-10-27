@@ -1,14 +1,17 @@
 -- 输入统计处理器与翻译器
 --
+-- 命令字母：tj＝统计；r＝日、z＝周、y＝月、n＝年、q＝全部；f＝分列、h＝合并。
 -- 用法（前缀为方案的 lua/input）：
---   tj   本机、本方案的今日、本周、本月、本年、累计统计，每个时段一个候选
---   rtj、ztj、ytj、ntj、qtj  只看今日、本周、本月、本年、累计中的一项
---   tjq  所有设备合并的统计（其他设备的数据经 Rime 同步后才会出现），也可以只看一项，如 rtjq
---   tjs  每个时段列出有数据的各设备，也可以只看一项，如 rtjs
+--   tj 首选为统计功能说明，后面是本机、本方案的今日、本周、本月、本年、全部统计
+--   tjr、tjz、tjy、tjn、tjq 只看今日、本周、本月、本年、全部中的一项
+--   tjr-1 昨天；tjz-1 上周；tjy-1 上个月；tjn-1 去年
+--   tj20261026、tj202610、tj2026、tj2026w44 指定日期、月份、年份、周
+--   tjf 所有设备分列的统计，如 tjf2026
+--   tjh 所有设备合并的统计，如 tjhr-1
 -- 统计命令本身上屏时不记；方案的 statistics/exclude 可以再列出一些正则，上屏时整个输入（context.input）
 -- 与其中任一个完全匹配就不记，例如 [ "o.*" ] 屏蔽所有 o 引导的输入。
 -- 设备按 installation.yaml 的 installation_id 区分，可改成 macbook、phone 等易读的名字，
--- 但改名后旧数据仍记在旧名字下。用户目录下没有 installation.yaml 或其中没有 installation_id 时统计不工作。
+-- 但改名后旧数据仍记在旧名字下。用户目录下没有 installation.yaml 或其中没有 installation_id 时只显示功能说明。
 -- 数据存在用户目录下的 snow_statistics.userdb，Rime 同步时会和用户词典一样导出为 snow_statistics.userdb.txt。
 --
 -- 各量的含义：
@@ -108,14 +111,23 @@ local function ratio(numerator, denominator)
   return (denominator or 0) > 0 and (numerator or 0) / denominator or 0
 end
 
---- 统计命令（如 otj、rtjq）的时段字母和命令字母，不是统计命令时返回 nil
+--- 统计命令（如 otj、otjhr-1）的设备标记和时段，不是统计命令时返回 nil
 ---@param input string
 ---@param prompt string
 local function parse_command(input, prompt)
   if input:sub(1, #prompt) ~= prompt then
     return nil
   end
-  return input:sub(#prompt + 1):match("^([rzynq]?)tj([qs]?)$")
+  local command, period = input:sub(#prompt + 1):match("^tj([hf]?)(.*)$")
+  if not command then
+    return nil
+  end
+  if period == "" or period:match("^[rzynq]$") or period:match("^[rzyn]%-%d+$")
+    or ((#period == 4 or #period == 6 or #period == 8) and period:match("^%d+$"))
+    or period:match("^%d%d%d%dw%d%d$") then
+    return command, period
+  end
+  return nil
 end
 
 --- 上屏时的输入是统计命令，或者与 statistics/exclude 中任一个正则完全匹配
@@ -321,6 +333,10 @@ end
 ---@param key_event KeyEvent
 ---@param env StatisticsEnv
 function processor.func(key_event, env)
+  -- 没有统计库时不积累按键，也无需接管并击的最后一次松开
+  if not env.db then
+    return snow.kNoop
+  end
   -- popping 重投的按键已经记过一次
   if snow.redispatching then
     return snow.kNoop
@@ -399,7 +415,7 @@ function translator.init(env)
       return
     end
     local genuine = cand:get_genuine()
-    local full = env.reports[genuine.text]
+    local full = genuine.type == "statistics" and env.reports[genuine.text]
     if full then
       genuine.text = full
     end
@@ -515,10 +531,10 @@ end
 
 ---@param env StatisticsEnv
 ---@param segment Segment
----@param title string 时段，如「2026 年 10 月 10 日」
+---@param title string 时段，如「10 月 10 日」
 ---@param s table<string, integer>
 ---@param installation string|nil 统计所属的安装，nil 表示所有设备合并
----@param per_device boolean 是否为 tjs 类命令，是则显示设备行，并在候选里写设备名；所有设备合并时设备行显示「全部」
+---@param per_device boolean 是否为 tjf 类命令，是则显示设备行，并在候选里写设备名；所有设备合并时设备行显示「全部」
 local function report(env, segment, title, s, installation, per_device)
   local words, chars, effective_keys, word, code = summarize(s)
   local keys, duration = s.keys or 0, s.duration or 0
@@ -533,7 +549,7 @@ local function report(env, segment, title, s, installation, per_device)
   elseif per_device then
     local name = device(env, installation)
     table.insert(lines, "💻 设备：" .. name)
-    -- uniquifier 只按文字合并候选，tjs 里同一时段的各设备不能只靠注释区分
+    -- uniquifier 只按文字合并候选，tjf 里同一时段的各设备不能只靠注释区分
     brief = brief .. " · " .. name
   end
   -- 库里只记了安装，没记平台，所以只有本机的统计能显示平台
@@ -565,84 +581,176 @@ local function report(env, segment, title, s, installation, per_device)
   table.insert(lines, divider)
   table.insert(lines, "❄️ 冰雪统计 v" .. snow.version)
   table.insert(lines, "💬 冰雪拼音 QQ 群 1014366669")
-  env.reports[brief] = table.concat(lines, "\n")
+  env.reports[brief] = table.concat(lines, "\r\n")
   yield(Candidate("statistics", segment.start, segment._end, brief, ""))
 end
 
----@param t osdate
-local function date(t)
-  return ("%d 年 %d 月 %d 日"):format(t.year, t.month, t.day)
+---@param env StatisticsEnv
+---@param segment Segment
+local function help(env, segment)
+  local brief = "📖 统计功能说明"
+  local command = env.prompt .. "tj"
+  local lines = {
+    "📖 冰雪输入统计使用说明",
+    "基本使用：输入 " .. command .. "，首选为本说明，后面依次是本机当前方案的今日、本周、本月、本年、全部统计。",
+    "当前时段：在命令最后加 r（日）、z（周）、y（月）、n（年）、q（全部）。例如 " .. command .. "r 查看今日，" .. command .. "q 查看全部。",
+    "相对时段：在 r、z、y、n 后减去整数。例如 " .. command .. "r-1 是昨天，" .. command .. "z-1 是上周，" .. command .. "y-1 是上个月，" .. command .. "n-1 是去年。",
+    "绝对时段：" .. command .. "20261026 查某日，" .. command .. "2026w44 查某周，" .. command .. "202610 查某月，" .. command .. "2026 查某年。",
+    "选择设备：默认只看本机；" .. command .. "f 分列有数据的设备，" .. command .. "h 合并所有设备。f 或 h 写在时段前，例如 " .. command .. "fr-1 查各设备昨天，" .. command .. "h2026 查合并后的 2026 年。",
+    "其他设备的数据需要先通过 Rime 同步，才会出现在本机的分列和合并报告中。",
+  }
+  if env.schema_id == "snow_yipin" then
+    table.insert(lines, 2, "冰雪一拼可并击 jkl 输入 " .. command .. "。")
+  end
+  env.reports[brief] = table.concat(lines, "\r\n")
+  yield(Candidate("statistics", segment.start, segment._end, brief, ""))
 end
 
--- tj 本机，tjq 全部安装合并，tjs 各安装分列；tj 前加 r、z、y、n、q 只看一个时段
+--- 用正午做日历运算，跨夏令时边界时仍落在目标日期
+---@param year integer
+---@param month integer
+---@param day integer
+local function calendar(year, month, day)
+  if year < 1 or year > 9999 then
+    return nil
+  end
+  local ok, timestamp = pcall(os.time, { year = year, month = month, day = day, hour = 12 })
+  if ok and timestamp then
+    local result = os.date("*t", timestamp)
+    ---@cast result osdate
+    if result.year >= 1 and result.year <= 9999 then
+      return result
+    end
+  end
+end
+
+---@param t osdate
+local function date_key(t)
+  return ("%04d%02d%02d"):format(t.year, t.month, t.day)
+end
+
+--- 把一个时段解析为标题和用于查库的日期前缀；不存在的绝对日期、周及超出范围的位移不产生候选
+---@param period string
+---@param now osdate
+local function period_data(period, now)
+  if period == "q" then
+    return "有史以来", { "" }
+  end
+  local kind, offset = period:match("^([rzyn])(%-%d+)$")
+  kind = kind or period:match("^[rzyn]$")
+  local shift = tonumber(offset) or 0
+  if math.abs(shift) > 9999 then
+    return nil
+  end
+  local absolute = not kind
+  local year, month, day = now.year, now.month, now.day
+  if absolute then
+    year = tonumber(period:sub(1, 4)) --[[@as integer]]
+    if #period == 8 then
+      kind = "r"
+      month = tonumber(period:sub(5, 6)) --[[@as integer]]
+      day = tonumber(period:sub(7, 8)) --[[@as integer]]
+    elseif #period == 6 then
+      kind = "y"
+      month = tonumber(period:sub(5, 6)) --[[@as integer]]
+    elseif #period == 4 then
+      kind = "n"
+    else
+      kind = "z"
+    end
+  end
+  if kind == "z" then
+    ---@type osdate|nil
+    local anchor = now
+    if absolute then
+      anchor = calendar(year, 1, 4)
+    end
+    local weeks = absolute and tonumber(period:sub(6, 7)) or shift
+    if not anchor or not weeks or absolute and (weeks < 1 or weeks > 53) then
+      return nil
+    end
+    local monday = calendar(anchor.year, anchor.month, anchor.day - (anchor.wday + 5) % 7
+      + (absolute and weeks - 1 or weeks) * 7)
+    if not monday then
+      return nil
+    end
+    local thursday = calendar(monday.year, monday.month, monday.day + 3)
+    if not thursday or absolute and thursday.year ~= year then
+      return nil
+    end
+    local prefixes = {}
+    for i = 0, 6 do
+      local t = calendar(monday.year, monday.month, monday.day + i)
+      if not t then
+        return nil
+      end
+      table.insert(prefixes, date_key(t))
+    end
+    return ("%d 周"):format((thursday.yday - 1) // 7 + 1), prefixes
+  end
+  if kind == "r" then
+    local target = calendar(year, month, day + shift)
+    if target and (not absolute or date_key(target) == period) then
+      return ("%d 月 %d 日"):format(target.month, target.day), { date_key(target) }
+    end
+  elseif kind == "y" then
+    local target = calendar(year, month + shift, 1)
+    if target and (not absolute or date_key(target):sub(1, 6) == period) then
+      return ("%d 月"):format(target.month), { date_key(target):sub(1, 6) }
+    end
+  elseif kind == "n" then
+    year = year + shift
+    if year >= 1 and year <= 9999 then
+      return ("%d 年"):format(year), { ("%04d"):format(year) }
+    end
+  end
+  return nil
+end
+
+-- tj 本机，tjh 全部安装合并，tjf 各安装分列；末尾可指定相对或绝对时段
 ---@param input string
 ---@param segment Segment
 ---@param env StatisticsEnv
 function translator.func(input, segment, env)
-  local period, command = parse_command(input, env.prompt)
-  if not env.db or not period then
+  env.reports = {}
+  local command, period = parse_command(input, env.prompt)
+  if not command then
+    return
+  end
+  if command == "" and period == "" then
+    help(env, segment)
+  end
+  if not env.db then
     return
   end
   local now = os.date("*t")
   ---@cast now osdate
-  local today = os.date("%Y%m%d")
-  ---@cast today string
-  --- i 天前的正午
-  ---@param i integer
-  local function ago(i)
-    return os.time({ year = now.year, month = now.month, day = now.day - i, hour = 12 })
-  end
-  -- 本周从周一算起
-  local offset = (now.wday + 5) % 7
-  ---@type string[]
-  local week = {}
-  for i = 0, offset do
-    table.insert(week, os.date("%Y%m%d", ago(i)))
-  end
-  -- ISO 8601 周：本周所在的年和周数都按本周的周四算，所以年初几天可能属于上一年的最后一周。
-  -- 不用 os.date 的 %G、%V，因为 Windows 上的 Lua 只支持 C89 的格式符
-  local thursday = os.date("*t", ago(offset - 3))
-  ---@cast thursday osdate
-  local week_title = ("%d 年 %d 周"):format(thursday.year, (thursday.yday - 1) // 7 + 1)
-  -- 命令字母、日期范围和日期前缀，空前缀匹配所有日期
-  local periods = {
-    { "r", date(now), { today } },
-    { "z", week_title, week },
-    { "y", ("%d 年 %d 月"):format(now.year, now.month), { today:sub(1, 6) } },
-    { "n", ("%d 年"):format(now.year), { today:sub(1, 4) } },
-    { "q", "截至 " .. date(now) .. "累计", { "" } },
-  }
-  -- 选中的时段，每项为标题、「安装 → 统计」和合计
-  ---@type { title: string, data: table<string, table<string, integer>>, total: table<string, integer> }[]
-  local selected = {}
+  local periods = period == "" and { "r", "z", "y", "n", "q" } or { period }
   for _, p in ipairs(periods) do
-    if period == "" or period == p[1] then
-      local data, total = collect(env, p[3])
-      table.insert(selected, { title = p[2], data = data, total = total })
-    end
-  end
-  env.reports = {}
-  for _, t in ipairs(selected) do
-    if command == "s" then
-      -- 每个时段列出该时段里有数据的安装，本机在前，其余按名字排
-      ---@type string[]
-      local installations = {}
-      for installation in pairs(t.data) do
-        table.insert(installations, installation)
-      end
-      table.sort(installations, function(a, b)
-        if (a == env.installation) ~= (b == env.installation) then
-          return a == env.installation
+    local title, prefixes = period_data(p, now)
+    if title and prefixes then
+      local data, total = collect(env, prefixes)
+      if command == "f" then
+        -- 每个时段列出该时段里有数据的安装，本机在前，其余按名字排
+        ---@type string[]
+        local installations = {}
+        for installation in pairs(data) do
+          table.insert(installations, installation)
         end
-        return a < b
-      end)
-      for _, installation in ipairs(installations) do
-        report(env, segment, t.title, t.data[installation], installation, true)
+        table.sort(installations, function(a, b)
+          if (a == env.installation) ~= (b == env.installation) then
+            return a == env.installation
+          end
+          return a < b
+        end)
+        for _, installation in ipairs(installations) do
+          report(env, segment, title, data[installation], installation, true)
+        end
+      elseif command == "h" then
+        report(env, segment, title, total, nil, false)
+      else
+        report(env, segment, title, data[env.installation] or {}, env.installation, false)
       end
-    elseif command == "q" then
-      report(env, segment, t.title, t.total, nil, false)
-    else
-      report(env, segment, t.title, t.data[env.installation] or {}, env.installation, false)
     end
   end
 end

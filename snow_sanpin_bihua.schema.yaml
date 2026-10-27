@@ -1,18 +1,16 @@
 # Rime schema
 # encoding: utf-8
 
-__include: stroke.schema.yaml:/
+__include: snow_bihua.schema.yaml:/
 
 schema:
   schema_id: snow_sanpin_bihua
   name: 冰雪三拼笔画
-  version: "0.4"
+  version: "0.3.12"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     用 ivuao 输入笔画，用于三拼反查
-  dependencies:
-    - stroke
 
 __patch:
   - patch
@@ -21,5 +19,10 @@ __patch:
 patch:
   speller/alphabet: aiouv
   speller/algebra:
-    - xlit/hspnz/ivuao/
+    - xform/[A-Z]+$//
+    - xlit/12345/ivuao/
   translator/prism: snow_sanpin_bihua
+  translator/preedit_format: [xlit/ivuao/一丨丿丶乙/]
+  translator/comment_format:
+    - xform/[A-Z]+$//
+    - xlit/12345/ivuao/

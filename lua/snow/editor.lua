@@ -66,7 +66,7 @@ function processor.func(key_event, env)
   -- 如果补码后不到 4 码，则返回当前的位置，使得补码后的输入可以继续匹配词语；
   -- 如果补码后已有 4 码，则不返回，相当于进入单字模式
   if first_char_code_len < 4 then
-    context.caret_pos = previous_caret_pos + 1
+    context.caret_pos = previous_caret_pos + (key_event.keycode == snow.kBackSpace and -1 or 1)
   end
   return snow.kAccepted
 end

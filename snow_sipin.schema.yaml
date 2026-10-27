@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_sipin
   name: 冰雪四拼
-  version: "0.3.11"
+  version: "0.3.12"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
@@ -51,10 +51,12 @@ engine:
     - lua_translator@*snow.datetime
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
+    - lua_translator@*snow.unicode*translator
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history
   filters:
     - lua_filter@*snow.placeholder
+    - lua_filter@*snow.bihua
     - reverse_lookup_filter@lookup_pinyin
     - reverse_lookup_filter@lookup_sipin
     - lua_filter@*snow.fix
@@ -63,7 +65,7 @@ engine:
     - uniquifier
     - simplifier
     - lua_filter@*snow.special
-    - lua_filter@*snow.unicode
+    - lua_filter@*snow.unicode*filter
 
 sipin_algebra:
   # 无理音节
@@ -71,6 +73,7 @@ sipin_algebra:
   - derive/wu3/gu2/ # 五
   - derive/ri4/ri1/ # 日
   # 还原
+  - xform/(^| )r5(?= |$)/$1er5/ # 儿化轻声并入 er5，避免占用单键 r
   - xform/(^| )(h?)([mn]g?\d)/$1$2e$3/
   - xform/(^| )wu?/$1u/
   - xform/(^| )yu/$1ü/
@@ -144,8 +147,8 @@ speller:
     - match: ".*[^a-z0-9]"
       accept: "[bpmfdtnlgkhjqxzcsrywv]"
     # 标点大写顶
-    - match: ".*[a-z0-9;']"
-      accept: "[^a-z0-9;' ]"
+    - match: ".*[a-z0-9]"
+      accept: "[^a-z0-9 ]"
   algebra:
     __include: /sipin_algebra
     __append:

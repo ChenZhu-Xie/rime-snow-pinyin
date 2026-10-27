@@ -1,8 +1,12 @@
--- Unicode 过滤器
--- 为候选加上 Unicode 和分区信息
+-- Unicode 翻译器与过滤器
+-- 按十六进制码点输入字符，并为候选标注 Unicode 编码和分区
 
 local snow = require "snow.snow"
 
+---@class UnicodeEnv: Env
+---@field prompt string
+
+local translator = {}
 local filter = {}
 
 local unicode_blocks = {
@@ -132,13 +136,9 @@ local unicode_blocks = {
   },
 }
 
----@param segment Segment
----@param env Env
-function filter.tags_match(segment, env)
-  return env.engine.context:get_option("unicode")
-end
-
-function filter.get_block_name(codepoint)
+---@param codepoint integer
+---@return string
+local function get_block_name(codepoint)
   for _, block in ipairs(unicode_blocks) do
     if codepoint >= block.begin and codepoint <= block.finish then
       return block.name
@@ -147,17 +147,50 @@ function filter.get_block_name(codepoint)
   return "未知分区"
 end
 
+---@param env UnicodeEnv
+function translator.init(env)
+  env.prompt = env.engine.schema.config:get_string("lua/input") or "o"
+end
+
+---@param input string
+---@param segment Segment
+---@param env UnicodeEnv
+function translator.func(input, segment, env)
+  if input:sub(1, #env.prompt) ~= env.prompt then
+    return
+  end
+  local code = input:sub(#env.prompt + 1)
+  if #code > 6 or not code:find("^%x+$") then
+    return
+  end
+  local codepoint = tonumber(code, 16)
+  if not codepoint or codepoint > 0x10ffff or codepoint >= 0xd800 and codepoint <= 0xdfff then
+    return
+  end
+  local comment = (" U+%04X %s"):format(codepoint, get_block_name(codepoint))
+  yield(Candidate("unicode", segment.start, segment._end, utf8.char(codepoint), comment))
+end
+
+---@param segment Segment
+---@param env Env
+function filter.tags_match(segment, env)
+  return env.engine.context:get_option("unicode")
+end
+
 ---@param translation Translation
 ---@param env Env
 function filter.func(translation, env)
   for candidate in translation:iter() do
     local codepoint = utf8.codepoint(candidate.text)
-    if utf8.len(candidate.text) == 1 and codepoint and codepoint >= 0x80 then
-      local block_name = filter.get_block_name(codepoint)
+    if candidate.type ~= "unicode" and utf8.len(candidate.text) == 1 and codepoint and codepoint >= 0x80 then
+      local block_name = get_block_name(codepoint)
       snow.comment(candidate, ("%04X %s"):format(codepoint, block_name))
     end
     yield(candidate)
   end
 end
 
-return filter
+return {
+  translator = translator,
+  filter = filter,
+}

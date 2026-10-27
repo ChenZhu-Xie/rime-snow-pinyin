@@ -1,6 +1,5 @@
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 import { load } from "js-yaml";
-import { convert } from "pinyin-pro";
 
 interface Replace {
 	from: RegExp;
@@ -15,12 +14,23 @@ export class SpellingAlgebra {
 	constructor(schema: string, key: string, options: { derive?: boolean } = {}) {
 		const { derive = true } = options;
 		const content = readFileSync(schema, "utf8");
-		const yaml = load(content) as Record<string, any>;
-		const rules: string[] = yaml[key];
+		const yaml = load(content);
+		if (!yaml || typeof yaml !== "object") {
+			throw new Error(`方案文件格式错误：${schema}`);
+		}
+		const rules = (yaml as Record<string, unknown>)[key];
+		if (
+			!Array.isArray(rules) ||
+			!rules.every((rule) => typeof rule === "string")
+		) {
+			throw new Error(`拼写规则格式错误：${key}`);
+		}
 		const parsed: Replace[] = [];
 		rules.forEach((rule) => {
 			const trimmed = rule.trim();
-			const ruleParts = trimmed.split(trimmed.at(-1)!);
+			const separator = trimmed.at(-1);
+			if (!separator) return;
+			const ruleParts = trimmed.split(separator);
 			if (ruleParts[0] === "derive" && !derive) return;
 			if (ruleParts[0] === "xform" || ruleParts[0] === "derive") {
 				parsed.push({
@@ -38,7 +48,6 @@ export class SpellingAlgebra {
 				});
 			}
 		});
-		// parsed.push({ from: /^([a-z]{3})$/g, to: "$1o" });
 		this.rules = parsed;
 	}
 
@@ -49,35 +58,4 @@ export class SpellingAlgebra {
 		}
 		return final;
 	}
-}
-
-export function 获取大字集拼音(path = "pinyin-data/pinyin.txt") {
-	const 原始数据 = readFileSync(path, "utf-8").trim().split("\n");
-	const 处理结果: { 汉字: string; 拼音: string }[] = [];
-	const 特殊处理: Record<string, string> = {
-		m̄: "m1",
-		hm: "hm5",
-		ê̄: "ê1",
-		ế: "ê2",
-		ê̌: "ê3",
-		ề: "ê4",
-	};
-
-	for (const line of 原始数据) {
-		if (line.startsWith("#")) continue;
-		const [code_str, pinyins] = line.split("#")[0]!.split(":");
-		const 编码 = parseInt(code_str.trim().slice(2), 16);
-		const 拼音列表 = pinyins.trim().split(",");
-		const 汉字 = String.fromCodePoint(编码);
-		for (const 原始拼音 of 拼音列表) {
-			const 拼音 =
-				特殊处理[原始拼音] ??
-				convert(原始拼音, { format: "symbolToNum" })
-					.replace("ü", "v")
-					.replace("0", "5");
-			处理结果.push({ 汉字, 拼音 });
-		}
-	}
-
-	return 处理结果;
 }

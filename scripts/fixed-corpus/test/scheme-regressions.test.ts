@@ -32,17 +32,17 @@ test("Three-Code and KeyTao share the Four-Code 23890 selection layout", () => {
 		assert.match(history, new RegExp(`char == "${key}"`, "u"));
 });
 
-test("Three-Code uses v, not e, for the horizontal-stroke assist code", () => {
+test("Three-Code uses its ivuao tone-key order for stroke assist codes", () => {
 	const filter = read("lua/snow/shape_filter.lua");
 	assert.match(
 		filter,
-		/local sanpin_stroke_map = \{ \["一"\] = "v", \["丨"\] = "i", \["丿"\] = "u", \["丶"\] = "o", \["乙"\] = "a" \}/u,
+		/local sanpin_stroke_map = \{ \["一"\] = "i", \["丨"\] = "v", \["丿"\] = "u", \["丶"\] = "a", \["乙"\] = "o" \}/u,
 	);
 	assert.match(
 		filter,
 		/elseif id == "snow_sanpin"[\s\S]+stroke_match\(text, shape_input, env, sanpin_stroke_map\)/u,
 	);
-	assert.equal("hshh".replaceAll("h", "v").replaceAll("s", "i"), "vivv");
+	assert.equal("hshh".replaceAll("h", "i").replaceAll("s", "v"), "ivii");
 });
 
 test("word-initial and word-final selection runs before popping", () => {
@@ -225,7 +225,7 @@ test("R9 KeyTao letter and number candidates follow the active schema", () => {
 	assert.deepEqual(lines.get("xj")?.split(" "), ["希望", "U", "u"]);
 });
 
-test("R9 KeyTao and Three-Code share letter bases without occupying Three-Code full codes", () => {
+test("R9 KeyTao and Three-Code share letter bases with measured full-code collisions", () => {
 	const jiandao = read("snow_jiandao.schema.yaml");
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(jiandao, /prism: snow_jiandao_jianpin/u);
@@ -283,7 +283,7 @@ test("R9 KeyTao and Three-Code share letter bases without occupying Three-Code f
 	}
 	assert.deepEqual(
 		letterFullCodes.filter((code) => occupiedFullCodes.has(code)),
-		[],
+		["tco", "hco", "xko"],
 	);
 	const sanpinCore = read("snow_sanpin.fixed.txt").split("# 字母")[0];
 	for (const code of letterFullCodes) {

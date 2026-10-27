@@ -1,22 +1,22 @@
+import { execFileSync } from "node:child_process";
 import {
 	cpSync,
 	existsSync,
 	lstatSync,
 	mkdirSync,
+	mkdtempSync,
 	readdirSync,
 	readFileSync,
 	readlinkSync,
+	renameSync,
 	rmSync,
 	symlinkSync,
 	unlinkSync,
 } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join, resolve, sep } from "node:path";
-import { fileURLToPath } from "node:url";
 import { Glob } from "bun";
-
-// 仓库根目录由本文件位置推出，因此不依赖运行时的工作目录
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+import { ROOT } from "./lib/paths";
 
 // fcitx5 固定读取的 Rime 用户目录
 const USER_DIR = join(homedir(), ".local", "share", "fcitx5", "rime");
@@ -31,6 +31,7 @@ const HAMSTER_DIR = join(
 	"RimeUserData",
 	"rime-snow-pinyin",
 );
+const HAMSTER_SYNC_DIR = join(dirname(dirname(HAMSTER_DIR)), "sync");
 
 // 使用 glob 模式匹配文件，支持星号通配符
 // * 匹配任意字符（不跨路径分隔符），** 匹配任意字符（可跨路径分隔符）
@@ -137,19 +138,21 @@ function unlink() {
 // 单向镜像到仓输入法的目录：仓库为准，只复制内容有变化的文件，以免 iCloud 重复上传大词典
 function sync() {
 	if (!existsSync(dirname(HAMSTER_DIR))) {
-		console.error(`找不到 ${dirname(HAMSTER_DIR)}，先在手机上打开仓输入法的 iCloud 同步`);
+		console.error(
+			`找不到 ${dirname(HAMSTER_DIR)}，先在手机上打开仓输入法的 iCloud 同步`,
+		);
 		process.exit(1);
 	}
 	// Bun 的花括号里不能带路径分隔符，lua/snow 单独一个 glob
-	const managed = [new Glob(`{${FILE_PATTERNS.join(",")}}`), new Glob("lua/snow/**")];
-	const scan = (dir: string) => managed.flatMap((glob) => [...glob.scanSync(dir)]);
+	const managed = [
+		new Glob(`{${FILE_PATTERNS.join(",")}}`),
+		new Glob("lua/snow/**"),
+	];
+	const scan = (dir: string) =>
+		managed.flatMap((glob) => [...glob.scanSync(dir)]);
 	// 目标目录里的相对路径 → 仓库里的源文件
 	const files = new Map<string, string>();
 	for (const file of scan(ROOT)) files.set(file, join(ROOT, file));
-	// 笔画反查依赖，fcitx5 那边由别处提供，手机上没有
-	for (const name of ["stroke.dict.yaml", "stroke.schema.yaml"]) {
-		files.set(name, join(ROOT, "rime-stroke", name));
-	}
 	let copied = 0;
 	for (const [file, src] of [...files].sort()) {
 		const dest = join(HAMSTER_DIR, file);
@@ -172,6 +175,21 @@ function sync() {
 	console.log(
 		`已同步到 ${HAMSTER_DIR}：更新 ${copied} 项，清理 ${removed} 项，共 ${files.size} 项`,
 	);
+	// 每次新建压缩包，避免旧包残留已删除的文件；成功后再替换。
+	mkdirSync(HAMSTER_SYNC_DIR, { recursive: true });
+	const temporary = mkdtempSync(join(HAMSTER_SYNC_DIR, ".snow-"));
+	const archive = join(HAMSTER_SYNC_DIR, "rime-snow-pinyin.zip");
+	try {
+		const output = join(temporary, "rime-snow-pinyin.zip");
+		execFileSync("zip", ["-qX", output, ...[...files.keys()].sort()], {
+			cwd: HAMSTER_DIR,
+			stdio: "pipe",
+		});
+		renameSync(output, archive);
+	} finally {
+		rmSync(temporary, { recursive: true, force: true });
+	}
+	console.log(`已生成压缩包 ${archive}`);
 }
 
 const args = process.argv.slice(2);

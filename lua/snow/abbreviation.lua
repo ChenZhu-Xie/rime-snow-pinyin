@@ -24,6 +24,10 @@ local partial_lookup = {
 ---@param env Env
 function processor.func(key_event, env)
   local context = env.engine.context
+  local segment = context.composition:toSegmentation():back()
+  if not segment or not segment:has_tag("abc") then
+    return snow.kNoop
+  end
   local selection = context:get_selected_candidate()
   if not selection then
     return snow.kNoop
