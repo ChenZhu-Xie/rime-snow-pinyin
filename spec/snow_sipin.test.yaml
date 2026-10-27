@@ -236,6 +236,25 @@ deploy:
       # Lua 脚本：数字转中文数字
       - send: o123
         assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Unicode 码点：十六进制不区分大小写，支持基本平面以外的字符
+      - send: o4e00
+        assert: cand[1].text == "一" and cand[1].comment:find("U+4E00 CJK", 1, true) ~= nil
+      - send: o4E00
+        assert: cand[1].text == "一"
+      - send: o20000
+        assert: has("𠀀") and cand[rank("𠀀")].comment:find("CJK-B", 1, true) ~= nil
+      - send: o1f600
+        assert: cand[1].text == "😀"
+      # 纯数字输入仍保留数字翻译的首选，同时提供对应的 Unicode 字符
+      - send: o41
+        assert: cand[1].text == "四十一" and has("A")
+      # 代理码点、超出 Unicode 范围及非法十六进制不产生字符候选
+      - send: od800
+        assert: not has(utf8.char(0xd800))
+      - send: o110000
+        assert: not has(utf8.char(0x110000))
+      - send: o4e00g
+        assert: not has("一")
       # Lua 脚本：计算表达式
       - send: o1234*5678
         assert: has("7006652")
@@ -246,6 +265,23 @@ deploy:
         assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
+      # 输入统计：相对日期、绝对日期与年份、ISO 周和全部设备
+      - send: otj
+        assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
+      - send: 'otj '
+        assert: commit:match("^📖 冰雪输入统计使用说明") ~= nil and commit:find("otjr-1", 1, true) ~= nil and commit:find("选择设备", 1, true) ~= nil and commit:find("均速", 1, true) == nil
+      - send: otjr-1
+        assert: cand[1].text:match("^📊 %d+ 月 %d+ 日$") ~= nil
+      - send: otjr+1
+        assert: cand[1] == nil or cand[1].text:match("^📊 ") == nil
+      - send: otj20261026
+        assert: cand[1].text == "📊 10 月 26 日"
+      - send: otj2026
+        assert: cand[1].text == "📊 2026 年"
+      - send: otj2026w44
+        assert: cand[1].text == "📊 44 周"
+      - send: otjhq
+        assert: cand[1].text == "📊 有史以来"
       # 略码：完整重复，一字词用 `[`
       - send: "yi["
         assert: commit == "吃吃"

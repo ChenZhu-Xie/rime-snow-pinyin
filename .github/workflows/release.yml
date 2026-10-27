@@ -19,6 +19,14 @@ jobs:
       - name: 打包用户安装包
         run: |
           zip -r snow-pinyin.zip snow_* lua
+      - name: 安装 Bun
+        uses: oven-sh/setup-bun@v2
+      - name: 安装皮肤生成依赖
+        run: bun install --cwd scripts --frozen-lockfile
+      - name: 生成并打包皮肤
+        run: |
+          bun scripts/generate-skins.ts skins
+          zip -r snow-pinyin-skins.zip skins
       - name: 预览安装包去掉腾讯词库和笔画
         run: |
           # rime-prelude 自带 default.yaml，仓库的 default.yaml 会被部署器当作过时副本移进 trash/

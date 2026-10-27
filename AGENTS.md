@@ -247,8 +247,9 @@ bun scripts/test.ts
     - script_translator@pinyin            # 冰雪一拼无
     - lua_translator@*snow.datetime       # 冰雪一拼无
     - lua_translator@*snow.statistics*translator
-    - lua_translator@*snow.number         # 以下冰雪一拼均无
-    - lua_translator@*snow.calculator
+    - lua_translator@*snow.number         # 冰雪一拼无
+    - lua_translator@*snow.unicode*translator
+    - lua_translator@*snow.calculator     # 以下冰雪一拼均无
     - history_translator
 
   filters:
@@ -263,7 +264,7 @@ bun scripts/test.ts
     - uniquifier                          # 冰雪清韵无
     - simplifier                          # 冰雪清韵无
     - lua_filter@*snow.hint               # 冰雪四拼用 *snow.special；冰雪一拼、冰雪清韵无
-    - lua_filter@*snow.unicode
+    - lua_filter@*snow.unicode*filter
 ```
 
 **改 preedit 的 filter 必须排在 `uniquifier` 之前**（如 `shape_filter` 的辅助码提示）：合并后的 `UniquifiedCandidate::preedit()` 恒返回首个被合并候选的 preedit，写在包装器上的会被丢弃。`comment` 不受影响。

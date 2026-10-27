@@ -1,6 +1,6 @@
-import { addDict, customPinyin, pinyin, convert } from "pinyin-pro";
-import CompleteDict from "@pinyin-pro/data/complete.json";
 import { readFileSync } from "node:fs";
+import CompleteDict from "@pinyin-pro/data/complete.json";
+import { addDict, convert, customPinyin, pinyin } from "pinyin-pro";
 import { readCharacterDictionary } from "./dictionary";
 import { dataPath } from "./paths";
 
@@ -13,7 +13,7 @@ function applyDiff(cdict: Map<string, string[]>) {
 		const ref = pinyin(word, { multiple: true, nonZh: "removed" });
 		const refList = ref.split(" ");
 		const getIndex = (p: string) => {
-			let index = refList.indexOf(p);
+			const index = refList.indexOf(p);
 			return index === -1 ? 100 : index;
 		};
 		pinyinList.sort((a, b) => getIndex(a) - getIndex(b));
@@ -49,11 +49,8 @@ function fixDictEntry(
 		const syllableWithoutTone = syllableNum.replace(/\d/g, "");
 		if (possible.includes(syllableNum)) return syllable;
 		if (possible.length === 1) return convert(possible[0]);
-		if (
-			possible.filter((p) => p.startsWith(syllableWithoutTone)).length === 1
-		) {
-			return convert(possible.find((p) => p.startsWith(syllableWithoutTone))!);
-		}
+		const matching = possible.filter((p) => p.startsWith(syllableWithoutTone));
+		if (matching.length === 1) return convert(matching[0]);
 		resolved = false;
 		return syllable;
 	});

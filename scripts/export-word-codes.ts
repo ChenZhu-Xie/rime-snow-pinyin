@@ -1,20 +1,20 @@
 // 本程序基于拼写规则和固顶词码表来模拟实际输入时的动态码长
 // 生成的码表可以用于评测和大竹查询
 
-import { readFileSync, writeFileSync } from "node:fs";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { rootPath } from "./lib/paths";
-import { readDictionary } from "./lib/dictionary";
 import { SpellingAlgebra } from "./lib/algebra";
+import { readDictionary } from "./lib/dictionary";
+import { rootPath } from "./lib/paths";
 
 function 获取固顶词(file: string) {
 	const fixed = readFileSync(file, "utf8").trim().split("\n");
 	const fixedMap = new Map<string, string>();
 	for (const line of fixed) {
 		if (line.startsWith("#")) continue;
-		let [code, words] = line.split("\t");
-		fixedMap.set(code, words.split(" ")[0]!);
+		const [code, words] = line.split("\t");
+		const firstWord = words?.split(" ")[0];
+		if (firstWord) fixedMap.set(code, firstWord);
 	}
 	return fixedMap;
 }
@@ -34,7 +34,7 @@ function 获取拼音词典() {
 		}[] = [];
 		for (const [word, reading, weight_s] of list) {
 			if (/^[a-zA-Z0-9]/.test(word)) continue;
-			const weight = parseInt(weight_s ?? "0");
+			const weight = parseInt(weight_s ?? "0", 10);
 			info.push({ word, reading, weight, importance: 0 });
 			wordTotalWeight.set(word, (wordTotalWeight.get(word) ?? 0) + weight);
 		}
@@ -46,7 +46,8 @@ function 获取拼音词典() {
 		.slice(0, maxMultiple);
 	const all = single.concat(multiple);
 	all.forEach((x) => {
-		x.importance = x.weight / wordTotalWeight.get(x.word)!;
+		const totalWeight = wordTotalWeight.get(x.word);
+		if (totalWeight !== undefined) x.importance = x.weight / totalWeight;
 	});
 	return all;
 }
@@ -57,11 +58,16 @@ function 获取拼音词典() {
 function assemble(syllables: string[], algebra: SpellingAlgebra) {
 	const transformed = syllables.map((x) => algebra.apply(x));
 	if (transformed.length === 1) return transformed[0];
+	const first = transformed[0];
+	const last = transformed.at(-1);
+	if (first === undefined || last === undefined) {
+		throw new Error("词典读音为空");
+	}
 	let base = transformed
 		.map((x, i) => (useCapital && i >= 4 ? x[0].toUpperCase() : x[0]))
 		.join("");
-	base += transformed.at(-1)!.slice(1, 3);
-	base += transformed[0]!.slice(1, 3);
+	base += last.slice(1, 3);
+	base += first.slice(1, 3);
 	return base;
 }
 
@@ -74,7 +80,7 @@ function simulate() {
 		"sipin_algebra",
 	);
 	const finalize = (s: string) =>
-		/^[bpmfdtnlgkhjqxzcsrwyv]{1,3}$/.test(s) ? s + "_" : s;
+		/^[bpmfdtnlgkhjqxzcsrwyv]{1,3}$/.test(s) ? `${s}_` : s;
 	const encoded: { word: string; code: string; importance: number }[] = [];
 	for (const { word, reading, importance } of codes) {
 		if (word === "的") {
@@ -86,7 +92,7 @@ function simulate() {
 		}
 		const syllables = reading.split(" ");
 		const full = assemble(syllables, rules);
-		let short: string | undefined = undefined;
+		let short: string | undefined;
 		for (let i = syllables.length; i < full.length; i++) {
 			const maybeShort = full.slice(0, i);
 			const maybeFixed = fixedMenu.get(maybeShort);
@@ -95,15 +101,11 @@ function simulate() {
 				if (maybeFixed === word) {
 					short = maybeShort;
 					break;
-				} else {
-					continue;
 				}
 			} else if (maybeMain === undefined || maybeMain === word) {
 				short = maybeShort;
 				mainMenu.set(maybeShort, word);
 				break;
-			} else {
-				continue;
 			}
 		}
 		const code = short ? finalize(short) : full;

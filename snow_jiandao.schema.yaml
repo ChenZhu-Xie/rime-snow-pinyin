@@ -51,6 +51,7 @@ engine:
     - lua_translator@*snow.datetime
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
+    - lua_translator@*snow.unicode*translator
     - lua_translator@*snow.calculator
     - history_translator
   filters:
@@ -65,7 +66,7 @@ engine:
     - uniquifier
     - simplifier
     - lua_filter@*snow.hint
-    - lua_filter@*snow.unicode
+    - lua_filter@*snow.unicode*filter
 
 speller:
   alphabet: bpmfdtnlgkhjqxzcsrwye

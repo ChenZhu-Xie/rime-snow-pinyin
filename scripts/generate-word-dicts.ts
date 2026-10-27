@@ -3,10 +3,10 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join, resolve as resolvePath } from "node:path";
 import { parseArgs } from "node:util";
 import matter from "gray-matter";
-import { VERSION } from "./version";
 import { readDictionary } from "./lib/dictionary";
 import { ROOT, rootPath } from "./lib/paths";
 import { getPinyin, initializePinyin } from "./lib/word-pinyin";
+import { VERSION } from "./version";
 
 function getIceFrequency() {
 	const frequency = new Map<string, [string, number][]>();
@@ -15,7 +15,7 @@ function getIceFrequency() {
 	)) {
 		frequency.set(
 			word,
-			(frequency.get(word) ?? []).concat([[pinyin, parseInt(freq)]]),
+			(frequency.get(word) ?? []).concat([[pinyin, parseInt(freq, 10)]]),
 		);
 	}
 	// sort the list in each entry
@@ -32,16 +32,19 @@ function resolve(
 	dict: Map<string, string[]>,
 ) {
 	let resolved = true;
-	let chars = [...word];
+	const chars = [...word];
 	const updatedList = ref_list.map((syllable, i) => {
 		const char = chars[i];
 		const simp = simp_list[i];
-		const possible = dict.get(char)!;
+		const possible = dict.get(char);
+		if (!possible) {
+			resolved = false;
+			return syllable;
+		}
 		if (syllable.startsWith(simp)) return syllable;
 		if (possible.length === 1) return possible[0];
-		if (possible.filter((p) => p.startsWith(simp)).length === 1) {
-			return possible.find((p) => p.startsWith(simp))!;
-		}
+		const matching = possible.filter((p) => p.startsWith(simp));
+		if (matching.length === 1) return matching[0];
 		resolved = false;
 		return syllable;
 	});

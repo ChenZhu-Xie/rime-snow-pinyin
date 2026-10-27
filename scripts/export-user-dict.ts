@@ -1,6 +1,7 @@
 // 从 Rime 用户词典快照导出按词频排序的词、编码和使用次数。
-import { parse } from "csv-parse/sync";
+
 import { readFileSync } from "node:fs";
+import { parse } from "csv-parse/sync";
 import { rootPath, writeOutput } from "./lib/paths";
 
 function main() {

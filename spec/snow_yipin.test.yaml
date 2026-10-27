@@ -18,6 +18,29 @@ script: |
     return rank(something) <= 6
   end
 deploy:
+  statistics:
+    tests:
+      - send: jkl{Release+j}{Release+k}{Release+l}
+        assert: cand[1].text == "📖 统计功能说明"
+      - send: jkl{Release+j}{Release+k}{Release+l}{space}{Release+space}
+        assert: commit:find("冰雪一拼可并击 jkl", 1, true) ~= nil
+      # 右手并击 jkl; 打出全部设备统计命令
+      - send: jkl;{Release+j}{Release+k}{Release+l}{Release+semicolon}
+        assert: cand[1].text:match("^📊 ") ~= nil
+      - send: '1'
+        assert: commit == "1"
+      # 并击 uio 分列已有数据的设备
+      - send: uio{Release+u}{Release+i}{Release+o}
+        assert: cand[1].text:match("^📊 .* · ") ~= nil
+  unicode:
+    tests:
+      # 并击 uio; 进入 Unicode 输入，字母用大写以避开并击
+      - send: uio;{Release+u}{Release+i}{Release+o}{Release+semicolon}4E00
+        assert: cand[1].text == "一"
+      - send: uio;{Release+u}{Release+i}{Release+o}{Release+semicolon}1F600
+        assert: cand[1].text == "😀"
+      - send: uio;{Release+u}{Release+i}{Release+o}{Release+semicolon}20000
+        assert: cand[1].text == "𠀀"
   syllable:
     tests:
       - send: zvio{Release+z}{Release+v}{Release+i}{Release+o}

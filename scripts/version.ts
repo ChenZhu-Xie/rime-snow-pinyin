@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { ROOT } from "./lib/paths";
 import { Glob } from "bun";
+import { ROOT } from "./lib/paths";
 
 // 版本号只写在 lua/snow/snow.lua 里，方案、词典的 version 和生成脚本都从这里取
 const LUA = join(ROOT, "lua", "snow", "snow.lua");

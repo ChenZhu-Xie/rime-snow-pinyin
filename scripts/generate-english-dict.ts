@@ -26,8 +26,9 @@ function parseEntries(content: string) {
 		const parts = line.split("\t");
 		if (parts.length < 2) continue;
 
-		const word = parts[0]!.toLowerCase();
-		const code = parts[1]!.toLowerCase();
+		const word = parts[0]?.toLowerCase();
+		const code = parts[1]?.toLowerCase();
+		if (!word || !code) continue;
 		if (!latinWord.test(word)) continue;
 
 		const weightText = parts[2];

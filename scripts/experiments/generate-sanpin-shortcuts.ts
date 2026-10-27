@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
-import { rootPath, writeOutput } from "../lib/paths";
 import { SpellingAlgebra } from "../lib/algebra";
+import { rootPath, writeOutput } from "../lib/paths";
 
 function main() {
 	const input = process.argv[2];

@@ -15,8 +15,8 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import { ROOT } from "./lib/paths";
 import { Glob } from "bun";
+import { ROOT } from "./lib/paths";
 
 // fcitx5 固定读取的 Rime 用户目录
 const USER_DIR = join(homedir(), ".local", "share", "fcitx5", "rime");

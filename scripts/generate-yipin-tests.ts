@@ -1,5 +1,5 @@
-import { parse } from "csv-parse/sync";
 import { readFileSync } from "node:fs";
+import { parse } from "csv-parse/sync";
 import { dump } from "js-yaml";
 import { dataPath, rootPath, writeOutput } from "./lib/paths";
 
@@ -184,9 +184,8 @@ ai1	HO
 		const 所有按键松开 = 所有按键.map((x) => `{Release+${lookup[x] ?? x}}`);
 		const send = 所有按键.concat(所有按键松开).join("");
 		const 不带调拼音 = 拼音.slice(0, 拼音.length - 1);
-		const 最终拼音 = 被合并的音节.has(不带调拼音)
-			? 拼音.replace(不带调拼音, 被合并的音节.get(不带调拼音)!)
-			: 拼音;
+		const 合并音节 = 被合并的音节.get(不带调拼音);
+		const 最终拼音 = 合并音节 ? 拼音.replace(不带调拼音, 合并音节) : 拼音;
 		const assert = `preedit == "${最终拼音}"`;
 		tests.push({ send, assert });
 	}

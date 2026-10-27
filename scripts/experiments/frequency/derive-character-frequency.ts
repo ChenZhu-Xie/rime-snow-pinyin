@@ -26,8 +26,9 @@ function main() {
 		});
 	for (const { word, frequency } of multiples) {
 		for (const char of [...word]) {
-			if (单字频率.has(char)) {
-				const 扣除后频率 = 单字频率.get(char)! - frequency;
+			const 原频 = 单字频率.get(char);
+			if (原频 !== undefined) {
+				const 扣除后频率 = 原频 - frequency;
 				if (扣除后频率 < 0)
 					console.log(`Negative frequency for ${char}: ${扣除后频率}`);
 				单字频率.set(char, 扣除后频率);

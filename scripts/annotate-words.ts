@@ -26,7 +26,7 @@ function main() {
 	);
 	writeOutput(
 		process.argv[3] ?? rootPath("output", "annotated-words.tsv"),
-		rows.join("\n") + "\n",
+		`${rows.join("\n")}\n`,
 	);
 }
 

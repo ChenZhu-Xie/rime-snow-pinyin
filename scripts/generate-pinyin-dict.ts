@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import matter from "gray-matter";
-import { 获取大字集拼音, 拼音词典发布页 } from "./lib/character-pinyin";
+import { 拼音词典发布页, 获取大字集拼音 } from "./lib/character-pinyin";
 import { dataPath, rootPath } from "./lib/paths";
 import { VERSION } from "./version";
 
@@ -72,7 +72,7 @@ async function main() {
 		const 字音组合 = `${char}\t${pinyin}`;
 		if (已输出拼音.has(字音组合)) continue;
 		已输出拼音.add(字音组合);
-		if (parseInt(frequency) < 2) {
+		if (parseInt(frequency, 10) < 2) {
 			frequency = "2";
 		}
 		文件内容.push(`${char}\t${pinyin}\t${frequency}`);
@@ -89,8 +89,8 @@ async function main() {
 			增补拼音总数++;
 			console.log(`增补拼音: ${汉字} ${拼音}`);
 		}
-		let 编码 = 汉字.codePointAt(0) ?? 0;
-		let 权重 = 0x4e00 <= 编码 && 编码 <= 0x9fff ? 1 : 0;
+		const 编码 = 汉字.codePointAt(0) ?? 0;
+		const 权重 = 0x4e00 <= 编码 && 编码 <= 0x9fff ? 1 : 0;
 		文件内容.push(`${汉字}\t${拼音}\t${权重}`);
 	}
 	writeFileSync(

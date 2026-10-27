@@ -7,7 +7,8 @@ function 最大逆向匹配分词(词典: Map<string, number>, 文本: string) {
 	const 字符列表 = [...文本];
 	let 结束位置 = 字符列表.length;
 	while (结束位置 > 0) {
-		const 末字 = 字符列表[结束位置 - 1]!;
+		const 末字 = 字符列表[结束位置 - 1];
+		if (末字 === undefined) break;
 		if (!词典.has(末字)) {
 			词列表.unshift(末字);
 			结束位置 -= 1;
@@ -41,7 +42,7 @@ function main() {
 		readFileSync(dataPath("tygf-pinyin.tsv"), "utf-8")
 			.trim()
 			.split("\n")
-			.map((line) => line.split("\t")[0]!),
+			.map((line) => line.split("\t")[0] ?? ""),
 	);
 	const 原始一字词频 = new Map<string, number>(
 		readFileSync(join(base, "万象一字词频（推导）.txt"), "utf-8")
@@ -53,8 +54,8 @@ function main() {
 			}),
 	);
 	const 词频 = new Map<string, number>();
-	通用规范汉字.forEach((word) => 词频.set(word, 原始一字词频.get(word) ?? 0));
-	基础多字词库.forEach((word) => 词频.set(word, 0));
+	for (const word of 通用规范汉字) 词频.set(word, 原始一字词频.get(word) ?? 0);
+	for (const word of 基础多字词库) 词频.set(word, 0);
 
 	const 多字词频 = (
 		readFileSync(join(base, "万象多字词频.txt"), "utf-8").trim() +
@@ -70,13 +71,13 @@ function main() {
 	for (const [word, frequency] of 多字词频) {
 		const 分词结果 = 最大逆向匹配分词(词频, word);
 		for (const 词 of 分词结果) {
-			if (词频.has(词)) {
-				词频.set(词, 词频.get(词)! + frequency);
-			}
+			const 原频 = 词频.get(词);
+			if (原频 !== undefined) 词频.set(词, 原频 + frequency);
 		}
 	}
 
-	词频.set("的", 词频.get("的")! / 3);
+	const 的频 = 词频.get("的");
+	if (的频 !== undefined) 词频.set("的", 的频 / 3);
 
 	writeOutput(
 		process.argv[4] ?? join(base, "万象词频玲珑二次分词.txt"),
@@ -98,7 +99,7 @@ function main() {
 			多字词总频 += frequency * 词长;
 		}
 	}
-	let 总频 = 一字词总频 + 多字词总频;
+	const 总频 = 一字词总频 + 多字词总频;
 	console.log(
 		`一字词总频: ${一字词总频}, 占比: ${((一字词总频 / 总频) * 100).toFixed(2)}%`,
 	);

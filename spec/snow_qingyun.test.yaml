@@ -258,6 +258,8 @@ deploy:
       - send: "cfu? `"
         assert: cand[1].text == "重复"
       # Lua 脚本（两个 `` ` `` 引导）：数字、计算（含字母开头）、日期时间
+      - send: "``4e00"
+        assert: cand[1].text == "一" and cand[1].comment == " U+4E00 CJK"
       - send: "``123"
         assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
       - send: "``1234*5678"

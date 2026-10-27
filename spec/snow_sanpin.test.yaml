@@ -185,6 +185,9 @@ deploy:
       # Lua 脚本：数字转中文数字
       - send: o123
         assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
+      # Unicode 码点
+      - send: o4e00
+        assert: cand[1].text == "一"
       # Lua 脚本：计算表达式
       - send: o1234*5678
         assert: has("7006652")

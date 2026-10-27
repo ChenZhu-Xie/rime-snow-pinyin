@@ -14,12 +14,23 @@ export class SpellingAlgebra {
 	constructor(schema: string, key: string, options: { derive?: boolean } = {}) {
 		const { derive = true } = options;
 		const content = readFileSync(schema, "utf8");
-		const yaml = load(content) as Record<string, any>;
-		const rules: string[] = yaml[key];
+		const yaml = load(content);
+		if (!yaml || typeof yaml !== "object") {
+			throw new Error(`方案文件格式错误：${schema}`);
+		}
+		const rules = (yaml as Record<string, unknown>)[key];
+		if (
+			!Array.isArray(rules) ||
+			!rules.every((rule) => typeof rule === "string")
+		) {
+			throw new Error(`拼写规则格式错误：${key}`);
+		}
 		const parsed: Replace[] = [];
 		rules.forEach((rule) => {
 			const trimmed = rule.trim();
-			const ruleParts = trimmed.split(trimmed.at(-1)!);
+			const separator = trimmed.at(-1);
+			if (!separator) return;
+			const ruleParts = trimmed.split(separator);
 			if (ruleParts[0] === "derive" && !derive) return;
 			if (ruleParts[0] === "xform" || ruleParts[0] === "derive") {
 				parsed.push({

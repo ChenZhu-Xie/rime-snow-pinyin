@@ -21,8 +21,7 @@ import type {
 	VerticalCandidateStyle,
 } from "./types";
 
-type Style = Record<string, any>;
-type Collection = Record<string, Style>;
+type Collection = Record<string, unknown>;
 
 // 保留 iOS 的 SF Symbols，为 Android 显式指定对应的 Material Icon。
 // https://ihsiao.com/apps/hamster/v3/docs/guides/skins/styles/#systemimage
@@ -33,11 +32,11 @@ const materialIcons: Record<string, string> = {
 	return: "keyboard_return",
 	"r.circle": "settings",
 	"chevron.down.circle": "expand_circle_down",
-	"characters.uppercase": "keyboard_capslock",
-	character: "translate",
+	"characters.uppercase": "match_case",
+	character: "language_pinyin",
 	function: "functions",
 	"doc.on.clipboard": "content_paste",
-	"text.quote": "format_quote",
+	"text.quote": "text_snippet",
 	"chevron.forward": "chevron_right",
 	"chevron.down": "expand_more",
 	"chevron.up": "expand_less",
@@ -136,12 +135,12 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 		for (const [keyIndex, key] of row.entries()) {
 			const isCharacter = key.action.length === 1;
 			const isAlphabet = /^[a-zA-Z]$/.test(key.action);
-			let name = key.name ?? key.action;
+			const name = key.name ?? key.action;
 			const action = parseAction(key.action, config.symbol);
 			const foregroundStyle: string[] = [];
 			if (action !== "space") {
 				// label
-				const labelName = name + "Label";
+				const labelName = `${name}Label`;
 				foregroundStyle.push(labelName);
 				if (isCharacter) {
 					styles[labelName] = {
@@ -159,8 +158,8 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 			let swipeDownAction: Action | undefined;
 			if (key.up || isAlphabet) {
 				const up = key.up ?? key.action.toUpperCase();
-				const swipeUpName = name + "SwipeUp";
-				if (!isAlphabet) foregroundStyle.push(swipeUpName);
+				const swipeUpName = `${name}SwipeUp`;
+				foregroundStyle.push(swipeUpName);
 				styles[swipeUpName] = {
 					...structuredClone(upSwipe),
 					text: key.upLabel ?? up,
@@ -168,7 +167,7 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 				swipeUpAction = parseAction(up, config.symbol);
 			}
 			if (key.down) {
-				const swipeDownName = name + "SwipeDown";
+				const swipeDownName = `${name}SwipeDown`;
 				foregroundStyle.push(swipeDownName);
 				styles[swipeDownName] = {
 					...structuredClone(downSwipe),
@@ -176,7 +175,7 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 				};
 				swipeDownAction = parseAction(key.down, config.symbol);
 			}
-			let backgroundStyle;
+			let backgroundStyle: string;
 			if (isCharacter) {
 				if (isAlphabet && config.colorful) {
 					const specialCharacters = config.specialCharacters ?? "aeiou";
@@ -198,7 +197,7 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 				swipeDownAction,
 			};
 			if (isAlphabet) {
-				const shiftName = name + "Shift";
+				const shiftName = `${name}Shift`;
 				styles[shiftName] = {
 					...structuredClone(mainLabel),
 					text: key.action.toUpperCase(),
@@ -358,7 +357,19 @@ function makeToolbar(
 	return [toolbar, toolbarLayout, styles];
 }
 
-function makeCandidates(config: Config): [any, Collection] {
+function makeCandidates(
+	config: Config,
+): [
+	Pick<
+		Keyboard,
+		| "horizontalCandidatesStyle"
+		| "horizontalCandidatesLayout"
+		| "verticalCandidatesStyle"
+		| "verticalCandidatesLayout"
+		| "candidateContextMenu"
+	>,
+	Collection,
+] {
 	const backgroundColor = config.dark ? "000000" : "ffffff";
 	const textColor = config.dark ? "ffffff" : "000000";
 	const expandButton = {

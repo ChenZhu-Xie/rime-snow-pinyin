@@ -116,7 +116,7 @@ function processor.check_move(input, index, new_index, env)
     return
   end
   local candidate = segment:get_candidate_at(index - 1)
-  if processor.is_fixed(candidate) then
+  if candidate and processor.is_fixed(candidate) then
     local epoch = snow.epoch()
     local word = candidate.text
     local key = snow.key(input, word)

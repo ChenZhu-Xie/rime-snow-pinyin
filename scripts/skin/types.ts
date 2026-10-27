@@ -32,15 +32,15 @@ export type Keyboard = {
 	toolbarHeight: Height;
 	toolbarStyle: ToolbarStyle;
 	toolbarLayout: Layout;
-	horizontalCandidateStyle: HorizontalCandidateStyle;
-	horizontalCandidateLayout: Layout;
-	verticalCandidateStyle: VerticalCandidateStyle;
-	verticalCandidateLayout: Layout;
+	horizontalCandidatesStyle: HorizontalCandidateStyle;
+	horizontalCandidatesLayout: Layout;
+	verticalCandidatesStyle: VerticalCandidateStyle;
+	verticalCandidatesLayout: Layout;
 	candidateContextMenu: CandidateContextMenu;
 	keyboardHeight: Height;
 	keyboardStyle: KeyboardStyle;
 	keyboardLayout: Layout;
-	[k: string]: any; // 其他样式或属性
+	[k: string]: unknown; // 其他样式或属性
 };
 
 // 预编辑区 Preedit

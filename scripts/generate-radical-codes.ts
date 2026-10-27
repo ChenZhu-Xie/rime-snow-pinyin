@@ -1,7 +1,7 @@
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 import { SpellingAlgebra } from "./lib/algebra";
 import { dataPath, rootPath } from "./lib/paths";
-import { join, resolve } from "node:path";
 
 function main() {
 	// 由部首读音生成冰雪四拼、冰雪三拼下的部首编码，输出到 lua/snow/radical_*.txt

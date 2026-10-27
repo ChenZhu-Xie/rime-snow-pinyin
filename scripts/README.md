@@ -56,6 +56,8 @@ bun scripts/generate-radical-codes.ts /tmp/snow-radicals
 
 皮肤打包需要系统提供 `zip` 命令（macOS 自带）。每个 `.cskin` 都是 ZIP 文件，根目录只有一个与皮肤同名的文件夹，`config.yaml`、`demo.png`、`dark/` 和 `light/` 等所有皮肤文件均放在该文件夹内，可分享给仓输入法导入。`demo.png` 由 `skin/preview.ts` 按拼音键盘配置生成浅色、暗色并排预览，系统图标使用文字或通用符号替代。
 
+CI 发布时另附 `snow-pinyin-skins.zip`，其中包含七组皮肤的完整文件夹及各自的 `.cskin` 压缩包。
+
 ## 实验工具
 
 这些工具不参与词典发布，也不会直接覆盖现有固定词表。语料和词频表需自行提供。
