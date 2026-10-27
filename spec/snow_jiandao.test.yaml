@@ -33,9 +33,9 @@ deploy:
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
       - send: r
         assert: page("人") and has("日")
-      # r5 并入 er5 后，可从本方案的 a 前缀拼音反查明确查询轻声 er5。
-      - send: aer5
-        assert: has("兒")
+      # r5 并入 er5 后，无调键道仍可在 er 的本地 qj 码页查询「儿」。
+      - send: qj
+        assert: has("儿")
       # 组词规则
       - send: bdxy
         assert: has("冰雪")
