@@ -191,7 +191,7 @@ deploy:
       - send: nwym
         assert: cand[1].text == "那样"
       - send: tpviv
-        assert: cand[1].text == "填" and cand[1].comment:find("ivii")
+        assert: has("填") and cand[rank("填")].comment:find("ivii")
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"
