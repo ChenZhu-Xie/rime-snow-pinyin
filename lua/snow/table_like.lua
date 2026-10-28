@@ -1,5 +1,5 @@
 -- 模拟码表翻译器
--- 适用于：冰雪三拼、冰雪键道
+-- 将冰雪三拼的词编码转换为逐音节代理码，交给原生拼音翻译器查询
 
 local snow = require "snow.snow"
 
@@ -7,6 +7,24 @@ local snow = require "snow.snow"
 ---@field translator Translator
 ---@field pattern string
 ---@field pattern2 string
+
+---@param proxy string
+---@param segment Segment
+---@param env TableLikeEnv
+---@param accept? fun(candidate: Candidate): boolean
+local function translate(proxy, segment, env, accept)
+  -- 代理码不是合法拼写时 query 返回 nil，这一路当作没有候选
+  local translation = env.translator:query(proxy, segment)
+  if not translation then
+    return
+  end
+  for candidate in translation:iter() do
+    snow.prepare(candidate, proxy)
+    if not accept or accept(candidate) then
+      yield(candidate)
+    end
+  end
+end
 
 local t12 = {}
 
@@ -22,24 +40,24 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function t12.func(input, segment, env)
-  -- 一字词
-  if rime_api.regex_match(input, env.pattern) or env.engine.context:get_option("fluid") == true then
-    -- 代理码不是合法拼写时 query 返回 nil，这一路当作没有候选
-    local translation = env.translator:query(input, segment)
-    if translation then
-      for candidate in translation:iter() do
-        yield(snow.prepare(candidate, input, true))
+  -- 六码二字词选完首字后，剩下「声₂韵₂调₂调₁」。末码已记在首字读音里，
+  -- 查第二字时忽略它，确认时一并消耗；原始输入不变，退格仍可撤销首字选择。
+  local previous = env.engine.context.composition:toSegmentation():get_at(-2)
+  local selected = previous and previous:get_selected_candidate()
+  if previous and previous._end == segment.start and selected
+      and selected:get_genuine().type == "sanpin_partial" and input:len() == 4 then
+    translate(input:sub(1, -2), segment, env, function(candidate)
+      if candidate._end ~= segment._end - 1 then
+        return false
       end
-    end
-    if input:len() == 2 then
-      local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2))
-      local translation2 = env.translator:query(proxy, segment)
-      if translation2 then
-        for candidate in translation2:iter() do
-          yield(snow.prepare(candidate, proxy, true))
-        end
-      end
-    end
+      candidate._end = segment._end
+      return true
+    end)
+    return
+  end
+  -- 一字词与整句模式
+  if rime_api.regex_match(input, env.pattern) or not env.engine.context:get_option("popping") then
+    translate(input, segment, env)
   end
   -- 二字词
   if rime_api.regex_match(input, env.pattern2) then
@@ -47,14 +65,16 @@ function t12.func(input, segment, env)
     if input:len() == 6 then
       proxy = ("%s%s %s"):format(input:sub(1, 2), input:sub(-1, -1), input:sub(3, -2))
     end
-    local translation = env.translator:query(proxy, segment)
-    if translation then
-      for candidate in translation:iter() do
-        if utf8.len(candidate.text) <= 2 then
-          yield(snow.prepare(candidate, proxy, true))
-        end
+    translate(proxy, segment, env, function(candidate)
+      local length = utf8.len(candidate.text)
+      if length == 1 and input:len() == 6 and candidate._end == segment.start + 3 then
+        -- 首字只消耗连续的声韵两码，其声调仍留在原始输入的末尾。
+        candidate._end = segment.start + 2
+        candidate.type = "sanpin_partial"
+        candidate.preedit = input:sub(1, 2) .. " "
       end
-    end
+      return length <= 2
+    end)
   end
 end
 
@@ -76,38 +96,20 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function jianpin.func(input, segment, env)
-  -- 多字词
-  if rime_api.regex_match(input, env.pattern) then
-    local proxy = input:gsub("[viuoa]", "")
-    local buma = input:gsub("[bpmfdtnlgkhjqxzcsrywe]", "")
-    if buma:len() == 1 then
-      proxy = ("%s?%s"):format(proxy, buma)
-    elseif buma:len() == 2 then
-      proxy = ("%s?%s%s?%s"):format(
-        proxy:sub(1, 1),
-        buma:sub(2),
-        proxy:sub(2),
-        buma:sub(1, 1)
-      )
-    elseif buma:len() == 3 then
-      proxy = ("%s?%s%s?%s%s?%s"):format(
-        proxy:sub(1, 1),
-        buma:sub(2, 2),
-        proxy:sub(2, 2),
-        buma:sub(3, 3),
-        proxy:sub(3),
-        buma:sub(1, 1)
-      )
-    end
-    local translation = env.translator:query(proxy, segment)
-    if translation then
-      for candidate in translation:iter() do
-        if utf8.len(candidate.text) >= input:gsub("[viuoa]", ""):len() and candidate.type ~= "sentence" then
-          yield(snow.prepare(candidate, proxy, true))
-        end
-      end
-    end
+  if not rime_api.regex_match(input, env.pattern) then
+    return
   end
+  local proxy = input:gsub("[viuoa]", "")
+  local buma = input:gsub("[bpmfdtnlgkhjqxzcsrywe]", "")
+  local initial_count = proxy:len()
+  -- 后置声调依次分配给最后、第一、第二个音节
+  proxy = proxy:gsub("()([a-z])", function(i, initial)
+    local tone = i == initial_count and buma:sub(1, 1) or buma:sub(i + 1, i + 1)
+    return initial .. (tone ~= "" and "?" .. tone or "")
+  end)
+  translate(proxy, segment, env, function(candidate)
+    return utf8.len(candidate.text) >= initial_count and candidate.type ~= "sentence"
+  end)
 end
 
 ---@param env TableLikeEnv

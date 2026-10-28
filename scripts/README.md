@@ -13,7 +13,7 @@ bun scripts/version.ts                  # 查看版本
 bun scripts/version.ts 0.3.12            # 更新版本
 bun scripts/link.ts link                # 建立本机软链
 bun scripts/link.ts unlink              # 还原独立副本
-bun scripts/link.ts sync                # 单向镜像到仓输入法的 iCloud 目录并打包
+bun scripts/link.ts sync                # 单向镜像到元书输入法的 iCloud 目录并打包
 bun run --cwd scripts format            # 格式化 TypeScript 和 JSON
 bun run --cwd scripts check:format      # 只检查格式
 ```
@@ -50,13 +50,15 @@ bun scripts/generate-radical-codes.ts /tmp/snow-radicals
 | `export-character-codes.ts [输出文件]` | 冰雪四拼的单字评测码表，需要联网下载大字集拼音 | `output/character-codes.tsv` |
 | `export-word-codes.ts [输出目录]` | 模拟冰雪四拼动态码长，导出评测和大竹查询码表；属于离线模拟 | `output/word-codes/simulated.txt`、`output/word-codes/dazhu.txt` |
 | `generate-yipin-tests.ts [输出文件]` | 从 `data/yipin-syllables.tsv` 的每组固定选择首条记录，生成 416 条可复现的音节测试 | `output/yipin-tests.yaml.snippet` |
-| `generate-skins.ts [输出目录]` | 生成七组仓输入法皮肤文件夹及同名 `.cskin` 压缩包，含亮色、暗色和预览图 | 当前用户的 `~/Library/Mobile Documents/iCloud~com~ihsiao~apps~Hamster3/Documents/Skins/` |
+| `generate-skins.ts [输出目录] [--backend hamster\|trime\|all]` | 从七组共用布局生成元书输入法和同文输入法皮肤，默认 `all`，可指定单个平台 | 默认写入 `output/skins/`；显式指定 `--backend hamster` 且省略输出目录时，写入当前用户的 `~/Library/Mobile Documents/iCloud~com~ihsiao~apps~Hamster3/Documents/Skins/` |
 
-`output/` 已被 Git 忽略。冰雪一拼测试生成的是 YAML 片段，需审阅后合入 `spec/snow_yipin.test.yaml`，不会覆盖已有的功能测试。皮肤布局放在 `skin/layouts.ts`，样式和键盘渲染放在 `skin/render.ts`，类型放在 `skin/types.ts`。预览皮肤生成结果可运行 `bun scripts/generate-skins.ts /tmp/snow-skins`。
+`output/` 已被 Git 忽略。冰雪一拼测试生成的是 YAML 片段，需审阅后合入 `spec/snow_yipin.test.yaml`，不会覆盖已有的功能测试。皮肤布局放在 `skin/layouts.ts`，共用七色配色放在 `skin/palette.ts`；元书输入法的类型、渲染、预览和打包集中在 `skin/hamster.ts`，同文的类型、渲染和文件输出集中在 `skin/trime.ts`；共用的布局配置类型放在 `skin/types.ts`，`generate-skins.ts` 负责选择后端及组织布局。运行 `bun scripts/generate-skins.ts /tmp/snow-skins` 会在该目录下生成 `hamster/` 和 `trime/`，只生成元书输入法皮肤时加 `--backend hamster`。
 
-皮肤打包需要系统提供 `zip` 命令（macOS 自带）。每个 `.cskin` 都是 ZIP 文件，根目录只有一个与皮肤同名的文件夹，`config.yaml`、`demo.png`、`dark/` 和 `light/` 等所有皮肤文件均放在该文件夹内，可分享给仓输入法导入。`demo.png` 由 `skin/preview.ts` 按拼音键盘配置生成浅色、暗色并排预览，系统图标使用文字或通用符号替代。
+皮肤打包需要系统提供 `zip` 命令（macOS 自带）。每个 `.cskin` 都是 ZIP 文件，根目录只有一个与皮肤同名的文件夹，`config.yaml`、`demo.png`、`dark/` 和 `light/` 等所有皮肤文件均放在该文件夹内，可分享给元书输入法导入。`demo.png` 由 `skin/hamster.ts` 按拼音键盘配置生成浅色、暗色并排预览，系统图标使用文字或通用符号替代。
 
-CI 发布时另附 `snow-pinyin-skins.zip`，其中包含七组皮肤的完整文件夹及各自的 `.cskin` 压缩包。
+同文皮肤可运行 `bun scripts/generate-skins.ts /tmp/snow-trime-skins --backend trime` 生成，每组输出一个 `.trime.yaml`，内含关联的亮暗配色、键盘布局、上下滑动及功能键。将这些文件复制到同文用户目录根目录，重新部署后在主题设置中选择；主题通过 `__include` 复用同文内置的 `trime.yaml` 样式和安卓键表，工具栏使用新版主题配置，需要支持新版工具栏的同文版本。普通键盘的标点发送给 Rime 处理，字母键盘的符号直接上屏，简繁键切换冰雪拼音的 `traditionalization` 开关。无刻布局保留输入动作并隐藏按键文字；同文使用通用符号和文字代替元书输入法系统图标。配置依据[官方主题文档](https://github.com/osfans/trime/wiki/trime.yaml-詳解)及[新版主题文档](https://github.com/osfans/trime/wiki/Theme-Configuration-(New))。`--backend all` 会在输出目录下分别建立 `hamster/`、`trime/`。
+
+CI 发布时分别提供 `snow-pinyin-skins-hamster.zip` 和 `snow-pinyin-skins-trime.zip`。前者包含七组元书输入法皮肤的完整文件夹及各自的 `.cskin` 压缩包，后者包含七份同文 `.trime.yaml` 主题文件；压缩包根目录直接放置对应平台的皮肤文件。
 
 ## 实验工具
 

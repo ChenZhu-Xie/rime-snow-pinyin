@@ -182,6 +182,23 @@ deploy:
       # 组句造词：词库中没有「密度矩阵」，但可由「密度」「矩阵」组合猜出
       - send: "jweoa mdjweoia"
         assert: cand[1].text == "密度矩阵"
+  buffered_command:
+    tests:
+      - send: o
+        assert: cand[1].text == "📝 开启缓冲" and commit == nil
+      - send: "o "
+        assert: commit == nil and preedit == nil
+      # 取消命令不应开启缓冲；正常空格仍直接上屏
+      - send: "o{Escape}d "
+        assert: commit == "都"
+      # 确认命令后分片输入，整句上屏后恢复非缓冲模式
+      - send: "o bxouivrf "
+        assert: commit == nil
+      - send: "o bxouivrf  d "
+        assert: commit == "冰雪输入法都"
+      # 再次选择命令仍保持开启，不会切换为关闭
+      - send: "o o kr qz"
+        assert: commit == nil and cand[1].text == "裙子"
   # 缓冲造词与英数混输造词
   buffered:
     tests:

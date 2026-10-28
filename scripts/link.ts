@@ -21,7 +21,7 @@ import { ROOT } from "./lib/paths";
 // fcitx5 固定读取的 Rime 用户目录
 const USER_DIR = join(homedir(), ".local", "share", "fcitx5", "rime");
 
-// 仓输入法的 iCloud 目录，会自动同步到手机。iCloud 不跟随软链，只能复制
+// 元书输入法的 iCloud 目录，会自动同步到手机。iCloud 不跟随软链，只能复制
 const HAMSTER_DIR = join(
 	homedir(),
 	"Library",
@@ -129,11 +129,11 @@ function unlink() {
 	console.log(`已把 ${count} 项还原成独立副本`);
 }
 
-// 单向镜像到仓输入法的目录：仓库为准，只复制内容有变化的文件，以免 iCloud 重复上传大词典
+// 单向镜像到元书输入法的目录：仓库为准，只复制内容有变化的文件，以免 iCloud 重复上传大词典
 function sync() {
 	if (!existsSync(dirname(HAMSTER_DIR))) {
 		console.error(
-			`找不到 ${dirname(HAMSTER_DIR)}，先在手机上打开仓输入法的 iCloud 同步`,
+			`找不到 ${dirname(HAMSTER_DIR)}，先在手机上打开元书输入法的 iCloud 同步`,
 		);
 		process.exit(1);
 	}

@@ -128,7 +128,7 @@ end
 
 ---@param candidate Candidate
 ---@param proxy string
-function snow.prepare(candidate, proxy, normal)
+function snow.prepare(candidate, proxy)
   local proxy_segment = proxy:sub(1, candidate._end - candidate._start)
   local real_segment = proxy_segment:gsub("[ ?~]", "")
   candidate._end = candidate._start + real_segment:len()
@@ -141,9 +141,6 @@ function snow.prepare(candidate, proxy, normal)
   local filler_length = proxy_segment:len() - real_segment:len()
   if filler_length > 0 and real_input_length > 0 then
     candidate.quality = candidate.quality - filler_length / real_input_length
-  end
-  if not normal then
-    candidate.quality = candidate.quality + 1
   end
   -- candidate.comment = candidate.comment .. (" [%f, %d, %d]"):format(candidate.quality, candidate._start, candidate._end)
   return candidate

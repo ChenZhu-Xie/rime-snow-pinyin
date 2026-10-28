@@ -1,6 +1,6 @@
 # 冰雪拼音开发约定
 
-**始终用中文回复。**
+始终用中文回复。
 
 ## 方案名称
 
@@ -27,7 +27,7 @@ bun scripts/link.ts link      # 建立软链（幂等，仓库新增文件后重
 bun scripts/link.ts unlink    # 还原成独立副本
 ```
 
-手机上的仓输入法读的是 iCloud 里的 `RimeUserData/rime-snow-pinyin`。iCloud 不跟随软链，所以那边只能复制：`bun scripts/link.ts sync` 把同样的文件单向镜像过去，只复制内容有变化的文件，并清理仓库里已删除的文件。这一步要手动跑，改完想在手机上用时再跑一次。
+手机上的元书输入法读的是 iCloud 里的 `RimeUserData/rime-snow-pinyin`。iCloud 不跟随软链，所以那边只能复制：`bun scripts/link.ts sync` 把同样的文件单向镜像过去，只复制内容有变化的文件，并清理仓库里已删除的文件。这一步要手动跑，改完想在手机上用时再跑一次。
 
 本机私有、已被 `.gitignore` 排除的 `*.custom.yaml`、`*.userdb`、`build/`、`user.yaml`、`installation.yaml` 仍各自独立，所以在仓库里跑 mira 不会污染实际词频。
 
@@ -43,6 +43,14 @@ bun scripts/version.ts          # 查看当前版本
 ```
 
 词典生成脚本（`generate-pinyin-dict.ts`、`generate-word-dicts.ts`、`generate-english-dict.ts`、`generate-stroke-dict.ts`）也从 `scripts/version.ts` 读取同一个版本号。Rime 的 `__include` 只在方案里生效，词典头不支持，所以没法靠 yaml 本身共用一份。
+
+### 发布时自动更新文档
+
+每次发布新版本，都必须自动检查并更新文档网站 `/Users/tansongchen/Public/input`，作为发布工作的必要步骤，不等待用户另行提醒。根据本次版本的功能、默认配置、快捷键、词库和皮肤变更，更新受影响的教程、公共片段、导航与示例；输入统计放在各方案的 `advanced.md` 中。实验性的冰雪英拼和冰雪注音暂不扩写；面向用户只介绍 `snow-pinyin.zip` 和皮肤包，预览包仅用于网站演示。
+
+网站的安装、皮肤和个性化等通用说明合并到起始页 `index.md`，按章节组织，避免新增过多顶层页面。各方案的按键逻辑分别在本方案的教程中说明，不维护统一的 `shortcuts.md`。
+
+方案行为或示例发生变化时，使用当前版本的独立部署环境重新生成候选框模拟缓存，并检查网页演示所用预览包的版本。文档仓库须运行格式检查和网站构建，并检查改动页面的链接、公共引用片段、候选显示与交互输入；全部验证完成后，才算完成本次版本的文档更新。开发脚本、统计设计和维护约定继续保留在本仓库，网站按需链接，不必复制实现细节。
 
 ## 笔画与地区字形
 
@@ -169,6 +177,10 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 - 用字面量建的、以字符串为键的查找表（如 `{ a = "j", e = "q" }`）用变量去索引时推不出类型，要标 `---@type table<string, string>`。函数里先建空表再逐项填的局部变量同理，要标元素类型。
 - 一个 `if` 的某个分支给变量赋字面量（`x = ""`），另一个分支写 `x = x:sub(1, -2)`，后者会报 `no-unknown`，加 `---@type` 也没用（LuaLS 的问题）。改成一个表达式 `x = cond and "" or x:sub(1, -2)`。
 
+## 冰雪一拼的功能并击
+
+功能并击最多使用三键，不要新增四键并击。`jkl`、`uio`、`m,.` 分别输入统计命令 `itj`、`itjf`、`itjh`；`jio` 直接开启缓冲。冰雪一拼不提供 Unicode 输入。
+
 ## processors 顺序
 
 五个顶功方案（冰雪四拼、冰雪三拼、冰雪一拼、冰雪键道、冰雪清韵）共用一套相对顺序，新增或移动处理器时按下表对齐：
@@ -245,10 +257,11 @@ bun scripts/test.ts
                                           # 冰雪三拼的 *snow.table_like*jianpin
     - table_translator@stroke             # 冰雪一拼无
     - script_translator@pinyin            # 冰雪一拼无
+    - lua_translator@*snow.buffered       # 仅冰雪四拼、冰雪三拼、冰雪键道
     - lua_translator@*snow.datetime       # 冰雪一拼无
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number         # 冰雪一拼无
-    - lua_translator@*snow.unicode*translator
+    - lua_translator@*snow.unicode*translator # 冰雪一拼无
     - lua_translator@*snow.calculator     # 以下冰雪一拼均无
     - history_translator
 

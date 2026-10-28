@@ -26,7 +26,8 @@ jobs:
       - name: 生成并打包皮肤
         run: |
           bun scripts/generate-skins.ts skins
-          zip -r snow-pinyin-skins.zip skins
+          (cd skins/hamster && zip -r ../../snow-pinyin-skins-hamster.zip .)
+          (cd skins/trime && zip -r ../../snow-pinyin-skins-trime.zip .)
       - name: 预览安装包去掉腾讯词库和笔画
         run: |
           # rime-prelude 自带 default.yaml，仓库的 default.yaml 会被部署器当作过时副本移进 trash/

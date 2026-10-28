@@ -46,6 +46,7 @@ engine:
     - script_translator
     - table_translator@stroke
     - script_translator@pinyin
+    - lua_translator@*snow.buffered
     - lua_translator@*snow.datetime
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number

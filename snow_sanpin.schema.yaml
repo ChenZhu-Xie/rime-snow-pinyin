@@ -46,6 +46,7 @@ engine:
     - lua_translator@*snow.table_like*jianpin
     - table_translator@stroke
     - script_translator@pinyin
+    - lua_translator@*snow.buffered
     - lua_translator@*snow.datetime
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
@@ -127,13 +128,9 @@ speller:
     - match_shape: ".+"
       accept: "[viuoa]"
   popping:
-    # 630
+    # 630、单字和三字词
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe][viuoa]+"
-      accept: "[bpmfdtnlgkhjqxzcsrywe]"
-    # 单字和三字词
-    - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe]{2,3}[viuoa]+"
+      match: "[bpmfdtnlgkhjqxzcsrywe]{1,3}[viuoa]+"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 四字词和多字词
     - when: popping
@@ -180,8 +177,8 @@ __patch:
 
 patch:
   switches/+:
-    - options: [fluid, popping]
-      states: [整句, 四顶]
+    - name: popping
+      states: [整句, 顶功]
       reset: 1
     - name: buffered
       states: [结束, 缓冲]
