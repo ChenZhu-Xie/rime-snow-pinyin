@@ -22,6 +22,14 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
+  function dump()
+    local values = {}
+    for i, v in ipairs(cand) do
+      if i > 12 then break end
+      values[#values + 1] = tostring(i) .. ":" .. v.text .. "[" .. v.comment .. "]"
+    end
+    error("preedit=" .. tostring(preedit) .. "; commit=" .. tostring(commit) .. "; cand=" .. table.concat(values, "|"))
+  end
 deploy:
   sentence:
     patch:
@@ -67,7 +75,7 @@ deploy:
       - send: erf
         assert: has("输入法")
       - send: bkhivi
-        assert: has("白花花")
+        assert: dump()
       - send: wmxs
         assert: has("充满希望")
       # 编码导航：14567 直达字位；Y/O 物理循环，U/I 逻辑左/右循环
@@ -271,7 +279,7 @@ deploy:
       - send: uivuao
         assert: cand[1].text == "札"
       - send: "wpfj i"
-        assert: cand[1].text == "重复"
+        assert: dump()
       - send: ia
         assert: cand[1].text == "ā"
       - send: o123
@@ -295,7 +303,7 @@ deploy:
       - send: rfvvv
         assert: not page("嶅")
       - send: rfv1e
-        assert: cand[1].text == "嶅"
+        assert: dump()
       - send: "xlrn["
         assert: commit == "熙"
       # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。
@@ -313,10 +321,10 @@ deploy:
         assert: not pinned(1)
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
       - send: "kfc{Control+apostrophe}fkxqS Vj 50{Control+apostrophe}kfc"
-        assert: cand[1].text == "疯狂星期四V我50"
+        assert: dump()
       # 本地 hb 固顶好吧：新词不得挤掉已有的首选。
       - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
-        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
+        assert: dump()
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
