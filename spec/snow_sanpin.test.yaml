@@ -22,14 +22,6 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump()
-    local values = {}
-    for i, v in ipairs(cand) do
-      if i > 12 then break end
-      values[#values + 1] = tostring(i) .. ":" .. v.text .. "[" .. v.comment .. "]"
-    end
-    error("preedit=" .. tostring(preedit) .. "; commit=" .. tostring(commit) .. "; cand=" .. table.concat(values, "|"))
-  end
 deploy:
   sentence:
     patch:
@@ -74,8 +66,8 @@ deploy:
         assert: has("近世")
       - send: erf
         assert: has("输入法")
-      - send: bkhivi
-        assert: dump()
+      - send: bhhivi
+        assert: has("白花花")
       - send: wmxs
         assert: has("充满希望")
       # 编码导航：14567 直达字位；Y/O 物理循环，U/I 逻辑左/右循环
@@ -278,8 +270,8 @@ deploy:
       # 本地横竖撇点折依次为 i/v/u/a/o（上游为 v/i/u/o/a）。
       - send: uivuao
         assert: cand[1].text == "札"
-      - send: "wpfj i"
-        assert: dump()
+      - send: "wpfh i"
+        assert: cand[1].text == "重复"
       - send: ia
         assert: cand[1].text == "ā"
       - send: o123
@@ -299,11 +291,11 @@ deploy:
       # 芫 yuan2：上游 ytivi → 本地 ye + v + iv。
       - send: yrviv
         assert: page("芫")
-      # 嶅 ao2：上游 xzivv / xzi1e → 本地 qzv + 笔画 / 山部首。
+      # 嶅 ao2：U357 为 rfv；部首反查补全“山”的 eli，排除同前缀食部字。
       - send: rfvvv
         assert: not page("嶅")
-      - send: rfv1e
-        assert: dump()
+      - send: rfv1eli
+        assert: cand[1].text == "嶅"
       - send: "xlrn["
         assert: commit == "熙"
       # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。
@@ -320,11 +312,11 @@ deploy:
       - send: "bpmw{Control+comma}bpmw"
         assert: not pinned(1)
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
-      - send: "kfc{Control+apostrophe}fkxqS Vj 50{Control+apostrophe}kfc"
-        assert: dump()
-      # 本地 hb 固顶好吧：新词不得挤掉已有的首选。
-      - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
-        assert: dump()
+      - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四V我50"
+      # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选。
+      - send: "hou{Control+apostrophe}ljhe v{Control+apostrophe}hou"
+        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"

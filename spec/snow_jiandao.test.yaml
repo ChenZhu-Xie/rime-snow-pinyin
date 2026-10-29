@@ -21,14 +21,6 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump()
-    local values = {}
-    for i, v in ipairs(cand) do
-      if i > 12 then break end
-      values[#values + 1] = tostring(i) .. ":" .. v.text .. "[" .. v.comment .. "]"
-    end
-    error("preedit=" .. tostring(preedit) .. "; commit=" .. tostring(commit) .. "; cand=" .. table.concat(values, "|"))
-  end
 deploy:
   sentence:
     patch:
@@ -188,8 +180,8 @@ deploy:
       - send: "{Control+period}btxkerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
       # 本地键道使用 shv/gc/tp/xb；数字和字母取第二候选。
-      - send: "{Control+period}shv2gc2tpxb  jgtx"
-        assert: dump()
+      - send: "{Control+period}shv2gc2tpxb  sgtx"
+        assert: cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
       - send: "{Control+period}dyou lwo xw mr  dlxm"
         assert: cand[1].text == "哆啦A梦"
@@ -203,8 +195,8 @@ deploy:
       - send: uviuoa
         assert: cand[1].text == "札"
       # 重复上屏（`i` 引导）
-      - send: "wpfj i"
-        assert: dump()
+      - send: "wpfh i"
+        assert: cand[1].text == "重复"
       # 符号（`i` 引导）
       - send: ia
         assert: cand[1].text == "ā"
@@ -242,11 +234,11 @@ deploy:
         assert: not pinned(1)
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
-      - send: "kfc{Control+apostrophe}fkxqS Vj 50{Control+apostrophe}kfc"
-        assert: dump()
-      # 本地 hb 固顶好吧：新词不得挤掉已有首选。
-      - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
-        assert: dump()
+      - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
+        assert: cand[1].text == "疯狂星期四V我50"
+      # U357 键道 ho 固顶“好吧”：新词不得挤掉已有首选。
+      - send: "ho{Control+apostrophe}ljhe v{Control+apostrophe}ho"
+        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
       - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdf{Control+bracketright}jpdf"
