@@ -20,11 +20,18 @@
 > [!NOTE]
 > 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五调辅键按照与[冰雪四拼](https://input.tansongchen.com/snow4/)相近的顺序排列。
 
-“无飞键道·神韵 U357 综合人体工学前沿”是方案全称，`U357` 是候选代号，`U357-21X21-M40-D0` 是实现标识；完整 Benchmark 候选 ID 为 `gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13`。
-
 **声韵映射**
 
-机器可复核的候选源配置见 [`config/shenyun-21x21-mapping.json`](config/shenyun-21x21-mapping.json)，421 音节生成快照见 [`docs/shenyun-u357-mapping.json`](docs/shenyun-u357-mapping.json)。旧 R9 映射、键盘图、热力图与公平对比报告继续保留，作为历史基线，不再代表当前实装。
+[![无飞键道·神韵 U357 声韵映射图](docs/shenyun-u357-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
+
+**神韵 U357 日常八场景文稿 纯双拼键频图（含标点）**
+
+![神韵 U357 文稿击键热力图](docs/shenyun-u357-keyboard-heat.svg)
+
+双拼热力图基于日常八场景文稿的 2149 次击键。
+
+> [!NOTE]
+> 注意：只包含双拼部分，5 辅键未参与评估。
 
 #### 声韵编码规则
 
@@ -67,34 +74,30 @@
 - 三拼声调 `I/V/U/A/O → 一/二/三/四/轻`；键道形码 `A/V/U/I/O → 折/横/撇/竖/点`。
 - 神韵 U357 的 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 全覆盖，形成 357 个唯一音节码与 42 个二元重码桶；实现另按同一规则推导 17 个扩展音节，扩展域共有 366 个唯一音码与 75 个空码。`hng、m、n、ng、ê` 不编码。
 
-#### 现行 U357 生产指标
+#### 神韵 U357 与 [星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949)的公平比较
 
-下表来自[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)中 U357 所在的严格 ProdGate 搜索报告，以 `S005 = 10` 的 CPU exact scoring 为参照。这里的 **CKT v4** 是现行候选评分，不是旧 R9 表里的“系综当量 v4”。
+三方案共用 Common399、冻结 20 合同、字词/形码数据、CKT v4 模型和日常八场景文稿；S005 是 21×21 的同键域基线，B04 是 26×26 的同环境基线。
 
-| 指标 | U357 | 门槛或参照 | 判定 |
-| --- | ---: | ---: | --- |
-| 声韵容量／辅键 | 21×21／`IVUAO` | 严格锁定 | 通过 |
-| 记忆代价 M | 40 | ≤ 40 | 通过 |
-| 普通声母位移 D | 0 | = 0 | 通过 |
-| 元音位移 V | 5 | ≤ 5 | 通过 |
-| Common399 唯一音节码 U | 357 | 生产基线 352；越高越好 | +5 |
-| 重码桶／受影响音节 | 42／84 | 越少越好 | — |
-| CKT v4 | 9.716421 | Tier-A ≤ 9.720；越低越好 | 通过 |
-| 右小指 S2 负载 `rp_s2` | 4.1808% | ≤ 4.1808% | 通过 |
-| 右小指峰值 `rp_max` | 5.1045% | ≤ 5.1045% | 通过 |
-| 主键区下限 `homeFloor` | 37.6204% | ≥ 35.0756% | 通过 |
-| W 键峰值 `w_max` | 3.6232% | ≤ 3.6232% | 通过 |
-| Y 键峰值 `y_max` | 6.3924% | ≤ 6.8685% | 通过 |
-| 移动手得分 `mxScore` | 143.380 | ≥ 140.842；越高越好 | 通过 |
+| 指标 | 神韵 U357 | 原键道 S005 | 首道 B04 | 何为好 |
+| --- | ---: | ---: | ---: | --- |
+| M-R2 记忆项 | 40 🥇 | 44 | 51 | 越低越好 |
+| Common399 不同二键码 | 357 | 372 | 399 🥇 | 越高重码越少 |
+| CKT v4 | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
+| 裸 S2 右小指负载 | 4.1808% | 2.1518% | 1.2618% 🥇 | 越低越好 |
+| 20 合同右小指峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| 20 合同主键区下限 | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 W 键峰值 | 3.6232% 🥇 | 7.2907% | 5.9773% | 越低越好 |
+| 20 合同 Y 键峰值 | 6.3924% 🥇 | 8.0125% | 7.6958% | 越低越好 |
+| 日常八场景纯双拼移动手分数（含标点） | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
-U357 在冻结语料上的八轨加权选重率如下；它们用于检查冰雪键道与冰雪三拼的真实编码路径，不等同真人测速。
+日常八场景移动手分数不含五辅键、空格和选重。神韵 U357 的优势集中在记忆项、合同主键区下限、W/Y 键峰值和日常文稿路径；代价是音节重码与右小指负载。B04 以更大的 26×26 键域取得零音节重码、最低 CKT v4 和最低右小指负载；S005 提供同键域直接参照。U357 是面向冰雪键道与冰雪三拼的综合折中，不是全指标支配；模型分数也不等同真人测速。
 
-| 方案 | 单字 | 二字词 | 三字词 | 四字词 |
-| --- | ---: | ---: | ---: | ---: |
-| 冰雪键道 | 0.489% | 0.440% | 4.948% | 0.366% |
-| 冰雪三拼 | 0.786% | 0.632% | 6.948% | 0.565% |
+[完整公平对比](reports/shenyun-u357-comparison.md)另列冰雪键道、冰雪三拼的八轨加权非首选率；[原始 JSON](reports/shenyun-u357-comparison.json)可供机器复核。
 
-旧 R9 的“系综当量 v4/v5/v6-CW150”、裸 S2 与 MX34 属于冻结 R11 历史口径，已经从现行 README 指标表移除，不能与上面的 CKT v4 混用。需要追溯时请查看[神韵 R9 公平对比](reports/shenyun-r9-comparison.md)及其[原始 JSON](reports/shenyun-r9-comparison.json)。现行 U357 的来源、完整候选和迁移边界见[实装迁移记录](research-notes/2026-10-30-shenyun-u357-migration.md)。
+```powershell
+bun scripts/生成神韵键盘图.ts "路径/a7_CKT_R11.html"
+bun scripts/导出神韵热力图.ts "路径/a7_CKT_R11.html"
+```
 
 #### 神韵固顶与二字词简码
 
@@ -187,7 +190,9 @@ bun scripts/验证神韵双拼.ts
 - [神韵与原冰雪键道双拼碰撞对比](reports/shenyun-collision-comparison.md)：按 Top 500～全量比较二字内部、四字内部及跨词长碰撞。
 - [神韵 R9 与原键道碰撞解读及双拼设计启发](reports/shenyun-collision-design-notes.md)：解释碰撞数据的取舍、结构原因和布局设计启发。
 - [神韵 R9 固顶受约束选优报告](reports/shenyun-fixed-optimization.md)：记录二简、AA 单字、三拼/键道 630 和去冗余约束。
-- [神韵 R9 公平对比](reports/shenyun-r9-comparison.md)：与 S005、B04 的完整 Benchmark 指标、分场景结果和边界说明。
+- [神韵 U357 公平对比](reports/shenyun-u357-comparison.md)：与 S005、B04 的现行 CKT v4、人体工学及八轨非首选率比较。
+- [神韵 U357 公平对比原始 JSON](reports/shenyun-u357-comparison.json)：上述现行对比的机器可复核数据。
+- [神韵 R9 公平对比](reports/shenyun-r9-comparison.md)：与 S005、B04 的历史 Benchmark 指标、分场景结果和边界说明。
 - [神韵 R9 公平对比原始 JSON](reports/shenyun-r9-comparison.json)：上述对比的机器可复核数据快照。
 - [当前方案快捷键审计与上游对照](reports/shortcut-audit.md)：四个方案的共享、专属及相对上游变化的快捷键。
 - [四拼二字词逐级排序对神韵固顶的参考调研](reports/sipin-bigram-ranking-research.md)：以四拼逐级候选名次为键道、三拼固顶提供有限旁证，不把四拼视为 R9 的组成部分。
@@ -221,11 +226,18 @@ Recipe: ℞ **snow-pinyin**
 > [!NOTE]
 > Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Three-Code](https://input.tansongchen.com/snow3/)'s five tone auxiliary keys are arranged in an order similar to [Snow Four-Code](https://input.tansongchen.com/snow4/)'s.
 
-“Wufei KeyTao·Shenyun U357 ergonomic frontier” is the full scheme name; `U357` is the candidate label and `U357-21X21-M40-D0` is the implementation ID. The full Benchmark candidate ID is `gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13`.
-
 **Initial/final mapping**
 
-The machine-reviewable candidate configuration is [`config/shenyun-21x21-mapping.json`](config/shenyun-21x21-mapping.json), and the generated 421-syllable snapshot is [`docs/shenyun-u357-mapping.json`](docs/shenyun-u357-mapping.json). The R9 keyboard and heat-map graphics remain as historical baselines and no longer describe the deployed layout.
+[![Wufei KeyTao·Shenyun U357 initial/final mapping](docs/shenyun-u357-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
+
+**Shenyun U357 pure-double-pinyin key-frequency map over the daily eight-scenario prose corpus (punctuation included)**
+
+![Shenyun U357 daily-prose keystroke heat map](docs/shenyun-u357-keyboard-heat.svg)
+
+The heat map contains 2,149 double-pinyin keystrokes from the daily eight-scenario prose corpus.
+
+> [!NOTE]
+> Only the double-pinyin layer is included; the five auxiliary keys are excluded.
 
 #### Coding rules
 
@@ -243,34 +255,30 @@ All ordinary initials have a fixed first key; the exceptions to the letter itsel
 
 The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [Three-Code](https://input.tansongchen.com/snow3/) tone keys are `I/V/U/A/O → 1/2/3/4/neutral`; [KeyTao](https://input.tansongchen.com/snow-jiandao/) shape keys are `A/V/U/I/O → bend/horizontal/left-falling/vertical/dot`. Common399 is fully covered with 357 unique codes and 42 collision buckets. The 17 derived extension syllables bring the implementation domain to 366 unique sound codes and 75 vacant codes; `hng/m/n/ng/ê` remain unencoded.
 
-#### Current U357 production metrics
+#### Fair comparison with [Starry KeyTao S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [Shoudao B04](https://sspai.com/post/108949)
 
-These values come from the strict ProdGate search in [Shuangpin Layout Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark) that produced U357, using CPU exact scoring with `S005 = 10`. **CKT v4** here is the current candidate score, not the legacy R9 “ensemble equivalent v4.”
+All three layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily eight-scenario corpus. S005 is the same-domain 21×21 baseline; B04 is a same-environment 26×26 baseline.
 
-| Metric | U357 | Gate or reference | Result |
-| --- | ---: | ---: | --- |
-| Sound-code capacity / auxiliary keys | 21×21 / `IVUAO` | Strictly locked | Pass |
-| Memory cost M | 40 | ≤ 40 | Pass |
-| Ordinary-initial displacement D | 0 | = 0 | Pass |
-| Vowel displacement V | 5 | ≤ 5 | Pass |
-| Unique Common399 codes U | 357 | Production baseline 352; higher is better | +5 |
-| Collision buckets / affected syllables | 42 / 84 | Lower is better | — |
-| CKT v4 | 9.716421 | Tier-A ≤ 9.720; lower is better | Pass |
-| Right-pinky S2 load `rp_s2` | 4.1808% | ≤ 4.1808% | Pass |
-| Right-pinky peak `rp_max` | 5.1045% | ≤ 5.1045% | Pass |
-| Home-area floor `homeFloor` | 37.6204% | ≥ 35.0756% | Pass |
-| W-key peak `w_max` | 3.6232% | ≤ 3.6232% | Pass |
-| Y-key peak `y_max` | 6.3924% | ≤ 6.8685% | Pass |
-| Moving-hand score `mxScore` | 143.380 | ≥ 140.842; higher is better | Pass |
+| Metric | Shenyun U357 | KeyTao S005 | Shoudao B04 | Better |
+| --- | ---: | ---: | ---: | --- |
+| M-R2 memory items | 40 🥇 | 44 | 51 | Lower |
+| Distinct Common399 two-key codes | 357 | 372 | 399 🥇 | Higher means fewer collisions |
+| CKT v4 | 9.716421 | 10.000000 | 9.184607 🥇 | Lower |
+| Bare-S2 right-pinky load | 4.1808% | 2.1518% | 1.2618% 🥇 | Lower |
+| 20-contract right-pinky peak | 5.1045% | 2.7738% | 1.8881% 🥇 | Lower |
+| 20-contract home-area floor | 37.6204% 🥇 | 30.8146% | 24.2427% | Higher |
+| 20-contract W-key peak | 3.6232% 🥇 | 7.2907% | 5.9773% | Lower |
+| 20-contract Y-key peak | 6.3924% 🥇 | 8.0125% | 7.6958% | Lower |
+| Daily eight-scenario pure-double-pinyin moving-hand score, with punctuation | 143.380 🥇 | 138.672 | 135.310 | Higher on the same corpus |
 
-Weighted selection rates over the frozen eight-track corpus are shown below. They validate Snow KeyTao and Snow Three-Code coding paths; they are not human typing-speed measurements.
+The daily moving-hand score excludes the five auxiliary keys, spaces, and candidate selection. U357 leads in memory cost, home-area floor, W/Y peaks, and the daily-prose path, at the cost of more syllable collisions and higher right-pinky load. B04 uses its larger 26×26 domain to achieve zero syllable collisions, the best CKT v4, and the lowest right-pinky load; S005 supplies the direct same-domain baseline. U357 is a balanced choice for Snow KeyTao and Snow Three-Code, not an all-metric dominator, and model scores are not human typing-speed results.
 
-| Scheme | Single characters | Bigrams | Trigrams | Four-character words |
-| --- | ---: | ---: | ---: | ---: |
-| Snow KeyTao | 0.489% | 0.440% | 4.948% | 0.366% |
-| Snow Three-Code | 0.786% | 0.632% | 6.948% | 0.565% |
+The [full comparison](reports/shenyun-u357-comparison.md) also lists the eight weighted non-first rates for Snow KeyTao and Snow Three-Code; the [raw JSON](reports/shenyun-u357-comparison.json) is machine-reviewable.
 
-The legacy R9 ensemble equivalents v4/v5/v6-CW150, bare S2, and MX34 belong to a frozen R11 methodology. They have been removed from the current README table and must not be compared with the CKT v4 value above. See the archived [R9 comparison](reports/shenyun-r9-comparison.md), its [raw JSON](reports/shenyun-r9-comparison.json), and the [U357 deployment note](research-notes/2026-10-30-shenyun-u357-migration.md) for provenance.
+```powershell
+bun scripts/生成神韵键盘图.ts "path/to/a7_CKT_R11.html"
+bun scripts/导出神韵热力图.ts "path/to/a7_CKT_R11.html"
+```
 
 #### Fixed candidates and staged two-character abbreviations
 
@@ -292,7 +300,9 @@ bun scripts/验证神韵双拼.ts
 - [Shenyun versus original Snow KeyTao collision comparison](reports/shenyun-collision-comparison.md): two-character, four-character, and cross-length collisions from Top 500 through the full corpus.
 - [Shenyun R9 collision interpretation and design lessons](reports/shenyun-collision-design-notes.md): tradeoffs, structural causes, and implications for double-pinyin layout design.
 - [Shenyun R9 constrained fixed-candidate optimization](reports/shenyun-fixed-optimization.md): two-key abbreviations, AA characters, Three-Code/KeyTao 630 spaces, and redundancy constraints.
-- [Complete Shenyun R9 benchmark comparison](reports/shenyun-r9-comparison.md): full metrics and scenario results against S005 and B04, with scope limits.
+- [Complete Shenyun U357 comparison](reports/shenyun-u357-comparison.md): current CKT v4, ergonomics, and eight-track non-first rates against S005 and B04.
+- [Raw Shenyun U357 comparison JSON](reports/shenyun-u357-comparison.json): machine-reviewable data behind the current comparison.
+- [Complete Shenyun R9 benchmark comparison](reports/shenyun-r9-comparison.md): historical metrics and scenario results against S005 and B04, with scope limits.
 - [Raw Shenyun R9 comparison JSON](reports/shenyun-r9-comparison.json): machine-reviewable snapshot underlying the comparison.
 - [Shortcut audit and upstream comparison](reports/shortcut-audit.md): shared and scheme-specific shortcuts plus local changes from upstream.
 - [Four-Code staged bigram ranking study](reports/sipin-bigram-ranking-research.md): limited ranking evidence for KeyTao and Three-Code fixed candidates; Four-Code itself is not part of R9.
@@ -318,11 +328,18 @@ bun scripts/验证神韵双拼.ts
 > [!NOTE]
 > 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
 
-「無飛鍵道·神韻 U357 綜合人體工學前沿」是方案全稱，`U357` 是候選代號，`U357-21X21-M40-D0` 是實作標識；完整 Benchmark 候選 ID 為 `gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13`。
-
 **聲韻映射**
 
-可由機器複核的候選設定見 [`config/shenyun-21x21-mapping.json`](config/shenyun-21x21-mapping.json)，421 音節生成快照見 [`docs/shenyun-u357-mapping.json`](docs/shenyun-u357-mapping.json)。舊 R9 鍵盤圖與熱力圖繼續保留為歷史基線，不再代表目前實裝。
+[![無飛鍵道·神韻 U357 聲韻映射圖](docs/shenyun-u357-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
+
+**神韻 U357 日常八場景文稿 純雙拼鍵頻圖（含標點）**
+
+![神韻 U357 文稿擊鍵熱力圖](docs/shenyun-u357-keyboard-heat.svg)
+
+雙拼熱力圖基於日常八場景文稿的 2149 次擊鍵。
+
+> [!NOTE]
+> 注意：只包含雙拼部分，5 輔鍵未參與評估。
 
 #### 聲韻規則
 
@@ -340,34 +357,30 @@ bun scripts/验证神韵双拼.ts
 
 `j/q/x` 的 u 系列與零聲母 YU 系列統一成 `v/van/ve/vn`。[三拼](https://input.tansongchen.com/snow3/)聲調鍵為 `I/V/U/A/O → 一/二/三/四/輕`，[鍵道](https://input.tansongchen.com/snow-jiandao/)形碼鍵為 `A/V/U/I/O → 折/橫/撇/豎/點`。Common399 全覆蓋並形成 357 個唯一碼、42 個重碼桶；加上 17 個擴充音節後共有 366 個唯一音碼與 75 個空碼。`hng、m、n、ng、ê` 不編碼。
 
-#### 現行 U357 生產指標
+#### 神韻 U357 與[星空鍵道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949)的公平比較
 
-下表來自[雙拼佈局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)中 U357 所在的嚴格 ProdGate 搜尋報告，以 `S005 = 10` 的 CPU exact scoring 為參照。這裡的 **CKT v4** 是現行候選評分，不是舊 R9 表中的「系綜當量 v4」。
+三方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；S005 是 21×21 的同鍵域基線，B04 是 26×26 的同環境基線。
 
-| 指標 | U357 | 門檻或參照 | 判定 |
-| --- | ---: | ---: | --- |
-| 聲韻容量／輔鍵 | 21×21／`IVUAO` | 嚴格鎖定 | 通過 |
-| 記憶代價 M | 40 | ≤ 40 | 通過 |
-| 普通聲母位移 D | 0 | = 0 | 通過 |
-| 元音位移 V | 5 | ≤ 5 | 通過 |
-| Common399 唯一音節碼 U | 357 | 生產基線 352；越高越好 | +5 |
-| 重碼桶／受影響音節 | 42／84 | 越少越好 | — |
-| CKT v4 | 9.716421 | Tier-A ≤ 9.720；越低越好 | 通過 |
-| 右小指 S2 負載 `rp_s2` | 4.1808% | ≤ 4.1808% | 通過 |
-| 右小指峰值 `rp_max` | 5.1045% | ≤ 5.1045% | 通過 |
-| 主鍵區下限 `homeFloor` | 37.6204% | ≥ 35.0756% | 通過 |
-| W 鍵峰值 `w_max` | 3.6232% | ≤ 3.6232% | 通過 |
-| Y 鍵峰值 `y_max` | 6.3924% | ≤ 6.8685% | 通過 |
-| 移動手分數 `mxScore` | 143.380 | ≥ 140.842；越高越好 | 通過 |
+| 指標 | 神韻 U357 | 原鍵道 S005 | 首道 B04 | 何為好 |
+| --- | ---: | ---: | ---: | --- |
+| M-R2 記憶項 | 40 🥇 | 44 | 51 | 越低越好 |
+| Common399 不同二鍵碼 | 357 | 372 | 399 🥇 | 越高重碼越少 |
+| CKT v4 | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
+| 裸 S2 右小指負載 | 4.1808% | 2.1518% | 1.2618% 🥇 | 越低越好 |
+| 20 合同右小指峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| 20 合同主鍵區下限 | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 W 鍵峰值 | 3.6232% 🥇 | 7.2907% | 5.9773% | 越低越好 |
+| 20 合同 Y 鍵峰值 | 6.3924% 🥇 | 8.0125% | 7.6958% | 越低越好 |
+| 日常八場景純雙拼移動手分數（含標點） | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
-U357 在凍結語料上的八軌加權選重率如下；它們用於檢查冰雪鍵道與冰雪三拼的實際編碼路徑，不等同真人測速。
+日常八場景移動手分數不含五輔鍵、空格和選重。神韻 U357 的優勢集中在記憶項、合同主鍵區下限、W/Y 鍵峰值和日常文稿路徑；代價是音節重碼與右小指負載。B04 以更大的 26×26 鍵域取得零音節重碼、最低 CKT v4 和最低右小指負載；S005 提供同鍵域直接參照。U357 是面向冰雪鍵道與冰雪三拼的綜合折中，不是全指標支配；模型分數也不等同真人測速。
 
-| 方案 | 單字 | 二字詞 | 三字詞 | 四字詞 |
-| --- | ---: | ---: | ---: | ---: |
-| 冰雪鍵道 | 0.489% | 0.440% | 4.948% | 0.366% |
-| 冰雪三拼 | 0.786% | 0.632% | 6.948% | 0.565% |
+[完整公平比較](reports/shenyun-u357-comparison.md)另列冰雪鍵道、冰雪三拼的八軌加權非首選率；[原始 JSON](reports/shenyun-u357-comparison.json)可供機器複核。
 
-舊 R9 的「系綜當量 v4/v5/v6-CW150」、裸 S2 與 MX34 屬於凍結 R11 歷史口徑，已從現行 README 指標表移除，不能與上面的 CKT v4 混用。需要追溯時請查看[神韻 R9 公平對比](reports/shenyun-r9-comparison.md)、[原始 JSON](reports/shenyun-r9-comparison.json)及[U357 實裝遷移記錄](research-notes/2026-10-30-shenyun-u357-migration.md)。
+```powershell
+bun scripts/生成神韵键盘图.ts "路徑/a7_CKT_R11.html"
+bun scripts/导出神韵热力图.ts "路徑/a7_CKT_R11.html"
+```
 
 #### 固頂與二字詞逐級簡碼
 
@@ -389,7 +402,9 @@ bun scripts/验证神韵双拼.ts
 - [神韻與原冰雪鍵道雙拼碰撞對比](reports/shenyun-collision-comparison.md)：按 Top 500 至全量比較二字內部、四字內部及跨詞長碰撞。
 - [神韻 R9 與原鍵道碰撞解讀及雙拼設計啟發](reports/shenyun-collision-design-notes.md)：解釋碰撞資料的取捨、結構原因與布局設計啟發。
 - [神韻 R9 固頂受約束選優報告](reports/shenyun-fixed-optimization.md)：記錄二簡、AA 單字、三拼/鍵道 630 與去冗餘約束。
-- [神韻 R9 公平對比](reports/shenyun-r9-comparison.md)：與 S005、B04 的完整 Benchmark 指標、分場景結果與邊界說明。
+- [神韻 U357 公平比較](reports/shenyun-u357-comparison.md)：與 S005、B04 的現行 CKT v4、人體工學及八軌非首選率比較。
+- [神韻 U357 公平比較原始 JSON](reports/shenyun-u357-comparison.json)：上述現行比較的機器可複核資料。
+- [神韻 R9 公平對比](reports/shenyun-r9-comparison.md)：與 S005、B04 的歷史 Benchmark 指標、分場景結果與邊界說明。
 - [神韻 R9 公平對比原始 JSON](reports/shenyun-r9-comparison.json)：上述對比的機器可複核資料快照。
 - [目前方案快捷鍵稽核與上游對照](reports/shortcut-audit.md)：四個方案的共用、專屬及相對上游變更的快捷鍵。
 - [四拼二字詞逐級排序對神韻固頂的參考調研](reports/sipin-bigram-ranking-research.md)：以四拼逐級候選名次為鍵道、三拼固頂提供有限旁證，不把四拼視為 R9 的組成部分。

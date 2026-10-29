@@ -1,11 +1,11 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 
-const targetScheme = "R9-21X21-M40-02";
-const track = "daily|native-punctuation";
-const benchmarkPath = process.argv[2];
+const args = process.argv.slice(2);
+const check = args.includes("--check");
+const benchmarkPath = args.find((arg) => arg !== "--check");
 if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
 
 const html = readFileSync(resolve(benchmarkPath), "utf8");
@@ -18,18 +18,33 @@ const payload = JSON.parse(
 ) as {
 	macroxue: {
 		layout: Record<string, { x: number; y: number }>;
-		corpora: Record<string, { label: string }>;
-		values: Record<
+		corpora: Record<
 			string,
-			Record<string, { hits: number; heat_map: Record<string, number> }>
+			{
+				label: string;
+				tokens: Array<{ key?: string; pinyin?: string }>;
+			}
 		>;
 	};
 };
-const sample = payload.macroxue.values[targetScheme]?.[track];
-if (!sample)
-	throw new Error(
-		`Benchmark payload 中未找到 ${targetScheme} 的 ${track} 热力数据。`,
-	);
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const mapping = JSON.parse(
+	readFileSync(join(root, "docs", "shenyun-u357-mapping.json"), "utf8"),
+) as { name: string; codes: Record<string, string | null> };
+const tokens = payload.macroxue.corpora.daily?.tokens;
+if (!tokens) throw new Error("Benchmark payload 中未找到日常八场景文稿。");
+const strokes = tokens
+	.map((token) => {
+		if (token.key) return token.key;
+		const code = token.pinyin ? mapping.codes[token.pinyin] : null;
+		if (!code) throw new Error(`日常八场景音节无法编码：${token.pinyin}`);
+		return code;
+	})
+	.join("")
+	.toLowerCase();
+const heatMap: Record<string, number> = {};
+for (const key of strokes) heatMap[key] = (heatMap[key] ?? 0) + 1;
+const sample = { hits: strokes.length, heat_map: heatMap };
 
 const visibleKeys = Object.entries(payload.macroxue.layout).filter(
 	([key, position]) => position.x < 10 && key !== "/",
@@ -65,17 +80,21 @@ const keys = visibleKeys
 	.join("\n");
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc">
-<title id="title">神韵 R9 日常八场景文稿 纯双拼键频图（含标点）</title>
+<title id="title">无飞键道·神韵 U357 日常八场景文稿 纯双拼键频图（含标点）</title>
 <desc id="desc">双拼热力图基于日常八场景文稿的 ${sample.hits} 次击键。只包含双拼部分，5 辅键未参与评估。</desc>
 <rect width="790" height="304" fill="#fbfcfa"/>
 ${keys}
 </svg>\n`;
-const output = join(
-	dirname(fileURLToPath(import.meta.url)),
-	"..",
-	"docs",
-	"shenyun-r9-keyboard-heat.svg",
-);
+const output = join(root, "docs", "shenyun-u357-keyboard-heat.svg");
 mkdirSync(dirname(output), { recursive: true });
-writeFileSync(output, svg, "utf8");
-console.log(`${output}\n${visibleKeys.length} 键，${sample.hits} 次击键。`);
+if (check) {
+	if (!existsSync(output) || readFileSync(output, "utf8") !== svg) {
+		throw new Error(`热力图与当前 U357 映射或文稿不一致：${output}`);
+	}
+	console.log(
+		`热力图校验通过：${mapping.name}，${visibleKeys.length} 键，${sample.hits} 次击键。`,
+	);
+} else {
+	writeFileSync(output, svg, "utf8");
+	console.log(`${output}\n${visibleKeys.length} 键，${sample.hits} 次击键。`);
+}
