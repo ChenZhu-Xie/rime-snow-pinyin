@@ -237,8 +237,8 @@ deploy:
       - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 键道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
-      - send: "xou{Control+apostrophe}ljhe v{Control+apostrophe}xou"
-        assert: error(table.concat((function() local r = {}; for i = 1, math.min(#cand, 20) do r[i] = cand[i].text end; return r end)(), "|"))
+      - send: "xou{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}xou"
+        assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四V我50"
       - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdf{Control+bracketright}jpdf"
