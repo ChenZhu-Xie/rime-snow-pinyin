@@ -236,9 +236,9 @@ deploy:
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
       - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
-      # U357 键道 ho 固顶“好吧”：新词不得挤掉已有首选。
-      - send: "ho{Control+apostrophe}ljhe v{Control+apostrophe}ho"
-        assert: cand[1].text == "好吧" and has("垃圾回收")
+      # U357 键道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
+      - send: "xou{Control+apostrophe}ljhe v{Control+apostrophe}xou"
+        assert: cand[1].text == "行叭" and cand[2].text == "垃圾回收"
       - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdf{Control+bracketright}jpdf"
