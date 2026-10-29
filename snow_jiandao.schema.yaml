@@ -113,10 +113,10 @@ speller:
     __append:
       # 字母入口与三拼共享二键基码：辅音借用 c 列，元音使用 x 载体。
       - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1c/
-      - xform/~{1,2}v/xy/
-      - xform/~{1,2}i/xk/
-      - xform/~{1,2}u/xj/
-      - xform/~{1,2}o/xe/
+      - xform/~{1,2}v/xg/
+      - xform/~{1,2}i/xl/
+      - xform/~{1,2}u/xh/
+      - xform/~{1,2}o/xd/
       - xform/~{1,2}a/xw/
       - xform/[viuoa]$// # 无声调
 

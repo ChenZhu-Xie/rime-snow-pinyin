@@ -22,22 +22,13 @@
 > [!NOTE]
 > 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五调辅键按照与[冰雪四拼](https://input.tansongchen.com/snow4/)相近的顺序排列。
 
-本仓库采用的方案全名为 **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文称 **[神韵 R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它来自[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的离散优化与冻结复核：在 21×21 键域和固定五辅键约束下，兼顾记忆量、击键成本、键位负载与规则一致性，因而被选作神韵的现行声韵布局。
+本仓库现行方案为 **神韵 U357**，实现标识为 `U357-21X21-M40-D0`，完整候选 ID 为 `gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13`。它来自[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的严格 `21×21 / IVUAO / M=40 / D=0 / V=5` ProdGate 前沿：Common399 得到 357 个唯一音节码，CKT v4 为 9.716421，移动手得分为 143.380，六项人体工学门禁全部通过。
 
-另有两套飞花式 `AUBB` 原型：[冰雪神韵·形](snow_shenyun_shape.schema.yaml)与[冰雪神韵·调](snow_shenyun_tone.schema.yaml)，共用 [R10 21×26 声韵映射](config/shenyun-21x26-mapping.json)，不占用逗号、句号。两者的 B 辅码分别为形码与声调；调方案单字首 B 筛声调，后续 B 筛笔画，数字 `1` 独立进入部首筛选。这不改变下文键道、三拼使用的 R9 21×21 布局。
+另有两套飞花式 `AUBB` 原型：[冰雪神韵·形](snow_shenyun_shape.schema.yaml)与[冰雪神韵·调](snow_shenyun_tone.schema.yaml)，共用 [R10 21×26 声韵映射](config/shenyun-21x26-mapping.json)，不占用逗号、句号。两者的 B 辅码分别为形码与声调；调方案单字首 B 筛声调，后续 B 筛笔画，数字 `1` 独立进入部首筛选。这不改变下文冰雪键道、冰雪三拼使用的 U357 21×21 布局。
 
 **声韵映射**
 
-[![无飞键道・神韵声韵映射图](docs/shenyun-r9-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
-
-**[神韵 R9](https://github.com/more-14-different/shuangpin-layout-benchmark) 日常八场景文稿 纯双拼键频图（含标点）**
-
-![神韵文稿击键热力图](docs/shenyun-r9-keyboard-heat.svg)
-
-双拼热力图基于日常八场景文稿的 2149 次击键。
-
-> [!NOTE]
-> 注意：只包含双拼部分，5 辅键未参与评估。
+机器可复核的候选源配置见 [`config/shenyun-21x21-mapping.json`](config/shenyun-21x21-mapping.json)，421 音节生成快照见 [`docs/shenyun-u357-mapping.json`](docs/shenyun-u357-mapping.json)。旧 R9 映射、键盘图、热力图与公平对比报告继续保留，作为历史基线，不再代表当前实装。
 
 #### 声韵编码规则
 
@@ -49,7 +40,7 @@
 | f | F | d | D | t | T |
 | n | N | l | L | g | G |
 | k | K | h | H | j | J |
-| q | Q | x | X | zh | F |
+| q | Q | x | X | zh | K |
 | ch | W | sh | E | r | R |
 | z | Z | c | C | s | S |
 
@@ -57,30 +48,32 @@
 
 | 前导组 | 首键 | 完整音节编码 |
 | --- | :---: | --- |
-| ØA | Q | a=QW · ai=QH · an=QL · ang=QM · ao=QZ |
-| ØE | Q | e=QS · ei=QX · en=QQ · eng=QN · er=QJ |
-| ØO | Q | o=QE · ou=QF |
-| ØY | Y | ya=YW · yan=YL · yang=YM · yao=YZ · ye=YS · yi=YK · yin=YG · ying=YD · yo=YE · yong=YP · you=YF · yu=YR · yuan=YE · yue=YY · yun=YQ |
-| ØW | J | wa=JW · wai=JH · wan=JL · wang=JM · wei=JX · wen=JQ · weng=JN · wo=JE · wu=JJ |
+| ØA | R | a=RW · ai=RK · an=RJ · ang=RN · ao=RF |
+| ØE | R | e=RS · ei=RE · en=RM · eng=RR · er=RE |
+| ØO | R | o=RD · ou=RQ |
+| ØY | Y | ya=YW · yan=YJ · yang=YN · yao=YF · ye=YS · yi=YL · yin=YB · ying=YT · yo=YD · yong=YP · you=YQ · yu=YG · yuan=YR · yue=YK · yun=YE |
+| ØW | S | wa=SW · wai=SK · wan=SJ · wang=SN · wei=SE · wen=SM · weng=SR · wo=SD · wu=SH |
 
 韵母使用第二键；`v` 表示 `ü`，`ve` 表示 `üe`：
 
 | 第二键 | 韵母 | 第二键 | 韵母 | 第二键 | 韵母 |
 | :---: | --- | :---: | --- | :---: | --- |
-| W | a | H | ai | L | an / ia |
-| M | ang | Z | ao | S | e |
-| X | ei | E | o / uan / van | N | eng / iong |
-| K | i | P | ian / ong | F | iang / ou |
-| C | iao / ua | B | ie | G | in / un |
-| D | ing / uang | T | iu / uai | Q | en / vn |
-| J | u / er | R | ui / v（ü） | Y | uo / ve（üe） |
+| W | a | K | ai / ve（üe） | J | an / iang |
+| N | ang / iong | F | ao / ia | S | e |
+| E | ei / er / vn | M | en | R | eng / van |
+| L | i | P | ian / ong | C | iao / ua |
+| Z | ie | B | in / un | T | ing / uang |
+| D | iu / o / uai | Q | ou | H | u |
+| X | uan | G | ui / v（ü） | Y | uo |
 
-- `zh/ch/sh → F/W/E`；零声母载体 `AOE/Y/W → Q/Y/J`。
+- `zh/ch/sh → K/W/E`；零声母载体 `AOE/Y/W → R/Y/S`。
 - `j/q/x` 的 `u/uan/ue/un` 与零声母 YU 系列统一按 `v/van/ve/vn` 编码。
 - 三拼声调 `I/V/U/A/O → 一/二/三/四/轻`；键道形码 `A/V/U/I/O → 折/横/撇/竖/点`。
-- [神韵 R9](https://github.com/more-14-different/shuangpin-layout-benchmark) 的 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 全覆盖；实现另按同一规则推导 17 个扩展音节。`hng、m、n、ng、ê` 不编码。
+- 神韵 U357 的 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 全覆盖，形成 357 个唯一音节码与 42 个二元重码桶；实现另按同一规则推导 17 个扩展音节，扩展域共有 366 个唯一音码与 75 个空码。`hng、m、n、ng、ê` 不编码。
 
-#### [神韵 R9](https://github.com/more-14-different/shuangpin-layout-benchmark) 与 [星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949) 的公平比较
+#### 历史基线：神韵 R9 与星空键道 S005、首道 B04 的公平比较
+
+以下冻结表及其链接报告记录旧 R9，不是 U357 的当前指标；保留它们用于追溯迁移前基线。
 
 三方案共用 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin)、冻结 20 合同、字词/形码数据和模型；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 是 21×21 的同键域基线，[B04 首道](https://sspai.com/post/108949)是 26×26 的同环境基线。
 
@@ -133,8 +126,8 @@ bun scripts/导出神韵热力图.ts "路径/benchmark.html"
 
 固顶表与简码概况：
 
-- `AA` 的 441 个位置由 377 个二码单字和 64 个二简完整覆盖；其中 59 个二简使用天然空码，5 个让极冷音码下沉到第三键。
-- 三拼 630 当前为 105 个二码位＋509 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
+- `AA` 的 441 个位置由 366 个二码单字和 75 个二简完整覆盖；75 个二简全部使用 U357 扩展域的天然空码，不再让音码下沉。
+- 三拼 630 当前为 105 个二码位＋505 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
 - 三拼二字词二、三码候选清单见 [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)：630 个理论码位中 550 个有合法候选，每码最多列 10 项，供逐级选词复核，不直接替代一码一候选的固顶表。
 - [二字词逐级排序结果](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音。
 - 多字轻声 `de/le` 尾词改走 `;`/`/` 尾字键；已有结构略码、完整码首选或日常收益不足的词不强占固顶位。
@@ -142,6 +135,7 @@ bun scripts/导出神韵热力图.ts "路径/benchmark.html"
 ```powershell
 bun scripts/生成神韵固顶词.ts
 bun scripts/生成神韵固顶词.ts --check
+bun scripts/生成神韵映射.ts --check
 bun scripts/生成三拼简词.ts
 bun scripts/生成三拼简词.ts --check
 bun scripts/验证神韵双拼.ts
@@ -254,40 +248,33 @@ Recipe: ℞ **snow-pinyin**
 > [!NOTE]
 > Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Three-Code](https://input.tansongchen.com/snow3/)'s five tone auxiliary keys are arranged in an order similar to [Snow Four-Code](https://input.tansongchen.com/snow4/)'s.
 
-The adopted scheme's full name is **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**, referred to below as **[Shenyun R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**. It comes from the discrete optimization and frozen review in [Shuangpin Layout Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark), balancing memory load, keystroke cost, key load, and rule consistency within a 21×21 domain with five fixed auxiliary keys.
+The current scheme is **Shenyun U357**, implementation ID `U357-21X21-M40-D0`, with full candidate ID `gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13`. It is a strict `21×21 / IVUAO / M=40 / D=0 / V=5` ProdGate-frontier candidate from [Shuangpin Layout Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark): Common399 yields 357 unique syllable codes, CKT v4 is 9.716421, the moving-hand score is 143.380, and all six ergonomic gates pass.
 
-Two separate AUBB prototypes, [Shenyun Shape](snow_shenyun_shape.schema.yaml) and [Shenyun Tone](snow_shenyun_tone.schema.yaml), share the [R10 21×26 mapping](config/shenyun-21x26-mapping.json); comma and period remain punctuation. In the tone prototype, the first single-character auxiliary key filters tone, later ones filter strokes, and `1` independently opens radical filtering. The KeyTao and Three-Code layouts below remain R9 21×21.
+Two separate AUBB prototypes, [Shenyun Shape](snow_shenyun_shape.schema.yaml) and [Shenyun Tone](snow_shenyun_tone.schema.yaml), share the [R10 21×26 mapping](config/shenyun-21x26-mapping.json); comma and period remain punctuation. In the tone prototype, the first single-character auxiliary key filters tone, later ones filter strokes, and `1` independently opens radical filtering. KeyTao and Three-Code use the U357 21×21 layout described below.
 
 **Initial/final mapping**
 
-![Shenyun initial/final mapping](docs/shenyun-r9-keyboard.svg)
-
-**[Shenyun R9](https://github.com/more-14-different/shuangpin-layout-benchmark) daily-document pure-double-pinyin key-frequency map (with punctuation)**
-
-![Shenyun document heat map](docs/shenyun-r9-keyboard-heat.svg)
-
-The double-pinyin heat map contains 2,149 keystrokes from eight daily-use scenarios.
-
-> [!NOTE]
-> It covers only the double-pinyin layer; the five auxiliary keys were not evaluated.
+The machine-reviewable candidate configuration is [`config/shenyun-21x21-mapping.json`](config/shenyun-21x21-mapping.json), and the generated 421-syllable snapshot is [`docs/shenyun-u357-mapping.json`](docs/shenyun-u357-mapping.json). The R9 keyboard and heat-map graphics remain as historical baselines and no longer describe the deployed layout.
 
 #### Coding rules
 
-All ordinary initials have a fixed first key; the exceptions to the letter itself are `zh/ch/sh → F/W/E`. Zero-onset carriers are `AOE/Y/W → Q/Y/J`. Finals are mapped as follows (`v` means `ü`):
+All ordinary initials have a fixed first key; the exceptions to the letter itself are `zh/ch/sh → K/W/E`. Zero-onset carriers are `AOE/Y/W → R/Y/S`. Finals are mapped as follows (`v` means `ü`):
 
 | Key | Finals | Key | Finals | Key | Finals |
 | :---: | --- | :---: | --- | :---: | --- |
-| W | a | H | ai | L | an / ia |
-| M | ang | Z | ao | S | e |
-| X | ei | E | o / uan / van | N | eng / iong |
-| K | i | P | ian / ong | F | iang / ou |
-| C | iao / ua | B | ie | G | in / un |
-| D | ing / uang | T | iu / uai | Q | en / vn |
-| J | u / er | R | ui / v | Y | uo / ve |
+| W | a | K | ai / ve | J | an / iang |
+| N | ang / iong | F | ao / ia | S | e |
+| E | ei / er / vn | M | en | R | eng / van |
+| L | i | P | ian / ong | C | iao / ua |
+| Z | ie | B | in / un | T | ing / uang |
+| D | iu / o / uai | Q | ou | H | u |
+| X | uan | G | ui / v | Y | uo |
 
-The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [Three-Code](https://input.tansongchen.com/snow3/) tone keys are `I/V/U/A/O → 1/2/3/4/neutral`; [KeyTao](https://input.tansongchen.com/snow-jiandao/) shape keys are `A/V/U/I/O → bend/horizontal/left-falling/vertical/dot`. [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) is fully covered, 17 extension syllables are derived by the same rules, and `hng/m/n/ng/ê` remain unencoded.
+The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [Three-Code](https://input.tansongchen.com/snow3/) tone keys are `I/V/U/A/O → 1/2/3/4/neutral`; [KeyTao](https://input.tansongchen.com/snow-jiandao/) shape keys are `A/V/U/I/O → bend/horizontal/left-falling/vertical/dot`. [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) is fully covered with 357 unique codes and 42 collision buckets. The 17 derived extension syllables bring the implementation domain to 366 unique sound codes and 75 vacant codes; `hng/m/n/ng/ê` remain unencoded.
 
-#### Fair comparison of [Shenyun R9](https://github.com/more-14-different/shuangpin-layout-benchmark) with [Starry KeyTao S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [Shoudao B04](https://sspai.com/post/108949)
+#### Historical baseline: Shenyun R9 versus [Starry KeyTao S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [Shoudao B04](https://sspai.com/post/108949)
+
+The frozen table below records the former R9 layout, not current U357 measurements.
 
 The three layouts use the same [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) data, frozen 20 contracts, dictionaries, shapes, and models. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) is the same-domain 21×21 baseline; [B04](https://sspai.com/post/108949) is a 26×26 same-environment baseline.
 
@@ -312,7 +299,7 @@ Against [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts
 
 #### Fixed candidates and staged two-character abbreviations
 
-The current layout produces 64 two-key abbreviations plus 377 two-key characters, 105+509 [Three-Code](https://input.tansongchen.com/snow3/) 630 candidates, and 105+525 [KeyTao](https://input.tansongchen.com/snow-jiandao/) 630 candidates. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key [Three-Code](https://input.tansongchen.com/snow3/) slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
+The current layout fills all 441 AA positions with 366 two-key characters and 75 two-key abbreviations; all abbreviations use naturally vacant U357 extension-domain codes. Three-Code has 105+505 candidates in its 630 space, while KeyTao has 105+525. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
 
 The [staged bigram ranking study](reports/sipin-bigram-ranking-research.md) also checks 133,205 encodable readings along the real [Four-Code](https://input.tansongchen.com/snow4/) completion path. It found no automatic replacement that both improves multiple stages and remains non-first at full code, so the evidence is retained without forcing extra fixed-candidate changes.
 
@@ -356,40 +343,33 @@ bun scripts/验证神韵双拼.ts
 > [!NOTE]
 > 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
 
-本倉庫採用的方案全名為 **[`R9-21X21-M40-02`](https://github.com/more-14-different/shuangpin-layout-benchmark)**，下文稱 **[神韻 R9](https://github.com/more-14-different/shuangpin-layout-benchmark)**。它來自[雙拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的離散最佳化與凍結複核：在 21×21 鍵域和固定五輔鍵約束下，兼顧記憶量、擊鍵成本、鍵位負載與規則一致性，因而被選作神韻的現行聲韻布局。
+本倉庫現行方案為 **神韻 U357**，實作標識為 `U357-21X21-M40-D0`，完整候選 ID 為 `gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13`。它來自[雙拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark)的嚴格 `21×21 / IVUAO / M=40 / D=0 / V=5` ProdGate 前沿：Common399 得到 357 個唯一音節碼，CKT v4 為 9.716421，移動手分數為 143.380，六項人體工學門檻全部通過。
 
-另有兩套飛花式 `AUBB` 原型：[冰雪神韻·形](snow_shenyun_shape.schema.yaml)與[冰雪神韻·調](snow_shenyun_tone.schema.yaml)，共用 [R10 21×26 聲韻映射](config/shenyun-21x26-mapping.json)，不佔用逗號、句號。兩者的 B 輔碼分別為形碼與聲調；調方案單字首 B 篩聲調，後續 B 篩筆畫，數字 `1` 獨立進入部首篩選。這不改變下文鍵道、三拼使用的 R9 21×21 布局。
+另有兩套飛花式 `AUBB` 原型：[冰雪神韻·形](snow_shenyun_shape.schema.yaml)與[冰雪神韻·調](snow_shenyun_tone.schema.yaml)，共用 [R10 21×26 聲韻映射](config/shenyun-21x26-mapping.json)，不佔用逗號、句號。兩者的 B 輔碼分別為形碼與聲調；調方案單字首 B 篩聲調，後續 B 篩筆畫，數字 `1` 獨立進入部首篩選。這不改變下文鍵道、三拼使用的 U357 21×21 布局。
 
 **聲韻映射**
 
-[![無飛鍵道・神韻聲韻映射圖](docs/shenyun-r9-keyboard.svg)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
-
-**[神韻 R9](https://github.com/more-14-different/shuangpin-layout-benchmark) 日常八場景文稿 純雙拼鍵頻圖（含標點）**
-
-![神韻文稿擊鍵熱力圖](docs/shenyun-r9-keyboard-heat.svg)
-
-雙拼熱力圖基於日常八場景文稿的 2149 次擊鍵。
-
-> [!NOTE]
-> 注意：只包含雙拼部分，5 輔鍵未參與評估。
+可由機器複核的候選設定見 [`config/shenyun-21x21-mapping.json`](config/shenyun-21x21-mapping.json)，421 音節生成快照見 [`docs/shenyun-u357-mapping.json`](docs/shenyun-u357-mapping.json)。舊 R9 鍵盤圖與熱力圖繼續保留為歷史基線，不再代表目前實裝。
 
 #### 聲韻規則
 
-普通聲母均使用固定首鍵，`zh/ch/sh → F/W/E`；零聲母載體為 `AOE/Y/W → Q/Y/J`。韻母映射如下（`v` 表示 `ü`）：
+普通聲母均使用固定首鍵，`zh/ch/sh → K/W/E`；零聲母載體為 `AOE/Y/W → R/Y/S`。韻母映射如下（`v` 表示 `ü`）：
 
 | 第二鍵 | 韻母 | 第二鍵 | 韻母 | 第二鍵 | 韻母 |
 | :---: | --- | :---: | --- | :---: | --- |
-| W | a | H | ai | L | an / ia |
-| M | ang | Z | ao | S | e |
-| X | ei | E | o / uan / van | N | eng / iong |
-| K | i | P | ian / ong | F | iang / ou |
-| C | iao / ua | B | ie | G | in / un |
-| D | ing / uang | T | iu / uai | Q | en / vn |
-| J | u / er | R | ui / v | Y | uo / ve |
+| W | a | K | ai / ve | J | an / iang |
+| N | ang / iong | F | ao / ia | S | e |
+| E | ei / er / vn | M | en | R | eng / van |
+| L | i | P | ian / ong | C | iao / ua |
+| Z | ie | B | in / un | T | ing / uang |
+| D | iu / o / uai | Q | ou | H | u |
+| X | uan | G | ui / v | Y | uo |
 
-`j/q/x` 的 u 系列與零聲母 YU 系列統一成 `v/van/ve/vn`。[三拼](https://input.tansongchen.com/snow3/)聲調鍵為 `I/V/U/A/O → 一/二/三/四/輕`，[鍵道](https://input.tansongchen.com/snow-jiandao/)形碼鍵為 `A/V/U/I/O → 折/橫/撇/豎/點`。[Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 全覆蓋，另依同一規則推導 17 個擴充音節；`hng、m、n、ng、ê` 不編碼。
+`j/q/x` 的 u 系列與零聲母 YU 系列統一成 `v/van/ve/vn`。[三拼](https://input.tansongchen.com/snow3/)聲調鍵為 `I/V/U/A/O → 一/二/三/四/輕`，[鍵道](https://input.tansongchen.com/snow-jiandao/)形碼鍵為 `A/V/U/I/O → 折/橫/撇/豎/點`。Common399 全覆蓋並形成 357 個唯一碼、42 個重碼桶；加上 17 個擴充音節後共有 366 個唯一音碼與 75 個空碼。`hng、m、n、ng、ê` 不編碼。
 
-#### [神韻 R9](https://github.com/more-14-different/shuangpin-layout-benchmark) 與 [星空鍵道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949) 的公平比較
+#### 歷史基線：神韻 R9 與 [星空鍵道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949) 的公平比較
+
+以下凍結表記錄舊 R9，不是 U357 的目前指標。
 
 三方案共用 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin)、凍結 20 合約、詞形資料與模型；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 是 21×21 的同鍵域基線，[B04](https://sspai.com/post/108949) 是 26×26 的同環境基線。
 
@@ -414,7 +394,7 @@ bun scripts/验证神韵双拼.ts
 
 #### 固頂與二字詞逐級簡碼
 
-當前方案生成 64 個二簡與 377 個二碼單字；三拼 630 為 105＋509，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
+目前方案以 366 個二碼單字與 75 個二簡完整覆蓋 441 個 AA 位置，二簡全部使用 U357 擴充域的自然空碼；三拼 630 為 105＋505，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
 
 [二字詞逐級排序結果](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音。
 

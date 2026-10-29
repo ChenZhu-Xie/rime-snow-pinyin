@@ -233,26 +233,27 @@ for (const key of "bpmfdtnlgkhjqxzcsrywe") {
 	jiandaoSupplementalCandidates.set(`${key}c`, [key.toUpperCase(), key]);
 }
 for (const [code, letter] of [
-	["xy", "v"],
-	["xk", "i"],
-	["xj", "u"],
-	["xe", "o"],
+	["xg", "v"],
+	["xl", "i"],
+	["xh", "u"],
+	["xd", "o"],
 	["xw", "a"],
 ] as const) {
 	jiandaoSupplementalCandidates.set(code, [letter.toUpperCase(), letter]);
 }
 for (const [code, words] of [
 	["y", "1"],
-	["qj", "2"],
+	["re", "二 2"],
+	// “三”的 U357 完整音码 sj 已占用 AA 单字位；这里只追加数字，避免 s/sj 父子码重复。
 	["s", "3"],
-	["ski", "4"],
-	["jjv", "5"],
-	["lto", "6"],
-	["qkv", "七 7"],
+	["sli", "四 4"],
+	["shv", "五 5"],
+	["ldo", "六 6"],
+	["qlv", "七 7"],
 	["bwu", "8"],
-	["jtu", "九 9"],
-	["eku", "10"],
-	["ldv", "0"],
+	["jdu", "九 9"],
+	["elu", "十 10"],
+	["ltv", "零 0"],
 ] as const) {
 	jiandaoSupplementalCandidates.set(code, [
 		...words.split(" "),
@@ -266,11 +267,13 @@ export function renderJiandaoFixedTable(sections: FixedSections) {
 		.trimEnd()
 		.split("\n")
 		.map((line) => {
-			const [code] = line.split("\t", 1);
+			const [code, candidates = ""] = line.split("\t", 2);
 			const aliases = jiandaoSupplementalCandidates.get(code);
 			if (!aliases) return line;
 			found.add(code);
-			return `${line} ${aliases.join(" ")}`;
+			const existing = new Set(candidates.split(" "));
+			const appended = aliases.filter((candidate) => !existing.has(candidate));
+			return appended.length > 0 ? `${line} ${appended.join(" ")}` : line;
 		});
 	for (const code of jiandaoSupplementalCandidates.keys()) {
 		if (!found.has(code)) throw new Error(`键道字母或数字码位不存在：${code}`);
@@ -309,23 +312,23 @@ export const sanpinLetterEntries = [
 	["yco", "Y y"],
 	["wco", "W w"],
 	["eco", "E e"],
-	["xyo", "V v"],
-	["xko", "I i"],
-	["xjo", "U u"],
-	["xeo", "O o"],
+	["xgo", "V v"],
+	["xlo", "I i"],
+	["xho", "U u"],
+	["xdo", "O o"],
 	["xwo", "A a"],
 ] as const;
 
 // 上游统计功能用这些三音节全码同时提供中文数字与阿拉伯数字候选。
-// 码位按当前 R9 神韵的声、韵、调键重新编码，均不占用固顶区已有条目。
+// 码位按当前 U357 神韵的声、韵、调键重新编码，均不占用固顶区已有条目。
 export const sanpinTemporaryNumberEntries = [
-	["jju", "五 5"],
-	["lta", "六 6"],
-	["qki", "七 7"],
+	["shu", "五 5"],
+	["lda", "六 6"],
+	["qli", "七 7"],
 	["bwi", "八 8"],
-	["jtu", "九 9"],
-	["ekv", "十 10"],
-	["ldv", "零 0"],
+	["jdu", "九 9"],
+	["elv", "十 10"],
+	["ltv", "零 0"],
 ] as const;
 
 export function renderSanpinFixedTable(sections: FixedSections) {

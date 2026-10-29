@@ -17,7 +17,7 @@ const toneKeys: Readonly<Record<string, string>> = {
 	"5": "o",
 };
 const mapping = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-r9-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-u357-mapping.json"), "utf8"),
 ) as { scheme: string; codes: Record<string, string | null> };
 
 const shapeElementKeys = new Map<string, string>();
@@ -237,7 +237,9 @@ interface DictEntry {
 }
 const allDictEntries: DictEntry[] = [];
 for (const dictionary of dictionaries) {
-	for (const line of readFileSync(join(root, dictionary), "utf8").split(/\r?\n/)) {
+	for (const line of readFileSync(join(root, dictionary), "utf8").split(
+		/\r?\n/,
+	)) {
 		const entry = parseDictionaryLine(line);
 		if (entry) allDictEntries.push(entry);
 	}
@@ -329,7 +331,7 @@ function buildAlternativesForTexts(texts: string[], scheme: SchemeId) {
 				continue;
 			}
 			const list = top.get(code) ?? [];
-			const existingIndex = list.findIndex(item => item.word === entry.word);
+			const existingIndex = list.findIndex((item) => item.word === entry.word);
 			if (existingIndex >= 0) {
 				if (entry.weight > list[existingIndex].weight) {
 					list[existingIndex].weight = entry.weight;
@@ -337,7 +339,9 @@ function buildAlternativesForTexts(texts: string[], scheme: SchemeId) {
 			} else {
 				list.push({ word: entry.word, weight: entry.weight });
 			}
-			list.sort((a, b) => b.weight - a.weight || a.word.localeCompare(b.word, "zh-CN"));
+			list.sort(
+				(a, b) => b.weight - a.weight || a.word.localeCompare(b.word, "zh-CN"),
+			);
 			if (list.length > 3) list.length = 3;
 			top.set(code, list);
 		}
@@ -483,9 +487,14 @@ function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
 	}
 	for (let i = characters.length - 1; i >= 0; i--) {
 		if (!best[i]) {
-			console.log(`从后往前第一个断链位置: index ${i}, 字符 '${characters[i]}', 上下文: '${characters.slice(Math.max(0, i - 3), i + 4).join("")}'`);
+			console.log(
+				`从后往前第一个断链位置: index ${i}, 字符 '${characters[i]}', 上下文: '${characters.slice(Math.max(0, i - 3), i + 4).join("")}'`,
+			);
 			const values = alternatives.get(characters[i]);
-			console.log(`该单字 alternatives:`, values?.map(v => `${v.rawCode}(${v.source})`));
+			console.log(
+				`该单字 alternatives:`,
+				values?.map((v) => `${v.rawCode}(${v.source})`),
+			);
 			break;
 		}
 	}
@@ -534,7 +543,9 @@ interface StatResult {
 
 function analyzePath(path: PathResult): StatResult {
 	const hanTokens = path.tokens.filter((t) => /\p{Script=Han}/u.test(t.word));
-	const punctTokens = path.tokens.filter((t) => !/\p{Script=Han}/u.test(t.word));
+	const punctTokens = path.tokens.filter(
+		(t) => !/\p{Script=Han}/u.test(t.word),
+	);
 
 	let c1Tokens = 0;
 	let c2Tokens = 0;
@@ -612,12 +623,14 @@ function analyzePath(path: PathResult): StatResult {
 
 async function run() {
 	const texts = corpusArticles.map((a) => a.text);
-	
+
 	// 核对各篇字数
 	console.log("\n=== 语料篇目汉字字数检查 ===");
 	let sumHan = 0;
 	corpusArticles.forEach((a) => {
-		const hanCount = [...a.text].filter((c) => /\p{Script=Han}/u.test(c)).length;
+		const hanCount = [...a.text].filter((c) =>
+			/\p{Script=Han}/u.test(c),
+		).length;
 		sumHan += hanCount;
 		console.log(`[篇${a.id}] ${a.genre} - ${a.title}: 汉字 ${hanCount} 个`);
 	});
@@ -629,7 +642,10 @@ async function run() {
 		jiandao: "神韵键道",
 	};
 
-	const allResults: Record<SchemeId, { articles: StatResult[]; total: StatResult }> = {
+	const allResults: Record<
+		SchemeId,
+		{ articles: StatResult[]; total: StatResult }
+	> = {
 		sanpin: { articles: [], total: {} as any },
 		jiandao: { articles: [], total: {} as any },
 	};
@@ -639,7 +655,9 @@ async function run() {
 		console.log(`正在为【${schemeNames[scheme]}】构建候选集...`);
 		const t0 = Date.now();
 		const alternatives = buildAlternativesForTexts(texts, scheme);
-		console.log(`构建完成，耗时 ${Date.now() - t0} ms，候选词数：${alternatives.size}`);
+		console.log(
+			`构建完成，耗时 ${Date.now() - t0} ms，候选词数：${alternatives.size}`,
+		);
 
 		console.log(`正在进行 10 篇 500 字独立最优 DP 切分...`);
 		const articleStats: StatResult[] = [];
@@ -659,69 +677,131 @@ async function run() {
 	}
 
 	// 汇总输出报表
-	console.log("\n\n==========================================================================================");
+	console.log(
+		"\n\n==========================================================================================",
+	);
 	console.log("【实测结果一：10 篇 500 字不同文体统计详情】");
-	console.log("==========================================================================================");
+	console.log(
+		"==========================================================================================",
+	);
 
 	for (const scheme of schemes) {
 		console.log(`\n### 方案：${schemeNames[scheme]}`);
-		console.log(`篇号\t文体\t汉字数\t总按键\t平均码长\t空格\t1字词%\t2字词%\t3字词%\t4字词%\t5字+%\t| 1字覆盖%\t2字覆盖%\t3字覆盖%\t4字覆盖%\t5字+覆盖%`);
+		console.log(
+			`篇号\t文体\t汉字数\t总按键\t平均码长\t空格\t1字词%\t2字词%\t3字词%\t4字词%\t5字+%\t| 1字覆盖%\t2字覆盖%\t3字覆盖%\t4字覆盖%\t5字+覆盖%`,
+		);
 		for (let i = 0; i < corpusArticles.length; i++) {
 			const a = corpusArticles[i];
 			const s = allResults[scheme].articles[i];
 			console.log(
 				`P${a.id}\t${a.genre}\t${s.totalChars}\t${s.totalKeys}\t${s.avgLength.toFixed(4)}\t${s.spaces}\t` +
-				`${s.tokenRatios.c1.toFixed(1)}%\t${s.tokenRatios.c2.toFixed(1)}%\t${s.tokenRatios.c3.toFixed(1)}%\t${s.tokenRatios.c4.toFixed(1)}%\t${s.tokenRatios.c5plus.toFixed(1)}%\t| ` +
-				`${s.charRatios.c1.toFixed(1)}%\t${s.charRatios.c2.toFixed(1)}%\t${s.charRatios.c3.toFixed(1)}%\t${s.charRatios.c4.toFixed(1)}%\t${s.charRatios.c5plus.toFixed(1)}%`
+					`${s.tokenRatios.c1.toFixed(1)}%\t${s.tokenRatios.c2.toFixed(1)}%\t${s.tokenRatios.c3.toFixed(1)}%\t${s.tokenRatios.c4.toFixed(1)}%\t${s.tokenRatios.c5plus.toFixed(1)}%\t| ` +
+					`${s.charRatios.c1.toFixed(1)}%\t${s.charRatios.c2.toFixed(1)}%\t${s.charRatios.c3.toFixed(1)}%\t${s.charRatios.c4.toFixed(1)}%\t${s.charRatios.c5plus.toFixed(1)}%`,
 			);
 		}
 
 		// 计算 10 篇均值
-		const avgTokenR1 = articleStatsAvg(allResults[scheme].articles, (s) => s.tokenRatios.c1);
-		const avgTokenR2 = articleStatsAvg(allResults[scheme].articles, (s) => s.tokenRatios.c2);
-		const avgTokenR3 = articleStatsAvg(allResults[scheme].articles, (s) => s.tokenRatios.c3);
-		const avgTokenR4 = articleStatsAvg(allResults[scheme].articles, (s) => s.tokenRatios.c4);
-		const avgTokenR5 = articleStatsAvg(allResults[scheme].articles, (s) => s.tokenRatios.c5plus);
+		const avgTokenR1 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.tokenRatios.c1,
+		);
+		const avgTokenR2 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.tokenRatios.c2,
+		);
+		const avgTokenR3 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.tokenRatios.c3,
+		);
+		const avgTokenR4 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.tokenRatios.c4,
+		);
+		const avgTokenR5 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.tokenRatios.c5plus,
+		);
 
-		const avgCharR1 = articleStatsAvg(allResults[scheme].articles, (s) => s.charRatios.c1);
-		const avgCharR2 = articleStatsAvg(allResults[scheme].articles, (s) => s.charRatios.c2);
-		const avgCharR3 = articleStatsAvg(allResults[scheme].articles, (s) => s.charRatios.c3);
-		const avgCharR4 = articleStatsAvg(allResults[scheme].articles, (s) => s.charRatios.c4);
-		const avgCharR5 = articleStatsAvg(allResults[scheme].articles, (s) => s.charRatios.c5plus);
+		const avgCharR1 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.charRatios.c1,
+		);
+		const avgCharR2 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.charRatios.c2,
+		);
+		const avgCharR3 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.charRatios.c3,
+		);
+		const avgCharR4 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.charRatios.c4,
+		);
+		const avgCharR5 = articleStatsAvg(
+			allResults[scheme].articles,
+			(s) => s.charRatios.c5plus,
+		);
 
 		console.log(
 			`均值\t10篇平均\t-\t-\t-\t-\t` +
-			`${avgTokenR1.toFixed(1)}%\t${avgTokenR2.toFixed(1)}%\t${avgTokenR3.toFixed(1)}%\t${avgTokenR4.toFixed(1)}%\t${avgTokenR5.toFixed(1)}%\t| ` +
-			`${avgCharR1.toFixed(1)}%\t${avgCharR2.toFixed(1)}%\t${avgCharR3.toFixed(1)}%\t${avgCharR4.toFixed(1)}%\t${avgCharR5.toFixed(1)}%`
+				`${avgTokenR1.toFixed(1)}%\t${avgTokenR2.toFixed(1)}%\t${avgTokenR3.toFixed(1)}%\t${avgTokenR4.toFixed(1)}%\t${avgTokenR5.toFixed(1)}%\t| ` +
+				`${avgCharR1.toFixed(1)}%\t${avgCharR2.toFixed(1)}%\t${avgCharR3.toFixed(1)}%\t${avgCharR4.toFixed(1)}%\t${avgCharR5.toFixed(1)}%`,
 		);
 	}
 
-	console.log("\n\n==========================================================================================");
+	console.log(
+		"\n\n==========================================================================================",
+	);
 	console.log("【实测结果二：5000 字长文全局最优切分总计】");
-	console.log("==========================================================================================");
+	console.log(
+		"==========================================================================================",
+	);
 	for (const scheme of schemes) {
 		const s = allResults[scheme].total;
 		console.log(`\n方案：${schemeNames[scheme]}`);
-		console.log(`总汉字数: ${s.totalChars}，标点: ${s.totalPunct}，总按键: ${s.totalKeys}，平均码长: ${s.avgLength.toFixed(4)}，空格: ${s.spaces}`);
+		console.log(
+			`总汉字数: ${s.totalChars}，标点: ${s.totalPunct}，总按键: ${s.totalKeys}，平均码长: ${s.avgLength.toFixed(4)}，空格: ${s.spaces}`,
+		);
 		console.log(`【按分词切分动作(词次)占比】：`);
-		console.log(`  单字: ${s.tokenCounts.c1} (${s.tokenRatios.c1.toFixed(2)}%)`);
-		console.log(`  二字: ${s.tokenCounts.c2} (${s.tokenRatios.c2.toFixed(2)}%)`);
-		console.log(`  三字: ${s.tokenCounts.c3} (${s.tokenRatios.c3.toFixed(2)}%)`);
-		console.log(`  四字: ${s.tokenCounts.c4} (${s.tokenRatios.c4.toFixed(2)}%)`);
-		console.log(`  五字及以上: ${s.tokenCounts.c5plus} (${s.tokenRatios.c5plus.toFixed(2)}%)`);
+		console.log(
+			`  单字: ${s.tokenCounts.c1} (${s.tokenRatios.c1.toFixed(2)}%)`,
+		);
+		console.log(
+			`  二字: ${s.tokenCounts.c2} (${s.tokenRatios.c2.toFixed(2)}%)`,
+		);
+		console.log(
+			`  三字: ${s.tokenCounts.c3} (${s.tokenRatios.c3.toFixed(2)}%)`,
+		);
+		console.log(
+			`  四字: ${s.tokenCounts.c4} (${s.tokenRatios.c4.toFixed(2)}%)`,
+		);
+		console.log(
+			`  五字及以上: ${s.tokenCounts.c5plus} (${s.tokenRatios.c5plus.toFixed(2)}%)`,
+		);
 		console.log(`【按汉字位置(覆盖率)占比】：`);
-		console.log(`  单字覆盖: ${s.charCounts.c1} 字 (${s.charRatios.c1.toFixed(2)}%)`);
-		console.log(`  二字覆盖: ${s.charCounts.c2} 字 (${s.charRatios.c2.toFixed(2)}%)`);
-		console.log(`  三字覆盖: ${s.charCounts.c3} 字 (${s.charRatios.c3.toFixed(2)}%)`);
-		console.log(`  四字覆盖: ${s.charCounts.c4} 字 (${s.charRatios.c4.toFixed(2)}%)`);
-		console.log(`  五字及以上: ${s.charCounts.c5plus} 字 (${s.charRatios.c5plus.toFixed(2)}%)`);
+		console.log(
+			`  单字覆盖: ${s.charCounts.c1} 字 (${s.charRatios.c1.toFixed(2)}%)`,
+		);
+		console.log(
+			`  二字覆盖: ${s.charCounts.c2} 字 (${s.charRatios.c2.toFixed(2)}%)`,
+		);
+		console.log(
+			`  三字覆盖: ${s.charCounts.c3} 字 (${s.charRatios.c3.toFixed(2)}%)`,
+		);
+		console.log(
+			`  四字覆盖: ${s.charCounts.c4} 字 (${s.charRatios.c4.toFixed(2)}%)`,
+		);
+		console.log(
+			`  五字及以上: ${s.charCounts.c5plus} 字 (${s.charRatios.c5plus.toFixed(2)}%)`,
+		);
 	}
 
 	// 保存详细 JSON 数据方便分析
 	writeFileSync(
 		join(root, "reports", "5000字_三拼键道最优切分实测结果.json"),
 		JSON.stringify(allResults, null, 2),
-		"utf8"
+		"utf8",
 	);
 	console.log("\n已保存结果至 reports/5000字_三拼键道最优切分实测结果.json");
 }

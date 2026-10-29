@@ -27,7 +27,7 @@ const toneKeys: Readonly<Record<string, string>> = {
 	"5": "o",
 };
 const mapping = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-r9-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-u357-mapping.json"), "utf8"),
 ) as { scheme: string; codes: Record<string, string | null> };
 const shapeElementKeys = new Map<string, string>();
 for (const line of readFileSync(
@@ -554,7 +554,13 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
 	const characters = [...text];
 	const best: Array<PathResult | undefined> = new Array(characters.length + 1);
-	best[characters.length] = { tokens: [], keys: 0, spaces: 0, shifts: 0, fixedCount: 0 };
+	best[characters.length] = {
+		tokens: [],
+		keys: 0,
+		spaces: 0,
+		shifts: 0,
+		fixedCount: 0,
+	};
 	for (let start = characters.length - 1; start >= 0; start -= 1) {
 		const character = characters[start];
 		if (!/\p{Script=Han}/u.test(character)) {
@@ -612,8 +618,10 @@ function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
 
 				const isBetter = (cand: PathResult, cur: PathResult) => {
 					if (cand.keys !== cur.keys) return cand.keys < cur.keys;
-					if (cand.tokens.length !== cur.tokens.length) return cand.tokens.length < cur.tokens.length;
-					if (cand.fixedCount !== cur.fixedCount) return cand.fixedCount > cur.fixedCount; // 固顶简码绝对优先！
+					if (cand.tokens.length !== cur.tokens.length)
+						return cand.tokens.length < cur.tokens.length;
+					if (cand.fixedCount !== cur.fixedCount)
+						return cand.fixedCount > cur.fixedCount; // 固顶简码绝对优先！
 					if (cand.spaces !== cur.spaces) return cand.spaces < cur.spaces;
 					return cand.shifts < cur.shifts;
 				};

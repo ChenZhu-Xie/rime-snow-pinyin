@@ -83,21 +83,21 @@ test("default traditional source entries are postponed before conversion and ded
 	}
 });
 
-test("reported phrase codes follow the frozen Shenyun mapping", () => {
-	const fixture = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
+test("reported phrase codes follow the active Shenyun U357 mapping", () => {
+	const fixture = JSON.parse(read("docs/shenyun-u357-mapping.json")) as {
 		scheme: string;
 		payloadCodes: Record<string, string | null>;
 		codes: Record<string, string>;
 	};
-	assert.equal(fixture.scheme, "R9-21X21-M40-02");
-	assert.equal(fixture.codes.na + fixture.codes.yang, "nwym");
+	assert.equal(fixture.scheme, "U357-21X21-M40-D0");
+	assert.equal(fixture.codes.na + fixture.codes.yang, "nwyn");
 	assert.notEqual(fixture.codes.na + fixture.codes.yang, "nnff");
-	assert.equal(fixture.codes.ben, "bq");
-	assert.equal(fixture.codes.bo, "be");
-	assert.equal(fixture.codes.duan, "de");
-	assert.equal(fixture.codes.jun, "jq");
-	assert.equal(fixture.codes.yun, "yq");
-	assert.equal(fixture.codes.yo, "ye");
+	assert.equal(fixture.codes.ben, "bm");
+	assert.equal(fixture.codes.bo, "bd");
+	assert.equal(fixture.codes.duan, "dx");
+	assert.equal(fixture.codes.jun, "je");
+	assert.equal(fixture.codes.yun, "ye");
+	assert.equal(fixture.codes.yo, "yd");
 
 	const summarize = (values: Array<string | null>) => {
 		const codes = values.filter((code): code is string => code !== null);
@@ -114,17 +114,17 @@ test("reported phrase codes follow the frozen Shenyun mapping", () => {
 			vacant: 21 * 21 - unique,
 		};
 	};
-	const expectedR9Space = {
-		common: { encoded: 399, unique: 373, collisionBuckets: 26, vacant: 68 },
-		extended: { encoded: 416, unique: 382, collisionBuckets: 34, vacant: 59 },
+	const expectedU357Space = {
+		common: { encoded: 399, unique: 357, collisionBuckets: 42, vacant: 84 },
+		extended: { encoded: 416, unique: 366, collisionBuckets: 50, vacant: 75 },
 	};
 	assert.deepEqual(
 		summarize(Object.values(fixture.payloadCodes)),
-		expectedR9Space.common,
+		expectedU357Space.common,
 	);
 	assert.deepEqual(
 		summarize(Object.values(fixture.codes)),
-		expectedR9Space.extended,
+		expectedU357Space.extended,
 	);
 });
 
@@ -198,10 +198,13 @@ test("Three-Code keeps two-syllable full codes ahead of colliding initial abbrev
 		translator,
 		/get_bool\("translator\/t12_preserve_proxy_quality"\)/u,
 	);
-	assert.match(translator, /candidate\.quality = candidate\.quality \+ proxy_bonus/u);
+	assert.match(
+		translator,
+		/candidate\.quality = candidate\.quality \+ proxy_bonus/u,
+	);
 });
 
-test("R9 KeyTao letter and number candidates follow the active schema", () => {
+test("U357 KeyTao letter and number candidates follow the active schema", () => {
 	const lines = new Map(
 		read("snow_jiandao.fixed.txt")
 			.split(/\r?\n/u)
@@ -209,34 +212,64 @@ test("R9 KeyTao letter and number candidates follow the active schema", () => {
 			.map((line) => line.split("\t", 2) as [string, string]),
 	);
 	for (const key of "bpmfdtnlgkhjqxzcsrywe") {
-		assert.deepEqual(lines.get(`${key}c`)?.split(" ").slice(1), [key.toUpperCase(), key]);
+		assert.deepEqual(lines.get(`${key}c`)?.split(" ").slice(1), [
+			key.toUpperCase(),
+			key,
+		]);
 	}
-	for (const [key, code] of Object.entries({ a: "xw", i: "xk", o: "xe", u: "xj", v: "xy" })) {
+	for (const [key, code] of Object.entries({
+		a: "xw",
+		i: "xl",
+		o: "xd",
+		u: "xh",
+		v: "xg",
+	})) {
 		const aliases = lines.get(code)?.split(" ") ?? [];
-		assert.ok(aliases.includes(key.toUpperCase()) && aliases.includes(key), `${key}: ${code}`);
+		assert.ok(
+			aliases.includes(key.toUpperCase()) && aliases.includes(key),
+			`${key}: ${code}`,
+		);
 	}
 	for (const [number, code] of Object.entries({
-		0: "ldv", 1: "y", 2: "qj", 3: "s", 4: "ski", 5: "jjv",
-		6: "lto", 7: "qkv", 8: "bwu", 9: "jtu", 10: "eku",
+		0: "ltv",
+		1: "y",
+		2: "re",
+		3: "s",
+		4: "sli",
+		5: "shv",
+		6: "ldo",
+		7: "qlv",
+		8: "bwu",
+		9: "jdu",
+		10: "elu",
 	})) {
-		assert.ok(lines.get(code)?.split(" ").includes(number), `${number}: ${code}`);
+		assert.ok(
+			lines.get(code)?.split(" ").includes(number),
+			`${number}: ${code}`,
+		);
 	}
-	assert.deepEqual(lines.get("qj")?.split(" "), ["二", "2"]);
-	assert.deepEqual(lines.get("xj")?.split(" "), ["希望", "U", "u"]);
+	assert.ok(lines.get("re")?.split(" ").includes("2"));
+	assert.ok(lines.get("xh")?.split(" ").includes("U"));
 });
 
-test("R9 KeyTao and Three-Code share letter bases with measured full-code collisions", () => {
+test("U357 KeyTao and Three-Code share letter bases with measured full-code collisions", () => {
 	const jiandao = read("snow_jiandao.schema.yaml");
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(jiandao, /prism: snow_jiandao_jianpin/u);
 	assert.match(sanpin, /prism: snow_jiandao_jianpin/u);
-	assert.match(jiandao, /xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1c\//u);
-	assert.match(sanpin, /xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1co\//u);
+	assert.match(
+		jiandao,
+		/xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1c\//u,
+	);
+	assert.match(
+		sanpin,
+		/xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1co\//u,
+	);
 	const prism = read("snow_jiandao_jianpin.schema.yaml");
 	assert.match(prism, /xform\/~\{1,2\}a\/xw\//u);
 
 	const initials = [..."bpmfdtnlgkhjqxzcsrwye"];
-	const vowelBases = ["xy", "xk", "xj", "xe", "xw"];
+	const vowelBases = ["xg", "xl", "xh", "xd", "xw"];
 	const letterBaseCodes = [
 		...initials.map((initial) => `${initial}c`),
 		...vowelBases,
@@ -247,13 +280,13 @@ test("R9 KeyTao and Three-Code share letter bases with measured full-code collis
 	];
 	assert.equal(new Set(letterBaseCodes).size, 26);
 	assert.equal(new Set(letterFullCodes).size, 26);
-	const mapping = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
+	const mapping = JSON.parse(read("docs/shenyun-u357-mapping.json")) as {
 		codes: Record<string, string>;
 	};
 	const occupiedBaseCodes = new Set(Object.values(mapping.codes));
 	assert.deepEqual(
 		letterBaseCodes.filter((code) => !occupiedBaseCodes.has(code)),
-		["zc", "cc", "sc", "yc", "xj", "xw"],
+		["zc", "cc", "sc", "yc", "xh", "xw"],
 	);
 	const toneKeys: Record<string, string> = {
 		"1": "i",
@@ -283,7 +316,7 @@ test("R9 KeyTao and Three-Code share letter bases with measured full-code collis
 	}
 	assert.deepEqual(
 		letterFullCodes.filter((code) => occupiedFullCodes.has(code)),
-		["tco", "hco", "xko"],
+		["tco", "hco", "xgo", "xlo"],
 	);
 	const sanpinCore = read("snow_sanpin.fixed.txt").split("# 字母")[0];
 	for (const code of letterFullCodes) {
@@ -296,20 +329,33 @@ test("R9 KeyTao and Three-Code share letter bases with measured full-code collis
 
 	const fixed = read("snow_sanpin.fixed.txt");
 	for (const [code, candidates] of [
-		["jju", "五 5"], ["lta", "六 6"], ["qki", "七 7"],
-		["bwi", "八 8"], ["jtu", "九 9"], ["ekv", "十 10"],
-		["ldv", "零 0"],
+		["shu", "五 5"],
+		["lda", "六 6"],
+		["qli", "七 7"],
+		["bwi", "八 8"],
+		["jdu", "九 9"],
+		["elv", "十 10"],
+		["ltv", "零 0"],
 	]) {
 		assert.match(fixed, new RegExp(`^${code}\\t${candidates}$`, "mu"));
 	}
 });
 
-test("R9 KeyTao and Three-Code keep their processors in a compatible order", () => {
+test("U357 KeyTao and Three-Code keep their processors in a compatible order", () => {
 	for (const file of ["snow_jiandao.schema.yaml", "snow_sanpin.schema.yaml"]) {
 		const schema = load(read(file)) as { engine: { processors: string[] } };
 		const processors = schema.engine.processors;
-		const position = (name: string) => processors.indexOf(`lua_processor@*snow.${name}`);
-		for (const name of ["shape_processor", "abbreviation", "select_character", "popping", "code_navigator", "user_dict", "history"]) {
+		const position = (name: string) =>
+			processors.indexOf(`lua_processor@*snow.${name}`);
+		for (const name of [
+			"shape_processor",
+			"abbreviation",
+			"select_character",
+			"popping",
+			"code_navigator",
+			"user_dict",
+			"history",
+		]) {
 			assert.ok(position(name) >= 0, `${file}: ${name}`);
 		}
 		assert.ok(position("abbreviation") < position("popping"), file);

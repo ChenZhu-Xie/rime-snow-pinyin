@@ -11,7 +11,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     带调拼音词顶功输入方案
-    双拼编码：无飞键道·神韵（R9-21X21-M40-02）
+    双拼编码：无飞键道·神韵（U357-21X21-M40-D0）
   dependencies:
     - snow_pinyin
     - snow_sanpin_bihua
@@ -71,7 +71,7 @@ engine:
     - lua_filter@*snow.unicode*filter
 
 sanpin_algebra:
-  # 无飞键道·神韵（R9-21X21-M40-02）
+  # 无飞键道·神韵（U357-21X21-M40-D0）
   # 目标布局的 421 音节码表中不编码这 5 个扩展音节。
   - erase/^(hng|m|n|ng|ê)\d$/
   # 儿化轻声并入 er5，避免占用单键 r。
@@ -82,37 +82,37 @@ sanpin_algebra:
   - xform/([jqx])un(?=\d)/$1vn/
   - xform/([jqx])u(?=\d)/$1v/
   - xform/(^| )yu/$1Yv/
-  # 零声母载体：AOE / Y / W → Q / Y / J。
-  - xform/(^| )(?=[aoe])/$1Q/
+  # 零声母载体：AOE / Y / W → R / Y / S。
+  - xform/(^| )(?=[aoe])/$1R/
   - xform/(^| )y/$1Y/
-  - xform/(^| )w/$1J/
-  # 21 个普通声母各使用一个固定首键。
-  - xform/(^| )zh/$1F/
+  - xform/(^| )w/$1S/
+  # U357 保持普通声母原键，并将 zh 与 k 合并到 K。
+  - xform/(^| )zh/$1K/
   - xform/(^| )ch/$1W/
   - xform/(^| )sh/$1E/
   # 21 键韵母映射；较长韵母必须先处理。
-  - xform/(iang|ou)(?=\d)/F/
-  - xform/(uang|ing)(?=\d)/D/
-  - xform/(iong|eng)(?=\d)/N/
+  - xform/iang(?=\d)/J/
+  - xform/(uang|ing)(?=\d)/T/
+  - xform/(iong|ang)(?=\d)/N/
   - xform/(ian|ong)(?=\d)/P/
   - xform/(iao|ua)(?=\d)/C/
-  - xform/(uai|iu)(?=\d)/T/
-  - xform/(uan|van)(?=\d)/E/
-  - xform/(un|in)(?=\d)/G/
-  - xform/(vn|en)(?=\d)/Q/
-  - xform/ui(?=\d)/R/
-  - xform/(uo|ve)(?=\d)/Y/
-  - xform/(an|ia)(?=\d)/L/
-  - xform/ang(?=\d)/M/
-  - xform/ai(?=\d)/H/
-  - xform/ao(?=\d)/Z/
-  - xform/ei(?=\d)/X/
-  - xform/ie(?=\d)/B/
+  - xform/(uai|iu)(?=\d)/D/
+  - xform/uan(?=\d)/X/
+  - xform/(van|eng)(?=\d)/R/
+  - xform/(un|in)(?=\d)/B/
+  - xform/(vn|ei|er)(?=\d)/E/
+  - xform/(ui|v)(?=\d)/G/
+  - xform/uo(?=\d)/Y/
+  - xform/(ve|ai)(?=\d)/K/
+  - xform/an(?=\d)/J/
+  - xform/(ao|ia)(?=\d)/F/
+  - xform/en(?=\d)/M/
+  - xform/ou(?=\d)/Q/
+  - xform/o(?=\d)/D/
+  - xform/ie(?=\d)/Z/
   - xform/a(?=\d)/W/
-  - xform/o(?=\d)/E/
-  - xform/v(?=\d)/R/
-  - xform/i(?=\d)/K/
-  - xform/(u|er)(?=\d)/J/
+  - xform/i(?=\d)/L/
+  - xform/u(?=\d)/H/
   - xform/e(?=\d)/S/
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
   # 声调
@@ -169,10 +169,10 @@ speller:
     __append:
       # 与键道共享二键基码，并统一追加轻声键 o；tco/hco/xko 的字母固顶覆盖新增的轻声读音。
       - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1co/
-      - xform/~{1,2}v/xyo/
-      - xform/~{1,2}i/xko/
-      - xform/~{1,2}u/xjo/
-      - xform/~{1,2}o/xeo/
+      - xform/~{1,2}v/xgo/
+      - xform/~{1,2}i/xlo/
+      - xform/~{1,2}u/xho/
+      - xform/~{1,2}o/xdo/
       - xform/~{1,2}a/xwo/
       - abbrev/^([a-z]).+$/$1/ # 简拼
       - derive/[ivuao]$// # 无声调

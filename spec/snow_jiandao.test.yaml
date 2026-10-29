@@ -26,127 +26,125 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: bdxypgyg
+      - send: btxkpbyb
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
       - send: r
         assert: page("人") and has("日")
-      # r5 并入 er5 后，无调键道仍可在 er 的本地 qj 码页查询「儿」。
-      - send: qj
+      # r5 并入 er5 后，无调键道仍可在 er 的本地 re 码页查询「儿」。
+      - send: re
         assert: has("儿")
       # 组词规则
-      - send: bdxy
+      - send: btxk
         assert: has("冰雪")
       - send: erf
         assert: has("输入法")
-      - send: wmxj
+      - send: wmxs
         assert: has("充满希望")
       # 编码导航：14567 直达字位；Y/O 物理循环，U/I 逻辑左/右循环
-      - send: "wmxj1{BackSpace}"
-        assert: eq(preedit, "m x j")
-      - send: "wmxj4{BackSpace}"
-        assert: eq(preedit, "wxj")
-      - send: "wmxj5{BackSpace}"
-        assert: eq(preedit, "wmj")
-      - send: "wmxj6{BackSpace}"
+      - send: "wmxs1{BackSpace}"
+        assert: eq(preedit, "m x s")
+      - send: "wmxs4{BackSpace}"
+        assert: eq(preedit, "wxs")
+      - send: "wmxs5{BackSpace}"
+        assert: eq(preedit, "wms")
+      - send: "wmxs6{BackSpace}"
         assert: eq(preedit, "w m x")
-      - send: "wmxj7{BackSpace}"
+      - send: "wmxs7{BackSpace}"
         assert: eq(preedit, "w m x")
-      - send: "wmxj{Control+y}{BackSpace}"
-        assert: eq(preedit, "wmj")
-      - send: "wmxj1{Control+u}{BackSpace}"
+      - send: "wmxs{Control+y}{BackSpace}"
+        assert: eq(preedit, "wms")
+      - send: "wmxs1{Control+u}{BackSpace}"
         assert: eq(preedit, "w m x")
-      - send: "wmxj1{Control+i}{BackSpace}"
-        assert: eq(preedit, "wxj")
-      - send: "wmxj1{Control+y}{Control+y}{Control+y}{BackSpace}"
-        assert: eq(preedit, "wmj")
-      - send: "wmxj{Control+o}{Control+o}{BackSpace}"
-        assert: eq(preedit, "m x j")
-      - send: fjerF
+      - send: "wmxs1{Control+i}{BackSpace}"
+        assert: eq(preedit, "wxs")
+      - send: "wmxs1{Control+y}{Control+y}{Control+y}{BackSpace}"
+        assert: eq(preedit, "wms")
+      - send: "wmxs{Control+o}{Control+o}{BackSpace}"
+        assert: eq(preedit, "m x s")
+      - send: kserF
         assert: has("中文输入法")
-      - send: fhrmGHG
+      - send: khrmGHG
         assert: has("中华人民共和国")
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
-      - send: xy
+      - send: xk
         assert: cand[1].text == "学"
-      - send: bdov
+      - send: btov
         assert: cand[1].text == "冰"
       - send: by
         assert: cand[1].text == "不要"
-      - send: fx
+      - send: fe
         assert: cand[1].text == "飞" and not has("(zhei4)")
-      - send: fuv
-        assert: cand[1].text == "这种"
-      - send: sx
-        assert: cand[1].text == "思想" and not has("(sei1)")
-      - send: sxu
+      - send: se
+        assert: not has("(sei1)")
+      - send: seu
         assert: not has("(sei3)")
-      - send: gx
+      - send: ge
         assert: cand[1].text == "给"
       # 辅音字母使用共享 c 列；三拼在同一基码后追加轻声键 o。
       - send: gc
         assert: cand[1].text == "挂" and has("G") and has("g")
       - send: ge
         assert: not has("G") and not has("g")
-      # 元音字母使用共享 x 载体；O 的二键基码为 xe。
-      - send: xe
+      # 元音字母使用共享 x 载体；O 的二键基码为 xd。
+      - send: xd
         assert: has("O") and has("o")
       - send: qq
         assert: not has("O") and not has("o")
       # 上游新增的字母和数字候选按当前声韵映射落在原有固顶码后。
       - send: bc
         assert: cand[1].text == "表" and cand[2].text == "B" and cand[3].text == "b"
-      - send: xy
-        assert: cand[1].text == "学" and cand[2].text == "V" and cand[3].text == "v"
-      - send: qj
+      - send: xg
+        assert: cand[1].text == "于" and cand[2].text == "V" and cand[3].text == "v"
+      - send: re
         assert: cand[1].text == "二" and cand[2].text == "2"
-      - send: xj
-        assert: cand[1].text == "希望" and cand[2].text == "U" and cand[3].text == "u"
-      - send: ski
+      - send: xh
+        assert: cand[1].text == "喜欢" and cand[2].text == "U" and cand[3].text == "u"
+      - send: sli
         assert: cand[1].text == "四" and cand[2].text == "4"
-      - send: wx
+      - send: we
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
         assert: not has("四但")
       - send: rc
         assert: not has("人从")
-      - send: yj
+      - send: yu
         assert: cand[1].text == "以及"
-      - send: hb
+      - send: ho
         assert: cand[1].text == "好吧"
       - send: xo
         assert: cand[1].text == "行吧"
       - send: xou
         assert: cand[1].text == "行叭"
-      - send: ykgs
+      - send: ylgs
         assert: cand[1].text == "一个"
       # 以词定字：[ 取词首，] 取词尾
-      - send: "ykgs["
+      - send: "ylgs["
         assert: commit == "一"
-      - send: "ykgs]"
+      - send: "ylgs]"
         assert: commit == "个"
-      - send: nwym
+      - send: nwyn
         assert: cand[1].text == "那样"
       # 首选后置
-      - send: ekek
+      - send: elel
         assert: cand[1].text == "事实"
-      - send: ekekv
+      - send: elelv
         assert: cand[2].text == "事实"
       # 顶功
-      - send: ykgsykgs
+      - send: ylgsylgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bdovxyv
+      - send: btovxkv
         assert: commit == "冰" and cand[1].text == "雪"
-      - send: pgygerf
+      - send: pbyberf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 强制上屏尾字；原 d/l 一码仍然保留
-      - send: ykgs;
+      - send: ylgs;
         assert: commit == "一个的"
-      - send: ykgs/
+      - send: ylgs/
         assert: commit == "一个了"
       - send: d
         assert: cand[1].text == "的"
@@ -174,18 +172,18 @@ deploy:
       - send: byA
         assert: commit == "不要不要"
       # 动态码长
-      - send: "ekekiiekek"
+      - send: "eleliielel"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "vwm mzu  wmmz"
+      - send: "vwn mfu  wnmf"
         assert: cand[1].text == "长猫"
-      - send: "{Control+period}bdxyerf  bxerF"
+      - send: "{Control+period}btxkerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
-      # 本地键道使用 jjv/gc/tp/xg；数字和字母取第二候选。
-      - send: "{Control+period}jjv2gc2tpxg  jgtx"
+      # 本地键道使用 shv/gc/tp/xb；数字和字母取第二候选。
+      - send: "{Control+period}shv2gc2tpxb  jgtx"
         assert: cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
-      - send: "{Control+period}dyou lwo xw mn  dlxm"
+      - send: "{Control+period}dyou lwo xw mr  dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:
@@ -219,10 +217,10 @@ deploy:
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
       # 以词定字：`[` 取首字、`]` 取末字
-      - send: "xkrm["
+      - send: "xlrn["
         assert: commit == "熙"
       # 词不在首选时先用方向键选中再定字
-      - send: "jpdz{Down}]"
+      - send: "jpdf{Down}]"
         assert: commit == "刀"
   # 方案码用户词典：这些操作会写入 snow_jiandao.userdb，故单独部署并按顺序执行
   schema_userdb:
@@ -241,13 +239,13 @@ deploy:
       # 本地 hb 固顶好吧：新词不得挤掉已有首选。
       - send: "hb{Control+apostrophe}ljhe v{Control+apostrophe}hb"
         assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
-      - send: "jpdz{Control+comma}{Down}{Control+comma}{Up}"
+      - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
-      - send: "jpdz{Control+bracketright}jpdz"
+      - send: "jpdf{Control+bracketright}jpdf"
         assert: cand[1].text == "剪刀" and cand[2].text == "见到"
-      - send: "jpdz{Down}{Control+bracketleft}jpdz"
+      - send: "jpdf{Down}{Control+bracketleft}jpdf"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
-      - send: "jpdz{Control+backslash}jpdz"
+      - send: "jpdf{Control+backslash}jpdf"
         assert: not pinned(1) and not pinned(2)
   shape_g:
     patch:

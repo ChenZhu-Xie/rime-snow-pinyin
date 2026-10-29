@@ -20,133 +20,42 @@ if (!schemaSource.includes("erase/^(hng|m|n|ng|ê)\\d$/")) {
 	throw new Error("神韵双拼缺少 5 个未编码扩展音节的 erase 规则。");
 }
 const algebra = new SpellingAlgebra(schemaPath, "sanpin_algebra");
-
-const initialMap: Record<string, string> = {
-	b: "b",
-	p: "p",
-	m: "m",
-	f: "f",
-	d: "d",
-	t: "t",
-	n: "n",
-	l: "l",
-	g: "g",
-	k: "k",
-	h: "h",
-	j: "j",
-	q: "q",
-	x: "x",
-	zh: "f",
-	ch: "w",
-	sh: "e",
-	r: "r",
-	z: "z",
-	c: "c",
-	s: "s",
+const fixture = JSON.parse(
+	readFileSync(
+		join(scriptDirectory, "..", "docs", "shenyun-u357-mapping.json"),
+		"utf8",
+	),
+) as {
+	scheme: string;
+	candidateId: string;
+	mappingSha256: string;
+	codes: Record<string, string | null>;
+	extendedSummary: { unique: number; vacantCodes: number };
 };
-
-const finalMap: Record<string, string> = {
-	a: "w",
-	ai: "h",
-	an: "l",
-	ang: "m",
-	ao: "z",
-	e: "s",
-	ei: "x",
-	en: "q",
-	eng: "n",
-	er: "j",
-	i: "k",
-	ia: "l",
-	ian: "p",
-	iang: "f",
-	iao: "c",
-	ie: "b",
-	in: "g",
-	ing: "d",
-	iong: "n",
-	iu: "t",
-	o: "e",
-	ong: "p",
-	ou: "f",
-	u: "j",
-	ua: "c",
-	uai: "t",
-	uan: "e",
-	uang: "d",
-	ui: "r",
-	un: "g",
-	uo: "y",
-	v: "r",
-	van: "e",
-	ve: "y",
-	vn: "q",
-};
-
-const zeroCodes: Record<string, string> = {
-	a: "qw",
-	ai: "qh",
-	an: "ql",
-	ang: "qm",
-	ao: "qz",
-	e: "qs",
-	ei: "qx",
-	en: "qq",
-	eng: "qn",
-	er: "qj",
-	o: "qe",
-	ou: "qf",
-	ya: "yw",
-	yan: "yl",
-	yang: "ym",
-	yao: "yz",
-	ye: "ys",
-	yi: "yk",
-	yin: "yg",
-	ying: "yd",
-	yo: "ye",
-	yong: "yp",
-	you: "yf",
-	yu: "yr",
-	yuan: "ye",
-	yue: "yy",
-	yun: "yq",
-	wa: "jw",
-	wai: "jh",
-	wan: "jl",
-	wang: "jm",
-	wei: "jx",
-	wen: "jq",
-	weng: "jn",
-	wo: "je",
-	wu: "jj",
-};
-
-const cases = new Map<string, string>();
-for (const [initial, key] of Object.entries(initialMap)) {
-	cases.set(`${initial}a1`, `${key}${finalMap.a}i`);
+const fixtureHash = createHash("sha256")
+	.update(JSON.stringify(fixture.codes))
+	.digest("hex");
+if (
+	fixture.scheme !== "U357-21X21-M40-D0" ||
+	fixtureHash !== fixture.mappingSha256
+) {
+	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
 }
-for (const [final, key] of Object.entries(finalMap)) {
-	if (["v", "ve"].includes(final)) cases.set(`l${final}1`, `l${key}i`);
-	else if (final === "van") cases.set("juan1", `j${key}i`);
-	else if (final === "vn") cases.set("jun1", `j${key}i`);
-	else cases.set(`b${final}1`, `b${key}i`);
+const fixtureFailures: string[] = [];
+for (const [syllable, code] of Object.entries(fixture.codes)) {
+	const actual =
+		code === null && ["hng", "m", "n", "ng", "ê"].includes(syllable)
+			? null
+			: algebra.apply(`${syllable}1`).slice(0, -1);
+	if (actual !== code)
+		fixtureFailures.push(`${syllable}: ${actual ?? "∅"} != ${code ?? "∅"}`);
 }
-for (const [syllable, code] of Object.entries(zeroCodes)) {
-	cases.set(`${syllable}1`, `${code}i`);
+if (fixtureFailures.length > 0) {
+	throw new Error(`神韵 U357 映射核验失败：\n${fixtureFailures.join("\n")}`);
 }
-
-const failures: string[] = [];
-for (const [pinyin, expected] of cases) {
-	const actual = algebra.apply(pinyin);
-	if (actual !== expected) failures.push(`${pinyin}: ${actual} != ${expected}`);
-}
-
-if (failures.length > 0) {
-	throw new Error(`神韵双拼映射校验失败：\n${failures.join("\n")}`);
-}
-
-console.log(`神韵双拼映射校验通过：${cases.size} 个规则覆盖用例。`);
+console.log(
+	`神韵 U357 映射核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
+);
 
 const pronunciationMap = new Map<string, string[][]>();
 for (const dictionary of [
@@ -390,8 +299,12 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 	}
 	const count = (name: string, length: number) =>
 		sectionLengths.get(`${name}:${length}`) ?? 0;
-	if (count("# 二简词", 2) !== 64)
-		fixedFailures.push(`二简应为 64，实际 ${count("# 二简词", 2)}`);
+	const expectedErjian = Math.max(64, fixture.extendedSummary.vacantCodes);
+	const expectedSingles = 441 - expectedErjian;
+	if (count("# 二简词", 2) !== expectedErjian)
+		fixedFailures.push(
+			`二简应为 ${expectedErjian}，实际 ${count("# 二简词", 2)}`,
+		);
 	if (count("# 630", 2) !== 105)
 		fixedFailures.push(`630 二码应为 105，实际 ${count("# 630", 2)}`);
 	if (file === "snow_jiandao.fixed.txt" && count("# 630", 3) !== 525) {
@@ -400,9 +313,9 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 	if (file === "snow_sanpin.fixed.txt" && count("# 630", 3) < 500) {
 		fixedFailures.push(`三拼 630 三码少于质量下限 500`);
 	}
-	if (count("# 单字", 1) !== 21 || count("# 单字", 2) !== 377) {
+	if (count("# 单字", 1) !== 21 || count("# 单字", 2) !== expectedSingles) {
 		fixedFailures.push(
-			`单字空间应为 21 个一码和 377 个二码，实际 ${count("# 单字", 1)}/${count("# 单字", 2)}`,
+			`单字空间应为 21 个一码和 ${expectedSingles} 个二码，实际 ${count("# 单字", 1)}/${count("# 单字", 2)}`,
 		);
 	}
 	const allocatedMainPairs = new Set(
@@ -424,41 +337,6 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 	);
 }
 
-const fixture = JSON.parse(
-	readFileSync(
-		join(scriptDirectory, "..", "docs", "shenyun-r9-mapping.json"),
-		"utf8",
-	),
-) as {
-	scheme: string;
-	mappingSha256: string;
-	codes: Record<string, string | null>;
-};
-const fixtureHash = createHash("sha256")
-	.update(JSON.stringify(fixture.codes))
-	.digest("hex");
-if (
-	fixture.scheme !== "R9-21X21-M40-02" ||
-	fixtureHash !== fixture.mappingSha256
-) {
-	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
-}
-const fixtureFailures: string[] = [];
-for (const [syllable, code] of Object.entries(fixture.codes)) {
-	const actual =
-		code === null && unencodedSyllables.has(syllable)
-			? null
-			: algebra.apply(`${syllable}1`).slice(0, -1);
-	if (actual !== code)
-		fixtureFailures.push(`${syllable}: ${actual ?? "∅"} != ${code ?? "∅"}`);
-}
-if (fixtureFailures.length > 0) {
-	throw new Error(`冻结映射快照核验失败：\n${fixtureFailures.join("\n")}`);
-}
-console.log(
-	`冻结映射快照核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
-);
-
 const benchmarkPath = process.argv[2];
 if (benchmarkPath) {
 	const html = readFileSync(benchmarkPath, "utf8");
@@ -473,9 +351,10 @@ if (benchmarkPath) {
 		entries: Array<{ id: string; codeList: Array<string | null> }>;
 	};
 	const target = payload.entries.find(
-		(entry) => entry.id === "R9-21X21-M40-02",
+		(entry) => entry.id === fixture.candidateId,
 	);
-	if (!target) throw new Error("Benchmark payload 中未找到 R9-21X21-M40-02。");
+	if (!target)
+		throw new Error(`Benchmark payload 中未找到 ${fixture.candidateId}。`);
 
 	const sourceFailures: string[] = [];
 	const unencoded = new Set(["hng", "m", "n", "ng", "ê"]);

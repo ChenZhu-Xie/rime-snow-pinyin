@@ -47,10 +47,10 @@ speller:
     __append:
       # 键道与三拼共享字母二键基码；三拼只在全码末尾追加轻声键 o。
       - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1c/
-      - xform/~{1,2}v/xy/
-      - xform/~{1,2}i/xk/
-      - xform/~{1,2}u/xj/
-      - xform/~{1,2}o/xe/
+      - xform/~{1,2}v/xg/
+      - xform/~{1,2}i/xl/
+      - xform/~{1,2}u/xh/
+      - xform/~{1,2}o/xd/
       - xform/~{1,2}a/xw/
       - derive/.([viuoa])$/?$1/ # 无韵母
       - xform/^([a-z])[^?]+$/$1/ # 简拼

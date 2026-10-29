@@ -211,10 +211,11 @@ function makeOptimizedCandidate(
 }
 
 const fixture = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-r9-mapping.json"), "utf8"),
+	readFileSync(join(root, "docs", "shenyun-u357-mapping.json"), "utf8"),
 ) as {
 	scheme: string;
 	codes: Record<string, string | null>;
+	extendedSummary: { unique: number; vacantCodes: number };
 };
 
 const shapeElementKeys = new Map<string, string>();
@@ -241,24 +242,24 @@ const layout: FixedLayout = {
 };
 assertLayout(layout);
 
-// 一码只保留一个冠军。R9 保持普通声母原键，并使用现行 zh/sh 与零声母 Y 映射。
+// 一码只保留一个冠军。U357 的 K/S 分别承载 zh、W 零声母，F/J 回归普通声母。
 const seedOneKeyWords = new Map<string, string>([
 	["b", "不"],
 	["c", "才"],
 	["d", "的"],
 	["e", "是"],
-	["f", "这"],
+	["f", "发"],
 	["g", "个"],
 	["h", "和"],
-	["j", "我"],
-	["k", "可"],
+	["j", "就"],
+	["k", "这"],
 	["l", "了"],
 	["m", "没"],
 	["n", "你"],
 	["p", "平"],
 	["q", "去"],
 	["r", "人"],
-	["s", "三"],
+	["s", "我"],
 	["t", "他"],
 	["w", "吃"],
 	["x", "想"],
@@ -266,7 +267,7 @@ const seedOneKeyWords = new Map<string, string>([
 	["z", "在"],
 ]);
 
-// 旧版候选只作肌肉记忆偏好；R9 的二简槽位按现行音码空间重新计算。
+// 旧版候选只作肌肉记忆偏好；U357 的二简槽位按现行音码空间重新计算。
 const legacySeedErjianWords = new Map<string, string>([
 	["bf", "不要"],
 	["bm", "部门"],
@@ -457,7 +458,7 @@ function assertCuratedCodes(
 	erjianWords: ReadonlyMap<string, string>,
 ) {
 	if (oneKeyWords.size !== 21) throw new Error("一码单字必须恰好为 21 个。");
-	if (erjianWords.size !== 64) throw new Error("二简必须恰好为 64 个唯一码。");
+	if (erjianWords.size < 64) throw new Error("二简不得少于 64 个唯一码。");
 	for (const [code, word] of oneKeyWords) {
 		const readings = readingsByWord.get(word) ?? [];
 		if (!readings.some((reading) => firstKey(layout, reading[0]) === code))
@@ -536,6 +537,7 @@ for (const entry of singleEntries) {
 		Math.max(singleCodePeakWeight.get(code) ?? 0, entry.weight),
 	);
 }
+const targetErjianCount = Math.max(64, naturalEmptyCodes.length);
 const occupiedGiveUpCodes = allMainPairsForErjian
 	.filter((code) => soundCodes.has(code) && candidateErjianCodes.has(code))
 	.sort(
@@ -543,11 +545,11 @@ const occupiedGiveUpCodes = allMainPairsForErjian
 			(singleCodePeakWeight.get(a) ?? 0) - (singleCodePeakWeight.get(b) ?? 0) ||
 			a.localeCompare(b),
 	)
-	.slice(0, 64 - naturalEmptyCodes.length);
+	.slice(0, targetErjianCount - naturalEmptyCodes.length);
 const erjianCodeSet = new Set([...naturalEmptyCodes, ...occupiedGiveUpCodes]);
-if (erjianCodeSet.size !== 64) {
+if (erjianCodeSet.size !== targetErjianCount) {
 	throw new Error(
-		`R9 二简槽位不足 64：天然空位 ${naturalEmptyCodes.length}，冷音码 ${occupiedGiveUpCodes.length}`,
+		`U357 二简槽位不足 ${targetErjianCount}：天然空位 ${naturalEmptyCodes.length}，冷音码 ${occupiedGiveUpCodes.length}`,
 	);
 }
 const seedErjianWords = new Map<string, string>();
@@ -595,9 +597,13 @@ assertCuratedCodes(oneKeyWords, erjianWords);
 const occupiedErjianCodes = [...erjianWords.keys()].filter((code) =>
 	soundCodes.has(code),
 );
-if (soundCodes.size !== 382 || occupiedErjianCodes.length !== 5) {
+if (
+	soundCodes.size !== fixture.extendedSummary.unique ||
+	occupiedErjianCodes.length !==
+		targetErjianCount - fixture.extendedSummary.vacantCodes
+) {
 	throw new Error(
-		`AA 空间不符合 382 音码、59 天然空位、5 冷音码让位的设计：${soundCodes.size}/${occupiedErjianCodes.length}`,
+		`AA 空间不符合 ${fixture.extendedSummary.unique} 音码、${fixture.extendedSummary.vacantCodes} 天然空位的设计：${soundCodes.size}/${occupiedErjianCodes.length}`,
 	);
 }
 
@@ -637,8 +643,12 @@ for (const code of twoKeySoundCodes) {
 	sharedSingles.set(code, selected.word);
 	usedSingleWords.add(selected.word);
 }
-if ([...sharedSingles].filter(([code]) => code.length === 2).length !== 377)
-	throw new Error("AA 单字必须恰好为 377 个。");
+const expectedTwoKeySingles = 441 - targetErjianCount;
+if (
+	[...sharedSingles].filter(([code]) => code.length === 2).length !==
+	expectedTwoKeySingles
+)
+	throw new Error(`AA 单字必须恰好为 ${expectedTwoKeySingles} 个。`);
 
 const allMainPairs = new Set(
 	layout.mainKeys.flatMap((first) =>
@@ -653,7 +663,9 @@ if (
 	allocatedMainPairs.size !== 441 ||
 	[...allMainPairs].some((code) => !allocatedMainPairs.has(code))
 ) {
-	throw new Error("AA 的 377 单字＋64 二简没有完整覆盖 21×21 空间。");
+	throw new Error(
+		`AA 的 ${expectedTwoKeySingles} 单字＋${targetErjianCount} 二简没有完整覆盖 21×21 空间。`,
+	);
 }
 
 function selectSixThirty(
@@ -981,5 +993,5 @@ const rejectionSummary = [...uniqueRejections.values()].reduce(
 	{} as Record<string, number>,
 );
 console.log(
-	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 64；AA 单字 377；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}；结构略码筛选 ${structuralRejectionCount}；完整码稳居首选筛选 ${efficientFullCodeRejectionCount}；等长或更短替代筛选 ${JSON.stringify(rejectionSummary)}。`,
+	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 ${targetErjianCount}；AA 单字 ${expectedTwoKeySingles}；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}；结构略码筛选 ${structuralRejectionCount}；完整码稳居首选筛选 ${efficientFullCodeRejectionCount}；等长或更短替代筛选 ${JSON.stringify(rejectionSummary)}。`,
 );
