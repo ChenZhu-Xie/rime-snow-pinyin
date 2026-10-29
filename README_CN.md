@@ -82,15 +82,16 @@
 | --- | ---: | ---: | ---: | --- |
 | M-R2 记忆项 | 40 🥇 | 44 | 51 | 越低越好 |
 | Common399 不同二键码 | 357 | 372 | 399 🥇 | 越高重码越少 |
-| CKT v4 | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
-| 裸 S2 右小指负载 | 4.1808% | 2.1518% | 1.2618% 🥇 | 越低越好 |
-| 20 合同右小指峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| CKT v4（原生码域合同） | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
+| 20 合同 QAZ 左小指组峰值 | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好 |
+| 20 合同 P 区右小指组峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| 20 合同 TYB 双食指组峰值 | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
 | 20 合同主键区下限 | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 20 合同 W 键峰值 | 3.6232% 🥇 | 7.2907% | 5.9773% | 越低越好 |
-| 20 合同 Y 键峰值 | 6.3924% 🥇 | 8.0125% | 7.6958% | 越低越好 |
 | 日常八场景纯双拼移动手分数（含标点） | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
-日常八场景移动手分数不含五辅键、空格和选重。神韵 U357 的优势集中在记忆项、合同主键区下限、W/Y 键峰值和日常文稿路径；代价是音节重码与右小指负载。B04 以更大的 26×26 键域取得零音节重码、最低 CKT v4 和最低右小指负载；S005 提供同键域直接参照。U357 是面向冰雪键道与冰雪三拼的综合折中，不是全指标支配；模型分数也不等同真人测速。
+`QAZ`、`TYB` 均取三键负载之和在冻结 20 合同中的最大值；P 区右小指组沿用 HTML 原始定义 `P[]\;'/`。CKT v4 的 B04 键道轨使用统一 `snowshape` 字形源，三拼轨使用统一笔画源，并非首道自身辅码；但 B04 按 26×26 四码顶合同计分，U357、S005 按 21×21 合同计分，因此 B04 保留更大双拼码域和三字词 AAA/AAAU 路由的结构优势。
+
+日常八场景移动手分数不含五辅键、空格和选重。神韵 U357 的优势集中在记忆项、QAZ 左小指组峰值、合同主键区下限和日常文稿路径，TYB 双食指组峰值低于 S005、高于 B04；代价是音节重码与 P 区右小指负载。B04 的 CKT v4 领先不是同键域下的辅码胜负；S005 才提供同键域直接参照。U357 是面向冰雪键道与冰雪三拼的综合折中，不是全指标支配；模型分数也不等同真人测速。
 
 [完整公平对比](reports/shenyun-u357-comparison.md)另列冰雪键道、冰雪三拼的八轨加权非首选率；[原始 JSON](reports/shenyun-u357-comparison.json)可供机器复核。
 
@@ -263,15 +264,16 @@ All three layouts use Common399, the frozen 20 contracts, the same word/shape da
 | --- | ---: | ---: | ---: | --- |
 | M-R2 memory items | 40 🥇 | 44 | 51 | Lower |
 | Distinct Common399 two-key codes | 357 | 372 | 399 🥇 | Higher means fewer collisions |
-| CKT v4 | 9.716421 | 10.000000 | 9.184607 🥇 | Lower |
-| Bare-S2 right-pinky load | 4.1808% | 2.1518% | 1.2618% 🥇 | Lower |
-| 20-contract right-pinky peak | 5.1045% | 2.7738% | 1.8881% 🥇 | Lower |
+| CKT v4 (native-domain contract) | 9.716421 | 10.000000 | 9.184607 🥇 | Lower |
+| 20-contract QAZ left-pinky-group peak | 16.3119% 🥇 | 17.1601% | 16.6615% | Lower |
+| 20-contract P-zone right-pinky-group peak | 5.1045% | 2.7738% | 1.8881% 🥇 | Lower |
+| 20-contract TYB two-index-finger peak | 14.0920% | 14.7331% | 12.3581% 🥇 | Lower |
 | 20-contract home-area floor | 37.6204% 🥇 | 30.8146% | 24.2427% | Higher |
-| 20-contract W-key peak | 3.6232% 🥇 | 7.2907% | 5.9773% | Lower |
-| 20-contract Y-key peak | 6.3924% 🥇 | 8.0125% | 7.6958% | Lower |
 | Daily eight-scenario pure-double-pinyin moving-hand score, with punctuation | 143.380 🥇 | 138.672 | 135.310 | Higher on the same corpus |
 
-The daily moving-hand score excludes the five auxiliary keys, spaces, and candidate selection. U357 leads in memory cost, home-area floor, W/Y peaks, and the daily-prose path, at the cost of more syllable collisions and higher right-pinky load. B04 uses its larger 26×26 domain to achieve zero syllable collisions, the best CKT v4, and the lowest right-pinky load; S005 supplies the direct same-domain baseline. U357 is a balanced choice for Snow KeyTao and Snow Three-Code, not an all-metric dominator, and model scores are not human typing-speed results.
+`QAZ` and `TYB` are each the maximum, over the frozen 20 contracts, of the summed load of those three keys. The P-zone group follows the HTML's original `P[]\;'/` definition. For CKT v4, B04's KeyTao track uses the shared `snowshape` source and its Three-Code track uses the shared stroke source, not Shoudao's native auxiliary code. B04 is nevertheless scored under the 26×26 four-code-top contract, while U357 and S005 use the 21×21 contract, preserving B04's larger double-pinyin domain and AAA/AAAU routing advantage for three-character words.
+
+The daily moving-hand score excludes the five auxiliary keys, spaces, and candidate selection. U357 leads in memory cost, the QAZ left-pinky-group peak, home-area floor, and the daily-prose path; its TYB peak is below S005 but above B04, at the cost of more syllable collisions and higher P-zone right-pinky load. B04's CKT v4 lead is therefore not an auxiliary-code contest within the same key domain; S005 supplies the direct same-domain baseline. U357 is a balanced choice for Snow KeyTao and Snow Three-Code, not an all-metric dominator, and model scores are not human typing-speed results.
 
 The [full comparison](reports/shenyun-u357-comparison.md) also lists the eight weighted non-first rates for Snow KeyTao and Snow Three-Code; the [raw JSON](reports/shenyun-u357-comparison.json) is machine-reviewable.
 
@@ -365,15 +367,16 @@ bun scripts/验证神韵双拼.ts
 | --- | ---: | ---: | ---: | --- |
 | M-R2 記憶項 | 40 🥇 | 44 | 51 | 越低越好 |
 | Common399 不同二鍵碼 | 357 | 372 | 399 🥇 | 越高重碼越少 |
-| CKT v4 | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
-| 裸 S2 右小指負載 | 4.1808% | 2.1518% | 1.2618% 🥇 | 越低越好 |
-| 20 合同右小指峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| CKT v4（原生碼域合同） | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
+| 20 合同 QAZ 左小指組峰值 | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好 |
+| 20 合同 P 區右小指組峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| 20 合同 TYB 雙食指組峰值 | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
 | 20 合同主鍵區下限 | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 20 合同 W 鍵峰值 | 3.6232% 🥇 | 7.2907% | 5.9773% | 越低越好 |
-| 20 合同 Y 鍵峰值 | 6.3924% 🥇 | 8.0125% | 7.6958% | 越低越好 |
 | 日常八場景純雙拼移動手分數（含標點） | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
-日常八場景移動手分數不含五輔鍵、空格和選重。神韻 U357 的優勢集中在記憶項、合同主鍵區下限、W/Y 鍵峰值和日常文稿路徑；代價是音節重碼與右小指負載。B04 以更大的 26×26 鍵域取得零音節重碼、最低 CKT v4 和最低右小指負載；S005 提供同鍵域直接參照。U357 是面向冰雪鍵道與冰雪三拼的綜合折中，不是全指標支配；模型分數也不等同真人測速。
+`QAZ`、`TYB` 均取三鍵負載之和在凍結 20 合同中的最大值；P 區右小指組沿用 HTML 原始定義 `P[]\;'/`。CKT v4 的 B04 鍵道軌使用統一 `snowshape` 字形源，三拼軌使用統一筆畫源，並非首道自身輔碼；但 B04 按 26×26 四碼頂合同計分，U357、S005 按 21×21 合同計分，因此 B04 保留更大雙拼碼域和三字詞 AAA/AAAU 路由的結構優勢。
+
+日常八場景移動手分數不含五輔鍵、空格和選重。神韻 U357 的優勢集中在記憶項、QAZ 左小指組峰值、合同主鍵區下限和日常文稿路徑，TYB 雙食指組峰值低於 S005、高於 B04；代價是音節重碼與 P 區右小指負載。B04 的 CKT v4 領先不是同鍵域下的輔碼勝負；S005 才提供同鍵域直接參照。U357 是面向冰雪鍵道與冰雪三拼的綜合折中，不是全指標支配；模型分數也不等同真人測速。
 
 [完整公平比較](reports/shenyun-u357-comparison.md)另列冰雪鍵道、冰雪三拼的八軌加權非首選率；[原始 JSON](reports/shenyun-u357-comparison.json)可供機器複核。
 

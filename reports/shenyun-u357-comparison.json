@@ -1,10 +1,21 @@
 {
-  "version": 1,
+  "version": 2,
   "comparisonPolicy": {
     "target": "U357-21X21-M40-D0",
     "baselines": ["S005", "B04"],
     "commonSupport": "Common399、冻结 20 合同、同一字词与形码数据、CKT v4 模型及日常八场景文稿",
     "boundary": "S005 是同键域 21×21 基线；B04 是同环境 26×26 基线，不是同键域基线",
+    "cktV4AuxiliarySources": "键道轨统一使用 snowshape，三拼轨统一使用同一笔画数据，再映射到各方案的五辅键；B04 不使用首道自身辅码数据",
+    "cktV4Contracts": { "U357": "traditional-21x21", "S005": "traditional-21x21", "B04": "four-code-top" },
+    "leftPinkyKeys": "QAZ",
+    "rightPinkyKeys": "P[]\\;'/",
+    "indexFingerKeys": "TYB",
+    "groupPeakDefinition": "先在每个冻结合同内合计组内各键负载，再取 20 合同最大值",
+    "groupPeakTracks": {
+      "leftPinkyQAZ": { "U357": "W6-Snow", "S005": "W6-Snow", "B04": "W6-Snow" },
+      "rightPinky": { "U357": "W4-common", "S005": "W4-Snow", "B04": "W4-Snow" },
+      "indexFingerTYB": { "U357": "W4-union", "S005": "W4-SBxh", "B04": "W4-common" }
+    },
     "auxiliaryIncludedInDailyMovingHand": false,
     "selectionIncludedInDailyMovingHand": false,
     "punctuationIncludedInDailyMovingHand": true
@@ -13,11 +24,10 @@
     "M-R2": { "better": "lower", "U357": 40, "S005": 44, "B04": 51 },
     "common399UniqueCodes": { "better": "higher", "U357": 357, "S005": 372, "B04": 399 },
     "cktV4": { "better": "lower", "U357": 9.716420811869073, "S005": 10, "B04": 9.184606967934092 },
-    "rightPinkyS2": { "better": "lower", "U357": 0.0418079455791114, "S005": 0.021518294032585674, "B04": 0.01261802041686662 },
+    "leftPinkyQAZPeak20Contracts": { "better": "lower", "U357": 0.1631186082848794, "S005": 0.17160089041834276, "B04": 0.16661462136610428 },
     "rightPinkyPeak20Contracts": { "better": "lower", "U357": 0.051044914723866866, "S005": 0.027738358671465325, "B04": 0.018880630404428396 },
+    "indexFingerTYBPeak20Contracts": { "better": "lower", "U357": 0.14091953200048554, "S005": 0.14733139423369562, "B04": 0.12358148940271357 },
     "homeFloor20Contracts": { "better": "higher", "U357": 0.3762039577208698, "S005": 0.3081455542108198, "B04": 0.24242726368425396 },
-    "wKeyPeak20Contracts": { "better": "lower", "U357": 0.036232262304036644, "S005": 0.07290722264212017, "B04": 0.05977344102124145 },
-    "yKeyPeak20Contracts": { "better": "lower", "U357": 0.06392364530990335, "S005": 0.0801250168436092, "B04": 0.07695774976451163 },
     "dailyEightScenarioMovingHand": { "better": "higher", "U357": 143.37998127078376, "S005": 138.67226692391787, "B04": 135.3104607733463 }
   },
   "weightedNonfirstRates": {
