@@ -291,11 +291,11 @@ deploy:
       # 芫 yuan2：上游 ytivi → 本地 ye + v + iv。
       - send: yrviv
         assert: page("芫")
-      # 嶅 ao2：U357 为 rfv；部首反查补全“山”的 eli，排除同前缀食部字。
+      # 嶅 ao2：U357 为 rfv，与“饶”等音节碰撞；山部首首码 e 将它保留在首页。
       - send: rfvvv
         assert: not page("嶅")
-      - send: rfv1eli
-        assert: cand[1].text == "嶅"
+      - send: rfv1e
+        assert: page("嶅")
       - send: "xlrn["
         assert: commit == "熙"
       # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。

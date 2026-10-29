@@ -238,7 +238,7 @@ deploy:
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 键道 ho 固顶“好吧”：新词不得挤掉已有首选。
       - send: "ho{Control+apostrophe}ljhe v{Control+apostrophe}ho"
-        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
+        assert: error((cand[1] and cand[1].text or "nil") .. "|" .. (cand[2] and cand[2].text or "nil") .. "|" .. (cand[3] and cand[3].text or "nil"))
       - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdf{Control+bracketright}jpdf"
