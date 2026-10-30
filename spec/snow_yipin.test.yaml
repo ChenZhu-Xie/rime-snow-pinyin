@@ -1,6 +1,8 @@
 schema: snow_yipin
 source_dir: ..
 script: |
+  local snow = require "snow.snow"
+  snow.debug = true
   -- 候选在整个候选列表中的位置，不存在时返回 math.huge
   function rank(something)
     for i, v in ipairs(cand) do
