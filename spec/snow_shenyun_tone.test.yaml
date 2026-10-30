@@ -10,6 +10,9 @@ script: |
 deploy:
   popping:
     tests:
+      # 输入统计沿用公共 lua 前缀 o。
+      - send: otj
+        assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
       # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）。
       - send: bdi
         assert: has("冰")

@@ -5,6 +5,7 @@ __include: snow_pinyin.schema.yaml:/
 
 engine:
   processors:
+    - lua_processor@*snow.statistics*processor
     - ascii_composer
     - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
@@ -34,6 +35,7 @@ engine:
     - table_translator@stroke
     - script_translator@pinyin
     - lua_translator@*snow.datetime
+    - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
     - lua_translator@*snow.calculator
     - lua_translator@*snow.history

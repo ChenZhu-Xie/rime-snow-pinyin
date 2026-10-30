@@ -179,6 +179,19 @@ test("两个飞花原型都随部署带上共用配置", () => {
 	assert.match(read("scripts/link.ts"), /"snow_shenyun_common\.yaml"/u);
 });
 
+test("冰雪神韵·形/调接入输入统计组件", () => {
+	const common = read("snow_shenyun_common.yaml");
+	const processor = common.indexOf("lua_processor@*snow.statistics*processor");
+	const asciiComposer = common.indexOf("    - ascii_composer");
+	const datetime = common.indexOf("lua_translator@*snow.datetime");
+	const translator = common.indexOf(
+		"lua_translator@*snow.statistics*translator",
+	);
+	const number = common.indexOf("lua_translator@*snow.number");
+	assert.ok(processor >= 0 && processor < asciiComposer);
+	assert.ok(datetime >= 0 && datetime < translator && translator < number);
+});
+
 test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", () => {
 	const initialKeys = "bpmfdtnlgkhjqwvxrzcsy";
 	const auxiliaryKeys = "aeuio";
