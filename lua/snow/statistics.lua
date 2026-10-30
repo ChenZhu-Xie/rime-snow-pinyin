@@ -52,6 +52,12 @@ local window_ms = 60000
 -- 有效按键 Σ i·code<i> 和词数 Σ word<i> 都在显示时由这两组字段算出，不单独存
 local db_name = "snow_statistics"
 
+-- get_time_ms 由较新的 librime-lua 提供；Weasel 0.17.4 所带的旧版没有。
+-- 旧版退化到秒级墙上时钟，计数仍完整，只有速度和击键率的精度较低。
+local function now()
+  return rime_api.get_time_ms and rime_api.get_time_ms() or os.time() * 1000
+end
+
 ---@class StatisticsEnv: Env
 ---@field db LevelDb|nil
 ---@field schema_id string
@@ -212,12 +218,13 @@ end
 ---@param env StatisticsEnv
 ---@param effective integer 计入有效按键的数目
 local function step(env, effective)
-  local now = rime_api.get_time_ms()
+  local current = now()
+  local elapsed = current - env.last
   table.insert(env.steps, {
     effective = effective,
-    duration = now - env.last < idle_ms and now - env.last or 0,
+    duration = elapsed >= 0 and elapsed < idle_ms and elapsed or 0,
   })
-  env.last = now
+  env.last = current
 end
 
 local processor = {}
@@ -262,7 +269,7 @@ function processor.init(env)
         or snow.handover or not ctx:get_selected_candidate() then
       return
     end
-    if not env.last_key or rime_api.get_time_ms() - env.last_key > click_ms then
+    if not env.last_key or now() - env.last_key > click_ms then
       step(env, 1)
     end
   end, 0)
@@ -365,7 +372,7 @@ function processor.func(key_event, env)
     return snow.kNoop
   end
   -- 与计入统计的逻辑键分开记录：松开、修饰键和并击键也能表明这次选词很可能由键盘触发
-  env.last_key = rime_api.get_time_ms()
+  env.last_key = now()
   local context = env.engine.context
   -- 本处理器排在第一位，事件开始时的状态就是上一个事件处理完的状态。上一个事件开始时有编码，现在没了，
   -- 中间又没有上屏，就是这段输入被放弃了：Escape、退格删光、临时西文下作为西文上屏（不经过 commit_notifier）

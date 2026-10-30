@@ -37,6 +37,10 @@ function processor.func(key_event, env)
   end
   -- 取出输入中当前正在翻译的一部分
   local input = snow.current(context) or ""
+  -- 冰雪一拼的 jio 并击输出统一的 o 缓冲命令；空输入时交给翻译器，不当作标点吞掉。
+  if input == "" and incoming == "o" then
+    return snow.kNoop
+  end
   if rime_api.regex_match(input, "([bpmfdtnlgkhzcsr]j?[iuv]?(a|ai|an|ang|ao|e|ei|en|eng|ou)?[wyxq])*") then
     if incoming == "u" then -- 在完整音节后面出现 u，表示追加
       env.active = false

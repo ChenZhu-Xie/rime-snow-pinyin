@@ -942,10 +942,10 @@ function makeCandidates(
 		systemImageName: systemImageName("delete.left"),
 	};
 	const candidateContextMenu: CandidateContextMenu = [
-		{ name: "固定", action: { sendKeys: "Control+comma" } },
+		{ name: "固定", action: { sendKeys: "Control+slash" } },
 		{ name: "前移", action: { sendKeys: "Control+bracketleft" } },
 		{ name: "后移", action: { sendKeys: "Control+bracketright" } },
-		{ name: "加词", action: { sendKeys: "Control+apostrophe" } },
+		{ name: "加词", action: { sendKeys: "Control+period" } },
 		{ name: "重置", action: { sendKeys: "Control+backslash" } },
 	];
 	const values = {

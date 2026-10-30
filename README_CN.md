@@ -162,7 +162,7 @@ bun scripts/验证神韵双拼.ts
 
 ### 快捷键
 
-以下只列[冰雪键道](https://input.tansongchen.com/snow-jiandao/)、[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)和[冰雪三拼](https://input.tansongchen.com/snow3/)均可使用的快捷键。
+以下集中列出方案层快捷键；公共编辑与翻页键由各方案继承，历史和方案固定词等功能只在加载相应模块的方案中出现。
 
 #### 候选选择与翻页
 
@@ -172,15 +172,15 @@ bun scripts/验证神韵双拼.ts
 | 选择当前页第 2～6 候选 | `2 / 3 / 8 / 9 / 0` |
 | 上移/下移一个候选 | `Up` / `Down`，或 `Ctrl+K` / `Ctrl+J` |
 | 上移/下移两个候选 | `Ctrl+H` / `Ctrl+L` |
-| 下一页 | `Tab`、`Ctrl+V` 或 `Page_Down` |
-| 上一页 | `Ctrl+M`、`Alt+V` 或 `Page_Up`；翻页后也可用 `Shift+Tab` |
+| 下一页 | `Tab`、`Ctrl+,` 或 `Page_Down` |
+| 上一页 | `Ctrl+M` 或 `Page_Up`；翻页后也可用 `Shift+Tab` |
 
 #### 输入码编辑与定位
 
 | 功能 | 快捷键 |
 | --- | --- |
 | 光标左移/右移一位 | `Left` / `Right` |
-| 光标移到输入码开头/末尾 | `Home` / `End`，或 `Ctrl+A` / `Ctrl+E` |
+| 光标移到输入码开头/末尾 | `Home` / `End`，或 `Ctrl+N` / `Ctrl+E` |
 | 从输入码开头右移两位 | `Ctrl+P`（`Home → Right → Right`） |
 | 输入码物理左移/右移一位并在边界循环 | `Ctrl+Y` / `Ctrl+O` |
 | 上一个/下一个逻辑字位或音节 | `Ctrl+U` / `Ctrl+I` |
@@ -188,7 +188,7 @@ bun scripts/验证神韵双拼.ts
 | 撤销最近一次选词，否则删除光标前一个输入码 | `BackSpace` |
 | 回退一个音节 | `Ctrl+BackSpace` |
 | 删除光标后的输入码 | `Delete` 或 `Ctrl+D` |
-| 清空当前输入 | `Escape`、`Ctrl+G` 或 `Ctrl+[` |
+| 清空当前输入 | `Escape` |
 | 以词定字：上屏当前多字候选的首字/末字 | `[` / `]` |
 
 #### 上屏方式
@@ -203,7 +203,7 @@ bun scripts/验证神韵双拼.ts
 
 | 功能 | 快捷键 |
 | --- | --- |
-| 切换结束/缓冲 | `Ctrl+.` |
+| 切换结束/缓冲 | 输入 `o` 后选择「开启缓冲」或「关闭缓冲」；冰雪一拼用 `jio` 并击输入 `o` |
 | 切换到下一个输入方案 | `Ctrl+Shift+1` |
 | 切换中/西文 | `Ctrl+Shift+2` |
 | 切换半角/全角 | `Ctrl+Shift+3` |
@@ -214,14 +214,14 @@ bun scripts/验证神韵双拼.ts
 
 | 功能 | 快捷键 |
 | --- | --- |
-| 在历史面板选择第 2～6 项 | `Ctrl+2/3/8/9/0` 或 `Alt+2/3/8/9/0` |
+| 在历史面板选择第 2～6 项 | `Ctrl+2/3/8/9/0` |
 | 删除高亮的普通 Rime 用户词 | `Ctrl+Delete` |
-| 固定/取消固定当前候选 | `Ctrl+,` |
-| 开始手动加词；再次按下完成添加 | `Ctrl+'`；过程中可按 `Escape` 取消 |
+| 固定/取消固定当前候选 | `Ctrl+/` |
+| 开始手动加词；再次按下完成添加 | `Ctrl+.`；过程中可按 `Escape` 取消 |
 | 将已固定候选上移/下移一位 | `Ctrl+[` / `Ctrl+]` |
 | 重置当前编码下的方案固定候选 | `Ctrl+\` |
 
-普通 Rime 用户词和方案固定词是两套机制：前者使用 `Ctrl+Delete` 删除；通过 `Ctrl+'` 手动加入的方案固定词，选中后使用 `Ctrl+,` 取消或禁用。静态 YAML 词典中的正式词条不能通过快捷键删除。
+普通 Rime 用户词和方案固定词是两套机制：前者使用 `Ctrl+Delete` 删除；通过 `Ctrl+.` 手动加入的方案固定词，选中后使用 `Ctrl+/` 取消或禁用。静态 YAML 词典中的正式词条不能通过快捷键删除。
 
 ### 研究报告与审计资料
 

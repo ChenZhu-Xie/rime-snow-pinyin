@@ -168,15 +168,15 @@ deploy:
       - send: "eleliielel"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "vwn mfu  wnmf"
+      - send: "o wn mfu  wnmf"
         assert: cand[1].text == "长猫"
-      - send: "{Control+period}btxkerf  bxerF"
+      - send: "o btxkerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
       # 本地键道使用 shv/gc/tp/xb；数字和字母取第二候选。
-      - send: "{Control+period}shv2gc2tpxb  sgtx"
+      - send: "o shv2gc2tpxb  sgtx"
         assert: cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
-      - send: "{Control+period}dyou lwo xw mr  dlxm"
+      - send: "o dyou lwo xw mr  dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:
@@ -198,6 +198,10 @@ deploy:
       - send: o
         assert: cand[1].text == "📝 开启缓冲" and commit == nil
       - send: "o "
+        assert: commit == nil and preedit == nil
+      - send: "o o"
+        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
+      - send: "o o "
         assert: commit == nil and preedit == nil
       - send: "o{Escape}erf "
         assert: commit == "输入法"
@@ -248,18 +252,18 @@ deploy:
       # 固定：本地固定键为 Control+,，编码/剪刀使用当前神韵码。
       - send: bpmw
         assert: not pinned(1)
-      - send: "bpmw{Control+comma}bpmw"
+      - send: "bpmw{Control+slash}bpmw"
         assert: cand[1].text == "编码" and pinned(1)
-      - send: "bpmw{Control+comma}bpmw"
+      - send: "bpmw{Control+slash}bpmw"
         assert: not pinned(1)
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
-      - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
+      - send: "kfc{Control+period}fkxqS Vs 50{Control+period}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 键道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
-      - send: "xou{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}xou"
+      - send: "xou{Control+period}fkxqS Vs 50{Control+period}xou"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四V我50"
-      - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
+      - send: "jpdf{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdf{Control+bracketright}jpdf"
         assert: cand[1].text == "剪刀" and cand[2].text == "见到"

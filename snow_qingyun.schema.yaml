@@ -74,6 +74,7 @@ engine:
     - script_translator@qingyun
     - table_translator@stroke
     - script_translator@pinyin
+    - lua_translator@*snow.buffered
     - lua_translator@*snow.datetime
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
@@ -202,7 +203,6 @@ patch:
     - { when: has_menu, accept: 5, send_sequence: "{Shift+Right}{Shift+Right}{Shift+Right}" }
     - { when: has_menu, accept: 6, send_sequence: "{Shift+Right}{Shift+Right}{Shift+Right}{Shift+Right}" }
     - { when: has_menu, accept: 7, send_sequence: "{End}" }
-    - { when: always, accept: "Control+period", toggle: buffered }
     - { when: has_menu, accept: "Shift+Tab", toggle: character }
     - { when: always, accept: "Control+q", toggle: unicode }
     - { when: always, accept: "Control+t", toggle: chaifen }

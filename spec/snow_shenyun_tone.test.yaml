@@ -8,6 +8,14 @@ script: |
     return false
   end
 deploy:
+  buffered_command:
+    tests:
+      - send: o
+        assert: cand[1].text == "📝 开启缓冲" and commit == nil
+      - send: "o o"
+        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
+      - send: "o o "
+        assert: commit == nil and preedit == nil
   popping:
     tests:
       # 输入统计沿用公共 lua 前缀 o。

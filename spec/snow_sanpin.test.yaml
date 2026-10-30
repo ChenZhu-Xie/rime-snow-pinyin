@@ -244,6 +244,10 @@ deploy:
         assert: cand[1].text == "📝 开启缓冲" and commit == nil
       - send: "o "
         assert: commit == nil and preedit == nil
+      - send: "o o"
+        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
+      - send: "o o "
+        assert: commit == nil and preedit == nil
       - send: "o{Escape}erf "
         assert: commit == "输入法"
       - send: "o btxkerf "
@@ -257,14 +261,14 @@ deploy:
         assert: cand[1].text == "冰四"
   encoding_buffered:
     tests:
-      - send: "{Control+period}btslai   btsl"
+      - send: "o btslai   btsl"
         assert: cand[1].text == "冰四"
-  # 上游 buffered：分片组词、字母候选与英数混输；本地缓冲键 Ctrl+.。
+  # 上游 buffered：分片组词、字母候选与英数混输；本地选择 o 命令切换缓冲。
   buffered:
     tests:
-      - send: "{Control+period}wn mfi  wnmf"
+      - send: "o wn mfi  wnmf"
         assert: cand[1].text == "长猫"
-      - send: "{Control+period}btxkerf  bxerF"
+      - send: "o btxkerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
       # 键道与三拼共享二键基码；三拼统一追加轻声键 o。
       - send: bco
@@ -281,10 +285,10 @@ deploy:
       - send: xlo
         assert: cand[1].text == "I" and cand[2].text == "i"
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
-      - send: "{Control+period}shu gco tpi xba  jgtx"
+      - send: "o shu gco tpi xba  jgtx"
         assert: commit == "五G通信"
       # 啦读轻声 la5（lwo），梦的二码固顶为 mn；la1/meng4 的首选会组成「垃/孟」。
-      - send: "{Control+period}dyi lwo xwo mr  dlxm"
+      - send: "o dyi lwo xwo mr  dlxm"
         assert: commit == "哆啦A梦"
   # 声声二字词的一次声调辅码，以及三字及以上简拼的大写补韵。
   initial_pair_and_mixed_spelling:
@@ -347,21 +351,21 @@ deploy:
   # 上游 schema_userdb：按顺序操作同一次部署的方案码用户词典。
   schema_userdb:
     tests:
-      # 上游 bmms → 本地 bian/ma = bp/mw；固定键 Ctrl+; → Ctrl+,。
+      # 上游 bmms → 本地 bian/ma = bp/mw；固定键 Ctrl+; → Ctrl+/。
       - send: bpmw
         assert: not pinned(1)
-      - send: "bpmw{Control+comma}bpmw"
+      - send: "bpmw{Control+slash}bpmw"
         assert: cand[1].text == "编码" and pinned(1)
-      - send: "bpmw{Control+comma}bpmw"
+      - send: "bpmw{Control+slash}bpmw"
         assert: not pinned(1)
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
-      - send: "kfc{Control+apostrophe}fkxqS Vs 50{Control+apostrophe}kfc"
+      - send: "kfc{Control+period}fkxqS Vs 50{Control+period}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选。
-      - send: "hou{Control+apostrophe}ljhe v{Control+apostrophe}hou"
+      - send: "hou{Control+period}ljhe v{Control+period}hou"
         assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
-      - send: "jpdf{Control+comma}{Down}{Control+comma}{Up}"
+      - send: "jpdf{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
       - send: "jpdf{Control+bracketright}jpdf"
         assert: cand[1].text == "剪刀" and cand[2].text == "见到"

@@ -19,7 +19,7 @@ test("the shared key binder does not alias Ctrl+B/F to arrow keys", () => {
 	assert.ok(!acceptedKeys.includes("Control+f"));
 });
 
-test("all current schemes leave Ctrl+B/N unbound", () => {
+test("all current schemes leave Ctrl+B unbound", () => {
 	for (const schema of [
 		"snow_pinyin.schema.yaml",
 		"snow_sipin.schema.yaml",
@@ -30,10 +30,66 @@ test("all current schemes leave Ctrl+B/N unbound", () => {
 	]) {
 		assert.doesNotMatch(
 			read(schema),
-			/accept:\s*["']?Control\+(?:b|n)\b/iu,
-			`${schema} must not bind Ctrl+B/N`,
+			/accept:\s*["']?Control\+b\b/iu,
+			`${schema} must not bind Ctrl+B`,
 		);
 	}
+});
+
+test("the shared key binder uses the current navigation shortcuts", () => {
+	const schema = read("snow_pinyin.schema.yaml");
+	assert.match(schema, /accept: "Control\+n", send: Home/u);
+	assert.match(schema, /accept: "Control\+m", send: Page_Up/u);
+	assert.match(schema, /accept: "Control\+comma", send: Page_Down/u);
+	for (const removed of [
+		"Control+a",
+		"Control+g",
+		"Control+bracketleft",
+		"Control+v",
+		"Alt+v",
+	]) {
+		assert.ok(!schema.includes(`accept: "${removed}"`));
+	}
+});
+
+test("history selection only accepts Ctrl-number shortcuts", () => {
+	const processor = read("lua/snow/history.lua");
+	assert.match(processor, /if key:ctrl\(\) then/u);
+	assert.doesNotMatch(processor, /key:ctrl\(\) or key:alt\(\)/u);
+});
+
+test("all schemes expose the o buffer toggle without legacy shortcuts", () => {
+	for (const schema of [
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_qingyun.schema.yaml",
+		"snow_shenyun_common.yaml",
+	]) {
+		assert.match(read(schema), /lua_translator@\*snow\.buffered/u);
+	}
+	const combined = [
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_qingyun.schema.yaml",
+	]
+		.map(read)
+		.join("\n");
+	assert.doesNotMatch(combined, /(?:toggle|set_option): buffered/u);
+	assert.match(read("snow_yipin.schema.yaml"), /xform\/\^jio\$\/\[o\]\//u);
+	const translator = read("lua/snow/buffered.lua");
+	assert.match(translator, /env\.target = not ctx:get_option\("buffered"\)/u);
+});
+
+test("statistics falls back when librime-lua lacks get_time_ms", () => {
+	assert.match(read("lua/snow/define.lua"), /get_time_ms\?/u);
+	assert.match(
+		read("lua/snow/statistics.lua"),
+		/rime_api\.get_time_ms and rime_api\.get_time_ms\(\) or os\.time\(\) \* 1000/u,
+	);
 });
 
 test("Three-Code and KeyTao share the Four-Code 23890 selection layout", () => {
@@ -181,8 +237,8 @@ test("Three-Code supports the shared fixed-candidate controls", () => {
 	assert.match(schema, /translator\/enable_schema_user_dict: true/u);
 	const processor = read("lua/snow/user_dict.lua");
 	for (const key of [
-		"Control+comma",
-		"Control+apostrophe",
+		"Control+slash",
+		"Control+period",
 		"Control+bracketleft",
 		"Control+bracketright",
 		"Control+backslash",
@@ -444,7 +500,10 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		read("snow_jiandao.schema.yaml"),
 		/translator\/reserved_initial_pair_pattern: "\^\(\?:xh\|xw\)\$"/u,
 	);
-	assert.match(read("lua/snow/enforce.lua"), /candidate\.type == "initial_pair"/u);
+	assert.match(
+		read("lua/snow/enforce.lua"),
+		/candidate\.type == "initial_pair"/u,
+	);
 	const shapeFilter = read("lua/snow/shape_filter.lua");
 	assert.match(shapeFilter, /sanpin_initial_pair_match/u);
 	assert.match(shapeFilter, /snow\.sub\(text, 2, 2\)/u);

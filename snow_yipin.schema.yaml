@@ -40,6 +40,7 @@ engine:
   translators:
     - punct_translator
     - script_translator
+    - lua_translator@*snow.buffered
     - lua_translator@*snow.statistics*translator
   filters:
     - lua_filter@*snow.fix
@@ -89,8 +90,8 @@ chord_composer:
     - xform/-/{Right}/
     - xform/^hk$/{Page_Up}/
     - xform/^hl$/{Page_Down}/
-    # 右手并击 jio 直接开启缓冲，无需选词确认
-    - xform/^jio$/{Control+j}/
+    # 右手并击 jio 输入与其他方案一致的 o 缓冲命令
+    - xform/^jio$/[o]/
     # 右手并击，打出输入统计的命令；加方括号以免被 output_format 当成非法音节删掉
     - xform/^jkl$/[itj]/
     - xform/^uio$/[itjf]/
@@ -375,7 +376,6 @@ patch:
       states: [结束, 缓冲]
       reset: 0
   key_binder/bindings/+:
-    - { when: always, accept: "Control+j", set_option: buffered }
     - { when: composing, accept: bracketright, send: Page_Down }
     - { when: composing, accept: bracketleft, send: Page_Up }
   menu/alternative_select_keys: null

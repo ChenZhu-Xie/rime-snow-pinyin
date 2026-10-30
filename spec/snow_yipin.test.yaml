@@ -34,20 +34,24 @@ deploy:
         assert: cand[1].text:match("^📊 .* · ") ~= nil
   buffered:
     tests:
-      # 右手并击 jio 直接开启缓冲，不产生文字或命令候选
+      # 右手并击 jio 输入统一的 o 命令，空格选择后开启缓冲
       - send: jio{Release+j}{Release+i}{Release+o}
-        assert: commit == nil and preedit == nil and tostring(#cand) == "0"
+        assert: cand[1].text == "📝 开启缓冲" and commit == nil
+      - send: jio{Release+j}{Release+i}{Release+o}{space}{Release+space}
+        assert: commit == nil and preedit == nil
       # 连续两组音节只确认前一组，不提前上屏
-      - send: jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
+      - send: jio{Release+j}{Release+i}{Release+o}{space}{Release+space}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
         assert: commit == nil and cand[1].text == "雪"
       # 左手一简字也留在缓冲区
-      - send: jio{Release+j}{Release+i}{Release+o}f{Release+f}d{Release+d}
+      - send: jio{Release+j}{Release+i}{Release+o}{space}{Release+space}f{Release+f}d{Release+d}
         assert: commit == nil and preedit == "的一"
-      # 再次并击保持开启
-      - send: jio{Release+j}{Release+i}{Release+o}jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
-        assert: commit == nil and cand[1].text == "雪"
+      # 已开启时再次并击显示关闭命令，选择后关闭缓冲
+      - send: jio{Release+j}{Release+i}{Release+o}{space}{Release+space}jio{Release+j}{Release+i}{Release+o}
+        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
+      - send: jio{Release+j}{Release+i}{Release+o}{space}{Release+space}jio{Release+j}{Release+i}{Release+o}{space}{Release+space}
+        assert: commit == nil and preedit == nil
       # 两次空格上屏整句，随后恢复普通顶屏
-      - send: jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{space}{Release+space}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
+      - send: jio{Release+j}{Release+i}{Release+o}{space}{Release+space}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{space}{Release+space}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
         assert: commit == "冰雪冰" and cand[1].text == "雪"
   syllable:
     tests:

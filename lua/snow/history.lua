@@ -1,6 +1,6 @@
 -- 上屏历史翻译器与处理器 (History Translator & Processor)
 -- 1. 记录上屏历史，过滤纯空白与纯标点，避免无意义提交污染历史，并支持超过 5 条（默认 20 条）的查询与多页翻页
--- 2. 在 i 历史列表激活时，支持通过 Ctrl/Alt+2/3/8/9/0 快速选定对应非首候选（避免占用 i+数字 的原有符号功能）
+-- 2. 在 i 历史列表激活时，支持通过 Ctrl+2/3/8/9/0 快速选定对应非首候选（避免占用 i+数字 的原有符号功能）
 
 local snow = require "snow.snow"
 
@@ -165,7 +165,7 @@ function history.translate(input, segment, env)
   end
 end
 
---- 作为处理器：在 i 面板激活时拦截 Alt+数字 快捷键进行选词
+--- 作为处理器：在 i 面板激活时拦截 Ctrl+数字快捷键进行选词
 ---@param key KeyEvent
 ---@param env HistoryEnv
 function history.process(key, env)
@@ -180,8 +180,8 @@ function history.process(key, env)
     return snow.kNoop
   end
 
-  -- 处理 Ctrl+数字 或 Alt+数字快捷选词；与三拼、键道、四拼统一为 23890。
-  if key:ctrl() or key:alt() then
+  -- 处理 Ctrl+数字快捷选词；与三拼、键道、四拼统一为 23890。Alt 不绑定任何功能。
+  if key:ctrl() then
     local char = ""
     if key.keycode >= 0x30 and key.keycode <= 0x39 then
       char = string.char(key.keycode)

@@ -243,7 +243,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 
 ## 冰雪一拼的功能并击
 
-功能并击最多使用三键，不要新增四键并击。`jkl`、`uio`、`m,.` 分别输入统计命令 `itj`、`itjf`、`itjh`；`jio` 直接开启缓冲。冰雪一拼不提供 Unicode 输入。
+功能并击最多使用三键，不要新增四键并击。`jkl`、`uio`、`m,.` 分别输入统计命令 `itj`、`itjf`、`itjh`；`jio` 输入统一的 `o` 缓冲命令，选择候选后切换缓冲。冰雪一拼不提供 Unicode 输入。
 
 ## processors 顺序
 
@@ -283,7 +283,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 - `abbreviation` < `popping`：略码用大写，排后面会收到被转成小写的键。
 - `select_character` < `popping`：`[` `]` 命中「标点大写顶」。
 - `popping` < `editor`：冰雪清韵的回头补码靠大写元音命中 `strategy: append` 规则后转小写重投给 editor；editor 排前面会让小写元音直接补码。
-- `user_dict` < `key_binder`：`Control+bracketleft` 被绑成了 Escape。user_dict 的上移/下移分支落空时也要返回 `kAccepted`，否则会穿透成 Escape 清空整句。
+- `user_dict` < `key_binder`：固定候选的上移/下移键由 `user_dict` 优先处理，分支落空时也要返回 `kAccepted`，避免按键继续穿透到后续处理器。
 - `shape_processor` < `key_binder`：冰雪四拼的 `1` 既是辅助码触发键又被绑成「定位」。
 - `statistics` 排第一：它只计数，除并击的最后一次松开外都返回 `kNoop`，要在其他处理器吃掉按键之前看到每个键，包括被 `ascii_composer` 吃掉的临时西文按键（靠它们判断临时西文是否上屏，以便丢掉之前累计的按键）。全局英文和临时西文由它自己按 `ascii_mode` 跳过；popping 重投的那一次靠 `snow.redispatching` 去重。
 - 其余沿用 Rime 原生顺序。
@@ -319,7 +319,7 @@ bun scripts/test.ts
                                           # 冰雪三拼的 *snow.table_like*jianpin
     - table_translator@stroke             # 冰雪一拼无
     - script_translator@pinyin            # 冰雪一拼无
-    - lua_translator@*snow.buffered       # 仅冰雪四拼、冰雪三拼、冰雪键道
+    - lua_translator@*snow.buffered       # 全部方案；冰雪一拼用 jio 输入 o 命令
     - lua_translator@*snow.datetime       # 冰雪一拼无
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number         # 冰雪一拼无

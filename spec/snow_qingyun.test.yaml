@@ -24,6 +24,14 @@ script: |
     return cand[index] ~= nil and cand[index].comment:find(text) ~= nil
   end
 deploy:
+  buffered_command:
+    tests:
+      - send: o
+        assert: cand[1].text == "📝 开启缓冲" and commit == nil
+      - send: "o o"
+        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
+      - send: "o o "
+        assert: commit == nil and preedit == nil
   # 全息模式：前缀码与顶功都不起作用，可以把每个字的形码打全参与组句
   sentence:
     options:
@@ -188,18 +196,18 @@ deploy:
       - send: "bsi1/83bsi"
         assert: page("冰四")
       # 缓冲造词
-      - send: "{Control+period}bxe? srfa2 bxsrF"
+      - send: "o bxe? srfa2 bxsrF"
         assert: cand[1].text == "冰雪输入法"
       # 缓冲造词中的形音替换法：用形码输入单字参与造词，再从候选中选取正确的读音
-      - send: "{Control+period}ppjg"
+      - send: "o ppjg"
         assert: cand[1].text == "梦"
-      - send: "{Control+period}ppjgkvna"
+      - send: "o ppjgkvna"
         assert: cand[1].text == "泽"
-      - send: "{Control+period}ppjgkvnagnpa"
+      - send: "o ppjgkvnagnpa"
         assert: cand[1].text == "闲"
-      - send: "{Control+period}ppjgkvnagnpabw"
+      - send: "o ppjgkvnagnpabw"
         assert: cand[1].text == "客"
-      - send: "{Control+period}ppjgkvnagnpabw  mzxk"
+      - send: "o ppjgkvnagnpabw  mzxk"
         assert: cand[1].text == "梦泽闲客"
       # 英数混输造词：阿拉伯数字固定在二码的次选，中文数字固定在二码的三选
       - send: yi
@@ -229,9 +237,9 @@ deploy:
       - send: ma
         assert: cand[2].text == "A" and cand[3].text == "a"
       # 缓冲模式展开「问」的 wen4、wen5 两个读音，G 位于第三项
-      - send: "{Control+period}wu2g.3lg lwo  wgtx"
+      - send: "o wu2g.3lg lwo  wgtx"
         assert: cand[1].text == "5G通信"
-      - send: "{Control+period}fjggfnlkma2ppjg  dlmm"
+      - send: "o fjggfnlkma2ppjg  dlmm"
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:
@@ -283,19 +291,19 @@ deploy:
       # 固定：Control+, 把当前候选固定到当前位置
       - send: bma
         assert: cand[1].text == "编码" and not pinned(1)
-      - send: "bma{Control+comma}bma"
+      - send: "bma{Control+slash}bma"
         assert: cand[1].text == "编码" and pinned(1)
       # 取消固定：对已固定的候选再按一次 Control+,
       - send: fhe
         assert: cand[1].text == "符合" and pinned(1)
-      - send: "fhe{Control+comma}fhe"
+      - send: "fhe{Control+slash}fhe"
         assert: cand[1].text == "发挥"
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
-      - send: "kfc{Control+apostrophe}fkxqS Vo50{Control+apostrophe}kfc"
+      - send: "kfc{Control+period}fkxqS Vo50{Control+period}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
       # 加词时若第一候选已固定，新词加到第二候选
-      - send: "dna{Control+apostrophe}tyhtHS {Control+apostrophe}dna"
+      - send: "dna{Control+period}tyhtHS {Control+period}dna"
         assert: cand[1].text == "半" and cand[2].text == "脱氧核糖核酸"
       # 后移：Control+] 把已固定的候选往后移一位，与另一个已固定的候选交换位置
       - send: fmje
