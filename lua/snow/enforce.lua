@@ -43,7 +43,7 @@ function filter.func(translation, env)
     local is_character = utf8.len(candidate.text) == 1 and preedit:len() == 2
     if rime_api.regex_match(input, env.vacant_initial_pattern) and utf8.len(candidate.text) == 2 then
       -- 天然空音码的 AA 表示两个声母，后续一码仅用于筛选。
-      is_normal_spelling = preedit == jianpin
+      is_normal_spelling = candidate.type == "initial_pair" or preedit == jianpin
     elseif input:find("[A-Z]") then
       -- 大写韵母与前一个声母构成同一音节，仅用于三字及以上词
       is_normal_spelling = preedit == jianpin and utf8.len(candidate.text) >= 3
