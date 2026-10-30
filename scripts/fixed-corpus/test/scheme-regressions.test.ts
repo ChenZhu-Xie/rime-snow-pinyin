@@ -375,7 +375,10 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 	assert.equal(vacant.length, 75);
 	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
 		const schema = load(read(file)) as {
-			patch: { "translator/vacant_initial_pattern": string };
+			patch: {
+				"translator/vacant_initial_pattern": string;
+				"translator/reserved_letter_pattern"?: string;
+			};
 		};
 		const pattern = new RegExp(
 			schema.patch["translator/vacant_initial_pattern"],
@@ -387,7 +390,22 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 			file,
 		);
 		assert.match(read(file), /match_shape: "\^\$"[\s\S]+block: true/u);
+		assert.match(read(file), /status: initial_pair/u);
 	}
+	const sanpin = load(read("snow_sanpin.schema.yaml")) as {
+		patch: { "translator/reserved_letter_pattern": string };
+	};
+	const reservedLetters = new RegExp(
+		sanpin.patch["translator/reserved_letter_pattern"],
+		"u",
+	);
+	assert.deepEqual(
+		["zco", "cco", "sco", "yco", "xho", "xwo"].filter((code) =>
+			reservedLetters.test(code),
+		),
+		["zco", "cco", "sco", "yco", "xho", "xwo"],
+	);
+	assert.match(read("lua/snow/fix.lua"), /shape_status ~= "initial_pair"/u);
 	const shapeFilter = read("lua/snow/shape_filter.lua");
 	assert.match(shapeFilter, /sanpin_initial_pair_match/u);
 	assert.match(shapeFilter, /snow\.sub\(text, 2, 2\)/u);

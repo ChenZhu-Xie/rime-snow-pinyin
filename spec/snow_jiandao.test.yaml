@@ -157,7 +157,9 @@ deploy:
       - send: yxa
         assert: has("也许") and not has("有些")
       - send: "yxa "
-        assert: commit == "也许"
+        assert: utf8.len(commit) == 2 and not commit:find("a", 1, true)
+      - send: yxab
+        assert: utf8.len(commit) == 2 and not commit:find("a", 1, true)
       - send: yxv
         assert: has("有些") and not has("也许")
       # 动态码长

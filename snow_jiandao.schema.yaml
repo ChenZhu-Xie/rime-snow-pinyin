@@ -83,6 +83,7 @@ speller:
     - match_config: "translator/vacant_initial_pattern"
       match_shape: "^$"
       accept: "[viuoa]"
+      status: initial_pair
     - match_config: "translator/vacant_initial_pattern"
       match_shape: ".+"
       accept: "[viuoa]"
