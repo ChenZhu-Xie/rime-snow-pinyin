@@ -65,14 +65,12 @@ function filter.func(translation, env)
     end
   else
     -- 其他情况，直接返回
+    local segment = env.engine.context.composition:toSegmentation():back()
+    local is_not_first_segment = segment and segment.start ~= 0 or false
     for candidate in translation:iter() do
       -- 造词过程中屏蔽二简词
-      local segment = env.engine.context.composition:toSegmentation():back()
-      if segment then
-        local is_not_first_segment = segment.start ~= 0
-        if is_not_first_segment and candidate:get_dynamic_type() == "Simple" then
-          goto continue
-        end
+      if is_not_first_segment and candidate:get_dynamic_type() == "Simple" then
+        goto continue
       end
       yield(candidate)
       ::continue::

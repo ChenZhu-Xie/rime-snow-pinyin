@@ -127,10 +127,21 @@ function filter.func(translation, env)
   local fixed_candidates = {}
   ---@type Candidate[]
   local free_candidates = {}
+  local unresolved_fixed = 0
+  local placeholder_count = 0
+  ---@type boolean[]
+  local fixed_resolved = {}
   for _, phrase in ipairs(fixed_phrases) do
     local dummy_candidate = Candidate("fixed", segment.start, segment._end, phrase, snow.fixed_notfound_symbol)
     dummy_candidate.preedit = input
     table.insert(fixed_candidates, dummy_candidate)
+    if phrase == snow.placeholder then
+      placeholder_count = placeholder_count + 1
+      fixed_resolved[#fixed_candidates] = true
+    else
+      unresolved_fixed = unresolved_fixed + 1
+      fixed_resolved[#fixed_candidates] = false
+    end
   end
   -- 检查前 100 个候选，如果有与固定候选匹配的就替换，否则就添加到未知候选中
   local seen_candidates = 0
@@ -149,9 +160,11 @@ function filter.func(translation, env)
     -- 对于一个新的候选，要么加入已知候选，要么加入未知候选
     local is_fixed = false
     for j = 1, #fixed_candidates do
-      if candidate.text == fixed_candidates[j].text then
+      if not fixed_resolved[j] and candidate.text == fixed_candidates[j].text then
         snow.comment(candidate, snow.fixed_symbol)
         fixed_candidates[j] = candidate
+        fixed_resolved[j] = true
+        unresolved_fixed = unresolved_fixed - 1
         is_fixed = true
         break
       end
@@ -160,6 +173,12 @@ function filter.func(translation, env)
       table.insert(free_candidates, candidate)
     end
     seen_candidates = seen_candidates + 1
+    -- 固定项都已找到、空位也已有候选可填时，顺序已经完全确定。
+    -- 立即输出，避免为了固定首选仍然预取满 100 项才弹出候选框。
+    if unresolved_fixed == 0 and #free_candidates >= placeholder_count then
+      filter.finalize(fixed_candidates, free_candidates)
+      finalized = true
+    end
     ::continue::
   end
   if not finalized then

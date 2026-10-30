@@ -100,7 +100,25 @@ test("all released schemes expose manual word addition with a visible state", ()
 test("fixed-candidate filtering streams through codes without custom entries", () => {
 	const filter = read("lua/snow/fix.lua");
 	assert.match(filter, /if #fixed_phrases == 0 then/u);
+	assert.match(
+		filter,
+		/if unresolved_fixed == 0 and #free_candidates >= placeholder_count then/u,
+	);
 	assert.doesNotMatch(filter, /collectgarbage\(\)/u);
+});
+
+test("Clear Rhyme stops short-code translation after its only visible candidate", () => {
+	const filter = read("lua/snow/qingyun.lua");
+	assert.match(filter, /if is_short_code then[\s\S]+yield\(c\)\s+return/u);
+	assert.match(filter, /env\.chaifen_cache\[candidate\.text\]/u);
+	assert.match(filter, /env\.buffered_cache\[text\]/u);
+});
+
+test("postponement streams the first code when no earlier choice can move", () => {
+	assert.match(
+		read("lua/snow/postpone.lua"),
+		/if next\(env\.known_candidates\) == nil then[\s\S]+yield\(candidate\)[\s\S]+return/u,
+	);
 });
 
 test("Shenyun merges translator routes lazily with their iterator state", () => {
@@ -138,7 +156,7 @@ test("Three-Code uses its ivuao tone-key order for stroke assist codes", () => {
 	);
 	assert.match(
 		filter,
-		/elseif id == "snow_sanpin"[\s\S]+stroke_match\(text, shape_input, env, sanpin_stroke_map\)/u,
+		/elseif state\.id == "snow_sanpin"[\s\S]+stroke_match\(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map\)/u,
 	);
 	assert.equal("hshh".replaceAll("h", "i").replaceAll("s", "v"), "ivii");
 });

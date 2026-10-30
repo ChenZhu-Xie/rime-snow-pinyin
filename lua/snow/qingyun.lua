@@ -11,6 +11,13 @@ local filter = {}
 ---@field memory Memory
 ---@field chaifen ReverseLookup|nil
 ---@field connection Connection
+---@field chaifen_cache table<string, string>
+---@field buffered_cache table<string, QingyunBufferedEntry[]>
+---@field preedit_cache table<string, string>
+
+---@class QingyunBufferedEntry
+---@field pinyin string
+---@field entry DictEntry
 
 ---@param env QingyunEnv
 function filter.init(env)
@@ -28,6 +35,9 @@ function filter.init(env)
   env.lookup_pinyin = ReverseLookup("snow_pinyin")
   env.memory = Memory(env.engine, env.engine.schema, "pinyin")
   env.chaifen = ReverseLookup("snow_qingyun_chaifen")
+  env.chaifen_cache = {}
+  env.buffered_cache = {}
+  env.preedit_cache = {}
   env.connection = env.engine.context.commit_notifier:connect(function(ctx)
     local reset = env.engine.schema.config:get_int("switches/3/reset")
     local target = reset == 1 and true or false
@@ -43,14 +53,56 @@ local function is_pinyin(candidate)
   return candidate.preedit:sub(1, 1) == "["
 end
 
+local consonants = {
+  b = true, p = true, m = true, f = true, d = true, t = true, n = true, l = true,
+  g = true, k = true, h = true, j = true, q = true, x = true, z = true, c = true,
+  s = true, r = true, w = true, y = true, v = true,
+}
+
+local affixes = { "a", "o", "e", "i", "u", ";", ",", ".", "/" }
+
 ---@param candidate Candidate
-local function prettify_preedit(candidate)
-  if candidate.preedit:sub(1, 1) == "[" then
-    candidate.preedit = candidate.preedit:sub(2, -2)
+---@param env QingyunEnv
+local function prettify_preedit(candidate, env)
+  local original = candidate.preedit
+  local cached = env.preedit_cache[original]
+  if cached then
+    candidate.preedit = cached
+    return
   end
-  -- 补齐空格以便阅读
-  candidate.preedit = rime_api.regex_replace(candidate.preedit,
-    "(?<=[bpmfdtnlgkhjqxzcsrwyv])(?=[bpmfdtnlgkhjqxzcsrwyv])", " ")
+  local preedit = original:sub(1, 1) == "[" and original:sub(2, -2) or original
+  local parts = {}
+  local previous = ""
+  for index = 1, preedit:len() do
+    local current = preedit:sub(index, index)
+    if consonants[previous] and consonants[current] then
+      table.insert(parts, " ")
+    end
+    table.insert(parts, current)
+    previous = current
+  end
+  candidate.preedit = table.concat(parts)
+  env.preedit_cache[original] = candidate.preedit
+end
+
+---@param text string
+---@param env QingyunEnv
+---@return QingyunBufferedEntry[]
+local function buffered_entries(text, env)
+  local cached = env.buffered_cache[text]
+  if cached then return cached end
+  local result = env.lookup_pinyin and env.lookup_pinyin:lookup(text) or ""
+  local entries = {}
+  for pinyin in result:gmatch("[^%s]+") do
+    env.memory:dict_lookup(pinyin, true, 100)
+    for entry in env.memory:iter_dict() do
+      if entry.text == text then
+        table.insert(entries, { pinyin = pinyin, entry = DictEntry(entry) })
+      end
+    end
+  end
+  env.buffered_cache[text] = entries
+  return entries
 end
 
 ---@param translation Translation
@@ -60,7 +112,6 @@ function filter.func(translation, env)
   local context = env.engine.context
   local input = snow.current(context) or ""
   local segment = context.composition:toSegmentation():back()
-  local affix = { "a", "o", "e", "i", "u", ";", ",", ".", "/" }
   local buffered = context:get_option("buffered")
   local character_only = context:get_option("character")
   local show_chaifen = context:get_option("chaifen")
@@ -74,21 +125,15 @@ function filter.func(translation, env)
       goto continue
     end
     if buffered and not is_pinyin(candidate) then
-      local result = env.lookup_pinyin and env.lookup_pinyin:lookup(candidate.text) or ""
       ---@type Candidate[]
       local candidates = {}
-      for pinyin in result:gmatch("[^%s]+") do
-        env.memory:dict_lookup(pinyin, true, 100)
-        for entry in env.memory:iter_dict() do
-          if entry.text == candidate.text then
-            local phrase = Phrase(env.memory, "phrase", candidate.start, candidate._end, entry)
-            local c = phrase:toCandidate()
-            c.comment = candidate.comment
-            snow.comment(c, pinyin)
-            c.quality = entry.weight
-            table.insert(candidates, c)
-          end
-        end
+      for _, item in ipairs(buffered_entries(candidate.text, env)) do
+        local phrase = Phrase(env.memory, "phrase", candidate.start, candidate._end, item.entry)
+        local c = phrase:toCandidate()
+        c.comment = candidate.comment
+        snow.comment(c, item.pinyin)
+        c.quality = item.entry.weight
+        table.insert(candidates, c)
       end
       table.sort(candidates, function(a, b) return a.quality > b.quality end)
       for _, c in ipairs(candidates) do
@@ -105,7 +150,7 @@ function filter.func(translation, env)
     if is_short_code then -- 生成一简十重提示
       if count == 0 then
         local hint = ""
-        for _, letter in ipairs(affix) do
+        for _, letter in ipairs(affixes) do
           local code = input .. letter
           local word_list = env.fixed[code]
           if word_list then
@@ -120,14 +165,14 @@ function filter.func(translation, env)
           local c = Candidate("placeholder", candidate.start, candidate._end, "🈚️", hint)
           c.preedit = candidate.preedit
           count = count + 1
-          prettify_preedit(c)
+          prettify_preedit(c, env)
           yield(c)
-          goto continue
+          return
         else
           snow.comment(candidate, hint)
         end
       else
-        goto continue
+        return
       end
       count = count + 1
     elseif utf8.len(candidate.text) == 1 and (is_pinyin(candidate) or (segment and (segment:has_tag("pinyin") or segment:has_tag("stroke")))) then -- 生成反查提示
@@ -150,13 +195,17 @@ function filter.func(translation, env)
       end
     end
     if show_chaifen then
-      local chaifen = env.chaifen and env.chaifen:lookup(candidate.text) or ""
+      local chaifen = env.chaifen_cache[candidate.text]
+      if chaifen == nil then
+        chaifen = env.chaifen and env.chaifen:lookup(candidate.text) or ""
+        env.chaifen_cache[candidate.text] = chaifen
+      end
       if chaifen:len() > 0 then
         snow.comment(candidate, "~ " .. chaifen:gsub("-", " "))
       end
     end
     if is_abc then
-      prettify_preedit(candidate)
+      prettify_preedit(candidate, env)
     end
     yield(candidate)
     ::continue::
@@ -177,6 +226,9 @@ function filter.fini(env)
   env.lookup_pinyin = nil
   env.memory = nil
   env.chaifen = nil
+  env.chaifen_cache = nil
+  env.buffered_cache = nil
+  env.preedit_cache = nil
   env.connection:disconnect()
   collectgarbage()
 end

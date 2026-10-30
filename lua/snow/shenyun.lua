@@ -19,6 +19,7 @@ local this = {}
 ---@field final_keys string
 ---@field auxiliary_keys string
 ---@field auxiliary_mode string
+---@field auxiliary_cache table<string, string[]>
 
 local function contains(keys, character)
   return keys:find(character, 1, true) ~= nil
@@ -154,10 +155,16 @@ local function tone_codes(text, env)
 end
 
 local function auxiliary_codes(text, env)
+  local cached = env.auxiliary_cache[text]
+  if cached then return cached end
+  local codes
   if env.auxiliary_mode == "tone" then
-    return tone_codes(text, env)
+    codes = tone_codes(text, env)
+  else
+    codes = shape_codes(text, env)
   end
-  return shape_codes(text, env)
+  env.auxiliary_cache[text] = codes
+  return codes
 end
 
 local function auxiliary_match(text, suffix, env)
@@ -264,6 +271,7 @@ function this.init(env)
   env.final_keys = config:get_string("translator/shenyun_final_keys") or "abcdefghijklmnopqrstuvwxyz"
   env.auxiliary_keys = config:get_string("translator/shenyun_auxiliary_keys") or "aeuio"
   env.auxiliary_mode = config:get_string("shenyun_options/auxiliary") or "shape"
+  env.auxiliary_cache = {}
   if env.auxiliary_mode == "tone" then bihua.load_strokes(env) end
 end
 
@@ -322,6 +330,7 @@ function this.fini(env)
   env.translator = nil
   env.pinyin = nil
   env.shape_elements = nil
+  env.auxiliary_cache = nil
   bihua.release_strokes(env)
   collectgarbage()
 end

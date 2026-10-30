@@ -43,7 +43,7 @@ function filter.func(translation, env)
   for candidate in translation:iter() do
     local is_phrase = candidate:get_dynamic_type() == "Phrase" or candidate:get_dynamic_type() == "Sentence"
     local is_normal_spelling = false
-    local preedit = rime_api.regex_replace(candidate.preedit, " 形.+$", "")
+    local preedit = candidate.preedit:gsub(" 形.+$", "")
     local is_character = utf8.len(candidate.text) == 1 and preedit:len() == 2
     if is_vacant_initial and utf8.len(candidate.text) == 2 then
       -- 天然空音码的 AA 表示两个声母，后续一码仅用于筛选。

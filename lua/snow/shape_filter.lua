@@ -40,6 +40,23 @@ local sipin_stroke_map = { ["一"] = "e", ["丨"] = "i", ["丿"] = "u", ["丶"] 
 local sanpin_stroke_map = { ["一"] = "i", ["丨"] = "v", ["丿"] = "u", ["丶"] = "a", ["乙"] = "o" }
 local sanpin_tones = { i = "1", v = "2", u = "3", a = "4", o = "5" }
 
+---@param map table<string, string>
+---@return table<string, string>, table<string, string>
+local function stroke_maps(map)
+  local reverse_map = {}
+  local direct_map = {}
+  for stroke, key in pairs(map) do
+    reverse_map[key] = stroke
+  end
+  for number, stroke in pairs(stroke_names) do
+    direct_map[number] = map[stroke]
+  end
+  return reverse_map, direct_map
+end
+
+local sipin_reverse_stroke_map, sipin_direct_stroke_map = stroke_maps(sipin_stroke_map)
+local sanpin_reverse_stroke_map, sanpin_direct_stroke_map = stroke_maps(sanpin_stroke_map)
+
 --- 声声二字词的一次辅码按第二字声调筛选。
 ---@param text string
 ---@param shape_input string
@@ -63,18 +80,9 @@ end
 --- @param text string
 --- @param partial_code string
 --- @param env ShapeFilterEnv
---- @param map table<string, string>
-local function stroke_match(text, partial_code, env, map)
-  ---@type table<string, string>
-  local reverse_map = {}
-  ---@type table<string, string>
-  local direct_map = {}
-  for k, v in pairs(map) do
-    reverse_map[v] = k
-  end
-  for k, v in pairs(stroke_names) do
-    direct_map[k] = map[v]
-  end
+--- @param reverse_map table<string, string>
+--- @param direct_map table<string, string>
+local function stroke_match(text, partial_code, env, reverse_map, direct_map)
   ---@type string?
   local prompt = nil
   if partial_code:len() > 0 then
@@ -150,6 +158,54 @@ end
 
 local filter = {}
 
+---@class ShapeFilterState
+---@field id string
+---@field current string
+---@field is_pinyin boolean
+---@field show_chaifen boolean
+---@field initial_pair boolean
+---@field sipin_passthrough boolean
+---@field sanpin_initial_pair boolean
+---@field sanpin_passthrough boolean
+---@field jiandao_active boolean
+
+---@param env ShapeFilterEnv
+---@return ShapeFilterState
+local function current_state(env)
+  local context = env.engine.context
+  local segment = context.composition:toSegmentation():back()
+  local id = env.engine.schema.schema_id
+  local current = snow.current(context) or ""
+  local shape_input = context.get_property and context:get_property("shape_input") or ""
+  local sipin_passthrough = false
+  local sanpin_initial_pair = false
+  local sanpin_passthrough = false
+  local jiandao_active = false
+  if id == "snow_sipin" then
+    sipin_passthrough = shape_input:len() == 0
+        and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrwyv][aeiou]{3}")
+  elseif id == "snow_sanpin" then
+    sanpin_initial_pair = shape_input:len() == 1
+        and rime_api.regex_match(current, env.vacant_initial_pattern)
+    sanpin_passthrough = shape_input:len() == 0
+        and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]")
+  elseif id == "snow_jiandao" then
+    jiandao_active = shape_input:len() > 0 or current:find("[A-Z]") ~= nil
+        or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?")
+  end
+  return {
+    id = id,
+    current = current,
+    is_pinyin = segment and segment:has_tag("pinyin") or false,
+    show_chaifen = context.get_option and context:get_option("chaifen") or false,
+    initial_pair = context.get_property and context:get_property("shape_status") == "initial_pair" or false,
+    sipin_passthrough = sipin_passthrough,
+    sanpin_initial_pair = sanpin_initial_pair,
+    sanpin_passthrough = sanpin_passthrough,
+    jiandao_active = jiandao_active,
+  }
+end
+
 ---@param env ShapeFilterEnv
 function filter.init(env)
   local config = env.engine.schema.config
@@ -172,45 +228,42 @@ end
 ---@param text string
 ---@param shape_input string
 ---@param env ShapeFilterEnv
-function filter.handle_candidate(text, shape_input, env)
-  local segment = env.engine.context.composition:toSegmentation():back()
-  local is_pinyin = segment and segment:has_tag("pinyin") or false
-  local current = snow.current(env.engine.context) or ""
-  local id = env.engine.schema.schema_id
-  if id == "snow_sipin" then -- 冰雪四拼
-    if shape_input:len() == 0 and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrwyv][aeiou]{3}") then
+---@param state? ShapeFilterState
+function filter.handle_candidate(text, shape_input, env, state)
+  state = state or current_state(env)
+  if state.id == "snow_sipin" then -- 冰雪四拼
+    if state.sipin_passthrough then
       return true, nil, nil
     end
     if shape_input:sub(1, 1) == "1" then
       return radical_match(text, shape_input:sub(2), env)
     else
-      return stroke_match(text, shape_input, env, sipin_stroke_map)
+      return stroke_match(text, shape_input, env, sipin_reverse_stroke_map, sipin_direct_stroke_map)
     end
-  elseif id == "snow_sanpin" then -- 冰雪三拼
-    if shape_input:len() == 1 and rime_api.regex_match(current, env.vacant_initial_pattern) then
+  elseif state.id == "snow_sanpin" then -- 冰雪三拼
+    if state.sanpin_initial_pair then
       return sanpin_initial_pair_match(text, shape_input, env)
     end
-    if shape_input:len() == 0 and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]") then
+    if state.sanpin_passthrough then
       return true, nil, nil
     end
     if shape_input:sub(1, 1) == "1" then
       return radical_match(text, shape_input:sub(2), env)
     else
-      return stroke_match(text, shape_input, env, sanpin_stroke_map)
+      return stroke_match(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map)
     end
-  elseif id == "snow_jiandao" then -- 冰雪键道
-    if is_pinyin or shape_input:len() > 0 or current:find("[A-Z]") or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?") then
+  elseif state.id == "snow_jiandao" then -- 冰雪键道
+    if state.is_pinyin or state.jiandao_active then
       local code = jiandao_encode(
-        text, current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache
+        text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache
       )
-      local initial_pair = env.engine.context:get_property("shape_status") == "initial_pair"
       local prompt = shape_input:len() > 0
-          and (initial_pair and " 形[" .. shape_input .. "]" or " 形 [" .. shape_input .. "]") or nil
+          and (state.initial_pair and " 形[" .. shape_input .. "]" or " 形 [" .. shape_input .. "]") or nil
       local match = code == "" or code:sub(1, #shape_input) == shape_input
       local comment = code
-      if not is_pinyin and current:len() == 1 then
+      if not state.is_pinyin and state.current:len() == 1 then
         comment = "" -- 630 不需要提示
-      elseif utf8.len(text) == 1 and (env.engine.context:get_option("chaifen") or is_pinyin) then
+      elseif utf8.len(text) == 1 and (state.show_chaifen or state.is_pinyin) then
         local chaifen = lookup(env.shape_elements, text)
         comment = comment .. " " .. chaifen
       end
@@ -218,7 +271,7 @@ function filter.handle_candidate(text, shape_input, env)
     else
       return true, nil, nil
     end
-  elseif id == "snow_yipin" then -- 冰雪一拼
+  elseif state.id == "snow_yipin" then -- 冰雪一拼
     local partial_code = ""
     local prompt = ""
     local element = lookup(env.shape_elements, text)
@@ -242,13 +295,14 @@ end
 function filter.func(translation, env)
   local context = env.engine.context
   local shape_input = context:get_property("shape_input")
+  local state = current_state(env)
   local has_candidate = false
   local has_match = false
   ---@type string?
   local first_preedit = nil
   for candidate in translation:iter() do
     has_candidate = true
-    local show, prompt, comment = filter.handle_candidate(candidate.text, shape_input, env)
+    local show, prompt, comment = filter.handle_candidate(candidate.text, shape_input, env, state)
     if not first_preedit and prompt then
       first_preedit = candidate.preedit .. prompt
     end

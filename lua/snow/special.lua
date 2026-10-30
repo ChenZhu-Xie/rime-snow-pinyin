@@ -20,12 +20,18 @@ function filter.func(translation, env)
   if not input then
     return
   end
+  local special_positions = {}
+  local position = 0
+  for syllable in input:gmatch("[bpmfdtnlgkhjqxzcsrwyv][aeiou]*") do
+    position = position + 1
+    if syllable:sub(1, 1) == "s" then
+      table.insert(special_positions, position)
+    end
+  end
   for candidate in translation:iter() do
-    local index = 0
-    for syllable in input:gmatch("[bpmfdtnlgkhjqxzcsrwyv][aeiou]*") do
-      index = index + 1
-      local char = snow.sub(candidate.text, index, index)
-      if syllable:sub(1, 1) == "s" and (char == "三" or char == "五") then
+    for _, index in ipairs(special_positions) do
+      local character = snow.sub(candidate.text, index, index)
+      if character == "三" or character == "五" then
         goto continue
       end
     end

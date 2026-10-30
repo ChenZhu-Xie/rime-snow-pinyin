@@ -19,7 +19,7 @@ end
 function filter.func(translation, env)
   for candidate in translation:iter() do
     local text = candidate.text
-    local is_placeholder = rime_api.regex_match(text, "^\\([a-z]+[0-9?]*\\)$")
+    local is_placeholder = text:match("^%([a-z]+[0-9?]*%)$") ~= nil
     if is_placeholder or rejected_text[text] then
       goto continue
     end

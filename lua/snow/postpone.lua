@@ -104,6 +104,21 @@ function filter.func(translation, env)
     end
   end
 
+  -- 新一段输入的第一码还没有需要后置的旧首选，候选顺序不可能改变。
+  -- 直接流式输出并记录首选，避免为了首屏无意义地预取 10 项。
+  if next(env.known_candidates) == nil then
+    local first = true
+    local record = not rime_api.regex_match(full_input, env.disable)
+    for candidate in translation:iter() do
+      if first then
+        if record then env.known_candidates[candidate.text] = full_input:len() end
+        first = false
+      end
+      yield(candidate)
+    end
+    return
+  end
+
   -- 设当前编码长度为 n，则：
   -- 过滤开始前，known_candidates 包含 n-1 项，分别是 1 ~ n-1 长度时对应的首选
   -- 过滤结束后，known_candidates 包含 n 项，分别是 1 ~ n 长度时对应的首选

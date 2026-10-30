@@ -9,10 +9,12 @@ local filter = {}
 
 ---@class SimplifiedEnv: Env
 ---@field converter Opencc?
+---@field cache table<string, boolean>
 
 ---@param env SimplifiedEnv
 function filter.init(env)
   env.converter = Opencc("t2s.json")
+  env.cache = {}
 end
 
 ---@param translation Translation
@@ -21,10 +23,14 @@ function filter.func(translation, env)
   local traditional = env.engine.context:get_option("traditionalization")
   local postponed = {}
   for candidate in translation:iter() do
+    local simplified = env.cache[candidate.text]
+    if simplified == nil and env.converter then
+      simplified = env.converter:convert_text(candidate.text) == candidate.text
+      env.cache[candidate.text] = simplified
+    end
     -- 精简测试环境（例如 Mira）可能不附带 OpenCC 的 t2s.json。
     -- 此时保持原序，避免过滤器因初始化失败而吞掉全部候选。
-    if traditional or not env.converter
-        or env.converter:convert_text(candidate.text) == candidate.text then
+    if traditional or not env.converter or simplified then
       yield(candidate)
     else
       table.insert(postponed, candidate)
@@ -37,6 +43,7 @@ end
 
 function filter.fini(env)
   env.converter = nil
+  env.cache = nil
 end
 
 return filter
