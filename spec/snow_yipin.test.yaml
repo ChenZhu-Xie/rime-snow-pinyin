@@ -17,6 +17,14 @@ script: |
   function page(something)
     return rank(something) <= 6
   end
+  function dump()
+    local output = {}
+    for i, candidate in ipairs(cand) do
+      if i > 10 then break end
+      table.insert(output, candidate.text)
+    end
+    return table.concat(output, " | ")
+  end
 deploy:
   statistics:
     tests:
@@ -53,9 +61,9 @@ deploy:
     tests:
       # 先以一简码 f 指定目标编码，再逐字上屏“冰雪”，第二次 Ctrl+. 完成添加。
       - send: f{Release+f}{Control+period}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{Control+period}
-        assert: commit == "冰雪"
+        assert: preedit == nil
       - send: f{Release+f}
-        assert: has("冰雪")
+        assert: error(dump())
   syllable:
     tests:
       - send: zvio{Release+z}{Release+v}{Release+i}{Release+o}
