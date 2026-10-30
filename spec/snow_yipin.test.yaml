@@ -24,23 +24,31 @@ deploy:
         assert: cand[1].text == "📖 统计功能说明"
       - send: jkl{Release+j}{Release+k}{Release+l}{space}{Release+space}
         assert: commit:find("冰雪一拼可并击 jkl", 1, true) ~= nil
-      # 右手并击 jkl; 打出全部设备统计命令
-      - send: jkl;{Release+j}{Release+k}{Release+l}{Release+semicolon}
+      # 右手并击 m,. 打出全部设备统计命令
+      - send: m,.{Release+m}{Release+comma}{Release+period}
         assert: cand[1].text:match("^📊 ") ~= nil
       - send: '1'
         assert: commit == "1"
       # 并击 uio 分列已有数据的设备
       - send: uio{Release+u}{Release+i}{Release+o}
         assert: cand[1].text:match("^📊 .* · ") ~= nil
-  unicode:
+  buffered:
     tests:
-      # 并击 uio; 进入 Unicode 输入，字母用大写以避开并击
-      - send: uio;{Release+u}{Release+i}{Release+o}{Release+semicolon}4E00
-        assert: cand[1].text == "一"
-      - send: uio;{Release+u}{Release+i}{Release+o}{Release+semicolon}1F600
-        assert: cand[1].text == "😀"
-      - send: uio;{Release+u}{Release+i}{Release+o}{Release+semicolon}20000
-        assert: cand[1].text == "𠀀"
+      # 右手并击 jio 直接开启缓冲，不产生文字或命令候选
+      - send: jio{Release+j}{Release+i}{Release+o}
+        assert: commit == nil and preedit == nil and tostring(#cand) == "0"
+      # 连续两组音节只确认前一组，不提前上屏
+      - send: jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
+        assert: commit == nil and cand[1].text == "雪"
+      # 左手一简字也留在缓冲区
+      - send: jio{Release+j}{Release+i}{Release+o}f{Release+f}d{Release+d}
+        assert: commit == nil and preedit == "的一"
+      # 再次并击保持开启
+      - send: jio{Release+j}{Release+i}{Release+o}jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
+        assert: commit == nil and cand[1].text == "雪"
+      # 两次空格上屏整句，随后恢复普通顶屏
+      - send: jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{space}{Release+space}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
+        assert: commit == "冰雪冰" and cand[1].text == "雪"
   syllable:
     tests:
       - send: zvio{Release+z}{Release+v}{Release+i}{Release+o}

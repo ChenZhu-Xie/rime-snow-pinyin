@@ -49,6 +49,9 @@ deploy:
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
       - send: r
         assert: page("人") and has("日")
+      # 上游词典新增 gue2；三拼完整码以二声键 v 区分。
+      - send: gkv
+        assert: has("𨭗")
       # r5 并入 er5 后，按本地神韵零声母与 er 韵键输入轻声「兒」
       - send: reo
         assert: has("兒")
@@ -235,6 +238,49 @@ deploy:
         assert: cand[1].text == "史诗"
       - send: eleliuelel
         assert: commit == "史诗" and cand[1].text == "史诗"
+  buffered_command:
+    tests:
+      - send: o
+        assert: cand[1].text == "📝 开启缓冲" and commit == nil
+      - send: "o "
+        assert: commit == nil and preedit == nil
+      - send: "o{Escape}erf "
+        assert: commit == "输入法"
+      - send: "o btxkerf "
+        assert: commit == nil
+      - send: "o btxkerf  erf "
+        assert: commit == "冰雪输入法输入法"
+  # 选择造词：六码末位是首字声调，选完首字后不能把它当成第二字编码。
+  encoding:
+    tests:
+      - send: btsl
+        assert: not has("冰四")
+      - send: btslai2
+        assert: cand[1].text == "四" and commit == nil
+      - send: "btslai2{BackSpace}"
+        assert: preedit == "bt slai" and cand[2].text == "冰"
+      - send: "btslai2{BackSpace}2"
+        assert: cand[1].text == "四" and commit == nil
+      - send: "btslai2{Escape}btsl"
+        assert: not has("冰四")
+      - send: "btslai2 btsl"
+        assert: cand[1].text == "冰四"
+      # 造出的词保留两个单字的真实声调，不能被其他声调命中。
+      - send: btsloo
+        assert: not has("冰四")
+      - send: btslii
+        assert: not has("冰四")
+      - send: btslai21btsl
+        assert: cand[1].text == "冰四"
+  # 第二字也可由下一个词顶屏，并与首字一起完成造词。
+  encoding_popping:
+    tests:
+      - send: "btslai2b{Escape}btsl"
+        assert: cand[1].text == "冰四"
+  encoding_buffered:
+    tests:
+      - send: "{Control+period}btslai2  btsl"
+        assert: cand[1].text == "冰四"
   # 上游 buffered：分片组词、字母候选与英数混输；本地缓冲键 Ctrl+.。
   buffered:
     tests:

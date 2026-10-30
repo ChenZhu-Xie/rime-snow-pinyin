@@ -6,7 +6,7 @@ __include: snow_shenyun_common.yaml:/
 schema:
   schema_id: snow_shenyun_tone
   name: 冰雪神韵·调
-  version: "0.1"
+  version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |

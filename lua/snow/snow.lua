@@ -33,7 +33,7 @@ end
 
 -- 冰雪拼音的版本号，是全仓库唯一的来源：用 `bun scripts/version.ts <版本号>` 修改，
 -- 它会同时改写所有 snow_*.schema.yaml、snow_*.dict.yaml 里的 version
-snow.version = "0.3.12"
+snow.version = "0.3.13"
 
 snow.debug = false
 
@@ -128,7 +128,7 @@ end
 
 ---@param candidate Candidate
 ---@param proxy string
-function snow.prepare(candidate, proxy, normal)
+function snow.prepare(candidate, proxy)
   local proxy_segment = proxy:sub(1, candidate._end - candidate._start)
   local real_segment = proxy_segment:gsub("[ ?~]", "")
   candidate._end = candidate._start + real_segment:len()
@@ -141,9 +141,6 @@ function snow.prepare(candidate, proxy, normal)
   local filler_length = proxy_segment:len() - real_segment:len()
   if filler_length > 0 and real_input_length > 0 then
     candidate.quality = candidate.quality - filler_length / real_input_length
-  end
-  if not normal then
-    candidate.quality = candidate.quality + 1
   end
   -- candidate.comment = candidate.comment .. (" [%f, %d, %d]"):format(candidate.quality, candidate._start, candidate._end)
   return candidate
@@ -250,6 +247,9 @@ function snow.release_db(name)
   if count <= 0 then
     local db = snow.db_pool[name]
     if db and db:loaded() then
+      -- query():iter() 遍历结束后，Lua 可能还没回收持有原生游标的 DbAccessor。
+      -- 必须在关库前回收：游标析构会访问数据库的缓存，关库后再析构会崩溃
+      collectgarbage()
       db:close()
     end
     snow.db_pool[name] = nil

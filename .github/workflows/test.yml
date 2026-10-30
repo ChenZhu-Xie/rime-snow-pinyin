@@ -28,6 +28,18 @@ on:
 name: 测试
 
 jobs:
+  dictionary:
+    name: 拼音词典编码检查
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 获取代码
+        uses: actions/checkout@v4
+      - name: 安装 Bun
+        uses: oven-sh/setup-bun@v2
+      - name: 安装脚本依赖
+        run: bun install --cwd scripts --frozen-lockfile
+      - name: 检查五个方案的全部拼音音节编码
+        run: bun scripts/check-pinyin-dict.ts
   validate-shenyun:
     name: 核验神韵双拼映射
     runs-on: ubuntu-24.04
@@ -49,7 +61,7 @@ jobs:
 
   test:
     name: 测试
-    needs: validate-shenyun
+    needs: [dictionary, validate-shenyun]
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false

@@ -19,7 +19,7 @@
 
 # 冰雪拼音开发约定
 
-**始终用中文回复。**
+始终用中文回复。
 
 ## 方案名称
 
@@ -37,6 +37,45 @@
 
 一个段落、一个列表项写成一行，不按最大行长度硬换行。中文段落中间的换行在渲染时会变成多余的空格，续行前的缩进也会带进排版。只在段落、列表项、标题、表格行、代码块之间换行；列表项里的第二段照常空一行并缩进。代码块和 yaml 注释不受这条约束。
 
+## 开发脚本
+
+依赖安装在 `scripts/`：`bun install --cwd scripts`。以下命令在仓库根目录运行；脚本通过 `lib/paths.ts` 定位仓库资源，显式传入的相对路径按调用目录解析。`generate-*` 生成数据，`export-*` 导出已有数据；公共逻辑、源数据、皮肤生成和实验工具分别放在 `scripts/lib/`、`scripts/data/`、`scripts/skin/`、`scripts/experiments/`。
+
+```sh
+bun run --cwd scripts format          # 格式化 TypeScript 和 JSON
+bun run --cwd scripts check:format    # 检查格式
+```
+
+测试、版本号和本机安装命令见下文。下表中的脚本均位于 `scripts/`，用 `bun scripts/<脚本名>` 运行；`data/` 指 `scripts/data/`，`output/` 指仓库根目录下已被 Git 忽略的输出目录。
+
+| 脚本与参数 | 输入与用途 | 默认输出 |
+| --- | --- | --- |
+| `generate-pinyin-dict.ts [输出文件]` | `data/tygf-pinyin.tsv` 与 `lib/character-pinyin.ts` 中固定版本的在线大字集拼音 | `snow_pinyin.dict.yaml` |
+| `check-pinyin-dict.ts` | 离线检查单字词典全部读音在五个方案中的完整音节编码，异常时退出失败 | 不写文件 |
+| `generate-word-dicts.ts [base ext tencent] [--output-dir 目录]` | 雾凇子模块 `ice/cn_dicts/` 与当前单字词典；省略词库名时生成三份 | `snow_pinyin.*.dict.yaml`；未确定读音写入 `diff/` |
+| `generate-english-dict.ts [输入文件] [输出文件]` | 默认读取 `rime-easy-en/easy_en.dict.yaml` | `snow_yingpin.dict.yaml` |
+| `generate-stroke-dict.ts <输入文件> [输出文件]` | 外部三列笔画 TSV，格式见「笔画与地区字形」 | `snow_bihua.dict.yaml` |
+| `generate-radical-codes.ts [输出目录]` | `data/radicals.tsv` 与冰雪四拼、冰雪三拼的拼写规则 | `lua/snow/radical_sipin.txt`、`radical_sanpin.txt` |
+| `annotate-words.ts <词表> [输出文件]` | 每行一个词，可带后续 TSV 列；优先查现有词典，缺词时调用注音库 | `output/annotated-words.tsv` |
+| `export-user-dict.ts <用户词典快照> [输出文件]` | 读取 Rime 文本快照，按使用次数排序 | `output/user-dict.tsv`（词、编码、次数三列） |
+| `export-character-codes.ts [输出文件]` | 冰雪四拼单字评测码表，需联网下载大字集拼音 | `output/character-codes.tsv` |
+| `export-word-codes.ts [输出目录]` | 离线模拟冰雪四拼动态码长，导出评测与大竹查询码表 | `output/word-codes/` 下的 `simulated.txt`、`dazhu.txt` |
+| `generate-yipin-tests.ts [输出文件]` | 从 `data/yipin-syllables.tsv` 每组固定取首条生成音节测试 | `output/yipin-tests.yaml.snippet`；审阅后合入 spec，不覆盖功能测试 |
+
+词典和辅助码生成默认更新仓库产物，审阅时可指定临时输出路径，如 `bun scripts/generate-word-dicts.ts base --output-dir /tmp/snow-word-dicts`；指定 `--output-dir` 后诊断文件也放在该目录的 `diff/`。注音逻辑集中在 `lib/word-pinyin.ts`，按需初始化且不写文件；`data/word-pinyin-overrides.tsv` 配置词语读音修正，`data/complete-pinyin-overrides.tsv` 修正 pinyin-pro 的完整词库。
+
+### 皮肤
+
+`bun scripts/generate-skins.ts [输出目录] [--backend hamster|trime|all] [--trime-toolbar-width 按键总宽度dp]` 生成七组皮肤，默认后端为 `all`，输出到调用目录的 `output/skins/hamster/` 和 `output/skins/trime/`。单后端输出直接放在指定目录；显式指定 `--backend hamster` 且省略输出目录时，会写入供 iOS 元书使用的 `~/Library/Mobile Documents/iCloud~com~ihsiao~apps~Hamster3/Documents/Skins/`。为 Android 生成皮肤或审阅产物时显式指定目录，例如 `bun scripts/generate-skins.ts /tmp/snow-skins`。
+
+布局、配色和共用类型分别在 `skin/layouts.ts`、`skin/palette.ts`、`skin/types.ts`；元书输入法（iOS、Android）与同文（Android）后端分别在 `skin/hamster.ts`、`skin/trime.ts`。元书输入法输出两平台共用的皮肤目录、亮暗预览 `demo.png` 和 `.cskin`，系统图标通过 `{ ios, android }` 映射，打包依赖系统 `zip`；`.cskin` 内必须只有一个与皮肤同名的根目录。同文每组输出一份 `.trime.yaml`，复用内置 `trime.yaml` 样式和安卓键表，工具栏采用新版配置。
+
+同文工具栏依次为菜单、常用语、剪贴板、编辑、中文、ABC、收起，默认七键各 50 dp、总宽 350 dp；菜单靠左，其余键靠右。窄屏或悬浮键盘用 `--trime-toolbar-width` 调整按键总宽度，例如 `315` 对应七键各 45 dp。CI 按输入法发布 `snow-pinyin-skins-hamster.zip`（皮肤目录及 `.cskin`）和 `snow-pinyin-skins-trime.zip`（主题文件），由 `.github/workflows/release.yml` 打包。
+
+### 实验工具
+
+`scripts/experiments/` 依赖自行提供的外部语料，不参与发布：`generate-sanpin-shortcuts.ts <词频表> [输出文件]` 生成冰雪三拼简词候选，默认写入 `output/sanpin-shortcuts.tsv`；`frequency/derive-character-frequency.ts <语料目录> [输出文件]` 推导单字剩余词频，`frequency/resegment-word-frequency.ts <语料目录> <玲珑词表> [输出文件]` 重新分词。具体输入文件约定见各脚本。
+
 ## 实际目录
 
 `~/.local/share/fcitx5/rime` 里的 `snow_*.schema.yaml`、`snow_*.dict.yaml`、`snow_*.fixed.txt`、`lua/snow` 都是指回本仓库的软链，**没有「同步」这一步**：改哪边都是改同一份文件，`git pull` 后重新部署即可。
@@ -46,7 +85,9 @@ bun scripts/link.ts link      # 建立软链（幂等，仓库新增文件后重
 bun scripts/link.ts unlink    # 还原成独立副本
 ```
 
-手机上的仓输入法读的是 iCloud 里的 `RimeUserData/rime-snow-pinyin`。iCloud 不跟随软链，所以那边只能复制：`bun scripts/link.ts sync` 把同样的文件单向镜像过去，只复制内容有变化的文件，并清理仓库里已删除的文件。这一步要手动跑，改完想在手机上用时再跑一次。
+本机供 iOS 元书输入法使用的方案目录是 iCloud 里的 `RimeUserData/rime-snow-pinyin`。iCloud 不跟随软链，所以那边只能复制：`bun scripts/link.ts sync` 把同样的文件单向镜像过去，只复制内容有变化的文件，并清理仓库里已删除的文件。这一步要手动跑，改完想在 iOS 上用时再跑一次。Android 元书通过应用的方案导入入口安装，不使用这条 iCloud 同步路径。
+
+`sync` 还会用系统 `zip` 重新打包全部同步文件，保留相对路径并替换 `~/Library/Mobile Documents/iCloud~com~ihsiao~apps~Hamster3/Documents/sync/rime-snow-pinyin.zip`。
 
 本机私有、已被 `.gitignore` 排除的 `*.custom.yaml`、`*.userdb`、`build/`、`user.yaml`、`installation.yaml` 仍各自独立，所以在仓库里跑 mira 不会污染实际词频。
 
@@ -62,6 +103,14 @@ bun scripts/version.ts          # 查看当前版本
 ```
 
 词典生成脚本（`generate-pinyin-dict.ts`、`generate-word-dicts.ts`、`generate-english-dict.ts`、`generate-stroke-dict.ts`）也从 `scripts/version.ts` 读取同一个版本号。Rime 的 `__include` 只在方案里生效，词典头不支持，所以没法靠 yaml 本身共用一份。
+
+### 发布时自动更新文档
+
+每次发布新版本，都必须自动检查并更新文档网站 `/Users/tansongchen/Public/input`，作为发布工作的必要步骤，不等待用户另行提醒。根据本次版本的功能、默认配置、快捷键、词库和皮肤变更，更新受影响的教程、公共片段、导航与示例；输入统计放在各方案的 `advanced.md` 中。实验性的冰雪英拼和冰雪注音暂不扩写；面向用户只介绍 `snow-pinyin.zip` 和皮肤包，预览包仅用于网站演示。
+
+网站的安装、皮肤、补丁文件入口和数据备份等通用说明合并到起始页 `index.md`，避免新增过多顶层页面。涉及方案逻辑的配置（如首选后置、调频、固定候选、词库、辅助码和笔画来源）及各方案专用文件说明，放在对应方案的教程中；共用内容通过 `components/` 下的公共片段引用复用，不堆在首页。各方案的按键逻辑分别在本方案的教程中说明，不维护统一的 `shortcuts.md`。
+
+方案行为或示例发生变化时，使用当前版本的独立部署环境重新生成候选框模拟缓存，并检查网页演示所用预览包的版本。文档仓库须运行格式检查和网站构建，并检查改动页面的链接、公共引用片段、候选显示与交互输入；全部验证完成后，才算完成本次版本的文档更新。开发脚本、统计设计和维护约定继续保留在本仓库，网站按需链接，不必复制实现细节。
 
 ## 笔画与地区字形
 
@@ -89,7 +138,9 @@ bun scripts/test.ts                  # 全部五个方案
 bun scripts/test.ts yipin qingyun    # 只跑指定方案，snow_ 前缀可省
 ```
 
-它为每个方案准备一份独立环境，这几步都是为了提速或者能并行，不要省掉：
+`generate-pinyin-dict.ts` 在写文件前校验全部输入读音；`scripts/test.ts`、CI 和发布流程也会离线检查现有词典在全部五个方案中的完整音节编码。各方案的正则定义在 `scripts/lib/pinyin-validation.ts`，依据 `../input` 中对应的拼写教程：冰雪四拼为声码加一至二码韵母加调码，冰雪三拼为声韵调三码，冰雪键道为声韵两码，冰雪清韵为声码加九键韵码，冰雪一拼为声介加可省略的韵基加四声标记。检查展开实际方案的拼写规则及引用，保留完整音节的 `derive` 分支，不检查 `abbrev`、简码、顶功或其他输入规则；字母伪音节不属于汉字音节，予以跳过。更新词典或拼写运算后运行 `bun scripts/check-pinyin-dict.ts`；结构异常应修正来源或运算，不应为已有异常放宽正则。
+
+`scripts/test.ts` 为每个方案准备一份独立环境，这几步都是为了提速或者能并行，不要省掉：
 
 - **精简的源目录**：mira 的每个 deploy 都会把整个 `source_dir`（spec 里写的是 `..`，也就是整个仓库，带 `.git`、`node_modules`、`cache`，约 1 GB）复制一遍。脚本只复制 `git ls-files -co --exclude-standard` 列出的文件，相当于 CI 的全新 checkout。本机的 `*.userdb`、`user.yaml` 自然被排除在外，不用再 `rm -rf *.userdb`。
 - **`default.custom.yaml` 只留被测方案**：否则每个 deploy 都要检查 `schema_list` 里的全部五个方案。这两项加起来，每个 deploy 从约 4 秒降到约 1.4 秒。
@@ -188,6 +239,10 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 - 用字面量建的、以字符串为键的查找表（如 `{ a = "j", e = "q" }`）用变量去索引时推不出类型，要标 `---@type table<string, string>`。函数里先建空表再逐项填的局部变量同理，要标元素类型。
 - 一个 `if` 的某个分支给变量赋字面量（`x = ""`），另一个分支写 `x = x:sub(1, -2)`，后者会报 `no-unknown`，加 `---@type` 也没用（LuaLS 的问题）。改成一个表达式 `x = cond and "" or x:sub(1, -2)`。
 
+## 冰雪一拼的功能并击
+
+功能并击最多使用三键，不要新增四键并击。`jkl`、`uio`、`m,.` 分别输入统计命令 `itj`、`itjf`、`itjh`；`jio` 直接开启缓冲。冰雪一拼不提供 Unicode 输入。
+
 ## processors 顺序
 
 五个顶功方案（冰雪四拼、冰雪三拼、冰雪一拼、冰雪键道、冰雪清韵）共用一套相对顺序，新增或移动处理器时按下表对齐：
@@ -264,10 +319,11 @@ bun scripts/test.ts
                                           # 冰雪三拼的 *snow.table_like*jianpin
     - table_translator@stroke             # 冰雪一拼无
     - script_translator@pinyin            # 冰雪一拼无
+    - lua_translator@*snow.buffered       # 仅冰雪四拼、冰雪三拼、冰雪键道
     - lua_translator@*snow.datetime       # 冰雪一拼无
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number         # 冰雪一拼无
-    - lua_translator@*snow.unicode*translator
+    - lua_translator@*snow.unicode*translator # 冰雪一拼无
     - lua_translator@*snow.calculator     # 以下冰雪一拼均无
     - history_translator
 

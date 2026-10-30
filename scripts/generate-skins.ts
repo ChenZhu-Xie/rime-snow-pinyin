@@ -1,64 +1,68 @@
-import { execFileSync } from "node:child_process";
-import {
-	mkdirSync,
-	mkdtempSync,
-	renameSync,
-	rmSync,
-	writeFileSync,
-} from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
-import { dump } from "js-yaml";
+import { parseArgs } from "node:util";
+import { generateHamsterSkin } from "./skin/hamster";
 import { jiandao, qpkr, qwerty, qwrt, shufu } from "./skin/layouts";
-import { makeSkinPreview } from "./skin/preview";
-import { makeHamsterSkin, makeHamsterSkinConfig } from "./skin/render";
+import { generateTrimeSkin } from "./skin/trime";
 import type { KeyboardCollection } from "./skin/types";
 
-function generateSkinFolder(
-	prefix: string,
-	name: string,
-	keyboards: KeyboardCollection,
-) {
-	const folder = join(prefix, name);
-	mkdirSync(folder, { recursive: true });
-	const skinConfig = makeHamsterSkinConfig(name, keyboards);
-	writeFileSync(join(folder, "config.yaml"), dump(skinConfig), "utf8");
-	for (const dark of [false, true]) {
-		const modeFolder = join(folder, dark ? "dark" : "light");
-		mkdirSync(modeFolder, { recursive: true });
-		for (const [key, config] of Object.entries(keyboards)) {
-			const content = dump(makeHamsterSkin({ ...config, dark }), {
-				flowLevel: 2,
-			});
-			const fileName = join(modeFolder, `${key}.yaml`);
-			writeFileSync(fileName, content, "utf8");
-		}
-	}
-	writeFileSync(join(folder, "demo.png"), makeSkinPreview(keyboards.pinyin));
-
-	// 从输出目录打包，将所有皮肤文件放在压缩包内的同名文件夹中。
-	// 每次新建压缩包，避免 zip 更新旧包时残留已经删除的条目。
-	const temporary = mkdtempSync(join(prefix, ".skin-"));
-	try {
-		const archive = join(temporary, "skin.cskin");
-		execFileSync("zip", ["-qrX", archive, name, "-x", "*.DS_Store"], {
-			cwd: prefix,
-			stdio: "pipe",
-		});
-		renameSync(archive, join(prefix, `${name}.cskin`));
-	} finally {
-		rmSync(temporary, { recursive: true, force: true });
-	}
-}
-
 function main() {
+	const { values, positionals } = parseArgs({
+		args: process.argv.slice(2),
+		options: {
+			backend: { type: "string", default: "all" },
+			"trime-toolbar-width": { type: "string" },
+			help: { type: "boolean", short: "h" },
+		},
+		allowPositionals: true,
+	});
+	if (values.help) {
+		console.log(
+			"用法：bun scripts/generate-skins.ts [输出目录] [--backend hamster|trime|all] [--trime-toolbar-width 按键总宽度dp]（默认 all，工具栏七键各 50 dp）",
+		);
+		return;
+	}
+	const backend = values.backend;
+	if (!["hamster", "trime", "all"].includes(backend ?? "")) {
+		throw new Error(`未知的皮肤后端：${backend}`);
+	}
+	if (positionals.length > 1) throw new Error("只能指定一个输出目录");
+	const toolbarWidth =
+		values["trime-toolbar-width"] === undefined
+			? undefined
+			: Number(values["trime-toolbar-width"]);
+	if (
+		toolbarWidth !== undefined &&
+		(!Number.isFinite(toolbarWidth) || toolbarWidth < 7)
+	) {
+		throw new Error("同文工具栏宽度必须为不小于 7 的 dp 数值");
+	}
 	const prefix = resolve(
-		process.argv[2] ??
-			join(
-				homedir(),
-				"Library/Mobile Documents/iCloud~com~ihsiao~apps~Hamster3/Documents/Skins",
-			),
+		positionals[0] ??
+			(backend === "hamster"
+				? join(
+						homedir(),
+						"Library/Mobile Documents/iCloud~com~ihsiao~apps~Hamster3/Documents/Skins",
+					)
+				: "output/skins"),
 	);
+	const generateSkinFolder = (name: string, keyboards: KeyboardCollection) => {
+		if (backend === "hamster" || backend === "all") {
+			generateHamsterSkin(
+				backend === "all" ? join(prefix, "hamster") : prefix,
+				name,
+				keyboards,
+			);
+		}
+		if (backend === "trime" || backend === "all") {
+			generateTrimeSkin(
+				backend === "all" ? join(prefix, "trime") : prefix,
+				name,
+				keyboards,
+				toolbarWidth,
+			);
+		}
+	};
 	const snow_sipin = {
 		colorful: true,
 		label: true,
@@ -103,39 +107,39 @@ function main() {
 		keyInfos: shufu,
 	};
 
-	generateSkinFolder(prefix, "俏皮可爱・七色", {
+	generateSkinFolder("俏皮可爱・七色", {
 		pinyin: snow_sipin,
 		alphabetic: general,
 	});
-	generateSkinFolder(prefix, "俏皮可爱・七色・无刻", {
+	generateSkinFolder("俏皮可爱・七色・无刻", {
 		pinyin: snow_sipin_nolabel,
 		alphabetic: general,
 	});
-	generateSkinFolder(prefix, "直列 35 键", {
+	generateSkinFolder("直列 35 键", {
 		pinyin: snow_qingyun,
 		alphabetic: general,
 	});
-	generateSkinFolder(prefix, "直列 35 键・无刻", {
+	generateSkinFolder("直列 35 键・无刻", {
 		pinyin: snow_qingyun_nolabel,
 		alphabetic: general,
 	});
-	generateSkinFolder(prefix, "键道 35 键", {
+	generateSkinFolder("键道 35 键", {
 		pinyin: snow_jiandao,
 		alphabetic: general,
 		numeric: snow_shufu,
 		symbolic: snow_shufu,
 	});
-	generateSkinFolder(prefix, "键道 35 键・无刻", {
+	generateSkinFolder("键道 35 键・无刻", {
 		pinyin: snow_jiandao_nolabel,
 		alphabetic: general,
 		numeric: snow_shufu,
 		symbolic: snow_shufu,
 	});
-	generateSkinFolder(prefix, "直列 45 键", {
+	generateSkinFolder("直列 45 键", {
 		pinyin: { ...general, symbol: false },
 	});
 
-	console.log(`已生成皮肤文件夹和 .cskin 压缩包到 ${prefix}`);
+	console.log(`已生成 ${backend} 皮肤到 ${prefix}`);
 }
 
 if (import.meta.main) main();

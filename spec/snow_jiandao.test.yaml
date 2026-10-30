@@ -36,6 +36,9 @@ deploy:
       # r5 并入 er5 后，无调键道仍可在 er 的本地 re 码页查询「儿」。
       - send: re
         assert: has("儿")
+      # 上游词典新增 gue2；本地神韵把 ue 与 ve/ai 同映射到 k。
+      - send: gk
+        assert: has("𨭗")
       # 组词规则
       - send: btxk
         assert: has("冰雪")
@@ -68,6 +71,16 @@ deploy:
         assert: has("中文输入法")
       - send: khrmGHG
         assert: has("中华人民共和国")
+      # 四字及以上词：前四字声母 + 每字形码首码，可只补前缀。
+      - send: sxwwvv
+        assert: cand[1].text == "三下五除二"
+      - send: sxwwvvva
+        assert: cand[1].text == "三下五除二"
+      - send: sxwwvvvav
+        assert: cand[1].text == "三下五除二"
+      # 第五字声母仍可用大写补全；本地神韵把 zh/ch 映射到 k/w。
+      - send: kxfkG
+        assert: cand[1].text == "科学发展观"
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
@@ -185,6 +198,42 @@ deploy:
       # 键道和三拼的元音字母简拼都使用共享载体 x。
       - send: "{Control+period}dyou lwo xw mr  dlxm"
         assert: cand[1].text == "哆啦A梦"
+  # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
+  mixed_spelling:
+    tests:
+      - send: X
+        assert: preedit == nil and commit == nil
+      - send: eHrf
+        assert: has("输入法") and preedit == "eH r f"
+      - send: erHf
+        assert: has("输入法") and preedit == "e rH f"
+      - send: erfW
+        assert: has("输入法") and preedit == "e r fW"
+      - send: eHrHfW
+        assert: has("输入法") and preedit == "eH rH fW"
+      - send: erfK
+        assert: not has("输入法")
+      # 沿用本地神韵拼写派生，并能在补韵后继续追加长词声母。
+      - send: zLxTwS
+        assert: has("自行车") and preedit == "zL xT wS"
+      - send: kSxKfWkJG
+        assert: has("科学发展观") and preedit == "kS xK fW kJ g"
+      - send: erfW{BackSpace}
+        assert: has("输入法") and preedit == "e r f"
+      - send: "zLxTwS "
+        assert: commit == "自行车"
+  buffered_command:
+    tests:
+      - send: o
+        assert: cand[1].text == "📝 开启缓冲" and commit == nil
+      - send: "o "
+        assert: commit == nil and preedit == nil
+      - send: "o{Escape}erf "
+        assert: commit == "输入法"
+      - send: "o btxkerf "
+        assert: commit == nil
+      - send: "o btxkerf  erf "
+        assert: commit == "冰雪输入法输入法"
   # 高级功能
   advanced:
     tests:

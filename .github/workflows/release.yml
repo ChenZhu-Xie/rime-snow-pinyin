@@ -24,28 +24,34 @@ jobs:
         uses: oven-sh/setup-bun@v2
       - name: 安装皮肤生成依赖
         run: bun install --cwd scripts --frozen-lockfile
+      - name: 检查五个方案的全部拼音音节编码
+        run: bun scripts/check-pinyin-dict.ts
       - name: 生成并打包皮肤
         run: |
           bun scripts/generate-skins.ts skins
-          zip -r snow-pinyin-skins.zip skins
+          (cd skins/hamster && zip -r ../../snow-pinyin-skins-hamster.zip .)
+          (cd skins/trime && zip -r ../../snow-pinyin-skins-trime.zip .)
       - name: 预览安装包去掉腾讯词库和笔画
         run: |
           # rime-prelude 自带 default.yaml，仓库的 default.yaml 会被部署器当作过时副本移进 trash/
           echo -e "patch:\n  schema_list:\n    - { schema: snow_sipin }\n    - { schema: snow_sanpin }\n    - { schema: snow_yipin }\n    - { schema: snow_jiandao }\n    - { schema: snow_qingyun }" > default.custom.yaml
           sed -i -E '/^ *- snow_pinyin\.tencent$/d' snow_*.schema.yaml
-          sed -i -E '/^ *- (snow_bihua|snow_jiandao_bihua|affix_segmentor@stroke|table_translator@stroke|lua_filter@\*snow\.bihua\*filter)$/d; /^ *(recognizer\/patterns\/)?stroke: /d' snow_*.schema.yaml
+          sed -i -E '/^ *- (snow_bihua|snow_jiandao_bihua|affix_segmentor@stroke|table_translator@stroke|lua_filter@\*snow\.bihua(\*filter)?)$/d; /^ *(recognizer\/patterns\/)?stroke: /d' snow_*.schema.yaml
       - name: 编译
         run: rime_deployer --build . /usr/share/rime-data/
       - name: 打包预览安装包
         run: |
           zip -r snow-pinyin-build.zip build lua *.txt
+      - name: 读取标签中的发布说明
+        run: git tag -l --format='%(contents)' "$GITHUB_REF_NAME" > release-notes.md
       - name: 发布
         uses: comnoco/create-release-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: 冰雪拼音 ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}
+          release_name: 冰雪拼音 ${{ github.ref_name }}
+          body_path: release-notes.md
       - name: 上传
         uses: svenstaro/upload-release-action@v2
         with:

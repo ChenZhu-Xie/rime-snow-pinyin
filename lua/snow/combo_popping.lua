@@ -7,10 +7,23 @@ local processor = {}
 
 ---@class ComboPoppingEnv: Env
 ---@field active boolean
+---@field option_connection Connection
+---@field commit_connection Connection
 
 ---@param env ComboPoppingEnv
 function processor.init(env)
   env.active = true
+  local context = env.engine.context
+  env.option_connection = context.option_update_notifier:connect(function(ctx, name)
+    if name == "buffered" then
+      ctx:set_option("_auto_commit", not ctx:get_option("buffered"))
+    end
+  end)
+  env.commit_connection = context.commit_notifier:connect(function(ctx)
+    if ctx:get_option("buffered") then
+      ctx:set_option("buffered", false)
+    end
+  end)
 end
 
 ---@param key_event KeyEvent
@@ -18,6 +31,7 @@ end
 function processor.func(key_event, env)
   local incoming = utf8.char(key_event.keycode)
   local context = env.engine.context
+  local buffered = context:get_option("buffered")
   if key_event:release() or key_event:alt() or key_event:ctrl() or key_event:caps() then
     return snow.kNoop
   end
@@ -31,14 +45,18 @@ function processor.func(key_event, env)
       -- 这是下一组并击的第一个合成按键，输入统计已经把这组并击记下了，要转给下一个词
       snow.handover = 1
       context:confirm_current_selection()
-      context:commit()
+      if not buffered then
+        context:commit()
+      end
       snow.handover = nil
       return incoming == "i" and snow.kNoop or snow.kAccepted
     elseif rime_api.regex_match(incoming, "[a-z]") then
       if env.active and context:get_option("popping") then
         snow.handover = 1
         context:confirm_current_selection()
-        context:commit()
+        if not buffered then
+          context:commit()
+        end
         snow.handover = nil
       else
         env.active = true
@@ -48,6 +66,12 @@ function processor.func(key_event, env)
   else
     return snow.kNoop
   end
+end
+
+---@param env ComboPoppingEnv
+function processor.fini(env)
+  env.option_connection:disconnect()
+  env.commit_connection:disconnect()
 end
 
 return processor

@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_sanpin
   name: 冰雪三拼
-  version: "0.3.12"
+  version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
@@ -49,6 +49,7 @@ engine:
     - lua_translator@*snow.table_like*jianpin
     - table_translator@stroke
     - script_translator@pinyin
+    - lua_translator@*snow.buffered
     - lua_translator@*snow.datetime
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number
@@ -103,7 +104,8 @@ sanpin_algebra:
   - xform/(vn|ei|er)(?=\d)/E/
   - xform/(ui|v)(?=\d)/G/
   - xform/uo(?=\d)/Y/
-  - xform/(ve|ai)(?=\d)/K/
+  # 扩展读音 gue 与上游一致按 ue 处理；键道与 gai 共码，三拼可由声调区分。
+  - xform/(ue|ve|ai)(?=\d)/K/
   - xform/an(?=\d)/J/
   - xform/(ao|ia)(?=\d)/F/
   - xform/en(?=\d)/M/
@@ -141,13 +143,9 @@ speller:
     - match_shape: ".+"
       accept: "[ivuao]"
   popping:
-    # 630
+    # 630、单字和三字词
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe][ivuao]+"
-      accept: "[bpmfdtnlgkhjqxzcsrywe]"
-    # 单字和三字词
-    - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe]{2,3}[ivuao]+"
+      match: "[bpmfdtnlgkhjqxzcsrywe]{1,3}[ivuao]+"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 四字词和多字词
     - when: popping

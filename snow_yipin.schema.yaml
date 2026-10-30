@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_yipin
   name: 冰雪一拼
-  version: "0.3.12"
+  version: "0.3.13"
   author:
     - 张皓哲 <576440085@qq.com>
     - 谭淞宸 <i@tansongchen.com>
@@ -41,7 +41,6 @@ engine:
     - punct_translator
     - script_translator
     - lua_translator@*snow.statistics*translator
-    - lua_translator@*snow.unicode*translator
   filters:
     - lua_filter@*snow.fix
     - lua_filter@*snow.shape_filter
@@ -90,12 +89,12 @@ chord_composer:
     - xform/-/{Right}/
     - xform/^hk$/{Page_Up}/
     - xform/^hl$/{Page_Down}/
+    # 右手并击 jio 直接开启缓冲，无需选词确认
+    - xform/^jio$/{Control+j}/
     # 右手并击，打出输入统计的命令；加方括号以免被 output_format 当成非法音节删掉
     - xform/^jkl$/[itj]/
-    - xform/^jkl;$/[itjh]/
     - xform/^uio$/[itjf]/
-    # Unicode 输入：并击 uio; 后串击十六进制码点，字母用大写以避开并击
-    - xform/^uio;$/[i]/
+    - xform/^m,\.$/[itjh]/
     # 左手声介
     - xform/ zv /rj/
     - xform/ d /rji/
@@ -235,6 +234,7 @@ speller:
     # 合并轻声
     - xform/5/1/
     # 合并边缘音节
+    - xlit/ê/e/
     - xform/^(h?)ng(?=\d)/$1eng/
     - xform/^n(?=\d)/en/
     - xform/^m(?=\d)/mu/
@@ -371,12 +371,15 @@ patch:
     - name: popping
       states: [整句, 顶功]
       reset: 1
+    - name: buffered
+      states: [结束, 缓冲]
+      reset: 0
   key_binder/bindings/+:
+    - { when: always, accept: "Control+j", set_option: buffered }
     - { when: composing, accept: bracketright, send: Page_Down }
     - { when: composing, accept: bracketleft, send: Page_Up }
   menu/alternative_select_keys: null
   # combo_popping 会吞掉 o，所以 lua 翻译器的命令改用 i 引导，和符号一致
   lua/input: "i"
-  recognizer/patterns/unicode: "^i[0-9A-Fa-f]+$"
   translator/shape_elements: snow_xingpang
   translator/shape_mapping: "radical_shengjie.txt"

@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_qingyun
   name: 冰雪清韵
-  version: "0.3.12"
+  version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
@@ -125,14 +125,15 @@ speller:
     - xform/^m$/me/
     - xform/(?<!\d)$/0/
     # 还原
+    - xlit/ê/e/
+    - xform/(^| )r5(?= |$)/$1er5/
     - xform/(^| )(h?)([mn]g?\d)/$1$2e$3/
     - xform/(^| )(?=[aoe])/$1v/
-    - xform/(^| )wu?/$1wu/
+    - xform/(^| )wu?(?!ong)/$1wu/
     - xform/(^| )yi?(?!u)/$1yi/
     - xform/((?<=[jqxy])u|(?<=[nl])v)/ü/
     - xform/iu/iou/
     - xform/u([in])/ue$1/
-    - xlit/ê/e/
     - xform/(?<=[a-zü])( |$)/1$1/
     # 声码
     - xform/(?<=[zcs])h//
@@ -141,14 +142,14 @@ speller:
     - xform/ü(?=\d)/u/
     - xform/(ia|ua)(?=\d)/a/
     - xform/(io|uo)(?=\d)/o/
-    - xform/(ie|üe)(?=\d)/e/
-    - xform/u?ai(?=\d)/i/
+    - xform/(ie|üe|ue)(?=\d)/e/
+    - xform/[iu]?ai(?=\d)/i/
     - xform/u?ei(?=\d)/e/
     - xform/i?ao(?=\d)/o/
     - xform/i?ou(?=\d)/a/
     - xform/(an|ian|uan|üan)(?=\d)/;/
     - xform/(ang|iang|uang)(?=\d)/,/
-    - xform/(en|in|uen|ün)(?=\d)/./
+    - xform/(en|in|uen|ün|em)(?=\d)/./
     - xform+(eng|ing|ueng|ong|iong)(?=\d)+/+
     # 声调
     - xform/\d//
