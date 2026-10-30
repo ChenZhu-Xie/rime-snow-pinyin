@@ -168,7 +168,7 @@ function initial_pair.func(input, segment, env)
     return
   end
   translate(input, segment, env, false, function(candidate)
-    if utf8.len(candidate.text) ~= 2 or candidate.type == "sentence" then
+    if utf8.len(candidate.text) ~= 2 then
       return false
     end
     candidate.type = "initial_pair"
