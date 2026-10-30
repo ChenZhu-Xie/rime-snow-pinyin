@@ -116,7 +116,7 @@
 [^zh-collision]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 的“重码盈余”为 `399−U`；“受影响音节”按所有非单例桶成员计数。三方案的重码桶均为二元桶。
 [^zh-s2]: [S2 补全](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 按音节频率给桶成员追加固定宽度五进制后缀；miss 是非首项频率权重，平均码长和中心时间只描述该规则补全情景。
 [^zh-ckt3]: [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在八条字词轨上采用固定 `τ=600 ms`、第一／第二辅键各 `300 ms` 的历史敏感性情景；仍可横向复算，但不作为现行主排名。
-[^zh-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 使用候选名次、扫描／翻页和分级辅键成本，是当前补全主指标；B04 按 26×26 四码顶合同，U357、S005 按 21×21 合同，因此 B04 不是同键域基线。
+[^zh-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是当前补全主指标：默认第一／第二辅键各 `300 ms`；非首选时固定决策 `600 ms`、每排除一个更高位候选 `50 ms`、每跨 9 个候选翻页 `300 ms`，独立选重动作项当前为 `0 ms`。八轨按单／二／三／四字 `1:3:1:1`、两模式等权后，以 S005＝10 做四次幂聚合。B04 按 26×26 四码顶合同，U357、S005 按 21×21 合同，因此 B04 不是同键域基线。
 [^zh-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是冻结的公开击键当量＋几何模型历史轴；v4 在 v3 上补齐至对称的 20 合同。它们保留作模型敏感性对照，不覆盖 v5/v6/CKT v4。
 [^zh-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在冻结 20 合同上只以 CKT 计时模型归一并取四次幂均值；分数越低越好，但不含候选名次决策成本。
 [^zh-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 排除抽象 S2，在 19 合同的 CKT 上加入 `150 ms × 非首选率`，以 S005＝10 归一化；是情景指数，不是真人标定速度。
@@ -126,6 +126,8 @@
 [^zh-home]: S2 主键区占比只看 Common399 裸声韵二键；“20 合同主键区下限”则取所有含辅字词合同的最低主行占比，二者不可混用。
 
 `QAZ`、`TYB` 均取三键负载之和在冻结 20 合同中的最大值；P 区右小指组沿用 HTML 原始定义 `P[]\;'/`。CKT v4 的 B04 键道轨使用统一 `snowshape` 字形源，三拼轨使用统一笔画源，并非首道自身辅码；但 B04 按 26×26 四码顶合同计分，U357、S005 按 21×21 合同计分，因此 B04 保留更大双拼码域和三字词 AAA/AAAU 路由的结构优势。
+
+CKT v4 不是八条重码率的简单平均。S005 虽在单字、二字词终局选重率略低，U357 在键道／三拼三字词却分别低约 `0.550/0.662` 个百分点，远大于二字词约 `0.066/0.068` 个百分点的劣势，再加上四字词优势，即使二字词权重为 3，八轨综合仍为 `1.443% < 1.532%`。主因是字词候选池的残余碰撞与排名；对 21×21 两方案，二字词与四字词共享联合池，三字词使用独立池。冻结主分实际纳入键道／三拼单字 `6,233/6,238` 条、二字词全量 `132,814` 条、三字词 99% 频率质量 `72,923` 条、四字词 99% 频率质量 `77,674` 条。[完整对比](reports/shenyun-u357-comparison.md#ckt-v4-的权重与额外时间如何进入主分)给出逐轨贡献、语料规模、终局碰撞桶和 CKT v4 成本分解。
 
 日常八场景移动手分数不含五辅键、空格和选重。神韵 U357 的优势集中在记忆项、QAZ 左小指组峰值、合同主键区下限和日常文稿路径，TYB 双食指组峰值低于 S005、高于 B04；代价是音节重码与 P 区右小指负载。B04 的 CKT v4 领先不是同键域下的辅码胜负；S005 才提供同键域直接参照。U357 是面向冰雪键道与冰雪三拼的综合折中，不是全指标支配；模型分数也不等同真人测速。
 
@@ -334,7 +336,7 @@ All three layouts use Common399, the frozen 20 contracts, the same word/shape da
 [^en-collision]: Under [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin), collision excess is `399−U`; affected syllables count every member of a non-singleton bucket. Every collision bucket here is binary.
 [^en-s2]: [S2 completion](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) appends fixed-width base-5 suffixes to collision-bucket members. Miss is the frequency weight outside the first item; mean length and center time describe only this rule-completion scenario.
 [^en-ckt3]: [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) uses the historical fixed `τ=600 ms` and `300 ms` first-/second-auxiliary penalties over eight character/word tracks. It remains reproducible as a sensitivity axis, not the current primary ranking.
-[^en-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) models terminal rank, scanning/paging, and staged auxiliary costs. B04 uses a 26×26 four-code-top contract, while U357 and S005 use 21×21, so B04 is not a same-domain baseline.
+[^en-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) is the current primary completion metric. Its defaults charge `300 ms` for each auxiliary stage; a non-first terminal candidate incurs a fixed `600 ms`, `50 ms` per higher-ranked candidate rejected, and `300 ms` per nine-candidate page crossed, while the separate selection-action term is currently `0 ms`. Character/two-/three-/four-character tracks are weighted `1:3:1:1`, the two modes equally, then aggregated by a fourth-power mean anchored at S005＝10. B04 uses a 26×26 four-code-top contract, while U357 and S005 use 21×21, so B04 is not a same-domain baseline.
 [^en-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) are frozen historical axes combining public keystroke equivalents and geometry; v4 extends v3 to symmetric 20-contract coverage. They are model-sensitivity references, not replacements for v5/v6/CKT v4.
 [^en-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) aggregates CKT-only timing over the frozen 20 contracts with a fourth-power mean. It omits rank-dependent candidate-choice costs.
 [^en-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) excludes abstract S2, adds `150 ms × non-first rate` to CKT over 19 contracts, and normalizes S005 to 10. It is a scenario index, not human-calibrated speed.
@@ -344,6 +346,8 @@ All three layouts use Common399, the frozen 20 contracts, the same word/shape da
 [^en-home]: S2 home-row share covers only bare Common399 sound pairs; the 20-contract home-row floor is the minimum across auxiliary-bearing character/word contracts. They are distinct metrics.
 
 `QAZ` and `TYB` are each the maximum, over the frozen 20 contracts, of the summed load of those three keys. The P-zone group follows the HTML's original `P[]\;'/` definition. For CKT v4, B04's KeyTao track uses the shared `snowshape` source and its Three-Code track uses the shared stroke source, not Shoudao's native auxiliary code. B04 is nevertheless scored under the 26×26 four-code-top contract, while U357 and S005 use the 21×21 contract, preserving B04's larger double-pinyin domain and AAA/AAAU routing advantage for three-character words.
+
+CKT v4 is not a simple average of eight collision rates. S005 is slightly better on terminal character and two-character-word selection, but U357 is about `0.550/0.662` percentage points better on KeyTao/Three-Code three-character words—far larger than its roughly `0.066/0.068`-point two-character deficits—and also leads on four-character words. Hence U357 still reaches `1.443%` versus S005's `1.532%` after the threefold two-character weight. Residual word-pool competition and rank are the main cause: for the two 21×21 layouts, two- and four-character words share joint pools, while three-character words use a separate pool. The frozen score includes `6,233/6,238` KeyTao/Three-Code character entries, all `132,814` two-character entries, `72,923` three-character entries covering 99% frequency mass, and `77,674` four-character entries covering 99%. The [full comparison](reports/shenyun-u357-comparison.md#ckt-v4-的权重与额外时间如何进入主分) provides per-track contributions, corpus sizes, terminal collision buckets, and the CKT v4 cost decomposition.
 
 The daily moving-hand score excludes the five auxiliary keys, spaces, and candidate selection. U357 leads in memory cost, the QAZ left-pinky-group peak, home-area floor, and the daily-prose path; its TYB peak is below S005 but above B04, at the cost of more syllable collisions and higher P-zone right-pinky load. B04's CKT v4 lead is therefore not an auxiliary-code contest within the same key domain; S005 supplies the direct same-domain baseline. U357 is a balanced choice for Snow KeyTao and Snow Three-Code, not an all-metric dominator, and model scores are not human typing-speed results.
 
@@ -473,7 +477,7 @@ bun scripts/验证神韵双拼.ts
 [^zht-collision]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 的「重碼盈餘」為 `399−U`；「受影響音節」按所有非單例桶成員計數。三方案的重碼桶均為二元桶。
 [^zht-s2]: [S2 補全](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 按音節頻率為桶成員追加固定寬度五進位後綴；miss 是非首項頻率權重，平均碼長與中心時間只描述此規則補全情景。
 [^zht-ckt3]: [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在八條字詞軌採用固定 `τ=600 ms`、第一／第二輔鍵各 `300 ms` 的歷史敏感性情景；仍可橫向複算，但不作現行主排名。
-[^zht-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 使用候選名次、掃描／翻頁與分級輔鍵成本；B04 按 26×26 四碼頂合同，U357、S005 按 21×21 合同，故 B04 不是同鍵域基線。
+[^zht-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是現行補全主指標：預設第一／第二輔鍵各 `300 ms`；非首選時固定決策 `600 ms`、每排除一個較高位候選 `50 ms`、每跨 9 個候選翻頁 `300 ms`，獨立選重動作項目前為 `0 ms`。八軌按單／二／三／四字 `1:3:1:1`、兩模式等權後，以 S005＝10 作四次冪聚合。B04 按 26×26 四碼頂合同，U357、S005 按 21×21 合同，故 B04 不是同鍵域基線。
 [^zht-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是凍結的公開擊鍵當量＋幾何模型歷史軸；v4 在 v3 上補齊對稱 20 合同，保留作模型敏感性對照。
 [^zht-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在凍結 20 合同上只以 CKT 計時模型歸一並取四次冪均值，不含候選名次決策成本。
 [^zht-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 排除抽象 S2，在 19 合同 CKT 上加入 `150 ms × 非首選率` 並以 S005＝10 歸一化；它是情景指數，不是真人標定速度。
@@ -483,6 +487,8 @@ bun scripts/验证神韵双拼.ts
 [^zht-home]: S2 主鍵區占比只看 Common399 裸聲韻二鍵；20 合同主鍵區下限則取所有含輔字詞合同的最低主行占比，兩者不可混用。
 
 `QAZ`、`TYB` 均取三鍵負載之和在凍結 20 合同中的最大值；P 區右小指組沿用 HTML 原始定義 `P[]\;'/`。CKT v4 的 B04 鍵道軌使用統一 `snowshape` 字形源，三拼軌使用統一筆畫源，並非首道自身輔碼；但 B04 按 26×26 四碼頂合同計分，U357、S005 按 21×21 合同計分，因此 B04 保留更大雙拼碼域和三字詞 AAA/AAAU 路由的結構優勢。
+
+CKT v4 不是八條重碼率的簡單平均。S005 雖在單字、二字詞終局選重率略低，U357 在鍵道／三拼三字詞卻分別低約 `0.550/0.662` 個百分點，遠大於二字詞約 `0.066/0.068` 個百分點的劣勢，再加上四字詞優勢，即使二字詞權重為 3，八軌綜合仍為 `1.443% < 1.532%`。主因是字詞候選池的殘餘碰撞與排名；對 21×21 兩方案，二字詞與四字詞共享聯合池，三字詞使用獨立池。凍結主分實際納入鍵道／三拼單字 `6,233/6,238` 條、二字詞全量 `132,814` 條、三字詞 99% 頻率質量 `72,923` 條、四字詞 99% 頻率質量 `77,674` 條。[完整比較](reports/shenyun-u357-comparison.md#ckt-v4-的权重与额外时间如何进入主分)列出逐軌貢獻、語料規模、終局碰撞桶與 CKT v4 成本分解。
 
 日常八場景移動手分數不含五輔鍵、空格和選重。神韻 U357 的優勢集中在記憶項、QAZ 左小指組峰值、合同主鍵區下限和日常文稿路徑，TYB 雙食指組峰值低於 S005、高於 B04；代價是音節重碼與 P 區右小指負載。B04 的 CKT v4 領先不是同鍵域下的輔碼勝負；S005 才提供同鍵域直接參照。U357 是面向冰雪鍵道與冰雪三拼的綜合折中，不是全指標支配；模型分數也不等同真人測速。
 

@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 6,
   "comparisonPolicy": {
     "target": "U357-21X21-M40-D0",
     "baselines": ["S005", "B04"],
@@ -22,6 +22,90 @@
     "auxiliaryIncludedInDailyMovingHand": false,
     "selectionIncludedInDailyMovingHand": false,
     "punctuationIncludedInDailyMovingHand": true
+  },
+  "cktV4Explanation": {
+    "kindWeights": { "character": 1, "word2": 3, "word3": 1, "word4": 1 },
+    "modeWeights": { "keytao": 1, "sanpin": 1 },
+    "power": 4,
+    "anchor": "S005=10",
+    "cognitiveParametersMs": {
+      "firstAux": 300,
+      "secondAux": 300,
+      "selectionDecision": 600,
+      "scanPerRejectedCandidate": 50,
+      "selectionAction": 0,
+      "pageSize": 9,
+      "pageAction": 300
+    },
+    "weightedMeanComponentsMs": {
+      "U357": { "motor": 348.002978980943, "firstAux": 78.45027083309036, "secondAux": 21.120667143417155, "selectionDecision": 8.660154189377842, "scan": 1.1383095427188505, "selectionAction": 0, "page": 0.016658754695102133, "total": 457.38903944424237 },
+      "S005": { "motor": 359.22473367107824, "firstAux": 79.23956416275662, "secondAux": 21.603915665251282, "selectionDecision": 9.192208945444358, "scan": 1.2338670415873974, "selectionAction": 0, "page": 0.016524229704876065, "total": 470.5108137158228 },
+      "B04": { "motor": 345.47157568609623, "firstAux": 59.23871723611423, "secondAux": 12.473567536554597, "selectionDecision": 3.4291943943593997, "scan": 0.3642804520078731, "selectionAction": 0, "page": 0.0002628070828248129, "total": 420.9775981122151 }
+    },
+    "counterfactualScores": {
+      "motorOnly": { "U357": 9.63456752156577, "S005": 10, "B04": 9.573777999485444 },
+      "motorAndAuxNoSelection": { "U357": 9.718997364113662, "S005": 10, "B04": 9.219064184323237 },
+      "fullExceptPageActionZero": { "U357": 9.716407534466805, "S005": 10, "B04": 9.184685015252875 },
+      "fullDefault": { "U357": 9.716420811869073, "S005": 10, "B04": 9.184606967934092 }
+    },
+    "u357MinusS005SelectionContributionPercentagePoints": {
+      "keytao": { "char": 0.0006751741632586876, "word2": 0.0166089178982269, "word3": -0.045809594186271264, "word4": -0.011032791705681158 },
+      "sanpin": { "char": 0.0009922280300052944, "word2": 0.016979154751204144, "word3": -0.05517659444149309, "word4": -0.01191228718700208 },
+      "total": -0.08867579267775255
+    }
+  },
+  "corpusCohorts": {
+    "source": "snow_pinyin.base.dict.yaml",
+    "singleCharacter": {
+      "common399PositiveWeight": 6263,
+      "fixedOneKeyExcluded": 25,
+      "keytaoScored": 6233,
+      "sanpinScored": 6238,
+      "keytaoTotalWeight": 34201052,
+      "sanpinTotalWeight": 34283114,
+      "keytaoAdditionalExcluded": ["月", "水", "木", "口", "乙"]
+    },
+    "word2": { "eligible": 132814, "scored": 132814, "massTarget": 1, "minimumWeight": 1, "totalWeight": 3604044247 },
+    "word3": { "eligible": 153578, "scored": 72923, "massTarget": 0.99, "actualMass": 0.990000082814491, "minimumWeight": 705, "totalWeight": 1101481234 },
+    "word4": { "eligible": 168560, "scored": 77674, "massTarget": 0.99, "actualMass": 0.990000480095091, "minimumWeight": 545, "totalWeight": 828363172 }
+  },
+  "terminalWordCollisionBuckets": {
+    "definition": "二辅后仍有目标位次大于 1 的有效桶；每个残余条目按最佳终局编码归入一个桶",
+    "fields": ["buckets", "residualEntries", "crossLengthBuckets", "maxBucketSize"],
+    "keytao": {
+      "word2": {
+        "U357": { "buckets": 3499, "residualEntries": 4298, "crossLengthBuckets": 404, "maxBucketSize": 8 },
+        "S005": { "buckets": 3063, "residualEntries": 3671, "crossLengthBuckets": 411, "maxBucketSize": 8 },
+        "B04": { "buckets": 3314, "residualEntries": 3965, "crossLengthBuckets": 714, "maxBucketSize": 9 }
+      },
+      "word3": {
+        "U357": { "buckets": 8070, "residualEntries": 13632, "crossLengthBuckets": 0, "maxBucketSize": 25 },
+        "S005": { "buckets": 8806, "residualEntries": 15424, "crossLengthBuckets": 0, "maxBucketSize": 15 },
+        "B04": { "buckets": 1873, "residualEntries": 2295, "crossLengthBuckets": 740, "maxBucketSize": 9 }
+      },
+      "word4": {
+        "U357": { "buckets": 950, "residualEntries": 1159, "crossLengthBuckets": 320, "maxBucketSize": 13 },
+        "S005": { "buckets": 1158, "residualEntries": 1473, "crossLengthBuckets": 340, "maxBucketSize": 8 },
+        "B04": { "buckets": 962, "residualEntries": 1143, "crossLengthBuckets": 482, "maxBucketSize": 8 }
+      }
+    },
+    "sanpin": {
+      "word2": {
+        "U357": { "buckets": 5126, "residualEntries": 6741, "crossLengthBuckets": 712, "maxBucketSize": 9 },
+        "S005": { "buckets": 4641, "residualEntries": 5968, "crossLengthBuckets": 746, "maxBucketSize": 9 },
+        "B04": { "buckets": 4903, "residualEntries": 6278, "crossLengthBuckets": 1151, "maxBucketSize": 10 }
+      },
+      "word3": {
+        "U357": { "buckets": 9642, "residualEntries": 18936, "crossLengthBuckets": 0, "maxBucketSize": 21 },
+        "S005": { "buckets": 9925, "residualEntries": 20476, "crossLengthBuckets": 0, "maxBucketSize": 21 },
+        "B04": { "buckets": 2640, "residualEntries": 3491, "crossLengthBuckets": 1095, "maxBucketSize": 11 }
+      },
+      "word4": {
+        "U357": { "buckets": 1412, "residualEntries": 1721, "crossLengthBuckets": 545, "maxBucketSize": 9 },
+        "S005": { "buckets": 1711, "residualEntries": 2096, "crossLengthBuckets": 547, "maxBucketSize": 10 },
+        "B04": { "buckets": 1263, "residualEntries": 1466, "crossLengthBuckets": 683, "maxBucketSize": 11 }
+      }
+    }
   },
   "metrics": {
     "M-R2": { "better": "lower", "U357": 40, "S005": 44, "B04": 51 },
