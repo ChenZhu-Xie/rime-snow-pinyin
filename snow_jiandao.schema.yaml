@@ -50,6 +50,8 @@ engine:
     - punct_translator
     - script_translator
     - script_translator@jianpin
+    # 空置 AA 码仍在 abc 段上，由此补入真正的声声二字词候选。
+    - lua_translator@*snow.table_like*initial_pair
     - table_translator@stroke
     - script_translator@pinyin
     - lua_translator@*snow.buffered

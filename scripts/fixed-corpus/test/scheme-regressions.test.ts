@@ -406,6 +406,15 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		["zco", "cco", "sco", "yco", "xho", "xwo"],
 	);
 	assert.match(read("lua/snow/fix.lua"), /shape_status ~= "initial_pair"/u);
+	assert.match(
+		read("snow_jiandao.schema.yaml"),
+		/lua_translator@\*snow\.table_like\*initial_pair/u,
+	);
+	assert.match(read("lua/snow/table_like.lua"), /local initial_pair = \{\}/u);
+	assert.match(
+		read("lua/snow/table_like.lua"),
+		/utf8\.len\(candidate\.text\) == 2/u,
+	);
 	const shapeFilter = read("lua/snow/shape_filter.lua");
 	assert.match(shapeFilter, /sanpin_initial_pair_match/u);
 	assert.match(shapeFilter, /snow\.sub\(text, 2, 2\)/u);

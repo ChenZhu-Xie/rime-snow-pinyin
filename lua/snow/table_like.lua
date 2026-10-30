@@ -152,7 +152,34 @@ function jianpin.fini(env)
   collectgarbage()
 end
 
+local initial_pair = {}
+
+---@param env TableLikeEnv
+function initial_pair.init(env)
+  env.translator = Component.Translator(env.engine, "jianpin", "script_translator")
+  env.pattern = env.engine.schema.config:get_string("translator/vacant_initial_pattern") or "^$"
+end
+
+---@param input string
+---@param segment Segment
+---@param env TableLikeEnv
+function initial_pair.func(input, segment, env)
+  if not rime_api.regex_match(input, env.pattern) then
+    return
+  end
+  translate(input, segment, env, false, function(candidate)
+    return utf8.len(candidate.text) == 2 and candidate.type ~= "sentence"
+  end)
+end
+
+---@param env TableLikeEnv
+function initial_pair.fini(env)
+  env.translator = nil
+  collectgarbage()
+end
+
 return {
   t12 = t12,
   jianpin = jianpin,
+  initial_pair = initial_pair,
 }
