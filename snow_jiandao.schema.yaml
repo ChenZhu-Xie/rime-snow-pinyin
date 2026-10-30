@@ -148,6 +148,10 @@ jianpin:
     - snow_pinyin.tencent
     - snow_pinyin.user
 
+initial_pair:
+  __include: /jianpin
+  tag: abc
+
 lookup_jiandao:
   tags: [pinyin]
   overwrite_comment: true

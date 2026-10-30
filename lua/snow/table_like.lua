@@ -156,7 +156,7 @@ local initial_pair = {}
 
 ---@param env TableLikeEnv
 function initial_pair.init(env)
-  env.translator = Component.Translator(env.engine, "jianpin", "script_translator")
+  env.translator = Component.Translator(env.engine, "initial_pair", "script_translator")
   env.pattern = env.engine.schema.config:get_string("translator/vacant_initial_pattern") or "^$"
 end
 
