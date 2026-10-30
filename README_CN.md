@@ -15,7 +15,7 @@
 
 ### 无[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道·神韵 U357 综合人体工学前沿（编码方案）
 
-[冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪三拼](https://input.tansongchen.com/snow3/)现共用 **无[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道·神韵 U357 综合人体工学前沿**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。
+[冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪三拼](https://input.tansongchen.com/snow3/)现共用 **无[飞键](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道·神韵 U357 综合人体工学前沿**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`；本仓库采用并实现该方案，其布局横评与复算口径见[双拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)。
 
 > [!NOTE]
 > 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五调辅键按照与[冰雪四拼](https://input.tansongchen.com/snow4/)相近的顺序排列。
@@ -80,14 +80,48 @@
 
 | 指标 | 神韵 U357 | 原键道 S005 | 首道 B04 | 何为好 |
 | --- | ---: | ---: | ---: | --- |
-| M-R2 记忆项 | 40 🥇 | 44 | 51 | 越低越好 |
-| Common399 不同二键码 | 357 | 372 | 399 🥇 | 越高重码越少 |
-| CKT v4（原生码域合同） | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
-| 20 合同 QAZ 左小指组峰值 | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好 |
-| 20 合同 P 区右小指组峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
-| 20 合同 TYB 双食指组峰值 | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
-| 20 合同主键区下限 | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 日常八场景纯双拼移动手分数（含标点） | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+| M-R2 记忆项[^zh-mr2] | 40 🥇 | 44 | 51 | 越低越好 |
+| FA-1 逻辑审计[^zh-logic] | 98.298315 | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| LU-v1r 逻辑均匀度[^zh-logic] | 73.529803 | 78.897555 | 83.107434 🥇 | 越高越统一 |
+| Common399 唯一码／唯一率[^zh-collision] | 357 / 89.474% | 372 / 93.233% | 399 / 100% 🥇 | 越高越少重码 |
+| 重码盈余／盈余率[^zh-collision] | 42 / 10.526% | 27 / 6.767% | 0 / 0% 🥇 | 越低越好 |
+| 重码桶／受影响音节[^zh-collision] | 42×二元 / 84（21.053%） | 27×二元 / 54（13.534%） | 0 / 0（0%）🥇 | 越少越好 |
+| 频率加权 S2 miss[^zh-s2] | 3.270% | 0.929% | 0% 🥇 | 越低越好 |
+| S2 补全平均码长[^zh-s2] | 2.1474 | 2.0725 | 2.0000 🥇 | 越低越好 |
+| S2 补全中心时间（ms）[^zh-s2] | 89.917 | 90.257 | 79.890 🥇 | 越低越好 |
+| 综合补全 CKT v3[^zh-ckt3] | 9.782135 | 10.000000 | 9.461105 🥇 | 越低越好；历史固定延迟情景 |
+| 综合补全 CKT v4[^zh-ckt4] | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
+| A7E-v3 系综当量[^zh-ensemble34] | 10.737188 | 10.740028 | 10.519452 🥇 | 越低越好；冻结历史轴 |
+| A7E-v4 系综当量[^zh-ensemble34] | 10.804598 | 10.805830 | 10.583290 🥇 | 越低越好；冻结历史轴 |
+| A7E-v5 系综当量[^zh-ensemble5] | 10.473306 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
+| A7E-v6-CW150[^zh-ensemble6] | 9.512904 🥇 | 10.000000 | 9.589632 | 越低越好；情景指标 |
+| 八轨综合选重率[^zh-rates] | 1.443% | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八轨第一辅键率[^zh-rates] | 26.150% | 26.413% | 19.746% 🥇 | 越低额外击键越少 |
+| 八轨第二辅键率[^zh-rates] | 7.040% | 7.201% | 4.158% 🥇 | 越低额外击键越少 |
+| 日常左右手负载／左手占比[^zh-daily] | 1091:1058 / 50.768% 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率[^zh-daily] | 46.533% | 45.882% | 45.416% 🥇 | 越低越好；非独立速度结论 |
+| 日常平均有效距离[^zh-daily] | 0.6555 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
+| 20 合同 QAZ 左小指组峰值[^zh-load] | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好；三者均在 W6-Snow |
+| 20 合同 P 区右小指组峰值[^zh-load] | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| 20 合同最大单指峰值[^zh-load] | 25.2149% 🥇 | 29.5312% | 29.2707% | 越低越好 |
+| S2 主键区占比[^zh-home] | 52.0307% 🥇 | 49.0006% | 36.5996% | 越高越集中 |
+| 20 合同主键区下限[^zh-load] | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 TYB 双食指组峰值[^zh-load] | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
+| 日常纯双拼移动手分数（含标点）[^zh-daily] | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+
+[^zh-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 Common399 口径下逐项计数非原键声韵映射和额外路由规则，是记忆／路由复杂度账本。
+[^zh-logic]: [FA-1 与 LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 分别衡量映射可因式分解的一致性，以及声韵拆分、韵类规则支持和声母规律性的综合统一度；两者不是速度分。
+[^zh-collision]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 的“重码盈余”为 `399−U`；“受影响音节”按所有非单例桶成员计数。三方案的重码桶均为二元桶。
+[^zh-s2]: [S2 补全](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 按音节频率给桶成员追加固定宽度五进制后缀；miss 是非首项频率权重，平均码长和中心时间只描述该规则补全情景。
+[^zh-ckt3]: [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在八条字词轨上采用固定 `τ=600 ms`、第一／第二辅键各 `300 ms` 的历史敏感性情景；仍可横向复算，但不作为现行主排名。
+[^zh-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 使用候选名次、扫描／翻页和分级辅键成本，是当前补全主指标；B04 按 26×26 四码顶合同，U357、S005 按 21×21 合同，因此 B04 不是同键域基线。
+[^zh-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是冻结的公开击键当量＋几何模型历史轴；v4 在 v3 上补齐至对称的 20 合同。它们保留作模型敏感性对照，不覆盖 v5/v6/CKT v4。
+[^zh-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在冻结 20 合同上只以 CKT 计时模型归一并取四次幂均值；分数越低越好，但不含候选名次决策成本。
+[^zh-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 排除抽象 S2，在 19 合同的 CKT 上加入 `150 ms × 非首选率`，以 S005＝10 归一化；是情景指数，不是真人标定速度。
+[^zh-rates]: 八轨综合率在冰雪键道／冰雪三拼各四条单字、二／三／四字词轨上按 `1:3:1:1` 加权，两种模式等权；“第一／第二辅键率”是进入相应辅键阶段的加权比例。
+[^zh-daily]: 日常指标在同一八场景、2149 击键文稿上回放纯双拼与标点；不含五辅键、空格和选重。移动手分数、同手率及有效距离都只在该冻结文稿和同一 [moving-hand](https://github.com/macroxue/shuangpin) 模型内比较。
+[^zh-load]: 负载指标先在每个冻结合同内合计相应键／手指，再取 20 合同峰值；`QAZ` 为左小指组，P 区沿用 `P[]\\;'/`，`TYB` 为双食指组。它们衡量最差合同负载，不等同日常平均。
+[^zh-home]: S2 主键区占比只看 Common399 裸声韵二键；“20 合同主键区下限”则取所有含辅字词合同的最低主行占比，二者不可混用。
 
 `QAZ`、`TYB` 均取三键负载之和在冻结 20 合同中的最大值；P 区右小指组沿用 HTML 原始定义 `P[]\;'/`。CKT v4 的 B04 键道轨使用统一 `snowshape` 字形源，三拼轨使用统一笔画源，并非首道自身辅码；但 B04 按 26×26 四码顶合同计分，U357、S005 按 21×21 合同计分，因此 B04 保留更大双拼码域和三字词 AAA/AAAU 路由的结构优势。
 
@@ -222,7 +256,7 @@ Recipe: ℞ **snow-pinyin**
 
 ### Wufei KeyTao·Shenyun U357 ergonomic frontier (coding scheme)
 
-[Snow KeyTao](https://input.tansongchen.com/snow-jiandao/) and [Snow Three-Code](https://input.tansongchen.com/snow3/) now share **Wufei KeyTao·Shenyun U357 ergonomic frontier**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`.
+[Snow KeyTao](https://input.tansongchen.com/snow-jiandao/) and [Snow Three-Code](https://input.tansongchen.com/snow3/) now share **Wufei KeyTao·Shenyun U357 ergonomic frontier**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`. This repository implements that layout; its cross-layout results and reproducible metric definitions are documented in [Shuangpin Layout Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md).
 
 > [!NOTE]
 > Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Three-Code](https://input.tansongchen.com/snow3/)'s five tone auxiliary keys are arranged in an order similar to [Snow Four-Code](https://input.tansongchen.com/snow4/)'s.
@@ -262,14 +296,48 @@ All three layouts use Common399, the frozen 20 contracts, the same word/shape da
 
 | Metric | Shenyun U357 | KeyTao S005 | Shoudao B04 | Better |
 | --- | ---: | ---: | ---: | --- |
-| M-R2 memory items | 40 🥇 | 44 | 51 | Lower |
-| Distinct Common399 two-key codes | 357 | 372 | 399 🥇 | Higher means fewer collisions |
-| CKT v4 (native-domain contract) | 9.716421 | 10.000000 | 9.184607 🥇 | Lower |
-| 20-contract QAZ left-pinky-group peak | 16.3119% 🥇 | 17.1601% | 16.6615% | Lower |
-| 20-contract P-zone right-pinky-group peak | 5.1045% | 2.7738% | 1.8881% 🥇 | Lower |
-| 20-contract TYB two-index-finger peak | 14.0920% | 14.7331% | 12.3581% 🥇 | Lower |
-| 20-contract home-area floor | 37.6204% 🥇 | 30.8146% | 24.2427% | Higher |
-| Daily eight-scenario pure-double-pinyin moving-hand score, with punctuation | 143.380 🥇 | 138.672 | 135.310 | Higher on the same corpus |
+| M-R2 memory items[^en-mr2] | 40 🥇 | 44 | 51 | Lower |
+| FA-1 logic audit[^en-logic] | 98.298315 | 97.708694 | 99.763391 🥇 | Higher consistency |
+| LU-v1r logic uniformity[^en-logic] | 73.529803 | 78.897555 | 83.107434 🥇 | Higher uniformity |
+| Common399 unique codes / rate[^en-collision] | 357 / 89.474% | 372 / 93.233% | 399 / 100% 🥇 | Higher, fewer collisions |
+| Collision excess / rate[^en-collision] | 42 / 10.526% | 27 / 6.767% | 0 / 0% 🥇 | Lower |
+| Collision buckets / affected syllables[^en-collision] | 42 binary / 84 (21.053%) | 27 binary / 54 (13.534%) | 0 / 0 (0%) 🥇 | Lower |
+| Frequency-weighted S2 miss[^en-s2] | 3.270% | 0.929% | 0% 🥇 | Lower |
+| S2-completion mean code length[^en-s2] | 2.1474 | 2.0725 | 2.0000 🥇 | Lower |
+| S2-completion center time (ms)[^en-s2] | 89.917 | 90.257 | 79.890 🥇 | Lower |
+| Completion CKT v3[^en-ckt3] | 9.782135 | 10.000000 | 9.461105 🥇 | Lower; historical fixed-delay scenario |
+| Completion CKT v4[^en-ckt4] | 9.716421 | 10.000000 | 9.184607 🥇 | Lower; current primary metric |
+| A7E-v3 ensemble equivalent[^en-ensemble34] | 10.737188 | 10.740028 | 10.519452 🥇 | Lower; frozen historical axis |
+| A7E-v4 ensemble equivalent[^en-ensemble34] | 10.804598 | 10.805830 | 10.583290 🥇 | Lower; frozen historical axis |
+| A7E-v5 ensemble equivalent[^en-ensemble5] | 10.473306 🥇 | 11.478960 | 11.091225 | Lower; CKT-only |
+| A7E-v6-CW150[^en-ensemble6] | 9.512904 🥇 | 10.000000 | 9.589632 | Lower; scenario index |
+| Eight-track aggregate selection rate[^en-rates] | 1.443% | 1.532% | 0.572% 🥇 | Lower |
+| Eight-track first-auxiliary rate[^en-rates] | 26.150% | 26.413% | 19.746% 🥇 | Lower means fewer extra keys |
+| Eight-track second-auxiliary rate[^en-rates] | 7.040% | 7.201% | 4.158% 🥇 | Lower means fewer extra keys |
+| Daily left:right load / left share[^en-daily] | 1091:1058 / 50.768% 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | Closer to 50% is more balanced |
+| Daily same-hand rate[^en-daily] | 46.533% | 45.882% | 45.416% 🥇 | Lower; not a standalone speed result |
+| Daily mean effective distance[^en-daily] | 0.6555 🥇 | 0.6796 | 0.7012 | Lower in the same model |
+| 20-contract QAZ left-pinky-group peak[^en-load] | 16.3119% 🥇 | 17.1601% | 16.6615% | Lower; W6-Snow for all three |
+| 20-contract P-zone right-pinky-group peak[^en-load] | 5.1045% | 2.7738% | 1.8881% 🥇 | Lower |
+| 20-contract maximum single-finger peak[^en-load] | 25.2149% 🥇 | 29.5312% | 29.2707% | Lower |
+| S2 home-row share[^en-home] | 52.0307% 🥇 | 49.0006% | 36.5996% | Higher concentration |
+| 20-contract home-row floor[^en-load] | 37.6204% 🥇 | 30.8146% | 24.2427% | Higher |
+| 20-contract TYB two-index-finger peak[^en-load] | 14.0920% | 14.7331% | 12.3581% 🥇 | Lower |
+| Daily pure-double-pinyin moving-hand score, with punctuation[^en-daily] | 143.380 🥇 | 138.672 | 135.310 | Higher on the same corpus |
+
+[^en-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) counts non-native initial/final mappings and extra routing rules under Common399; it is a memory/routing-complexity ledger.
+[^en-logic]: [FA-1 and LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) measure mapping factorization consistency and broader uniformity across sound/rhyme decomposition, rhyme-rule support, and onset regularity. Neither is a speed score.
+[^en-collision]: Under [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin), collision excess is `399−U`; affected syllables count every member of a non-singleton bucket. Every collision bucket here is binary.
+[^en-s2]: [S2 completion](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) appends fixed-width base-5 suffixes to collision-bucket members. Miss is the frequency weight outside the first item; mean length and center time describe only this rule-completion scenario.
+[^en-ckt3]: [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) uses the historical fixed `τ=600 ms` and `300 ms` first-/second-auxiliary penalties over eight character/word tracks. It remains reproducible as a sensitivity axis, not the current primary ranking.
+[^en-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) models terminal rank, scanning/paging, and staged auxiliary costs. B04 uses a 26×26 four-code-top contract, while U357 and S005 use 21×21, so B04 is not a same-domain baseline.
+[^en-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) are frozen historical axes combining public keystroke equivalents and geometry; v4 extends v3 to symmetric 20-contract coverage. They are model-sensitivity references, not replacements for v5/v6/CKT v4.
+[^en-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) aggregates CKT-only timing over the frozen 20 contracts with a fourth-power mean. It omits rank-dependent candidate-choice costs.
+[^en-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) excludes abstract S2, adds `150 ms × non-first rate` to CKT over 19 contracts, and normalizes S005 to 10. It is a scenario index, not human-calibrated speed.
+[^en-rates]: Aggregate rates weight character/two-/three-/four-character tracks `1:3:1:1` within both Snow KeyTao and Snow Three-Code, with the two modes weighted equally. First-/second-auxiliary rates are the weighted proportions reaching those stages.
+[^en-daily]: Daily metrics replay the same 2,149-keystroke eight-scenario corpus with double pinyin and punctuation, excluding the five auxiliaries, spaces, and selection. Score, same-hand rate, and effective distance are comparable only within that corpus and the same [moving-hand](https://github.com/macroxue/shuangpin) model.
+[^en-load]: Load metrics sum the responsible keys/finger inside each frozen contract, then take the peak over 20 contracts: `QAZ` is the left-pinky group, the P zone is `P[]\\;'/`, and `TYB` is the two-index-finger group. They measure worst-contract load, not daily average.
+[^en-home]: S2 home-row share covers only bare Common399 sound pairs; the 20-contract home-row floor is the minimum across auxiliary-bearing character/word contracts. They are distinct metrics.
 
 `QAZ` and `TYB` are each the maximum, over the frozen 20 contracts, of the summed load of those three keys. The P-zone group follows the HTML's original `P[]\;'/` definition. For CKT v4, B04's KeyTao track uses the shared `snowshape` source and its Three-Code track uses the shared stroke source, not Shoudao's native auxiliary code. B04 is nevertheless scored under the 26×26 four-code-top contract, while U357 and S005 use the 21×21 contract, preserving B04's larger double-pinyin domain and AAA/AAAU routing advantage for three-character words.
 
@@ -325,7 +393,7 @@ bun scripts/验证神韵双拼.ts
 
 ### 無[飛鍵](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道·神韻 U357 綜合人體工學前沿（編碼方案）
 
-[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)與[冰雪三拼](https://input.tansongchen.com/snow3/)現共用 **無[飛鍵](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道·神韻 U357 綜合人體工學前沿**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。
+[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)與[冰雪三拼](https://input.tansongchen.com/snow3/)現共用 **無[飛鍵](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)道·神韻 U357 綜合人體工學前沿**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`；本倉庫採用並實作該方案，其佈局橫評與複算口徑見[雙拼佈局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)。
 
 > [!NOTE]
 > 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
@@ -365,14 +433,48 @@ bun scripts/验证神韵双拼.ts
 
 | 指標 | 神韻 U357 | 原鍵道 S005 | 首道 B04 | 何為好 |
 | --- | ---: | ---: | ---: | --- |
-| M-R2 記憶項 | 40 🥇 | 44 | 51 | 越低越好 |
-| Common399 不同二鍵碼 | 357 | 372 | 399 🥇 | 越高重碼越少 |
-| CKT v4（原生碼域合同） | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好 |
-| 20 合同 QAZ 左小指組峰值 | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好 |
-| 20 合同 P 區右小指組峰值 | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
-| 20 合同 TYB 雙食指組峰值 | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
-| 20 合同主鍵區下限 | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 日常八場景純雙拼移動手分數（含標點） | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+| M-R2 記憶項[^zht-mr2] | 40 🥇 | 44 | 51 | 越低越好 |
+| FA-1 邏輯審計[^zht-logic] | 98.298315 | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| LU-v1r 邏輯均勻度[^zht-logic] | 73.529803 | 78.897555 | 83.107434 🥇 | 越高越統一 |
+| Common399 唯一碼／唯一率[^zht-collision] | 357 / 89.474% | 372 / 93.233% | 399 / 100% 🥇 | 越高越少重碼 |
+| 重碼盈餘／盈餘率[^zht-collision] | 42 / 10.526% | 27 / 6.767% | 0 / 0% 🥇 | 越低越好 |
+| 重碼桶／受影響音節[^zht-collision] | 42×二元 / 84（21.053%） | 27×二元 / 54（13.534%） | 0 / 0（0%）🥇 | 越少越好 |
+| 頻率加權 S2 miss[^zht-s2] | 3.270% | 0.929% | 0% 🥇 | 越低越好 |
+| S2 補全平均碼長[^zht-s2] | 2.1474 | 2.0725 | 2.0000 🥇 | 越低越好 |
+| S2 補全中心時間（ms）[^zht-s2] | 89.917 | 90.257 | 79.890 🥇 | 越低越好 |
+| 綜合補全 CKT v3[^zht-ckt3] | 9.782135 | 10.000000 | 9.461105 🥇 | 越低越好；歷史固定延遲情景 |
+| 綜合補全 CKT v4[^zht-ckt4] | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好；現行主指標 |
+| A7E-v3 系綜當量[^zht-ensemble34] | 10.737188 | 10.740028 | 10.519452 🥇 | 越低越好；凍結歷史軸 |
+| A7E-v4 系綜當量[^zht-ensemble34] | 10.804598 | 10.805830 | 10.583290 🥇 | 越低越好；凍結歷史軸 |
+| A7E-v5 系綜當量[^zht-ensemble5] | 10.473306 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
+| A7E-v6-CW150[^zht-ensemble6] | 9.512904 🥇 | 10.000000 | 9.589632 | 越低越好；情景指標 |
+| 八軌綜合選重率[^zht-rates] | 1.443% | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八軌第一輔鍵率[^zht-rates] | 26.150% | 26.413% | 19.746% 🥇 | 越低額外擊鍵越少 |
+| 八軌第二輔鍵率[^zht-rates] | 7.040% | 7.201% | 4.158% 🥇 | 越低額外擊鍵越少 |
+| 日常左右手負載／左手占比[^zht-daily] | 1091:1058 / 50.768% 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率[^zht-daily] | 46.533% | 45.882% | 45.416% 🥇 | 越低越好；非獨立速度結論 |
+| 日常平均有效距離[^zht-daily] | 0.6555 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
+| 20 合同 QAZ 左小指組峰值[^zht-load] | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好；三者均在 W6-Snow |
+| 20 合同 P 區右小指組峰值[^zht-load] | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
+| 20 合同最大單指峰值[^zht-load] | 25.2149% 🥇 | 29.5312% | 29.2707% | 越低越好 |
+| S2 主鍵區占比[^zht-home] | 52.0307% 🥇 | 49.0006% | 36.5996% | 越高越集中 |
+| 20 合同主鍵區下限[^zht-load] | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 TYB 雙食指組峰值[^zht-load] | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
+| 日常純雙拼移動手分數（含標點）[^zht-daily] | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+
+[^zht-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 Common399 口徑下逐項計數非原鍵聲韻映射與額外路由規則，是記憶／路由複雜度帳本。
+[^zht-logic]: [FA-1 與 LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 分別衡量映射可因式分解的一致性，以及聲韻拆分、韻類規則支援與聲母規律性的綜合統一度；兩者不是速度分。
+[^zht-collision]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 的「重碼盈餘」為 `399−U`；「受影響音節」按所有非單例桶成員計數。三方案的重碼桶均為二元桶。
+[^zht-s2]: [S2 補全](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 按音節頻率為桶成員追加固定寬度五進位後綴；miss 是非首項頻率權重，平均碼長與中心時間只描述此規則補全情景。
+[^zht-ckt3]: [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在八條字詞軌採用固定 `τ=600 ms`、第一／第二輔鍵各 `300 ms` 的歷史敏感性情景；仍可橫向複算，但不作現行主排名。
+[^zht-ckt4]: [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 使用候選名次、掃描／翻頁與分級輔鍵成本；B04 按 26×26 四碼頂合同，U357、S005 按 21×21 合同，故 B04 不是同鍵域基線。
+[^zht-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是凍結的公開擊鍵當量＋幾何模型歷史軸；v4 在 v3 上補齊對稱 20 合同，保留作模型敏感性對照。
+[^zht-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在凍結 20 合同上只以 CKT 計時模型歸一並取四次冪均值，不含候選名次決策成本。
+[^zht-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 排除抽象 S2，在 19 合同 CKT 上加入 `150 ms × 非首選率` 並以 S005＝10 歸一化；它是情景指數，不是真人標定速度。
+[^zht-rates]: 八軌綜合率在冰雪鍵道／冰雪三拼各四條單字、二／三／四字詞軌按 `1:3:1:1` 加權，兩模式等權；第一／第二輔鍵率是進入相應階段的加權比例。
+[^zht-daily]: 日常指標以同一八場景、2149 擊鍵文稿回放純雙拼與標點，不含五輔鍵、空格及選重；只可在該文稿與同一 [moving-hand](https://github.com/macroxue/shuangpin) 模型內比較。
+[^zht-load]: 負載指標先在每個凍結合同合計相應鍵／手指，再取 20 合同峰值；`QAZ` 為左小指組，P 區沿用 `P[]\\;'/`，`TYB` 為雙食指組。
+[^zht-home]: S2 主鍵區占比只看 Common399 裸聲韻二鍵；20 合同主鍵區下限則取所有含輔字詞合同的最低主行占比，兩者不可混用。
 
 `QAZ`、`TYB` 均取三鍵負載之和在凍結 20 合同中的最大值；P 區右小指組沿用 HTML 原始定義 `P[]\;'/`。CKT v4 的 B04 鍵道軌使用統一 `snowshape` 字形源，三拼軌使用統一筆畫源，並非首道自身輔碼；但 B04 按 26×26 四碼頂合同計分，U357、S005 按 21×21 合同計分，因此 B04 保留更大雙拼碼域和三字詞 AAA/AAAU 路由的結構優勢。
 
