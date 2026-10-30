@@ -9,11 +9,13 @@ local filter = {}
 ---@field dict table<string, string[]>
 ---@field user_dict LevelDb|nil
 ---@field user_dict_name string
+---@field page_size integer
 
 ---@param env FixEnv
 function filter.init(env)
   local config = env.engine.schema.config
   env.dict = snow.read_dictionary(snow.get_dictionary_path(env))
+  env.page_size = config:get_int("menu/page_size") or 5
   if config:get_bool("translator/enable_schema_user_dict") then
     -- 记下方案名，fini 时 engine.schema 已是新方案，见 snow.get_db 的注释
     env.user_dict_name = env.engine.schema.schema_id
@@ -160,11 +162,13 @@ function filter.func(translation, env)
     -- 对于一个新的候选，要么加入已知候选，要么加入未知候选
     local is_fixed = false
     for j = 1, #fixed_candidates do
-      if not fixed_resolved[j] and candidate.text == fixed_candidates[j].text then
+      if candidate.text == fixed_candidates[j].text then
         snow.comment(candidate, snow.fixed_symbol)
         fixed_candidates[j] = candidate
-        fixed_resolved[j] = true
-        unresolved_fixed = unresolved_fixed - 1
+        if not fixed_resolved[j] then
+          fixed_resolved[j] = true
+          unresolved_fixed = unresolved_fixed - 1
+        end
         is_fixed = true
         break
       end
@@ -175,7 +179,8 @@ function filter.func(translation, env)
     seen_candidates = seen_candidates + 1
     -- 固定项都已找到、空位也已有候选可填时，顺序已经完全确定。
     -- 立即输出，避免为了固定首选仍然预取满 100 项才弹出候选框。
-    if unresolved_fixed == 0 and #free_candidates >= placeholder_count then
+    if seen_candidates >= env.page_size and unresolved_fixed == 0
+        and #free_candidates >= placeholder_count then
       filter.finalize(fixed_candidates, free_candidates)
       finalized = true
     end

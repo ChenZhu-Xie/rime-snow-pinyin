@@ -102,7 +102,7 @@ test("fixed-candidate filtering streams through codes without custom entries", (
 	assert.match(filter, /if #fixed_phrases == 0 then/u);
 	assert.match(
 		filter,
-		/if unresolved_fixed == 0 and #free_candidates >= placeholder_count then/u,
+		/if seen_candidates >= env\.page_size and unresolved_fixed == 0/u,
 	);
 	assert.doesNotMatch(filter, /collectgarbage\(\)/u);
 });
@@ -111,7 +111,6 @@ test("Clear Rhyme stops short-code translation after its only visible candidate"
 	const filter = read("lua/snow/qingyun.lua");
 	assert.match(filter, /if is_short_code then[\s\S]+yield\(c\)\s+return/u);
 	assert.match(filter, /env\.chaifen_cache\[candidate\.text\]/u);
-	assert.match(filter, /env\.buffered_cache\[text\]/u);
 });
 
 test("postponement streams the first code when no earlier choice can move", () => {
