@@ -51,9 +51,9 @@ deploy:
         assert: commit == "冰雪冰" and cand[1].text == "雪"
   schema_userdb:
     tests:
-      # 以“冰”的完整音节码指定目标编码，把“雪”上屏后再次按 Ctrl+. 完成添加。
+      # “冰”已静态固顶；把“雪”加入同码后，原首选保持不变，新词进入第二位。
       - send: sgi{Release+s}{Release+g}{Release+i}{Control+period}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{Control+period}sgi{Release+s}{Release+g}{Release+i}
-        assert: cand[1].text == "雪"
+        assert: cand[1].text == "冰" and cand[2].text == "雪"
   syllable:
     tests:
       - send: zvio{Release+z}{Release+v}{Release+i}{Release+o}

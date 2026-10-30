@@ -25,9 +25,6 @@ local processor = {}
 ---@param env UserDictEnv
 function processor.init(env)
   local config = env.engine.schema.config
-  if env.engine.schema.schema_id == "snow_yipin" then
-    snow.debug = true
-  end
   env.dict = snow.read_dictionary(snow.get_dictionary_path(env))
   if config:get_bool("translator/enable_schema_user_dict") then
     -- 记下方案名，fini 时 engine.schema 已是新方案，见 snow.get_db 的注释
