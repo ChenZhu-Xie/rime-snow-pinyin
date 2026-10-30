@@ -179,6 +179,8 @@ patch:
   history/input: "`"
   history/initial_quality: 100
   lua/input: "``"
+  # o 不是合法首码，用 matcher 单独为缓冲命令建立分段
+  recognizer/patterns/buffered: "^o$"
   recognizer/patterns/history: "^`$"
   # 单个 ` 引导反查和重复上屏，两个 ` 引导 lua（数字、计算、日期时间、输入统计）
   recognizer/patterns/lua: "^``.*$"

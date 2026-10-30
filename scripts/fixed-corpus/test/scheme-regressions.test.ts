@@ -80,6 +80,10 @@ test("all schemes expose the o buffer toggle without legacy shortcuts", () => {
 		.join("\n");
 	assert.doesNotMatch(combined, /(?:toggle|set_option): buffered/u);
 	assert.match(read("snow_yipin.schema.yaml"), /xform\/\^jio\$\/\[~o\]\//u);
+	assert.match(
+		read("snow_qingyun.schema.yaml"),
+		/recognizer\/patterns\/buffered: "\^o\$"/u,
+	);
 	const translator = read("lua/snow/buffered.lua");
 	assert.match(translator, /env\.target = not ctx:get_option\("buffered"\)/u);
 });
