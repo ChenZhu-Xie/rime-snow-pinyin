@@ -87,7 +87,6 @@ function filter.get_customized_list(env, input)
   end
   ---@diagnostic disable-next-line: cast-local-type
   da = nil
-  collectgarbage()
   for i = 1, max_index do
     if not fixed_phrases[i] then
       fixed_phrases[i] = snow.placeholder
@@ -115,7 +114,9 @@ function filter.func(translation, env)
     full_input = input .. shape_input
   end
   local fixed_phrases = filter.get_customized_list(env, full_input)
-  if not fixed_phrases then
+  -- 没有固定候选时直接透传。旧逻辑仍会预取 100 个候选后才输出首项，
+  -- 会把复杂翻译器和过滤器的开销无谓放大到每一次按键。
+  if #fixed_phrases == 0 then
     for candidate in translation:iter() do
       yield(candidate)
     end

@@ -57,9 +57,15 @@ end
 ---@param env QingyunEnv
 function filter.func(translation, env)
   local count = 0
-  local input = snow.current(env.engine.context) or ""
-  local segment = env.engine.context.composition:toSegmentation():back()
+  local context = env.engine.context
+  local input = snow.current(context) or ""
+  local segment = context.composition:toSegmentation():back()
   local affix = { "a", "o", "e", "i", "u", ";", ",", ".", "/" }
+  local buffered = context:get_option("buffered")
+  local character_only = context:get_option("character")
+  local show_chaifen = context:get_option("chaifen")
+  local is_short_code = rime_api.regex_match(input, "[bpmfdtnlgkhjqxzcsrvwy]{1,2}")
+  local is_abc = segment and segment:has_tag("abc") or false
   for candidate in translation:iter() do
     -- 历史候选与其他方案共用同一套排序和选择行为，不受清韵的
     -- 缓冲、单字模式、拆分提示等候选加工影响。
@@ -67,7 +73,7 @@ function filter.func(translation, env)
       yield(candidate)
       goto continue
     end
-    if env.engine.context:get_option("buffered") and not is_pinyin(candidate) then
+    if buffered and not is_pinyin(candidate) then
       local result = env.lookup_pinyin and env.lookup_pinyin:lookup(candidate.text) or ""
       ---@type Candidate[]
       local candidates = {}
@@ -93,11 +99,10 @@ function filter.func(translation, env)
     if candidate.type == "sentence" and (not is_pinyin(candidate)) then
       goto continue -- 过滤掉冰雪清韵形码的组句候选
     end
-    local character_only = env.engine.context:get_option("character")
     if character_only and utf8.len(candidate.text) > 1 then
       goto continue
     end
-    if rime_api.regex_match(input, "[bpmfdtnlgkhjqxzcsrvwy]{1,2}") then -- 生成一简十重提示
+    if is_short_code then -- 生成一简十重提示
       if count == 0 then
         local hint = ""
         for _, letter in ipairs(affix) do
@@ -144,13 +149,13 @@ function filter.func(translation, env)
         end
       end
     end
-    if env.engine.context:get_option("chaifen") then
+    if show_chaifen then
       local chaifen = env.chaifen and env.chaifen:lookup(candidate.text) or ""
       if chaifen:len() > 0 then
         snow.comment(candidate, "~ " .. chaifen:gsub("-", " "))
       end
     end
-    if segment and segment:has_tag("abc") then
+    if is_abc then
       prettify_preedit(candidate)
     end
     yield(candidate)

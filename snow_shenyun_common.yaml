@@ -180,6 +180,9 @@ switches:
   - name: buffered
     states: [结束, 缓冲]
     reset: 0
+  - name: add
+    states: [结束, 加词中]
+    reset: 0
 
 menu:
   alternative_select_keys: "_23890"

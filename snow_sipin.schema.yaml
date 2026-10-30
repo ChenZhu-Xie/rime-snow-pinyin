@@ -184,6 +184,9 @@ patch:
     - name: buffered
       states: [结束, 缓冲]
       reset: 0
+    - name: add
+      states: [结束, 加词中]
+      reset: 0
   translator/prism: snow_sipin
   translator/preedit_format: null
   translator/enable_schema_user_dict: true

@@ -34,7 +34,7 @@ switches:
     states: [ 结束, 缓冲 ]
     reset: 0
   - name: add
-    states: [ 结束, 加词 ]
+    states: [ 结束, 加词中 ]
     reset: 0
   - name: ascii_mode
     reset: 0

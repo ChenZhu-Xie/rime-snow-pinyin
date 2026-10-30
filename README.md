@@ -205,6 +205,7 @@ bun scripts/验证神韵双拼.ts
 | 上屏原始输入码 | `Enter` |
 | 上屏转换后的脚本文本 | `Ctrl+Enter` |
 | 上屏当前候选的注释 | `Ctrl+Shift+Enter` |
+| 上屏当前首选并切换中/西文 | 单击左/右 `Shift`；右 `Shift` 与上游相同，左 `Shift` 相比上游由行内临时英文改为此功能，因而多了一个首选上屏入口 |
 
 #### 输入模式与方案开关
 
@@ -224,11 +225,13 @@ bun scripts/验证神韵双拼.ts
 | 在历史面板选择第 2～6 项 | `Ctrl+2/3/8/9/0` |
 | 删除高亮的普通 Rime 用户词 | `Ctrl+Delete` |
 | 固定/取消固定当前候选 | `Ctrl+/` |
-| 开始手动加词；再次按下完成添加 | `Ctrl+.`；过程中可按 `Escape` 取消 |
+| 开始手动加词；再次按下完成添加 | 所有方案使用 `Ctrl+.`；进入后方案状态显示「加词中」，过程中可按 `Escape` 取消 |
 | 将已固定候选上移/下移一位 | `Ctrl+[` / `Ctrl+]` |
 | 重置当前编码下的方案固定候选 | `Ctrl+\` |
 
 普通 Rime 用户词和方案固定词是两套机制：前者使用 `Ctrl+Delete` 删除；通过 `Ctrl+.` 手动加入的方案固定词，选中后使用 `Ctrl+/` 取消或禁用。静态 YAML 词典中的正式词条不能通过快捷键删除。
+
+手动加词是两段式操作：先输入以后用于查询新词的目标编码并按 `Ctrl+.`，再正常输入且上屏新词的全部文字，最后再次按 `Ctrl+.` 保存；第一下不是把当前候选直接加入词典，最后一段文字也须先上屏。
 
 #### 方案专属编码键（含大写）
 
@@ -253,7 +256,7 @@ bun scripts/验证神韵双拼.ts
 - [神韵 U357 公平对比原始 JSON](reports/shenyun-u357-comparison.json)：上述现行对比的机器可复核数据。
 - [神韵 R9 公平对比](reports/shenyun-r9-comparison.md)：与 S005、B04 的历史 Benchmark 指标、分场景结果和边界说明。
 - [神韵 R9 公平对比原始 JSON](reports/shenyun-r9-comparison.json)：上述对比的机器可复核数据快照。
-- [当前方案快捷键审计与上游对照](reports/shortcut-audit.md)：四个方案的共享、专属及相对上游变化的快捷键。
+- [当前方案快捷键审计与上游对照](reports/shortcut-audit.md)：七套方案的共享、专属及相对上游变化的快捷键。
 - [四拼二字词逐级排序对神韵固顶的参考调研](reports/sipin-bigram-ranking-research.md)：以四拼逐级候选名次为键道、三拼固顶提供有限旁证，不把四拼视为 R9 的组成部分。
 - [神韵双拼八方案 500 字最短键码实战测评](reports/神韵双拼八方案_500字_最短键码实战测评.txt)：同一篇 500 字赛文下八条冻结或现行回放轨的实际按键比较。
 
@@ -406,7 +409,7 @@ bun scripts/验证神韵双拼.ts
 - [Raw Shenyun U357 comparison JSON](reports/shenyun-u357-comparison.json): machine-reviewable data behind the current comparison.
 - [Complete Shenyun R9 benchmark comparison](reports/shenyun-r9-comparison.md): historical metrics and scenario results against S005 and B04, with scope limits.
 - [Raw Shenyun R9 comparison JSON](reports/shenyun-r9-comparison.json): machine-reviewable snapshot underlying the comparison.
-- [Shortcut audit and upstream comparison](reports/shortcut-audit.md): shared and scheme-specific shortcuts plus local changes from upstream.
+- [Shortcut audit and upstream comparison](reports/shortcut-audit.md): shared and scheme-specific shortcuts across all seven schemes plus local changes from upstream.
 - [Four-Code staged bigram ranking study](reports/sipin-bigram-ranking-research.md): limited ranking evidence for KeyTao and Three-Code fixed candidates; Four-Code itself is not part of R9.
 - [Eight-scheme 500-character shortest-code replay](reports/神韵双拼八方案_500字_最短键码实战测评.txt): actual keystroke comparison over one shared 500-character text.
 
@@ -560,7 +563,7 @@ bun scripts/验证神韵双拼.ts
 - [神韻 U357 公平比較原始 JSON](reports/shenyun-u357-comparison.json)：上述現行比較的機器可複核資料。
 - [神韻 R9 公平對比](reports/shenyun-r9-comparison.md)：與 S005、B04 的歷史 Benchmark 指標、分場景結果與邊界說明。
 - [神韻 R9 公平對比原始 JSON](reports/shenyun-r9-comparison.json)：上述對比的機器可複核資料快照。
-- [目前方案快捷鍵稽核與上游對照](reports/shortcut-audit.md)：四個方案的共用、專屬及相對上游變更的快捷鍵。
+- [目前方案快捷鍵稽核與上游對照](reports/shortcut-audit.md)：七套方案的共用、專屬及相對上游變更的快捷鍵。
 - [四拼二字詞逐級排序對神韻固頂的參考調研](reports/sipin-bigram-ranking-research.md)：以四拼逐級候選名次為鍵道、三拼固頂提供有限旁證，不把四拼視為 R9 的組成部分。
 - [神韻雙拼八方案 500 字最短鍵碼實戰測評](reports/神韵双拼八方案_500字_最短键码实战测评.txt)：同一篇 500 字賽文下八條凍結或現行回放軌的實際按鍵比較。
 

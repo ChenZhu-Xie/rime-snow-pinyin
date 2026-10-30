@@ -71,6 +71,38 @@ test("serial schemes expose o while all schemes inherit Ctrl+B", () => {
 	assert.match(translator, /env\.target = not ctx:get_option\("buffered"\)/u);
 });
 
+test("all released schemes expose manual word addition with a visible state", () => {
+	for (const schema of [
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_qingyun.schema.yaml",
+		"snow_shenyun_common.yaml",
+	]) {
+		const content = read(schema);
+		assert.match(content, /name: add\s+states: \[\s*结束,\s*加词中\s*\]/u);
+	}
+	for (const schema of [
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_qingyun.schema.yaml",
+		"snow_shenyun_common.yaml",
+	]) {
+		const content = read(schema);
+		assert.match(content, /lua_processor@\*snow\.user_dict/u);
+		assert.match(content, /enable_schema_user_dict: true/u);
+	}
+});
+
+test("fixed-candidate filtering streams through codes without custom entries", () => {
+	const filter = read("lua/snow/fix.lua");
+	assert.match(filter, /if #fixed_phrases == 0 then/u);
+	assert.doesNotMatch(filter, /collectgarbage\(\)/u);
+});
+
 test("statistics falls back when librime-lua lacks get_time_ms", () => {
 	assert.match(read("lua/snow/define.lua"), /get_time_ms\?/u);
 	assert.match(

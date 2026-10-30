@@ -187,6 +187,39 @@ local function add_route(routes, family, proxy, suffix, length)
   table.insert(routes, { family = family, proxy = proxy, suffix = suffix, length = length })
 end
 
+---@class ShenyunRoute
+---@field family string
+---@field proxy string
+---@field suffix string
+---@field length integer
+
+---@class ShenyunStream
+---@field route ShenyunRoute
+---@field iterator fun(): Candidate?
+---@field candidate Candidate?
+---@field auxiliary string
+
+---@param stream ShenyunStream
+---@param env ShenyunEnv
+---@return boolean
+local function advance(stream, env)
+  while true do
+    local candidate = stream.iterator()
+    if not candidate then
+      stream.candidate = nil
+      return false
+    end
+    if candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
+      local matches, auxiliary = auxiliary_match(candidate.text, stream.route.suffix, env)
+      if matches then
+        stream.candidate = candidate
+        stream.auxiliary = auxiliary
+        return true
+      end
+    end
+  end
+end
+
 local function routes_for(input, env)
   local routes = {}
   local n = input:len()
@@ -234,36 +267,52 @@ function this.init(env)
 end
 
 function this.func(input, segment, env)
-  local found = {}
+  ---@type ShenyunStream[]
+  local streams = {}
   for _, route in ipairs(routes_for(input, env)) do
     local translation = env.translator:query(route.proxy, segment)
     if translation then
-      for candidate in translation:iter() do
-        if candidate.type ~= "sentence" and utf8.len(candidate.text) == route.length then
-          local matches, auxiliary = auxiliary_match(candidate.text, route.suffix, env)
-          if matches then
-            table.insert(found, { candidate = candidate, auxiliary = auxiliary, family = route.family })
-          end
-        end
+      local stream = {
+        route = route,
+        iterator = translation:iter(),
+        candidate = nil,
+        auxiliary = "",
+      }
+      if advance(stream, env) then
+        table.insert(streams, stream)
       end
     end
   end
-  table.sort(found, function(left, right)
-    return (left.candidate.quality or 0) > (right.candidate.quality or 0)
-  end)
   local seen = {}
-  for _, item in ipairs(found) do
-    local candidate = item.candidate
+  while #streams > 0 do
+    local best_index = 1
+    for index = 2, #streams do
+      local candidate = streams[index].candidate
+      local best = streams[best_index].candidate
+      if candidate and best and (candidate.quality or 0) > (best.quality or 0) then
+        best_index = index
+      end
+    end
+    local stream = streams[best_index]
+    local candidate = stream.candidate
+    if not candidate then
+      table.remove(streams, best_index)
+      goto continue
+    end
     if not seen[candidate.text] then
       seen[candidate.text] = true
       candidate._end = segment._end
       candidate.preedit = input
       local label = env.auxiliary_mode == "tone" and "调" or "形"
-      if item.auxiliary ~= "" then
-        snow.comment(candidate, ("〔%s %s〕"):format(label, item.auxiliary))
+      if stream.auxiliary ~= "" then
+        snow.comment(candidate, ("〔%s %s〕"):format(label, stream.auxiliary))
       end
       yield(candidate)
     end
+    if not advance(stream, env) then
+      table.remove(streams, best_index)
+    end
+    ::continue::
   end
 end
 

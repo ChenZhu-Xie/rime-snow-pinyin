@@ -49,6 +49,11 @@ deploy:
       # 两次空格上屏整句，随后恢复普通顶屏
       - send: jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{space}{Release+space}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
         assert: commit == "冰雪冰" and cand[1].text == "雪"
+  schema_userdb:
+    tests:
+      # 先以一简码 f 指定目标编码，再逐字上屏“冰雪”，第二次 Ctrl+. 完成添加。
+      - send: f{Release+f}{Control+period}sgi{Release+s}{Release+g}{Release+i}{space}{Release+space}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{Control+period}f{Release+f}
+        assert: has("冰雪")
   syllable:
     tests:
       - send: zvio{Release+z}{Release+v}{Release+i}{Release+o}

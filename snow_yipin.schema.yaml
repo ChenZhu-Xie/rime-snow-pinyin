@@ -25,6 +25,7 @@ engine:
     - lua_processor@*snow.shape_processor
     - lua_processor@*snow.combo_popping
     - recognizer
+    - lua_processor@*snow.user_dict
     - key_binder
     - speller
     - punctuator
@@ -374,6 +375,9 @@ patch:
     - name: buffered
       states: [结束, 缓冲]
       reset: 0
+    - name: add
+      states: [结束, 加词中]
+      reset: 0
   key_binder/bindings/+:
     - { when: composing, accept: bracketright, send: Page_Down }
     - { when: composing, accept: bracketleft, send: Page_Up }
@@ -382,3 +386,4 @@ patch:
   lua/input: "i"
   translator/shape_elements: snow_xingpang
   translator/shape_mapping: "radical_shengjie.txt"
+  translator/enable_schema_user_dict: true

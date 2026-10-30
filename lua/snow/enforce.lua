@@ -36,21 +36,25 @@ function filter.func(translation, env)
     end
     return
   end
+  local is_vacant_initial = rime_api.regex_match(input, env.vacant_initial_pattern)
+  local has_uppercase = input:find("[A-Z]") ~= nil
+  local is_two_code = rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{2}[vioua]*")
+  local is_four_code = rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{4}[vioua]*")
   for candidate in translation:iter() do
     local is_phrase = candidate:get_dynamic_type() == "Phrase" or candidate:get_dynamic_type() == "Sentence"
     local is_normal_spelling = false
     local preedit = rime_api.regex_replace(candidate.preedit, " 形.+$", "")
     local is_character = utf8.len(candidate.text) == 1 and preedit:len() == 2
-    if rime_api.regex_match(input, env.vacant_initial_pattern) and utf8.len(candidate.text) == 2 then
+    if is_vacant_initial and utf8.len(candidate.text) == 2 then
       -- 天然空音码的 AA 表示两个声母，后续一码仅用于筛选。
       is_normal_spelling = candidate.type == "initial_pair" or preedit == jianpin
-    elseif input:find("[A-Z]") then
+    elseif has_uppercase then
       -- 大写韵母与前一个声母构成同一音节，仅用于三字及以上词
       is_normal_spelling = preedit == jianpin and utf8.len(candidate.text) >= 3
-    elseif rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{2}[vioua]*") then
+    elseif is_two_code then
       -- 两码时一定是双拼
       is_normal_spelling = preedit == shuangpin
-    elseif rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{4}[vioua]*") then
+    elseif is_four_code then
       -- 四码时可能是双拼，也可能是简拼
       is_normal_spelling = preedit == jianpin or preedit == shuangpin or is_character
     else
