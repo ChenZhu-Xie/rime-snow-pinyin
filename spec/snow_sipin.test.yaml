@@ -172,7 +172,7 @@ deploy:
       - send: "spioia22spi"
         assert: cand[1].text == "四拼"
       # 缓冲造词
-      - send: "ekr qz  krqz"
+      - send: "{Control+b}kr qz  krqz"
         assert: cand[1].text == "可爱裙子"
       # 略码与顶屏
       - send: "krK"

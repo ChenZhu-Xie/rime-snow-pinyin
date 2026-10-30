@@ -201,4 +201,5 @@ patch:
     - { when: has_menu, accept: 5, send_sequence: "{Shift+Right}{Shift+Right}{Shift+Right}" }
     - { when: has_menu, accept: 6, send_sequence: "{Shift+Right}{Shift+Right}{Shift+Right}{Shift+Right}" }
     - { when: has_menu, accept: 7, send_sequence: "{End}" }
+    - { when: composing, accept: e, send: e }
   menu/alternative_select_keys: "_23890"

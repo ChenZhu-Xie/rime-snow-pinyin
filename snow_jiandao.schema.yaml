@@ -193,6 +193,7 @@ patch:
     "/": 了
     "\\": 、
   key_binder/bindings/+:
+    - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: "_23890"
   stroke/prism: snow_jiandao_bihua
   stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]
