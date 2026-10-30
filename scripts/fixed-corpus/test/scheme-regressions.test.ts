@@ -103,6 +103,12 @@ test("fixed-candidate filtering streams through codes without custom entries", (
 	assert.doesNotMatch(filter, /collectgarbage\(\)/u);
 });
 
+test("Shenyun merges translator routes lazily with their iterator state", () => {
+	const translator = read("lua/snow/shenyun.lua");
+	assert.match(translator, /stream\.iterator\(stream\.translation\)/u);
+	assert.doesNotMatch(translator, /table\.sort\(found/u);
+});
+
 test("statistics falls back when librime-lua lacks get_time_ms", () => {
 	assert.match(read("lua/snow/define.lua"), /get_time_ms\?/u);
 	assert.match(

@@ -195,7 +195,8 @@ end
 
 ---@class ShenyunStream
 ---@field route ShenyunRoute
----@field iterator fun(): Candidate?
+---@field translation Translation
+---@field iterator fun(translation: Translation): Candidate?
 ---@field candidate Candidate?
 ---@field auxiliary string
 
@@ -204,7 +205,7 @@ end
 ---@return boolean
 local function advance(stream, env)
   while true do
-    local candidate = stream.iterator()
+    local candidate = stream.iterator(stream.translation)
     if not candidate then
       stream.candidate = nil
       return false
@@ -274,6 +275,7 @@ function this.func(input, segment, env)
     if translation then
       local stream = {
         route = route,
+        translation = translation,
         iterator = translation:iter(),
         candidate = nil,
         auxiliary = "",

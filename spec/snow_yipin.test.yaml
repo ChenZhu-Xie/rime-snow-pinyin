@@ -52,7 +52,7 @@ deploy:
   schema_userdb:
     tests:
       # 先以一简码 f 指定目标编码，再逐字上屏“冰雪”，第二次 Ctrl+. 完成添加。
-      - send: f{Release+f}{Control+period}sgi{Release+s}{Release+g}{Release+i}{space}{Release+space}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{Control+period}f{Release+f}
+      - send: f{Release+f}{Control+period}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{Control+period}f{Release+f}
         assert: has("冰雪")
   syllable:
     tests:
