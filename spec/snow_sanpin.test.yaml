@@ -361,8 +361,8 @@ deploy:
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
       - send: "kfc{Control+period}fkxqS Vs 50{Control+period}kfc"
         assert: cand[1].text == "疯狂星期四V我50"
-      # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选。
-      - send: "hou{Control+period}ljhe v{Control+period}hou"
+      # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选；单独 v 已不再切换缓冲。
+      - send: "hou{Control+period}ljhe {Control+period}hou"
         assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jpdf{Control+slash}{Down}{Control+slash}{Up}"
