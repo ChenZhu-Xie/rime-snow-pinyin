@@ -520,7 +520,12 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 		highlightColor: baseColor,
 	};
 	const styles: Collection = { mainBackground, fnBackground };
-	const mainColor = config.dark ? "ffffff" : "000000";
+	// 无刻只隐藏颜色，保留与有刻相同的前景层和按键状态。
+	const mainColor = config.label
+		? config.dark
+			? "ffffff"
+			: "000000"
+		: "00000000";
 	const mainLabel: Omit<TextStyle, "text"> = {
 		buttonStyleType: "text",
 		normalColor: mainColor,
@@ -535,7 +540,11 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 		highlightColor: mainColor,
 		fontSize: 16,
 	};
-	const swipeColor = config.dark ? "e5e5e5" : "575757";
+	const swipeColor = config.label
+		? config.dark
+			? "e5e5e5"
+			: "575757"
+		: "00000000";
 	const upSwipe: Omit<TextStyle, "text"> = {
 		buttonStyleType: "text",
 		normalColor: swipeColor,
@@ -624,7 +633,7 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 			const c: Cell = {
 				size: { width: key.width ?? `1/${row.length}` },
 				backgroundStyle,
-				foregroundStyle: config.label ? foregroundStyle : [],
+				foregroundStyle,
 				action,
 				swipeUpAction,
 				swipeDownAction,
@@ -637,10 +646,8 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 				};
 				const foreground = [...c.foregroundStyle];
 				foreground[0] = shiftName;
-				c.uppercasedStateForegroundStyle = config.label ? foreground : [];
-				c.capsLockedStateForegroundStyle = config.label
-					? structuredClone(foreground)
-					: [];
+				c.uppercasedStateForegroundStyle = foreground;
+				c.capsLockedStateForegroundStyle = structuredClone(foreground);
 				c.uppercasedStateAction = parseAction(
 					key.action.toUpperCase(),
 					config.symbol,

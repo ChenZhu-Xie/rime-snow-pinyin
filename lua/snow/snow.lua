@@ -33,7 +33,7 @@ end
 
 -- 冰雪拼音的版本号，是全仓库唯一的来源：用 `bun scripts/version.ts <版本号>` 修改，
 -- 它会同时改写所有 snow_*.schema.yaml、snow_*.dict.yaml 里的 version
-snow.version = "0.3.12"
+snow.version = "0.3.13"
 
 snow.debug = false
 
@@ -246,6 +246,9 @@ function snow.release_db(name)
   if count <= 0 then
     local db = snow.db_pool[name]
     if db and db:loaded() then
+      -- query():iter() 遍历结束后，Lua 可能还没回收持有原生游标的 DbAccessor。
+      -- 必须在关库前回收：游标析构会访问数据库的缓存，关库后再析构会崩溃
+      collectgarbage()
       db:close()
     end
     snow.db_pool[name] = nil

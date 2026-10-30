@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import matter from "gray-matter";
 import { 拼音词典发布页, 获取大字集拼音 } from "./lib/character-pinyin";
 import { dataPath, rootPath } from "./lib/paths";
+import { checkPinyinReadings } from "./lib/pinyin-validation";
 import { VERSION } from "./version";
 
 async function main() {
@@ -9,6 +10,11 @@ async function main() {
 		.trim()
 		.split("\n");
 	const 大字集拼音 = await 获取大字集拼音();
+	// 先验证全部输入读音；失败时保留已有词典，避免异常音节进入产物。
+	checkPinyinReadings([
+		...通用规范拼音.map((line) => line.split("\t")[1]),
+		...大字集拼音.map(({ 拼音 }) => 拼音),
+	]);
 
 	const 通用规范汉字 = new Set<string>();
 	// 两份来源共用去重集合，保留首次出现的字音组合及其权重。

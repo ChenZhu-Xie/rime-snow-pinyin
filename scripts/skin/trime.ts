@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { dump } from "js-yaml";
+import { qwerty } from "./layouts";
 import { rainbow } from "./palette";
 import type { Config, KeyboardCollection } from "./types";
 
@@ -62,6 +63,8 @@ export interface TrimeColorScheme {
 
 export interface TrimeToolbarButton {
 	action: string;
+	long_press_action?: string;
+	size: [number, number];
 	foreground: { style: string; font_size: number };
 }
 
@@ -93,6 +96,7 @@ export interface TrimeSkin {
 		};
 	};
 	tool_bar: {
+		button_spacing: number;
 		primary_button: TrimeToolbarButton;
 		buttons: TrimeToolbarButton[];
 	};
@@ -266,7 +270,8 @@ function makeKeyboard(
 				highlight = `color${index}${special ? "" : "_alt"}`;
 			}
 			// 图标名称仅供元书输入法使用，同文采用动作自带的文字或通用符号。
-			const label = isCharacter ? key.label : undefined;
+			const label =
+				isCharacter || key.action.startsWith("*") ? key.label : undefined;
 			const click = addAction(key.action, label);
 			const rendered: TrimeKey = {
 				click,
@@ -315,46 +320,120 @@ function makeKeyboard(
 export function makeTrimeSkin(
 	name: string,
 	keyboards: KeyboardCollection,
+	toolbarWidth = 350,
 ): TrimeSkin {
 	if (!keyboards.pinyin) throw new Error("同文皮肤必须提供 pinyin 键盘");
+	if (!Number.isFinite(toolbarWidth) || toolbarWidth < 7) {
+		throw new Error("同文工具栏宽度必须为不小于 7 的 dp 数值");
+	}
+	// 工具栏固定提供中文、英文和编辑入口，不依赖某套皮肤是否自带副键盘。
+	const allKeyboards: KeyboardCollection = {
+		...keyboards,
+		alphabetic: keyboards.alphabetic ?? {
+			colorful: false,
+			label: true,
+			keyInfos: qwerty,
+			symbol: true,
+		},
+		editor: {
+			colorful: false,
+			label: true,
+			keyInfos: [
+				[
+					{ action: "*Control+a", label: "全选" },
+					{ action: "*Home", label: "行首" },
+					{ action: "*Up", label: "↑" },
+					{ action: "*End", label: "行尾" },
+					{ action: "#重输" },
+				],
+				[
+					{ action: "#剪切" },
+					{ action: "*Left", label: "←" },
+					{ action: "*Down", label: "↓" },
+					{ action: "*Right", label: "→" },
+					{ action: "backspace" },
+				],
+				[
+					{ action: "#复制" },
+					{ action: "#粘贴" },
+					{ action: "#撤销" },
+					{ action: "#重做" },
+					{ action: "enter" },
+				],
+			],
+		},
+	};
 	const presetKeys: Record<string, TrimePresetKey> = {
+		menu_keyboard: {
+			label: "菜单",
+			send: "FUNCTION",
+			command: "menu_keyboard",
+		},
 		Snow_settings: { label: "设置", send: "SETTINGS" },
 		Snow_hide: { label: "收起", send: "BACK" },
+		Snow_phrase: {
+			label: "常用语",
+			send: "FUNCTION",
+			command: "clipboard_window",
+			option: "1",
+		},
+		Snow_clipboard: {
+			label: "剪贴板",
+			send: "FUNCTION",
+			command: "clipboard_window",
+			option: "0",
+		},
 	};
 	const presetKeyboards: Record<string, TrimeKeyboard> = {};
-	const buttons: TrimeSkin["tool_bar"]["buttons"] = [];
 	const labels: Record<string, string> = {
 		pinyin: "中文",
 		alphabetic: "ABC",
 		numeric: "123",
 		symbolic: "符号",
+		editor: "编辑",
 	};
-	for (const [id, config] of Object.entries(keyboards)) {
-		presetKeyboards[id] = makeKeyboard(id, config, keyboards, presetKeys);
+	for (const [id, config] of Object.entries(allKeyboards)) {
+		presetKeyboards[id] = makeKeyboard(id, config, allKeyboards, presetKeys);
 		const action = `Snow_keyboard_${id}`;
 		presetKeys[action] = {
 			label: labels[id] ?? id,
 			send: "Eisu_toggle",
 			select: id,
 		};
-		buttons.push({
-			action,
-			foreground: { style: labels[id] ?? id, font_size: 16 },
-		});
 	}
 	// .default 会按方案自动匹配；这里让所有方案使用所选皮肤的主键盘。
 	presetKeyboards.default = presetKeyboards.pinyin;
-	buttons.push({
-		action: "Snow_hide",
-		foreground: { style: "⌄", font_size: 20 },
+	const makeButton = (
+		action: string,
+		style: string,
+		column: number,
+	): TrimeToolbarButton => ({
+		action,
+		// 默认七键各 50 dp；剩余宽度留在左侧菜单与右侧按钮组之间。
+		size: [
+			Math.round(((column + 1) * toolbarWidth) / 7) -
+				Math.round((column * toolbarWidth) / 7),
+			-1,
+		],
+		foreground: { style, font_size: 18 },
 	});
+	// 同文将 buttons 从右向左排，首项还会单独固定在最右侧。
+	// 视觉顺序与元书一致：菜单、常用语、剪贴板、编辑、中文、ABC、收起。
+	const buttons = [
+		makeButton("Snow_hide", "ic@keyboard_close", 6),
+		makeButton("Snow_keyboard_alphabetic", "ABC", 5),
+		makeButton("Snow_keyboard_pinyin", "中", 4),
+		makeButton("Snow_keyboard_editor", "ic@cursor_text", 3),
+		makeButton("Snow_clipboard", "ic@clipboard", 2),
+		makeButton("Snow_phrase", "ic@format_quote_close", 1),
+	];
 	return {
 		config_version: "3.0",
 		name,
 		author,
 		style: {
 			__include: "trime:/style",
-			keyboards: [".default", ...Object.keys(keyboards)],
+			keyboards: [".default", ...Object.keys(allKeyboards)],
 			auto_caps: false,
 			key_text_size: 20,
 			key_long_text_size: 16,
@@ -376,9 +455,10 @@ export function makeTrimeSkin(
 			},
 		},
 		tool_bar: {
+			button_spacing: 0,
 			primary_button: {
-				action: "Snow_settings",
-				foreground: { style: "⚙", font_size: 20 },
+				...makeButton("menu_keyboard", "ic@dots_horizontal", 0),
+				long_press_action: "Snow_settings",
 			},
 			buttons,
 		},
@@ -397,11 +477,12 @@ export function generateTrimeSkin(
 	prefix: string,
 	name: string,
 	keyboards: KeyboardCollection,
+	toolbarWidth?: number,
 ) {
 	mkdirSync(prefix, { recursive: true });
 	writeFileSync(
 		join(prefix, `${name}.trime.yaml`),
-		dump(makeTrimeSkin(name, keyboards), { noRefs: true }),
+		dump(makeTrimeSkin(name, keyboards, toolbarWidth), { noRefs: true }),
 		"utf8",
 	);
 }

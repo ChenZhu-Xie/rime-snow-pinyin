@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_jiandao
   name: 冰雪键道
-  version: "0.3.12"
+  version: "0.3.13"
   author:
     - 吅吅大山
     - 谭淞宸 <i@tansongchen.com>
@@ -70,9 +70,12 @@ engine:
     - lua_filter@*snow.unicode*filter
 
 speller:
-  alphabet: bpmfdtnlgkhjqxzcsrwye
+  alphabet: bpmfdtnlgkhjqxzcsrwyeBPMFDTNLGKHJQXZCSRWYE
+  initials: bpmfdtnlgkhjqxzcsrwye
   delimiter: " "
   shape:
+    - match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}[viuoa]*"
+      accept: "[viuoa]"
     - match: "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?[viuoa]*"
       accept: "[viuoa]"
     - match: "[bpmfdtnlgkhjqxzcsrywe][viuoa]*"
@@ -85,19 +88,24 @@ speller:
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 单字和三字词
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe]{2,3}[viuoa]+"
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){2,3}[viuoa]+"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 四字词和多字词
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe]{4,}[viuoa]*"
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){4,}[viuoa]*"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
-    # 大写参与编码
+    # 已有至少四个小写字母时，大写转成小写追加下一个字的声母
     - when: popping
-      match: "[bpmfdtnlgkhjqxzcsrywe][a-z]{3,}"
+      match: "(?=(?:[A-Z]*[a-z]){4})[bpmfdtnlgkhjqxzcsrywe][a-zA-Z]*"
       accept: "[BPMFDTNLGKHJQXZCSRYWE]"
       strategy: append
+    # 不足四个小写声母时，大写原样追加为前一个字的韵母
+    - when: popping
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){0,2}[bpmfdtnlgkhjqxzcsrywe]"
+      accept: "[BPMFDTNLGKHJQXZCSRYWE]"
+      strategy: append_raw
     # 顶标点
-    - match: ".*[^a-z0-9]"
+    - match: ".*[^a-zA-Z0-9]"
       accept: "[bpmfdtnlgkhjqxzcsrywe]"
     # 标点大写顶
     - match: ".*[a-z0-9]"
@@ -157,6 +165,6 @@ patch:
   key_binder/bindings/+:
     - { when: always, accept: "Control+j", toggle: buffered }
   menu/alternative_select_keys: null
-  recognizer/patterns/jianpin: "^[bpmfdtnlgkhjqxzcsrywe]{3,}$"
+  recognizer/patterns/jianpin: "^(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}$"
   stroke/prism: snow_jiandao_bihua
   stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]

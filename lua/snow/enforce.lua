@@ -13,7 +13,7 @@ function filter.func(translation, env)
   if shape_input then
     full_input = full_input .. shape_input
   end
-  local jianpin = input:gsub("(.)", "%1 "):sub(1, -2)
+  local jianpin = input:gsub("([a-z][A-Z]?)", "%1 "):sub(1, -2)
   local shuangpin = input:gsub("(..)", "%1 "):sub(1, -2)
   -- 整句模式下，不允许简拼组词，其余都可以接受
   if not env.engine.context:get_option("popping") then
@@ -32,7 +32,10 @@ function filter.func(translation, env)
     local is_normal_spelling = false
     local preedit = rime_api.regex_replace(candidate.preedit, " 形.+$", "")
     local is_character = utf8.len(candidate.text) == 1 and preedit:len() == 2
-    if rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{2}[vioua]*") then
+    if input:find("[A-Z]") then
+      -- 大写韵母与前一个声母构成同一音节，仅用于三字及以上词
+      is_normal_spelling = preedit == jianpin and utf8.len(candidate.text) >= 3
+    elseif rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{2}[vioua]*") then
       -- 两码时一定是双拼
       is_normal_spelling = preedit == shuangpin
     elseif rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{4}[vioua]*") then

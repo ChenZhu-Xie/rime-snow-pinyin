@@ -46,20 +46,42 @@ deploy:
         assert: has("中文输入法")
       - send: fhrmGHG
         assert: has("中华人民共和国")
-      # 五字及以上词：前四字声母 + 前两字笔画
+      # 四字及以上词：前四字声母 + 每字形码首码，可只补前缀
       - send: sxwjvv
         assert: cand[1].text == "三下五除二"
-      # 这种取码方式会与四字词重码：
-      # 「科学发展观」与「科学发展」的编码都是 kxfquo
+      - send: sxwjvvva
+        assert: cand[1].text == "三下五除二"
+      - send: sxwjvvvav
+        assert: cand[1].text == "三下五除二"
+      # 五字词可用第五字形码与四字词区分
       - send: kxfq
         assert: has("科学发展") and has("科学发展观")
       - send: kxfquo
         assert: page("科学发展") and page("科学发展观")
-      # 「中华人民共和国」与「中华人民」的编码都是 fhrmii
+      - send: kxfquoa
+        assert: page("科学发展") and page("科学发展观")
+      - send: kxfquoaa
+        assert: page("科学发展") and page("科学发展观")
+      - send: kxfquoaaa
+        assert: page("科学发展观") and not has("科学发展")
+      - send: kxfquoaav
+        assert: not has("科学发展观")
+      # 第三、第四字的形码均参与筛选
+      - send: kxfquov
+        assert: not has("科学发展") and not has("科学发展观")
+      - send: kxfquoav
+        assert: not has("科学发展") and not has("科学发展观")
+      # 七字词也能逐字补全形码
       - send: fhrm
         assert: has("中华人民") and has("中华人民共和国")
       - send: fhrmii
         assert: page("中华人民") and page("中华人民共和国")
+      - send: fhrmiiia
+        assert: page("中华人民") and page("中华人民共和国")
+      - send: fhrmiiiavui
+        assert: page("中华人民共和国") and not has("中华人民")
+      - send: fhrmiiiavuv
+        assert: not has("中华人民共和国")
       # 用大写字母补完其余声母则重码更低，且不影响顶功
       - send: kxfqG
         assert: cand[1].text == "科学发展观"
@@ -113,6 +135,58 @@ deploy:
         assert: cand[1].text == "史诗"
       - send: ekekioekek
         assert: commit == "史诗" and cand[1].text == "史诗"
+  # 混合声韵拼写：大写韵母不计入四个小写字母的分界
+  mixed_spelling:
+    tests:
+      # 空输入时大写字母仍直接输入西文
+      - send: X
+        assert: preedit == nil and commit == nil
+      # 前三个字均可单独补韵母，也可以同时补
+      - send: eJrf
+        assert: has("输入法") and preedit == "eJ r f"
+      - send: erJf
+        assert: has("输入法") and preedit == "e rJ f"
+      - send: erfS
+        assert: has("输入法") and preedit == "e r fS"
+      - send: eJrJfS
+        assert: has("输入法") and preedit == "eJ rJ fS"
+      - send: erfK
+        assert: not has("输入法")
+      # 沿用原生拼写派生，支持飞键
+      - send: zKxGjE
+        assert: has("自行车") and preedit == "zK xG jE"
+      # 两字词仍使用原来的双拼，不用大写韵母
+      - send: bGxH
+        assert: not has("冰雪")
+      # 补过韵母后仍可输入第四个声母
+      - send: kExHfSq
+        assert: has("科学发展") and commit == nil
+      # 已有四个小写字母时，大写沿用追加长词声母的行为
+      - send: kExHfSqG
+        assert: has("科学发展观") and preedit == "kE xH fS q g"
+      - send: fYhrmGHG
+        assert: has("中华人民共和国") and preedit == "fY h r m g h g"
+      # 补韵母后可继续补形码
+      - send: eJrJfSv
+        assert: has("输入法")
+      - send: eJrJfSa
+        assert: not has("输入法")
+      - send: kExHfSquoaa
+        assert: has("科学发展")
+      # 退格直接删除真实编码中的韵母，取消后也没有残留状态
+      - send: erfS{BackSpace}
+        assert: has("输入法") and preedit == "e r f"
+      - send: erfS{BackSpace}K
+        assert: not has("输入法")
+      - send: eJrJfS{Escape}erf
+        assert: has("输入法") and preedit == "e r f"
+      # 形码完成的三字词、四个声母后的长词仍能顶功
+      - send: eJrJfSvbgxh
+        assert: commit == "输入法" and has("冰雪")
+      - send: kExHfSqGbgxh
+        assert: commit == "科学发展观" and has("冰雪")
+      - send: "zKxGjE "
+        assert: commit == "自行车"
   # 自动造词
   encoding:
     tests:

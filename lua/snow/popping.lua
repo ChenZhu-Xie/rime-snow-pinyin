@@ -9,6 +9,7 @@ local processor = {}
 local strategies = {
   pop = "pop",
   append = "append",
+  append_raw = "append_raw",
   conditional = "conditional"
 }
 
@@ -115,6 +116,7 @@ function processor.func(key_event, env)
     end
   end
   local with_punct = false
+  local preserve_case = false
   for _, rule in ipairs(env.popping) do
     local when = rule.when
     local success = false
@@ -128,8 +130,9 @@ function processor.func(key_event, env)
       goto continue
     end
     -- 如果策略为追加编码，则不执行顶屏直接返回
-    if rule.strategy == strategies.append then
-      with_punct = true
+    if rule.strategy == strategies.append or rule.strategy == strategies.append_raw then
+      with_punct = rule.strategy == strategies.append
+      preserve_case = rule.strategy == strategies.append_raw
       goto finish
       -- 如果策略为条件顶屏，那么尝试先添加编码，如果能匹配到候选就不顶屏
     elseif rule.strategy == strategies.conditional then
@@ -163,14 +166,14 @@ function processor.func(key_event, env)
     ::continue::
   end
   ::finish::
-  -- 大写字母执行完顶屏功能之后转成小写
+  -- 除原样追加策略外，大写字母执行完顶屏功能之后转成小写
   local map = {
     [string.byte(":")] = string.byte(";"),
     [string.byte("<")] = string.byte(","),
     [string.byte(">")] = string.byte("."),
     [string.byte("?")] = string.byte("/")
   }
-  if key_event.keycode >= 65 and key_event.keycode <= 90 then
+  if not preserve_case and key_event.keycode >= 65 and key_event.keycode <= 90 then
     key_event = KeyEvent(utf8.char(key_event.keycode + 32))
   elseif with_punct and map[key_event.keycode] then
     key_event = KeyEvent(utf8.char(map[key_event.keycode]))

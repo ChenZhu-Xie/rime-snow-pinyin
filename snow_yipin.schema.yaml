@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_yipin
   name: 冰雪一拼
-  version: "0.3.12"
+  version: "0.3.13"
   author:
     - 张皓哲 <576440085@qq.com>
     - 谭淞宸 <i@tansongchen.com>
@@ -234,6 +234,7 @@ speller:
     # 合并轻声
     - xform/5/1/
     # 合并边缘音节
+    - xlit/ê/e/
     - xform/^(h?)ng(?=\d)/$1eng/
     - xform/^n(?=\d)/en/
     - xform/^m(?=\d)/mu/

@@ -2,22 +2,52 @@
 
 > 优雅、高效、个性化的中文输入体验
 
-配方： ℞ **snow-pinyin**
+冰雪拼音是一系列基于 [Rime](https://rime.im) 的中文输入方案，涵盖音码、音形码和形码，通过顶功、并击和个性化词频提升输入效率。
 
-开发脚本的用途、参数和旧名称对照见 [scripts/README.md](scripts/README.md)。
+[使用文档](https://input.tansongchen.com) · [方案总览](https://input.tansongchen.com/snow) · [下载最新版](https://github.com/rimeinn/rime-snow-pinyin/releases/latest) · [QQ 群](https://qm.qq.com/q/vI6avK1YT6)
 
-[冰雪拼音](https://input.tansongchen.com)是一系列以普通话拼音为基础的中文输入方案。它们充分利用汉字的字音信息来实现自然优雅的编码；它们使用先进的离散优化技术和顶功技术来设计，使得编码十分高效；它们配备了智能算法，通过学习用户的语言习惯来个性化输入体验。
+## 输入方案
 
-冰雪拼音包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪三拼](https://input.tansongchen.com/snow3/)、[冰雪双拼](https://input.tansongchen.com/snow2/)、[冰雪一拼](https://input.tansongchen.com/snow1/)和[冰雪键道](https://input.tansongchen.com/snow-jiandao/)输入方案。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
+本仓库提供以下五个方案，点击名称查看教程：
 
-## 关于词库的说明
+| 方案 | 特点 | schema_id |
+| --- | --- | --- |
+| [冰雪四拼](https://input.tansongchen.com/snow4/) | 音码、主打词组、二三四码顶 | `snow_sipin` |
+| [冰雪三拼](https://input.tansongchen.com/snow3/) | 音码、主打词组、三四码顶 | `snow_sanpin` |
+| [冰雪一拼](https://input.tansongchen.com/snow1/) | 音形码、字词均衡、一码顶、并击 | `snow_yipin` |
+| [冰雪键道](https://input.tansongchen.com/snow-jiandao/) | 音形码、字词均衡、三四码顶 | `snow_jiandao` |
+| [冰雪清韵](https://input.tansongchen.com/snow-qingyun/) | 形码、主打单字、前缀码 | `snow_qingyun` |
 
-冰雪拼音词库收词范围与[雾凇拼音](http://github.com/iDvel/rime-ice)相同。其特点为：
+## 下载安装
 
-1. 大词库：与雾凇拼音共享 180 万词库
-2. 持续更新：上游雾凇拼音更新后，本仓库也会随之更新
-3. 单字读音遵循《通用规范汉字字典》规范
-4. 词语读音尽可能使用单字已有的读音，便于自动造词。这意味着
-    - 不考虑因弱化产生的轻声，如「知识」为 `zhī shí`，不为 `zhī shi`
-    - 不考虑连读变调，如「一个」为 `yī gè`，不为 `yí gè`
-    - 部分专有名词中的专用音允许例外，例如「冒顿」可以是 `mò dú`
+1. 安装所在平台的 Rime 前端，例如 Windows 小狼毫、macOS 或 Linux 小企鹅、iOS 或 Android 元书、Android 同文、HarmonyOS 超越输入法；下载入口见[使用文档](https://input.tansongchen.com/#下载安装)。
+2. 从[发布页面](https://github.com/rimeinn/rime-snow-pinyin/releases/latest)下载 `snow-pinyin.zip`，解压到 Rime 用户文件夹，使 `snow_*.schema.yaml` 和 `lua/snow/` 直接位于其中。
+3. 在 `default.custom.yaml` 的 `patch/schema_list` 中加入所需方案，执行“重新部署”，再从方案选单中选择。
+
+例如，启用冰雪四拼和冰雪三拼：
+
+```yaml
+patch:
+  schema_list:
+    - schema: snow_sipin
+    - schema: snow_sanpin
+```
+
+已有配置时，将设置合并到同一个 `patch` 下，并保留原来需要的方案。首次部署需等待大词库编译完成。
+
+## 手机皮肤
+
+从同一发布页面按所用输入法下载皮肤包，包含七组布局及亮暗配色：
+
+| 前端 | 下载文件 | 使用方式 |
+| --- | --- | --- |
+| 同文（Android） | `snow-pinyin-skins-trime.zip` | 将所需 `.trime.yaml` 放入 Rime 用户文件夹，重新部署并选择主题 |
+| 元书（iOS、Android） | `snow-pinyin-skins-hamster.zip` | 两个平台使用同一皮肤包，导入所需 `.cskin` 并启用 |
+
+皮肤与输入方案需分别安装，布局应与方案匹配；这些触屏布局未提供冰雪一拼专用的并击键盘。布局预览、选择与导入说明见[手机皮肤](https://input.tansongchen.com/#手机皮肤)。
+
+## 更新与个性化
+
+更新前备份用户文件夹并执行 Rime 同步，再用新版方案包覆盖并重新部署。个人设置写入 `*.custom.yaml`，避免直接修改随安装包分发的文件；配置和自建词库需另行备份。
+
+常见问题、补丁配置和数据同步见[使用文档](https://input.tansongchen.com/)，开发脚本与维护约定见 [AGENTS.md](AGENTS.md)。

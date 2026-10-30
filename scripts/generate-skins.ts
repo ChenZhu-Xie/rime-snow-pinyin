@@ -11,13 +11,14 @@ function main() {
 		args: process.argv.slice(2),
 		options: {
 			backend: { type: "string", default: "all" },
+			"trime-toolbar-width": { type: "string" },
 			help: { type: "boolean", short: "h" },
 		},
 		allowPositionals: true,
 	});
 	if (values.help) {
 		console.log(
-			"用法：bun scripts/generate-skins.ts [输出目录] [--backend hamster|trime|all]（默认 all）",
+			"用法：bun scripts/generate-skins.ts [输出目录] [--backend hamster|trime|all] [--trime-toolbar-width 按键总宽度dp]（默认 all，工具栏七键各 50 dp）",
 		);
 		return;
 	}
@@ -26,6 +27,16 @@ function main() {
 		throw new Error(`未知的皮肤后端：${backend}`);
 	}
 	if (positionals.length > 1) throw new Error("只能指定一个输出目录");
+	const toolbarWidth =
+		values["trime-toolbar-width"] === undefined
+			? undefined
+			: Number(values["trime-toolbar-width"]);
+	if (
+		toolbarWidth !== undefined &&
+		(!Number.isFinite(toolbarWidth) || toolbarWidth < 7)
+	) {
+		throw new Error("同文工具栏宽度必须为不小于 7 的 dp 数值");
+	}
 	const prefix = resolve(
 		positionals[0] ??
 			(backend === "hamster"
@@ -48,6 +59,7 @@ function main() {
 				backend === "all" ? join(prefix, "trime") : prefix,
 				name,
 				keyboards,
+				toolbarWidth,
 			);
 		}
 	};

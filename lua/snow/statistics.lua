@@ -17,7 +17,7 @@
 -- 各量的含义：
 --   词数      上屏的次数
 --   字数      上屏的字符数，标点、数字、空格以及没有编码时直接输入的字符都算，但没有编码时单独输入的空格、回车等空白符不算
---   按键      输入过程中按下的键数，组合键整组算一个，并击方案中一组并击算一个；临时西文和全局英文下的按键不算
+--   按键      输入过程中按下的键数，组合键整组算一个，并击方案中一组并击算一个；推测的候选点击也算一个，临时西文和全局英文下的按键不算
 --   有效按键  按键数减去两倍退格数，即退格和被它删掉的那个键都不算；没有打出任何编码的并击也不算
 --   用时      相邻两次按键的间隔之和，超过 5 秒的间隔视为停顿，不计入
 --   均速      字数 / 用时，单位为字/分
@@ -39,6 +39,8 @@ local number = require "snow.number"
 
 -- 两次击键间隔超过这个值（毫秒）视为停顿，不计入输入时长
 local idle_ms = 5000
+-- 选词前这么长时间（毫秒）没有真实按键事件，就推测为点击候选，补记一键
+local click_ms = 50
 -- 每累计这么长的输入时长（毫秒）结算一次分速，取最高值作为极速
 local window_ms = 60000
 -- 所有方案、所有安装共用一个库，键为「方案 日期 安装 \t字段」，值为 `c=` 格式：这是用户词典快照
@@ -59,11 +61,13 @@ local db_name = "snow_statistics"
 ---@field schema_name string
 ---@field platform string
 ---@field connection Connection
+---@field select_connection Connection
 ---@field unhandled_connection Connection
 ---@field property_connection Connection
 ---@field expand_connection Connection
 ---@field reports table<string, string>
 ---@field last integer
+---@field last_key integer|nil
 ---@field composing boolean
 ---@field committed boolean
 ---@field steps { effective: integer, duration: integer }[]
@@ -204,12 +208,25 @@ local function record(env, text, handover)
   end
 end
 
+--- 记一个按键
+---@param env StatisticsEnv
+---@param effective integer 计入有效按键的数目
+local function step(env, effective)
+  local now = rime_api.get_time_ms()
+  table.insert(env.steps, {
+    effective = effective,
+    duration = now - env.last < idle_ms and now - env.last or 0,
+  })
+  env.last = now
+end
+
 local processor = {}
 
 ---@param env StatisticsEnv
 function processor.init(env)
   open(env)
   env.last = 0
+  env.last_key = nil
   env.steps = {}
   env.composing = false
   env.committed = false
@@ -238,6 +255,17 @@ function processor.init(env)
     env.output = 0
   end
   local context = env.engine.context
+  -- 点击候选绕过 processor，但会触发选词通知。键盘选词通常紧接着按键事件；超过阈值就补记一次点击。
+  -- 分组回调先于引擎的 OnSelect，避免自动上屏先把按键结算掉；缓冲模式下则留到整句上屏时结算
+  env.select_connection = context.select_notifier:connect(function(ctx)
+    if not env.db or ctx:get_option("ascii_mode") or env.finishing or snow.redispatching
+        or snow.handover or not ctx:get_selected_candidate() then
+      return
+    end
+    if not env.last_key or rime_api.get_time_ms() - env.last_key > click_ms then
+      step(env, 1)
+    end
+  end, 0)
   -- 选词、顶屏、回车上屏编码等经过 context:commit() 的上屏
   env.connection = context.commit_notifier:connect(function(ctx)
     env.committed = true
@@ -273,18 +301,6 @@ function processor.init(env)
       record(env, ctx:get_property(name))
     end
   end)
-end
-
---- 记一个按键
----@param env StatisticsEnv
----@param effective integer 计入有效按键的数目
-local function step(env, effective)
-  local now = rime_api.get_time_ms()
-  table.insert(env.steps, {
-    effective = effective,
-    duration = now - env.last < idle_ms and now - env.last or 0,
-  })
-  env.last = now
 end
 
 --- 按 chord_composer 的规则跟踪并击，整组并击在最后一个键松开时算一个键。不是并击键时返回 nil，按普通按键处理
@@ -348,6 +364,8 @@ function processor.func(key_event, env)
     end
     return snow.kNoop
   end
+  -- 与计入统计的逻辑键分开记录：松开、修饰键和并击键也能表明这次选词很可能由键盘触发
+  env.last_key = rime_api.get_time_ms()
   local context = env.engine.context
   -- 本处理器排在第一位，事件开始时的状态就是上一个事件处理完的状态。上一个事件开始时有编码，现在没了，
   -- 中间又没有上屏，就是这段输入被放弃了：Escape、退格删光、临时西文下作为西文上屏（不经过 commit_notifier）
@@ -385,6 +403,7 @@ end
 ---@param env StatisticsEnv
 function processor.fini(env)
   env.connection:disconnect()
+  env.select_connection:disconnect()
   env.unhandled_connection:disconnect()
   env.property_connection:disconnect()
   close(env)

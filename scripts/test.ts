@@ -20,6 +20,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import { checkPinyinDictionary } from "./check-pinyin-dict";
 import { ROOT } from "./lib/paths";
 
 const SCHEMAS = [
@@ -79,6 +80,8 @@ const schemas =
 		: SCHEMAS;
 const unknown = schemas.filter((schema) => !SCHEMAS.includes(schema));
 if (unknown.length > 0) throw new Error(`Unknown schema: ${unknown}`);
+
+checkPinyinDictionary();
 
 const base = mkdtempSync(join(tmpdir(), "snow-test-"));
 const cache = join(ROOT, "cache");

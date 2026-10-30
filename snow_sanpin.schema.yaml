@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_sanpin
   name: 冰雪三拼
-  version: "0.3.12"
+  version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
@@ -68,6 +68,7 @@ engine:
 
 sanpin_algebra:
   # 全拼还原
+  - xlit/ê/e/
   - xform/(^| )r5(?= |$)/$1er5/ # 儿化轻声并入 er5，避免占用单键 r
   - xform/(?<=[jqxy])u(e?\d)/v$1/
   - xform/(^| )([aoe]|[mn]g?\d)/$1X$2/
@@ -88,7 +89,7 @@ sanpin_algebra:
   - xform/e?ng(?=\d)/R/
   - xform/(ei|un)(?=\d)/W/
   - xform/en(?=\d)/N/
-  - xform/uan(?=\d)/T/
+  - xform/[uv]an(?=\d)/T/
   - xform/ian(?=\d)/M/
   - xform/an(?=\d)/F/
   - xform/(iu|ua)(?=\d)/Q/
