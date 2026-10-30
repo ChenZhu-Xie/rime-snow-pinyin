@@ -78,36 +78,38 @@
 
 三方案共用 Common399、冻结 20 合同、字词/形码数据、CKT v4 模型和日常八场景文稿；S005 是 21×21 的同键域基线，B04 是 26×26 的同环境基线。
 
+**粗体** ★ 表示神韵 U357 与原键道／星空键道 S005 两个 21×21 同口径方案中的较优值；🥇 表示三方案全局最优值。
+
 | 指标 | 神韵 U357 | 原键道 S005 | 首道 B04 | 何为好 |
 | --- | ---: | ---: | ---: | --- |
-| M-R2 记忆项[^zh-mr2] | 40 🥇 | 44 | 51 | 越低越好 |
-| FA-1 逻辑审计[^zh-logic] | 98.298315 | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| LU-v1r 逻辑均匀度[^zh-logic] | 73.529803 | 78.897555 | 83.107434 🥇 | 越高越统一 |
-| Common399 唯一码／唯一率[^zh-collision] | 357 / 89.474% | 372 / 93.233% | 399 / 100% 🥇 | 越高越少重码 |
-| 重码盈余／盈余率[^zh-collision] | 42 / 10.526% | 27 / 6.767% | 0 / 0% 🥇 | 越低越好 |
-| 重码桶／受影响音节[^zh-collision] | 42×二元 / 84（21.053%） | 27×二元 / 54（13.534%） | 0 / 0（0%）🥇 | 越少越好 |
-| 频率加权 S2 miss[^zh-s2] | 3.270% | 0.929% | 0% 🥇 | 越低越好 |
-| S2 补全平均码长[^zh-s2] | 2.1474 | 2.0725 | 2.0000 🥇 | 越低越好 |
-| S2 补全中心时间（ms）[^zh-s2] | 89.917 | 90.257 | 79.890 🥇 | 越低越好 |
-| 综合补全 CKT v3[^zh-ckt3] | 9.782135 | 10.000000 | 9.461105 🥇 | 越低越好；历史固定延迟情景 |
-| 综合补全 CKT v4[^zh-ckt4] | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
-| A7E-v3 系综当量[^zh-ensemble34] | 10.737188 | 10.740028 | 10.519452 🥇 | 越低越好；冻结历史轴 |
-| A7E-v4 系综当量[^zh-ensemble34] | 10.804598 | 10.805830 | 10.583290 🥇 | 越低越好；冻结历史轴 |
-| A7E-v5 系综当量[^zh-ensemble5] | 10.473306 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
-| A7E-v6-CW150[^zh-ensemble6] | 9.512904 🥇 | 10.000000 | 9.589632 | 越低越好；情景指标 |
-| 八轨综合选重率[^zh-rates] | 1.443% | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八轨第一辅键率[^zh-rates] | 26.150% | 26.413% | 19.746% 🥇 | 越低额外击键越少 |
-| 八轨第二辅键率[^zh-rates] | 7.040% | 7.201% | 4.158% 🥇 | 越低额外击键越少 |
-| 日常左右手负载／左手占比[^zh-daily] | 1091:1058 / 50.768% 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率[^zh-daily] | 46.533% | 45.882% | 45.416% 🥇 | 越低越好；非独立速度结论 |
-| 日常平均有效距离[^zh-daily] | 0.6555 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
-| 20 合同 QAZ 左小指组峰值[^zh-load] | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好；三者均在 W6-Snow |
-| 20 合同 P 区右小指组峰值[^zh-load] | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
-| 20 合同最大单指峰值[^zh-load] | 25.2149% 🥇 | 29.5312% | 29.2707% | 越低越好 |
-| S2 主键区占比[^zh-home] | 52.0307% 🥇 | 49.0006% | 36.5996% | 越高越集中 |
-| 20 合同主键区下限[^zh-load] | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 20 合同 TYB 双食指组峰值[^zh-load] | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
-| 日常纯双拼移动手分数（含标点）[^zh-daily] | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+| M-R2 记忆项[^zh-mr2] | **40** ★ 🥇 | 44 | 51 | 越低越好 |
+| FA-1 逻辑审计[^zh-logic] | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| LU-v1r 逻辑均匀度[^zh-logic] | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
+| Common399 唯一码／唯一率[^zh-collision] | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重码 |
+| 重码盈余／盈余率[^zh-collision] | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | 越低越好 |
+| 重码桶／受影响音节[^zh-collision] | 42×二元 / 84（21.053%） | **27×二元 / 54（13.534%）** ★ | 0 / 0（0%）🥇 | 越少越好 |
+| 频率加权 S2 miss[^zh-s2] | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |
+| S2 补全平均码长[^zh-s2] | 2.1474 | **2.0725** ★ | 2.0000 🥇 | 越低越好 |
+| S2 补全中心时间（ms）[^zh-s2] | **89.917** ★ | 90.257 | 79.890 🥇 | 越低越好 |
+| 综合补全 CKT v3[^zh-ckt3] | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；历史固定延迟情景 |
+| 综合补全 CKT v4[^zh-ckt4] | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
+| A7E-v3 系综当量[^zh-ensemble34] | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；冻结历史轴 |
+| A7E-v4 系综当量[^zh-ensemble34] | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；冻结历史轴 |
+| A7E-v5 系综当量[^zh-ensemble5] | **10.473306** ★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
+| A7E-v6-CW150[^zh-ensemble6] | **9.512904** ★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指标 |
+| 八轨综合选重率[^zh-rates] | **1.443%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八轨第一辅键率[^zh-rates] | **26.150%** ★ | 26.413% | 19.746% 🥇 | 越低额外击键越少 |
+| 八轨第二辅键率[^zh-rates] | **7.040%** ★ | 7.201% | 4.158% 🥇 | 越低额外击键越少 |
+| 日常左右手负载／左手占比[^zh-daily] | **1091:1058 / 50.768%** ★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率[^zh-daily] | 46.533% | **45.882%** ★ | 45.416% 🥇 | 越低越好；非独立速度结论 |
+| 日常平均有效距离[^zh-daily] | **0.6555** ★ 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
+| 20 合同 QAZ 左小指组峰值[^zh-load] | **16.3119%** ★ 🥇 | 17.1601% | 16.6615% | 越低越好；三者均在 W6-Snow |
+| 20 合同 P 区右小指组峰值[^zh-load] | 5.1045% | **2.7738%** ★ | 1.8881% 🥇 | 越低越好 |
+| 20 合同最大单指峰值[^zh-load] | **25.2149%** ★ 🥇 | 29.5312% | 29.2707% | 越低越好 |
+| S2 主键区占比[^zh-home] | **52.0307%** ★ 🥇 | 49.0006% | 36.5996% | 越高越集中 |
+| 20 合同主键区下限[^zh-load] | **37.6204%** ★ 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 TYB 双食指组峰值[^zh-load] | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | 越低越好 |
+| 日常纯双拼移动手分数（含标点）[^zh-daily] | **143.380** ★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
 [^zh-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 Common399 口径下逐项计数非原键声韵映射和额外路由规则，是记忆／路由复杂度账本。
 [^zh-logic]: [FA-1 与 LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 分别衡量映射可因式分解的一致性，以及声韵拆分、韵类规则支持和声母规律性的综合统一度；两者不是速度分。
@@ -294,36 +296,38 @@ The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [T
 
 All three layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily eight-scenario corpus. S005 is the same-domain 21×21 baseline; B04 is a same-environment 26×26 baseline.
 
+**Bold** ★ marks the better value between the two like-for-like 21×21 layouts, Shenyun U357 and original KeyTao S005; 🥇 marks the overall best among all three layouts.
+
 | Metric | Shenyun U357 | KeyTao S005 | Shoudao B04 | Better |
 | --- | ---: | ---: | ---: | --- |
-| M-R2 memory items[^en-mr2] | 40 🥇 | 44 | 51 | Lower |
-| FA-1 logic audit[^en-logic] | 98.298315 | 97.708694 | 99.763391 🥇 | Higher consistency |
-| LU-v1r logic uniformity[^en-logic] | 73.529803 | 78.897555 | 83.107434 🥇 | Higher uniformity |
-| Common399 unique codes / rate[^en-collision] | 357 / 89.474% | 372 / 93.233% | 399 / 100% 🥇 | Higher, fewer collisions |
-| Collision excess / rate[^en-collision] | 42 / 10.526% | 27 / 6.767% | 0 / 0% 🥇 | Lower |
-| Collision buckets / affected syllables[^en-collision] | 42 binary / 84 (21.053%) | 27 binary / 54 (13.534%) | 0 / 0 (0%) 🥇 | Lower |
-| Frequency-weighted S2 miss[^en-s2] | 3.270% | 0.929% | 0% 🥇 | Lower |
-| S2-completion mean code length[^en-s2] | 2.1474 | 2.0725 | 2.0000 🥇 | Lower |
-| S2-completion center time (ms)[^en-s2] | 89.917 | 90.257 | 79.890 🥇 | Lower |
-| Completion CKT v3[^en-ckt3] | 9.782135 | 10.000000 | 9.461105 🥇 | Lower; historical fixed-delay scenario |
-| Completion CKT v4[^en-ckt4] | 9.716421 | 10.000000 | 9.184607 🥇 | Lower; current primary metric |
-| A7E-v3 ensemble equivalent[^en-ensemble34] | 10.737188 | 10.740028 | 10.519452 🥇 | Lower; frozen historical axis |
-| A7E-v4 ensemble equivalent[^en-ensemble34] | 10.804598 | 10.805830 | 10.583290 🥇 | Lower; frozen historical axis |
-| A7E-v5 ensemble equivalent[^en-ensemble5] | 10.473306 🥇 | 11.478960 | 11.091225 | Lower; CKT-only |
-| A7E-v6-CW150[^en-ensemble6] | 9.512904 🥇 | 10.000000 | 9.589632 | Lower; scenario index |
-| Eight-track aggregate selection rate[^en-rates] | 1.443% | 1.532% | 0.572% 🥇 | Lower |
-| Eight-track first-auxiliary rate[^en-rates] | 26.150% | 26.413% | 19.746% 🥇 | Lower means fewer extra keys |
-| Eight-track second-auxiliary rate[^en-rates] | 7.040% | 7.201% | 4.158% 🥇 | Lower means fewer extra keys |
-| Daily left:right load / left share[^en-daily] | 1091:1058 / 50.768% 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | Closer to 50% is more balanced |
-| Daily same-hand rate[^en-daily] | 46.533% | 45.882% | 45.416% 🥇 | Lower; not a standalone speed result |
-| Daily mean effective distance[^en-daily] | 0.6555 🥇 | 0.6796 | 0.7012 | Lower in the same model |
-| 20-contract QAZ left-pinky-group peak[^en-load] | 16.3119% 🥇 | 17.1601% | 16.6615% | Lower; W6-Snow for all three |
-| 20-contract P-zone right-pinky-group peak[^en-load] | 5.1045% | 2.7738% | 1.8881% 🥇 | Lower |
-| 20-contract maximum single-finger peak[^en-load] | 25.2149% 🥇 | 29.5312% | 29.2707% | Lower |
-| S2 home-row share[^en-home] | 52.0307% 🥇 | 49.0006% | 36.5996% | Higher concentration |
-| 20-contract home-row floor[^en-load] | 37.6204% 🥇 | 30.8146% | 24.2427% | Higher |
-| 20-contract TYB two-index-finger peak[^en-load] | 14.0920% | 14.7331% | 12.3581% 🥇 | Lower |
-| Daily pure-double-pinyin moving-hand score, with punctuation[^en-daily] | 143.380 🥇 | 138.672 | 135.310 | Higher on the same corpus |
+| M-R2 memory items[^en-mr2] | **40** ★ 🥇 | 44 | 51 | Lower |
+| FA-1 logic audit[^en-logic] | **98.298315** ★ | 97.708694 | 99.763391 🥇 | Higher consistency |
+| LU-v1r logic uniformity[^en-logic] | 73.529803 | **78.897555** ★ | 83.107434 🥇 | Higher uniformity |
+| Common399 unique codes / rate[^en-collision] | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | Higher, fewer collisions |
+| Collision excess / rate[^en-collision] | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | Lower |
+| Collision buckets / affected syllables[^en-collision] | 42 binary / 84 (21.053%) | **27 binary / 54 (13.534%)** ★ | 0 / 0 (0%) 🥇 | Lower |
+| Frequency-weighted S2 miss[^en-s2] | 3.270% | **0.929%** ★ | 0% 🥇 | Lower |
+| S2-completion mean code length[^en-s2] | 2.1474 | **2.0725** ★ | 2.0000 🥇 | Lower |
+| S2-completion center time (ms)[^en-s2] | **89.917** ★ | 90.257 | 79.890 🥇 | Lower |
+| Completion CKT v3[^en-ckt3] | **9.782135** ★ | 10.000000 | 9.461105 🥇 | Lower; historical fixed-delay scenario |
+| Completion CKT v4[^en-ckt4] | **9.716421** ★ | 10.000000 | 9.184607 🥇 | Lower; current primary metric |
+| A7E-v3 ensemble equivalent[^en-ensemble34] | **10.737188** ★ | 10.740028 | 10.519452 🥇 | Lower; frozen historical axis |
+| A7E-v4 ensemble equivalent[^en-ensemble34] | **10.804598** ★ | 10.805830 | 10.583290 🥇 | Lower; frozen historical axis |
+| A7E-v5 ensemble equivalent[^en-ensemble5] | **10.473306** ★ 🥇 | 11.478960 | 11.091225 | Lower; CKT-only |
+| A7E-v6-CW150[^en-ensemble6] | **9.512904** ★ 🥇 | 10.000000 | 9.589632 | Lower; scenario index |
+| Eight-track aggregate selection rate[^en-rates] | **1.443%** ★ | 1.532% | 0.572% 🥇 | Lower |
+| Eight-track first-auxiliary rate[^en-rates] | **26.150%** ★ | 26.413% | 19.746% 🥇 | Lower means fewer extra keys |
+| Eight-track second-auxiliary rate[^en-rates] | **7.040%** ★ | 7.201% | 4.158% 🥇 | Lower means fewer extra keys |
+| Daily left:right load / left share[^en-daily] | **1091:1058 / 50.768%** ★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | Closer to 50% is more balanced |
+| Daily same-hand rate[^en-daily] | 46.533% | **45.882%** ★ | 45.416% 🥇 | Lower; not a standalone speed result |
+| Daily mean effective distance[^en-daily] | **0.6555** ★ 🥇 | 0.6796 | 0.7012 | Lower in the same model |
+| 20-contract QAZ left-pinky-group peak[^en-load] | **16.3119%** ★ 🥇 | 17.1601% | 16.6615% | Lower; W6-Snow for all three |
+| 20-contract P-zone right-pinky-group peak[^en-load] | 5.1045% | **2.7738%** ★ | 1.8881% 🥇 | Lower |
+| 20-contract maximum single-finger peak[^en-load] | **25.2149%** ★ 🥇 | 29.5312% | 29.2707% | Lower |
+| S2 home-row share[^en-home] | **52.0307%** ★ 🥇 | 49.0006% | 36.5996% | Higher concentration |
+| 20-contract home-row floor[^en-load] | **37.6204%** ★ 🥇 | 30.8146% | 24.2427% | Higher |
+| 20-contract TYB two-index-finger peak[^en-load] | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | Lower |
+| Daily pure-double-pinyin moving-hand score, with punctuation[^en-daily] | **143.380** ★ 🥇 | 138.672 | 135.310 | Higher on the same corpus |
 
 [^en-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) counts non-native initial/final mappings and extra routing rules under Common399; it is a memory/routing-complexity ledger.
 [^en-logic]: [FA-1 and LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) measure mapping factorization consistency and broader uniformity across sound/rhyme decomposition, rhyme-rule support, and onset regularity. Neither is a speed score.
@@ -431,36 +435,38 @@ bun scripts/验证神韵双拼.ts
 
 三方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；S005 是 21×21 的同鍵域基線，B04 是 26×26 的同環境基線。
 
+**粗體** ★ 表示神韻 U357 與原鍵道 S005 兩個 21×21 同口徑方案中的較優值；🥇 表示三方案全域最優值。
+
 | 指標 | 神韻 U357 | 原鍵道 S005 | 首道 B04 | 何為好 |
 | --- | ---: | ---: | ---: | --- |
-| M-R2 記憶項[^zht-mr2] | 40 🥇 | 44 | 51 | 越低越好 |
-| FA-1 邏輯審計[^zht-logic] | 98.298315 | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| LU-v1r 邏輯均勻度[^zht-logic] | 73.529803 | 78.897555 | 83.107434 🥇 | 越高越統一 |
-| Common399 唯一碼／唯一率[^zht-collision] | 357 / 89.474% | 372 / 93.233% | 399 / 100% 🥇 | 越高越少重碼 |
-| 重碼盈餘／盈餘率[^zht-collision] | 42 / 10.526% | 27 / 6.767% | 0 / 0% 🥇 | 越低越好 |
-| 重碼桶／受影響音節[^zht-collision] | 42×二元 / 84（21.053%） | 27×二元 / 54（13.534%） | 0 / 0（0%）🥇 | 越少越好 |
-| 頻率加權 S2 miss[^zht-s2] | 3.270% | 0.929% | 0% 🥇 | 越低越好 |
-| S2 補全平均碼長[^zht-s2] | 2.1474 | 2.0725 | 2.0000 🥇 | 越低越好 |
-| S2 補全中心時間（ms）[^zht-s2] | 89.917 | 90.257 | 79.890 🥇 | 越低越好 |
-| 綜合補全 CKT v3[^zht-ckt3] | 9.782135 | 10.000000 | 9.461105 🥇 | 越低越好；歷史固定延遲情景 |
-| 綜合補全 CKT v4[^zht-ckt4] | 9.716421 | 10.000000 | 9.184607 🥇 | 越低越好；現行主指標 |
-| A7E-v3 系綜當量[^zht-ensemble34] | 10.737188 | 10.740028 | 10.519452 🥇 | 越低越好；凍結歷史軸 |
-| A7E-v4 系綜當量[^zht-ensemble34] | 10.804598 | 10.805830 | 10.583290 🥇 | 越低越好；凍結歷史軸 |
-| A7E-v5 系綜當量[^zht-ensemble5] | 10.473306 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
-| A7E-v6-CW150[^zht-ensemble6] | 9.512904 🥇 | 10.000000 | 9.589632 | 越低越好；情景指標 |
-| 八軌綜合選重率[^zht-rates] | 1.443% | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八軌第一輔鍵率[^zht-rates] | 26.150% | 26.413% | 19.746% 🥇 | 越低額外擊鍵越少 |
-| 八軌第二輔鍵率[^zht-rates] | 7.040% | 7.201% | 4.158% 🥇 | 越低額外擊鍵越少 |
-| 日常左右手負載／左手占比[^zht-daily] | 1091:1058 / 50.768% 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率[^zht-daily] | 46.533% | 45.882% | 45.416% 🥇 | 越低越好；非獨立速度結論 |
-| 日常平均有效距離[^zht-daily] | 0.6555 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
-| 20 合同 QAZ 左小指組峰值[^zht-load] | 16.3119% 🥇 | 17.1601% | 16.6615% | 越低越好；三者均在 W6-Snow |
-| 20 合同 P 區右小指組峰值[^zht-load] | 5.1045% | 2.7738% | 1.8881% 🥇 | 越低越好 |
-| 20 合同最大單指峰值[^zht-load] | 25.2149% 🥇 | 29.5312% | 29.2707% | 越低越好 |
-| S2 主鍵區占比[^zht-home] | 52.0307% 🥇 | 49.0006% | 36.5996% | 越高越集中 |
-| 20 合同主鍵區下限[^zht-load] | 37.6204% 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 20 合同 TYB 雙食指組峰值[^zht-load] | 14.0920% | 14.7331% | 12.3581% 🥇 | 越低越好 |
-| 日常純雙拼移動手分數（含標點）[^zht-daily] | 143.380 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+| M-R2 記憶項[^zht-mr2] | **40** ★ 🥇 | 44 | 51 | 越低越好 |
+| FA-1 邏輯審計[^zht-logic] | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| LU-v1r 邏輯均勻度[^zht-logic] | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
+| Common399 唯一碼／唯一率[^zht-collision] | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重碼 |
+| 重碼盈餘／盈餘率[^zht-collision] | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | 越低越好 |
+| 重碼桶／受影響音節[^zht-collision] | 42×二元 / 84（21.053%） | **27×二元 / 54（13.534%）** ★ | 0 / 0（0%）🥇 | 越少越好 |
+| 頻率加權 S2 miss[^zht-s2] | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |
+| S2 補全平均碼長[^zht-s2] | 2.1474 | **2.0725** ★ | 2.0000 🥇 | 越低越好 |
+| S2 補全中心時間（ms）[^zht-s2] | **89.917** ★ | 90.257 | 79.890 🥇 | 越低越好 |
+| 綜合補全 CKT v3[^zht-ckt3] | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；歷史固定延遲情景 |
+| 綜合補全 CKT v4[^zht-ckt4] | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；現行主指標 |
+| A7E-v3 系綜當量[^zht-ensemble34] | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；凍結歷史軸 |
+| A7E-v4 系綜當量[^zht-ensemble34] | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；凍結歷史軸 |
+| A7E-v5 系綜當量[^zht-ensemble5] | **10.473306** ★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
+| A7E-v6-CW150[^zht-ensemble6] | **9.512904** ★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指標 |
+| 八軌綜合選重率[^zht-rates] | **1.443%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八軌第一輔鍵率[^zht-rates] | **26.150%** ★ | 26.413% | 19.746% 🥇 | 越低額外擊鍵越少 |
+| 八軌第二輔鍵率[^zht-rates] | **7.040%** ★ | 7.201% | 4.158% 🥇 | 越低額外擊鍵越少 |
+| 日常左右手負載／左手占比[^zht-daily] | **1091:1058 / 50.768%** ★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率[^zht-daily] | 46.533% | **45.882%** ★ | 45.416% 🥇 | 越低越好；非獨立速度結論 |
+| 日常平均有效距離[^zht-daily] | **0.6555** ★ 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
+| 20 合同 QAZ 左小指組峰值[^zht-load] | **16.3119%** ★ 🥇 | 17.1601% | 16.6615% | 越低越好；三者均在 W6-Snow |
+| 20 合同 P 區右小指組峰值[^zht-load] | 5.1045% | **2.7738%** ★ | 1.8881% 🥇 | 越低越好 |
+| 20 合同最大單指峰值[^zht-load] | **25.2149%** ★ 🥇 | 29.5312% | 29.2707% | 越低越好 |
+| S2 主鍵區占比[^zht-home] | **52.0307%** ★ 🥇 | 49.0006% | 36.5996% | 越高越集中 |
+| 20 合同主鍵區下限[^zht-load] | **37.6204%** ★ 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 TYB 雙食指組峰值[^zht-load] | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | 越低越好 |
+| 日常純雙拼移動手分數（含標點）[^zht-daily] | **143.380** ★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
 [^zht-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 Common399 口徑下逐項計數非原鍵聲韻映射與額外路由規則，是記憶／路由複雜度帳本。
 [^zht-logic]: [FA-1 與 LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 分別衡量映射可因式分解的一致性，以及聲韻拆分、韻類規則支援與聲母規律性的綜合統一度；兩者不是速度分。
