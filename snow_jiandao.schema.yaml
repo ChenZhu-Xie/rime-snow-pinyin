@@ -50,7 +50,7 @@ engine:
     - punct_translator
     - script_translator
     - script_translator@jianpin
-    # 空置 AA 码仍在 abc 段上，由此补入真正的声声二字词候选。
+    # 空置 AA 码仍在 abc 段上，由此补入真正的声声二字词候选；xh/xw 保留给 U/A 字母入口。
     - lua_translator@*snow.table_like*initial_pair
     - table_translator@stroke
     - script_translator@pinyin
@@ -183,6 +183,8 @@ patch:
   translator/shape_elements: snow_jiandao_chaifen
   translator/shape_mapping: "radical_jiandao.txt"
   translator/vacant_initial_pattern: "^(?:bg|bq|bx|bs|by|pg|px|ps|py|mg|mx|my|fb|fp|ff|ft|fl|fg|fk|fx|fz|fs|fy|tm|td|lm|gl|gz|kz|hl|hz|jm|jh|jq|jx|js|jw|jy|qm|qh|qq|qx|qs|qw|qy|xm|xh|xq|xx|xs|xw|xy|zd|zt|zz|zc|cd|ct|cz|cc|st|sz|sc|rt|rz|wz|we|ym|yh|yx|yz|yc|yy|ep|ez)$"
+  # xh/xw 同时是 U/A 的二键入口，不能让声声词候选改变缓冲模式的字母首选。
+  translator/reserved_initial_pair_pattern: "^(?:xh|xw)$"
   # 与四拼一致：先顶出当前候选，再直接提交高频尾字。
   # 保留 d→的、l→了，;/ 只作为可选的强制上屏尾字键。
   punctuator/half_shape/+:

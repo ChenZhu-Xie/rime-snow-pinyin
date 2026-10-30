@@ -7,6 +7,7 @@ local snow = require "snow.snow"
 ---@field translator Translator
 ---@field pattern string
 ---@field pattern2 string
+---@field reserved_pattern string
 ---@field preserve_t12_proxy_quality boolean
 
 ---@param candidate Candidate
@@ -158,13 +159,16 @@ local initial_pair = {}
 function initial_pair.init(env)
   env.translator = Component.Translator(env.engine, "initial_pair", "script_translator")
   env.pattern = env.engine.schema.config:get_string("translator/vacant_initial_pattern") or "^$"
+  env.reserved_pattern =
+      env.engine.schema.config:get_string("translator/reserved_initial_pair_pattern") or "^$"
 end
 
 ---@param input string
 ---@param segment Segment
 ---@param env TableLikeEnv
 function initial_pair.func(input, segment, env)
-  if not rime_api.regex_match(input, env.pattern) then
+  if not rime_api.regex_match(input, env.pattern)
+      or rime_api.regex_match(input, env.reserved_pattern) then
     return
   end
   translate(input, segment, env, false, function(candidate)

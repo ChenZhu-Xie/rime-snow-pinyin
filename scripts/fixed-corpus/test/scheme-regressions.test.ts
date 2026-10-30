@@ -423,6 +423,10 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		read("snow_jiandao.schema.yaml"),
 		/initial_pair:\r?\n  __include: \/jianpin\r?\n  tag: abc/u,
 	);
+	assert.match(
+		read("snow_jiandao.schema.yaml"),
+		/translator\/reserved_initial_pair_pattern: "\^\(\?:xh\|xw\)\$"/u,
+	);
 	assert.match(read("lua/snow/enforce.lua"), /candidate\.type == "initial_pair"/u);
 	const shapeFilter = read("lua/snow/shape_filter.lua");
 	assert.match(shapeFilter, /sanpin_initial_pair_match/u);

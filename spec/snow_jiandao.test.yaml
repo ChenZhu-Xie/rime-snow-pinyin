@@ -155,7 +155,7 @@ deploy:
         assert: cand[1].text == "了"
       # 声声二字词只接受一个首字首形辅码，辅码不进入上屏文本。
       - send: yx
-        assert: error((function() local t = {}; for i = 1, math.min(#cand, 20) do local c = cand[i]; t[#t + 1] = tostring(i) .. ":" .. c.text .. ":" .. tostring(c.preedit) end; return "yx n=" .. tostring(#cand) .. " " .. table.concat(t, "|") end)())
+        assert: #cand > 1 and has("也许")
       - send: yxa
         assert: has("也许") and not has("有些")
       - send: yxv
@@ -177,7 +177,7 @@ deploy:
         assert: cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
       - send: "{Control+period}dyou lwo xw mr  dlxm"
-        assert: error((function() local t = {}; for i = 1, math.min(#cand, 20) do local c = cand[i]; t[#t + 1] = tostring(i) .. ":" .. c.text .. ":" .. tostring(c.preedit) end; return "buffer n=" .. tostring(#cand) .. " " .. table.concat(t, "|") end)())
+        assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:
     tests:
