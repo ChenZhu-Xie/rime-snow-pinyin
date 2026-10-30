@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "comparisonPolicy": {
     "target": "U357-21X21-M40-D0",
     "baselines": ["S005", "B04"],
@@ -22,6 +22,37 @@
     "auxiliaryIncludedInDailyMovingHand": false,
     "selectionIncludedInDailyMovingHand": false,
     "punctuationIncludedInDailyMovingHand": true
+  },
+  "flyingKeyComponents": {
+    "scope": "Common399 实际二键码；沿用 M-R2 的规范化书写韵尾，j/q/x/Y 后的 u 还原为 v",
+    "definition": "同一逻辑声母、零声母组或韵母分布在两个或更多物理键上时，该成分计 1；不同成分共用一个键、或成分整体移到非本位键均不计",
+    "fields": ["initials", "zeroInitialGroups", "finals"],
+    "U357": {
+      "counts": { "initials": 0, "zeroInitialGroups": 0, "finals": 0 },
+      "initials": {},
+      "zeroInitialGroups": {},
+      "finals": {}
+    },
+    "S005": {
+      "counts": { "initials": 2, "zeroInitialGroups": 0, "finals": 1 },
+      "initials": { "ch": ["J", "W"], "zh": ["F", "Q"] },
+      "zeroInitialGroups": {},
+      "finals": { "uang": ["M", "X"] }
+    },
+    "B04": {
+      "counts": { "initials": 0, "zeroInitialGroups": 1, "finals": 7 },
+      "initials": {},
+      "zeroInitialGroups": { "E": ["E", "U"] },
+      "finals": {
+        "ai": ["I", "L"],
+        "an": ["J", "N"],
+        "ao": ["D", "O"],
+        "en": ["K", "N"],
+        "ou": ["S", "U"],
+        "v": ["U", "V"],
+        "ve": ["B", "L"]
+      }
+    }
   },
   "cktV4Explanation": {
     "kindWeights": { "character": 1, "word2": 3, "word3": 1, "word4": 1 },

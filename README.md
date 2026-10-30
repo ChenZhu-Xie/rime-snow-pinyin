@@ -85,6 +85,7 @@
 | 指标 | 神韵 U357 | 原键道 S005 | 首道 B04 | 何为好 |
 | --- | ---: | ---: | ---: | --- |
 | M-R2 记忆项[^zh-mr2] | **40** ★ 🥇 | 44 | 51 | 越低越好 |
+| 飞键成分（声母／零声母组／韵母）[^zh-fly] | **0 / 0 / 0** ★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | FA-1 逻辑审计[^zh-logic] | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | LU-v1r 逻辑均匀度[^zh-logic] | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
 | Common399 唯一码／唯一率[^zh-collision] | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重码 |
@@ -114,6 +115,7 @@
 | 日常纯双拼移动手分数（含标点）[^zh-daily] | **143.380** ★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
 [^zh-mr2]: [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 Common399 口径下逐项计数非原键声韵映射和额外路由规则，是记忆／路由复杂度账本。
+[^zh-fly]: 飞键按 Common399 实际二键码统计：同一逻辑成分分布在两个或更多物理键上时计 1；不同成分共用一个键、或成分整体移到非本位键均不计。韵母沿用 M-R2 的规范化书写韵尾，`j/q/x/Y` 后的 `u` 还原为 `v`。神韵 U357 无飞键；S005 为声母 `ch→J/W`、`zh→F/Q` 与韵母 `uang→M/X`；B04 的普通声母无飞键，零声母 `E→E/U`，韵母为 `ai→I/L`、`an→J/N`、`ao→D/O`、`en→K/N`、`ou→S/U`、`v→U/V`、`ve→B/L`，其中 `v/ve` 即 `ü/üe` 规范组。
 [^zh-logic]: [FA-1 与 LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 分别衡量映射可因式分解的一致性，以及声韵拆分、韵类规则支持和声母规律性的综合统一度；两者不是速度分。
 [^zh-collision]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 的“重码盈余”为 `399−U`；“受影响音节”按所有非单例桶成员计数。三方案的重码桶均为二元桶。
 [^zh-s2]: [S2 补全](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 按音节频率给桶成员追加固定宽度五进制后缀；miss 是非首项频率权重，平均码长和中心时间只描述该规则补全情景。
@@ -306,6 +308,7 @@ All three layouts use Common399, the frozen 20 contracts, the same word/shape da
 | Metric | Shenyun U357 | KeyTao S005 | Shoudao B04 | Better |
 | --- | ---: | ---: | ---: | --- |
 | M-R2 memory items[^en-mr2] | **40** ★ 🥇 | 44 | 51 | Lower |
+| Flying-key components (initials / zero-initial groups / finals)[^en-fly] | **0 / 0 / 0** ★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | Fewer is better |
 | FA-1 logic audit[^en-logic] | **98.298315** ★ | 97.708694 | 99.763391 🥇 | Higher consistency |
 | LU-v1r logic uniformity[^en-logic] | 73.529803 | **78.897555** ★ | 83.107434 🥇 | Higher uniformity |
 | Common399 unique codes / rate[^en-collision] | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | Higher, fewer collisions |
@@ -335,6 +338,7 @@ All three layouts use Common399, the frozen 20 contracts, the same word/shape da
 | Daily pure-double-pinyin moving-hand score, with punctuation[^en-daily] | **143.380** ★ 🥇 | 138.672 | 135.310 | Higher on the same corpus |
 
 [^en-mr2]: [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md) counts non-native initial/final mappings and extra routing rules under Common399; it is a memory/routing-complexity ledger.
+[^en-fly]: Flying-key components are counted from the actual Common399 two-key codes: one logical component counts once when it uses two or more physical keys. Co-locating different components on one key, or moving an entire component away from its native key, does not count. Finals follow M-R2 normalized written tails, with `u` after `j/q/x/Y` restored to `v`. Shenyun U357 has none; S005 splits initials `ch→J/W` and `zh→F/Q` plus final `uang→M/X`; B04 has no split ordinary initial, but splits zero-initial group `E→E/U` and finals `ai→I/L`, `an→J/N`, `ao→D/O`, `en→K/N`, `ou→S/U`, `v→U/V`, and `ve→B/L`. Here `v/ve` are the normalized `ü/üe` groups.
 [^en-logic]: [FA-1 and LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md) measure mapping factorization consistency and broader uniformity across sound/rhyme decomposition, rhyme-rule support, and onset regularity. Neither is a speed score.
 [^en-collision]: Under [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin), collision excess is `399−U`; affected syllables count every member of a non-singleton bucket. Every collision bucket here is binary.
 [^en-s2]: [S2 completion](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md) appends fixed-width base-5 suffixes to collision-bucket members. Miss is the frequency weight outside the first item; mean length and center time describe only this rule-completion scenario.
@@ -447,6 +451,7 @@ bun scripts/验证神韵双拼.ts
 | 指標 | 神韻 U357 | 原鍵道 S005 | 首道 B04 | 何為好 |
 | --- | ---: | ---: | ---: | --- |
 | M-R2 記憶項[^zht-mr2] | **40** ★ 🥇 | 44 | 51 | 越低越好 |
+| 飛鍵成分（聲母／零聲母組／韻母）[^zht-fly] | **0 / 0 / 0** ★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | FA-1 邏輯審計[^zht-logic] | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | LU-v1r 邏輯均勻度[^zht-logic] | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
 | Common399 唯一碼／唯一率[^zht-collision] | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重碼 |
@@ -476,6 +481,7 @@ bun scripts/验证神韵双拼.ts
 | 日常純雙拼移動手分數（含標點）[^zht-daily] | **143.380** ★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
 [^zht-mr2]: [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 Common399 口徑下逐項計數非原鍵聲韻映射與額外路由規則，是記憶／路由複雜度帳本。
+[^zht-fly]: 飛鍵按 Common399 實際二鍵碼統計：同一邏輯成分分佈在兩個或更多物理鍵上時計 1；不同成分共用一鍵，或成分整體移到非本位鍵均不計。韻母沿用 M-R2 的規範化書寫韻尾，`j/q/x/Y` 後的 `u` 還原為 `v`。神韻 U357 無飛鍵；S005 為聲母 `ch→J/W`、`zh→F/Q` 與韻母 `uang→M/X`；B04 的普通聲母無飛鍵，零聲母 `E→E/U`，韻母為 `ai→I/L`、`an→J/N`、`ao→D/O`、`en→K/N`、`ou→S/U`、`v→U/V`、`ve→B/L`，其中 `v/ve` 即 `ü/üe` 規範組。
 [^zht-logic]: [FA-1 與 LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 分別衡量映射可因式分解的一致性，以及聲韻拆分、韻類規則支援與聲母規律性的綜合統一度；兩者不是速度分。
 [^zht-collision]: [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 的「重碼盈餘」為 `399−U`；「受影響音節」按所有非單例桶成員計數。三方案的重碼桶均為二元桶。
 [^zht-s2]: [S2 補全](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 按音節頻率為桶成員追加固定寬度五進位後綴；miss 是非首項頻率權重，平均碼長與中心時間只描述此規則補全情景。
