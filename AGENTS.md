@@ -171,6 +171,8 @@ mira -C cache -R '^popping$' spec/snow_sipin.test.yaml
 
 本地神韵布局的英数字母入口与上游保持同一结构：键道使用 `辅音+c`、`x+元音韵键`，三拼沿用同一二键基码并追加轻声键 `o`。键道和三拼共用 `snow_jiandao_jianpin` 棱镜。当前大字集使 `tco`、`hco`、`xko` 分别与 `tiao5`、`hua5`、`xi5` 重合，字母固顶必须保持在这些读音之前；其余 23 个三拼字母全码为空槽。
 
+冰雪键道和冰雪三拼的三字及以上简拼都留在 `abc` 段，由 `table_like.jianpin` 查询；不要给冰雪键道恢复无前缀的 `recognizer/patterns/jianpin`、`affix_segmentor@jianpin` 和 `script_translator@jianpin`，否则输入第三个声母时会重分段并产生明显延迟。
+
 改字母规则时，要同步修改两个方案的 `speller/algebra`、共享棱镜、两个 fixed 表及其生成器。英数混输回归统一以 `dlxm` 检查「哆啦A梦」。
 
 ## lua 的三处坑
@@ -280,7 +282,6 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 - `shape_processor` < `popping`：辅助码键在顶功的 accept 里（冰雪一拼的 `combo_popping` 在完整音节后任何小写字母都顶屏）。
 - `abbreviation` < `popping`：略码用大写，排后面会收到被转成小写的键。
 - `select_character` < `popping`：`[` `]` 命中「标点大写顶」。
-- `popping` < `recognizer`：冰雪键道的 `recognizer/patterns/jianpin` 无前缀，会匹配普通编码并自己 `PushInput`，排前面会让 3 码以上的顶功静默失效（短码正常，容易漏测）。
 - `popping` < `editor`：冰雪清韵的回头补码靠大写元音命中 `strategy: append` 规则后转小写重投给 editor；editor 排前面会让小写元音直接补码。
 - `user_dict` < `key_binder`：`Control+bracketleft` 被绑成了 Escape。user_dict 的上移/下移分支落空时也要返回 `kAccepted`，否则会穿透成 Escape 清空整句。
 - `shape_processor` < `key_binder`：冰雪四拼的 `1` 既是辅助码触发键又被绑成「定位」。
@@ -308,7 +309,6 @@ bun scripts/test.ts
     - abc_segmentor
     - affix_segmentor@stroke              # 冰雪一拼、冰雪清韵无
     - affix_segmentor@pinyin              # 冰雪一拼无
-    - affix_segmentor@jianpin             # 仅冰雪键道
     - punct_segmentor
     - fallback_segmentor
 

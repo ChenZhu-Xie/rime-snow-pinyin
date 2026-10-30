@@ -464,3 +464,13 @@ test("Three-Code and KeyTao reserve uppercase finals for three-or-more-character
 	);
 	assert.match(translator, /local initial_count = #groups/u);
 });
+
+test("KeyTao keeps three-initial jianpin on the abc segment", () => {
+	const schema = read("snow_jiandao.schema.yaml");
+	assert.match(schema, /lua_translator@\*snow\.table_like\*jianpin/u);
+	assert.match(schema, /translator\/jianpin_pattern:/u);
+	assert.doesNotMatch(schema, /affix_segmentor@jianpin/u);
+	assert.doesNotMatch(schema, /script_translator@jianpin/u);
+	assert.doesNotMatch(schema, /recognizer\/patterns\/jianpin/u);
+	assert.match(read("lua/snow/shape_filter.lua"), /jiandao_shape_cache/u);
+});

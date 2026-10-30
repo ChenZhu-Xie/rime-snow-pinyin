@@ -157,7 +157,7 @@ deploy:
       - send: yx
         assert: cand[2] ~= nil
       - send: yxa
-        assert: has("也许") and not has("有些") and preedit == "y x?a"
+        assert: has("也许") and not has("有些") and preedit == "y x 形[a]"
       - send: yxv
         assert: has("有些") and not has("也许")
       - send: "yxa "

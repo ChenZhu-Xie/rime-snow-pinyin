@@ -8,6 +8,7 @@ local bihua = require "snow.bihua"
 ---@field shape_elements ReverseLookup|nil
 ---@field pinyin ReverseLookup|nil
 ---@field shape_mapping table<string, string>
+---@field jiandao_shape_cache table<string, string>
 ---@field vacant_initial_pattern string
 
 --- 反查库加载失败时为 nil，当作查不到
@@ -45,7 +46,7 @@ local sanpin_tones = { i = "1", v = "2", u = "3", a = "4", o = "5" }
 ---@param env ShapeFilterEnv
 local function sanpin_initial_pair_match(text, shape_input, env)
   local tone = sanpin_tones[shape_input]
-  local prompt = tone and "?" .. shape_input or nil
+  local prompt = tone and " 调[" .. shape_input .. "]" or nil
   if not tone or utf8.len(text) ~= 2 then
     return false, prompt, nil
   end
@@ -114,18 +115,23 @@ end
 ---@param current string
 ---@param radicals_map ReverseLookup|nil
 ---@param map table<string, string>
-local function jiandao_encode(text, current, radicals_map, map)
+---@param cache table<string, string>
+local function jiandao_encode(text, current, radicals_map, map, cache)
   -- 把 UTF-8 编码的词语拆成单个字符的列表
   ---@type string[]
   local codes = {}
   for _, codepoint in utf8.codes(text) do
     local char = utf8.char(codepoint)
-    local radicals = lookup(radicals_map, char)
-    local code = ""
-    for _, radical_codepoint in utf8.codes(radicals) do
-      local r = utf8.char(radical_codepoint)
-      local radical_code = map[r] or ""
-      code = code .. radical_code
+    local code = cache[char]
+    if code == nil then
+      local radicals = lookup(radicals_map, char)
+      code = ""
+      for _, radical_codepoint in utf8.codes(radicals) do
+        local r = utf8.char(radical_codepoint)
+        local radical_code = map[r] or ""
+        code = code .. radical_code
+      end
+      cache[char] = code
     end
     table.insert(codes, code)
   end
@@ -160,6 +166,7 @@ function filter.init(env)
   env.shape_elements = ReverseLookup(shape_elements)
   local shape_mapping = config:get_string("translator/shape_mapping") or "radical_sipin.txt"
   env.shape_mapping = snow.table_from_tsv(dir .. shape_mapping)
+  env.jiandao_shape_cache = {}
 end
 
 ---@param text string
@@ -193,10 +200,12 @@ function filter.handle_candidate(text, shape_input, env)
     end
   elseif id == "snow_jiandao" then -- 冰雪键道
     if is_pinyin or shape_input:len() > 0 or current:find("[A-Z]") or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?") then
-      local code = jiandao_encode(text, current, env.shape_elements, env.shape_mapping)
+      local code = jiandao_encode(
+        text, current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache
+      )
       local initial_pair = env.engine.context:get_property("shape_status") == "initial_pair"
       local prompt = shape_input:len() > 0
-          and (initial_pair and "?" .. shape_input or " 形 [" .. shape_input .. "]") or nil
+          and (initial_pair and " 形[" .. shape_input .. "]" or " 形 [" .. shape_input .. "]") or nil
       local match = code == "" or code:sub(1, #shape_input) == shape_input
       local comment = code
       if not is_pinyin and current:len() == 1 then
