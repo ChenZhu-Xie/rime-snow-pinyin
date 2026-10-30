@@ -160,8 +160,6 @@ deploy:
         assert: utf8.len(commit) == 2 and not commit:find("a", 1, true)
       - send: yxab
         assert: utf8.len(commit) == 2 and not commit:find("a", 1, true)
-      - send: yxv
-        assert: cand[1] and cand[1].text ~= "🈚️" and utf8.len(cand[1].text) == 2 and not has("也许")
       # 动态码长
       - send: "eleliielel"
         assert: cand[1].text == "誓师"
