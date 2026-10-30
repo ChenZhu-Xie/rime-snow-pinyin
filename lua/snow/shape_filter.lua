@@ -45,7 +45,7 @@ local sanpin_tones = { i = "1", v = "2", u = "3", a = "4", o = "5" }
 ---@param env ShapeFilterEnv
 local function sanpin_initial_pair_match(text, shape_input, env)
   local tone = sanpin_tones[shape_input]
-  local prompt = tone and " 声调 [" .. tone .. "]" or nil
+  local prompt = tone and "?" .. shape_input or nil
   if not tone or utf8.len(text) ~= 2 then
     return false, prompt, nil
   end
@@ -194,7 +194,9 @@ function filter.handle_candidate(text, shape_input, env)
   elseif id == "snow_jiandao" then -- 冰雪键道
     if is_pinyin or shape_input:len() > 0 or current:find("[A-Z]") or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?") then
       local code = jiandao_encode(text, current, env.shape_elements, env.shape_mapping)
-      local prompt = shape_input:len() > 0 and " 形 [" .. shape_input .. "]" or nil
+      local initial_pair = env.engine.context:get_property("shape_status") == "initial_pair"
+      local prompt = shape_input:len() > 0
+          and (initial_pair and "?" .. shape_input or " 形 [" .. shape_input .. "]") or nil
       local match = code == "" or code:sub(1, #shape_input) == shape_input
       local comment = code
       if not is_pinyin and current:len() == 1 then

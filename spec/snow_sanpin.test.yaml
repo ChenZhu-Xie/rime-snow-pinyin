@@ -290,7 +290,7 @@ deploy:
   initial_pair_and_mixed_spelling:
     tests:
       - send: yxu
-        assert: has("也许") and not has("一些")
+        assert: has("也许") and not has("一些") and preedit == "y x?u"
       - send: "yxu "
         assert: utf8.len(commit) == 2 and not commit:find("u", 1, true)
       - send: yxub

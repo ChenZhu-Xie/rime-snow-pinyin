@@ -19,6 +19,23 @@ test("the shared key binder does not alias Ctrl+B/F to arrow keys", () => {
 	assert.ok(!acceptedKeys.includes("Control+f"));
 });
 
+test("all current schemes leave Ctrl+B/N unbound", () => {
+	for (const schema of [
+		"snow_pinyin.schema.yaml",
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_qingyun.schema.yaml",
+	]) {
+		assert.doesNotMatch(
+			read(schema),
+			/accept:\s*["']?Control\+(?:b|n)\b/iu,
+			`${schema} must not bind Ctrl+B/N`,
+		);
+	}
+});
+
 test("Three-Code and KeyTao share the Four-Code 23890 selection layout", () => {
 	for (const schema of [
 		"snow_sanpin.schema.yaml",
