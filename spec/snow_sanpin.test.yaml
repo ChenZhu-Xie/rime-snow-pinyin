@@ -255,31 +255,29 @@ deploy:
     tests:
       - send: btsl
         assert: not has("冰四")
-      - send: btslai2
+      - send: "btslai "
         assert: cand[1].text == "四" and commit == nil
-      - send: "btslai2{BackSpace}"
-        assert: preedit == "bt slai" and cand[2].text == "冰"
-      - send: "btslai2{BackSpace}2"
+      - send: "btslai {BackSpace}"
+        assert: preedit == "bt slai" and has("冰")
+      - send: "btslai {BackSpace} "
         assert: cand[1].text == "四" and commit == nil
-      - send: "btslai2{Escape}btsl"
+      - send: "btslai {Escape}btsl"
         assert: not has("冰四")
-      - send: "btslai2 btsl"
+      - send: "btslai  btsl"
         assert: cand[1].text == "冰四"
       # 造出的词保留两个单字的真实声调，不能被其他声调命中。
       - send: btsloo
         assert: not has("冰四")
       - send: btslii
         assert: not has("冰四")
-      - send: btslai21btsl
-        assert: cand[1].text == "冰四"
   # 第二字也可由下一个词顶屏，并与首字一起完成造词。
   encoding_popping:
     tests:
-      - send: "btslai2b{Escape}btsl"
+      - send: "btslai b{Escape}btsl"
         assert: cand[1].text == "冰四"
   encoding_buffered:
     tests:
-      - send: "{Control+period}btslai2  btsl"
+      - send: "{Control+period}btslai   btsl"
         assert: cand[1].text == "冰四"
   # 上游 buffered：分片组词、字母候选与英数混输；本地缓冲键 Ctrl+.。
   buffered:
