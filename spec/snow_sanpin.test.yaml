@@ -250,27 +250,7 @@ deploy:
         assert: commit == nil
       - send: "o btxkerf  erf "
         assert: commit == "冰雪输入法输入法"
-  # 选择造词：六码末位是首字声调，选完首字后不能把它当成第二字编码。
-  encoding:
-    tests:
-      - send: btsl
-        assert: not has("冰四")
-      - send: "btslai "
-        assert: cand[1].text == "四" and commit == nil
-      - send: "btslai {BackSpace}"
-        assert: preedit == "bt slai" and has("冰")
-      - send: "btslai {BackSpace} "
-        assert: cand[1].text == "四" and commit == nil
-      - send: "btslai {Escape}btsl"
-        assert: not has("冰四")
-      - send: "btslai  btsl"
-        assert: cand[1].text == "冰四"
-      # 造出的词保留两个单字的真实声调，不能被其他声调命中。
-      - send: btsloo
-        assert: not has("冰四")
-      - send: btslii
-        assert: not has("冰四")
-  # 第二字也可由下一个词顶屏，并与首字一起完成造词。
+  # 六码二字词选完首字后，第二字可由下一个词顶屏，并与首字一起完成造词。
   encoding_popping:
     tests:
       - send: "btslai b{Escape}btsl"

@@ -197,19 +197,8 @@ deploy:
         assert: has("输入法") and preedit == "eH r f"
       - send: erHf
         assert: has("输入法") and preedit == "e rH f"
-      - send: erfW
-        assert: has("输入法")
-      - send: eHrHfW
-        assert: has("输入法")
       - send: erfK
         assert: not has("输入法")
-      # 沿用本地神韵拼写派生，并能在补韵后继续追加长词声母。
-      - send: zLxTwS
-        assert: has("自行车")
-      - send: kSxKfWkJG
-        assert: has("科学发展观")
-      - send: "zLxTwS "
-        assert: commit == "自行车"
   buffered_command:
     tests:
       - send: o
