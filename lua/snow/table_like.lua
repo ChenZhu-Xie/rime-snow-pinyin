@@ -127,14 +127,20 @@ function jianpin.func(input, segment, env)
   if not rime_api.regex_match(input, env.pattern) then
     return
   end
-  local proxy = input:gsub("[ivuao]", "")
-  local tones = input:gsub("[bpmfdtnlgkhjqxzcsrywe]", "")
-  local initial_count = proxy:len()
+  local tones = input:match("[ivuao]+$") or ""
+  local sound_input = tones == "" and input or input:sub(1, -tones:len() - 1)
+  ---@type string[]
+  local groups = {}
+  for group in sound_input:gmatch("[bpmfdtnlgkhjqxzcsrywe][A-Z]?") do
+    table.insert(groups, group)
+  end
+  local initial_count = #groups
   -- 后置声调依次分配给最后、第一、第二个音节
-  proxy = proxy:gsub("()([a-z])", function(i, initial)
+  for i, group in ipairs(groups) do
     local tone = i == initial_count and tones:sub(1, 1) or tones:sub(i + 1, i + 1)
-    return initial .. (tone ~= "" and "?" .. tone or "")
-  end)
+    groups[i] = group .. (tone ~= "" and "?" .. tone or "")
+  end
+  local proxy = table.concat(groups)
   translate(proxy, segment, env, false, function(candidate)
     return utf8.len(candidate.text) >= initial_count and candidate.type ~= "sentence"
   end)

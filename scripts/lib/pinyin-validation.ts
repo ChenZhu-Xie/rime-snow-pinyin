@@ -50,20 +50,35 @@ export function checkPinyinReadings(readings: Iterable<string>) {
 		(reading) => !/^~{1,2}[a-z]$/.test(reading),
 	);
 	const invalid: string[] = [];
+	const schemes: Array<{
+		name: string;
+		pattern: RegExp;
+		excluded: string[];
+	}> = [];
 	for (const { schema, name, key, pattern } of SYLLABLE_PATTERNS) {
 		const algebra = new SpellingAlgebra(rootPath(`${schema}.schema.yaml`), key);
+		const excluded: string[] = [];
 		for (const reading of syllables) {
-			for (const code of algebra.applyAll(reading)) {
+			const result = algebra.applyAllWithStatus(reading);
+			if (result.codes.length === 0) {
+				if (result.erased) {
+					excluded.push(reading);
+				} else {
+					invalid.push(`${name}：${reading} 没有生成任何完整音节编码`);
+				}
+			}
+			for (const code of result.codes) {
 				if (!pattern.test(code)) {
 					invalid.push(`${name}：${reading} → ${code}，预期 ${pattern}`);
 				}
 			}
 		}
+		schemes.push({ name, pattern, excluded });
 	}
 	if (invalid.length > 0) {
 		throw new Error(
 			`完整音节编码不符合方案的拼写结构，请检查拼音来源或拼写规则：\n${invalid.join("\n")}`,
 		);
 	}
-	return syllables.length;
+	return { total: syllables.length, schemes };
 }

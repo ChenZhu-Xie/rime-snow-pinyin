@@ -4,8 +4,17 @@ local snow = require "snow.snow"
 
 local filter = {}
 
+---@class EnforceEnv: Env
+---@field vacant_initial_pattern string
+
+---@param env EnforceEnv
+function filter.init(env)
+  env.vacant_initial_pattern =
+      env.engine.schema.config:get_string("translator/vacant_initial_pattern") or "^$"
+end
+
 ---@param translation Translation
----@param env Env
+---@param env EnforceEnv
 function filter.func(translation, env)
   local input = snow.current(env.engine.context) or ""
   local shape_input = env.engine.context:get_property("shape_input")
@@ -32,7 +41,10 @@ function filter.func(translation, env)
     local is_normal_spelling = false
     local preedit = rime_api.regex_replace(candidate.preedit, " 形.+$", "")
     local is_character = utf8.len(candidate.text) == 1 and preedit:len() == 2
-    if input:find("[A-Z]") then
+    if rime_api.regex_match(input, env.vacant_initial_pattern) and utf8.len(candidate.text) == 2 then
+      -- 天然空音码的 AA 表示两个声母，后续一码仅用于筛选。
+      is_normal_spelling = preedit == jianpin
+    elseif input:find("[A-Z]") then
       -- 大写韵母与前一个声母构成同一音节，仅用于三字及以上词
       is_normal_spelling = preedit == jianpin and utf8.len(candidate.text) >= 3
     elseif rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{2}[vioua]*") then

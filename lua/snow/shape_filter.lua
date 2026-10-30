@@ -6,7 +6,9 @@ local bihua = require "snow.bihua"
 
 ---@class ShapeFilterEnv: BihuaEnv
 ---@field shape_elements ReverseLookup|nil
+---@field pinyin ReverseLookup|nil
 ---@field shape_mapping table<string, string>
+---@field vacant_initial_pattern string
 
 --- 反查库加载失败时为 nil，当作查不到
 ---@param db ReverseLookup|nil
@@ -35,6 +37,26 @@ end
 local stroke_names = { ["1"] = "一", ["2"] = "丨", ["3"] = "丿", ["4"] = "丶", ["5"] = "乙" }
 local sipin_stroke_map = { ["一"] = "e", ["丨"] = "i", ["丿"] = "u", ["丶"] = "o", ["乙"] = "a" }
 local sanpin_stroke_map = { ["一"] = "i", ["丨"] = "v", ["丿"] = "u", ["丶"] = "a", ["乙"] = "o" }
+local sanpin_tones = { i = "1", v = "2", u = "3", a = "4", o = "5" }
+
+--- 声声二字词的一次辅码按第二字声调筛选。
+---@param text string
+---@param shape_input string
+---@param env ShapeFilterEnv
+local function sanpin_initial_pair_match(text, shape_input, env)
+  local tone = sanpin_tones[shape_input]
+  local prompt = tone and " 声调 [" .. tone .. "]" or nil
+  if not tone or utf8.len(text) ~= 2 then
+    return false, prompt, nil
+  end
+  local readings = lookup(env.pinyin, snow.sub(text, 2, 2))
+  for reading in readings:gmatch("%S+") do
+    if reading:sub(-1) == tone then
+      return true, prompt, nil
+    end
+  end
+  return false, prompt, nil
+end
 
 --- 冰雪四拼和冰雪三拼的笔画匹配函数
 --- @param text string
@@ -130,6 +152,10 @@ function filter.init(env)
   if id == "snow_sipin" or id == "snow_sanpin" then
     bihua.load_strokes(env)
   end
+  env.vacant_initial_pattern = config:get_string("translator/vacant_initial_pattern") or "^$"
+  if id == "snow_sanpin" then
+    env.pinyin = ReverseLookup("snow_pinyin")
+  end
   local shape_elements = config:get_string("translator/shape_elements") or "snow_bushou"
   env.shape_elements = ReverseLookup(shape_elements)
   local shape_mapping = config:get_string("translator/shape_mapping") or "radical_sipin.txt"
@@ -154,6 +180,9 @@ function filter.handle_candidate(text, shape_input, env)
       return stroke_match(text, shape_input, env, sipin_stroke_map)
     end
   elseif id == "snow_sanpin" then -- 冰雪三拼
+    if shape_input:len() == 1 and rime_api.regex_match(current, env.vacant_initial_pattern) then
+      return sanpin_initial_pair_match(text, shape_input, env)
+    end
     if shape_input:len() == 0 and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]") then
       return true, nil, nil
     end
@@ -239,6 +268,7 @@ end
 ---@param env ShapeFilterEnv
 function filter.fini(env)
   env.shape_elements = nil
+  env.pinyin = nil
   env.shape_mapping = nil
   bihua.release_strokes(env)
 end

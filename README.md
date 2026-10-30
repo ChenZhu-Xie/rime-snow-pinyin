@@ -74,7 +74,7 @@
 | X | uan | G | ui / v（ü） | Y | uo |
 
 - `zh/ch/sh → K/W/E`；零声母载体 `AOE/Y/W → R/Y/S`。
-- `j/q/x` 的 `u/uan/ue/un` 与零声母 YU 系列统一按 `v/van/ve/vn` 编码。
+- `j/q/x` 的 `u/uan/ue/un` 与零声母 YU 系列统一按 `v/van/ve/vn` 编码；所有来源中以 `ue` 书写的 `üe` 也先规范化为 `ve`，不另设韵母。
 - 三拼声调 `I/V/U/A/O → 一/二/三/四/轻`；键道形码 `A/V/U/I/O → 折/横/撇/竖/点`。
 - 神韵 U357 的 [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 全覆盖，形成 357 个唯一音节码与 42 个二元重码桶；实现另按同一规则推导 17 个扩展音节，扩展域共有 366 个唯一音码与 75 个空码。`hng、m、n、ng、ê` 不编码。
 
@@ -149,10 +149,12 @@ bun scripts/导出神韵热力图.ts "路径/a7_CKT_R11.html"
 固顶表与简码概况：
 
 - `AA` 的 441 个位置由 366 个二码单字和 75 个二简完整覆盖；75 个二简全部使用 U357 扩展域的天然空码，不再让音码下沉。
-- 三拼 630 当前为 105 个二码位＋505 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
+- 三拼 630 当前为 105 个二码位＋506 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
 - 三拼二字词二、三码候选清单见 [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)：630 个理论码位中 550 个有合法候选，每码最多列 10 项，供逐级选词复核，不直接替代一码一候选的固顶表。
+- 75 个天然空码作为声声二字词时只接受一次辅码：冰雪三拼按第二字声调用 `I/V/U/A/O` 筛选，冰雪键道按首字首形码筛选；辅码不进入上屏文本。
+- 冰雪三拼和冰雪键道的大写字母统一用于三字及以上简拼的韵母补全：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
 - [二字词逐级排序结果](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音。
-- 多字轻声 `de/le` 尾词改走 `;`/`/` 尾字键；已有结构略码、完整码首选或日常收益不足的词不强占固顶位。
+- 多字轻声 `de/le` 尾词改走 `;`/`/` 尾字键；已有等长或更短打法、完整码首选或日常收益不足的词不强占固顶位。
 
 ```powershell
 bun scripts/生成神韵固顶词.ts
@@ -163,7 +165,7 @@ bun scripts/生成三拼简词.ts --check
 bun scripts/验证神韵双拼.ts
 ```
 
-批量校验覆盖布局快照、421 音节、规则分支、空间数量、编码公式、一码一候选、父子码/词语重复、生成结果时效，以及尾字键和结构略码约束。
+批量校验覆盖布局快照、421 音节、规则分支、空间数量、编码公式、一码一候选、父子码/词语重复、生成结果时效，以及尾字键和等长或更短替代路径约束。
 
 ### 快捷键
 
@@ -299,7 +301,7 @@ All ordinary initials have a fixed first key; the exceptions to the letter itsel
 | D | iu / o / uai | Q | ou | H | u |
 | X | uan | G | ui / v | Y | uo |
 
-The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [Three-Code](https://input.tansongchen.com/snow3/) tone keys are `I/V/U/A/O → 1/2/3/4/neutral`; [KeyTao](https://input.tansongchen.com/snow-jiandao/) shape keys are `A/V/U/I/O → bend/horizontal/left-falling/vertical/dot`. [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) is fully covered with 357 unique codes and 42 collision buckets. The 17 derived extension syllables bring the implementation domain to 366 unique sound codes and 75 vacant codes; `hng/m/n/ng/ê` remain unencoded.
+The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`; every source spelling `üe` as `ue` is likewise canonicalized to `ve`, never treated as a separate final. [Three-Code](https://input.tansongchen.com/snow3/) tone keys are `I/V/U/A/O → 1/2/3/4/neutral`; [KeyTao](https://input.tansongchen.com/snow-jiandao/) shape keys are `A/V/U/I/O → bend/horizontal/left-falling/vertical/dot`. [Common399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) is fully covered with 357 unique codes and 42 collision buckets. The 17 derived extension syllables bring the implementation domain to 366 unique sound codes and 75 vacant codes; `hng/m/n/ng/ê` remain unencoded.
 
 #### Fair comparison with [Starry KeyTao S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [Shoudao B04](https://sspai.com/post/108949)
 
@@ -369,7 +371,9 @@ bun scripts/导出神韵热力图.ts "path/to/a7_CKT_R11.html"
 
 #### Fixed candidates and staged two-character abbreviations
 
-The current layout fills all 441 AA positions with 366 two-key characters and 75 two-key abbreviations; all abbreviations use naturally vacant U357 extension-domain codes. Three-Code has 105+505 candidates in its 630 space, while KeyTao has 105+525. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
+The current layout fills all 441 AA positions with 366 two-key characters and 75 two-key abbreviations; all abbreviations use naturally vacant U357 extension-domain codes. Three-Code has 105+506 candidates in its 630 space, while KeyTao has 105+525. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
+
+When those 75 vacant pairs act as two-initial, two-character abbreviations, exactly one auxiliary is accepted: Three-Code filters by the second character's tone through `I/V/U/A/O`, while KeyTao filters by the first character's first shape code. The auxiliary remains outside committed text. In both schemes, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials are already present.
 
 The [staged bigram ranking study](reports/sipin-bigram-ranking-research.md) also checks 133,205 encodable readings along the real [Four-Code](https://input.tansongchen.com/snow4/) completion path. It found no automatic replacement that both improves multiple stages and remains non-first at full code, so the evidence is retained without forcing extra fixed-candidate changes.
 
@@ -442,7 +446,7 @@ bun scripts/验证神韵双拼.ts
 | D | iu / o / uai | Q | ou | H | u |
 | X | uan | G | ui / v | Y | uo |
 
-`j/q/x` 的 u 系列與零聲母 YU 系列統一成 `v/van/ve/vn`。[三拼](https://input.tansongchen.com/snow3/)聲調鍵為 `I/V/U/A/O → 一/二/三/四/輕`，[鍵道](https://input.tansongchen.com/snow-jiandao/)形碼鍵為 `A/V/U/I/O → 折/橫/撇/豎/點`。Common399 全覆蓋並形成 357 個唯一碼、42 個重碼桶；加上 17 個擴充音節後共有 366 個唯一音碼與 75 個空碼。`hng、m、n、ng、ê` 不編碼。
+`j/q/x` 的 u 系列與零聲母 YU 系列統一成 `v/van/ve/vn`；所有來源中以 `ue` 書寫的 `üe` 也先規範化為 `ve`，不另設韻母。[三拼](https://input.tansongchen.com/snow3/)聲調鍵為 `I/V/U/A/O → 一/二/三/四/輕`，[鍵道](https://input.tansongchen.com/snow-jiandao/)形碼鍵為 `A/V/U/I/O → 折/橫/撇/豎/點`。Common399 全覆蓋並形成 357 個唯一碼、42 個重碼桶；加上 17 個擴充音節後共有 366 個唯一音碼與 75 個空碼。`hng、m、n、ng、ê` 不編碼。
 
 #### 神韻 U357 與[星空鍵道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://sspai.com/post/108949)的公平比較
 
@@ -512,7 +516,9 @@ bun scripts/导出神韵热力图.ts "路徑/a7_CKT_R11.html"
 
 #### 固頂與二字詞逐級簡碼
 
-目前方案以 366 個二碼單字與 75 個二簡完整覆蓋 441 個 AA 位置，二簡全部使用 U357 擴充域的自然空碼；三拼 630 為 105＋505，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
+目前方案以 366 個二碼單字與 75 個二簡完整覆蓋 441 個 AA 位置，二簡全部使用 U357 擴充域的自然空碼；三拼 630 為 105＋506，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
+
+這 75 個自然空碼作為聲聲二字詞時只接受一次輔碼：冰雪三拼按第二字聲調以 `I/V/U/A/O` 篩選，冰雪鍵道按首字首形碼篩選；輔碼不進入上屏文字。兩方案的大寫字母統一用於三字及以上簡拼的韻母補全：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
 
 [二字詞逐級排序結果](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音。
 

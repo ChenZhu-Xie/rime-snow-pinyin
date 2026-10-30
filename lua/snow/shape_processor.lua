@@ -12,6 +12,7 @@ end
 ---@field match string?
 ---@field match_shape string?
 ---@field accept string
+---@field block boolean
 
 ---@class ShapeProcessorEnv: Env
 ---@field config ShapeConfig[]
@@ -39,12 +40,15 @@ function processor.init(env)
     local value = item:get_map()
     if not value then goto continue end
     local match = value:get_value("match")
+    local match_config = value:get_value("match_config")
     local match_shape = value:get_value("match_shape")
     ---@type ShapeConfig
     local parsed = {
-      match = match and match:get_string(),
+      match = match and match:get_string()
+          or match_config and env.engine.schema.config:get_string(match_config:get_string()),
       match_shape = match_shape and match_shape:get_string(),
       accept = value:get_value("accept"):get_string() or "",
+      block = value:get_value("block") and value:get_value("block"):get_bool() or false,
     }
     table.insert(env.config, parsed)
     ::continue::
@@ -87,6 +91,9 @@ function processor.func(key_event, env)
       end
       if not rime_api.regex_match(key_char, rule.accept) then
         goto continue
+      end
+      if rule.block then
+        return snow.kAccepted
       end
       shape_input = shape_input .. key_char
       goto update

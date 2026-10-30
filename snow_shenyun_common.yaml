@@ -55,6 +55,8 @@ shenyun_algebra:
   - xform/([jqx])ue(?=\d)/$1ve/
   - xform/([jqx])un(?=\d)/$1vn/
   - xform/([jqx])u(?=\d)/$1v/
+  # 词典来源偶尔使用 ue 书写 üe；统一并入 ve 规范韵母。
+  - xform/ue(?=\d)/ve/
   - xform/(^| )yuan(?=\d)/$1Yvan/
   - xform/(^| )yue(?=\d)/$1Yve/
   - xform/(^| )yun(?=\d)/$1Yvn/

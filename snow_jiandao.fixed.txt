@@ -34,7 +34,7 @@ jx	继续
 jy	建议
 kz	正在
 lm	里面
-mg	美国
+mg	每个
 mx	明显
 my	没有
 pg	苹果
@@ -43,7 +43,7 @@ px	培训
 py	朋友
 qh	前后
 qm	前面
-qq	全球
+qq	轻轻
 qs	千万
 qw	清楚
 qx	取消
@@ -62,7 +62,7 @@ xm	下面
 xq	需求
 xs	希望
 xw	形成 A a
-xx	学习
+xx	谢谢
 xy	需要
 yc	因此 Y y
 yh	以后
@@ -177,7 +177,7 @@ eii	收藏
 eio	适当
 eiu	数据
 eiv	身体
-eo	时间
+eo	试试
 eoa	是吧
 eoi	数量
 eoo	事情
@@ -321,7 +321,7 @@ kai	看出
 kao	可能
 kau	开始
 kav	夸张
-ki	看见
+ki	看看
 kia	科目
 kii	刻苦
 kio	块钱

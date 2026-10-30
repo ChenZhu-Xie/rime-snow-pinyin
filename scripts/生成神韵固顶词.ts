@@ -30,11 +30,7 @@ import {
 	toneOf,
 	wordLength,
 } from "./固顶编译器";
-import {
-	findStructuralAbbreviation,
-	FixedReplacementIndex,
-	type FixedReplacement,
-} from "./固顶替代";
+import { FixedReplacementIndex, type FixedReplacement } from "./固顶替代";
 import {
 	explicitlyRequestedWords,
 	fullCodeAlreadyEasyWords,
@@ -63,15 +59,7 @@ interface OptimizationRejection {
 }
 
 const optimizationRejections: OptimizationRejection[] = [];
-let structuralRejectionCount = 0;
 let efficientFullCodeRejectionCount = 0;
-let selectableAbbreviationBases = new Set<string>();
-
-function structuralAbbreviation(word: string) {
-	return findStructuralAbbreviation(word, (base) =>
-		selectableAbbreviationBases.has(base),
-	);
-}
 
 interface FullCodeStanding {
 	rank: number;
@@ -143,10 +131,6 @@ function chooseWithoutRedundancy(
 			!preferredEverydayWords.has(candidate.word) &&
 			wordLength(candidate.word) > 2
 		) {
-			continue;
-		}
-		if (structuralAbbreviation(candidate.word)) {
-			structuralRejectionCount += 1;
 			continue;
 		}
 		if (rejectEfficientFullCode && isEfficientAtFullCode(candidate)) {
@@ -358,7 +342,6 @@ const dictionaryFiles = [
 const allEntries = mergeDictionaries(
 	dictionaryFiles.flatMap((file) => readDictionary(join(root, file))),
 );
-selectableAbbreviationBases = new Set(allEntries.map((entry) => entry.word));
 const singleEntries = allEntries.filter(
 	(entry) => entry.syllables.length === 1 && isHanWord(entry.word, 1, 1),
 );
@@ -507,7 +490,7 @@ for (const code of layout.mainKeys) {
 	usedOneKeyWords.add(selected.word);
 }
 
-const erjianReplacements = new FixedReplacementIndex();
+const erjianReplacements = new FixedReplacementIndex(false);
 for (const [code, word] of oneKeyWords) erjianReplacements.addFixed(code, word);
 
 const soundCodes = new Set(
@@ -723,7 +706,7 @@ function selectSixThirty(
 }
 
 function createCommonReplacementIndex() {
-	const replacements = new FixedReplacementIndex();
+	const replacements = new FixedReplacementIndex(false);
 	for (const [code, word] of oneKeyWords) replacements.addFixed(code, word);
 	for (const [code, word] of erjianWords) replacements.addFixed(code, word);
 	for (const [code, word] of sharedSingles) {
@@ -918,7 +901,7 @@ for (const sections of [sanpin, jiandao]) {
 }
 
 function assertNoReplaceableFixed(name: string, sections: FixedSections) {
-	const replacements = new FixedReplacementIndex();
+	const replacements = new FixedReplacementIndex(false);
 	for (const entries of [
 		sections.erjian,
 		sections.sixThirty,
@@ -932,13 +915,6 @@ function assertNoReplaceableFixed(name: string, sections: FixedSections) {
 		["630", sections.sixThirty],
 	] as const) {
 		for (const [code, word] of entries) {
-			const abbreviation = structuralAbbreviation(word);
-			if (abbreviation) {
-				redundant.push(
-					`${section} ${code}→${word} 符合结构略码 ${abbreviation.base}${abbreviation.trigger}`,
-				);
-				continue;
-			}
 			const replacement = replacements.find(word, code.length);
 			if (replacement) {
 				redundant.push(
@@ -993,5 +969,5 @@ const rejectionSummary = [...uniqueRejections.values()].reduce(
 	{} as Record<string, number>,
 );
 console.log(
-	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 ${targetErjianCount}；AA 单字 ${expectedTwoKeySingles}；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}；结构略码筛选 ${structuralRejectionCount}；完整码稳居首选筛选 ${efficientFullCodeRejectionCount}；等长或更短替代筛选 ${JSON.stringify(rejectionSummary)}。`,
+	`神韵固顶${checkOnly ? "核验" : "生成"}完成：二简 ${targetErjianCount}；AA 单字 ${expectedTwoKeySingles}；三拼 630 为 105+${sanpinThreeKey}；键道 630 为 105+525；键道三码单字 ${jiandaoThreeKeySingles}；完整码稳居首选筛选 ${efficientFullCodeRejectionCount}；等长或更短替代筛选 ${JSON.stringify(rejectionSummary)}。`,
 );

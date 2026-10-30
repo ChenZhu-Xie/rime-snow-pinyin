@@ -59,6 +59,13 @@ test("suffix keys and abbreviations only replace equal-or-longer fixed codes", (
 	});
 });
 
+test("schemes without the abbreviation processor only derive suffix-key replacements", () => {
+	const index = new FixedReplacementIndex(false);
+	index.addFixed("ka", "可爱");
+	assert.equal(index.find("可爱了", 3)?.mechanism, "尾字键");
+	assert.equal(index.find("可爱可爱", 3), undefined);
+});
+
 test("detects structural abbreviations without requiring a fixed base", () => {
 	const selectable = new Set(["翻", "慢", "测试"]);
 	const detect = (word: string) =>

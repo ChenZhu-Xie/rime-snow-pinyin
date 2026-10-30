@@ -153,27 +153,13 @@ deploy:
         assert: cand[1].text == "的"
       - send: l
         assert: cand[1].text == "了"
-      # 大写结构略码；四码后的大写仍由原顶功编码处理
-      - send: kuoK
-        assert: commit == "可爱了一可爱"
-      - send: koaP
-        assert: commit == "开不开心"
-      - send: koaJ
-        assert: commit == "开了开心"
-      - send: koaN
-        assert: commit == "开里开心"
-      - send: koaG
-        assert: commit == "开个心"
-      - send: kuoE
-        assert: commit == "可可爱"
-      - send: kuoT
-        assert: commit == "爱可爱"
-      - send: kuoY
-        assert: commit == "可爱可"
-      - send: kuoI
-        assert: commit == "可爱爱"
-      - send: byA
-        assert: commit == "不要不要"
+      # 声声二字词只接受一个首字首形辅码，辅码不进入上屏文本。
+      - send: yxa
+        assert: has("也许") and not has("有些")
+      - send: "yxa "
+        assert: commit == "也许"
+      - send: yxv
+        assert: has("有些") and not has("也许")
       # 动态码长
       - send: "eleliielel"
         assert: cand[1].text == "誓师"
@@ -197,8 +183,12 @@ deploy:
         assert: has("输入法") and preedit == "eH r f"
       - send: erHf
         assert: has("输入法") and preedit == "e rH f"
-      - send: erfK
-        assert: not has("输入法")
+      - send: erfW
+        assert: has("输入法") and preedit == "e r fW"
+      - send: eHrHfW
+        assert: has("输入法") and preedit == "eH rH fW"
+      - send: zLxTwS
+        assert: has("自行车")
   buffered_command:
     tests:
       - send: o

@@ -119,16 +119,26 @@ export class SpellingAlgebra {
 
 	// 保留 derive 的所有分支；abbrev 不属于完整音节，沿用解析时忽略它的处理。
 	applyAll(code: string) {
+		return this.applyAllWithStatus(code).codes;
+	}
+
+	// 除完整分支外保留是否命中过 erase，供校验器区分“方案明确排除”和“意外无编码”。
+	applyAllWithStatus(code: string) {
 		let codes = new Set([code]);
+		let erased = false;
 		for (const rule of this.rules) {
 			const next = new Set<string>();
 			for (const value of codes) {
 				if (rule.derive) next.add(value);
 				const transformed = transform(value, rule);
-				if (transformed !== null) next.add(transformed);
+				if (transformed !== null) {
+					next.add(transformed);
+				} else {
+					erased = true;
+				}
 			}
 			codes = next;
 		}
-		return [...codes];
+		return { codes: [...codes], erased };
 	}
 }

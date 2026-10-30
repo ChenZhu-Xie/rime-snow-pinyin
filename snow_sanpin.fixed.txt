@@ -34,7 +34,7 @@ jx	继续
 jy	建议
 kz	正在
 lm	里面
-mg	美国
+mg	每个
 mx	明显
 my	没有
 pg	苹果
@@ -43,7 +43,7 @@ px	培训
 py	朋友
 qh	前后
 qm	前面
-qq	全球
+qq	轻轻
 qs	千万
 qw	清楚
 qx	取消
@@ -62,7 +62,7 @@ xm	下面
 xq	需求
 xs	希望
 xw	形成
-xx	学习
+xx	谢谢
 xy	需要
 yc	因此
 yh	以后
@@ -90,6 +90,7 @@ biv	白天
 bo	变得
 boa	比得上
 boi	背着
+boo	啵啵
 bou	本着
 bov	别的人
 bu	不可以
@@ -163,7 +164,7 @@ dvi	当年
 dvo	躲藏着
 dvu	等于
 dvv	多长时间
-ea	时候
+ea	试试
 eaa	上面
 eai	失败
 eau	使用
@@ -303,7 +304,7 @@ jvi	经常
 jvu	简直
 jvv	极为
 ka	只是
-kaa	控制
+kaa	看看
 kai	空气
 kau	只要
 kav	咳嗽

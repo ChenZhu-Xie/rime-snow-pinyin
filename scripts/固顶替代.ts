@@ -113,6 +113,8 @@ function compareReplacement(a: FixedReplacement, b: FixedReplacement) {
 export class FixedReplacementIndex {
 	private readonly alternatives = new Map<string, FixedReplacement[]>();
 
+	constructor(private readonly includeStructuralAbbreviations = true) {}
+
 	private add(alternative: FixedReplacement) {
 		const values = this.alternatives.get(alternative.word) ?? [];
 		if (!values.some((value) => value.code === alternative.code)) {
@@ -135,6 +137,7 @@ export class FixedReplacementIndex {
 		}
 		for (const value of directOutputs) this.add(value);
 
+		if (!this.includeStructuralAbbreviations) return;
 		for (const generated of generateAbbreviations(base)) {
 			const abbreviation: FixedReplacement = {
 				word: generated.word,

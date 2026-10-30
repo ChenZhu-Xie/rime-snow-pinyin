@@ -349,7 +349,6 @@ test("U357 KeyTao and Three-Code keep their processors in a compatible order", (
 			processors.indexOf(`lua_processor@*snow.${name}`);
 		for (const name of [
 			"shape_processor",
-			"abbreviation",
 			"select_character",
 			"popping",
 			"code_navigator",
@@ -358,8 +357,53 @@ test("U357 KeyTao and Three-Code keep their processors in a compatible order", (
 		]) {
 			assert.ok(position(name) >= 0, `${file}: ${name}`);
 		}
-		assert.ok(position("abbreviation") < position("popping"), file);
+		assert.equal(position("abbreviation"), -1, file);
 		assert.ok(position("select_character") < position("popping"), file);
 		assert.ok(position("code_navigator") < position("user_dict"), file);
 	}
+});
+
+test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
+	const fixture = JSON.parse(read("docs/shenyun-u357-mapping.json")) as {
+		codes: Record<string, string | null>;
+	};
+	const keys = [..."bpmfdtnlgkhjqxzcsrwye"];
+	const occupied = new Set(Object.values(fixture.codes));
+	const vacant = keys
+		.flatMap((first) => keys.map((second) => first + second))
+		.filter((code) => !occupied.has(code));
+	assert.equal(vacant.length, 75);
+	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
+		const schema = load(read(file)) as {
+			patch: { "translator/vacant_initial_pattern": string };
+		};
+		const pattern = new RegExp(
+			schema.patch["translator/vacant_initial_pattern"],
+			"u",
+		);
+		assert.deepEqual(
+			vacant.filter((code) => pattern.test(code)),
+			vacant,
+			file,
+		);
+		assert.match(read(file), /match_shape: "\^\$"[\s\S]+block: true/u);
+	}
+	const shapeFilter = read("lua/snow/shape_filter.lua");
+	assert.match(shapeFilter, /sanpin_initial_pair_match/u);
+	assert.match(shapeFilter, /snow\.sub\(text, 2, 2\)/u);
+});
+
+test("Three-Code and KeyTao reserve uppercase finals for three-or-more-character jianpin", () => {
+	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
+		const source = read(file);
+		assert.doesNotMatch(source, /lua_processor@\*snow\.abbreviation/u);
+		assert.match(source, /strategy: append_raw/u);
+		assert.match(source, /\[bpmfdtnlgkhjqxzcsrywe\]\[A-Z\]\?/u);
+	}
+	const translator = read("lua/snow/table_like.lua");
+	assert.match(
+		translator,
+		/sound_input:gmatch\("\[bpmfdtnlgkhjqxzcsrywe\]\[A-Z\]\?"\)/u,
+	);
+	assert.match(translator, /local initial_count = #groups/u);
 });
