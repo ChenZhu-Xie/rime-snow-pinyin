@@ -137,6 +137,8 @@ key_binder:
   select_first_character: bracketleft
   select_last_character: bracketright
   bindings:
+    # 所有方案统一的缓冲开关
+    - { when: always, accept: "Control+b", toggle: buffered }
     # 候选项跳转
     - { when: has_menu, accept: "Control+j", send: Down }
     - { when: has_menu, accept: "Control+k", send: Up }

@@ -8,36 +8,19 @@ import { load } from "js-yaml";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 
-test("the shared key binder does not alias Ctrl+B/F to arrow keys", () => {
+test("the shared key binder does not alias Ctrl+F to an arrow key", () => {
 	const schema = load(read("snow_pinyin.schema.yaml")) as {
 		key_binder: { bindings: Array<{ accept?: string }> };
 	};
 	const acceptedKeys = schema.key_binder.bindings.flatMap((binding) =>
 		binding.accept ? [binding.accept] : [],
 	);
-	assert.ok(!acceptedKeys.includes("Control+b"));
 	assert.ok(!acceptedKeys.includes("Control+f"));
-});
-
-test("all current schemes leave Ctrl+B unbound", () => {
-	for (const schema of [
-		"snow_pinyin.schema.yaml",
-		"snow_sipin.schema.yaml",
-		"snow_sanpin.schema.yaml",
-		"snow_yipin.schema.yaml",
-		"snow_jiandao.schema.yaml",
-		"snow_qingyun.schema.yaml",
-	]) {
-		assert.doesNotMatch(
-			read(schema),
-			/accept:\s*["']?Control\+b\b/iu,
-			`${schema} must not bind Ctrl+B`,
-		);
-	}
 });
 
 test("the shared key binder uses the current navigation shortcuts", () => {
 	const schema = read("snow_pinyin.schema.yaml");
+	assert.match(schema, /accept: "Control\+b", toggle: buffered/u);
 	assert.match(schema, /accept: "Control\+n", send: Home/u);
 	assert.match(schema, /accept: "Control\+m", send: Page_Up/u);
 	assert.match(schema, /accept: "Control\+comma", send: Page_Down/u);
@@ -58,16 +41,17 @@ test("history selection only accepts Ctrl-number shortcuts", () => {
 	assert.doesNotMatch(processor, /key:ctrl\(\) or key:alt\(\)/u);
 });
 
-test("all schemes expose the o buffer toggle without legacy shortcuts", () => {
+test("serial schemes expose o while all schemes inherit Ctrl+B", () => {
 	for (const schema of [
 		"snow_sipin.schema.yaml",
 		"snow_sanpin.schema.yaml",
-		"snow_yipin.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_qingyun.schema.yaml",
 		"snow_shenyun_common.yaml",
 	]) {
 		assert.match(read(schema), /lua_translator@\*snow\.buffered/u);
+	}
+	for (const schema of ["snow_yipin.schema.yaml", "snow_qingyun.schema.yaml"]) {
+		assert.doesNotMatch(read(schema), /lua_translator@\*snow\.buffered/u);
 	}
 	const combined = [
 		"snow_sipin.schema.yaml",
@@ -79,10 +63,9 @@ test("all schemes expose the o buffer toggle without legacy shortcuts", () => {
 		.map(read)
 		.join("\n");
 	assert.doesNotMatch(combined, /(?:toggle|set_option): buffered/u);
-	assert.match(read("snow_yipin.schema.yaml"), /xform\/\^jio\$\/\[~o\]\//u);
 	assert.match(
-		read("snow_qingyun.schema.yaml"),
-		/recognizer\/patterns\/buffered: "\^o\$"/u,
+		read("snow_yipin.schema.yaml"),
+		/xform\/\^jio\$\/\{Control\+b\}\//u,
 	);
 	const translator = read("lua/snow/buffered.lua");
 	assert.match(translator, /env\.target = not ctx:get_option\("buffered"\)/u);

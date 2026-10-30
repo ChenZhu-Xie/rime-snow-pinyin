@@ -243,7 +243,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 
 ## 冰雪一拼的功能并击
 
-功能并击最多使用三键，不要新增四键并击。`jkl`、`uio`、`m,.` 分别输入统计命令 `itj`、`itjf`、`itjh`；`jio` 输入统一的 `o` 缓冲命令，选择候选后切换缓冲。冰雪一拼不提供 Unicode 输入。
+功能并击最多使用三键，不要新增四键并击。`jkl`、`uio`、`m,.` 分别输入统计命令 `itj`、`itjf`、`itjh`；`jio` 等效于公共的 `Control+b`，直接切换缓冲。冰雪一拼不提供 Unicode 输入。
 
 ## processors 顺序
 
@@ -319,7 +319,7 @@ bun scripts/test.ts
                                           # 冰雪三拼的 *snow.table_like*jianpin
     - table_translator@stroke             # 冰雪一拼无
     - script_translator@pinyin            # 冰雪一拼无
-    - lua_translator@*snow.buffered       # 全部方案；冰雪一拼用 jio 输入 o 命令
+    - lua_translator@*snow.buffered       # 冰雪清韵、冰雪一拼除外；两者只用 Control+b
     - lua_translator@*snow.datetime       # 冰雪一拼无
     - lua_translator@*snow.statistics*translator
     - lua_translator@*snow.number         # 冰雪一拼无

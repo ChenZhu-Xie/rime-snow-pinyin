@@ -24,14 +24,6 @@ script: |
     return cand[index] ~= nil and cand[index].comment:find(text) ~= nil
   end
 deploy:
-  buffered_command:
-    tests:
-      - send: o
-        assert: cand[1].text == "📝 开启缓冲" and commit == nil
-      - send: "o o"
-        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
-      - send: "o o "
-        assert: commit == nil and preedit == nil
   # 全息模式：前缀码与顶功都不起作用，可以把每个字的形码打全参与组句
   sentence:
     options:
@@ -196,18 +188,18 @@ deploy:
       - send: "bsi1/83bsi"
         assert: page("冰四")
       # 缓冲造词
-      - send: "o bxe? srfa2 bxsrF"
+      - send: "{Control+b}bxe? srfa2 bxsrF"
         assert: cand[1].text == "冰雪输入法"
       # 缓冲造词中的形音替换法：用形码输入单字参与造词，再从候选中选取正确的读音
-      - send: "o ppjg"
+      - send: "{Control+b}ppjg"
         assert: cand[1].text == "梦"
-      - send: "o ppjgkvna"
+      - send: "{Control+b}ppjgkvna"
         assert: cand[1].text == "泽"
-      - send: "o ppjgkvnagnpa"
+      - send: "{Control+b}ppjgkvnagnpa"
         assert: cand[1].text == "闲"
-      - send: "o ppjgkvnagnpabw"
+      - send: "{Control+b}ppjgkvnagnpabw"
         assert: cand[1].text == "客"
-      - send: "o ppjgkvnagnpabw  mzxk"
+      - send: "{Control+b}ppjgkvnagnpabw  mzxk"
         assert: cand[1].text == "梦泽闲客"
       # 英数混输造词：阿拉伯数字固定在二码的次选，中文数字固定在二码的三选
       - send: yi
@@ -237,9 +229,9 @@ deploy:
       - send: ma
         assert: cand[2].text == "A" and cand[3].text == "a"
       # 缓冲模式展开「问」的 wen4、wen5 两个读音，G 位于第三项
-      - send: "o wu2g.3lg lwo  wgtx"
+      - send: "{Control+b}wu2g.3lg lwo  wgtx"
         assert: cand[1].text == "5G通信"
-      - send: "o fjggfnlkma2ppjg  dlmm"
+      - send: "{Control+b}fjggfnlkma2ppjg  dlmm"
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
   advanced:
