@@ -7,12 +7,14 @@ local processor = {}
 
 ---@class ComboPoppingEnv: Env
 ---@field active boolean
+---@field buffer_command boolean
 ---@field option_connection Connection
 ---@field commit_connection Connection
 
 ---@param env ComboPoppingEnv
 function processor.init(env)
   env.active = true
+  env.buffer_command = false
   local context = env.engine.context
   env.option_connection = context.option_update_notifier:connect(function(ctx, name)
     if name == "buffered" then
@@ -37,9 +39,15 @@ function processor.func(key_event, env)
   end
   -- 取出输入中当前正在翻译的一部分
   local input = snow.current(context) or ""
-  -- 冰雪一拼的 jio 并击输出统一的 o 缓冲命令；空输入时交给翻译器，不当作标点吞掉。
-  if input == "" and incoming == "o" then
-    return snow.kNoop
+  -- 左手一简并击本来就以 o 为内部顶功标记；jio 先输出 ~ 作区分，再把后续 o 交给翻译器。
+  if input == "" and incoming == "~" then
+    env.buffer_command = true
+    return snow.kAccepted
+  elseif env.buffer_command and not key_event:release() then
+    env.buffer_command = false
+    if input == "" and incoming == "o" and not key_event:alt() and not key_event:ctrl() then
+      return snow.kNoop
+    end
   end
   if rime_api.regex_match(input, "([bpmfdtnlgkhzcsr]j?[iuv]?(a|ai|an|ang|ao|e|ei|en|eng|ou)?[wyxq])*") then
     if incoming == "u" then -- 在完整音节后面出现 u，表示追加
