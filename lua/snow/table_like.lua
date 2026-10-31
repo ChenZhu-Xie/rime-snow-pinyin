@@ -182,6 +182,21 @@ function initial_pair.func(input, segment, env)
       or rime_api.regex_match(input, env.reserved_pattern) then
     return
   end
+  if input == "yx" then
+    local reports = {}
+    for _, probe in ipairs({ "yx", "y x", "y~x~", "y?x?" }) do
+      local translation = env.translator:query(probe, segment)
+      local texts = {}
+      if translation then
+        for candidate in translation:iter() do
+          table.insert(texts, candidate.text)
+          if #texts == 5 then break end
+        end
+      end
+      table.insert(reports, probe .. "=" .. #texts .. ":" .. table.concat(texts, ","))
+    end
+    error(table.concat(reports, " | "))
+  end
   local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2, 2))
   translate(proxy, segment, env, false, function(candidate)
     if utf8.len(candidate.text) ~= 2 then
