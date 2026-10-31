@@ -13,7 +13,7 @@ const files = [join(root, "README.md"), join(root, "README_CN.md")];
 
 const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
-冰雪神韵·形（\`snow_shenyun_shape\`）与冰雪神韵·调（\`snow_shenyun_tone\`）共用 **神韵(Overall-17) 21×26 双拼**。其底层方案 ID 是 \`SNOW-SHENYUN-21X26-PRODUCTION\`；\`a7_CKT_R11.html\` 只是保存该方案及绘图、复算函数的 benchmark 页面版本，不是方案名称。
+冰雪神韵·形（\`snow_shenyun_shape\`）与冰雪神韵·调（\`snow_shenyun_tone\`）共用 **神韵(Overall-17) 21×26 双拼**。该方案出自双拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿于提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本节映射与键盘图均以该定稿方案为准。
 
 **声韵辅-键 映射**
 
@@ -23,7 +23,7 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 ![神韵(Overall-17) 21×26 双拼键频图](docs/shenyun-overall17-keyboard-heat.svg)
 
-两图均直接从 benchmark HTML 中的目标方案导出：声韵图调用页面内置 \`keyboardSVG\` 后裁出 26 个字母键；键频图调用页面内置 \`r9MacroHeat\`，使用同一篇 2149 击键日常八场景文稿。键频图不含五辅键、空格和选重。
+两图由 benchmark 页面中的定稿方案导出：声韵图调用页面内置 \`keyboardSVG\` 后裁出 26 个字母键；键频图调用页面内置 \`r9MacroHeat\`，使用同一篇 2149 击键日常八场景文稿。键频图不含五辅键、空格和选重。
 
 #### 声韵编码规则
 
@@ -62,7 +62,7 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 const enOverall = `### Shenyun(Overall-17) 21×26 double pinyin
 
-Snow Shenyun Shape (\`snow_shenyun_shape\`) and Snow Shenyun Tone (\`snow_shenyun_tone\`) share **Shenyun(Overall-17) 21×26 double pinyin**. Its stable scheme ID is \`SNOW-SHENYUN-21X26-PRODUCTION\`; \`a7_CKT_R11.html\` is only the benchmark page carrying the scheme and rendering/replay functions, not the layout's name.
+Snow Shenyun Shape (\`snow_shenyun_shape\`) and Snow Shenyun Tone (\`snow_shenyun_tone\`) share **Shenyun(Overall-17) 21×26 double pinyin**. The layout comes from the Shuangpin Layout Benchmark branch \`production/ckt-v4-2126-strict-d0-20261030\` and was finalized in commit \`7a7e154\`; \`2026-10-30-strict-d0-production-closure-report.md\` records the search constraints, derivation, and winning mapping. This repository freezes it as \`SNOW-SHENYUN-21X26-PRODUCTION\`, and this section's mapping and keyboard figures use that finalized layout.
 
 **Initial/final/auxiliary-key mapping**
 
@@ -72,7 +72,7 @@ Snow Shenyun Shape (\`snow_shenyun_shape\`) and Snow Shenyun Tone (\`snow_shenyu
 
 ![Shenyun(Overall-17) 21×26 key-frequency map](docs/shenyun-overall17-keyboard-heat.svg)
 
-Both SVGs are exported directly from the target entry in the benchmark HTML: the first uses its built-in \`keyboardSVG\`, while the second uses \`r9MacroHeat\` over the same 2,149-keystroke daily corpus. The heat map excludes auxiliaries, spaces, and candidate selection.
+Both SVGs are exported from the finalized entry in the benchmark page: the first uses its built-in \`keyboardSVG\`, while the second uses \`r9MacroHeat\` over the same 2,149-keystroke daily corpus. The heat map excludes auxiliaries, spaces, and candidate selection.
 
 #### Coding rules
 
@@ -84,7 +84,7 @@ Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 do
 
 const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
-冰雪神韻·形（\`snow_shenyun_shape\`）與冰雪神韻·調（\`snow_shenyun_tone\`）共用 **神韻(Overall-17) 21×26 雙拼**。底層方案 ID 為 \`SNOW-SHENYUN-21X26-PRODUCTION\`；\`a7_CKT_R11.html\` 只是承載方案與繪圖、複算函式的 benchmark 頁面版本，不是方案名稱。
+冰雪神韻·形（\`snow_shenyun_shape\`）與冰雪神韻·調（\`snow_shenyun_tone\`）共用 **神韻(Overall-17) 21×26 雙拼**。該方案出自雙拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿於提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本節映射與鍵盤圖均以該定稿方案為準。
 
 **聲韻輔-鍵 映射**
 
@@ -94,7 +94,7 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 ![神韻(Overall-17) 21×26 雙拼鍵頻圖](docs/shenyun-overall17-keyboard-heat.svg)
 
-兩圖均直接從 benchmark HTML 的目標方案匯出：聲韻圖使用頁面內建 \`keyboardSVG\`，鍵頻圖使用 \`r9MacroHeat\` 與同一篇 2149 擊鍵日常文稿；鍵頻圖不含五輔鍵、空格及選重。
+兩圖由 benchmark 頁面中的定稿方案匯出：聲韻圖使用頁面內建 \`keyboardSVG\`，鍵頻圖使用 \`r9MacroHeat\` 與同一篇 2149 擊鍵日常文稿；鍵頻圖不含五輔鍵、空格及選重。
 
 #### 聲韻規則
 
@@ -135,6 +135,39 @@ const overallValues = [
 	"12.4215%",
 	"132.219",
 ];
+
+function normalizeSourceProvenance(markdown: string) {
+	return markdown
+		.split("\n")
+		.map((line) => {
+			if (line.startsWith("冰雪神韵·形（"))
+				return "冰雪神韵·形（`snow_shenyun_shape`）与冰雪神韵·调（`snow_shenyun_tone`）共用 **神韵(Overall-17) 21×26 双拼**。该方案出自双拼布局 Benchmark 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿于提交 `7a7e154`；`2026-10-30-strict-d0-production-closure-report.md` 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 `SNOW-SHENYUN-21X26-PRODUCTION`，本节映射与键盘图均以该定稿方案为准。";
+			if (line.startsWith("Snow Shenyun Shape ("))
+				return "Snow Shenyun Shape (`snow_shenyun_shape`) and Snow Shenyun Tone (`snow_shenyun_tone`) share **Shenyun(Overall-17) 21×26 double pinyin**. The layout comes from the Shuangpin Layout Benchmark branch `production/ckt-v4-2126-strict-d0-20261030` and was finalized in commit `7a7e154`; `2026-10-30-strict-d0-production-closure-report.md` records the search constraints, derivation, and winning mapping. This repository freezes it as `SNOW-SHENYUN-21X26-PRODUCTION`, and this section's mapping and keyboard figures use that finalized layout.";
+			if (line.startsWith("冰雪神韻·形（"))
+				return "冰雪神韻·形（`snow_shenyun_shape`）與冰雪神韻·調（`snow_shenyun_tone`）共用 **神韻(Overall-17) 21×26 雙拼**。該方案出自雙拼布局 Benchmark 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿於提交 `7a7e154`；`2026-10-30-strict-d0-production-closure-report.md` 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 `SNOW-SHENYUN-21X26-PRODUCTION`，本節映射與鍵盤圖均以該定稿方案為準。";
+			if (line.startsWith("[冰雪键道]"))
+				return "[冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪三拼](https://input.tansongchen.com/snow3/)现共用 **无飞键道(U357) 21×21 双拼**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。该方案出自双拼布局 Benchmark 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿于提交 `11713b6`；`2026-10-29-prodgate-directed-repair-final-report.md` 给出了 U=357 候选的搜索过程、完整映射、指标和投产推荐。本仓库采用并实现该候选，本节映射与键盘图均以报告中的 U=357 方案为准。";
+			if (line.startsWith("[Snow KeyTao]"))
+				return "[Snow KeyTao](https://input.tansongchen.com/snow-jiandao/) and [Snow Three-Code](https://input.tansongchen.com/snow3/) now share **Wufei KeyTao(U357) 21×21 double pinyin**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`. The layout comes from the Shuangpin Layout Benchmark branch `production/ckt-v4-2121-strict-avuio-20261024` and was finalized in commit `11713b6`; `2026-10-29-prodgate-directed-repair-final-report.md` records the U=357 candidate's search, full mapping, metrics, and production recommendation. This repository implements that candidate, and this section's mapping and keyboard figures use the reported U=357 layout.";
+			if (line.startsWith("[冰雪鍵道]"))
+				return "[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)與[冰雪三拼](https://input.tansongchen.com/snow3/)現共用 **無飛鍵道(U357) 21×21 雙拼**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。該方案出自雙拼布局 Benchmark 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿於提交 `11713b6`；`2026-10-29-prodgate-directed-repair-final-report.md` 給出了 U=357 候選的搜尋過程、完整映射、指標及投產建議。本倉庫採用並實作該候選，本節映射與鍵盤圖均以報告中的 U=357 方案為準。";
+			return line
+				.replace(
+					"两图均直接从 benchmark HTML 中的目标方案导出",
+					"两图由 benchmark 页面中的定稿方案导出",
+				)
+				.replace(
+					"Both SVGs are exported directly from the target entry in the benchmark HTML",
+					"Both SVGs are exported from the finalized entry in the benchmark page",
+				)
+				.replace(
+					"兩圖均直接從 benchmark HTML 的目標方案匯出",
+					"兩圖由 benchmark 頁面中的定稿方案匯出",
+				);
+		})
+		.join("\n");
+}
 
 function normalizeContractClaims(markdown: string) {
 	const lines = markdown.split("\n").map((line) => {
@@ -203,7 +236,7 @@ function addOverallColumn(markdown: string) {
 }
 
 function normalizeTerms(markdown: string) {
-	markdown = markdown
+	markdown = normalizeSourceProvenance(markdown)
 		.replaceAll("**声韵键盘图**", "**声韵辅-键 映射**")
 		.replaceAll("**声韵映射**", "**声韵辅-键 映射**")
 		.replaceAll(

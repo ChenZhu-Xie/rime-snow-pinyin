@@ -87,11 +87,11 @@ test("为四个方案名补链接且不嵌套已有链接", () => {
 	const linked = linkShenyunTerms(source, "zh", "github");
 	includes(
 		linked,
-		"[神韵(Overall-17) 21×26 双拼](https://input.tansongchen.com/snow-feihua/basic.html)",
+		"[神韵(Overall-17) 21×26 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)",
 	);
 	includes(
 		linked,
-		"[无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)",
+		"[无飞键道(U357) 21×21 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)",
 	);
 	includes(
 		linked,
@@ -103,6 +103,14 @@ test("为四个方案名补链接且不嵌套已有链接", () => {
 
 test("生成报告在所有可比较表中保留图例、星标与奖牌", () => {
 	const report = read("reports/shenyun-comparison.md");
+	includes(
+		report,
+		"[神韵(Overall-17)](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)",
+	);
+	includes(
+		report,
+		"[无飞键道(U357)](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)",
+	);
 	includes(report, "第 1 名数值加粗并标 ★★");
 	includes(report, "第 2 名数值加粗并标 ★");
 	includes(report, "🥇 独立比较全部四方案，可以与星标同时出现");
@@ -154,6 +162,10 @@ test("两张纯双拼热力图使用相同裁剪、背景和短标题", () => {
 test("两份 README 的六张比较表、标题和方案链接完整", () => {
 	for (const filename of ["README.md", "README_CN.md"]) {
 		const readme = read(filename);
+		const benchmarkHost =
+			filename === "README.md"
+				? "github.com/more-14-different"
+				: "gitee.com/xie-chenzhu";
 		const lines = readme.split("\n");
 		const tables = lines
 			.map((line, index) => ({ line, index }))
@@ -188,14 +200,24 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 			assert.equal(readme.split(heading).length - 1, 2, heading);
 		includes(
 			readme,
-			"[神韵(Overall-17) 21×26 双拼](https://input.tansongchen.com/snow-feihua/basic.html)",
+			`[神韵(Overall-17) 21×26 双拼](https://${benchmarkHost}/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)`,
 		);
 		includes(
 			readme,
-			"[无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)",
+			`[无飞键道(U357) 21×21 双拼](https://${benchmarkHost}/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)`,
 		);
+		includes(readme, "`production/ckt-v4-2126-strict-d0-20261030`");
+		includes(readme, "`production/ckt-v4-2121-strict-avuio-20261024`");
+		includes(readme, "[`7a7e154`](https://");
+		includes(readme, "[`11713b6`](https://");
+		includes(readme, "2026-10-30-strict-d0-production-closure-report.md");
+		includes(readme, "2026-10-29-prodgate-directed-repair-final-report.md");
 		includes(readme, "[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)");
-		includes(readme, "[`a7_CKT_R11.html`](https://");
+		assert.ok(!readme.includes("只是保存该方案及绘图、复算函数"));
+		assert.ok(
+			!readme.includes("is only the benchmark page carrying the scheme"),
+		);
+		assert.ok(!readme.includes("只是承載方案與繪圖、複算函式"));
 		includes(readme, "第 1 名数值加粗并标 ★★");
 		includes(readme, "第 2 名数值加粗并标 ★");
 		includes(readme, "first place is bold with ★★");

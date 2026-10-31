@@ -122,8 +122,15 @@ export function decorateMarkdownTable(
 }
 
 const links = {
-	overall: "https://input.tansongchen.com/snow-feihua/basic.html",
-	u357: "https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code",
+	overallGithub:
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md",
+	overallGitee:
+		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md",
+	u357Github:
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md",
+	u357Gitee:
+		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md",
+	feihua: "https://input.tansongchen.com/snow-feihua/basic.html",
 	s005: "https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts",
 	benchmarkGithub:
 		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md",
@@ -133,13 +140,14 @@ const links = {
 
 const terms: Record<ShenyunLanguage, Array<[string, keyof typeof links]>> = {
 	zh: [
-		["神韵(Overall-17) 21×26 双拼", "overall"],
-		["无飞键道(U357) 21×21 双拼", "u357"],
-		["神韵(Overall-17)", "overall"],
-		["无飞键道(U357)", "u357"],
+		["神韵(Overall-17) 21×26 双拼", "overallGithub"],
+		["无飞键道(U357) 21×21 双拼", "u357Github"],
+		["神韵(Overall-17)", "overallGithub"],
+		["无飞键道(U357)", "u357Github"],
+		["双拼布局 Benchmark", "benchmarkGithub"],
 		["星空键道 S005", "s005"],
 		["首道 B04", "benchmarkGithub"],
-		["飞花式四码顶", "overall"],
+		["飞花式四码顶", "feihua"],
 		["A7E-v6-CW150", "benchmarkGithub"],
 		["A7E-v5", "benchmarkGithub"],
 		["A7E-v4", "benchmarkGithub"],
@@ -154,30 +162,55 @@ const terms: Record<ShenyunLanguage, Array<[string, keyof typeof links]>> = {
 		["B04", "benchmarkGithub"],
 	],
 	en: [
-		["Shenyun(Overall-17) 21×26 double pinyin", "overall"],
-		["Wufei KeyTao(U357) 21×21 double pinyin", "u357"],
-		["Shenyun(Overall-17)", "overall"],
-		["Wufei KeyTao(U357)", "u357"],
-		["Feihua four-code-top", "overall"],
+		["Shenyun(Overall-17) 21×26 double pinyin", "overallGithub"],
+		["Wufei KeyTao(U357) 21×21 double pinyin", "u357Github"],
+		["Shenyun(Overall-17)", "overallGithub"],
+		["Wufei KeyTao(U357)", "u357Github"],
+		["Shuangpin Layout Benchmark", "benchmarkGithub"],
+		["Feihua four-code-top", "feihua"],
 		["S005", "s005"],
 		["B04", "benchmarkGithub"],
 	],
 	zht: [
-		["神韻(Overall-17) 21×26 雙拼", "overall"],
-		["無飛鍵道(U357) 21×21 雙拼", "u357"],
-		["神韻(Overall-17)", "overall"],
-		["無飛鍵道(U357)", "u357"],
-		["飛花式四碼頂", "overall"],
+		["神韻(Overall-17) 21×26 雙拼", "overallGithub"],
+		["無飛鍵道(U357) 21×21 雙拼", "u357Github"],
+		["神韻(Overall-17)", "overallGithub"],
+		["無飛鍵道(U357)", "u357Github"],
+		["雙拼布局 Benchmark", "benchmarkGithub"],
+		["飛花式四碼頂", "feihua"],
 		["S005", "s005"],
 		["B04", "benchmarkGithub"],
 	],
 };
+
+const resolveLink = (key: keyof typeof links, host: LinkHost) => {
+	if (host === "gitee") {
+		if (key === "overallGithub") return links.overallGitee;
+		if (key === "u357Github") return links.u357Gitee;
+		if (key === "benchmarkGithub") return links.benchmarkGitee;
+	}
+	return links[key];
+};
+
+const escapeRegexp = (value: string) =>
+	value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 
 export function linkShenyunTerms(
 	markdown: string,
 	language: ShenyunLanguage,
 	host: LinkHost = "github",
 ) {
+	for (const [term, key] of terms[language]) {
+		if (key !== "overallGithub" && key !== "u357Github") continue;
+		markdown = markdown.replace(
+			new RegExp(`(?<!!)\\[${escapeRegexp(term)}\\]\\([^)]+\\)`, "gu"),
+			`[${term}](${resolveLink(key, host)})`,
+		);
+	}
+	markdown = markdown.replace(
+		/(\[!\[[^\]]*U357[^\]]*\]\(docs\/shenyun-u357-keyboard\.svg\)\])\([^)]+\)/gu,
+		`$1(${resolveLink("u357Github", host)})`,
+	);
 	const protectedFragments: string[] = [];
 	const protectedMarkdown = markdown.replace(
 		/!?\[[^\]]*\]\([^)]+\)|`[^`]*`/gu,
@@ -187,12 +220,7 @@ export function linkShenyunTerms(
 		},
 	);
 	const replacements = new Map(
-		terms[language].map(([term, key]) => [
-			term,
-			key === "benchmarkGithub" && host === "gitee"
-				? links.benchmarkGitee
-				: links[key],
-		]),
+		terms[language].map(([term, key]) => [term, resolveLink(key, host)]),
 	);
 	const pattern = new RegExp(
 		[...replacements.keys()]
@@ -216,6 +244,8 @@ export function linkReadmeFiles(markdown: string, host: LinkHost) {
 		host === "gitee"
 			? "https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/a7_CKT_R11.html"
 			: "https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/a7_CKT_R11.html";
+	const overallSource = resolveLink("overallGithub", host);
+	const u357Source = resolveLink("u357Github", host);
 	return markdown
 		.replace(
 			/(?<!\[)`snow_shenyun_shape`/gu,
@@ -232,5 +262,13 @@ export function linkReadmeFiles(markdown: string, host: LinkHost) {
 		.replace(
 			/(?<!\[)`a7_CKT_R11\.html`/gu,
 			`[\`a7_CKT_R11.html\`](${benchmark})`,
+		)
+		.replace(
+			/(?<!\[)`(?:7a7e154|2026-10-30-strict-d0-production-closure-report\.md)`/gu,
+			(match) => `[${match}](${overallSource})`,
+		)
+		.replace(
+			/(?<!\[)`(?:11713b6|2026-10-29-prodgate-directed-repair-final-report\.md)`/gu,
+			(match) => `[${match}](${u357Source})`,
 		);
 }

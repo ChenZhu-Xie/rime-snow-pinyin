@@ -513,6 +513,8 @@ const flyingDisplays = decorate(
 
 const report = `# 神韵两代布局与 S005、B04 四方案比较
 
+方案来源：神韵(Overall-17) 21×26 双拼出自 \`production/ckt-v4-2126-strict-d0-20261030\` 分支的提交 \`7a7e154\`；无飞键道(U357) 21×21 双拼出自 \`production/ckt-v4-2121-strict-avuio-20261024\` 分支的提交 \`11713b6\`。方案名分别链接到对应固定提交的最终报告，报告记录了搜索过程、候选取舍和定稿映射。
+
 本文把两个现行专有名词置于同等地位：**无飞键道(U357) 21×21 双拼**与**神韵(Overall-17) 21×26 双拼**。另以星空键道 S005、首道 B04 为参照。四方案共用 Common399、冻结 20 合同、同一字词与形码数据、CKT v4 模型及日常八场景文稿。
 
 必须同时注意合同边界：无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 原方案只提供双拼映射，本报告为其套用同一飞花式四码顶路由和统一辅码数据。21×26／26×26 相比 21×21 扩大了韵码域，不能把跨键域领先直接解释成同键域映射胜负。
@@ -558,7 +560,7 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 - B04 的 26×26 大码域以及本报告套用的飞花式四码顶合同带来零音节重码及较低补全成本；这不是 B04 原方案的顶功声明，其飞键、记忆项和日常路径指标也采用另一种取舍。
 - 所有模型分数都用于同语料、同模型横向复算，不等同真人输入速度。
 
-机器可复核数据见 [\`shenyun-comparison.json\`](shenyun-comparison.json)。神韵(Overall-17)的底层方案 ID 为 \`${overallId}\`；R11 仅是承载该条目与复算函数的 benchmark 页面版本，不是方案名称。
+机器可复核数据见 [\`shenyun-comparison.json\`](shenyun-comparison.json)。神韵(Overall-17)的底层方案 ID 为 \`${overallId}\`。两代方案的来源、得来过程与定稿映射以上述固定提交报告为准。
 `;
 
 writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");

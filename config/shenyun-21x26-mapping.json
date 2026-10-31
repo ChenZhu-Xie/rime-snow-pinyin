@@ -5,6 +5,7 @@
   "source": "shuangpin-layout-benchmark/a7_CKT_R11.html#SNOW-SHENYUN-21X26-PRODUCTION",
   "sourceBranch": "production/ckt-v4-2126-strict-d0-20261030",
   "sourceCommit": "7a7e154f3f7d0c86653ee15e755ccd72e866e5e2",
+  "sourceReport": "research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md",
   "archiveCommit": "70545d9f182a97700f7b404e18487fb12738ce01",
   "capacity": [21, 26],
   "commonSyllables": 399,
