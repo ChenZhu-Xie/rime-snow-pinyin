@@ -3,61 +3,50 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { chromium } from "playwright-core";
 
-const templateSchemeId = "R9-21X21-M40-02";
 const cropWidth = 1040;
 const cropHeight = 590;
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const root = join(scriptDirectory, "..");
+const args = process.argv.slice(2);
+const is21x26 = args.includes("--21x26");
 const scheme = JSON.parse(
-	readFileSync(join(root, "config", "shenyun-21x21-mapping.json"), "utf8"),
+	readFileSync(
+		join(
+			root,
+			"config",
+			is21x26 ? "shenyun-21x26-mapping.json" : "shenyun-21x21-mapping.json",
+		),
+		"utf8",
+	),
 ) as {
 	id: string;
+	candidateId?: string;
 	name: string;
 	capacity: [number, number];
+	toneKeys: string;
 	initialMap: Record<string, string>;
 	finalMap: Record<string, string>;
 };
-const roles = Object.entries(scheme.initialMap).reduce<
-	Record<string, string[]>
->((result, [initial, key]) => {
-	const role = ["Y", "YU"].includes(initial)
-		? "ØY"
-		: initial === initial.toUpperCase()
-			? `Ø${initial}`
-			: initial;
-	result[key] ??= [];
-	if (!result[key].includes(role)) result[key].push(role);
-	return result;
-}, {});
-const rhymes = Object.entries(scheme.finalMap).reduce<Record<string, string[]>>(
-	(result, [final, key]) => {
-		result[key] ??= [];
-		result[key].push(final);
-		return result;
-	},
-	{},
+const targetSchemeId = is21x26 ? scheme.id : (scheme.candidateId ?? scheme.id);
+const displayName = is21x26
+	? "神韵(Overall-17) 21×26 双拼"
+	: "无飞键道(U357) 21×21 双拼";
+const outputPath = join(
+	root,
+	"docs",
+	is21x26 ? "shenyun-overall17-keyboard.svg" : "shenyun-u357-keyboard.svg",
 );
-const renderingScheme = {
-	...scheme,
-	name: "无飞键道·神韵 U357 综合人体工学前沿",
-	roles,
-	rhymes,
-	tone: "IVUAO",
-	zeroOnsetScope: "pure-y",
-};
-const outputPath = join(root, "docs", "shenyun-u357-keyboard.svg");
 
-const args = process.argv.slice(2);
 const check = args.includes("--check");
 const cdp = args
 	.find((arg) => arg.startsWith("--cdp="))
 	?.slice("--cdp=".length);
 const positional = args.filter(
-	(arg) => arg !== "--check" && !arg.startsWith("--cdp="),
+	(arg) => arg !== "--check" && arg !== "--21x26" && !arg.startsWith("--cdp="),
 );
 if (!positional[0]) {
 	throw new Error(
-		"用法：tsx 生成神韵键盘图.ts <benchmark.html> [浏览器可执行文件] [--check]",
+		"用法：tsx 生成神韵键盘图.ts <benchmark.html> [浏览器可执行文件] [--21x26] [--check]",
 	);
 }
 
@@ -89,44 +78,57 @@ function findBrowser(explicit?: string) {
 }
 
 async function renderOverCdp(endpoint: string) {
-	const target = (await fetch(
-		`${endpoint.replace(/\/$/u, "")}/json/new?${encodeURIComponent(pathToFileURL(htmlPath).href)}`,
-		{ method: "PUT" },
-	).then((response) => response.json())) as { webSocketDebuggerUrl: string };
-	const socket = new WebSocket(target.webSocketDebuggerUrl);
-	const pending = new Map<
-		number,
-		{ resolve: (value: unknown) => void; reject: (reason: unknown) => void }
-	>();
-	let requestId = 0;
-	await new Promise<void>((resolve, reject) => {
-		socket.addEventListener("open", () => resolve(), { once: true });
-		socket.addEventListener("error", (event) => reject(event), { once: true });
-	});
-	socket.addEventListener("message", (event) => {
-		const message = JSON.parse(String(event.data)) as {
-			id?: number;
-			result?: unknown;
-			error?: unknown;
-		};
-		if (message.id === undefined) return;
-		const handler = pending.get(message.id);
-		if (!handler) return;
-		pending.delete(message.id);
-		if (message.error) handler.reject(message.error);
-		else handler.resolve(message.result);
-	});
-	const request = (method: string, params: Record<string, unknown> = {}) =>
-		new Promise<unknown>((resolve, reject) => {
-			const id = ++requestId;
-			pending.set(id, { resolve, reject });
-			socket.send(JSON.stringify({ id, method, params }));
+	type CdpResponse = { id?: number; result?: unknown; error?: unknown };
+	const connect = async (url: string) => {
+		const socket = new WebSocket(url);
+		const pending = new Map<
+			number,
+			{ resolve: (value: unknown) => void; reject: (reason: unknown) => void }
+		>();
+		let requestId = 0;
+		await new Promise<void>((resolve, reject) => {
+			socket.addEventListener("open", () => resolve(), { once: true });
+			socket.addEventListener("error", (event) => reject(event), {
+				once: true,
+			});
 		});
+		socket.addEventListener("message", (event) => {
+			const message = JSON.parse(String(event.data)) as CdpResponse;
+			if (message.id === undefined) return;
+			const handler = pending.get(message.id);
+			if (!handler) return;
+			pending.delete(message.id);
+			if (message.error) handler.reject(message.error);
+			else handler.resolve(message.result);
+		});
+		const request = (method: string, params: Record<string, unknown> = {}) =>
+			new Promise<unknown>((resolve, reject) => {
+				const id = ++requestId;
+				pending.set(id, { resolve, reject });
+				socket.send(JSON.stringify({ id, method, params }));
+			});
+		return { socket, request };
+	};
+	const base = endpoint.replace(/\/$/u, "");
+	const version = (await fetch(`${base}/json/version`).then((response) =>
+		response.json(),
+	)) as { webSocketDebuggerUrl: string };
+	const browser = await connect(version.webSocketDebuggerUrl);
+	const created = (await browser.request("Target.createTarget", {
+		url: pathToFileURL(htmlPath).href,
+	})) as { targetId: string };
+	browser.socket.close();
+	const targets = (await fetch(`${base}/json/list`).then((response) =>
+		response.json(),
+	)) as Array<{ id: string; webSocketDebuggerUrl: string }>;
+	const target = targets.find(({ id }) => id === created.targetId);
+	if (!target) throw new Error("CDP 未返回新建页面");
+	const page = await connect(target.webSocketDebuggerUrl);
 	try {
-		await request("Runtime.enable");
+		await page.request("Runtime.enable");
 		const deadline = Date.now() + 300_000;
 		while (true) {
-			const status = (await request("Runtime.evaluate", {
+			const status = (await page.request("Runtime.evaluate", {
 				expression: "Boolean(globalThis.App7?.ready)",
 				returnByValue: true,
 			})) as { result?: { value?: boolean } };
@@ -135,10 +137,8 @@ async function renderOverCdp(endpoint: string) {
 			await Bun.sleep(250);
 		}
 		const expression = `(() => {
-			const template = App7.data.entries.find(({ id }) => id === ${JSON.stringify(templateSchemeId)});
-			if (!template) throw new Error("HTML 中找不到模板方案");
-			const sourceConfig = ${JSON.stringify(renderingScheme)};
-			const entry = { ...template, ...sourceConfig, actual: sourceConfig.capacity };
+			const entry = App7.data.entries.find(({ id }) => id === ${JSON.stringify(targetSchemeId)});
+			if (!entry) throw new Error("HTML 中找不到目标方案");
 			const source = keyboardSVG(entry, null, 28, 21, 20);
 			const parsed = new DOMParser().parseFromString(source, "image/svg+xml");
 			const root = parsed.documentElement;
@@ -149,20 +149,15 @@ async function renderOverCdp(endpoint: string) {
 			root.setAttribute("aria-labelledby", "title desc");
 			const background = Array.from(root.children).find((element) => element.tagName.toLowerCase() === "rect");
 			if (background) background.setAttribute("width", "${cropWidth}");
-			const namespace = "http://www.w3.org/2000/svg";
-			const title = parsed.createElementNS(namespace, "title");
-			title.id = "title";
-			title.textContent = "无飞键道·神韵 U357 声韵映射图";
-			const description = parsed.createElementNS(namespace, "desc");
-			description.id = "desc";
-			description.textContent = "无飞键道·神韵 U357 的声母、韵母与辅键映射。";
+			const title = root.querySelector("title");
+			if (title) title.textContent = ${JSON.stringify(`${displayName} 声韵映射图`)};
+			const description = root.querySelector("desc");
+			if (description) description.textContent = ${JSON.stringify(`${displayName} 的声母、韵母与辅键映射。`)};
 			const heading = root.querySelector('text[x="24"][y="34"]');
-			if (heading) heading.textContent = "无飞键道·神韵 U357";
-			root.insertBefore(description, root.firstChild);
-			root.insertBefore(title, description);
+			if (heading) heading.textContent = ${JSON.stringify(displayName)};
 			return new XMLSerializer().serializeToString(root) + "\\n";
 		})()`;
-		const evaluated = (await request("Runtime.evaluate", {
+		const evaluated = (await page.request("Runtime.evaluate", {
 			expression,
 			returnByValue: true,
 			awaitPromise: true,
@@ -175,8 +170,8 @@ async function renderOverCdp(endpoint: string) {
 		}
 		return evaluated.result.value;
 	} finally {
-		void request("Page.close").catch(() => undefined);
-		socket.close();
+		void page.request("Page.close").catch(() => undefined);
+		page.socket.close();
 	}
 }
 
@@ -188,7 +183,7 @@ async function main() {
 		const browser = await chromium.launch({
 			executablePath: findBrowser(positional[1]),
 			headless: true,
-			timeout: 30_000,
+			timeout: 120_000,
 		});
 
 		try {
@@ -205,34 +200,28 @@ async function main() {
 				{ timeout: 300_000 },
 			);
 
-			const nativeSvg = await page.evaluate(
-				({ templateId, source }) => {
-					const scope = globalThis as typeof globalThis & {
-						App7: {
-							data: {
-								entries: Array<Record<string, unknown> & { id: string }>;
-							};
+			const nativeSvg = await page.evaluate((targetId) => {
+				const scope = globalThis as typeof globalThis & {
+					App7: {
+						data: {
+							entries: Array<Record<string, unknown> & { id: string }>;
 						};
-						keyboardSVG: (
-							entry: Record<string, unknown> & { id: string },
-							loads: null,
-							final: number,
-							onset: number,
-							alias: number,
-						) => string;
 					};
-					const template = scope.App7.data.entries.find(
-						({ id }) => id === templateId,
-					);
-					if (!template) throw new Error(`HTML 中找不到模板方案 ${templateId}`);
-					const entry = { ...template, ...source, actual: source.capacity };
-					return scope.keyboardSVG(entry, null, 28, 21, 20);
-				},
-				{ templateId: templateSchemeId, source: renderingScheme },
-			);
+					keyboardSVG: (
+						entry: Record<string, unknown> & { id: string },
+						loads: null,
+						final: number,
+						onset: number,
+						alias: number,
+					) => string;
+				};
+				const entry = scope.App7.data.entries.find(({ id }) => id === targetId);
+				if (!entry) throw new Error(`HTML 中找不到目标方案 ${targetId}`);
+				return scope.keyboardSVG(entry, null, 28, 21, 20);
+			}, targetSchemeId);
 
 			svg = await page.evaluate(
-				({ source, width, height }) => {
+				({ source, width, height, name }) => {
 					const document = new DOMParser().parseFromString(
 						source,
 						"image/svg+xml",
@@ -257,13 +246,12 @@ async function main() {
 					const namespace = "http://www.w3.org/2000/svg";
 					const title = document.createElementNS(namespace, "title");
 					title.id = "title";
-					title.textContent = "无飞键道·神韵 U357 声韵映射图";
+					title.textContent = `${name} 声韵映射图`;
 					const description = document.createElementNS(namespace, "desc");
 					description.id = "desc";
-					description.textContent =
-						"无飞键道·神韵 U357 的声母、韵母与辅键映射。";
+					description.textContent = `${name} 的声母、韵母与辅键映射。`;
 					const heading = root.querySelector('text[x="24"][y="34"]');
-					if (heading) heading.textContent = "无飞键道·神韵 U357";
+					if (heading) heading.textContent = name;
 					root.insertBefore(description, root.firstChild);
 					root.insertBefore(title, description);
 
@@ -273,6 +261,7 @@ async function main() {
 					source: nativeSvg,
 					width: cropWidth,
 					height: cropHeight,
+					name: displayName,
 				},
 			);
 		} finally {

@@ -1,100 +1,220 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { gunzipSync } from "node:zlib";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { chromium, type Page } from "playwright-core";
 
 const args = process.argv.slice(2);
 const check = args.includes("--check");
-const benchmarkPath = args.find((arg) => arg !== "--check");
-if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
-
-const html = readFileSync(resolve(benchmarkPath), "utf8");
-const payloadMatch = html.match(
-	/<script id="payload"[^>]*>([\s\S]*?)<\/script>/,
+const is21x26 = args.includes("--21x26");
+const cdp = args
+	.find((arg) => arg.startsWith("--cdp="))
+	?.slice("--cdp=".length);
+const positional = args.filter(
+	(arg) => arg !== "--check" && arg !== "--21x26" && !arg.startsWith("--cdp="),
 );
-if (!payloadMatch) throw new Error("Benchmark HTML 中未找到压缩 payload。");
-const payload = JSON.parse(
-	gunzipSync(Buffer.from(payloadMatch[1].trim(), "base64")).toString("utf8"),
-) as {
-	macroxue: {
-		layout: Record<string, { x: number; y: number }>;
-		corpora: Record<
-			string,
-			{
-				label: string;
-				tokens: Array<{ key?: string; pinyin?: string }>;
-			}
-		>;
-	};
-};
-const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const mapping = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-u357-mapping.json"), "utf8"),
-) as { name: string; codes: Record<string, string | null> };
-const tokens = payload.macroxue.corpora.daily?.tokens;
-if (!tokens) throw new Error("Benchmark payload 中未找到日常八场景文稿。");
-const strokes = tokens
-	.map((token) => {
-		if (token.key) return token.key;
-		const code = token.pinyin ? mapping.codes[token.pinyin] : null;
-		if (!code) throw new Error(`日常八场景音节无法编码：${token.pinyin}`);
-		return code;
-	})
-	.join("")
-	.toLowerCase();
-const heatMap: Record<string, number> = {};
-for (const key of strokes) heatMap[key] = (heatMap[key] ?? 0) + 1;
-const sample = { hits: strokes.length, heat_map: heatMap };
-
-const visibleKeys = Object.entries(payload.macroxue.layout).filter(
-	([key, position]) => position.x < 10 && key !== "/",
-);
-const maximum =
-	Math.max(
-		...visibleKeys.map(([key]) => sample.heat_map[key.toLowerCase()] ?? 0),
-	) / sample.hits;
-const percent = (value: number) => `${(value * 100).toFixed(2)}%`;
-const heatColor = (ratio: number) => {
-	const normalized = Math.max(0, Math.min(1, ratio / (maximum || 1)));
-	const cold = [238, 246, 240];
-	const hot = [73, 132, 91];
-	const channel = (index: number) =>
-		Math.round(cold[index] + (hot[index] - cold[index]) * normalized);
-	return `rgb(${channel(0)}, ${channel(1)}, ${channel(2)})`;
-};
-const escapeXml = (value: string) =>
-	value
-		.replaceAll("&", "&amp;")
-		.replaceAll("<", "&lt;")
-		.replaceAll(">", "&gt;");
-
-const keys = visibleKeys
-	.map(([key, position]) => {
-		const x =
-			18 + (position.x + (position.y ? 0.25 + (position.y - 1) * 0.5 : 0)) * 76;
-		const y = 22 + position.y * 88;
-		const hits = sample.heat_map[key.toLowerCase()] ?? 0;
-		const ratio = hits / sample.hits;
-		return `<g data-mxkey="${escapeXml(key)}"><title>${escapeXml(key)}：${hits} 次，${percent(ratio)}</title><rect x="${x}" y="${y}" width="68" height="76" rx="7" fill="${heatColor(ratio)}" stroke="#9cad9e"/><text x="${x + 10}" y="${y + 23}" font-size="18" fill="#30483a">${escapeXml(key)}</text><text x="${x + 34}" y="${y + 49}" text-anchor="middle" font-size="14" fill="#30483a">${percent(ratio)}</text><text x="${x + 34}" y="${y + 65}" text-anchor="middle" font-size="10" fill="#5a6c60">${hits} 次</text></g>`;
-	})
-	.join("\n");
-
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc">
-<title id="title">无飞键道·神韵 U357 日常八场景文稿 纯双拼键频图（含标点）</title>
-<desc id="desc">双拼热力图基于日常八场景文稿的 ${sample.hits} 次击键。只包含双拼部分，5 辅键未参与评估。</desc>
-<rect width="790" height="304" fill="#fbfcfa"/>
-${keys}
-</svg>\n`;
-const output = join(root, "docs", "shenyun-u357-keyboard-heat.svg");
-mkdirSync(dirname(output), { recursive: true });
-if (check) {
-	if (!existsSync(output) || readFileSync(output, "utf8") !== svg) {
-		throw new Error(`热力图与当前 U357 映射或文稿不一致：${output}`);
-	}
-	console.log(
-		`热力图校验通过：${mapping.name}，${visibleKeys.length} 键，${sample.hits} 次击键。`,
+if (!positional[0]) {
+	throw new Error(
+		"用法：tsx 导出神韵热力图.ts <benchmark.html> [浏览器可执行文件] [--21x26] [--check]",
 	);
-} else {
-	writeFileSync(output, svg, "utf8");
-	console.log(`${output}\n${visibleKeys.length} 键，${sample.hits} 次击键。`);
 }
+
+const htmlPath = resolve(positional[0]);
+if (!existsSync(htmlPath))
+	throw new Error(`找不到 benchmark HTML：${htmlPath}`);
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const scheme = JSON.parse(
+	readFileSync(
+		join(
+			root,
+			"config",
+			is21x26 ? "shenyun-21x26-mapping.json" : "shenyun-21x21-mapping.json",
+		),
+		"utf8",
+	),
+) as { id: string; candidateId?: string };
+const targetSchemeId = is21x26 ? scheme.id : (scheme.candidateId ?? scheme.id);
+const displayName = is21x26
+	? "神韵(Overall-17) 21×26 双拼"
+	: "无飞键道(U357) 21×21 双拼";
+const output = join(
+	root,
+	"docs",
+	is21x26
+		? "shenyun-overall17-keyboard-heat.svg"
+		: "shenyun-u357-keyboard-heat.svg",
+);
+
+function findBrowser(explicit?: string) {
+	const candidates = [
+		explicit,
+		process.env.CHROME_PATH,
+		"C:/Program Files/Google/Chrome/Application/chrome.exe",
+		"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+		"C:/Program Files/Microsoft/Edge/Application/msedge.exe",
+		"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+		"/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+		"/usr/bin/google-chrome",
+		"/usr/bin/chromium",
+		"/usr/bin/chromium-browser",
+	].filter((candidate): candidate is string => Boolean(candidate));
+	const browser = candidates.find((candidate) => existsSync(candidate));
+	if (!browser) throw new Error("找不到 Chrome/Edge/Chromium。");
+	return browser;
+}
+
+const expression = `(() => {
+	R9_MX.corpus = "daily";
+	R9_MX.variant = "native-punctuation";
+	const wrapper = document.createElement("div");
+	wrapper.innerHTML = r9MacroHeat(${JSON.stringify(targetSchemeId)});
+	const svg = wrapper.querySelector("#r9MacroSVG svg");
+	if (!svg) throw new Error("HTML 中找不到目标方案的文稿热力图");
+	svg.setAttribute("role", "img");
+	svg.setAttribute("aria-labelledby", "title desc");
+	const title = svg.querySelector("title");
+	if (title) {
+		title.id = "title";
+		title.textContent = ${JSON.stringify(`${displayName}日常八场景文稿纯双拼键频图（含标点）`)};
+	}
+	const description = document.createElementNS("http://www.w3.org/2000/svg", "desc");
+	description.id = "desc";
+	description.textContent = "直接导出自 benchmark HTML 的 34 键日常文稿热力图；只含双拼与文稿标点，不含五辅键、空格和选重。";
+	svg.insertBefore(description, title?.nextSibling ?? svg.firstChild);
+	return new XMLSerializer().serializeToString(svg) + "\\n";
+})()`;
+
+async function waitUntilReady(
+	request: (
+		method: string,
+		params?: Record<string, unknown>,
+	) => Promise<unknown>,
+) {
+	const deadline = Date.now() + 300_000;
+	while (true) {
+		const status = (await request("Runtime.evaluate", {
+			expression: "Boolean(globalThis.App7?.ready)",
+			returnByValue: true,
+		})) as { result?: { value?: boolean } };
+		if (status.result?.value) return;
+		if (Date.now() >= deadline) throw new Error("等待 Benchmark 初始化超时");
+		await Bun.sleep(250);
+	}
+}
+
+async function renderOverCdp(endpoint: string) {
+	type CdpResponse = { id?: number; result?: unknown; error?: unknown };
+	const connect = async (url: string) => {
+		const socket = new WebSocket(url);
+		const pending = new Map<
+			number,
+			{ resolve: (value: unknown) => void; reject: (reason: unknown) => void }
+		>();
+		let requestId = 0;
+		await new Promise<void>((resolve, reject) => {
+			socket.addEventListener("open", () => resolve(), { once: true });
+			socket.addEventListener("error", (event) => reject(event), {
+				once: true,
+			});
+		});
+		socket.addEventListener("message", (event) => {
+			const message = JSON.parse(String(event.data)) as CdpResponse;
+			if (message.id === undefined) return;
+			const handler = pending.get(message.id);
+			if (!handler) return;
+			pending.delete(message.id);
+			if (message.error) handler.reject(message.error);
+			else handler.resolve(message.result);
+		});
+		const request = (method: string, params: Record<string, unknown> = {}) =>
+			new Promise<unknown>((resolve, reject) => {
+				const id = ++requestId;
+				pending.set(id, { resolve, reject });
+				socket.send(JSON.stringify({ id, method, params }));
+			});
+		return { socket, request };
+	};
+	const base = endpoint.replace(/\/$/u, "");
+	const version = (await fetch(`${base}/json/version`).then((response) =>
+		response.json(),
+	)) as { webSocketDebuggerUrl: string };
+	const browser = await connect(version.webSocketDebuggerUrl);
+	const created = (await browser.request("Target.createTarget", {
+		url: pathToFileURL(htmlPath).href,
+	})) as { targetId: string };
+	browser.socket.close();
+	const targets = (await fetch(`${base}/json/list`).then((response) =>
+		response.json(),
+	)) as Array<{ id: string; webSocketDebuggerUrl: string }>;
+	const target = targets.find(({ id }) => id === created.targetId);
+	if (!target) throw new Error("CDP 未返回新建页面");
+	const page = await connect(target.webSocketDebuggerUrl);
+	try {
+		await page.request("Runtime.enable");
+		await waitUntilReady(page.request);
+		const evaluated = (await page.request("Runtime.evaluate", {
+			expression,
+			returnByValue: true,
+			awaitPromise: true,
+		})) as {
+			result?: { value?: string };
+			exceptionDetails?: { text?: string };
+		};
+		if (evaluated.exceptionDetails || !evaluated.result?.value) {
+			throw new Error(evaluated.exceptionDetails?.text ?? "CDP 未返回 SVG");
+		}
+		return evaluated.result.value;
+	} finally {
+		void page.request("Page.close").catch(() => undefined);
+		page.socket.close();
+	}
+}
+
+async function renderWithPage(page: Page) {
+	await page.goto(pathToFileURL(htmlPath).href, {
+		waitUntil: "load",
+		timeout: 300_000,
+	});
+	await page.waitForFunction(
+		() =>
+			(globalThis as typeof globalThis & { App7?: { ready?: boolean } }).App7
+				?.ready === true,
+		undefined,
+		{ timeout: 300_000 },
+	);
+	return await page.evaluate(expression);
+}
+
+async function main() {
+	let svg: string;
+	if (cdp) {
+		svg = await renderOverCdp(cdp);
+	} else {
+		const browser = await chromium.launch({
+			executablePath: findBrowser(positional[1]),
+			headless: true,
+			timeout: 120_000,
+		});
+		try {
+			svg = await renderWithPage(await browser.newPage());
+		} finally {
+			await browser.close();
+		}
+	}
+	const keyCount = [...svg.matchAll(/data-mxkey=/gu)].length;
+	if (keyCount !== 34)
+		throw new Error(`热力图应有 34 个键，实际 ${keyCount} 个。`);
+	if (check) {
+		if (!existsSync(output) || readFileSync(output, "utf8") !== svg) {
+			throw new Error(`热力图与 benchmark HTML 不一致：${output}`);
+		}
+		console.log(`热力图校验通过：${displayName}，34 键。`);
+	} else {
+		writeFileSync(output, svg, "utf8");
+		console.log(`已从 benchmark HTML 直接导出：${output}`);
+	}
+}
+
+main().catch((error) => {
+	console.error(error);
+	process.exitCode = 1;
+});
