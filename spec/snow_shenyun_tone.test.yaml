@@ -82,7 +82,7 @@ deploy:
         assert: all_have_length(3) and has("测试仪")
       # xk 是合法的 xia 音节；dyxku 走标准 AAAU+B1。调辅只给出首字三声，仍会与「顶一下」等同桶。
       - send: dyxku
-        assert: page("等一下")
+        assert: error("等一下 rank=" .. tostring(rank("等一下")))
       # 第三音节的 yu 空桶可把第一字三声辅键 u 前移，ykyu 是 AAA+B 的可选短码。
       - send: ykyu
         assert: has("也可以")
