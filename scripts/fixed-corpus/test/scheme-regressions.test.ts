@@ -128,6 +128,8 @@ test("Shenyun merges translator routes lazily with their iterator state", () => 
 		/candidate = snow\.prepare\(candidate, stream\.route\.proxy\)/u,
 	);
 	assert.match(translator, /consumed_length == stream\.route\.main_length/u);
+	assert.match(translator, /add_route\(routes, "AA"/u);
+	assert.match(translator, /route\.family ~= "AA" or not occupied_au/u);
 	assert.doesNotMatch(translator, /table\.sort\(found/u);
 });
 

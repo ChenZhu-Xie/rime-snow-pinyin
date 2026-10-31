@@ -41,12 +41,19 @@ deploy:
         assert: cand[1].text == "在"
       # bing 的 Overall-17 声韵码为 br，键道式首形码为 o（丶）。
       - send: br
-        assert: has("冰")
+        assert: all_have_length(1) and has("冰")
       - send: bro
         assert: has("冰")
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
         assert: commit == nil and has("测试")
+      # AU 空桶回退为声声二字词；第三码按第二字首形辅筛选。
+      - send: cw
+        assert: all_have_length(2) and has("测试")
+      - send: yxo
+        assert: has("也许") and not has("一些")
+      - send: yxi
+        assert: has("一些") and not has("也许")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: brxg
         assert: has("冰雪")

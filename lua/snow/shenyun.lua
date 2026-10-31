@@ -1,6 +1,6 @@
 -- 冰雪神韵·形 / 冰雪神韵·调的飞码式翻译器
 --
--- 主码族：一简 A、单字 AU、二字 AUAU、三字 AAA / AAAU、四字 AAAA。
+-- 主码族：一简 A、单字 AU、空桶二字 AA、二字 AUAU、三字 AAA / AAAU、四字 AAAA。
 -- 两个方案共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
@@ -214,6 +214,7 @@ end
 ---@field iterator fun(translation: Translation): Candidate?
 ---@field candidate Candidate?
 ---@field auxiliary string
+---@field full_found boolean
 
 ---@param stream ShenyunStream
 ---@param env ShenyunEnv
@@ -236,6 +237,7 @@ local function advance(stream, env)
     end
     if consumed_length == stream.route.main_length
         and candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
+      stream.full_found = true
       local matches, auxiliary = auxiliary_match(candidate.text, stream.route.suffix, env)
       if matches then
         stream.candidate = candidate
@@ -257,6 +259,10 @@ local function routes_for(input, env)
   if n >= 2 and contains(A, input:sub(1, 1)) and contains(U, input:sub(2, 2))
       and all_in(input, 3, B) then
     add_route(routes, "AU", input:sub(1, 2), input:sub(3), 1)
+  end
+  if n >= 2 and all_in(input:sub(1, 2), 1, A) and all_in(input, 3, B) then
+    -- AA 只在同码 AU 没有完整单字候选时启用；B 沿用二字词的 B2、B1 顺序。
+    add_route(routes, "AA", input:sub(1, 1) .. " " .. input:sub(2, 2), input:sub(3), 2)
   end
   if n >= 4 and contains(A, input:sub(1, 1)) and contains(U, input:sub(2, 2))
       and contains(A, input:sub(3, 3)) and contains(U, input:sub(4, 4))
@@ -296,6 +302,7 @@ end
 function this.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
+  local occupied_au = false
   for _, route in ipairs(routes_for(input, env)) do
     local translation = env.translator:query(route.proxy, segment)
     if translation then
@@ -305,8 +312,13 @@ function this.func(input, segment, env)
         iterator = translation:iter(),
         candidate = nil,
         auxiliary = "",
+        full_found = false,
       }
-      if advance(stream, env) then
+      local available = advance(stream, env)
+      if route.family == "AU" and stream.full_found then
+        occupied_au = true
+      end
+      if available and (route.family ~= "AA" or not occupied_au) then
         table.insert(streams, stream)
       end
     end

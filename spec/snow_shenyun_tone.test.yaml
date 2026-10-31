@@ -39,12 +39,22 @@ deploy:
         assert: cand[1].text == "人"
       - send: z
         assert: cand[1].text == "在"
+      # 合法 AU 不得混入同键位的声声二字词。
+      - send: br
+        assert: all_have_length(1) and has("冰")
       # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）。
       - send: bri
         assert: has("冰")
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
         assert: commit == nil and has("测试")
+      # AU 空桶回退为声声二字词；第三码按第二字声调筛选。
+      - send: cw
+        assert: all_have_length(2) and has("测试")
+      - send: yxu
+        assert: has("也许") and not has("一些")
+      - send: yxi
+        assert: has("一些") and not has("也许")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: brxg
         assert: has("冰雪")
