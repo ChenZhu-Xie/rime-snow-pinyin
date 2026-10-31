@@ -15,28 +15,28 @@ const includes = (source: string, expected: string, message?: string) =>
 	assert.ok(source.includes(expected), message ?? `缺少：${expected}`);
 
 describe("神韵文档比较装饰", () => {
-	test("星标只比较两个 21×21 方案，奖牌覆盖全部四方案和并列最优", () => {
+	test("单星比较两个 21×21 方案，双星比较前三方案，奖牌比较全部四方案", () => {
 		assert.deepEqual(
 			decorateComparison(values(["1", 1], ["2", 2], ["3", 3], ["1", 1]), "min"),
-			["1 🥇", "**2** ★", "3", "1 🥇"],
+			["**1** ★★ 🥇", "**2** ★", "3", "1 🥇"],
 		);
 		assert.deepEqual(
 			decorateComparison(values(["3", 3], ["2", 2], ["2", 2], ["1", 1]), "min"),
-			["3", "**2** ★", "**2** ★", "1 🥇"],
+			["3", "**2** ★ ★★", "**2** ★ ★★", "1 🥇"],
 		);
 	});
 
 	test("支持高优、接近 50% 与飞键三元组总数", () => {
 		assert.deepEqual(
 			decorateComparison(values(["8", 8], ["7", 7], ["6", 6], ["9", 9]), "max"),
-			["8", "**7** ★", "6", "9 🥇"],
+			["**8** ★★", "**7** ★", "6", "9 🥇"],
 		);
 		assert.deepEqual(
 			decorateComparison(
 				values(["49%", 0.49], ["48%", 0.48], ["53%", 0.53], ["51%", 0.51]),
 				"closest-to-half",
 			),
-			["49% 🥇", "**48%** ★", "53%", "51% 🥇"],
+			["**49%** ★★ 🥇", "**48%** ★", "53%", "51% 🥇"],
 		);
 		assert.deepEqual(
 			decorateComparison(
@@ -48,7 +48,12 @@ describe("神韵文档比较装饰", () => {
 				),
 				"triple-sum",
 			),
-			["0 / 0 / 0 🥇", "**0 / 0 / 0** ★ 🥇", "2 / 0 / 1", "0 / 1 / 7"],
+			[
+				"**0 / 0 / 0** ★★ 🥇",
+				"**0 / 0 / 0** ★ ★★ 🥇",
+				"2 / 0 / 1",
+				"0 / 1 / 7",
+			],
 		);
 	});
 
@@ -60,10 +65,10 @@ describe("神韵文档比较装饰", () => {
 			"| 飞键 | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 0 / 1 | 0 / 1 / 7 |",
 		].join("\n");
 		const once = decorateMarkdownTable(source, ["min", "triple-sum"]);
-		includes(once, "| 低优 | 1 🥇 | **2** ★ | 3 | 1 🥇 |");
+		includes(once, "| 低优 | **1** ★★ 🥇 | **2** ★ | 3 | 1 🥇 |");
 		includes(
 			once,
-			"| 飞键 | 0 / 0 / 0 🥇 | **0 / 0 / 0** ★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 |",
+			"| 飞键 | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★ ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 |",
 		);
 		assert.equal(decorateMarkdownTable(once, ["min", "triple-sum"]), once);
 	});
@@ -92,6 +97,7 @@ test("为四个方案名补链接且不嵌套已有链接", () => {
 test("生成报告在所有可比较表中保留图例、星标与奖牌", () => {
 	const report = read("reports/shenyun-comparison.md");
 	includes(report, "**粗体** ★");
+	includes(report, "**粗体** ★★");
 	includes(report, "🥇");
 	includes(
 		report,
@@ -149,6 +155,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		assert.equal(tables.length, 3);
 		for (const table of tables) {
 			includes(table, "★");
+			includes(table, "★★");
 			includes(table, "🥇");
 		}
 		for (const heading of [
@@ -171,13 +178,13 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 			readme,
 			"[无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)",
 		);
-		includes(
-			readme,
-			"[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)",
-		);
+		includes(readme, "[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)");
 		includes(readme, "[`a7_CKT_R11.html`](https://");
 		includes(readme, "**粗体** ★");
+		includes(readme, "**粗体** ★★");
 		includes(readme, "**Bold** ★");
+		includes(readme, "**Bold** ★★");
 		includes(readme, "**粗體** ★");
+		includes(readme, "**粗體** ★★");
 	}
 });

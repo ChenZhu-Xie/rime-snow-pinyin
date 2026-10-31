@@ -124,39 +124,39 @@
 
 四方案共用 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)、冻结 20 合同、字词／形码数据、[CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 模型和日常八场景文稿；[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 采用传统 21×21 合同，[神韵(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html)与 [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 采用四码顶合同。
 
-表中 **粗体** ★ 只比较同为传统 21×21 合同的[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)；🥇 比较全部四方案；并列最优均保留标记。
+表中 **粗体** ★ 只比较同为传统 21×21 合同的[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)；**粗体** ★★ 比较[神韵(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html)、[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 不参与；🥇 比较全部四方案；并列最优均保留标记。
 
 | 指标 | [神韵(Overall-17) 21×26 双拼](https://input.tansongchen.com/snow-feihua/basic.html) | [无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) | 何为好 |
 | --- | ---: | ---: | ---: | ---: | --- |
-| [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 记忆项[^zh-mr2] | 36 🥇 | **40** ★ | 44 | 51 | 越低越好 |
-| 飞键成分（声母／零声母组／韵母）[^zh-fly] | 0 / 0 / 0 🥇 | **0 / 0 / 0** ★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
-| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑审计[^zh-logic] | 98.298315 | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑均匀度[^zh-logic] | 81.043390 | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一码／唯一率[^zh-collision] | 399 / 100% 🥇 | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重码 |
-| 重码盈余／盈余率[^zh-collision] | 0 / 0% 🥇 | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | 越低越好 |
-| 重码桶／受影响音节[^zh-collision] | 0 / 0（0%） 🥇 | 42×二元 / 84（21.053%） | **27×二元 / 54（13.534%）** ★ | 0 / 0（0%） 🥇 | 越少越好 |
-| 频率加权 S2 miss[^zh-s2] | 0% 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |
-| S2 补全平均码长[^zh-s2] | 2.0000 🥇 | 2.1474 | **2.0725** ★ | 2.0000 🥇 | 越低越好 |
-| S2 补全中心时间（ms）[^zh-s2] | 75.672 🥇 | **89.917** ★ | 90.257 | 79.890 | 越低越好 |
-| 综合补全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ckt3] | 9.630039 | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；历史固定延迟情景 |
-| 综合补全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ckt4] | 9.185254 | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble34] | 10.620559 | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；冻结历史轴 |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble34] | 10.684702 | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；冻结历史轴 |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble5] | 10.821925 | **10.473306** ★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ensemble6] | 9.534119 | **9.512904** ★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指标 |
-| 八轨综合选重率[^zh-rates] | 0.609% | **1.443%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八轨第一辅键率[^zh-rates] | 20.831% | **26.150%** ★ | 26.413% | 19.746% 🥇 | 越低额外击键越少 |
-| 八轨第二辅键率[^zh-rates] | 4.459% | **7.040%** ★ | 7.201% | 4.158% 🥇 | 越低额外击键越少 |
-| 日常左右手负载／左手占比[^zh-daily] | 1017:1132 / 47.324% | **1091:1058 / 50.768%** ★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率[^zh-daily] | 45.882% | 46.533% | **45.882%** ★ | 45.416% 🥇 | 越低越好；非独立速度结论 |
-| 日常平均有效距离[^zh-daily] | 0.7118 | **0.6555** ★ 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
-| 20 合同 QAZ 左小指组峰值[^zh-load] | 18.8952% | **16.3119%** ★ 🥇 | 17.1601% | 16.6615% | 越低越好 |
-| 20 合同 P 区右小指组峰值[^zh-load] | 3.5164% | 5.1045% | **2.7738%** ★ | 1.8881% 🥇 | 越低越好 |
-| 20 合同最大单指峰值[^zh-load] | 27.6709% | **25.2149%** ★ 🥇 | 29.5312% | 29.2707% | 越低越好 |
-| S2 主键区占比[^zh-home] | 37.0249% | **52.0307%** ★ 🥇 | 49.0006% | 36.5996% | 越高越集中 |
-| 20 合同主键区下限[^zh-load] | 24.7331% | **37.6204%** ★ 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 20 合同 TYB 双食指组峰值[^zh-load] | 12.4215% | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | 越低越好 |
-| 日常纯双拼移动手分数（含标点）[^zh-daily] | 132.219 | **143.380** ★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+| [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 记忆项[^zh-mr2] | **36** ★★ 🥇 | **40** ★ | 44 | 51 | 越低越好 |
+| 飞键成分（声母／零声母组／韵母）[^zh-fly] | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★ ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
+| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑审计[^zh-logic] | **98.298315** ★★ | **98.298315** ★ ★★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑均匀度[^zh-logic] | **81.043390** ★★ | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一码／唯一率[^zh-collision] | **399 / 100%** ★★ 🥇 | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重码 |
+| 重码盈余／盈余率[^zh-collision] | **0 / 0%** ★★ 🥇 | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | 越低越好 |
+| 重码桶／受影响音节[^zh-collision] | **0 / 0（0%）** ★★ 🥇 | 42×二元 / 84（21.053%） | **27×二元 / 54（13.534%）** ★ | 0 / 0（0%） 🥇 | 越少越好 |
+| 频率加权 S2 miss[^zh-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |
+| S2 补全平均码长[^zh-s2] | **2.0000** ★★ 🥇 | 2.1474 | **2.0725** ★ | 2.0000 🥇 | 越低越好 |
+| S2 补全中心时间（ms）[^zh-s2] | **75.672** ★★ 🥇 | **89.917** ★ | 90.257 | 79.890 | 越低越好 |
+| 综合补全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ckt3] | **9.630039** ★★ | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；历史固定延迟情景 |
+| 综合补全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ckt4] | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble34] | **10.620559** ★★ | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；冻结历史轴 |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble34] | **10.684702** ★★ | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；冻结历史轴 |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble5] | 10.821925 | **10.473306** ★ ★★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ensemble6] | 9.534119 | **9.512904** ★ ★★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指标 |
+| 八轨综合选重率[^zh-rates] | **0.609%** ★★ | **1.443%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八轨第一辅键率[^zh-rates] | **20.831%** ★★ | **26.150%** ★ | 26.413% | 19.746% 🥇 | 越低额外击键越少 |
+| 八轨第二辅键率[^zh-rates] | **4.459%** ★★ | **7.040%** ★ | 7.201% | 4.158% 🥇 | 越低额外击键越少 |
+| 日常左右手负载／左手占比[^zh-daily] | 1017:1132 / 47.324% | **1091:1058 / 50.768%** ★ ★★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率[^zh-daily] | **45.882%** ★★ | 46.533% | **45.882%** ★ ★★ | 45.416% 🥇 | 越低越好；非独立速度结论 |
+| 日常平均有效距离[^zh-daily] | 0.7118 | **0.6555** ★ ★★ 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
+| 20 合同 QAZ 左小指组峰值[^zh-load] | 18.8952% | **16.3119%** ★ ★★ 🥇 | 17.1601% | 16.6615% | 越低越好 |
+| 20 合同 P 区右小指组峰值[^zh-load] | 3.5164% | 5.1045% | **2.7738%** ★ ★★ | 1.8881% 🥇 | 越低越好 |
+| 20 合同最大单指峰值[^zh-load] | 27.6709% | **25.2149%** ★ ★★ 🥇 | 29.5312% | 29.2707% | 越低越好 |
+| S2 主键区占比[^zh-home] | 37.0249% | **52.0307%** ★ ★★ 🥇 | 49.0006% | 36.5996% | 越高越集中 |
+| 20 合同主键区下限[^zh-load] | 24.7331% | **37.6204%** ★ ★★ 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 TYB 双食指组峰值[^zh-load] | **12.4215%** ★★ | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | 越低越好 |
+| 日常纯双拼移动手分数（含标点）[^zh-daily] | 132.219 | **143.380** ★ ★★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
 [^zh-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 口径下逐项计数非原键声韵映射和额外路由规则，是记忆／路由复杂度账本。
 [^zh-fly]: 飞键按 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 实际二键码统计：同一逻辑成分分布在两个或更多物理键上时计 1；不同成分共用一个键、或成分整体移到非本位键均不计。韵母沿用 [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的规范化书写韵尾，`j/q/x/Y` 后的 `u` 还原为 `v`。[无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)无飞键；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 为声母 `ch→J/W`、`zh→F/Q` 与韵母 `uang→M/X`；[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的普通声母无飞键，零声母 `E→E/U`，韵母为 `ai→I/L`、`an→J/N`、`ao→D/O`、`en→K/N`、`ou→S/U`、`v→U/V`、`ve→B/L`，其中 `v/ve` 即 `ü/üe` 规范组。
@@ -368,39 +368,39 @@ The `j/q/x` u-series and the zero-onset YU series normalize to `v/van/ve/vn`. [T
 
 All four layouts use [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md), the frozen 20 contracts, the same word/shape data, [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md), and the daily corpus. [Wufei KeyTao(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) and [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) use the traditional 21×21 contract; [Shenyun(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html) and [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) use the four-code-top contract.
 
-In the tables, **Bold** ★ compares only the two traditional 21×21 layouts, [Wufei KeyTao(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) and [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts); 🥇 compares all four layouts. Every tied best cell keeps the same marker.
+In the tables, **Bold** ★ compares only the two traditional 21×21 layouts, [Wufei KeyTao(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts); **Bold** ★★ compares [Shenyun(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html), [Wufei KeyTao(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code), and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts), excluding Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md); 🥇 compares all four layouts. Every tied best cell keeps the same marker.
 
 | Metric | [Shenyun(Overall-17) 21×26 double pinyin](https://input.tansongchen.com/snow-feihua/basic.html) | [Wufei KeyTao(U357) 21×21 double pinyin](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) | KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) | Better |
 | --- | ---: | ---: | ---: | ---: | --- |
-| [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) memory items[^en-mr2] | 36 🥇 | **40** ★ | 44 | 51 | Lower |
-| Flying-key components (initials / zero-initial groups / finals)[^en-fly] | 0 / 0 / 0 🥇 | **0 / 0 / 0** ★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | Fewer is better |
-| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) logic audit[^en-logic] | 98.298315 | **98.298315** ★ | 97.708694 | 99.763391 🥇 | Higher consistency |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) logic uniformity[^en-logic] | 81.043390 | 73.529803 | **78.897555** ★ | 83.107434 🥇 | Higher uniformity |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) unique codes / rate[^en-collision] | 399 / 100% 🥇 | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | Higher, fewer collisions |
-| Collision excess / rate[^en-collision] | 0 / 0% 🥇 | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | Lower |
-| Collision buckets / affected syllables[^en-collision] | 0 / 0（0%） 🥇 | 42 binary / 84 (21.053%) | **27 binary / 54 (13.534%)** ★ | 0 / 0 (0%) 🥇 | Lower |
-| Frequency-weighted S2 miss[^en-s2] | 0% 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | Lower |
-| S2-completion mean code length[^en-s2] | 2.0000 🥇 | 2.1474 | **2.0725** ★ | 2.0000 🥇 | Lower |
-| S2-completion center time (ms)[^en-s2] | 75.672 🥇 | **89.917** ★ | 90.257 | 79.890 | Lower |
-| Completion [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ckt3] | 9.630039 | **9.782135** ★ | 10.000000 | 9.461105 🥇 | Lower; historical fixed-delay scenario |
-| Completion [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ckt4] | 9.185254 | **9.716421** ★ | 10.000000 | 9.184607 🥇 | Lower; current primary metric |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble34] | 10.620559 | **10.737188** ★ | 10.740028 | 10.519452 🥇 | Lower; frozen historical axis |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble34] | 10.684702 | **10.804598** ★ | 10.805830 | 10.583290 🥇 | Lower; frozen historical axis |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble5] | 10.821925 | **10.473306** ★ 🥇 | 11.478960 | 11.091225 | Lower; CKT-only |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ensemble6] | 9.534119 | **9.512904** ★ 🥇 | 10.000000 | 9.589632 | Lower; scenario index |
-| Eight-track aggregate selection rate[^en-rates] | 0.609% | **1.443%** ★ | 1.532% | 0.572% 🥇 | Lower |
-| Eight-track first-auxiliary rate[^en-rates] | 20.831% | **26.150%** ★ | 26.413% | 19.746% 🥇 | Lower means fewer extra keys |
-| Eight-track second-auxiliary rate[^en-rates] | 4.459% | **7.040%** ★ | 7.201% | 4.158% 🥇 | Lower means fewer extra keys |
-| Daily left:right load / left share[^en-daily] | 1017:1132 / 47.324% | **1091:1058 / 50.768%** ★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | Closer to 50% is more balanced |
-| Daily same-hand rate[^en-daily] | 45.882% | 46.533% | **45.882%** ★ | 45.416% 🥇 | Lower; not a standalone speed result |
-| Daily mean effective distance[^en-daily] | 0.7118 | **0.6555** ★ 🥇 | 0.6796 | 0.7012 | Lower in the same model |
-| 20-contract QAZ left-pinky-group peak[^en-load] | 18.8952% | **16.3119%** ★ 🥇 | 17.1601% | 16.6615% | Lower; W6-Snow for all three |
-| 20-contract P-zone right-pinky-group peak[^en-load] | 3.5164% | 5.1045% | **2.7738%** ★ | 1.8881% 🥇 | Lower |
-| 20-contract maximum single-finger peak[^en-load] | 27.6709% | **25.2149%** ★ 🥇 | 29.5312% | 29.2707% | Lower |
-| S2 home-row share[^en-home] | 37.0249% | **52.0307%** ★ 🥇 | 49.0006% | 36.5996% | Higher concentration |
-| 20-contract home-row floor[^en-load] | 24.7331% | **37.6204%** ★ 🥇 | 30.8146% | 24.2427% | Higher |
-| 20-contract TYB two-index-finger peak[^en-load] | 12.4215% | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | Lower |
-| Daily pure-double-pinyin moving-hand score, with punctuation[^en-daily] | 132.219 | **143.380** ★ 🥇 | 138.672 | 135.310 | Higher on the same corpus |
+| [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) memory items[^en-mr2] | **36** ★★ 🥇 | **40** ★ | 44 | 51 | Lower |
+| Flying-key components (initials / zero-initial groups / finals)[^en-fly] | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★ ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | Fewer is better |
+| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) logic audit[^en-logic] | **98.298315** ★★ | **98.298315** ★ ★★ | 97.708694 | 99.763391 🥇 | Higher consistency |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) logic uniformity[^en-logic] | **81.043390** ★★ | 73.529803 | **78.897555** ★ | 83.107434 🥇 | Higher uniformity |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) unique codes / rate[^en-collision] | **399 / 100%** ★★ 🥇 | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | Higher, fewer collisions |
+| Collision excess / rate[^en-collision] | **0 / 0%** ★★ 🥇 | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | Lower |
+| Collision buckets / affected syllables[^en-collision] | **0 / 0（0%）** ★★ 🥇 | 42 binary / 84 (21.053%) | **27 binary / 54 (13.534%)** ★ | 0 / 0 (0%) 🥇 | Lower |
+| Frequency-weighted S2 miss[^en-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | Lower |
+| S2-completion mean code length[^en-s2] | **2.0000** ★★ 🥇 | 2.1474 | **2.0725** ★ | 2.0000 🥇 | Lower |
+| S2-completion center time (ms)[^en-s2] | **75.672** ★★ 🥇 | **89.917** ★ | 90.257 | 79.890 | Lower |
+| Completion [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ckt3] | **9.630039** ★★ | **9.782135** ★ | 10.000000 | 9.461105 🥇 | Lower; historical fixed-delay scenario |
+| Completion [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ckt4] | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | Lower; current primary metric |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble34] | **10.620559** ★★ | **10.737188** ★ | 10.740028 | 10.519452 🥇 | Lower; frozen historical axis |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble34] | **10.684702** ★★ | **10.804598** ★ | 10.805830 | 10.583290 🥇 | Lower; frozen historical axis |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble5] | 10.821925 | **10.473306** ★ ★★ 🥇 | 11.478960 | 11.091225 | Lower; CKT-only |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ensemble6] | 9.534119 | **9.512904** ★ ★★ 🥇 | 10.000000 | 9.589632 | Lower; scenario index |
+| Eight-track aggregate selection rate[^en-rates] | **0.609%** ★★ | **1.443%** ★ | 1.532% | 0.572% 🥇 | Lower |
+| Eight-track first-auxiliary rate[^en-rates] | **20.831%** ★★ | **26.150%** ★ | 26.413% | 19.746% 🥇 | Lower means fewer extra keys |
+| Eight-track second-auxiliary rate[^en-rates] | **4.459%** ★★ | **7.040%** ★ | 7.201% | 4.158% 🥇 | Lower means fewer extra keys |
+| Daily left:right load / left share[^en-daily] | 1017:1132 / 47.324% | **1091:1058 / 50.768%** ★ ★★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | Closer to 50% is more balanced |
+| Daily same-hand rate[^en-daily] | **45.882%** ★★ | 46.533% | **45.882%** ★ ★★ | 45.416% 🥇 | Lower; not a standalone speed result |
+| Daily mean effective distance[^en-daily] | 0.7118 | **0.6555** ★ ★★ 🥇 | 0.6796 | 0.7012 | Lower in the same model |
+| 20-contract QAZ left-pinky-group peak[^en-load] | 18.8952% | **16.3119%** ★ ★★ 🥇 | 17.1601% | 16.6615% | Lower; W6-Snow for all three |
+| 20-contract P-zone right-pinky-group peak[^en-load] | 3.5164% | 5.1045% | **2.7738%** ★ ★★ | 1.8881% 🥇 | Lower |
+| 20-contract maximum single-finger peak[^en-load] | 27.6709% | **25.2149%** ★ ★★ 🥇 | 29.5312% | 29.2707% | Lower |
+| S2 home-row share[^en-home] | 37.0249% | **52.0307%** ★ ★★ 🥇 | 49.0006% | 36.5996% | Higher concentration |
+| 20-contract home-row floor[^en-load] | 24.7331% | **37.6204%** ★ ★★ 🥇 | 30.8146% | 24.2427% | Higher |
+| 20-contract TYB two-index-finger peak[^en-load] | **12.4215%** ★★ | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | Lower |
+| Daily pure-double-pinyin moving-hand score, with punctuation[^en-daily] | 132.219 | **143.380** ★ ★★ 🥇 | 138.672 | 135.310 | Higher on the same corpus |
 
 [^en-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) counts non-native initial/final mappings and extra routing rules under [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md); it is a memory/routing-complexity ledger.
 [^en-fly]: Flying-key components are counted from the actual [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) two-key codes: one logical component counts once when it uses two or more physical keys. Co-locating different components on one key, or moving an entire component away from its native key, does not count. Finals follow [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) normalized written tails, with `u` after `j/q/x/Y` restored to `v`. [Wufei KeyTao(U357) 21×21 double pinyin](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) has none; [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) splits initials `ch→J/W` and `zh→F/Q` plus final `uang→M/X`; [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) has no split ordinary initial, but splits zero-initial group `E→E/U` and finals `ai→I/L`, `an→J/N`, `ao→D/O`, `en→K/N`, `ou→S/U`, `v→U/V`, and `ve→B/L`. Here `v/ve` are the normalized `ü/üe` groups.
@@ -533,39 +533,39 @@ bun scripts/验证神韵双拼.ts
 
 四方案共用 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)、凍結 20 合同、字詞／形碼資料、[CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 模型及日常八場景文稿；[無飛鍵道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)與 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 採傳統 21×21 合同，[神韻(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html)與 [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 採四碼頂合同。
 
-表中 **粗體** ★ 只比較同為傳統 21×21 合同的[無飛鍵道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)與 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)；🥇 比較全部四方案；並列最優均保留標記。
+表中 **粗體** ★ 只比較同為傳統 21×21 合同的[無飛鍵道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)；**粗體** ★★ 比較[神韻(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html)、[無飛鍵道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 不參與；🥇 比較全部四方案；並列最優均保留標記。
 
 | 指標 | [神韻(Overall-17) 21×26 雙拼](https://input.tansongchen.com/snow-feihua/basic.html) | [無飛鍵道(U357) 21×21 雙拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) | 原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) | 何為好 |
 | --- | ---: | ---: | ---: | ---: | --- |
-| [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 記憶項[^zht-mr2] | 36 🥇 | **40** ★ | 44 | 51 | 越低越好 |
-| 飛鍵成分（聲母／零聲母組／韻母）[^zht-fly] | 0 / 0 / 0 🥇 | **0 / 0 / 0** ★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
-| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 邏輯審計[^zht-logic] | 98.298315 | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 邏輯均勻度[^zht-logic] | 81.043390 | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一碼／唯一率[^zht-collision] | 399 / 100% 🥇 | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重碼 |
-| 重碼盈餘／盈餘率[^zht-collision] | 0 / 0% 🥇 | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | 越低越好 |
-| 重碼桶／受影響音節[^zht-collision] | 0 / 0（0%） 🥇 | 42×二元 / 84（21.053%） | **27×二元 / 54（13.534%）** ★ | 0 / 0（0%） 🥇 | 越少越好 |
-| 頻率加權 S2 miss[^zht-s2] | 0% 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |
-| S2 補全平均碼長[^zht-s2] | 2.0000 🥇 | 2.1474 | **2.0725** ★ | 2.0000 🥇 | 越低越好 |
-| S2 補全中心時間（ms）[^zht-s2] | 75.672 🥇 | **89.917** ★ | 90.257 | 79.890 | 越低越好 |
-| 綜合補全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ckt3] | 9.630039 | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；歷史固定延遲情景 |
-| 綜合補全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ckt4] | 9.185254 | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；現行主指標 |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble34] | 10.620559 | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；凍結歷史軸 |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble34] | 10.684702 | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；凍結歷史軸 |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble5] | 10.821925 | **10.473306** ★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ensemble6] | 9.534119 | **9.512904** ★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指標 |
-| 八軌綜合選重率[^zht-rates] | 0.609% | **1.443%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八軌第一輔鍵率[^zht-rates] | 20.831% | **26.150%** ★ | 26.413% | 19.746% 🥇 | 越低額外擊鍵越少 |
-| 八軌第二輔鍵率[^zht-rates] | 4.459% | **7.040%** ★ | 7.201% | 4.158% 🥇 | 越低額外擊鍵越少 |
-| 日常左右手負載／左手占比[^zht-daily] | 1017:1132 / 47.324% | **1091:1058 / 50.768%** ★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率[^zht-daily] | 45.882% | 46.533% | **45.882%** ★ | 45.416% 🥇 | 越低越好；非獨立速度結論 |
-| 日常平均有效距離[^zht-daily] | 0.7118 | **0.6555** ★ 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
-| 20 合同 QAZ 左小指組峰值[^zht-load] | 18.8952% | **16.3119%** ★ 🥇 | 17.1601% | 16.6615% | 越低越好 |
-| 20 合同 P 區右小指組峰值[^zht-load] | 3.5164% | 5.1045% | **2.7738%** ★ | 1.8881% 🥇 | 越低越好 |
-| 20 合同最大單指峰值[^zht-load] | 27.6709% | **25.2149%** ★ 🥇 | 29.5312% | 29.2707% | 越低越好 |
-| S2 主鍵區占比[^zht-home] | 37.0249% | **52.0307%** ★ 🥇 | 49.0006% | 36.5996% | 越高越集中 |
-| 20 合同主鍵區下限[^zht-load] | 24.7331% | **37.6204%** ★ 🥇 | 30.8146% | 24.2427% | 越高越好 |
-| 20 合同 TYB 雙食指組峰值[^zht-load] | 12.4215% | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | 越低越好 |
-| 日常純雙拼移動手分數（含標點）[^zht-daily] | 132.219 | **143.380** ★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
+| [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 記憶項[^zht-mr2] | **36** ★★ 🥇 | **40** ★ | 44 | 51 | 越低越好 |
+| 飛鍵成分（聲母／零聲母組／韻母）[^zht-fly] | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★ ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
+| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 邏輯審計[^zht-logic] | **98.298315** ★★ | **98.298315** ★ ★★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 邏輯均勻度[^zht-logic] | **81.043390** ★★ | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一碼／唯一率[^zht-collision] | **399 / 100%** ★★ 🥇 | 357 / 89.474% | **372 / 93.233%** ★ | 399 / 100% 🥇 | 越高越少重碼 |
+| 重碼盈餘／盈餘率[^zht-collision] | **0 / 0%** ★★ 🥇 | 42 / 10.526% | **27 / 6.767%** ★ | 0 / 0% 🥇 | 越低越好 |
+| 重碼桶／受影響音節[^zht-collision] | **0 / 0（0%）** ★★ 🥇 | 42×二元 / 84（21.053%） | **27×二元 / 54（13.534%）** ★ | 0 / 0（0%） 🥇 | 越少越好 |
+| 頻率加權 S2 miss[^zht-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |
+| S2 補全平均碼長[^zht-s2] | **2.0000** ★★ 🥇 | 2.1474 | **2.0725** ★ | 2.0000 🥇 | 越低越好 |
+| S2 補全中心時間（ms）[^zht-s2] | **75.672** ★★ 🥇 | **89.917** ★ | 90.257 | 79.890 | 越低越好 |
+| 綜合補全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ckt3] | **9.630039** ★★ | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；歷史固定延遲情景 |
+| 綜合補全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ckt4] | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；現行主指標 |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble34] | **10.620559** ★★ | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；凍結歷史軸 |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble34] | **10.684702** ★★ | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；凍結歷史軸 |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble5] | 10.821925 | **10.473306** ★ ★★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ensemble6] | 9.534119 | **9.512904** ★ ★★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指標 |
+| 八軌綜合選重率[^zht-rates] | **0.609%** ★★ | **1.443%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八軌第一輔鍵率[^zht-rates] | **20.831%** ★★ | **26.150%** ★ | 26.413% | 19.746% 🥇 | 越低額外擊鍵越少 |
+| 八軌第二輔鍵率[^zht-rates] | **4.459%** ★★ | **7.040%** ★ | 7.201% | 4.158% 🥇 | 越低額外擊鍵越少 |
+| 日常左右手負載／左手占比[^zht-daily] | 1017:1132 / 47.324% | **1091:1058 / 50.768%** ★ ★★ 🥇 | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率[^zht-daily] | **45.882%** ★★ | 46.533% | **45.882%** ★ ★★ | 45.416% 🥇 | 越低越好；非獨立速度結論 |
+| 日常平均有效距離[^zht-daily] | 0.7118 | **0.6555** ★ ★★ 🥇 | 0.6796 | 0.7012 | 同模型越低越好 |
+| 20 合同 QAZ 左小指組峰值[^zht-load] | 18.8952% | **16.3119%** ★ ★★ 🥇 | 17.1601% | 16.6615% | 越低越好 |
+| 20 合同 P 區右小指組峰值[^zht-load] | 3.5164% | 5.1045% | **2.7738%** ★ ★★ | 1.8881% 🥇 | 越低越好 |
+| 20 合同最大單指峰值[^zht-load] | 27.6709% | **25.2149%** ★ ★★ 🥇 | 29.5312% | 29.2707% | 越低越好 |
+| S2 主鍵區占比[^zht-home] | 37.0249% | **52.0307%** ★ ★★ 🥇 | 49.0006% | 36.5996% | 越高越集中 |
+| 20 合同主鍵區下限[^zht-load] | 24.7331% | **37.6204%** ★ ★★ 🥇 | 30.8146% | 24.2427% | 越高越好 |
+| 20 合同 TYB 雙食指組峰值[^zht-load] | **12.4215%** ★★ | **14.0920%** ★ | 14.7331% | 12.3581% 🥇 | 越低越好 |
+| 日常純雙拼移動手分數（含標點）[^zht-daily] | 132.219 | **143.380** ★ ★★ 🥇 | 138.672 | 135.310 | 同文稿越高越好 |
 
 [^zht-mr2]: [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 口徑下逐項計數非原鍵聲韻映射與額外路由規則，是記憶／路由複雜度帳本。
 [^zht-fly]: 飛鍵按 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 實際二鍵碼統計：同一邏輯成分分佈在兩個或更多物理鍵上時計 1；不同成分共用一鍵，或成分整體移到非本位鍵均不計。韻母沿用 [M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的規範化書寫韻尾，`j/q/x/Y` 後的 `u` 還原為 `v`。[無飛鍵道(U357) 21×21 雙拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)無飛鍵；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 為聲母 `ch→J/W`、`zh→F/Q` 與韻母 `uang→M/X`；[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的普通聲母無飛鍵，零聲母 `E→E/U`，韻母為 `ai→I/L`、`an→J/N`、`ao→D/O`、`en→K/N`、`ou→S/U`、`v→U/V`、`ve→B/L`，其中 `v/ve` 即 `ü/üe` 規範組。

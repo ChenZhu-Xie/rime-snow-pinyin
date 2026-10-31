@@ -12,7 +12,8 @@ export interface ComparisonValue {
 export type ShenyunLanguage = "zh" | "en" | "zht";
 export type LinkHost = "github" | "gitee";
 
-const peerIndices = [1, 2] as const;
+const traditional21x21Indices = [1, 2] as const;
+const nonShoudaoIndices: readonly number[] = [0, 1, 2];
 const epsilon = 1e-12;
 
 export const readComparisonScore = (
@@ -28,7 +29,10 @@ export const readComparisonScore = (
 };
 
 export const stripComparisonDecoration = (value: string) => {
-	let result = value.trim().replaceAll(" ★", "").replaceAll(" 🥇", "");
+	let result = value
+		.trim()
+		.replace(/(?:\s+★+)+/gu, "")
+		.replaceAll(" 🥇", "");
 	if (result.startsWith("**") && result.endsWith("**"))
 		result = result.slice(2, -2);
 	return result;
@@ -40,7 +44,7 @@ const isTied = (left: number, right: number) =>
 export function decorateComparison(
 	values: readonly ComparisonValue[],
 	direction: ComparisonDirection,
-	peers: readonly number[] = peerIndices,
+	peers: readonly number[] = traditional21x21Indices,
 ) {
 	if (values.length === 0) return [];
 	const scores = values.map(({ score }) =>
@@ -50,10 +54,18 @@ export function decorateComparison(
 		throw new Error("比较值必须是有限数字。");
 	const globalBest = Math.min(...scores);
 	const peerBest = Math.min(...peers.map((index) => scores[index]));
+	const nonShoudaoBest = Math.min(
+		...nonShoudaoIndices.map((index) => scores[index]),
+	);
 	return values.map(({ display }, index) => {
 		let output = stripComparisonDecoration(display);
-		if (peers.includes(index) && isTied(scores[index], peerBest))
-			output = `**${output}** ★`;
+		const isPeerBest = peers.includes(index) && isTied(scores[index], peerBest);
+		const isNonShoudaoBest =
+			nonShoudaoIndices.includes(index) &&
+			isTied(scores[index], nonShoudaoBest);
+		if (isPeerBest || isNonShoudaoBest) output = `**${output}**`;
+		if (isPeerBest) output += " ★";
+		if (isNonShoudaoBest) output += " ★★";
 		if (isTied(scores[index], globalBest)) output += " 🥇";
 		return output;
 	});

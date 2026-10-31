@@ -370,10 +370,10 @@ function addComparisonLegends(markdown: string) {
 		if (!match) continue;
 		const legend =
 			match[1] === "Metric"
-				? "In the tables, **Bold** ★ compares only the two traditional 21×21 layouts, Wufei KeyTao(U357) and S005; 🥇 compares all four layouts. Every tied best cell keeps the same marker."
+				? "In the tables, **Bold** ★ compares only the two traditional 21×21 layouts, Wufei KeyTao(U357) and the original KeyTao S005; **Bold** ★★ compares Shenyun(Overall-17), Wufei KeyTao(U357), and the original KeyTao S005, excluding Shoudao B04; 🥇 compares all four layouts. Every tied best cell keeps the same marker."
 				: match[1] === "指標"
-					? "表中 **粗體** ★ 只比較同為傳統 21×21 合同的無飛鍵道(U357)與 S005；🥇 比較全部四方案；並列最優均保留標記。"
-					: "表中 **粗体** ★ 只比较同为传统 21×21 合同的无飞键道(U357)与 S005；🥇 比较全部四方案；并列最优均保留标记。";
+					? "表中 **粗體** ★ 只比較同為傳統 21×21 合同的無飛鍵道(U357)與原鍵道 S005；**粗體** ★★ 比較神韻(Overall-17)、無飛鍵道(U357)與原鍵道 S005，首道 B04 不參與；🥇 比較全部四方案；並列最優均保留標記。"
+					: "表中 **粗体** ★ 只比较同为传统 21×21 合同的无飞键道(U357)与原键道 S005；**粗体** ★★ 比较神韵(Overall-17)、无飞键道(U357)与原键道 S005，首道 B04 不参与；🥇 比较全部四方案；并列最优均保留标记。";
 		while (index > 0 && lines[index - 1] === "") {
 			lines.splice(index - 1, 1);
 			index--;
