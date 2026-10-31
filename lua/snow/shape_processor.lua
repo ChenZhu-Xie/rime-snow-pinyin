@@ -24,6 +24,7 @@ end
 ---@field commit_connection Connection
 ---@field vacancy_translator Translator|nil
 ---@field vacancy_memory Memory|nil
+---@field vacancy_projection Projection|nil
 ---@field vacancy_cache table<string, boolean>
 
 local processor = {}
@@ -70,6 +71,8 @@ function processor.init(env)
     if parsed.vacant and not env.vacancy_memory then
       env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
       env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
+      env.vacancy_projection = Projection(
+        env.engine.schema.config:get_list("sanpin_algebra") or {})
     end
     table.insert(env.config, parsed)
     ::continue::
@@ -116,8 +119,9 @@ function processor.func(key_event, env)
       end
       if rule.vacant then
         if input:len() ~= 2 or not env.vacancy_translator or not env.vacancy_memory
+            or not env.vacancy_projection
             or not vacancy.is_empty(input, segment, env.vacancy_translator,
-              env.vacancy_memory, env.vacancy_cache) then
+              env.vacancy_memory, env.vacancy_projection, env.vacancy_cache) then
           goto continue
         end
       end
@@ -149,6 +153,7 @@ function processor.fini(env)
   if env.commit_connection then env.commit_connection:disconnect() end
   env.vacancy_translator = nil
   env.vacancy_memory = nil
+  env.vacancy_projection = nil
   collectgarbage()
 end
 

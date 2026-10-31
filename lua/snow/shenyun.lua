@@ -15,6 +15,7 @@ local this = {}
 ---@field translator Translator
 ---@field vacancy_translator Translator
 ---@field vacancy_memory Memory
+---@field vacancy_projection Projection
 ---@field memory Memory
 ---@field pinyin ReverseLookup
 ---@field shape_elements ReverseLookup
@@ -284,11 +285,11 @@ local function routes_for(input, segment, env)
   local first_pair = n >= 2 and input:sub(1, 2) or ""
   local first_vacant = first_pair ~= "" and all_in(first_pair, 1, A)
       and vacancy.is_empty(first_pair, segment, env.vacancy_translator,
-        env.vacancy_memory, env.vacancy_cache)
+        env.vacancy_memory, env.vacancy_projection, env.vacancy_cache)
   local third_pair = n >= 4 and input:sub(3, 4) or ""
   local third_vacant = third_pair ~= "" and contains(A, third_pair:sub(1, 1))
       and vacancy.is_empty(third_pair, segment, env.vacancy_translator,
-        env.vacancy_memory, env.vacancy_cache)
+        env.vacancy_memory, env.vacancy_projection, env.vacancy_cache)
 
   if n == 1 and contains(A, input) then
     add_route(routes, "A", input, "", 1)
@@ -330,6 +331,7 @@ function this.init(env)
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
+  env.vacancy_projection = Projection(config:get_list("shenyun_algebra") or {})
   env.memory = Memory(env.engine, env.engine.schema, "shenyun")
   env.pinyin = ReverseLookup("snow_pinyin")
   local shape_elements = config:get_string("translator/shape_elements") or "snow_jiandao_chaifen"
@@ -402,6 +404,7 @@ function this.fini(env)
   env.translator = nil
   env.vacancy_translator = nil
   env.vacancy_memory = nil
+  env.vacancy_projection = nil
   env.memory = nil
   env.pinyin = nil
   env.shape_elements = nil

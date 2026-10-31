@@ -34,11 +34,15 @@ local fallback_syllables = {
 
 ---@param entry DictEntry
 ---@param memory Memory
+---@param projection Projection
+---@param input string
 ---@return boolean
-local function occupies_bucket(entry, memory)
+local function occupies_bucket(entry, memory, projection, input)
   local spelling = memory:decode(entry.code)[1]
   -- 字母等伪音节以 ~ 开头，不属于汉字音节，也不能占用 AA/AU 空桶。
   return spelling ~= nil and spelling:sub(1, 1) ~= "~"
+      -- 兼容 derive 分支只负责接受旧拼写；只有当前规范码才能占桶。
+      and projection:apply(spelling):sub(1, input:len()) == input
       and fallback_syllables[spelling:gsub("[0-9]$", "")] ~= true
 end
 
@@ -46,9 +50,10 @@ end
 ---@param segment Segment
 ---@param translator Translator
 ---@param memory Memory
+---@param projection Projection
 ---@param cache table<string, boolean>
 ---@return boolean
-function vacancy.is_empty(input, segment, translator, memory, cache)
+function vacancy.is_empty(input, segment, translator, memory, projection, cache)
   local cached = cache[input]
   if cached ~= nil then return cached end
   local occupied = false
@@ -59,7 +64,7 @@ function vacancy.is_empty(input, segment, translator, memory, cache)
       local phrase = genuine:to_phrase()
       local consumed = genuine._end - genuine.start
       if phrase and consumed == input:len() and utf8.len(candidate.text) == 1
-          and occupies_bucket(phrase.entry, memory) then
+          and occupies_bucket(phrase.entry, memory, projection, input) then
         occupied = true
       end
     end

@@ -530,6 +530,7 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 	assert.match(vacancySource, /translator:query\(input, segment\)/u);
 	assert.match(vacancySource, /memory:decode\(entry\.code\)/u);
 	assert.match(vacancySource, /spelling:sub\(1, 1\) ~= "~"/u);
+	assert.match(vacancySource, /projection:apply\(spelling\):sub\(1, input:len\(\)\) == input/u);
 	assert.doesNotMatch(vacancySource, /entry\.weight/u);
 	const shapeProcessor = read("lua/snow/shape_processor.lua");
 	assert.match(shapeProcessor, /input:len\(\) ~= 2/u);

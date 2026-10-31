@@ -12,6 +12,7 @@ local vacancy = require "snow.vacancy"
 ---@field preserve_t12_proxy_quality boolean
 ---@field vacancy_translator Translator
 ---@field vacancy_memory Memory
+---@field vacancy_projection Projection
 ---@field vacancy_cache table<string, boolean>
 
 ---@param candidate Candidate
@@ -164,6 +165,8 @@ function initial_pair.init(env)
   env.translator = Component.Translator(env.engine, "initial_pair", "script_translator")
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
+  env.vacancy_projection = Projection(
+    env.engine.schema.config:get_list("sanpin_algebra") or {})
   env.vacancy_cache = {}
   env.reserved_pattern =
       env.engine.schema.config:get_string("translator/reserved_initial_pair_pattern") or "^$"
@@ -174,7 +177,7 @@ end
 ---@param env TableLikeEnv
 function initial_pair.func(input, segment, env)
   if not vacancy.is_empty(input, segment, env.vacancy_translator,
-        env.vacancy_memory, env.vacancy_cache)
+        env.vacancy_memory, env.vacancy_projection, env.vacancy_cache)
       or rime_api.regex_match(input, env.reserved_pattern) then
     return
   end
@@ -192,6 +195,7 @@ function initial_pair.fini(env)
   env.translator = nil
   env.vacancy_translator = nil
   env.vacancy_memory = nil
+  env.vacancy_projection = nil
   collectgarbage()
 end
 
