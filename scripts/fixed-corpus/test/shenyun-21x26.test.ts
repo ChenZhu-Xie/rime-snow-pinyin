@@ -123,6 +123,10 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 });
 
 test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码清单", () => {
+	const vacancySource = read("lua/snow/vacancy.lua");
+	assert.match(vacancySource, /memory:dict_lookup\(input, false, 1000\)/u);
+	assert.match(vacancySource, /entry\.weight > 0/u);
+	assert.doesNotMatch(vacancySource, /translator:query/u);
 	const occupied = new Set<string>();
 	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
 		const [word, spelling, rawWeight] = line.split("\t");

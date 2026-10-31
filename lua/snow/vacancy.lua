@@ -4,28 +4,21 @@
 local vacancy = {}
 
 ---@param input string
----@param segment Segment
----@param translator Translator
+---@param memory Memory
 ---@param cache table<string, boolean>
 ---@return boolean
-function vacancy.is_empty(input, segment, translator, cache)
+function vacancy.is_empty(input, memory, cache)
   local cached = cache[input]
   if cached ~= nil then return cached end
-  local translation = translator:query(input, segment)
-  if translation then
-    for candidate in translation:iter() do
-      local genuine = candidate:get_genuine()
-      local phrase = genuine:to_phrase()
-      local consumed = genuine._end - genuine.start
-      if phrase and consumed == input:len() and utf8.len(candidate.text) == 1
-          and phrase.entry.weight > 0 then
-        cache[input] = false
-        return false
-      end
+  local occupied = false
+  memory:dict_lookup(input, false, 1000)
+  for entry in memory:iter_dict() do
+    if utf8.len(entry.text) == 1 and entry.weight > 0 then
+      occupied = true
     end
   end
-  cache[input] = true
-  return true
+  cache[input] = not occupied
+  return not occupied
 end
 
 return vacancy
