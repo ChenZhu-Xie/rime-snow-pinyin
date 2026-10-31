@@ -6,7 +6,7 @@
       "B04"
     ],
     "commonSupport": "Common399、冻结 20 合同、同一字词与形码数据、CKT v4 模型及日常八场景文稿",
-    "boundary": "无飞键道(U357)与S005采用传统21×21合同；神韵(Overall-17)与B04采用四码顶合同。四者共用语料和模型，但不同键域与合同不是同键域胜负。",
+    "boundary": "无飞键道(U357)与S005按传统21×21合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04只提供双拼映射，本比较为其套用同一飞花式四码顶合同。四者共用语料和模型，但不同键域与合同不是同键域胜负。",
     "cktV4AuxiliarySources": "键道轨统一使用 snowshape，三拼轨统一使用同一笔画数据，再映射到各方案的五辅键；B04 不使用首道自身辅码数据",
     "cktV4Contracts": {
       "Overall17": "four-code-top",
@@ -51,7 +51,13 @@
     "targets": [
       "SNOW-SHENYUN-21X26-PRODUCTION",
       "U357-21X21-M40-D0"
-    ]
+    ],
+    "cktV4ContractProvenance": {
+      "Overall17": "native-feihua-four-code-top",
+      "U357": "native-traditional-21x21",
+      "S005": "native-traditional-21x21",
+      "B04": "benchmark-applied-feihua-four-code-top"
+    }
   },
   "flyingKeyComponents": {
     "scope": "Common399 实际二键码；沿用 M-R2 的规范化书写韵尾，j/q/x/Y 后的 u 还原为 v",

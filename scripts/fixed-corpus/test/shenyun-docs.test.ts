@@ -106,6 +106,9 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	includes(report, "第 1 名数值加粗并标 ★★");
 	includes(report, "第 2 名数值加粗并标 ★");
 	includes(report, "🥇 独立比较全部四方案，可以与星标同时出现");
+	includes(report, "原生遵循[飞花式四码顶]");
+	includes(report, "原方案只提供双拼映射");
+	assert.ok(!report.includes("神韵(Overall-17)与 B04 采用四码顶合同"));
 	assert.ok(!report.includes("★ ★★"));
 	includes(report, "🥇");
 	includes(
@@ -199,6 +202,9 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "second place is bold with ★");
 		includes(readme, "第 1 名數值加粗並標 ★★");
 		includes(readme, "第 2 名數值加粗並標 ★");
+		includes(readme, "本身只提供双拼映射");
+		includes(readme, "supplies only a double-pinyin mapping");
+		includes(readme, "本身只提供雙拼映射");
 		includes(
 			readme,
 			"| 频率加权 S2 miss[^zh-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |",

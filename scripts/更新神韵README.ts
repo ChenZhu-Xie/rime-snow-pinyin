@@ -136,6 +136,32 @@ const overallValues = [
 	"132.219",
 ];
 
+function normalizeContractClaims(markdown: string) {
+	const lines = markdown.split("\n").map((line) => {
+		if (line.startsWith("四方案共用 ") && line.includes("冻结 20 合同"))
+			return "四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 本身只提供双拼映射，本比较为其套用同一飞花式四码顶合同。";
+		if (line.startsWith("All four layouts use "))
+			return "All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it.";
+		if (line.startsWith("四方案共用 ") && line.includes("凍結 20 合同"))
+			return "四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 本身只提供雙拼映射，本比較為其套用同一飛花式四碼頂合同。";
+		return line;
+	});
+	return lines
+		.join("\n")
+		.replace(
+			/(\[神韵\(Overall-17\)\]\([^)]+\))与 (\[B04\]\([^)]+\)) 按四码顶合同(?:计分)?，(\[无飞键道\(U357\)\]\([^)]+\))与 (\[S005\]\([^)]+\)) 按传统 21×21 合同(?:计分)?/gu,
+			"$1按原生飞花式四码顶合同、$2按本比较套用的同一合同计分，$3与 $4按传统 21×21 合同计分",
+		)
+		.replace(
+			/(\[神韻\(Overall-17\)\]\([^)]+\))與 (\[B04\]\([^)]+\)) 按四碼頂合同(?:計分)?，(\[無飛鍵道\(U357\)\]\([^)]+\))與 (\[S005\]\([^)]+\)) 按傳統 21×21 合同(?:計分)?/gu,
+			"$1按原生飛花式四碼頂合同、$2按本比較套用的同一合同計分，$3與 $4按傳統 21×21 合同計分",
+		)
+		.replace(
+			/(\[Shenyun\(Overall-17\)\]\([^)]+\)) and (\[B04\]\([^)]+\)) (?:use|are scored under) four-code-top contracts, while (\[Wufei KeyTao\(U357\)\]\([^)]+\)) and (\[S005\]\([^)]+\)) use the traditional 21×21 contract/gu,
+			"$1 uses its native Feihua four-code-top contract and $2 is scored under the same contract for this comparison, while $3 and $4 use the traditional 21×21 contract",
+		);
+}
+
 function addOverallColumn(markdown: string) {
 	const lines = markdown.split("\n");
 	for (let index = 0; index < lines.length; index++) {
@@ -267,31 +293,67 @@ function normalizeTerms(markdown: string) {
 		)
 		.replaceAll(
 			"B04 按 26×26 四码顶合同，U357、S005 按 21×21 合同",
-			"神韵(Overall-17)与 B04 按四码顶合同，无飞键道(U357)与 S005 按传统 21×21 合同",
+			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同",
 		)
 		.replaceAll(
 			"B04 按 26×26 四码顶合同计分，U357、S005 按 21×21 合同计分",
-			"神韵(Overall-17)与 B04 按四码顶合同计分，无飞键道(U357)与 S005 按传统 21×21 合同计分",
+			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同计分",
 		)
 		.replaceAll(
 			"B04 按 26×26 四碼頂合同，U357、S005 按 21×21 合同",
-			"神韻(Overall-17)與 B04 按四碼頂合同，無飛鍵道(U357)與 S005 按傳統 21×21 合同",
+			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同",
 		)
 		.replaceAll(
 			"B04 按 26×26 四碼頂合同計分，U357、S005 按 21×21 合同計分",
-			"神韻(Overall-17)與 B04 按四碼頂合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同計分",
+			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同計分",
 		)
 		.replaceAll(
 			"B04 uses the 26×26 four-code-top contract, whereas U357 and S005 use 21×21",
-			"Shenyun(Overall-17) and B04 use four-code-top contracts, whereas Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
+			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, whereas Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
 		)
 		.replaceAll(
 			"B04 uses a 26×26 four-code-top contract, while U357 and S005 use 21×21",
-			"Shenyun(Overall-17) and B04 use four-code-top contracts, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
+			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
 		)
 		.replaceAll(
 			"B04 is nevertheless scored under the 26×26 four-code-top contract, while U357 and S005 use the 21×21 contract",
+			"Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it; Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract",
+		)
+		.replaceAll(
+			"无飞键道(U357)与 S005 采用传统 21×21 合同，神韵(Overall-17)与 B04 采用四码顶合同。",
+			"无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 本身只提供双拼映射，本比较为其套用同一飞花式四码顶合同。",
+		)
+		.replaceAll(
+			"無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
+			"無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 本身只提供雙拼映射，本比較為其套用同一飛花式四碼頂合同。",
+		)
+		.replaceAll(
+			"Wufei KeyTao(U357) and S005 use the traditional 21×21 contract; Shenyun(Overall-17) and B04 use the four-code-top contract.",
+			"Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it.",
+		)
+		.replaceAll(
+			"神韵(Overall-17)与 B04 按四码顶合同，无飞键道(U357)与 S005 按传统 21×21 合同",
+			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同",
+		)
+		.replaceAll(
+			"神韵(Overall-17)与 B04 按四码顶合同计分，无飞键道(U357)与 S005 按传统 21×21 合同计分",
+			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同计分",
+		)
+		.replaceAll(
+			"神韻(Overall-17)與 B04 按四碼頂合同，無飛鍵道(U357)與 S005 按傳統 21×21 合同",
+			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同",
+		)
+		.replaceAll(
+			"神韻(Overall-17)與 B04 按四碼頂合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同計分",
+			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同計分",
+		)
+		.replaceAll(
+			"Shenyun(Overall-17) and B04 use four-code-top contracts, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
+			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
+		)
+		.replaceAll(
 			"Shenyun(Overall-17) and B04 are scored under four-code-top contracts, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
+			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
 		)
 		.replaceAll(
 			"reports/shenyun-comparison.md#ckt-v4-的权重与额外时间如何进入主分",
@@ -305,7 +367,7 @@ function normalizeTerms(markdown: string) {
 			/(### 兩代神韻與 S005、B04 的四方案公平比較\r?\n\r?\n)四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道\(U357\)与 S005 采用传统 21×21 合同，神韵\(Overall-17\)与 B04 采用四码顶合同。/gu,
 			"$1四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
 		);
-	return markdown;
+	return normalizeContractClaims(markdown);
 }
 
 const readmeDirections = [
@@ -462,15 +524,15 @@ function update(markdown: string, host: "github" | "gitee") {
 		)
 		.replace(
 			/三方案共用 Common399[^\n]*/gu,
-			"四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 采用传统 21×21 合同，神韵(Overall-17)与 B04 采用四码顶合同。",
+			"四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 本身只提供双拼映射，本比较为其套用同一飞花式四码顶合同。",
 		)
 		.replace(
 			/All three layouts use Common399[^\n]*/gu,
-			"All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 use the traditional 21×21 contract; Shenyun(Overall-17) and B04 use the four-code-top contract.",
+			"All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it.",
 		)
 		.replace(
 			/三方案共用 Common399、凍結 20 合同[^\n]*/gu,
-			"四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
+			"四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 本身只提供雙拼映射，本比較為其套用同一飛花式四碼頂合同。",
 		)
 		.replaceAll(
 			"reports/shenyun-u357-comparison.md",
