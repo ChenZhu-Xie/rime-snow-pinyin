@@ -15,10 +15,21 @@ const includes = (source: string, expected: string, message?: string) =>
 	assert.ok(source.includes(expected), message ?? `缺少：${expected}`);
 
 describe("神韵文档比较装饰", () => {
-	test("单星比较两个 21×21 方案，双星比较前三方案，奖牌比较全部四方案", () => {
+	test("前三方案按名次显示双星、单星、无星，奖牌独立比较全部四方案", () => {
 		assert.deepEqual(
 			decorateComparison(values(["1", 1], ["2", 2], ["3", 3], ["1", 1]), "min"),
 			["**1** ★★ 🥇", "**2** ★", "3", "1 🥇"],
+		);
+		assert.deepEqual(
+			decorateComparison(
+				values(["0%", 0], ["3.270%", 0.0327], ["0.929%", 0.00929], ["0%", 0]),
+				"min",
+			),
+			["**0%** ★★ 🥇", "3.270%", "**0.929%** ★", "0% 🥇"],
+		);
+		assert.deepEqual(
+			decorateComparison(values(["2", 2], ["1", 1], ["3", 3], ["0", 0]), "min"),
+			["**2** ★", "**1** ★★", "3", "0 🥇"],
 		);
 		assert.deepEqual(
 			decorateComparison(values(["3", 3], ["2", 2], ["2", 2], ["1", 1]), "min"),
@@ -92,10 +103,15 @@ test("为四个方案名补链接且不嵌套已有链接", () => {
 
 test("生成报告在所有可比较表中保留图例、星标与奖牌", () => {
 	const report = read("reports/shenyun-comparison.md");
-	includes(report, "**粗体** ★");
-	includes(report, "**粗体** ★★");
+	includes(report, "第 1 名数值加粗并标 ★★");
+	includes(report, "第 2 名数值加粗并标 ★");
+	includes(report, "🥇 独立比较全部四方案，可以与星标同时出现");
 	assert.ok(!report.includes("★ ★★"));
 	includes(report, "🥇");
+	includes(
+		report,
+		"| 频率加权 S2 miss | **0.000%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |",
+	);
 	includes(
 		report,
 		"[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)",
@@ -177,12 +193,16 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		);
 		includes(readme, "[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)");
 		includes(readme, "[`a7_CKT_R11.html`](https://");
-		includes(readme, "**粗体** ★");
-		includes(readme, "**粗体** ★★");
-		includes(readme, "**Bold** ★");
-		includes(readme, "**Bold** ★★");
-		includes(readme, "**粗體** ★");
-		includes(readme, "**粗體** ★★");
+		includes(readme, "第 1 名数值加粗并标 ★★");
+		includes(readme, "第 2 名数值加粗并标 ★");
+		includes(readme, "first place is bold with ★★");
+		includes(readme, "second place is bold with ★");
+		includes(readme, "第 1 名數值加粗並標 ★★");
+		includes(readme, "第 2 名數值加粗並標 ★");
+		includes(
+			readme,
+			"| 频率加权 S2 miss[^zh-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |",
+		);
 		assert.ok(!readme.includes("★ ★★"));
 	}
 });

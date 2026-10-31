@@ -12,8 +12,7 @@ export interface ComparisonValue {
 export type ShenyunLanguage = "zh" | "en" | "zht";
 export type LinkHost = "github" | "gitee";
 
-const traditional21x21Indices = [1, 2] as const;
-const nonShoudaoIndices: readonly number[] = [0, 1, 2];
+const threeSchemeIndices: readonly number[] = [0, 1, 2];
 const epsilon = 1e-12;
 
 export const readComparisonScore = (
@@ -44,28 +43,27 @@ const isTied = (left: number, right: number) =>
 export function decorateComparison(
 	values: readonly ComparisonValue[],
 	direction: ComparisonDirection,
-	peers: readonly number[] = traditional21x21Indices,
+	rankedIndices: readonly number[] = threeSchemeIndices,
 ) {
 	if (values.length === 0) return [];
+	if (rankedIndices.some((index) => index < 0 || index >= values.length))
+		throw new Error("排名方案索引超出比较值范围。");
 	const scores = values.map(({ score }) =>
 		readComparisonScore(score, direction),
 	);
 	if (scores.some((score) => !Number.isFinite(score)))
 		throw new Error("比较值必须是有限数字。");
 	const globalBest = Math.min(...scores);
-	const peerBest = Math.min(...peers.map((index) => scores[index]));
-	const nonShoudaoBest = Math.min(
-		...nonShoudaoIndices.map((index) => scores[index]),
-	);
 	return values.map(({ display }, index) => {
 		let output = stripComparisonDecoration(display);
-		const isPeerBest = peers.includes(index) && isTied(scores[index], peerBest);
-		const isNonShoudaoBest =
-			nonShoudaoIndices.includes(index) &&
-			isTied(scores[index], nonShoudaoBest);
-		if (isPeerBest || isNonShoudaoBest) output = `**${output}**`;
-		if (isNonShoudaoBest) output += " ★★";
-		else if (isPeerBest) output += " ★";
+		if (rankedIndices.includes(index)) {
+			const rank =
+				1 +
+				rankedIndices.filter(
+					(otherIndex) => scores[otherIndex] < scores[index] - epsilon,
+				).length;
+			if (rank <= 2) output = `**${output}** ${rank === 1 ? "★★" : "★"}`;
+		}
 		if (isTied(scores[index], globalBest)) output += " 🥇";
 		return output;
 	});

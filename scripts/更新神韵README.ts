@@ -361,9 +361,9 @@ function addComparisonLegends(markdown: string) {
 		.split("\n")
 		.filter(
 			(line) =>
-				!line.includes("**粗体** ★") &&
-				!line.includes("**Bold** ★") &&
-				!line.includes("**粗體** ★") &&
+				!(line.startsWith("表中") && line.includes("★")) &&
+				!line.startsWith("In the tables, **Bold** ★") &&
+				!line.startsWith("The tables rank ") &&
 				!["表中", "In the tables,"].includes(line.trim()),
 		);
 	for (let index = 0; index < lines.length; index++) {
@@ -371,10 +371,10 @@ function addComparisonLegends(markdown: string) {
 		if (!match) continue;
 		const legend =
 			match[1] === "Metric"
-				? "In the tables, **Bold** ★ compares only the two traditional 21×21 layouts, Wufei KeyTao(U357) and the original KeyTao S005; **Bold** ★★ compares Shenyun(Overall-17), Wufei KeyTao(U357), and the original KeyTao S005, excluding Shoudao B04. A cell that wins both comparisons shows only ★★, never three stars. 🥇 compares all four layouts. Every tied best cell keeps the same marker."
+				? "The tables rank Shenyun(Overall-17), Wufei KeyTao(U357), and the original KeyTao S005 together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao B04 is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format."
 				: match[1] === "指標"
-					? "表中 **粗體** ★ 只比較同為傳統 21×21 合同的無飛鍵道(U357)與原鍵道 S005；**粗體** ★★ 比較神韻(Overall-17)、無飛鍵道(U357)與原鍵道 S005，首道 B04 不參與；同時贏得兩層比較時只顯示 ★★，不疊加為三顆星；🥇 比較全部四方案；並列最優均保留標記。"
-					: "表中 **粗体** ★ 只比较同为传统 21×21 合同的无飞键道(U357)与原键道 S005；**粗体** ★★ 比较神韵(Overall-17)、无飞键道(U357)与原键道 S005，首道 B04 不参与；同时赢得两层比较时只显示 ★★，不叠加为三颗星；🥇 比较全部四方案；并列最优均保留标记。";
+					? "表中在神韻(Overall-17)、無飛鍵道(U357)與原鍵道 S005 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；首道 B04 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。"
+					: "表中在神韵(Overall-17)、无飞键道(U357)与原键道 S005 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；首道 B04 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。";
 		while (index > 0 && lines[index - 1] === "") {
 			lines.splice(index - 1, 1);
 			index--;

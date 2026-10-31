@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - 两个专有名词固定为“无飞键道(U357) 21×21 双拼”和“神韵(Overall-17) 21×26 双拼”。
-- 星标/粗体只比较 U357 与 S005；奖牌比较四方案并覆盖所有并列最优。
+- 星标/粗体按 Overall-17、U357、S005 三方案完整排名：第 1 名 `**…** ★★`，第 2 名 `**…** ★`，第 3 名无标记；奖牌独立比较四方案、允许与星标叠加，并覆盖所有并列最优。
 - 图仍直接导出自 `SNOW-SHENYUN-21X26-PRODUCTION`，不得重绘映射或热力数据。
 - README.md 使用 GitHub 来源链接，README_CN.md 使用 Gitee 来源链接；本仓库文件使用相对链接。
 - 不改方案映射、候选与评分数据。
@@ -21,7 +21,7 @@
 ## Review Focus
 
 - 数值相同的全局最优：所有并列格都应有 `🥇`。
-- U357/S005 并列：两格都应加粗并带 `★`，Overall/B04 不参与星标。
+- 三方案并列采用竞赛排名：并列格使用相同标记；B04 不参与星标，但仍可获得 `🥇`。
 - “越接近 50%”不能按简单最大/最小比较。
 - 重复运行生成器不得叠加 `**`、`★`、`🥇` 或嵌套链接。
 - Overall 热力图必须与 U357 具有相同 viewBox 和背景，并裁为相同的 29 个可见键。
@@ -36,7 +36,7 @@
 - Modify: `scripts/生成神韵对比.ts`
 
 **Interfaces:**
-- Produces: `decorateComparison(values, direction, peerIndices)`、`decorateMarkdownTable(...)`、`linkShenyunTerms(...)`。
+- Produces: `decorateComparison(values, direction, rankedIndices)`、`decorateMarkdownTable(...)`、`linkShenyunTerms(...)`。
 - Consumes: 四方案顺序固定为 Overall17、U357、S005、B04；指标方向元数据。
 
 - [ ] **Step 1: 写失败测试**：以字面量断言低优、高优、接近 50%、三元组、同值并列、幂等、原地链接，以及报告总览/成本/反事实/非首选率的标记。
