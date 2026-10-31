@@ -191,7 +191,14 @@ local function auxiliary_match(text, suffix, env)
 end
 
 local function add_route(routes, family, proxy, suffix, length)
-  table.insert(routes, { family = family, proxy = proxy, suffix = suffix, length = length })
+  local main_length = proxy:gsub("[ ?~]", ""):len()
+  table.insert(routes, {
+    family = family,
+    proxy = proxy,
+    suffix = suffix,
+    length = length,
+    main_length = main_length,
+  })
 end
 
 ---@class ShenyunRoute
@@ -199,6 +206,7 @@ end
 ---@field proxy string
 ---@field suffix string
 ---@field length integer
+---@field main_length integer
 
 ---@class ShenyunStream
 ---@field route ShenyunRoute
@@ -217,7 +225,17 @@ local function advance(stream, env)
       stream.candidate = nil
       return false
     end
-    if candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
+    -- 代理码中的分隔符会同时虚增 _end 和 quality，合流前必须统一还原。
+    candidate = snow.prepare(candidate, stream.route.proxy)
+    local consumed_length = candidate._end - candidate._start
+    -- script_translator 先给出完整匹配，再给出只消费前缀的候选；进入前缀区后
+    -- 不会再出现完整候选，直接结束可避免为空音码扫描整批二、三字词。
+    if consumed_length < stream.route.main_length then
+      stream.candidate = nil
+      return false
+    end
+    if consumed_length == stream.route.main_length
+        and candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
       local matches, auxiliary = auxiliary_match(candidate.text, stream.route.suffix, env)
       if matches then
         stream.candidate = candidate

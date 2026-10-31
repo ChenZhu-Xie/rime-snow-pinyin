@@ -7,6 +7,13 @@ script: |
     end
     return false
   end
+  function all_have_length(length)
+    if #cand == 0 then return false end
+    for _, candidate in ipairs(cand) do
+      if utf8.len(candidate.text) ~= length then return false end
+    end
+    return true
+  end
 deploy:
   buffered_command:
     tests:
@@ -49,6 +56,12 @@ deploy:
         assert: has("输入法")
       - send: rgfn
         assert: has("人工智能")
+      # cw、yx 都不是合法音节；cwyx 只能走 AAAA，不能混入二、三字前缀候选。
+      - send: cwyx
+        assert: all_have_length(4) and has("测试一下") and not has("测试仪")
+      # yi 是合法完整音节，cwyi 仍应走 AAAU 得到三字词。
+      - send: cwyi
+        assert: all_have_length(3) and has("测试仪")
       - send: "br,"
         assert: commit and commit:find("，", 1, true)
       - send: "br."

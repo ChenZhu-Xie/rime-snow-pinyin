@@ -123,6 +123,11 @@ test("postponement streams the first code when no earlier choice can move", () =
 test("Shenyun merges translator routes lazily with their iterator state", () => {
 	const translator = read("lua/snow/shenyun.lua");
 	assert.match(translator, /stream\.iterator\(stream\.translation\)/u);
+	assert.match(
+		translator,
+		/candidate = snow\.prepare\(candidate, stream\.route\.proxy\)/u,
+	);
+	assert.match(translator, /consumed_length == stream\.route\.main_length/u);
 	assert.doesNotMatch(translator, /table\.sort\(found/u);
 });
 
