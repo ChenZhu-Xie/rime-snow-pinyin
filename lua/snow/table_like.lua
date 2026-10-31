@@ -186,6 +186,9 @@ function initial_pair.func(input, segment, env)
     if utf8.len(candidate.text) ~= 2 then
       return false
     end
+    -- 简拼棱镜可能把声声码按一个音节解析，只消费首码；这里的候选既然由
+    -- 完整的两码空桶入口产生，就必须覆盖整个当前段，否则不会进入最终候选流。
+    candidate._end = segment._end
     candidate.type = "initial_pair"
     return true
   end)
