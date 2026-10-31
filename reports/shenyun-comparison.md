@@ -4,14 +4,14 @@
 
 必须同时注意合同边界：[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 采用传统 21×21 合同；[神韵(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html)与 [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 采用四码顶合同。21×26 相比 21×21 扩大了韵码域，不能把跨键域领先直接解释成同键域映射胜负。
 
-表中 **粗体** ★ 只比较同为传统 21×21 合同的[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)；**粗体** ★★ 比较[神韵(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html)、[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 不参与；🥇 比较全部四方案。遇到并列最优时，所有并列单元格均保留相同标记。
+表中 **粗体** ★ 只比较同为传统 21×21 合同的[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)；**粗体** ★★ 比较[神韵(Overall-17)](https://input.tansongchen.com/snow-feihua/basic.html)、[无飞键道(U357)](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 不参与；同时赢得两层比较时只显示 ★★，不叠加为三颗星；🥇 比较全部四方案。遇到并列最优时，所有并列单元格均保留相同标记。
 
 ## 总览
 
 | 指标 | [神韵(Overall-17) 21×26 双拼](https://input.tansongchen.com/snow-feihua/basic.html) | [无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) | [星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | 何为好 |
 | --- | --- | --- | --- | --- | --- |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 记忆项 | **36.000000** ★★ 🥇 | **40.000000** ★ | 44.000000 | 51.000000 | 越低越好 |
-| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑审计 | **98.298315** ★★ | **98.298315** ★ ★★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑审计 | **98.298315** ★★ | **98.298315** ★★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑均匀度 | **81.043390** ★★ | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
 | [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一码 | **399** ★★ 🥇 | 357 | **372** ★ | 399 🥇 | 越高越少重码 |
 | 频率加权 S2 miss | **0.000%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
@@ -21,22 +21,22 @@
 | 综合补全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
 | [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量 | **10.620559** ★★ | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；冻结历史轴 |
 | [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量 | **10.684702** ★★ | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；冻结历史轴 |
-| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量 | 10.821925 | **10.473306** ★ ★★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
-| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | 9.534119 | **9.512904** ★ ★★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指标 |
+| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量 | 10.821925 | **10.473306** ★★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
+| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | 9.534119 | **9.512904** ★★ 🥇 | 10.000000 | 9.589632 | 越低越好；情景指标 |
 | 八轨综合选重率 | **0.609%** ★★ | **1.443%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
 | 八轨第一辅键率 | **20.831%** ★★ | **26.150%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
 | 八轨第二辅键率 | **4.459%** ★★ | **7.040%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
-| 日常同手率 | **45.882%** ★★ | 46.533% | **45.882%** ★ ★★ | 45.416% 🥇 | 越低越好；非独立速度结论 |
-| 日常平均有效距离 | 0.7118 | **0.6555** ★ ★★ 🥇 | 0.6796 | 0.7012 | 越低越好 |
-| 20 合同 QAZ 左小指组峰值 | 18.895% | **16.312%** ★ ★★ 🥇 | 17.160% | 16.661% | 越低越好 |
-| 20 合同 P 区右小指组峰值 | 3.516% | 5.104% | **2.774%** ★ ★★ | 1.888% 🥇 | 越低越好 |
-| 20 合同最大单指峰值 | 27.671% | **25.215%** ★ ★★ 🥇 | 29.531% | 29.271% | 越低越好 |
-| S2 主键区占比 | 37.025% | **52.031%** ★ ★★ 🥇 | 49.001% | 36.600% | 越高越好 |
+| 日常同手率 | **45.882%** ★★ | 46.533% | **45.882%** ★★ | 45.416% 🥇 | 越低越好；非独立速度结论 |
+| 日常平均有效距离 | 0.7118 | **0.6555** ★★ 🥇 | 0.6796 | 0.7012 | 越低越好 |
+| 20 合同 QAZ 左小指组峰值 | 18.895% | **16.312%** ★★ 🥇 | 17.160% | 16.661% | 越低越好 |
+| 20 合同 P 区右小指组峰值 | 3.516% | 5.104% | **2.774%** ★★ | 1.888% 🥇 | 越低越好 |
+| 20 合同最大单指峰值 | 27.671% | **25.215%** ★★ 🥇 | 29.531% | 29.271% | 越低越好 |
+| S2 主键区占比 | 37.025% | **52.031%** ★★ 🥇 | 49.001% | 36.600% | 越高越好 |
 | 20 合同 TYB 双食指组峰值 | **12.422%** ★★ | **14.092%** ★ | 14.733% | 12.358% 🥇 | 越低越好 |
-| 20 合同主键区下限 | 24.733% | **37.620%** ★ ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
-| 日常纯双拼移动手分数（含标点） | 132.219 | **143.380** ★ ★★ 🥇 | 138.672 | 135.310 | 越高越好 |
+| 20 合同主键区下限 | 24.733% | **37.620%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
+| 日常纯双拼移动手分数（含标点） | 132.219 | **143.380** ★★ 🥇 | 138.672 | 135.310 | 越高越好 |
 
-四方案的飞键成分（声母／零声母组／韵母）依次为：[神韵(Overall-17) 21×26 双拼](https://input.tansongchen.com/snow-feihua/basic.html) **0 / 0 / 0** ★★ 🥇、[无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) **0 / 0 / 0** ★ ★★ 🥇、[星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 2 / 0 / 1、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 0 / 1 / 7。飞键按 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 实际二键码统计；不同成分共用一键或成分整体移位不计飞键。
+四方案的飞键成分（声母／零声母组／韵母）依次为：[神韵(Overall-17) 21×26 双拼](https://input.tansongchen.com/snow-feihua/basic.html) **0 / 0 / 0** ★★ 🥇、[无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) **0 / 0 / 0** ★★ 🥇、[星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 2 / 0 / 1、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 0 / 1 / 7。飞键按 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 实际二键码统计；不同成分共用一键或成分整体移位不计飞键。
 
 ## [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 成本分解
 
@@ -63,13 +63,13 @@
 | 编码轨 | 词长 | [神韵(Overall-17) 21×26 双拼](https://input.tansongchen.com/snow-feihua/basic.html) | [无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code) | [星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) |
 | --- | --- | --- | --- | --- | --- |
 | 冰雪键道 | 单字 | **0.443%** ★★ 🥇 | 0.489% | **0.480%** ★ | 0.443% 🥇 |
-| 冰雪键道 | 二字词 | 0.412% | 0.440% | **0.374%** ★ ★★ 🥇 | 0.413% |
+| 冰雪键道 | 二字词 | 0.412% | 0.440% | **0.374%** ★★ 🥇 | 0.413% |
 | 冰雪键道 | 三字词 | **0.809%** ★★ | **4.948%** ★ | 5.498% | 0.729% 🥇 |
-| 冰雪键道 | 四字词 | 0.421% | **0.366%** ★ ★★ 🥇 | 0.499% | 0.383% |
+| 冰雪键道 | 四字词 | 0.421% | **0.366%** ★★ 🥇 | 0.499% | 0.383% |
 | 冰雪三拼 | 单字 | **0.702%** ★★ 🥇 | 0.786% | **0.774%** ★ | 0.702% 🥇 |
-| 冰雪三拼 | 二字词 | 0.582% | 0.632% | **0.564%** ★ ★★ 🥇 | 0.587% |
+| 冰雪三拼 | 二字词 | 0.582% | 0.632% | **0.564%** ★★ 🥇 | 0.587% |
 | 冰雪三拼 | 三字词 | **1.321%** ★★ | **6.948%** ★ | 7.610% | 1.090% 🥇 |
-| 冰雪三拼 | 四字词 | 0.631% | **0.565%** ★ ★★ | 0.708% | 0.512% 🥇 |
+| 冰雪三拼 | 四字词 | 0.631% | **0.565%** ★★ | 0.708% | 0.512% 🥇 |
 
 ## 逐级辅键后的频率加权残余非首选率
 
@@ -81,26 +81,26 @@
 | 冰雪键道 | 单字 | 一辅后 | **4.097%** ★★ 🥇 | 4.653% | **4.567%** ★ | 4.097% 🥇 |
 | 冰雪键道 | 单字 | 二辅后 | **0.443%** ★★ 🥇 | 0.489% | **0.480%** ★ | 0.443% 🥇 |
 | 冰雪键道 | 二字词 | 零辅后 | **18.490%** ★★ 🥇 | 20.066% | **18.927%** ★ | 18.533% |
-| 冰雪键道 | 二字词 | 一辅后 | 3.640% | 3.795% | **3.474%** ★ ★★ 🥇 | 3.639% |
-| 冰雪键道 | 二字词 | 二辅后 | 0.412% | 0.440% | **0.374%** ★ ★★ 🥇 | 0.413% |
+| 冰雪键道 | 二字词 | 一辅后 | 3.640% | 3.795% | **3.474%** ★★ 🥇 | 3.639% |
+| 冰雪键道 | 二字词 | 二辅后 | 0.412% | 0.440% | **0.374%** ★★ 🥇 | 0.413% |
 | 冰雪键道 | 三字词 | 零辅后 | **24.456%** ★★ | **50.365%** ★ | 51.729% | 21.566% 🥇 |
 | 冰雪键道 | 三字词 | 一辅后 | **6.167%** ★★ | **19.783%** ★ | 21.108% | 5.251% 🥇 |
 | 冰雪键道 | 三字词 | 二辅后 | **0.809%** ★★ | **4.948%** ★ | 5.498% | 0.729% 🥇 |
 | 冰雪键道 | 四字词 | 零辅后 | **24.132%** ★★ | **24.301%** ★ | 27.835% | 20.385% 🥇 |
-| 冰雪键道 | 四字词 | 一辅后 | 3.962% | **3.822%** ★ ★★ | 4.562% | 3.263% 🥇 |
-| 冰雪键道 | 四字词 | 二辅后 | 0.421% | **0.366%** ★ ★★ 🥇 | 0.499% | 0.383% |
+| 冰雪键道 | 四字词 | 一辅后 | 3.962% | **3.822%** ★★ | 4.562% | 3.263% 🥇 |
+| 冰雪键道 | 四字词 | 二辅后 | 0.421% | **0.366%** ★★ 🥇 | 0.499% | 0.383% |
 | 冰雪三拼 | 单字 | 零辅后 | **21.001%** ★★ 🥇 | **22.111%** ★ | 22.208% | 21.001% 🥇 |
 | 冰雪三拼 | 单字 | 一辅后 | **4.748%** ★★ 🥇 | 5.379% | **5.062%** ★ | 4.748% 🥇 |
 | 冰雪三拼 | 单字 | 二辅后 | **0.702%** ★★ 🥇 | 0.786% | **0.774%** ★ | 0.702% 🥇 |
 | 冰雪三拼 | 二字词 | 零辅后 | **18.490%** ★★ 🥇 | 20.066% | **18.927%** ★ | 18.533% |
-| 冰雪三拼 | 二字词 | 一辅后 | 3.960% | 4.275% | **3.916%** ★ ★★ 🥇 | 3.961% |
-| 冰雪三拼 | 二字词 | 二辅后 | 0.582% | 0.632% | **0.564%** ★ ★★ 🥇 | 0.587% |
+| 冰雪三拼 | 二字词 | 一辅后 | 3.960% | 4.275% | **3.916%** ★★ 🥇 | 3.961% |
+| 冰雪三拼 | 二字词 | 二辅后 | 0.582% | 0.632% | **0.564%** ★★ 🥇 | 0.587% |
 | 冰雪三拼 | 三字词 | 零辅后 | **24.456%** ★★ | **50.365%** ★ | 51.729% | 21.566% 🥇 |
 | 冰雪三拼 | 三字词 | 一辅后 | **7.044%** ★★ | **22.103%** ★ | 23.400% | 5.996% 🥇 |
 | 冰雪三拼 | 三字词 | 二辅后 | **1.321%** ★★ | **6.948%** ★ | 7.610% | 1.090% 🥇 |
 | 冰雪三拼 | 四字词 | 零辅后 | **24.132%** ★★ | **24.301%** ★ | 27.835% | 20.385% 🥇 |
-| 冰雪三拼 | 四字词 | 一辅后 | 4.692% | **4.535%** ★ ★★ | 5.545% | 3.739% 🥇 |
-| 冰雪三拼 | 四字词 | 二辅后 | 0.631% | **0.565%** ★ ★★ | 0.708% | 0.512% 🥇 |
+| 冰雪三拼 | 四字词 | 一辅后 | 4.692% | **4.535%** ★★ | 5.545% | 3.739% 🥇 |
+| 冰雪三拼 | 四字词 | 二辅后 | 0.631% | **0.565%** ★★ | 0.708% | 0.512% 🥇 |
 
 ## 二／三／四字词的终局碰撞桶
 

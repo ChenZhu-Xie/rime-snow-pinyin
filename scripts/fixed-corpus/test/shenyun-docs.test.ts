@@ -22,7 +22,7 @@ describe("神韵文档比较装饰", () => {
 		);
 		assert.deepEqual(
 			decorateComparison(values(["3", 3], ["2", 2], ["2", 2], ["1", 1]), "min"),
-			["3", "**2** ★ ★★", "**2** ★ ★★", "1 🥇"],
+			["3", "**2** ★★", "**2** ★★", "1 🥇"],
 		);
 	});
 
@@ -48,12 +48,7 @@ describe("神韵文档比较装饰", () => {
 				),
 				"triple-sum",
 			),
-			[
-				"**0 / 0 / 0** ★★ 🥇",
-				"**0 / 0 / 0** ★ ★★ 🥇",
-				"2 / 0 / 1",
-				"0 / 1 / 7",
-			],
+			["**0 / 0 / 0** ★★ 🥇", "**0 / 0 / 0** ★★ 🥇", "2 / 0 / 1", "0 / 1 / 7"],
 		);
 	});
 
@@ -68,9 +63,10 @@ describe("神韵文档比较装饰", () => {
 		includes(once, "| 低优 | **1** ★★ 🥇 | **2** ★ | 3 | 1 🥇 |");
 		includes(
 			once,
-			"| 飞键 | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★ ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 |",
+			"| 飞键 | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 |",
 		);
 		assert.equal(decorateMarkdownTable(once, ["min", "triple-sum"]), once);
+		assert.ok(!once.includes("★ ★★"));
 	});
 });
 
@@ -98,6 +94,7 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	const report = read("reports/shenyun-comparison.md");
 	includes(report, "**粗体** ★");
 	includes(report, "**粗体** ★★");
+	assert.ok(!report.includes("★ ★★"));
 	includes(report, "🥇");
 	includes(
 		report,
@@ -186,5 +183,6 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "**Bold** ★★");
 		includes(readme, "**粗體** ★");
 		includes(readme, "**粗體** ★★");
+		assert.ok(!readme.includes("★ ★★"));
 	}
 });

@@ -64,8 +64,8 @@ export function decorateComparison(
 			nonShoudaoIndices.includes(index) &&
 			isTied(scores[index], nonShoudaoBest);
 		if (isPeerBest || isNonShoudaoBest) output = `**${output}**`;
-		if (isPeerBest) output += " ★";
 		if (isNonShoudaoBest) output += " ★★";
+		else if (isPeerBest) output += " ★";
 		if (isTied(scores[index], globalBest)) output += " 🥇";
 		return output;
 	});
