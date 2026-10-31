@@ -364,7 +364,6 @@ function this.func(input, segment, env)
     end
   end
   local seen = {}
-  local yielded_count = 0
   while #streams > 0 do
     local best_index = 1
     for index = 2, #streams do
@@ -382,10 +381,6 @@ function this.func(input, segment, env)
     end
     if not seen[candidate.text] then
       seen[candidate.text] = true
-      yielded_count = yielded_count + 1
-      if input == "dyxku" and (yielded_count <= 10 or candidate.text == "等一下") then
-        log.warning(("dyxku #%d: %s"):format(yielded_count, candidate.text))
-      end
       candidate._end = segment._end
       candidate.preedit = input
       local length = utf8.len(candidate.text)

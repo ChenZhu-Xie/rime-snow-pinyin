@@ -120,10 +120,6 @@ function processor.func(key_event, env)
               env.vacancy_memory, env.vacancy_cache) then
           goto continue
         end
-        local combined_segment = Segment(segment.start, segment._end + 1)
-        if vacancy.has_candidate(input .. key_char, combined_segment, env.vacancy_translator) then
-          goto continue
-        end
       end
       if rule.match_shape and not rime_api.regex_match(shape_input, rule.match_shape) then
         goto continue

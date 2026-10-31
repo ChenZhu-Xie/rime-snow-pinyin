@@ -35,25 +35,11 @@ local fallback_syllables = {
 ---@param entry DictEntry
 ---@param memory Memory
 ---@return boolean
-local function is_fallback(entry, memory)
+local function occupies_bucket(entry, memory)
   local spelling = memory:decode(entry.code)[1]
-  return spelling ~= nil and fallback_syllables[spelling:gsub("[0-9]$", "")] == true
-end
-
----@param input string
----@param segment Segment
----@param translator Translator
----@return boolean
-function vacancy.has_candidate(input, segment, translator)
-  local translation = translator:query(input, segment)
-  if not translation then return false end
-  for candidate in translation:iter() do
-    local genuine = candidate:get_genuine()
-    if genuine._end - genuine.start == input:len() then
-      return true
-    end
-  end
-  return false
+  -- 字母等伪音节以 ~ 开头，不属于汉字音节，也不能占用 AA/AU 空桶。
+  return spelling ~= nil and spelling:sub(1, 1) ~= "~"
+      and fallback_syllables[spelling:gsub("[0-9]$", "")] ~= true
 end
 
 ---@param input string
@@ -72,13 +58,8 @@ function vacancy.is_empty(input, segment, translator, memory, cache)
       local genuine = candidate:get_genuine()
       local phrase = genuine:to_phrase()
       local consumed = genuine._end - genuine.start
-      if input == "yx" then
-        local spellings = phrase and memory:decode(phrase.entry.code) or {}
-        log.warning(("vacancy yx: %s | %s | %s | %d"):format(
-          candidate.text, table.concat(spellings, " "), candidate.type, consumed))
-      end
       if phrase and consumed == input:len() and utf8.len(candidate.text) == 1
-          and not is_fallback(phrase.entry, memory) then
+          and occupies_bucket(phrase.entry, memory) then
         occupied = true
       end
     end

@@ -1,11 +1,17 @@
 schema: snow_shenyun_tone
 source_dir: ..
 script: |
-  function has(text)
-    for _, candidate in ipairs(cand) do
-      if candidate.text == text then return true end
+  function rank(text)
+    for index, candidate in ipairs(cand) do
+      if candidate.text == text then return index end
     end
-    return false
+    return math.huge
+  end
+  function has(text)
+    return rank(text) < math.huge
+  end
+  function page(text)
+    return rank(text) <= 6
   end
   function all_have_length(length)
     if #cand == 0 then return false end

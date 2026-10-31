@@ -83,10 +83,12 @@ speller:
   shape:
     # 运行时空音码的 AA 是声声二字词；仅接受一个首字首形辅码。
     - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
       match_shape: "^$"
       accept: "[viuoa]"
       status: initial_pair
     - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
       match_shape: ".+"
       accept: "[viuoa]"
       block: true

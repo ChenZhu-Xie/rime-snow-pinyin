@@ -150,11 +150,13 @@ speller:
   shape:
     # 运行时空音码的 AA 是声声二字词；仅接受一个第二字声调辅码。
     - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
       match_shape: "^$"
       reject_combined_config: "translator/reserved_letter_pattern"
       accept: "[ivuao]"
       status: initial_pair
     - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
       match_shape: ".+"
       accept: "[ivuao]"
       block: true
