@@ -43,6 +43,22 @@ end
 ---@param input string
 ---@param segment Segment
 ---@param translator Translator
+---@return boolean
+function vacancy.has_candidate(input, segment, translator)
+  local translation = translator:query(input, segment)
+  if not translation then return false end
+  for candidate in translation:iter() do
+    local genuine = candidate:get_genuine()
+    if genuine._end - genuine.start == input:len() then
+      return true
+    end
+  end
+  return false
+end
+
+---@param input string
+---@param segment Segment
+---@param translator Translator
 ---@param memory Memory
 ---@param cache table<string, boolean>
 ---@return boolean
@@ -56,6 +72,11 @@ function vacancy.is_empty(input, segment, translator, memory, cache)
       local genuine = candidate:get_genuine()
       local phrase = genuine:to_phrase()
       local consumed = genuine._end - genuine.start
+      if input == "yx" then
+        local spellings = phrase and memory:decode(phrase.entry.code) or {}
+        log.warning(("vacancy yx: %s | %s | %s | %d"):format(
+          candidate.text, table.concat(spellings, " "), candidate.type, consumed))
+      end
       if phrase and consumed == input:len() and utf8.len(candidate.text) == 1
           and not is_fallback(phrase.entry, memory) then
         occupied = true

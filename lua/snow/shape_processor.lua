@@ -111,17 +111,21 @@ function processor.func(key_event, env)
       if rule.match and not rime_api.regex_match(input, rule.match) then
         goto continue
       end
+      if not rime_api.regex_match(key_char, rule.accept) then
+        goto continue
+      end
       if rule.vacant then
         if input:len() ~= 2 or not env.vacancy_translator or not env.vacancy_memory
             or not vacancy.is_empty(input, segment, env.vacancy_translator,
               env.vacancy_memory, env.vacancy_cache) then
           goto continue
         end
+        local combined_segment = Segment(segment.start, segment._end + 1)
+        if vacancy.has_candidate(input .. key_char, combined_segment, env.vacancy_translator) then
+          goto continue
+        end
       end
       if rule.match_shape and not rime_api.regex_match(shape_input, rule.match_shape) then
-        goto continue
-      end
-      if not rime_api.regex_match(key_char, rule.accept) then
         goto continue
       end
       if rule.reject_combined and rime_api.regex_match(input .. key_char, rule.reject_combined) then
