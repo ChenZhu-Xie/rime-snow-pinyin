@@ -30,7 +30,7 @@ deploy:
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
       # Overall-17 换位后的一级固顶字。
       - send: d
-        assert: cand[1].text == "的"
+        assert: cand[1].text == "的" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: q
         assert: cand[1].text == "我"
       - send: w
@@ -69,6 +69,11 @@ deploy:
       # yi 是合法完整音节，cwyi 仍应走 AAAU 得到三字词。
       - send: cwyi
         assert: all_have_length(3) and has("测试仪")
+      - send: dyxku
+        assert: cand[1].text == "等一下"
+      # 「管理员」首字形辅为 u；第三音节的 yu 空桶回收为 AAA+B。
+      - send: glyu
+        assert: has("管理员")
       - send: "br,"
         assert: commit and commit:find("，", 1, true)
       - send: "br."

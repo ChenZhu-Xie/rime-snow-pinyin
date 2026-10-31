@@ -30,7 +30,7 @@ deploy:
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
       # Overall-17 换位后的一级固顶字。
       - send: d
-        assert: cand[1].text == "的"
+        assert: cand[1].text == "的" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: q
         assert: cand[1].text == "我"
       - send: w
@@ -52,9 +52,13 @@ deploy:
       - send: cw
         assert: all_have_length(2) and has("测试")
       - send: yxu
-        assert: has("也许") and not has("一些")
+        assert: has("也许") and not has("一些") and not has("也需")
+      - send: yxe
+        assert: not has("也需")
+      - send: yxa
+        assert: not has("也需")
       - send: yxi
-        assert: has("一些") and not has("也许")
+        assert: has("一些") and has("也需") and not has("也许")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: brxg
         assert: has("冰雪")
@@ -70,6 +74,12 @@ deploy:
       # yi 是合法完整音节，cwyi 仍应走 AAAU 得到三字词。
       - send: cwyi
         assert: all_have_length(3) and has("测试仪")
+      # xk 是合法的 xia 音节；dyxku 走标准 AAAU+B1，形/调辅码都应把「等一下」筛到首选。
+      - send: dyxku
+        assert: cand[1].text == "等一下"
+      # 第三音节的 yu 空桶可把第一字三声辅键 u 前移，ykyu 是 AAA+B 的可选短码。
+      - send: ykyu
+        assert: has("也可以")
       - send: brio
         assert: has("冰")
       - send: brioe

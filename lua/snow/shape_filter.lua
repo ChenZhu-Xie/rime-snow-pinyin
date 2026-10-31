@@ -7,9 +7,9 @@ local bihua = require "snow.bihua"
 ---@class ShapeFilterEnv: BihuaEnv
 ---@field shape_elements ReverseLookup|nil
 ---@field pinyin ReverseLookup|nil
+---@field memory Memory|nil
 ---@field shape_mapping table<string, string>
 ---@field jiandao_shape_cache table<string, string>
----@field vacant_initial_pattern string
 
 --- 反查库加载失败时为 nil，当作查不到
 ---@param db ReverseLookup|nil
@@ -61,13 +61,24 @@ local sanpin_reverse_stroke_map, sanpin_direct_stroke_map = stroke_maps(sanpin_s
 ---@param text string
 ---@param shape_input string
 ---@param env ShapeFilterEnv
-local function sanpin_initial_pair_match(text, shape_input, env)
+---@param candidate Candidate?
+local function sanpin_initial_pair_match(text, shape_input, env, candidate)
   local tone = sanpin_tones[shape_input]
   local prompt = tone and " 调[" .. shape_input .. "]" or nil
   if not tone or utf8.len(text) ~= 2 then
     return false, prompt, nil
   end
-  local readings = lookup(env.pinyin, snow.sub(text, 2, 2))
+  local readings = ""
+  if candidate and env.memory then
+    local phrase = candidate:get_genuine():to_phrase()
+    if phrase then
+      local spellings = env.memory:decode(phrase.entry.code)
+      readings = spellings[2] or ""
+    end
+  end
+  if readings == "" then
+    readings = lookup(env.pinyin, snow.sub(text, 2, 2))
+  end
   for reading in readings:gmatch("%S+") do
     if reading:sub(-1) == tone then
       return true, prompt, nil
@@ -186,7 +197,7 @@ local function current_state(env)
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrwyv][aeiou]{3}")
   elseif id == "snow_sanpin" then
     sanpin_initial_pair = shape_input:len() == 1
-        and rime_api.regex_match(current, env.vacant_initial_pattern)
+        and context:get_property("shape_status") == "initial_pair"
     sanpin_passthrough = shape_input:len() == 0
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]")
   elseif id == "snow_jiandao" then
@@ -214,9 +225,9 @@ function filter.init(env)
   if id == "snow_sipin" or id == "snow_sanpin" then
     bihua.load_strokes(env)
   end
-  env.vacant_initial_pattern = config:get_string("translator/vacant_initial_pattern") or "^$"
   if id == "snow_sanpin" then
     env.pinyin = ReverseLookup("snow_pinyin")
+    env.memory = Memory(env.engine, env.engine.schema, "translator")
   end
   local shape_elements = config:get_string("translator/shape_elements") or "snow_bushou"
   env.shape_elements = ReverseLookup(shape_elements)
@@ -229,7 +240,8 @@ end
 ---@param shape_input string
 ---@param env ShapeFilterEnv
 ---@param state? ShapeFilterState
-function filter.handle_candidate(text, shape_input, env, state)
+---@param candidate? Candidate
+function filter.handle_candidate(text, shape_input, env, state, candidate)
   state = state or current_state(env)
   if state.id == "snow_sipin" then -- 冰雪四拼
     if state.sipin_passthrough then
@@ -242,7 +254,7 @@ function filter.handle_candidate(text, shape_input, env, state)
     end
   elseif state.id == "snow_sanpin" then -- 冰雪三拼
     if state.sanpin_initial_pair then
-      return sanpin_initial_pair_match(text, shape_input, env)
+      return sanpin_initial_pair_match(text, shape_input, env, candidate)
     end
     if state.sanpin_passthrough then
       return true, nil, nil
@@ -302,7 +314,7 @@ function filter.func(translation, env)
   local first_preedit = nil
   for candidate in translation:iter() do
     has_candidate = true
-    local show, prompt, comment = filter.handle_candidate(candidate.text, shape_input, env, state)
+    local show, prompt, comment = filter.handle_candidate(candidate.text, shape_input, env, state, candidate)
     if not first_preedit and prompt then
       first_preedit = candidate.preedit .. prompt
     end
@@ -334,8 +346,10 @@ end
 function filter.fini(env)
   env.shape_elements = nil
   env.pinyin = nil
+  env.memory = nil
   env.shape_mapping = nil
   bihua.release_strokes(env)
+  collectgarbage()
 end
 
 return filter

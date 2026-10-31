@@ -2,6 +2,7 @@
 -- 适用于：冰雪三拼、冰雪键道
 
 local snow = require "snow.snow"
+local vacancy = require "snow.vacancy"
 
 ---@class TableLikeEnv: Env
 ---@field translator Translator
@@ -9,6 +10,8 @@ local snow = require "snow.snow"
 ---@field pattern2 string
 ---@field reserved_pattern string
 ---@field preserve_t12_proxy_quality boolean
+---@field vacancy_translator Translator
+---@field vacancy_cache table<string, boolean>
 
 ---@param candidate Candidate
 ---@param proxy string
@@ -158,7 +161,8 @@ local initial_pair = {}
 ---@param env TableLikeEnv
 function initial_pair.init(env)
   env.translator = Component.Translator(env.engine, "initial_pair", "script_translator")
-  env.pattern = env.engine.schema.config:get_string("translator/vacant_initial_pattern") or "^$"
+  env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
+  env.vacancy_cache = {}
   env.reserved_pattern =
       env.engine.schema.config:get_string("translator/reserved_initial_pair_pattern") or "^$"
 end
@@ -167,7 +171,7 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function initial_pair.func(input, segment, env)
-  if not rime_api.regex_match(input, env.pattern)
+  if not vacancy.is_empty(input, segment, env.vacancy_translator, env.vacancy_cache)
       or rime_api.regex_match(input, env.reserved_pattern) then
     return
   end
@@ -183,6 +187,7 @@ end
 ---@param env TableLikeEnv
 function initial_pair.fini(env)
   env.translator = nil
+  env.vacancy_translator = nil
   collectgarbage()
 end
 

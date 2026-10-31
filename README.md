@@ -61,7 +61,8 @@
 
 - [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 全覆盖且 399 个二键码全部唯一，21×26 共保留 147 个空码；[M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 为 36，普通声母仅 `f→J` 偏移，基础元音仅 `o→M` 偏移。
 - 冰雪神韵·形辅键为 `A/E/U/I/O`，冰雪神韵·调声调键为 `I/E/U/A/O → 一/二/三/四/轻`。
-- 小写输入遵循[飞花式四码顶](https://input.tansongchen.com/snow-feihua/basic.html)：单字为 `A_ / AU_ / AUB / AUBB`，二字词为 `A₁U₁A₂U₂[B₂B₁]`，三字词为 `A₁A₂A₃U₃[B₁B₂]`，四字词为 `A₁A₂A₃A₄[B₁B₂]`。完整码之后输入下一字声码才顶屏，未完成主码直接续写。
+- 小写输入遵循[飞花式四码顶](https://input.tansongchen.com/snow-feihua/basic.html)：单字为 `A_ / AU_ / AUB / AUBB`，二字词为 `A₁U₁A₂U₂[B₂B₁]`，三字词为 `A₁A₂A₃U₃[B₁B₂]`，四字词为 `A₁A₂A₃A₄[B₁B₂]`。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若 `A₃B₁` 运行时为空桶，三字词还可用 `A₁A₂A₃B₁[B₂]`。
+- 两组 21×26 方案的 `AA` 与 `A₃B₁` 均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 `AU`；词典或映射变化后无需重写空码清单。单键只固顶一个一简字，其余候选自然排序。
 
 ### [无飞键道(U357) 21×21 双拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
 
@@ -199,7 +200,7 @@ bun scripts/导出神韵热力图.ts "路径/a7_CKT_R11.html" --21x26
 - `AA` 的 441 个位置由 366 个二码单字和 75 个二简完整覆盖；75 个二简全部使用 U357 扩展域的天然空码，不再让音码下沉。
 - 三拼 630 当前为 105 个二码位＋506 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
 - 三拼二字词二、三码候选清单见 [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)：630 个理论码位中 550 个有合法候选，每码最多列 10 项，供逐级选词复核，不直接替代一码一候选的固顶表。
-- 天然空码作为声声二字词时只接受一次辅码：冰雪三拼的 75 个空码按第二字声调用 `I/V/U/A/O` 筛选并显示 `调[辅键]`；冰雪键道除 `xh`、`xw` 保留给 U/A 字母入口外，其余 73 个空码按首字首形码筛选并显示 `形[辅键]`；辅码不进入上屏文本。
+- 声声二字词入口不再读取固定空码正则，而是在运行时查询不含用户词典的系统词典；完整单字词频大于 1 才占桶，当前词典得到 80 个空 `AA`。冰雪三拼按词条实际读音的第二字声调用 `I/V/U/A/O` 筛选，冰雪键道按首字首形码筛选；辅码不进入上屏文本。
 - 冰雪三拼和冰雪键道的大写字母统一用于三字及以上简拼的韵母补全：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
 - [二字词逐级排序结果](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音。
 - 多字轻声 `de/le` 尾词改走 `;`/`/` 尾字键；已有等长或更短打法、完整码首选或日常收益不足的词不强占固顶位。
@@ -347,7 +348,7 @@ Both SVGs are exported directly from the target entry in the benchmark HTML: the
 
 Ordinary initials use their own letter except `f→J` and `zh/ch/sh→F/V/W`; zero-onset carriers are `AOE→X`, `W→Q`, and `Y/YU→Y`. The final keys are `a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B`.
 
-[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) is 36. Shape auxiliaries are `A/E/U/I/O`, and tone auxiliaries are `I/E/U/A/O → 1/2/3/4/neutral`. Lowercase input follows the [Feihua four-code-top](https://input.tansongchen.com/snow-feihua/basic.html) contract: characters use `A_ / AU_ / AUB / AUBB`; two-character words use `A₁U₁A₂U₂[B₂B₁]`; three-character words use `A₁A₂A₃U₃[B₁B₂]`; four-character words use `A₁A₂A₃A₄[B₁B₂]`.
+[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) is 36. Shape auxiliaries are `A/E/U/I/O`, and tone auxiliaries are `I/E/U/A/O → 1/2/3/4/neutral`. Lowercase input follows the [Feihua four-code-top](https://input.tansongchen.com/snow-feihua/basic.html) contract: characters use `A_ / AU_ / AUB / AUBB`; two-character words use `A₁U₁A₂U₂[B₂B₁]`; three-character words use `A₁A₂A₃U₃[B₁B₂]`; four-character words use `A₁A₂A₃A₄[B₁B₂]`. When `A₃B₁` is vacant at runtime, a three-character word may also use `A₁A₂A₃B₁[B₂]`. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime `AU` vacancies. Only one one-key character is pinned per initial.
 
 ### [Wufei KeyTao(U357) 21×21 double pinyin](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
 
@@ -457,7 +458,7 @@ bun scripts/导出神韵热力图.ts "path/to/a7_CKT_R11.html" --21x26
 
 The current layout fills all 441 AA positions with 366 two-key characters and 75 two-key abbreviations; all abbreviations use naturally vacant U357 extension-domain codes. Three-Code has 105+506 candidates in its 630 space, while KeyTao has 105+525. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
 
-When those 75 vacant pairs act as two-initial, two-character abbreviations, exactly one auxiliary is accepted: Three-Code filters by the second character's tone through `I/V/U/A/O`, while KeyTao filters by the first character's first shape code. The auxiliary remains outside committed text. In both schemes, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials are already present.
+Vacant two-initial pairs are now detected at runtime from a system-dictionary-only translator; a complete single-character entry occupies the bucket only when its frequency is above 1. The current dictionary yields 80 vacant `AA` pairs. Three-Code filters them by the second character's actual dictionary-reading tone through `I/V/U/A/O`, while KeyTao filters by the first character's first shape code. The auxiliary remains outside committed text. In both schemes, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials are already present.
 
 The [staged bigram ranking study](reports/sipin-bigram-ranking-research.md) also checks 133,205 encodable readings along the real [Four-Code](https://input.tansongchen.com/snow4/) completion path. It found no automatic replacement that both improves multiple stages and remains non-first at full code, so the evidence is retained without forcing extra fixed-candidate changes.
 
@@ -514,7 +515,7 @@ bun scripts/验证神韵双拼.ts
 
 普通聲母除 `f→J`、`zh/ch/sh→F/V/W` 外使用本字母；零聲母載體為 `AOE→X`、`W→Q`、`Y/YU→Y`。韻母鍵為 `a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B`。
 
-[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；[M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 為 36。形輔鍵為 `A/E/U/I/O`，聲調鍵為 `I/E/U/A/O → 一/二/三/四/輕`。小寫輸入遵循[飛花式四碼頂](https://input.tansongchen.com/snow-feihua/basic.html)：單字 `A_ / AU_ / AUB / AUBB`；二字詞 `A₁U₁A₂U₂[B₂B₁]`；三字詞 `A₁A₂A₃U₃[B₁B₂]`；四字詞 `A₁A₂A₃A₄[B₁B₂]`。
+[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；[M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 為 36。形輔鍵為 `A/E/U/I/O`，聲調鍵為 `I/E/U/A/O → 一/二/三/四/輕`。小寫輸入遵循[飛花式四碼頂](https://input.tansongchen.com/snow-feihua/basic.html)：單字 `A_ / AU_ / AUB / AUBB`；二字詞 `A₁U₁A₂U₂[B₂B₁]`；三字詞 `A₁A₂A₃U₃[B₁B₂]`；四字詞 `A₁A₂A₃A₄[B₁B₂]`。若 `A₃B₁` 運行時為空桶，三字詞亦可使用 `A₁A₂A₃B₁[B₂]`。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 `AU`；每個聲鍵只固頂一個一簡字。
 
 ### [無飛鍵道(U357) 21×21 雙拼](https://pingshunhuangalex.gitbook.io/rime-xkjd/advance-in-xkjd/alt-code)
 
@@ -624,7 +625,7 @@ bun scripts/导出神韵热力图.ts "路徑/a7_CKT_R11.html" --21x26
 
 目前方案以 366 個二碼單字與 75 個二簡完整覆蓋 441 個 AA 位置，二簡全部使用 U357 擴充域的自然空碼；三拼 630 為 105＋506，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
 
-自然空碼作為聲聲二字詞時只接受一次輔碼：冰雪三拼的 75 個空碼按第二字聲調以 `I/V/U/A/O` 篩選並顯示 `調[輔鍵]`；冰雪鍵道除 `xh`、`xw` 保留給 U/A 字母入口外，其餘 73 個空碼按首字首形碼篩選並顯示 `形[輔鍵]`；輔碼不進入上屏文字。兩方案的大寫字母統一用於三字及以上簡拼的韻母補全：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
+聲聲二字詞空碼改為運行時查詢不含用戶詞典的系統詞典，完整單字詞頻大於 1 才占桶，當前詞典得到 80 個空 `AA`。冰雪三拼按詞條實際讀音的第二字聲調以 `I/V/U/A/O` 篩選，冰雪鍵道按首字首形碼篩選；輔碼不進入上屏文字。兩方案的大寫字母統一用於三字及以上簡拼的韻母補全：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
 
 #### 方案專屬編碼鍵（含大寫）
 

@@ -2,6 +2,7 @@
 -- 本处理器接受辅助码按键，把它们放到上下文中
 
 local snow = require "snow.snow"
+local vacancy = require "snow.vacancy"
 
 ---@param env Env
 local function update(env)
@@ -15,11 +16,14 @@ end
 ---@field accept string
 ---@field block boolean
 ---@field status string?
+---@field vacant boolean
 
 ---@class ShapeProcessorEnv: Env
 ---@field config ShapeConfig[]
 ---@field select_connection Connection
 ---@field commit_connection Connection
+---@field vacancy_translator Translator|nil
+---@field vacancy_cache table<string, boolean>
 
 local processor = {}
 
@@ -36,6 +40,7 @@ function processor.init(env)
   env.select_connection = context.select_notifier:connect(clear)
   env.commit_connection = context.commit_notifier:connect(clear)
   env.config = {}
+  env.vacancy_cache = {}
   for i = 1, shape_config.size do
     local item = shape_config:get_at(i - 1)
     if not item then goto continue end
@@ -47,6 +52,7 @@ function processor.init(env)
     local reject_combined = value:get_value("reject_combined")
     local reject_combined_config = value:get_value("reject_combined_config")
     local status = value:get_value("status")
+    local vacant = value:get_value("vacant")
     ---@type ShapeConfig
     local parsed = {
       match = match and match:get_string()
@@ -58,7 +64,11 @@ function processor.init(env)
       accept = value:get_value("accept"):get_string() or "",
       block = value:get_value("block") and value:get_value("block"):get_bool() or false,
       status = status and status:get_string(),
+      vacant = vacant and vacant:get_bool() or false,
     }
+    if parsed.vacant and not env.vacancy_translator then
+      env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
+    end
     table.insert(env.config, parsed)
     ::continue::
   end
@@ -99,6 +109,10 @@ function processor.func(key_event, env)
       if rule.match and not rime_api.regex_match(input, rule.match) then
         goto continue
       end
+      if rule.vacant and (not env.vacancy_translator
+          or not vacancy.is_empty(input, segment, env.vacancy_translator, env.vacancy_cache)) then
+        goto continue
+      end
       if rule.match_shape and not rime_api.regex_match(shape_input, rule.match_shape) then
         goto continue
       end
@@ -128,6 +142,8 @@ end
 function processor.fini(env)
   if env.select_connection then env.select_connection:disconnect() end
   if env.commit_connection then env.commit_connection:disconnect() end
+  env.vacancy_translator = nil
+  collectgarbage()
 end
 
 return processor

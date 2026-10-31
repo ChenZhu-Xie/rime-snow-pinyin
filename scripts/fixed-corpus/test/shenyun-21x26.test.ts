@@ -108,7 +108,6 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 		translator: {
 			shenyun_initial_keys: string;
 			shenyun_final_keys: string;
-			shenyun_vacant_au_pattern: string;
 		};
 	};
 	const { shenyun_initial_keys: initial, shenyun_final_keys: final } =
@@ -117,21 +116,26 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 	const vacant = [...initial]
 		.flatMap((first) => [...final].map((second) => first + second))
 		.filter((code) => !occupied.has(code));
-	const vacantPattern = new RegExp(
-		common.translator.shenyun_vacant_au_pattern,
-		"u",
-	);
 	assert.equal(vacant.length, 147);
-	assert.deepEqual(
-		vacant.filter((code) => vacantPattern.test(code)),
-		vacant,
-	);
-	assert.deepEqual(
-		encoded.filter((code) => vacantPattern.test(code)),
-		[],
-	);
-	assert.equal(vacantPattern.test("cw"), true);
-	assert.equal(vacantPattern.test("br"), false);
+	assert.equal(vacant.includes("cw"), true);
+	assert.equal(vacant.includes("br"), false);
+	assert.doesNotMatch(commonSource, /shenyun_vacant_au_pattern/u);
+});
+
+test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码清单", () => {
+	const occupied = new Set<string>();
+	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
+		const [word, spelling, rawWeight] = line.split("\t");
+		if ([...(word ?? "")].length !== 1 || !spelling || Number(rawWeight) <= 1) continue;
+		const code = applyAlgebra(spelling, rules).canonical;
+		if (code?.length === 2) occupied.add(code);
+	}
+	const runtimeVacant = [..."bpmfdtnlgkhjqwvxrzcsy"]
+		.flatMap((initial) => [..."abcdefghijklmnopqrstuvwxyz"].map((final) => initial + final))
+		.filter((code) => !occupied.has(code));
+	assert.equal(runtimeVacant.length, 143);
+	assert.equal(runtimeVacant.includes("cw"), true);
+	assert.equal(runtimeVacant.includes("lk"), false);
 });
 
 test("A、U、B 键类独立，逗号句号只由标点处理", () => {
@@ -325,8 +329,8 @@ test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", 
 			const candidates = candidatesStr.trim().split(/\s+/);
 			assert.equal(
 				candidates.length,
-				6,
-				`键 ${key} 候选列表应为 1 首选 + 5 次选`,
+				1,
+				`键 ${key} 只应固顶 1 个首选一简`,
 			);
 			assert.equal(
 				candidates[0],

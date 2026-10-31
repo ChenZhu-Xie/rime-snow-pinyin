@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { load } from "js-yaml";
+import { applyAlgebra, parseAlgebraRules } from "../algebra";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
@@ -129,8 +130,10 @@ test("Shenyun merges translator routes lazily with their iterator state", () => 
 	);
 	assert.match(translator, /consumed_length == stream\.route\.main_length/u);
 	assert.match(translator, /add_route\(routes, "AA"/u);
-	assert.match(translator, /not vacant_au and all_in\(input, 3, B\)/u);
-	assert.match(translator, /if vacant_au and all_in/u);
+	assert.match(translator, /vacancy\.is_empty\(first_pair/u);
+	assert.match(translator, /not first_vacant and all_in\(input, 3, B\)/u);
+	assert.match(translator, /if first_vacant and all_in/u);
+	assert.match(translator, /add_route\(routes, "AAA\+B"/u);
 	assert.match(
 		translator,
 		/stream\.route\.family == "AA"[\s\S]+goto continue/u,
@@ -500,25 +503,30 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		.flatMap((first) => keys.map((second) => first + second))
 		.filter((code) => !occupied.has(code));
 	assert.equal(vacant.length, 75);
+	const sanpinRules = parseAlgebraRules(read("snow_sanpin.schema.yaml"), "sanpin_algebra");
+	const runtimeOccupied = new Set<string>();
+	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
+		const [word, spelling, rawWeight] = line.split("\t");
+		if ([...(word ?? "")].length !== 1 || !spelling || Number(rawWeight) <= 1) continue;
+		const code = applyAlgebra(spelling, sanpinRules).canonical?.replace(/[ivuao]$/u, "");
+		if (code?.length === 2) runtimeOccupied.add(code);
+	}
+	const runtimeVacant = keys
+		.flatMap((first) => keys.map((second) => first + second))
+		.filter((code) => !runtimeOccupied.has(code));
+	assert.equal(runtimeVacant.length, 80);
+	assert.equal(runtimeVacant.includes("yx"), true);
+	assert.equal(runtimeVacant.includes("lk"), false);
 	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
 		const schema = load(read(file)) as {
-			patch: {
-				"translator/vacant_initial_pattern": string;
-				"translator/reserved_letter_pattern"?: string;
-			};
+			vacancy: { enable_user_dict: boolean };
 		};
-		const pattern = new RegExp(
-			schema.patch["translator/vacant_initial_pattern"],
-			"u",
-		);
-		assert.deepEqual(
-			vacant.filter((code) => pattern.test(code)),
-			vacant,
-			file,
-		);
-		assert.match(read(file), /match_shape: "\^\$"[\s\S]+block: true/u);
+		assert.equal(schema.vacancy.enable_user_dict, false, file);
+		assert.doesNotMatch(read(file), /vacant_initial_pattern/u);
+		assert.match(read(file), /vacant: true[\s\S]+match_shape: "\^\$"[\s\S]+block: true/u);
 		assert.match(read(file), /status: initial_pair/u);
 	}
+	assert.match(read("lua/snow/vacancy.lua"), /phrase\.entry\.weight > 0/u);
 	const sanpin = load(read("snow_sanpin.schema.yaml")) as {
 		patch: { "translator/reserved_letter_pattern": string };
 	};
