@@ -134,6 +134,8 @@ jianpin:
 vacancy:
   dictionary: snow_pinyin
   prism: snow_sanpin
+  canonical_format:
+    __include: /sanpin_algebra
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext

@@ -331,7 +331,7 @@ function this.init(env)
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
-  env.vacancy_projection = Projection(config:get_list("shenyun_algebra") or {})
+  env.vacancy_projection = Projection(config:get_list("vacancy/canonical_format") or {})
   env.memory = Memory(env.engine, env.engine.schema, "shenyun")
   env.pinyin = ReverseLookup("snow_pinyin")
   local shape_elements = config:get_string("translator/shape_elements") or "snow_jiandao_chaifen"

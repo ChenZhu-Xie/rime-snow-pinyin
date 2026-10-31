@@ -541,6 +541,7 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 			/vacant: true\r?\n      match: "\^\[bpmfdtnlgkhjqxzcsrwye\]\{2\}\$"/u,
 			file,
 		);
+		assert.match(read(file), /canonical_format:\r?\n    __include: /u, file);
 	}
 	const sanpin = load(read("snow_sanpin.schema.yaml")) as {
 		patch: { "translator/reserved_letter_pattern": string };

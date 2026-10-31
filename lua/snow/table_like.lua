@@ -166,7 +166,7 @@ function initial_pair.init(env)
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
   env.vacancy_projection = Projection(
-    env.engine.schema.config:get_list("sanpin_algebra") or {})
+    env.engine.schema.config:get_list("vacancy/canonical_format") or {})
   env.vacancy_cache = {}
   env.reserved_pattern =
       env.engine.schema.config:get_string("translator/reserved_initial_pair_pattern") or "^$"

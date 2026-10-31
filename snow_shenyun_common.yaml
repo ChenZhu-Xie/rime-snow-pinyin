@@ -129,6 +129,8 @@ shenyun:
 vacancy:
   dictionary: snow_pinyin
   prism: snow_shenyun
+  canonical_format:
+    __include: /shenyun_algebra
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext

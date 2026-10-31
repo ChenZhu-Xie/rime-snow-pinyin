@@ -157,6 +157,8 @@ initial_pair:
 vacancy:
   dictionary: snow_pinyin
   prism: snow_jiandao
+  canonical_format:
+    __include: snow_sanpin.schema.yaml:/sanpin_algebra
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext
