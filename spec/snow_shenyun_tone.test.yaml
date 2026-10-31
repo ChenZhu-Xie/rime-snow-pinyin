@@ -35,6 +35,9 @@ deploy:
       # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）。
       - send: bri
         assert: has("冰")
+      # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
+      - send: cewi
+        assert: commit == nil and has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: brxg
         assert: has("冰雪")

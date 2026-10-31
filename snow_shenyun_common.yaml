@@ -130,7 +130,31 @@ speller:
   initials: bpmfdtnlgkhjqwvxrzcsy
   delimiter: " "
   popping:
-    # 字母先尝试追加；无候选时顶出当前首选，再重放该键。
+    # 四码顶的未完成主码必须直接续写，不依赖中间态是否恰好有候选。
+    # A 后的第二码既可能是单字 U，也可能是三、四字词的 A2。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy]$"
+      accept: "[a-z]"
+      strategy: append
+    # AU/AA 后的第三码分流为单字 B 或词语 A；A、B 正好划分 26 个小写字母。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z]$"
+      accept: "[a-z]"
+      strategy: append
+    # AUA/AAA 后完整接收 26 键 U，形成 AUAU、AAAU 或 AAAA。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy]$"
+      accept: "[a-z]"
+      strategy: append
+    # 单字 AUB 可以继续追加第二个辅码。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$"
+      accept: "[aeuio]"
+      strategy: append
+    # 二、三、四字词的四码主码后依次追加 B1、B2（其中二字词实际为 B2、B1）。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy][a-z]$"
+      accept: "[aeuio]"
+      strategy: append
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$"
+      accept: "[aeuio]"
+      strategy: append
+    # 其余字母先尝试追加；不能形成候选时顶出完整码首选，再重放该键。
     - match: "^[a-z]+$"
       accept: "[a-z]"
       strategy: conditional

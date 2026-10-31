@@ -132,12 +132,45 @@ test("A、U、B 键类独立，逗号句号只由标点处理", () => {
 	);
 	assert.equal(common.speller.alphabet, "abcdefghijklmnopqrstuvwxyz");
 	assert.equal(final.includes(",") || final.includes("."), false);
-	assert.deepEqual(common.speller.popping[0], {
+	assert.deepEqual(common.speller.popping.slice(0, 6), [
+		{
+			match: "^[bpmfdtnlgkhjqwvxrzcsy]$",
+			accept: "[a-z]",
+			strategy: "append",
+		},
+		{
+			match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z]$",
+			accept: "[a-z]",
+			strategy: "append",
+		},
+		{
+			match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy]$",
+			accept: "[a-z]",
+			strategy: "append",
+		},
+		{
+			match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$",
+			accept: "[aeuio]",
+			strategy: "append",
+		},
+		{
+			match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy][a-z]$",
+			accept: "[aeuio]",
+			strategy: "append",
+		},
+		{
+			match:
+				"^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$",
+			accept: "[aeuio]",
+			strategy: "append",
+		},
+	]);
+	assert.deepEqual(common.speller.popping[6], {
 		match: "^[a-z]+$",
 		accept: "[a-z]",
 		strategy: "conditional",
 	});
-	assert.deepEqual(common.speller.popping[1], {
+	assert.deepEqual(common.speller.popping[7], {
 		match: ".*[a-z0-9]",
 		accept: "[^a-z0-9 ]",
 	});

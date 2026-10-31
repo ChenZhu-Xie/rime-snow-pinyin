@@ -37,6 +37,9 @@ deploy:
         assert: has("冰")
       - send: bro
         assert: has("冰")
+      # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
+      - send: cewi
+        assert: commit == nil and has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: brxg
         assert: has("冰雪")
