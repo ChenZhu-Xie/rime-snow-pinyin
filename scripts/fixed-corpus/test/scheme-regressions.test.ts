@@ -526,7 +526,10 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		assert.match(read(file), /vacant: true[\s\S]+match_shape: "\^\$"[\s\S]+block: true/u);
 		assert.match(read(file), /status: initial_pair/u);
 	}
-	assert.match(read("lua/snow/vacancy.lua"), /phrase\.entry\.weight > 0/u);
+	const vacancySource = read("lua/snow/vacancy.lua");
+	assert.match(vacancySource, /memory:dict_lookup\(input, true, 1000\)/u);
+	assert.match(vacancySource, /memory:decode\(entry\.code\)/u);
+	assert.doesNotMatch(vacancySource, /entry\.weight/u);
 	const sanpin = load(read("snow_sanpin.schema.yaml")) as {
 		patch: { "translator/reserved_letter_pattern": string };
 	};
