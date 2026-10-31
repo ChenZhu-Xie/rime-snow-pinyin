@@ -21,14 +21,6 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function snapshot()
-    local result = { "preedit=" .. tostring(preedit), "count=" .. tostring(#cand) }
-    for index, candidate in ipairs(cand) do
-      if index > 12 then break end
-      table.insert(result, index .. ":" .. candidate.text .. "「" .. candidate.comment .. "」")
-    end
-    return table.concat(result, " | ")
-  end
 deploy:
   sentence:
     patch:
@@ -163,9 +155,9 @@ deploy:
         assert: cand[1].text == "了"
       # 声声二字词只接受一个首字首形辅码，辅码不进入上屏文本。
       - send: yx
-        assert: error(snapshot())
+        assert: cand[2] ~= nil
       - send: yxa
-        assert: error(snapshot())
+        assert: has("也许") and not has("有些") and preedit == "y x 形[a]"
       - send: yxv
         assert: has("有些") and not has("也许")
       - send: "yxa "

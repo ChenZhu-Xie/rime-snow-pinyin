@@ -181,7 +181,8 @@ function initial_pair.func(input, segment, env)
       or rime_api.regex_match(input, env.reserved_pattern) then
     return
   end
-  translate(input, segment, env, false, function(candidate)
+  local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2, 2))
+  translate(proxy, segment, env, false, function(candidate)
     if utf8.len(candidate.text) ~= 2 then
       return false
     end
