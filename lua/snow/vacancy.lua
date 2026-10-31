@@ -39,6 +39,10 @@ local fallback_syllables = {
 ---@return boolean
 local function occupies_bucket(entry, memory, projection, input)
   local spelling = memory:decode(entry.code)[1]
+  if input == "bt" or input == "yx" then
+    error(("vacancy %s: spelling=%s projection=%s"):format(
+      input, tostring(spelling), spelling and projection:apply(spelling) or "nil"))
+  end
   -- 字母等伪音节以 ~ 开头，不属于汉字音节，也不能占用 AA/AU 空桶。
   return spelling ~= nil and spelling:sub(1, 1) ~= "~"
       -- 兼容 derive 分支只负责接受旧拼写；只有当前规范码才能占桶。
