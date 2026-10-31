@@ -229,11 +229,15 @@ local function advance(stream, env)
     -- 代理码中的分隔符会同时虚增 _end 和 quality，合流前必须统一还原。
     candidate = snow.prepare(candidate, stream.route.proxy)
     local consumed_length = candidate._end - candidate._start
-    -- script_translator 先给出完整匹配，再给出只消费前缀的候选；进入前缀区后
-    -- 不会再出现完整候选，直接结束可避免为空音码扫描整批二、三字词。
+    -- 普通主码进入前缀区后不会再出现完整候选，直接结束可避免为空音码扫描整批词。
+    -- AA 使用两个简拼音节，某些桶会先返回只消费首音节的高频候选，必须继续查找。
     if consumed_length < stream.route.main_length then
-      stream.candidate = nil
-      return false
+      if stream.route.family == "AA" then
+        goto continue
+      else
+        stream.candidate = nil
+        return false
+      end
     end
     if consumed_length == stream.route.main_length
         and candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
@@ -245,6 +249,7 @@ local function advance(stream, env)
         return true
       end
     end
+    ::continue::
   end
 end
 
