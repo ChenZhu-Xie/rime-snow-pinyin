@@ -182,6 +182,8 @@ translator:
   shenyun_initial_keys: bpmfdtnlgkhjqwvxrzcsy
   shenyun_final_keys: abcdefghijklmnopqrstuvwxyz
   shenyun_auxiliary_keys: aeuio
+  # Common399 的天然空 AU；大字集中的罕见扩展读音不得占用这些 AA 二字词入口。
+  shenyun_vacant_au_pattern: "^(?:bb|be|bf|bg|bk|bl|bq|bt|bv|bx|pb|pe|pg|pk|pl|pq|pt|pv|px|mb|mg|mk|ml|mq|mt|mv|fb|fc|fd|fg|fv|fw|fz|db|dc|dg|dj|dv|dw|tb|tc|tg|tj|tv|tw|tx|nb|nf|nt|lb|lj|gb|gc|gd|gg|gi|gv|gz|kb|kc|kd|kg|ki|kv|kw|kz|hb|hc|hd|hg|hi|hv|hz|je|jh|js|qe|qf|qs|wb|wc|wd|wg|wk|wv|wz|vb|vc|vd|vg|vv|vw|vx|vz|xw|ra|rb|rc|rd|rg|rh|rp|rr|rv|rw|rx|rz|zb|zc|zd|zg|zp|zr|zv|zx|zz|cb|cc|cd|cg|cp|cr|cv|cw|cx|cz|sb|sc|sd|sg|sp|sr|sv|sw|sx|sz|yd|yh|yj|yl|yn|yp|yq|yu|yw|yx|yz)$"
 
 switches:
   - name: ascii_mode

@@ -18,6 +18,7 @@ local this = {}
 ---@field initial_keys string
 ---@field final_keys string
 ---@field auxiliary_keys string
+---@field vacant_au_pattern string
 ---@field auxiliary_mode string
 ---@field auxiliary_cache table<string, string[]>
 
@@ -214,7 +215,6 @@ end
 ---@field iterator fun(translation: Translation): Candidate?
 ---@field candidate Candidate?
 ---@field auxiliary string
----@field full_found boolean
 
 ---@param stream ShenyunStream
 ---@param env ShenyunEnv
@@ -241,7 +241,6 @@ local function advance(stream, env)
     end
     if consumed_length == stream.route.main_length
         and candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
-      stream.full_found = true
       local matches, auxiliary = auxiliary_match(candidate.text, stream.route.suffix, env)
       if matches then
         stream.candidate = candidate
@@ -257,15 +256,17 @@ local function routes_for(input, env)
   local routes = {}
   local n = input:len()
   local A, U, B = env.initial_keys, env.final_keys, env.auxiliary_keys
+  local vacant_au = n >= 2
+      and rime_api.regex_match(input:sub(1, 2), env.vacant_au_pattern)
 
   if n == 1 and contains(A, input) then
     add_route(routes, "A", input, "", 1)
   end
   if n >= 2 and contains(A, input:sub(1, 1)) and contains(U, input:sub(2, 2))
-      and all_in(input, 3, B) then
+      and not vacant_au and all_in(input, 3, B) then
     add_route(routes, "AU", input:sub(1, 2), input:sub(3), 1)
   end
-  if n >= 2 and all_in(input:sub(1, 2), 1, A) and all_in(input, 3, B) then
+  if vacant_au and all_in(input:sub(1, 2), 1, A) and all_in(input, 3, B) then
     -- AA 只在同码 AU 没有完整单字候选时启用；B 沿用二字词的 B2、B1 顺序。
     add_route(routes, "AA", input:sub(1, 1) .. " " .. input:sub(2, 2), input:sub(3), 2)
   end
@@ -299,6 +300,7 @@ function this.init(env)
   env.initial_keys = config:get_string("translator/shenyun_initial_keys") or "bpmfdtnlgkhjqwvxrzcsy"
   env.final_keys = config:get_string("translator/shenyun_final_keys") or "abcdefghijklmnopqrstuvwxyz"
   env.auxiliary_keys = config:get_string("translator/shenyun_auxiliary_keys") or "aeuio"
+  env.vacant_au_pattern = config:get_string("translator/shenyun_vacant_au_pattern") or "^$"
   env.auxiliary_mode = config:get_string("shenyun_options/auxiliary") or "shape"
   env.auxiliary_cache = {}
   if env.auxiliary_mode == "tone" then bihua.load_strokes(env) end
@@ -307,7 +309,6 @@ end
 function this.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
-  local occupied_au = false
   for _, route in ipairs(routes_for(input, env)) do
     local translation = env.translator:query(route.proxy, segment)
     if translation then
@@ -317,13 +318,8 @@ function this.func(input, segment, env)
         iterator = translation:iter(),
         candidate = nil,
         auxiliary = "",
-        full_found = false,
       }
-      local available = advance(stream, env)
-      if route.family == "AU" and stream.full_found then
-        occupied_au = true
-      end
-      if available and (route.family ~= "AA" or not occupied_au) then
+      if advance(stream, env) then
         table.insert(streams, stream)
       end
     end

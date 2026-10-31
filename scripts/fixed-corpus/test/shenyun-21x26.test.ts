@@ -104,6 +104,34 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 	assert.equal(new Set(encoded).size, 399);
 	assert.equal(21 * 26 - new Set(encoded).size, 147);
 	assert.equal(21 * 28 - new Set(encoded).size, 189);
+	const common = load(commonSource) as {
+		translator: {
+			shenyun_initial_keys: string;
+			shenyun_final_keys: string;
+			shenyun_vacant_au_pattern: string;
+		};
+	};
+	const { shenyun_initial_keys: initial, shenyun_final_keys: final } =
+		common.translator;
+	const occupied = new Set(encoded);
+	const vacant = [...initial]
+		.flatMap((first) => [...final].map((second) => first + second))
+		.filter((code) => !occupied.has(code));
+	const vacantPattern = new RegExp(
+		common.translator.shenyun_vacant_au_pattern,
+		"u",
+	);
+	assert.equal(vacant.length, 147);
+	assert.deepEqual(
+		vacant.filter((code) => vacantPattern.test(code)),
+		vacant,
+	);
+	assert.deepEqual(
+		encoded.filter((code) => vacantPattern.test(code)),
+		[],
+	);
+	assert.equal(vacantPattern.test("cw"), true);
+	assert.equal(vacantPattern.test("br"), false);
 });
 
 test("A、U、B 键类独立，逗号句号只由标点处理", () => {
