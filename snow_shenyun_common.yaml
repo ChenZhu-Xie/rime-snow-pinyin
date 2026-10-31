@@ -1,5 +1,5 @@
 # 冰雪神韵·形 / 冰雪神韵·调共用配置
-# 21×26 R10-21X26-M39-08；,/. 只作普通标点。
+# 21×26 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）；,/. 只作普通标点。
 
 __include: snow_pinyin.schema.yaml:/
 
@@ -64,55 +64,50 @@ shenyun_algebra:
   - xform/(^| )yue(?=\d)/$1Yve/
   - xform/(^| )yun(?=\d)/$1Yvn/
   - xform/(^| )yu(?=\d)/$1Yv/
-  # 零声母载体 A/E/O、W、Y 分别映射到 J、W、Y。
-  - xform/(^| )(?=[aoe])/$1J/
-  - xform/(^| )w/$1W/
+  # 零声母载体 A/E/O、W、Y 分别映射到 X、Q、Y。
+  - xform/(^| )(?=[aoe])/$1X/
+  - xform/(^| )w/$1Q/
   - xform/(^| )y/$1Y/
-  # R10 21×26 的声母宿主键；合键依靠互斥的合法韵集合消歧。
+  # Overall-17 的声母宿主键；普通声母只移动 f，合键依靠互斥的合法韵集合消歧。
   - xform/(^| )zh/$1F/
   - xform/(^| )ch/$1V/
-  - xform/(^| )sh/$1D/
-  - xform/(^| )f/$1X/
-  - xform/(^| )d/$1R/
-  - xform/(^| )q/$1W/
-  - xform/(^| )x/$1X/
-  - xform/(^| )r/$1Z/
-  - xform/(^| )z/$1Q/
-  # 26 个纯字母韵键；较长韵尾先行，保留 a/e/i/o/u 的原键。
-  - xform/iang(?=\d)/V/
-  - xform/iong(?=\d)/H/
-  - xform/uang(?=\d)/K/
-  - xform/ian(?=\d)/K/
-  - xform/iao(?=\d)/C/
-  - xform/ing(?=\d)/D/
+  - xform/(^| )sh/$1W/
+  - xform/(^| )f/$1J/
+  # 26 个纯字母韵键；较长韵尾先行，保留 a/e/i/u 的原键。
+  - xform/iang(?=\d)/L/
+  - xform/iong(?=\d)/Q/
+  - xform/uang(?=\d)/P/
+  - xform/ian(?=\d)/P/
+  - xform/iao(?=\d)/D/
+  - xform/ing(?=\d)/R/
   - xform/uai(?=\d)/R/
-  - xform/uan(?=\d)/X/
-  - xform/van(?=\d)/F/
+  - xform/uan(?=\d)/Q/
+  - xform/van(?=\d)/T/
   - xform/eng(?=\d)/N/
   - xform/ang(?=\d)/Y/
-  - xform/ong(?=\d)/P/
-  - xform/ai(?=\d)/J/
-  - xform/an(?=\d)/L/
-  - xform/ao(?=\d)/W/
-  - xform/ei(?=\d)/Q/
-  - xform/en(?=\d)/M/
-  - xform/er(?=\d)/Q/
-  - xform/ia(?=\d)/P/
+  - xform/ong(?=\d)/K/
+  - xform/ai(?=\d)/H/
+  - xform/an(?=\d)/O/
+  - xform/ao(?=\d)/S/
+  - xform/ei(?=\d)/W/
+  - xform/en(?=\d)/J/
+  - xform/er(?=\d)/U/
+  - xform/ia(?=\d)/K/
   - xform/ie(?=\d)/Z/
-  - xform/in(?=\d)/G/
-  - xform/iu(?=\d)/B/
-  - xform/ou(?=\d)/S/
-  - xform/ua(?=\d)/D/
-  - xform/ui(?=\d)/O/
-  - xform/un(?=\d)/F/
-  - xform/uo(?=\d)/H/
-  - xform/ve(?=\d)/T/
-  - xform/vn(?=\d)/X/
-  - xform/v(?=\d)/R/
+  - xform/in(?=\d)/C/
+  - xform/iu(?=\d)/X/
+  - xform/ou(?=\d)/F/
+  - xform/ua(?=\d)/X/
+  - xform/ui(?=\d)/L/
+  - xform/un(?=\d)/T/
+  - xform/uo(?=\d)/M/
+  - xform/ve(?=\d)/G/
+  - xform/vn(?=\d)/B/
+  - xform/v(?=\d)/V/
   - xform/a(?=\d)/A/
   - xform/e(?=\d)/E/
   - xform/i(?=\d)/I/
-  - xform/o(?=\d)/O/
+  - xform/o(?=\d)/M/
   - xform/u(?=\d)/U/
   - xform/\d//
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/

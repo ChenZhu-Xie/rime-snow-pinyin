@@ -21,15 +21,35 @@ deploy:
       # 输入统计沿用公共 lua 前缀 o。
       - send: otj
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
+      # Overall-17 换位后的一级固顶字。
+      - send: d
+        assert: cand[1].text == "的"
+      - send: q
+        assert: cand[1].text == "我"
+      - send: w
+        assert: cand[1].text == "是"
+      - send: r
+        assert: cand[1].text == "人"
+      - send: z
+        assert: cand[1].text == "在"
       # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）。
-      - send: bdi
+      - send: bri
         assert: has("冰")
-      - send: bdio
+      # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
+      - send: brxg
+        assert: has("冰雪")
+      - send: wrj
+        assert: has("输入法")
+      - send: wrja
+        assert: has("输入法")
+      - send: rgfn
+        assert: has("人工智能")
+      - send: brio
         assert: has("冰")
-      - send: bdioe
+      - send: brioe
         assert: has("冰")
       # 部首冫的三拼部首码以 b 开头；数字 1 与声调、笔画互不混淆。
-      - send: "bdi1b"
+      - send: "bri1b"
         assert: has("冰")
-      - send: "bdi1x"
+      - send: "bri1x"
         assert: not has("冰")

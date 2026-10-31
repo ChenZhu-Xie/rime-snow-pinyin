@@ -11,7 +11,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     AUBB 飞花式 21×26 顶功方案
-    共用 R10-21X26-M39-08 声韵布局；单字首 B 为声调，后续 B 为笔画，1 独立进入部首码
+    共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局；单字首 B 为声调，后续 B 为笔画，1 独立进入部首码
   dependencies:
     - snow_pinyin
     - snow_bihua

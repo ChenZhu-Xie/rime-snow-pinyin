@@ -21,12 +21,32 @@ deploy:
       # 输入统计沿用公共 lua 前缀 o。
       - send: otj
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
-      # bing 的 R10 21×26 声韵码为 bd，键道式首形码为 o（丶）。
-      - send: bd
+      # Overall-17 换位后的一级固顶字。
+      - send: d
+        assert: cand[1].text == "的"
+      - send: q
+        assert: cand[1].text == "我"
+      - send: w
+        assert: cand[1].text == "是"
+      - send: r
+        assert: cand[1].text == "人"
+      - send: z
+        assert: cand[1].text == "在"
+      # bing 的 Overall-17 声韵码为 br，键道式首形码为 o（丶）。
+      - send: br
         assert: has("冰")
-      - send: bdo
+      - send: bro
         assert: has("冰")
-      - send: "bd,"
+      # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
+      - send: brxg
+        assert: has("冰雪")
+      - send: wrj
+        assert: has("输入法")
+      - send: wrja
+        assert: has("输入法")
+      - send: rgfn
+        assert: has("人工智能")
+      - send: "br,"
         assert: commit and commit:find("，", 1, true)
-      - send: "bd."
+      - send: "br."
         assert: commit and commit:find("。", 1, true)

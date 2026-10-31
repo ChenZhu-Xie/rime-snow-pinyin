@@ -1,29 +1,34 @@
 {
-  "id": "R10-21X26-M39-08",
+  "id": "SNOW-SHENYUN-21X26-PRODUCTION",
+  "label": "Overall-17",
   "name": "冰雪神韵·形/调共用声韵布局",
-  "source": "research-notes/data/shenyun-r10-21x28-frontier.json",
+  "source": "shuangpin-layout-benchmark/a7_CKT_R11.html#SNOW-SHENYUN-21X26-PRODUCTION",
+  "sourceBranch": "production/ckt-v4-2126-strict-d0-20261030",
+  "sourceCommit": "7a7e154f3f7d0c86653ee15e755ccd72e866e5e2",
+  "archiveCommit": "70545d9f182a97700f7b404e18487fb12738ce01",
   "capacity": [21, 26],
   "commonSyllables": 399,
   "collisions": 0,
   "vacantCodes": 147,
-  "memory": 39,
-  "ordinaryInitialDisplacements": 5,
+  "memory": 36,
+  "ordinaryInitialDisplacements": 1,
+  "vowelDisplacements": 1,
   "auxiliaryKeys": "AEUIO",
   "toneKeys": "IEUAO",
   "initialMap": {
-    "b": "B", "p": "P", "m": "M", "f": "X", "d": "R", "t": "T",
+    "b": "B", "p": "P", "m": "M", "f": "J", "d": "D", "t": "T",
     "n": "N", "l": "L", "g": "G", "k": "K", "h": "H", "j": "J",
-    "q": "W", "x": "X", "zh": "F", "ch": "V", "sh": "D", "r": "Z",
-    "z": "Q", "c": "C", "s": "S", "A": "J", "E": "J", "O": "J",
-    "W": "W", "Y": "Y", "YU": "Y"
+    "q": "Q", "x": "X", "zh": "F", "ch": "V", "sh": "W", "r": "R",
+    "z": "Z", "c": "C", "s": "S", "A": "X", "E": "X", "O": "X",
+    "W": "Q", "Y": "Y", "YU": "Y"
   },
   "finalMap": {
-    "a": "A", "ai": "J", "an": "L", "ang": "Y", "ao": "W",
-    "e": "E", "ei": "Q", "en": "M", "eng": "N", "er": "Q",
-    "i": "I", "ia": "P", "ian": "K", "iang": "V", "iao": "C",
-    "ie": "Z", "in": "G", "ing": "D", "iong": "H", "iu": "B",
-    "o": "O", "ong": "P", "ou": "S", "u": "U", "ua": "D",
-    "uai": "R", "uan": "X", "uang": "K", "ui": "O", "un": "F",
-    "uo": "H", "v": "R", "van": "F", "ve": "T", "vn": "X"
+    "a": "A", "ai": "H", "an": "O", "ang": "Y", "ao": "S",
+    "e": "E", "ei": "W", "en": "J", "eng": "N", "er": "U",
+    "i": "I", "ia": "K", "ian": "P", "iang": "L", "iao": "D",
+    "ie": "Z", "in": "C", "ing": "R", "iong": "Q", "iu": "X",
+    "o": "M", "ong": "K", "ou": "F", "u": "U", "ua": "X",
+    "uai": "R", "uan": "Q", "uang": "P", "ui": "L", "un": "T",
+    "uo": "M", "v": "V", "van": "T", "ve": "G", "vn": "B"
   }
 }

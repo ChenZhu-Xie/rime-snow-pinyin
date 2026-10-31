@@ -10,7 +10,11 @@ const commonSource = read("snow_shenyun_common.yaml");
 const rules = parseAlgebraRules(commonSource, "shenyun_algebra");
 const layout = JSON.parse(read("config/shenyun-21x26-mapping.json")) as {
 	id: string;
+	label: string;
 	capacity: [number, number];
+	memory: number;
+	ordinaryInitialDisplacements: number;
+	vowelDisplacements: number;
 	initialMap: Record<string, string>;
 	finalMap: Record<string, string>;
 };
@@ -48,9 +52,13 @@ function expectedCode(syllable: string): string {
 	return `${layout.initialMap[initial]}${layout.finalMap[final]}`.toLowerCase();
 }
 
-test("冰雪神韵·形/调共用 R10 的 21×26 映射", () => {
-	assert.equal(layout.id, "R10-21X26-M39-08");
+test("冰雪神韵·形/调共用 Overall-17 的 21×26 映射", () => {
+	assert.equal(layout.id, "SNOW-SHENYUN-21X26-PRODUCTION");
+	assert.equal(layout.label, "Overall-17");
 	assert.deepEqual(layout.capacity, [21, 26]);
+	assert.equal(layout.memory, 36);
+	assert.equal(layout.ordinaryInitialDisplacements, 1);
+	assert.equal(layout.vowelDisplacements, 1);
 	for (const syllable of [
 		"bin",
 		"gui",
@@ -71,7 +79,7 @@ test("冰雪神韵·形/调共用 R10 的 21×26 映射", () => {
 });
 
 test("ue 来源拼写统一并入 ve 规范韵母", () => {
-	assert.equal(encode("gue"), "gt");
+	assert.equal(encode("gue"), "gg");
 	const sanpinRules = parseAlgebraRules(
 		read("snow_sanpin.schema.yaml"),
 		"sanpin_algebra",
@@ -79,7 +87,7 @@ test("ue 来源拼写统一并入 ve 规范韵母", () => {
 	assert.equal(applyAlgebra("gue2", sanpinRules).canonical, "gkv");
 });
 
-test("Common399 的实际拼写代数逐一等于 R10 映射，且留 147 个空码", () => {
+test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147 个空码", () => {
 	const frozen = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
 		payloadCodes: Record<string, string | null>;
 	};
@@ -200,7 +208,7 @@ test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", 
 		p: "平",
 		m: "没",
 		f: "这",
-		d: "是",
+		d: "的",
 		t: "他",
 		n: "你",
 		l: "了",
@@ -208,16 +216,25 @@ test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", 
 		k: "可",
 		h: "和",
 		j: "就",
-		q: "在",
+		q: "我",
 		x: "下",
-		z: "人",
+		r: "人",
+		z: "在",
 		c: "才",
 		s: "三",
-		r: "的",
 		y: "一",
-		w: "我",
+		w: "是",
 		v: "出",
 	} as Record<string, string>;
+	const readings = new Map<string, string[]>();
+	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
+		const [character, spelling] = line.split("\t");
+		const match = spelling?.match(/^([a-z]+)[1-5]$/u);
+		if ([...(character ?? "")].length !== 1 || !match) continue;
+		const values = readings.get(character) ?? [];
+		values.push(match[1]);
+		readings.set(character, values);
+	}
 
 	for (const filename of [
 		"snow_shenyun_shape.fixed.txt",
@@ -255,6 +272,14 @@ test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", 
 				expectedFirst[key],
 				`键 ${key} 的首选字必须为 ${expectedFirst[key]}`,
 			);
+			for (const candidate of candidates) {
+				assert.ok(
+					(readings.get(candidate) ?? []).some((spelling) =>
+						expectedCode(spelling).startsWith(key),
+					),
+					`${key}→${candidate} 必须属于 Overall-17 的该声键`,
+				);
+			}
 		}
 		assert.equal(keys.size, 21);
 	}
