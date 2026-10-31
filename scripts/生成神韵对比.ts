@@ -2,6 +2,11 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
+import {
+	type ComparisonDirection,
+	decorateComparison,
+	linkShenyunTerms,
+} from "./lib/shenyun-markdown";
 
 const benchmarkPath = process.argv.find((arg) => arg.endsWith(".html"));
 if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
@@ -245,6 +250,15 @@ const labels: Record<(typeof schemes)[number], string> = {
 	S005: "星空键道 S005",
 	B04: "首道 B04",
 };
+const decorate = (
+	displays: string[],
+	values: Array<number | number[]>,
+	direction: ComparisonDirection,
+) =>
+	decorateComparison(
+		displays.map((display, index) => ({ display, score: values[index] })),
+		direction,
+	);
 const percent = (value: number, digits = 3) =>
 	`${(value * 100).toFixed(digits)}%`;
 const number = (value: number, digits = 6) => value.toFixed(digits);
@@ -257,63 +271,112 @@ const table = (headers: string[], rows: string[][]) =>
 const metricTable = table(
 	["指标", ...schemes.map((scheme) => labels[scheme]), "何为好"],
 	[
-		["M-R2 记忆项", "M-R2", "number", "越低越好"],
-		["FA-1 逻辑审计", "logicAuditFA1", "number", "越高越一致"],
-		["LU-v1r 逻辑均匀度", "logicUniformityLUv1r", "number", "越高越统一"],
-		["Common399 唯一码", "common399UniqueCodes", "integer", "越高越少重码"],
-		["频率加权 S2 miss", "s2FrequencyWeightedMiss", "percent", "越低越好"],
-		["S2 补全平均码长", "s2CompletionMeanKeys", "four", "越低越好"],
-		["S2 补全中心时间（ms）", "s2CompletionCenterMs", "three", "越低越好"],
-		["综合补全 CKT v3", "cktV3", "number", "越低越好；历史情景"],
-		["综合补全 CKT v4", "cktV4", "number", "越低越好；现行主指标"],
-		["A7E-v3 系综当量", "ensembleV3", "number", "越低越好；冻结历史轴"],
-		["A7E-v4 系综当量", "ensembleV4", "number", "越低越好；冻结历史轴"],
-		["A7E-v5 系综当量", "ensembleV5", "number", "越低越好；CKT-only"],
-		["A7E-v6-CW150", "ensembleV6CW150", "number", "越低越好；情景指标"],
-		["八轨综合选重率", "aggregateSelectionRate", "percent", "越低越好"],
-		["八轨第一辅键率", "aggregateFirstAuxRate", "percent", "越低越好"],
-		["八轨第二辅键率", "aggregateSecondAuxRate", "percent", "越低越好"],
-		["日常同手率", "dailySameHandRate", "percent", "越低越好；非独立速度结论"],
-		["日常平均有效距离", "dailyMeanEffectiveDistance", "four", "越低越好"],
+		["M-R2 记忆项", "M-R2", "number", "越低越好", "min"],
+		["FA-1 逻辑审计", "logicAuditFA1", "number", "越高越一致", "max"],
+		[
+			"LU-v1r 逻辑均匀度",
+			"logicUniformityLUv1r",
+			"number",
+			"越高越统一",
+			"max",
+		],
+		[
+			"Common399 唯一码",
+			"common399UniqueCodes",
+			"integer",
+			"越高越少重码",
+			"max",
+		],
+		[
+			"频率加权 S2 miss",
+			"s2FrequencyWeightedMiss",
+			"percent",
+			"越低越好",
+			"min",
+		],
+		["S2 补全平均码长", "s2CompletionMeanKeys", "four", "越低越好", "min"],
+		[
+			"S2 补全中心时间（ms）",
+			"s2CompletionCenterMs",
+			"three",
+			"越低越好",
+			"min",
+		],
+		["综合补全 CKT v3", "cktV3", "number", "越低越好；历史情景", "min"],
+		["综合补全 CKT v4", "cktV4", "number", "越低越好；现行主指标", "min"],
+		["A7E-v3 系综当量", "ensembleV3", "number", "越低越好；冻结历史轴", "min"],
+		["A7E-v4 系综当量", "ensembleV4", "number", "越低越好；冻结历史轴", "min"],
+		["A7E-v5 系综当量", "ensembleV5", "number", "越低越好；CKT-only", "min"],
+		["A7E-v6-CW150", "ensembleV6CW150", "number", "越低越好；情景指标", "min"],
+		["八轨综合选重率", "aggregateSelectionRate", "percent", "越低越好", "min"],
+		["八轨第一辅键率", "aggregateFirstAuxRate", "percent", "越低越好", "min"],
+		["八轨第二辅键率", "aggregateSecondAuxRate", "percent", "越低越好", "min"],
+		[
+			"日常同手率",
+			"dailySameHandRate",
+			"percent",
+			"越低越好；非独立速度结论",
+			"min",
+		],
+		[
+			"日常平均有效距离",
+			"dailyMeanEffectiveDistance",
+			"four",
+			"越低越好",
+			"min",
+		],
 		[
 			"20 合同 QAZ 左小指组峰值",
 			"leftPinkyQAZPeak20Contracts",
 			"percent",
 			"越低越好",
+			"min",
 		],
 		[
 			"20 合同 P 区右小指组峰值",
 			"rightPinkyPeak20Contracts",
 			"percent",
 			"越低越好",
+			"min",
 		],
-		["20 合同最大单指峰值", "maxFingerPeak20Contracts", "percent", "越低越好"],
-		["S2 主键区占比", "homeShareS2", "percent", "越高越好"],
+		[
+			"20 合同最大单指峰值",
+			"maxFingerPeak20Contracts",
+			"percent",
+			"越低越好",
+			"min",
+		],
+		["S2 主键区占比", "homeShareS2", "percent", "越高越好", "max"],
 		[
 			"20 合同 TYB 双食指组峰值",
 			"indexFingerTYBPeak20Contracts",
 			"percent",
 			"越低越好",
+			"min",
 		],
-		["20 合同主键区下限", "homeFloor20Contracts", "percent", "越高越好"],
+		["20 合同主键区下限", "homeFloor20Contracts", "percent", "越高越好", "max"],
 		[
 			"日常纯双拼移动手分数（含标点）",
 			"dailyEightScenarioMovingHand",
 			"three",
 			"越高越好",
+			"max",
 		],
-	].map(([title, name, format, direction]) => [
-		title,
-		...schemes.map((scheme) => {
-			const value = metricValue(name, scheme);
+	].map(([title, name, format, good, direction]) => {
+		const rawValues = schemes.map((scheme) => metricValue(name, scheme));
+		const displays = rawValues.map((value) => {
 			if (format === "percent") return percent(value);
 			if (format === "integer") return String(value);
 			if (format === "three") return number(value, 3);
 			if (format === "four") return number(value, 4);
 			return number(value);
-		}),
-		direction,
-	]),
+		});
+		return [
+			title,
+			...decorate(displays, rawValues, direction as ComparisonDirection),
+			good,
+		];
+	}),
 );
 
 const trackNames = {
@@ -331,11 +394,16 @@ const stagedRows: string[][] = [];
 const bucketRows: string[][] = [];
 for (const mode of modes) {
 	for (const kind of ["char", "word2", "word3", "word4"] as const) {
+		const rateValues = schemes.map(
+			(scheme) => data.weightedNonfirstRates[mode][kind][scheme] as number,
+		);
 		rateRows.push([
 			trackNames[mode],
 			kindNames[kind],
-			...schemes.map((scheme) =>
-				percent(data.weightedNonfirstRates[mode][kind][scheme]),
+			...decorate(
+				rateValues.map((value) => percent(value)),
+				rateValues,
+				"min",
 			),
 		]);
 		for (const [stage, stageName] of [
@@ -343,12 +411,18 @@ for (const mode of modes) {
 			["afterOneAux", "一辅后"],
 			["afterTwoAux", "二辅后"],
 		] as const) {
+			const stageValues = schemes.map(
+				(scheme) =>
+					data.stagedResidualNonfirstRates[mode][kind][stage][scheme] as number,
+			);
 			stagedRows.push([
 				trackNames[mode],
 				kindNames[kind],
 				stageName,
-				...schemes.map((scheme) =>
-					percent(data.stagedResidualNonfirstRates[mode][kind][stage][scheme]),
+				...decorate(
+					stageValues.map((value) => percent(value)),
+					stageValues,
+					"min",
 				),
 			]);
 		}
@@ -374,16 +448,27 @@ const componentNames = [
 	["page", "翻页"],
 	["total", "线性总计"],
 ] as const;
+const componentDecorations = Object.fromEntries(
+	componentNames.map(([key]) => {
+		const values = schemes.map(
+			(scheme) =>
+				data.cktV4Explanation.weightedMeanComponentsMs[scheme][key] as number,
+		);
+		return [
+			key,
+			decorate(
+				values.map((value) => number(value, key === "page" ? 4 : 3)),
+				values,
+				"min",
+			),
+		];
+	}),
+) as Record<(typeof componentNames)[number][0], string[]>;
 const componentTable = table(
 	["方案", ...componentNames.map(([, label]) => `${label}（ms）`)],
-	schemes.map((scheme) => [
+	schemes.map((scheme, schemeIndex) => [
 		labels[scheme],
-		...componentNames.map(([key]) =>
-			number(
-				data.cktV4Explanation.weightedMeanComponentsMs[scheme][key],
-				key === "page" ? 4 : 3,
-			),
-		),
+		...componentNames.map(([key]) => componentDecorations[key][schemeIndex]),
 	]),
 );
 const counterfactuals = [
@@ -394,12 +479,30 @@ const counterfactuals = [
 ] as const;
 const counterfactualTable = table(
 	["CKT v4 情景", ...schemes.map((scheme) => labels[scheme])],
-	counterfactuals.map(([key, label]) => [
-		label,
-		...schemes.map((scheme) =>
-			number(data.cktV4Explanation.counterfactualScores[key][scheme]),
-		),
-	]),
+	counterfactuals.map(([key, label]) => {
+		const values = schemes.map(
+			(scheme) =>
+				data.cktV4Explanation.counterfactualScores[key][scheme] as number,
+		);
+		return [
+			label,
+			...decorate(
+				values.map((value) => number(value)),
+				values,
+				"min",
+			),
+		];
+	}),
+);
+
+const flyingValues = schemes.map((scheme) => {
+	const counts = data.flyingKeyComponents[scheme].counts;
+	return [counts.initials, counts.zeroInitialGroups, counts.finals] as number[];
+});
+const flyingDisplays = decorate(
+	flyingValues.map((values) => values.join(" / ")),
+	flyingValues,
+	"triple-sum",
 );
 
 const report = `# 神韵两代布局与 S005、B04 四方案比较
@@ -408,11 +511,13 @@ const report = `# 神韵两代布局与 S005、B04 四方案比较
 
 必须同时注意合同边界：无飞键道(U357)与 S005 采用传统 21×21 合同；神韵(Overall-17)与 B04 采用四码顶合同。21×26 相比 21×21 扩大了韵码域，不能把跨键域领先直接解释成同键域映射胜负。
 
+表中 **粗体** ★ 只比较同为传统 21×21 合同的无飞键道(U357)与 S005；🥇 比较全部四方案。遇到并列最优时，所有并列单元格均保留相同标记。
+
 ## 总览
 
 ${metricTable}
 
-四方案的飞键成分（声母／零声母组／韵母）依次为：神韵(Overall-17) **0 / 0 / 0**、无飞键道(U357) **0 / 0 / 0**、S005 **2 / 0 / 1**、B04 **0 / 1 / 7**。飞键按 Common399 实际二键码统计；不同成分共用一键或成分整体移位不计飞键。
+四方案的飞键成分（声母／零声母组／韵母）依次为：${schemes.map((scheme, index) => `${labels[scheme]} ${flyingDisplays[index]}`).join("、")}。飞键按 Common399 实际二键码统计；不同成分共用一键或成分整体移位不计飞键。
 
 ## CKT v4 成本分解
 
@@ -451,5 +556,5 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 `;
 
 writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
-writeFileSync(reportPath, report, "utf8");
+writeFileSync(reportPath, linkShenyunTerms(report, "zh", "github"), "utf8");
 console.log(`已生成 ${reportPath}\n已生成 ${jsonPath}`);

@@ -1,6 +1,12 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+	type ComparisonDirection,
+	decorateMarkdownTable,
+	linkReadmeFiles,
+	linkShenyunTerms,
+} from "./lib/shenyun-markdown";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const files = [join(root, "README.md"), join(root, "README_CN.md")];
@@ -9,7 +15,7 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 冰雪神韵·形（\`snow_shenyun_shape\`）与冰雪神韵·调（\`snow_shenyun_tone\`）共用 **神韵(Overall-17) 21×26 双拼**。其底层方案 ID 是 \`SNOW-SHENYUN-21X26-PRODUCTION\`；\`a7_CKT_R11.html\` 只是保存该方案及绘图、复算函数的 benchmark 页面版本，不是方案名称。
 
-**声韵键盘图**
+**声韵辅-键 映射**
 
 ![神韵(Overall-17) 21×26 双拼声韵键盘图](docs/shenyun-overall17-keyboard.svg)
 
@@ -57,7 +63,7 @@ const enOverall = `### Shenyun(Overall-17) 21×26 double pinyin
 
 Snow Shenyun Shape (\`snow_shenyun_shape\`) and Snow Shenyun Tone (\`snow_shenyun_tone\`) share **Shenyun(Overall-17) 21×26 double pinyin**. Its stable scheme ID is \`SNOW-SHENYUN-21X26-PRODUCTION\`; \`a7_CKT_R11.html\` is only the benchmark page carrying the scheme and rendering/replay functions, not the layout's name.
 
-**Initial/final keyboard map**
+**Initial/final/auxiliary-key mapping**
 
 ![Shenyun(Overall-17) 21×26 initial/final keyboard map](docs/shenyun-overall17-keyboard.svg)
 
@@ -79,7 +85,7 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 冰雪神韻·形（\`snow_shenyun_shape\`）與冰雪神韻·調（\`snow_shenyun_tone\`）共用 **神韻(Overall-17) 21×26 雙拼**。底層方案 ID 為 \`SNOW-SHENYUN-21X26-PRODUCTION\`；\`a7_CKT_R11.html\` 只是承載方案與繪圖、複算函式的 benchmark 頁面版本，不是方案名稱。
 
-**聲韻鍵盤圖**
+**聲韻輔-鍵 映射**
 
 ![神韻(Overall-17) 21×26 雙拼聲韻鍵盤圖](docs/shenyun-overall17-keyboard.svg)
 
@@ -171,6 +177,30 @@ function addOverallColumn(markdown: string) {
 
 function normalizeTerms(markdown: string) {
 	markdown = markdown
+		.replaceAll("**声韵键盘图**", "**声韵辅-键 映射**")
+		.replaceAll("**声韵映射**", "**声韵辅-键 映射**")
+		.replaceAll(
+			"**Initial/final keyboard map**",
+			"**Initial/final/auxiliary-key mapping**",
+		)
+		.replaceAll(
+			"**Initial/final mapping**",
+			"**Initial/final/auxiliary-key mapping**",
+		)
+		.replaceAll("**聲韻鍵盤圖**", "**聲韻輔-鍵 映射**")
+		.replaceAll("**聲韻映射**", "**聲韻輔-鍵 映射**")
+		.replaceAll(
+			"**无飞键道(U357) 21×21 双拼 日常八场景文稿 纯双拼键频图（含标点）**",
+			"**日常八场景文稿纯双拼键频图（含标点）**",
+		)
+		.replaceAll(
+			"**Wufei KeyTao(U357) 21×21 double pinyin pure-double-pinyin key-frequency map over the daily eight-scenario prose corpus (punctuation included)**",
+			"**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**",
+		)
+		.replaceAll(
+			"**無飛鍵道(U357) 21×21 雙拼 日常八場景文稿 純雙拼鍵頻圖（含標點）**",
+			"**日常八場景文稿純雙拼鍵頻圖（含標點）**",
+		)
 		.replace(
 			/\*\*无\[飞键\]\([^)]+\)道·神韵 U357 综合人体工学前沿\*\*/gu,
 			"**无飞键道(U357) 21×21 双拼**",
@@ -273,16 +303,128 @@ function normalizeTerms(markdown: string) {
 		.replace(
 			/(### 兩代神韻與 S005、B04 的四方案公平比較\r?\n\r?\n)四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道\(U357\)与 S005 采用传统 21×21 合同，神韵\(Overall-17\)与 B04 采用四码顶合同。/gu,
 			"$1四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
-		)
-		.replaceAll("🥇", "");
+		);
 	return markdown;
 }
 
-function update(markdown: string) {
+const readmeDirections = [
+	"min",
+	"triple-sum",
+	"max",
+	"max",
+	"max",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"closest-to-half",
+	"min",
+	"min",
+	"min",
+	"min",
+	"min",
+	"max",
+	"max",
+	"min",
+	"max",
+] as const satisfies readonly ComparisonDirection[];
+
+function decorateReadmeTables(markdown: string) {
+	const lines = markdown.split("\n");
+	for (let index = 0; index < lines.length; index++) {
+		if (!/^\| (?:指标|Metric|指標) \|/u.test(lines[index])) continue;
+		let end = index + 1;
+		while (end < lines.length && lines[end].startsWith("|")) end++;
+		const decorated = decorateMarkdownTable(
+			lines.slice(index, end).join("\n"),
+			readmeDirections,
+		).split("\n");
+		lines.splice(index, end - index, ...decorated);
+		index += decorated.length - 1;
+	}
+	return lines.join("\n");
+}
+
+function addComparisonLegends(markdown: string) {
+	const lines = markdown
+		.split("\n")
+		.filter(
+			(line) =>
+				!line.includes("**粗体** ★") &&
+				!line.includes("**Bold** ★") &&
+				!line.includes("**粗體** ★") &&
+				!["表中", "In the tables,"].includes(line.trim()),
+		);
+	for (let index = 0; index < lines.length; index++) {
+		const match = lines[index].match(/^\| (指标|Metric|指標) \|/u);
+		if (!match) continue;
+		const legend =
+			match[1] === "Metric"
+				? "In the tables, **Bold** ★ compares only the two traditional 21×21 layouts, Wufei KeyTao(U357) and S005; 🥇 compares all four layouts. Every tied best cell keeps the same marker."
+				: match[1] === "指標"
+					? "表中 **粗體** ★ 只比較同為傳統 21×21 合同的無飛鍵道(U357)與 S005；🥇 比較全部四方案；並列最優均保留標記。"
+					: "表中 **粗体** ★ 只比较同为传统 21×21 合同的无飞键道(U357)与 S005；🥇 比较全部四方案；并列最优均保留标记。";
+		while (index > 0 && lines[index - 1] === "") {
+			lines.splice(index - 1, 1);
+			index--;
+		}
+		lines.splice(index, 0, "", legend, "");
+		index += 3;
+	}
+	return lines.join("\n");
+}
+
+function finalizeReadme(markdown: string, host: "github" | "gitee") {
+	let output = decorateReadmeTables(markdown);
+	output = addComparisonLegends(output);
+	output = linkReadmeFiles(output, host);
+	output = linkShenyunTerms(output, "zh", host);
+	output = linkShenyunTerms(output, "en", host);
+	output = linkShenyunTerms(output, "zht", host);
+	return output;
+}
+
+function deduplicateOverallSections(markdown: string) {
+	const lines = markdown.split("\n");
+	const seen = new Set<string>();
+	for (let index = 0; index < lines.length; index++) {
+		if (
+			!lines[index].startsWith("### ") ||
+			!lines[index].includes("Overall-17")
+		)
+			continue;
+		const language = lines[index].includes("Shenyun")
+			? "en"
+			: lines[index].includes("神韻")
+				? "zht"
+				: "zh";
+		if (!seen.has(language)) {
+			seen.add(language);
+			continue;
+		}
+		let end = index + 1;
+		while (end < lines.length && !/^##(?:#)? /u.test(lines[end])) end++;
+		lines.splice(index, end - index);
+		index--;
+	}
+	return lines.join("\n");
+}
+
+function update(markdown: string, host: "github" | "gitee") {
 	if (process.argv.includes("--tables-only"))
-		return normalizeTerms(addOverallColumn(markdown));
+		return finalizeReadme(normalizeTerms(addOverallColumn(markdown)), host);
 	if (process.argv.includes("--normalize-only"))
-		return normalizeTerms(markdown);
+		return finalizeReadme(normalizeTerms(markdown), host);
 	markdown = markdown
 		.replace(
 			/(## 简体中文[\s\S]*?)(### 无\[飞键\])/u,
@@ -329,9 +471,6 @@ function update(markdown: string) {
 			/三方案共用 Common399、凍結 20 合同[^\n]*/gu,
 			"四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
 		)
-		.replace(/\*\*粗体\*\* ★[^\n]*\n/gu, "")
-		.replace(/\*\*Bold\*\* ★[^\n]*\n/gu, "")
-		.replace(/\*\*粗體\*\* ★[^\n]*\n/gu, "")
 		.replaceAll(
 			"reports/shenyun-u357-comparison.md",
 			"reports/shenyun-comparison.md",
@@ -354,13 +493,24 @@ function update(markdown: string) {
 			/bun scripts\/生成神韵键盘图\.ts "([^"]+)"\nbun scripts\/导出神韵热力图\.ts "\1"/gu,
 			'bun scripts/生成神韵键盘图.ts "$1"\nbun scripts/生成神韵键盘图.ts "$1" --21x26\nbun scripts/导出神韵热力图.ts "$1"\nbun scripts/导出神韵热力图.ts "$1" --21x26',
 		);
-	return normalizeTerms(addOverallColumn(markdown));
+	return finalizeReadme(
+		normalizeTerms(addOverallColumn(deduplicateOverallSections(markdown))),
+		host,
+	);
 }
 
 for (const file of files) {
 	const source = readFileSync(file, "utf8");
-	const output = update(source);
+	const host = file.endsWith("README_CN.md") ? "gitee" : "github";
+	const output = update(source, host);
 	const normalized = output.replaceAll("\r\n", "\n");
-	if (normalized === source) throw new Error(`${file} 没有发生变化。`);
-	writeFileSync(file, normalized, "utf8");
+	if (process.argv.includes("--check")) {
+		if (normalized !== source) throw new Error(`${file} 需要重新生成。`);
+		console.log(`README 校验通过：${file}`);
+	} else if (normalized !== source) {
+		writeFileSync(file, normalized, "utf8");
+		console.log(`已更新：${file}`);
+	} else {
+		console.log(`无需更新：${file}`);
+	}
 }

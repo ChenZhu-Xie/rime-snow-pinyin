@@ -43,6 +43,8 @@ const output = join(
 		? "shenyun-overall17-keyboard-heat.svg"
 		: "shenyun-u357-keyboard-heat.svg",
 );
+const visibleKeys = [..."QWERTYUIOPASDFGHJKL;ZXCVBNM,."];
+const heatmapTitle = "日常八场景文稿纯双拼键频图（含标点）";
 
 function findBrowser(explicit?: string) {
 	const candidates = [
@@ -69,17 +71,27 @@ const expression = `(() => {
 	wrapper.innerHTML = r9MacroHeat(${JSON.stringify(targetSchemeId)});
 	const svg = wrapper.querySelector("#r9MacroSVG svg");
 	if (!svg) throw new Error("HTML 中找不到目标方案的文稿热力图");
+	const visibleKeys = new Set(${JSON.stringify(visibleKeys)});
+	for (const group of svg.querySelectorAll("g[data-mxkey]")) {
+		if (!visibleKeys.has(group.getAttribute("data-mxkey"))) group.remove();
+	}
+	svg.setAttribute("viewBox", "0 0 790 304");
 	svg.setAttribute("role", "img");
 	svg.setAttribute("aria-labelledby", "title desc");
-	const title = svg.querySelector("title");
-	if (title) {
-		title.id = "title";
-		title.textContent = ${JSON.stringify(`${displayName}日常八场景文稿纯双拼键频图（含标点）`)};
-	}
+	svg.removeAttribute("aria-label");
+	const title = svg.querySelector("title") ?? document.createElementNS("http://www.w3.org/2000/svg", "title");
+	title.id = "title";
+	title.textContent = ${JSON.stringify(heatmapTitle)};
+	if (!title.parentNode) svg.insertBefore(title, svg.firstChild);
 	const description = document.createElementNS("http://www.w3.org/2000/svg", "desc");
 	description.id = "desc";
-	description.textContent = "直接导出自 benchmark HTML 的 34 键日常文稿热力图；只含双拼与文稿标点，不含五辅键、空格和选重。";
+	description.textContent = ${JSON.stringify(`${displayName}；直接导出自 benchmark HTML 的 29 键日常文稿热力图，只含双拼与文稿标点，不含五辅键、空格和选重。`)};
 	svg.insertBefore(description, title?.nextSibling ?? svg.firstChild);
+	const background = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+	background.setAttribute("width", "790");
+	background.setAttribute("height", "304");
+	background.setAttribute("fill", "#fbfcfa");
+	svg.insertBefore(background, description.nextSibling);
 	return new XMLSerializer().serializeToString(svg) + "\\n";
 })()`;
 
@@ -201,13 +213,15 @@ async function main() {
 		}
 	}
 	const keyCount = [...svg.matchAll(/data-mxkey=/gu)].length;
-	if (keyCount !== 34)
-		throw new Error(`热力图应有 34 个键，实际 ${keyCount} 个。`);
+	if (keyCount !== visibleKeys.length)
+		throw new Error(
+			`热力图应有 ${visibleKeys.length} 个键，实际 ${keyCount} 个。`,
+		);
 	if (check) {
 		if (!existsSync(output) || readFileSync(output, "utf8") !== svg) {
 			throw new Error(`热力图与 benchmark HTML 不一致：${output}`);
 		}
-		console.log(`热力图校验通过：${displayName}，34 键。`);
+		console.log(`热力图校验通过：${displayName}，${visibleKeys.length} 键。`);
 	} else {
 		writeFileSync(output, svg, "utf8");
 		console.log(`已从 benchmark HTML 直接导出：${output}`);
