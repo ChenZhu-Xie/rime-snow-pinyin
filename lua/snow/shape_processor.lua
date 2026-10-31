@@ -22,6 +22,7 @@ end
 ---@field config ShapeConfig[]
 ---@field select_connection Connection
 ---@field commit_connection Connection
+---@field vacancy_translator Translator|nil
 ---@field vacancy_memory Memory|nil
 ---@field vacancy_cache table<string, boolean>
 
@@ -67,6 +68,7 @@ function processor.init(env)
       vacant = vacant and vacant:get_bool() or false,
     }
     if parsed.vacant and not env.vacancy_memory then
+      env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
       env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
     end
     table.insert(env.config, parsed)
@@ -109,9 +111,12 @@ function processor.func(key_event, env)
       if rule.match and not rime_api.regex_match(input, rule.match) then
         goto continue
       end
-      if rule.vacant and (not env.vacancy_memory
-          or not vacancy.is_empty(input, env.vacancy_memory, env.vacancy_cache)) then
-        goto continue
+      if rule.vacant then
+        if input:len() ~= 2 or not env.vacancy_translator or not env.vacancy_memory
+            or not vacancy.is_empty(input, segment, env.vacancy_translator,
+              env.vacancy_memory, env.vacancy_cache) then
+          goto continue
+        end
       end
       if rule.match_shape and not rime_api.regex_match(shape_input, rule.match_shape) then
         goto continue
@@ -142,6 +147,7 @@ end
 function processor.fini(env)
   if env.select_connection then env.select_connection:disconnect() end
   if env.commit_connection then env.commit_connection:disconnect() end
+  env.vacancy_translator = nil
   env.vacancy_memory = nil
   collectgarbage()
 end

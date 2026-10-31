@@ -124,10 +124,9 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 
 test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码清单", () => {
 	const vacancySource = read("lua/snow/vacancy.lua");
-	assert.match(vacancySource, /memory:dict_lookup\(input, true, 1000\)/u);
+	assert.match(vacancySource, /translator:query\(input, segment\)/u);
 	assert.match(vacancySource, /memory:decode\(entry\.code\)/u);
 	assert.doesNotMatch(vacancySource, /entry\.weight/u);
-	assert.doesNotMatch(vacancySource, /translator:query/u);
 	const actualFallbacks = new Set(
 		[...vacancySource.matchAll(/^\s+(?:\["([^"]+)"\]|([a-z]+)) = true,$/gmu)].map(
 			(match) => match[1] ?? match[2],

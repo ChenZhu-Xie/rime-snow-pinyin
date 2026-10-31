@@ -13,6 +13,7 @@ local this = {}
 
 ---@class ShenyunEnv: BihuaEnv
 ---@field translator Translator
+---@field vacancy_translator Translator
 ---@field vacancy_memory Memory
 ---@field memory Memory
 ---@field pinyin ReverseLookup
@@ -273,18 +274,21 @@ local function advance(stream, env)
 end
 
 ---@param input string
+---@param segment Segment
 ---@param env ShenyunEnv
 ---@return ShenyunRoute[]
-local function routes_for(input, env)
+local function routes_for(input, segment, env)
   local routes = {}
   local n = input:len()
   local A, U, B = env.initial_keys, env.final_keys, env.auxiliary_keys
   local first_pair = n >= 2 and input:sub(1, 2) or ""
   local first_vacant = first_pair ~= "" and all_in(first_pair, 1, A)
-      and vacancy.is_empty(first_pair, env.vacancy_memory, env.vacancy_cache)
+      and vacancy.is_empty(first_pair, segment, env.vacancy_translator,
+        env.vacancy_memory, env.vacancy_cache)
   local third_pair = n >= 4 and input:sub(3, 4) or ""
   local third_vacant = third_pair ~= "" and contains(A, third_pair:sub(1, 1))
-      and vacancy.is_empty(third_pair, env.vacancy_memory, env.vacancy_cache)
+      and vacancy.is_empty(third_pair, segment, env.vacancy_translator,
+        env.vacancy_memory, env.vacancy_cache)
 
   if n == 1 and contains(A, input) then
     add_route(routes, "A", input, "", 1)
@@ -324,6 +328,7 @@ end
 function this.init(env)
   local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
+  env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
   env.memory = Memory(env.engine, env.engine.schema, "shenyun")
   env.pinyin = ReverseLookup("snow_pinyin")
@@ -343,7 +348,7 @@ end
 function this.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
-  for _, route in ipairs(routes_for(input, env)) do
+  for _, route in ipairs(routes_for(input, segment, env)) do
     local translation = env.translator:query(route.proxy, segment)
     if translation then
       local stream = {
@@ -395,6 +400,7 @@ end
 
 function this.fini(env)
   env.translator = nil
+  env.vacancy_translator = nil
   env.vacancy_memory = nil
   env.memory = nil
   env.pinyin = nil

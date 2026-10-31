@@ -41,19 +41,25 @@ local function is_fallback(entry, memory)
 end
 
 ---@param input string
+---@param segment Segment
+---@param translator Translator
 ---@param memory Memory
 ---@param cache table<string, boolean>
 ---@return boolean
-function vacancy.is_empty(input, memory, cache)
+function vacancy.is_empty(input, segment, translator, memory, cache)
   local cached = cache[input]
   if cached ~= nil then return cached end
-  -- 冰雪三拼的完整单字还有第三位声调，必须以前缀方式查询前两码；
-  -- 冰雪键道和冰雪神韵的完整单字仍会作为精确匹配返回。
-  memory:dict_lookup(input, true, 1000)
   local occupied = false
-  for entry in memory:iter_dict() do
-    if utf8.len(entry.text) == 1 and not is_fallback(entry, memory) then
-      occupied = true
+  local translation = translator:query(input, segment)
+  if translation then
+    for candidate in translation:iter() do
+      local genuine = candidate:get_genuine()
+      local phrase = genuine:to_phrase()
+      local consumed = genuine._end - genuine.start
+      if phrase and consumed == input:len() and utf8.len(candidate.text) == 1
+          and not is_fallback(phrase.entry, memory) then
+        occupied = true
+      end
     end
   end
   cache[input] = not occupied

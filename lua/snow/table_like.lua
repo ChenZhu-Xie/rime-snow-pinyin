@@ -10,6 +10,7 @@ local vacancy = require "snow.vacancy"
 ---@field pattern2 string
 ---@field reserved_pattern string
 ---@field preserve_t12_proxy_quality boolean
+---@field vacancy_translator Translator
 ---@field vacancy_memory Memory
 ---@field vacancy_cache table<string, boolean>
 
@@ -161,6 +162,7 @@ local initial_pair = {}
 ---@param env TableLikeEnv
 function initial_pair.init(env)
   env.translator = Component.Translator(env.engine, "initial_pair", "script_translator")
+  env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
   env.vacancy_cache = {}
   env.reserved_pattern =
@@ -171,7 +173,8 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function initial_pair.func(input, segment, env)
-  if not vacancy.is_empty(input, env.vacancy_memory, env.vacancy_cache)
+  if not vacancy.is_empty(input, segment, env.vacancy_translator,
+        env.vacancy_memory, env.vacancy_cache)
       or rime_api.regex_match(input, env.reserved_pattern) then
     return
   end
@@ -187,6 +190,7 @@ end
 ---@param env TableLikeEnv
 function initial_pair.fini(env)
   env.translator = nil
+  env.vacancy_translator = nil
   env.vacancy_memory = nil
   collectgarbage()
 end
