@@ -176,7 +176,8 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function initial_pair.func(input, segment, env)
-  if not vacancy.is_empty(input, segment, env.vacancy_translator,
+  if input:len() ~= 2
+      or not vacancy.is_empty(input, segment, env.vacancy_translator,
         env.vacancy_memory, env.vacancy_projection, env.vacancy_cache)
       or rime_api.regex_match(input, env.reserved_pattern) then
     return

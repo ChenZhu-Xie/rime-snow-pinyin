@@ -569,6 +569,7 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		read("lua/snow/table_like.lua"),
 		/\("%s %s"\):format\(input:sub\(1, 1\), input:sub\(2, 2\)\)/u,
 	);
+	assert.match(read("lua/snow/table_like.lua"), /if input:len\(\) ~= 2/u);
 	assert.match(
 		read("lua/snow/table_like.lua"),
 		/Component\.Translator\(env\.engine, "initial_pair", "script_translator"\)/u,
