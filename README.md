@@ -21,6 +21,9 @@
 
 冰雪神韵·形（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪神韵·调（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）共用 **[神韵(Overall-17) 21×26 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**。该方案出自[双拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿于提交 [`7a7e154`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)；[`2026-10-30-strict-d0-production-closure-report.md`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json)，本节映射与键盘图均以该定稿方案为准。
 
+> [!NOTE]
+> 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪神韵·调](snow_shenyun_tone.schema.yaml)的五调辅键，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的顺序排列。
+
 **声韵辅-键 映射**
 
 ![神韵(Overall-17) 21×26 双拼声韵键盘图](docs/shenyun-overall17-keyboard.svg)
@@ -334,6 +337,9 @@ Recipe: ℞ **snow-pinyin**
 
 Snow Shenyun Shape ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and Snow Shenyun Tone ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) share **[Shenyun(Overall-17) 21×26 double pinyin](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**. The layout comes from the [Shuangpin Layout Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) branch `production/ckt-v4-2126-strict-d0-20261030` and was finalized in commit [`7a7e154`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md); [`2026-10-30-strict-d0-production-closure-report.md`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) records the search constraints, derivation, and winning mapping. This repository freezes it as [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json), and this section's mapping and keyboard figures use that finalized layout.
 
+> [!NOTE]
+> Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Shenyun Tone](snow_shenyun_tone.schema.yaml)'s five tone auxiliary keys are arranged directly in the order of [Snow Four-Code](https://input.tansongchen.com/snow4/).
+
 **Initial/final/auxiliary-key mapping**
 
 ![Shenyun(Overall-17) 21×26 initial/final keyboard map](docs/shenyun-overall17-keyboard.svg)
@@ -500,6 +506,9 @@ bun scripts/验证神韵双拼.ts
 ### [神韻(Overall-17) 21×26 雙拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)
 
 冰雪神韻·形（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪神韻·調（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）共用 **[神韻(Overall-17) 21×26 雙拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**。該方案出自[雙拼布局 Benchmark](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿於提交 [`7a7e154`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)；[`2026-10-30-strict-d0-production-closure-report.md`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json)，本節映射與鍵盤圖均以該定稿方案為準。
+
+> [!NOTE]
+> 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪神韻·調](snow_shenyun_tone.schema.yaml)的五調輔鍵，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的順序排列。
 
 **聲韻輔-鍵 映射**
 
