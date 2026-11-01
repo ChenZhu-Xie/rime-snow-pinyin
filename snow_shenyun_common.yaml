@@ -1,5 +1,5 @@
 # 冰雪神韵·形 / 冰雪神韵·调共用配置
-# 21×26 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）；,/. 只作普通标点。
+# 21×26 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）。
 
 __include: snow_pinyin.schema.yaml:/
 
@@ -197,6 +197,13 @@ translator:
   shenyun_initial_keys: bpmfdtnlgkhjqwvxrzcsy
   shenyun_final_keys: abcdefghijklmnopqrstuvwxyz
   shenyun_auxiliary_keys: aeuio
+
+# 与 21×21 方案一致：编码完成时 ;/ 先顶出当前候选，再追加高频尾字“的/了”。
+punctuator:
+  half_shape:
+    __include: snow_pinyin.schema.yaml:/punctuator/half_shape
+    ";": 的
+    "/": 了
 
 switches:
   - name: ascii_mode

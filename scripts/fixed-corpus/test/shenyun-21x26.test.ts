@@ -335,6 +335,14 @@ test("冰雪神韵·形/调接入输入统计组件", () => {
 	assert.ok(datetime >= 0 && datetime < translator && translator < number);
 });
 
+test("冰雪神韵·形/调用 ;/ 顶屏并追加的/了", () => {
+	const common = load(commonSource) as {
+		punctuator: { half_shape: Record<string, string> };
+	};
+	assert.equal(common.punctuator.half_shape[";"], "的");
+	assert.equal(common.punctuator.half_shape["/"], "了");
+});
+
 test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", () => {
 	const initialKeys = "bpmfdtnlgkhjqwvxrzcsy";
 	const auxiliaryKeys = "aeuio";

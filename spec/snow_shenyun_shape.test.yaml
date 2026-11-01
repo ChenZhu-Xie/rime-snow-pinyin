@@ -76,6 +76,11 @@ deploy:
         assert: all_have_length(3) and has("测试仪")
       - send: dyxku
         assert: cand[1].text == "等一下"
+      # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
+      - send: cewi;
+        assert: commit == "测试的"
+      - send: cewi/
+        assert: commit == "测试了"
       # 「管理员」首字形辅为 u；第三音节的 yu 空桶回收为 AAA+B。
       - send: glyu
         assert: has("管理员")
