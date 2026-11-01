@@ -50,6 +50,11 @@ deploy:
       # AU 空桶回退为声声二字词；第三码按第二字首形辅筛选。
       - send: cw
         assert: all_have_length(2) and has("测试")
+      # be 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
+      - send: be
+        assert: "#cand == 0 and commit == nil"
+      - send: bea
+        assert: "#cand == 0 and commit == nil"
       - send: yxo
         assert: has("也许") and not has("一些")
       - send: yxi

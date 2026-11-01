@@ -227,6 +227,12 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "本身只提供双拼映射");
 		includes(readme, "supplies only a double-pinyin mapping");
 		includes(readme, "本身只提供雙拼映射");
+		includes(readme, "143 个空 `AU`，其中 134 个为空 `AA`、9 个为空 `AB`");
+		includes(
+			readme,
+			"143 runtime `AU` vacancies: 134 vacant `AA` codes and 9 vacant `AB` codes",
+		);
+		includes(readme, "143 個運行時空 `AU`，其中 134 個為空 `AA`、9 個為空 `AB`");
 		includes(
 			readme,
 			"| 频率加权 S2 miss[^zh-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |",

@@ -23,6 +23,17 @@ function encode(syllable: string): string | null {
 	return applyAlgebra(`${syllable}1`, rules).canonical;
 }
 
+function partitionVacancies(
+	codes: string[],
+	initialKeys: string,
+	auxiliaryKeys: string,
+): { aa: string[]; ab: string[] } {
+	const aa = codes.filter((code) => initialKeys.includes(code[1]));
+	const ab = codes.filter((code) => auxiliaryKeys.includes(code[1]));
+	assert.equal(aa.length + ab.length, codes.length);
+	return { aa, ab };
+}
+
 function expectedCode(syllable: string): string {
 	let initial = "";
 	let final = syllable;
@@ -108,15 +119,34 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 		translator: {
 			shenyun_initial_keys: string;
 			shenyun_final_keys: string;
+			shenyun_auxiliary_keys: string;
 		};
 	};
-	const { shenyun_initial_keys: initial, shenyun_final_keys: final } =
-		common.translator;
+	const {
+		shenyun_initial_keys: initial,
+		shenyun_final_keys: final,
+		shenyun_auxiliary_keys: auxiliary,
+	} = common.translator;
 	const occupied = new Set(encoded);
 	const vacant = [...initial]
 		.flatMap((first) => [...final].map((second) => first + second))
 		.filter((code) => !occupied.has(code));
+	const { aa: vacantAA, ab: vacantAB } = partitionVacancies(
+		vacant,
+		initial,
+		auxiliary,
+	);
 	assert.equal(vacant.length, 147);
+	assert.equal(vacantAA.length, 138);
+	assert.deepEqual(vacantAB, ["be", "pe", "gi", "ki", "hi", "je", "qe", "ra", "yu"]);
+	const vacantAUB = vacantAB.flatMap((code) =>
+		[...auxiliary].map((suffix) => code + suffix),
+	);
+	const vacantAUBB = vacantAUB.flatMap((code) =>
+		[...auxiliary].map((suffix) => code + suffix),
+	);
+	assert.equal(new Set(vacantAUB).size, 45);
+	assert.equal(new Set(vacantAUBB).size, 225);
 	assert.equal(vacant.includes("cw"), true);
 	assert.equal(vacant.includes("br"), false);
 	assert.doesNotMatch(commonSource, /shenyun_vacant_au_pattern/u);
@@ -156,7 +186,24 @@ test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码�
 	const runtimeVacant = [..."bpmfdtnlgkhjqwvxrzcsy"]
 		.flatMap((initial) => [..."abcdefghijklmnopqrstuvwxyz"].map((final) => initial + final))
 		.filter((code) => !occupied.has(code));
+	const { aa: runtimeVacantAA, ab: runtimeVacantAB } = partitionVacancies(
+		runtimeVacant,
+		"bpmfdtnlgkhjqwvxrzcsy",
+		"aeuio",
+	);
 	assert.equal(runtimeVacant.length, 143);
+	assert.equal(runtimeVacantAA.length, 134);
+	assert.deepEqual(runtimeVacantAB, [
+		"be",
+		"pe",
+		"gi",
+		"ki",
+		"hi",
+		"je",
+		"qe",
+		"ra",
+		"yu",
+	]);
 	assert.equal(runtimeVacant.includes("cw"), true);
 	assert.equal(runtimeVacant.includes("lk"), false);
 });
