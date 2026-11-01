@@ -49,6 +49,7 @@ const DEFAULT_CASES = [
 const SHAPE_FROM = "IEUAO";
 const WORD_WEIGHTS = Object.freeze({ word2: 3, word3: 1, word4: 1 });
 const WORD_KINDS = Object.keys(WORD_WEIGHTS);
+const PAGE_SIZE = 6;
 
 function parseArgs(argv) {
 	const args = {};
@@ -291,15 +292,21 @@ function verifyCurrentPolicy({
 
 function scenarioParameters(model) {
 	return {
-		rankAwareDefault: model.DEFAULT_COGNITIVE_PRIOR,
-		historical300_300_600: model.HISTORICAL_COGNITIVE_PRIOR,
+		rankAwareDefault: {
+			...model.DEFAULT_COGNITIVE_PRIOR,
+			pageSize: PAGE_SIZE,
+		},
+		historical300_300_600: {
+			...model.HISTORICAL_COGNITIVE_PRIOR,
+			pageSize: PAGE_SIZE,
+		},
 		motorOnly: {
 			firstAuxMs: 0,
 			secondAuxMs: 0,
 			selectionDecisionMs: 0,
 			scanPerCandidateMs: 0,
 			selectionActionMs: 0,
-			pageSize: model.DEFAULT_COGNITIVE_PRIOR.pageSize,
+			pageSize: PAGE_SIZE,
 			pageActionMs: 0,
 		},
 	};
@@ -533,6 +540,7 @@ function main() {
 			"The two source positions must be distinct; repeated positions add no information under this code family.",
 			"Candidate pools, early commit, terminal rank, motor tables, and cognitive parameters are otherwise identical to CKT v4.",
 			"21x26 Keytao uses deployed AEUIO shape keys; 21x26 Sanpin uses deployed IEUAO tone keys.",
+			"Candidate pages contain six candidates.",
 		],
 		cases: Object.fromEntries(evaluated.map((value) => [value.label, value])),
 	};
