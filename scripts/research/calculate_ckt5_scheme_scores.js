@@ -25,6 +25,10 @@ const ROBUST_POLICIES = Object.freeze({
 	"21x26-keytao": { word2: "12", word3: "12", word4: "24" },
 	"21x26-sanpin": { word2: "12", word3: "21", word4: "13" },
 });
+const PAIRS = Object.freeze({
+	"21x21": ["21x21-keytao", "21x21-sanpin"],
+	"21x26": ["21x26-keytao", "21x26-sanpin"],
+});
 
 function parseArgs(argv) {
 	const args = {};
@@ -79,6 +83,34 @@ function weightedMetrics(tracks) {
 			) / total,
 		]),
 	);
+}
+
+function averageMetrics(values) {
+	const fields = Object.keys(values[0]);
+	return Object.fromEntries(
+		fields
+			.filter((field) => typeof values[0][field] === "number")
+			.map((field) => [
+				field,
+				values.reduce((sum, value) => sum + value[field], 0) / values.length,
+			]),
+	);
+}
+
+function pairResult(cases, members) {
+	return {
+		members,
+		memberPolicies: Object.fromEntries(
+			members.map((member) => [member, cases[member].policy]),
+		),
+		tracks: Object.fromEntries(
+			Object.keys(TRACK_WEIGHTS).map((kind) => [
+				kind,
+				averageMetrics(members.map((member) => cases[member].tracks[kind])),
+			]),
+		),
+		ckt5: averageMetrics(members.map((member) => cases[member].ckt5)),
+	};
 }
 
 function evaluateCase(context, specification) {
@@ -165,11 +197,18 @@ function main() {
 			return [specification.label, result];
 		}),
 	);
+	const pairs = Object.fromEntries(
+		Object.entries(PAIRS).map(([name, members]) => [
+			name,
+			pairResult(cases, members),
+		]),
+	);
 	const output = {
 		version: "ckt5-scheme-specific-1",
 		pageSize: PAGE_SIZE,
 		trackWeights: TRACK_WEIGHTS,
 		formula: "(character + 3*word2 + word3 + word4) / 6",
+		pairFormula: "(member1 + member2) / 2",
 		cognitivePrior: {
 			...model.DEFAULT_COGNITIVE_PRIOR,
 			pageSize: PAGE_SIZE,
@@ -181,6 +220,7 @@ function main() {
 			word4: words.word4.length,
 		},
 		cases,
+		pairs,
 	};
 	const outputFile = path.resolve(
 		args.output || path.join(repo, "output", "ckt5-scheme-specific.json"),
