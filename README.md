@@ -11,9 +11,9 @@
 
 开发脚本与维护约定见 [AGENTS.md](AGENTS.md)。
 
-[^zh-ckt5]: [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)沿用 CKT v4 的运动与认知耗时，候选页改为 6 项；每个布局的键道／形辅与三拼／调辅分别使用自己的辅键映射和稳健二／三／四字辅序：神韵为 `12/12/24`、`12/21/13`，U357 为 `12/23/24`、`12/21/23`，S005 为 `12/21/24`、`12/21/23`。八轨按单／二／三／四字 `1:3:1:1`、两个方案 `1:1`，逐轨相对 S005 取四次幂均值并固定 S005＝10。首道 B04 缺少可确认的原生辅码及辅序，不参与 CKT v5。
-[^en-ckt5]: [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5) retains the CKT v4 motor and cognitive costs but uses six-candidate pages. Each layout's KeyTao/shape and Three-Code/tone member uses its own auxiliary mapping and robust two-/three-/four-character source orders: Shenyun `12/12/24`, `12/21/13`; U357 `12/23/24`, `12/21/23`; S005 `12/21/24`, `12/21/23`. The eight tracks use `1:3:1:1` character-length weights and `1:1` member weights, then take a fourth-power mean of trackwise ratios anchored at S005＝10. Shoudao B04 is excluded because its native auxiliaries and source orders are unknown.
-[^zht-ckt5]: [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)沿用 CKT v4 的運動與認知耗時，候選頁改為 6 項；每個布局的鍵道／形輔與三拼／調輔分別使用自己的輔鍵映射和穩健二／三／四字輔序：神韻為 `12/12/24`、`12/21/13`，U357 為 `12/23/24`、`12/21/23`，S005 為 `12/21/24`、`12/21/23`。八軌按單／二／三／四字 `1:3:1:1`、兩個方案 `1:1`，逐軌相對 S005 取四次冪均值並固定 S005＝10。首道 B04 缺少可確認的原生輔碼及輔序，不參與 CKT v5。
+[^zh-ckt5]: [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)沿用 CKT v4 的运动与认知耗时，候选页改为 6 项；21×26 的形／调语义映射为“折横撇竖点→`AEUIO`、一二三四轻→`IEUAO`”，21×21 为“折横撇竖点→`AVUIO`、一二三四轻→`IVUAO`”。各成员使用稳健二／三／四字辅序：神韵为 `12/21/14`、`12/21/13`，U357 为 `12/23/24`、`12/21/23`，S005 为 `12/21/24`、`12/21/23`。八轨按单／二／三／四字 `1:3:1:1`、两个方案 `1:1`，逐轨相对 S005 取四次幂均值并固定 S005＝10。首道 B04 缺少可确认的原生辅码及辅序，不参与 CKT v5。
+[^en-ckt5]: [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5) retains the CKT v4 motor and cognitive costs but uses six-candidate pages. The 21×26 semantic mappings are bend/horizontal/left-falling/vertical/dot→`AEUIO` and tones 1/2/3/4/neutral→`IEUAO`; 21×21 uses `AVUIO` and `IVUAO`, respectively. Robust two-/three-/four-character source orders are Shenyun `12/21/14`, `12/21/13`; U357 `12/23/24`, `12/21/23`; S005 `12/21/24`, `12/21/23`. The eight tracks use `1:3:1:1` character-length weights and `1:1` member weights, then take a fourth-power mean of trackwise ratios anchored at S005＝10. Shoudao B04 is excluded because its native auxiliaries and source orders are unknown.
+[^zht-ckt5]: [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)沿用 CKT v4 的運動與認知耗時，候選頁改為 6 項；21×26 的形／調語義映射為「折橫撇豎點→`AEUIO`、一二三四輕→`IEUAO`」，21×21 為「折橫撇豎點→`AVUIO`、一二三四輕→`IVUAO`」。各成員使用穩健二／三／四字輔序：神韻為 `12/21/14`、`12/21/13`，U357 為 `12/23/24`、`12/21/23`，S005 為 `12/21/24`、`12/21/23`。八軌按單／二／三／四字 `1:3:1:1`、兩個方案 `1:1`，逐軌相對 S005 取四次冪均值並固定 S005＝10。首道 B04 缺少可確認的原生輔碼及輔序，不參與 CKT v5。
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通话拼音为基础的中文输入方案。它们充分利用汉字的字音信息来实现自然优雅的编码；它们使用先进的离散优化技术和顶功技术来设计，使得编码十分高效；它们配备了智能算法，通过学习用户的语言习惯来个性化输入体验。
 
@@ -153,7 +153,7 @@
 | S2 补全中心时间（ms）[^zh-s2] | **75.672** ★★ 🥇 | **89.917** ★ | 90.257 | 79.890 | 越低越好 |
 | 综合补全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ckt3] | **9.630039** ★★ | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；历史固定延迟情景 |
 | 综合补全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zh-ckt4] | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
-| 综合补全 [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)[^zh-ckt5] | **9.210373** ★★ | **9.715587** ★ | 10.000000 | — | 越低越好；方案专属辅键与辅序 |
+| 综合补全 [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)[^zh-ckt5] | **9.195082** ★★ | **9.715587** ★ | 10.000000 | — | 越低越好；方案专属辅键与辅序 |
 | [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble34] | **10.620559** ★★ | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；冻结历史轴 |
 | [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble34] | **10.684702** ★★ | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；冻结历史轴 |
 | [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系综当量[^zh-ensemble5] | **10.821925** ★ | **10.473306** ★★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |
@@ -418,7 +418,7 @@ The tables rank [Shenyun(Overall-17)](https://github.com/more-14-different/shuan
 | S2-completion center time (ms)[^en-s2] | **75.672** ★★ 🥇 | **89.917** ★ | 90.257 | 79.890 | Lower |
 | Completion [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ckt3] | **9.630039** ★★ | **9.782135** ★ | 10.000000 | 9.461105 🥇 | Lower; historical fixed-delay scenario |
 | Completion [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)[^en-ckt4] | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | Lower; current primary metric |
-| Completion [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)[^en-ckt5] | **9.210373** ★★ | **9.715587** ★ | 10.000000 | — | Lower; scheme-specific auxiliaries and source orders |
+| Completion [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)[^en-ckt5] | **9.195082** ★★ | **9.715587** ★ | 10.000000 | — | Lower; scheme-specific auxiliaries and source orders |
 | [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble34] | **10.620559** ★★ | **10.737188** ★ | 10.740028 | 10.519452 🥇 | Lower; frozen historical axis |
 | [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble34] | **10.684702** ★★ | **10.804598** ★ | 10.805830 | 10.583290 🥇 | Lower; frozen historical axis |
 | [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) ensemble equivalent[^en-ensemble5] | **10.821925** ★ | **10.473306** ★★ 🥇 | 11.478960 | 11.091225 | Lower; CKT-only |
@@ -589,7 +589,7 @@ bun scripts/验证神韵双拼.ts
 | S2 補全中心時間（ms）[^zht-s2] | **75.672** ★★ 🥇 | **89.917** ★ | 90.257 | 79.890 | 越低越好 |
 | 綜合補全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ckt3] | **9.630039** ★★ | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；歷史固定延遲情景 |
 | 綜合補全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)[^zht-ckt4] | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；現行主指標 |
-| 綜合補全 [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)[^zht-ckt5] | **9.210373** ★★ | **9.715587** ★ | 10.000000 | — | 越低越好；方案專屬輔鍵與輔序 |
+| 綜合補全 [CKT v5](research-notes/2026-11-01-ckt-v4-word-aux-order.md#方案级-ckt-v5)[^zht-ckt5] | **9.195082** ★★ | **9.715587** ★ | 10.000000 | — | 越低越好；方案專屬輔鍵與輔序 |
 | [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble34] | **10.620559** ★★ | **10.737188** ★ | 10.740028 | 10.519452 🥇 | 越低越好；凍結歷史軸 |
 | [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble34] | **10.684702** ★★ | **10.804598** ★ | 10.805830 | 10.583290 🥇 | 越低越好；凍結歷史軸 |
 | [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 系綜當量[^zht-ensemble5] | **10.821925** ★ | **10.473306** ★★ 🥇 | 11.478960 | 11.091225 | 越低越好；CKT-only |

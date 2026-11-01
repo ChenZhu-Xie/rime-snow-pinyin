@@ -9,6 +9,7 @@ const {
 	DEFAULT_CASES,
 	REFERENCE_CASES,
 	buildRowsForOrder,
+	semanticMapping,
 } = require("./evaluate_ckt_v4_word_aux_order.js");
 
 const DEFAULT_BENCHMARK =
@@ -23,7 +24,7 @@ const TRACK_WEIGHTS = Object.freeze({
 const ROBUST_POLICIES = Object.freeze({
 	"21x21-keytao": { word2: "12", word3: "23", word4: "24" },
 	"21x21-sanpin": { word2: "12", word3: "21", word4: "23" },
-	"21x26-keytao": { word2: "12", word3: "12", word4: "24" },
+	"21x26-keytao": { word2: "12", word3: "21", word4: "14" },
 	"21x26-sanpin": { word2: "12", word3: "21", word4: "13" },
 	"s005-keytao": { word2: "12", word3: "21", word4: "24" },
 	"s005-sanpin": { word2: "12", word3: "21", word4: "23" },
@@ -154,7 +155,7 @@ function evaluateCase(context, specification) {
 		snapshot.keys,
 		data.ckt.calibration.extension_maps,
 	);
-	const cloned = { ...entry, tone: specification.auxiliaryKeys };
+	const cloned = { ...entry, tone: specification.slotKeys };
 	const characterRows = scorer
 		.buildRows(cloned, data, strokes, words, specification.mode)
 		.filter((row) => row.kind === "character");
@@ -164,7 +165,7 @@ function evaluateCase(context, specification) {
 			data,
 			words,
 			specification.mode,
-			specification.auxiliaryKeys,
+			specification.slotKeys,
 			kind,
 			order,
 			model,
@@ -182,7 +183,11 @@ function evaluateCase(context, specification) {
 		schemeId: specification.id,
 		schemeName: entry.name,
 		mode: specification.mode,
-		auxiliaryKeys: specification.auxiliaryKeys,
+		slotKeys: specification.slotKeys,
+		semanticMapping: semanticMapping(
+			specification.mode,
+			specification.slotKeys,
+		),
 		policy,
 		tracks: Object.fromEntries(
 			Object.keys(TRACK_WEIGHTS).map((kind) => [

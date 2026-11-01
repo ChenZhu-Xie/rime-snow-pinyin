@@ -20,28 +20,28 @@ const DEFAULT_CASES = [
 		id: "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
 		label: "21x21-keytao",
 		mode: "keytao",
-		auxiliaryKeys: "IVUAO",
+		slotKeys: "IVUAO",
 		current: { word2: "12", word3: "12", word4: "12" },
 	},
 	{
 		id: "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
 		label: "21x21-sanpin",
 		mode: "sanpin",
-		auxiliaryKeys: "IVUAO",
+		slotKeys: "IVUAO",
 		current: { word2: "21", word3: "31", word4: "41" },
 	},
 	{
 		id: "SNOW-SHENYUN-21X26-PRODUCTION",
 		label: "21x26-keytao",
 		mode: "keytao",
-		auxiliaryKeys: "AEUIO",
+		slotKeys: "IEUAO",
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
 	{
 		id: "SNOW-SHENYUN-21X26-PRODUCTION",
 		label: "21x26-sanpin",
 		mode: "sanpin",
-		auxiliaryKeys: "IEUAO",
+		slotKeys: "IEUAO",
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
 ];
@@ -50,19 +50,20 @@ const REFERENCE_CASES = [
 		id: "S005",
 		label: "s005-keytao",
 		mode: "keytao",
-		auxiliaryKeys: "IVUAO",
+		slotKeys: "IVUAO",
 		current: { word2: "12", word3: "12", word4: "12" },
 	},
 	{
 		id: "S005",
 		label: "s005-sanpin",
 		mode: "sanpin",
-		auxiliaryKeys: "IVUAO",
+		slotKeys: "IVUAO",
 		current: { word2: "21", word3: "31", word4: "41" },
 	},
 ];
 
 const SHAPE_FROM = "IEUAO";
+const SHAPE_SEMANTIC_FROM = "AEUIO";
 const TRACK_WEIGHTS = Object.freeze({
 	word2: 3,
 	word3: 1,
@@ -94,10 +95,18 @@ function orderedDistinctPairs(length) {
 	return result;
 }
 
-function physicalShape(abstract, auxiliaryKeys) {
+// The payload stores abstract shape symbols in SHAPE_FROM slot order. slotKeys
+// is indexed by those slots; it is not the displayed 折横撇竖点 key sequence.
+function physicalShape(abstract, slotKeys) {
 	return [...(abstract || "")]
-		.map((key) => auxiliaryKeys[SHAPE_FROM.indexOf(key)] || "")
+		.map((key) => slotKeys[SHAPE_FROM.indexOf(key)] || "")
 		.join("");
+}
+
+function semanticMapping(mode, slotKeys) {
+	return mode === "keytao"
+		? `折横撇竖点→${physicalShape(SHAPE_SEMANTIC_FROM, slotKeys)}`
+		: `一二三四轻→${slotKeys}`;
 }
 
 function stage(code) {
@@ -115,11 +124,10 @@ function wordRow(model, contract, id, text, kind, weight, baseLength, codes) {
 	};
 }
 
-function auxiliaryFor(item, chars, position, mode, auxiliaryKeys, shape) {
+function auxiliaryFor(item, chars, position, mode, slotKeys, shape) {
 	const index = position - 1;
-	if (mode === "keytao")
-		return physicalShape(shape[chars[index]], auxiliaryKeys)[0];
-	return auxiliaryKeys[item.tones[index] - 1];
+	if (mode === "keytao") return physicalShape(shape[chars[index]], slotKeys)[0];
+	return slotKeys[item.tones[index] - 1];
 }
 
 function buildRowsForOrder(
@@ -127,7 +135,7 @@ function buildRowsForOrder(
 	data,
 	words,
 	mode,
-	auxiliaryKeys,
+	slotKeys,
 	kind,
 	order,
 	model,
@@ -148,7 +156,7 @@ function buildRowsForOrder(
 			chars,
 			firstPosition,
 			mode,
-			auxiliaryKeys,
+			slotKeys,
 			shape,
 		);
 		const second = auxiliaryFor(
@@ -156,7 +164,7 @@ function buildRowsForOrder(
 			chars,
 			secondPosition,
 			mode,
-			auxiliaryKeys,
+			slotKeys,
 			shape,
 		);
 		if (!first || !second) continue;
@@ -272,14 +280,14 @@ function verifyCurrentPolicy({
 	words,
 	strokes,
 	mode,
-	auxiliaryKeys,
+	slotKeys,
 	current,
 	motor,
 	model,
 	scorer,
 	rowsByKind,
 }) {
-	const cloned = { ...entry, tone: auxiliaryKeys };
+	const cloned = { ...entry, tone: slotKeys };
 	const upstreamRows = scorer
 		.buildRows(cloned, data, strokes, words, mode)
 		.filter((row) => WORD_KINDS.includes(row.kind));
@@ -423,7 +431,7 @@ function evaluateCase(context, specification) {
 					data,
 					words,
 					specification.mode,
-					specification.auxiliaryKeys,
+					specification.slotKeys,
 					kind,
 					order,
 					model,
@@ -437,7 +445,7 @@ function evaluateCase(context, specification) {
 		words,
 		strokes,
 		mode: specification.mode,
-		auxiliaryKeys: specification.auxiliaryKeys,
+		slotKeys: specification.slotKeys,
 		current: specification.current,
 		motor,
 		model,
@@ -491,7 +499,11 @@ function evaluateCase(context, specification) {
 		schemeName: entry.name,
 		capacity: entry.capacity,
 		mode: specification.mode,
-		auxiliaryKeys: specification.auxiliaryKeys,
+		slotKeys: specification.slotKeys,
+		semanticMapping: semanticMapping(
+			specification.mode,
+			specification.slotKeys,
+		),
 		currentPolicy: specification.current,
 		policySpace: Object.fromEntries(
 			WORD_KINDS.map((kind) => [kind, orders[kind]]),
@@ -586,6 +598,7 @@ if (require.main === module) main();
 module.exports = {
 	DEFAULT_CASES,
 	REFERENCE_CASES,
+	semanticMapping,
 	orderedDistinctPairs,
 	buildRowsForOrder,
 	weightedTrackMetrics,
