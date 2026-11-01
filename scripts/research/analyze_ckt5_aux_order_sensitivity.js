@@ -19,7 +19,6 @@ const BASELINE = Object.freeze({
 });
 const KINDS = ["word2", "word3", "word4"];
 const TRACK_WEIGHTS = Object.freeze({
-	character: 1,
 	word2: 3,
 	word3: 1,
 	word4: 1,
@@ -183,6 +182,17 @@ function finishStats(stats, count) {
 		);
 }
 
+function byRobustRank(ranking) {
+	return [...ranking].sort(
+		(left, right) =>
+			left.meanRank - right.meanRank ||
+			right.top3Rate - left.top3Rate ||
+			right.top1Rate - left.top1Rate ||
+			left.worstRank - right.worstRank ||
+			left.order.localeCompare(right.order),
+	);
+}
+
 function independentGrid(groups) {
 	const stats = makeStats(groups);
 	let count = 0;
@@ -197,7 +207,13 @@ function independentGrid(groups) {
 						addRanks(stats, ranksFor(groups, multipliers));
 						count++;
 					}
-	return { count, stepPercent: 50, ranking: finishStats(stats, count) };
+	const ranking = finishStats(stats, count);
+	return {
+		count,
+		stepPercent: 50,
+		ranking,
+		robustRanking: byRobustRank(ranking),
+	};
 }
 
 function synchronizedSweep(groups) {
@@ -208,7 +224,13 @@ function synchronizedSweep(groups) {
 		addRanks(stats, ranksFor(groups, Array(5).fill(multiplier)));
 		count++;
 	}
-	return { count, stepPercent: 1, ranking: finishStats(stats, count) };
+	const ranking = finishStats(stats, count);
+	return {
+		count,
+		stepPercent: 1,
+		ranking,
+		robustRanking: byRobustRank(ranking),
+	};
 }
 
 function baseline(groups) {
@@ -274,7 +296,7 @@ function main() {
 		},
 		synchronizedSweep: { rangePercent: [0, 500], stepPercent: 1 },
 		method:
-			"The aggregate ranks complete policies at character/word2/word3/word4 weights 1:3:1:1. For each individual word length and source order, minimize over companion orders in the unchanged joint candidate pool, then rank source orders.",
+			"The aggregate ranks complete policies at word2/word3/word4 weights 3:1:1. For each individual word length and source order, minimize over companion orders in the unchanged joint candidate pool, then rank source orders.",
 		cases,
 	};
 	const outputFile = path.resolve(
