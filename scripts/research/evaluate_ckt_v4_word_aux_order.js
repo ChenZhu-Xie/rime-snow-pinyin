@@ -45,6 +45,22 @@ const DEFAULT_CASES = [
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
 ];
+const REFERENCE_CASES = [
+	{
+		id: "S005",
+		label: "s005-keytao",
+		mode: "keytao",
+		auxiliaryKeys: "IVUAO",
+		current: { word2: "12", word3: "12", word4: "12" },
+	},
+	{
+		id: "S005",
+		label: "s005-sanpin",
+		mode: "sanpin",
+		auxiliaryKeys: "IVUAO",
+		current: { word2: "21", word3: "31", word4: "41" },
+	},
+];
 
 const SHAPE_FROM = "IEUAO";
 const TRACK_WEIGHTS = Object.freeze({
@@ -517,7 +533,9 @@ function main() {
 		? new Set(String(args.case).split(",").filter(Boolean))
 		: null;
 	const cases = requested
-		? DEFAULT_CASES.filter((value) => requested.has(value.label))
+		? [...DEFAULT_CASES, ...REFERENCE_CASES].filter((value) =>
+				requested.has(value.label),
+			)
 		: DEFAULT_CASES;
 	if (requested && cases.length !== requested.size)
 		throw new Error(`unknown --case: ${args.case}`);
@@ -567,6 +585,7 @@ if (require.main === module) main();
 
 module.exports = {
 	DEFAULT_CASES,
+	REFERENCE_CASES,
 	orderedDistinctPairs,
 	buildRowsForOrder,
 	weightedTrackMetrics,

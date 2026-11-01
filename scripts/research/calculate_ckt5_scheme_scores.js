@@ -7,6 +7,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const {
 	DEFAULT_CASES,
+	REFERENCE_CASES,
 	buildRowsForOrder,
 } = require("./evaluate_ckt_v4_word_aux_order.js");
 
@@ -24,10 +25,13 @@ const ROBUST_POLICIES = Object.freeze({
 	"21x21-sanpin": { word2: "12", word3: "21", word4: "23" },
 	"21x26-keytao": { word2: "12", word3: "12", word4: "24" },
 	"21x26-sanpin": { word2: "12", word3: "21", word4: "13" },
+	"s005-keytao": { word2: "12", word3: "21", word4: "24" },
+	"s005-sanpin": { word2: "12", word3: "21", word4: "23" },
 });
 const PAIRS = Object.freeze({
 	"21x21": ["21x21-keytao", "21x21-sanpin"],
 	"21x26": ["21x26-keytao", "21x26-sanpin"],
+	s005: ["s005-keytao", "s005-sanpin"],
 });
 
 function parseArgs(argv) {
@@ -113,6 +117,32 @@ function pairResult(cases, members) {
 	};
 }
 
+function normalizedScore(cases, members, referenceMembers, power = 4) {
+	let weighted = 0;
+	let totalWeight = 0;
+	const ratios = {};
+	for (let modeIndex = 0; modeIndex < members.length; modeIndex++) {
+		const member = members[modeIndex];
+		const reference = referenceMembers[modeIndex];
+		ratios[member] = {};
+		for (const [kind, weight] of Object.entries(TRACK_WEIGHTS)) {
+			const ratio =
+				cases[member].tracks[kind].effectiveMs /
+				cases[reference].tracks[kind].effectiveMs;
+			ratios[member][kind] = ratio;
+			weighted += weight * ratio ** power;
+			totalWeight += weight;
+		}
+	}
+	return {
+		anchor: 10,
+		power,
+		referenceMembers,
+		ratios,
+		score: 10 * (weighted / totalWeight) ** (1 / power),
+	};
+}
+
 function evaluateCase(context, specification) {
 	const { data, words, strokes, model, scorer, snapshot } = context;
 	const policy = ROBUST_POLICIES[specification.label];
@@ -191,7 +221,7 @@ function main() {
 	const snapshot = JSON.parse(fs.readFileSync(motorFile, "utf8"));
 	const context = { data, words, strokes, model, scorer, snapshot };
 	const cases = Object.fromEntries(
-		DEFAULT_CASES.map((specification) => {
+		[...DEFAULT_CASES, ...REFERENCE_CASES].map((specification) => {
 			process.stderr.write(`evaluating ${specification.label}\n`);
 			const result = evaluateCase(context, specification);
 			return [specification.label, result];
@@ -203,12 +233,17 @@ function main() {
 			pairResult(cases, members),
 		]),
 	);
+	for (const pair of Object.values(pairs)) {
+		pair.normalized = normalizedScore(cases, pair.members, PAIRS.s005);
+	}
 	const output = {
 		version: "ckt5-scheme-specific-1",
 		pageSize: PAGE_SIZE,
 		trackWeights: TRACK_WEIGHTS,
 		formula: "(character + 3*word2 + word3 + word4) / 6",
 		pairFormula: "(member1 + member2) / 2",
+		normalizedFormula:
+			"10 * weightedMean((candidateTrack / s005Track)^4, 1:3:1:1 per mode and 1:1 across modes)^(1/4)",
 		cognitivePrior: {
 			...model.DEFAULT_COGNITIVE_PRIOR,
 			pageSize: PAGE_SIZE,
