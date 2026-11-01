@@ -1,0 +1,226 @@
+{
+  "contract": {
+    "pageSize": 6,
+    "trackWeights": {
+      "character": 1,
+      "word2": 3,
+      "word3": 1,
+      "word4": 1
+    },
+    "auxOrderScope": "fixed by layout family and mode; not re-optimized per candidate layout",
+    "policies": {
+      "s005": {
+        "keytao": ["12", "21", "24"],
+        "sanpin": ["12", "21", "23"]
+      },
+      "21x21": {
+        "keytao": ["12", "23", "24"],
+        "sanpin": ["12", "21", "23"]
+      },
+      "21x26": {
+        "shape": ["12", "21", "14"],
+        "tone": ["12", "21", "13"]
+      }
+    }
+  },
+  "sourceFrontiers": {
+    "21x21": {
+      "commit": "11713b652cd6a2350d8bf6d0a16d3383d8f0038f",
+      "path": "research/notes/2026-10-29-prodgate-directed-repair-pareto.json",
+      "array": "candidates",
+      "candidateCount": 6
+    },
+    "21x26": {
+      "commit": "7a7e154f3f7d0c86653ee15e755ccd72e866e5e2",
+      "path": "research/milestones/strict-d0/strict-d0-pareto-frontier-20261030.json",
+      "array": "topFrontier",
+      "candidateCount": 50
+    }
+  },
+  "21x21": {
+    "currentCktV5": 9.715586951861034,
+    "betterCandidates": [
+      {
+        "sourceRank": 1,
+        "id": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f25_29",
+        "U": 353,
+        "cktV4": 9.703547533132962,
+        "cktV5": 9.703761875432793,
+        "memory": 40,
+        "homeFloor": 0.37515572500684075,
+        "mxScore": 141.03384602128477
+      },
+      {
+        "sourceRank": 2,
+        "id": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f4_5",
+        "U": 354,
+        "cktV4": 9.704071772970739,
+        "cktV5": 9.701745073443774,
+        "memory": 40,
+        "homeFloor": 0.37515572500684075,
+        "mxScore": 141.31582455324423
+      },
+      {
+        "sourceRank": 3,
+        "id": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_3-d4-f25_26",
+        "U": 356,
+        "cktV4": 9.713832369310046,
+        "cktV5": 9.713172196666424,
+        "memory": 40,
+        "homeFloor": 0.3722521678795211,
+        "mxScore": 141.63311514968768
+      }
+    ],
+    "current": {
+      "sourceRank": 4,
+      "id": "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
+      "U": 357,
+      "cktV4": 9.716420811869073,
+      "cktV5": 9.715586951861034,
+      "memory": 40,
+      "homeFloor": 0.3762039577208698,
+      "mxScore": 143.37998127078376
+    }
+  },
+  "21x26": {
+    "currentCktV5": 9.195082189845293,
+    "betterCandidates": [
+      {
+        "sourceRank": 1,
+        "cktV4": 9.167862175046617,
+        "cktV5": 9.179502111489438,
+        "memory": 37,
+        "homeFloor": 0.23986253737328267,
+        "mxScore": 126.44668688003028
+      },
+      {
+        "sourceRank": 2,
+        "cktV4": 9.17189736233716,
+        "cktV5": 9.181881667076766,
+        "memory": 37,
+        "homeFloor": 0.24759922821937985,
+        "mxScore": 125.82787232175085
+      },
+      {
+        "sourceRank": 3,
+        "cktV4": 9.172714497907611,
+        "cktV5": 9.18207979773803,
+        "memory": 37,
+        "homeFloor": 0.24523419354164055,
+        "mxScore": 127.9198319850082
+      },
+      {
+        "sourceRank": 4,
+        "cktV4": 9.173901625552686,
+        "cktV5": 9.18327940932227,
+        "memory": 37,
+        "homeFloor": 0.2445502733937737,
+        "mxScore": 127.92144242585282
+      },
+      {
+        "sourceRank": 5,
+        "cktV4": 9.17625796252673,
+        "cktV5": 9.186265087797574,
+        "memory": 37,
+        "homeFloor": 0.24335599393335527,
+        "mxScore": 128.44332395598465
+      },
+      {
+        "sourceRank": 6,
+        "cktV4": 9.176563464077311,
+        "cktV5": 9.186245151855445,
+        "memory": 37,
+        "homeFloor": 0.24691530807151296,
+        "mxScore": 128.6800519034719
+      },
+      {
+        "sourceRank": 7,
+        "cktV4": 9.176681574667745,
+        "cktV5": 9.186554507647772,
+        "memory": 37,
+        "homeFloor": 0.2450012588904253,
+        "mxScore": 128.90677905062446
+      },
+      {
+        "sourceRank": 8,
+        "cktV4": 9.1773606302488,
+        "cktV5": 9.188574415346222,
+        "memory": 37,
+        "homeFloor": 0.247905434878001,
+        "mxScore": 129.3837209358722
+      },
+      {
+        "sourceRank": 9,
+        "cktV4": 9.177458758705724,
+        "cktV5": 9.187840585418023,
+        "memory": 37,
+        "homeFloor": 0.26698242496929786,
+        "mxScore": 124.9407042439168
+      },
+      {
+        "sourceRank": 10,
+        "cktV4": 9.17845428406802,
+        "cktV5": 9.18922336814458,
+        "memory": 37,
+        "homeFloor": 0.24800113561995735,
+        "mxScore": 126.26292536752888
+      },
+      {
+        "sourceRank": 11,
+        "cktV4": 9.178884679860635,
+        "cktV5": 9.187531768112422,
+        "memory": 37,
+        "homeFloor": 0.24856057302858295,
+        "mxScore": 127.01633556261368
+      },
+      {
+        "sourceRank": 12,
+        "cktV4": 9.17898228481166,
+        "cktV5": 9.189342990402874,
+        "memory": 37,
+        "homeFloor": 0.24335599393335527,
+        "mxScore": 129.45897138032177
+      },
+      {
+        "sourceRank": 13,
+        "cktV4": 9.181076234442022,
+        "cktV5": 9.192127439139504,
+        "memory": 37,
+        "homeFloor": 0.2492933720891518,
+        "mxScore": 130.31700643473013
+      },
+      {
+        "sourceRank": 14,
+        "cktV4": 9.181919464999096,
+        "cktV5": 9.191358563782881,
+        "memory": 37,
+        "homeFloor": 0.26393347014369173,
+        "mxScore": 127.00302681055116
+      },
+      {
+        "sourceRank": 15,
+        "cktV4": 9.183523838240085,
+        "cktV5": 9.193188548202887,
+        "memory": 37,
+        "homeFloor": 0.2682255833424182,
+        "mxScore": 128.406497984391
+      }
+    ],
+    "boundary": {
+      "sourceRank": 16,
+      "cktV4": 9.184897669106316,
+      "cktV5": 9.19645685246635,
+      "memory": 36,
+      "homeFloor": 0.24451216755415167,
+      "mxScore": 127.1070973904516
+    },
+    "current": {
+      "sourceRank": 17,
+      "cktV4": 9.185254321702468,
+      "cktV5": 9.195082189845293,
+      "memory": 36,
+      "homeFloor": 0.24733118234751789,
+      "mxScore": 132.2185188145348
+    }
+  }
+}

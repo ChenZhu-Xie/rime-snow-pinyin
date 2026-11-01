@@ -227,6 +227,43 @@ L_{A+B}^*=\arg\min_L\frac{
 \operatorname{CKT5}_B\bigl(L,o_B^*(L)\bigr)}{2}.
 \]
 
+## 固定辅序下的来源前沿复核
+
+2026-11-02 继续用方案级 CKT v5 复核当前两个双拼布局的正式来源前沿。21×21 取提交 `11713b652cd6a2350d8bf6d0a16d3383d8f0038f` 中正式保存的 6 个 ProdGate Pareto 候选；21×26 取提交 `7a7e154f3f7d0c86653ee15e755ccd72e866e5e2` 中 `topFrontier` 的 50 个 `D=1` 候选。这里的“竞争对手”只指来源提交正式保存的 Pareto／frontier，不包含未提交 SQLite 中被支配的中间采样状态。
+
+本轮不是对每个候选布局重新搜索自己的最优辅序。所有候选都固定使用当前布局族已经选定的方案专属稳健辅序：21×21 的冰雪键道为 `12/23/24`、冰雪三拼为 `12/21/23`；21×26 的冰雪神韵·形为 `12/21/14`、冰雪神韵·调为 `12/21/13`；参考 S005 分别为 `12/21/24`、`12/21/23`。因此本节结果是“固定布局族辅序下的来源前沿复核”，不是上文嵌套目标 \(o_s^*(L)\) 的实现。
+
+### 21×21
+
+正式 6 个候选中有 3 个 CKT v5 低于当前 U357：
+
+| 候选 | CKT v4 | CKT v5 ↓ | 相对 U357 | U ↑ | 主行下限 ↑ | 移动手 ↑ |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| U354 | 9.704072 | **9.701745** | −0.1425% | 354 | 37.516% | 141.316 |
+| U353 | 9.703548 | **9.703762** | −0.1217% | 353 | 37.516% | 141.034 |
+| U356 | 9.713832 | **9.713172** | −0.0249% | 356 | 37.225% | 141.633 |
+| 当前 U357 | 9.716421 | 9.715587 | 基准 | **357** | **37.620%** | **143.380** |
+
+四者均为 `M=40, D=0, V=5`；三个更低 CKT v5 候选的 `rpS2`、`rpMax`、`wMax`、`yMax` 与 U357 相同，但唯一音节码、主行下限和移动手均退化。固定辅序下纯 CKT v5 最低的是 U354，而不是 CKT v4 最低的 U353；没有候选在降低 CKT v5 的同时保持当前关键生产指标不退化。
+
+### 21×26
+
+正式 50 个候选中，来源 CKT v4 第 1～15 名的 CKT v5 低于当前第 17 名 Overall-17，范围为 `9.179502～9.193189`；第 16 名由 CKT v4 的略优反转为 CKT v5 的 `9.196457`，高于当前的 `9.195082`。代表点如下：
+
+| 候选 | CKT v4 | CKT v5 ↓ | 相对当前 | M ↓ | 主行下限 ↑ | 移动手 ↑ |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 来源第 1 名，纯速度冠军 | 9.167862 | **9.179502** | −0.1694% | 37 | 23.986% | 126.447 |
+| 来源第 13 名，更低 CKT v5 者中移动手最高 | 9.181076 | **9.192127** | −0.0321% | 37 | 24.929% | 130.317 |
+| 来源第 15 名 | 9.183524 | **9.193189** | −0.0206% | 37 | 26.823% | 128.406 |
+| 来源第 16 名，边界反转 | 9.184898 | 9.196457 | +0.0149% | 36 | 24.451% | 127.107 |
+| 当前第 17 名 Overall-17 | 9.185254 | 9.195082 | 基准 | **36** | 24.733% | **132.219** |
+
+15 个更低 CKT v5 候选全部为 `M=37`，而当前为 `M=36`；它们的移动手为 `124.941～130.317`，全部低于当前 `132.219`。其中 `rpS2` 有 13 个更好、1 个相同、1 个更差，`rpMax` 有 14 个更好、1 个相同，主行下限有 8 个更好、7 个更差，`wMax` 有 1 个更好、14 个相同，`yMax` 有 9 个更好、6 个相同。也就是说，竞争方案可以改善部分负载指标，但不存在 CKT v5 更低且 `M≤36` 或移动手不低于当前的候选。
+
+在本轮固定辅序口径下，U357 和 Overall-17 仍是合理的综合投产折中，但这个结论不能外推成“候选各自优化辅序后仍无更优布局”。要回答后一个问题，必须对每个候选布局分别执行两个成员各自的 144 组合内层优化，再按 `1:1` 合并；本轮没有做这项计算。
+
+精简结果列表见 [`reports/ckt5-source-frontier-results.json`](../reports/ckt5-source-frontier-results.json)。复算脚本为 [`scripts/research/evaluate_ckt5_source_candidates.js`](../scripts/research/evaluate_ckt5_source_candidates.js)，输出会显式标记 `auxOrderScope` 和实际辅序，防止误读为逐候选优化。
+
 ## 对 CKT 下一版的建议
 
 CKT 应把“键域、输入模式、原生辅键映射、二/三/四字词有序字位对”拆成显式配置。主输出先给四个独立对象的原始词轨成本、终局非首选率、平均排除候选数和翻页数，再把跨模式综合分作为布局搜索用的上层视图。
@@ -240,3 +277,15 @@ CKT 应把“键域、输入模式、原生辅键映射、二/三/四字词有�
 ## 复现
 
 运行 `node scripts/research/evaluate_ckt_v4_word_aux_order.js --benchmark <shuangpin-layout-benchmark 路径> --output <结果.json>`。脚本会对四个对象各跑 144 种组合，保存所有逐轨结果、三个认知情景、当前规则名次和各目标最优点。单独运行可用 `--case 21x21-keytao`、`21x21-sanpin`、`21x26-keytao` 或 `21x26-sanpin`。生成四个单对象结果后，运行 `node scripts/research/analyze_ckt5_aux_order_sensitivity.js` 复现同步扫描和五维独立网格，默认输出 `output/ckt5-aux-order-sensitivity.json`。运行 `node scripts/research/calculate_ckt5_scheme_scores.js` 把单字放回联合候选池，按已选稳健辅序生成 `1:3:1:1` 方案级结果，默认输出 `output/ckt5-scheme-specific.json`。
+
+固定辅序复核 21×21 正式来源前沿：
+
+```powershell
+node scripts/research/evaluate_ckt5_source_candidates.js --benchmark <shuangpin-layout-benchmark 路径> --domain 21x21 --git-object '11713b652cd6a2350d8bf6d0a16d3383d8f0038f:research/notes/2026-10-29-prodgate-directed-repair-pareto.json' --array candidates
+```
+
+固定辅序复核 21×26 正式来源前沿：
+
+```powershell
+node --max-old-space-size=4096 scripts/research/evaluate_ckt5_source_candidates.js --benchmark <shuangpin-layout-benchmark 路径> --domain 21x26 --git-object '7a7e154f3f7d0c86653ee15e755ccd72e866e5e2:research/milestones/strict-d0/strict-d0-pareto-frontier-20261030.json' --array topFrontier
+```
