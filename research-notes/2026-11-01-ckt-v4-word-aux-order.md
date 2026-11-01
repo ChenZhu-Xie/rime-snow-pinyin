@@ -289,3 +289,5 @@ node scripts/research/evaluate_ckt5_source_candidates.js --benchmark <shuangpin-
 ```powershell
 node --max-old-space-size=4096 scripts/research/evaluate_ckt5_source_candidates.js --benchmark <shuangpin-layout-benchmark 路径> --domain 21x26 --git-object '7a7e154f3f7d0c86653ee15e755ccd72e866e5e2:research/milestones/strict-d0/strict-d0-pareto-frontier-20261030.json' --array topFrontier
 ```
+
+对两个正式来源前沿逐布局、逐成员执行 144 种辅序内层选优时，使用 [`run_ckt5_nested_frontier.js`](../scripts/research/run_ckt5_nested_frontier.js)；跨机器长跑、断点续跑、资源门槛与完成验收见[运行手册](2026-11-02-ckt-v5-nested-frontier-runbook.md)。
