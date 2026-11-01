@@ -47,8 +47,14 @@ const DEFAULT_CASES = [
 ];
 
 const SHAPE_FROM = "IEUAO";
-const WORD_WEIGHTS = Object.freeze({ word2: 3, word3: 1, word4: 1 });
-const WORD_KINDS = Object.keys(WORD_WEIGHTS);
+const TRACK_WEIGHTS = Object.freeze({
+	character: 1,
+	word2: 3,
+	word3: 1,
+	word4: 1,
+});
+const TRACK_KINDS = Object.keys(TRACK_WEIGHTS);
+const WORD_KINDS = TRACK_KINDS.filter((kind) => kind !== "character");
 const PAGE_SIZE = 6;
 
 function parseArgs(argv) {
@@ -190,7 +196,7 @@ function buildRowsForOrder(
 	return rows;
 }
 
-function weightedWordMetrics(summary) {
+function weightedTrackMetrics(summary) {
 	const result = {};
 	const fields = [
 		"motorUpperMs",
@@ -204,14 +210,14 @@ function weightedWordMetrics(summary) {
 		"meanPageActions",
 		"meanKeys",
 	];
-	const totalWeight = Object.values(WORD_WEIGHTS).reduce(
+	const totalWeight = Object.values(TRACK_WEIGHTS).reduce(
 		(sum, value) => sum + value,
 		0,
 	);
 	for (const field of fields) {
 		result[field] =
-			WORD_KINDS.reduce(
-				(sum, kind) => sum + WORD_WEIGHTS[kind] * summary[kind][field],
+			TRACK_KINDS.reduce(
+				(sum, kind) => sum + TRACK_WEIGHTS[kind] * summary[kind][field],
 				0,
 			) / totalWeight;
 	}
@@ -257,21 +263,21 @@ function verifyCurrentPolicy({
 	model,
 	scorer,
 	rowsByKind,
+	characterRows,
 }) {
 	const cloned = { ...entry, tone: auxiliaryKeys };
-	const upstreamRows = scorer
-		.buildRows(cloned, data, strokes, words, mode)
-		.filter((row) => WORD_KINDS.includes(row.kind));
+	const upstreamRows = scorer.buildRows(cloned, data, strokes, words, mode);
 	const expected = model.summarizeOutcomes(
 		model.resolveCompetition(upstreamRows, { motorCost: motor }),
 	);
-	const actualRows = WORD_KINDS.flatMap((kind) =>
-		rowsByKind[kind].get(current[kind]),
-	);
+	const actualRows = [
+		...characterRows,
+		...WORD_KINDS.flatMap((kind) => rowsByKind[kind].get(current[kind])),
+	];
 	const actual = model.summarizeOutcomes(
 		model.resolveCompetition(actualRows, { motorCost: motor }),
 	);
-	for (const kind of WORD_KINDS) {
+	for (const kind of TRACK_KINDS) {
 		for (const field of [
 			"count",
 			"totalWeight",
@@ -410,6 +416,10 @@ function evaluateCase(context, specification) {
 			]),
 		);
 	}
+	const cloned = { ...entry, tone: specification.auxiliaryKeys };
+	const characterRows = scorer
+		.buildRows(cloned, data, strokes, words, specification.mode)
+		.filter((row) => row.kind === "character");
 	verifyCurrentPolicy({
 		entry,
 		data,
@@ -422,6 +432,7 @@ function evaluateCase(context, specification) {
 		model,
 		scorer,
 		rowsByKind,
+		characterRows,
 	});
 
 	const parameters = scenarioParameters(model);
@@ -432,6 +443,7 @@ function evaluateCase(context, specification) {
 		for (const word3 of orders.word3) {
 			for (const word4 of orders.word4) {
 				const rows = [
+					...characterRows,
 					...rowsByKind.word2.get(word2),
 					...rowsByKind.word3.get(word3),
 					...rowsByKind.word4.get(word4),
@@ -441,14 +453,17 @@ function evaluateCase(context, specification) {
 				let defaultTracks;
 				for (const [name, values] of Object.entries(parameters)) {
 					const tracks = model.summarizeOutcomes(outcomes, values);
-					scenarios[name] = weightedWordMetrics(tracks);
+					scenarios[name] = weightedTrackMetrics(tracks);
 					if (name === "rankAwareDefault") defaultTracks = tracks;
 				}
 				results.push({
 					policy: { word2, word3, word4 },
 					scenarios,
 					tracks: Object.fromEntries(
-						WORD_KINDS.map((kind) => [kind, compactTrack(defaultTracks[kind])]),
+						TRACK_KINDS.map((kind) => [
+							kind,
+							compactTrack(defaultTracks[kind]),
+						]),
 					),
 				});
 				completed++;
@@ -518,9 +533,9 @@ function main() {
 		evaluateCase(context, specification),
 	);
 	const output = {
-		version: "ckt-v4-word-aux-order-within-layout-1",
+		version: "ckt5-aux-order-with-character-1",
 		purpose:
-			"within-layout and within-mode auxiliary source-order comparison; no S005 normalization and no cross-mode composite",
+			"within-layout and within-mode auxiliary source-order comparison with character/word2/word3/word4 weights 1:3:1:1; no S005 normalization and no cross-mode composite",
 		benchmark: {
 			html,
 			upstreamCommit: snapshot.commit,
@@ -533,7 +548,7 @@ function main() {
 			word3: words.word3.length,
 			word4: words.word4.length,
 		},
-		wordWeights: WORD_WEIGHTS,
+		trackWeights: TRACK_WEIGHTS,
 		cognitiveScenarios: scenarioParameters(model),
 		assumptions: [
 			"Each auxiliary uses the first shape code or tone of one source character.",
@@ -561,5 +576,5 @@ module.exports = {
 	DEFAULT_CASES,
 	orderedDistinctPairs,
 	buildRowsForOrder,
-	weightedWordMetrics,
+	weightedTrackMetrics,
 };

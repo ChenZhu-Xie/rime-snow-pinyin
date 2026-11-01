@@ -18,6 +18,12 @@ const BASELINE = Object.freeze({
 	pageActionMs: 300,
 });
 const KINDS = ["word2", "word3", "word4"];
+const TRACK_WEIGHTS = Object.freeze({
+	character: 1,
+	word2: 3,
+	word3: 1,
+	word4: 1,
+});
 const DEFAULT_FILES = [
 	"ckt-v4-word-aux-order-2121-keytao.json",
 	"ckt-v4-word-aux-order-2121-sanpin.json",
@@ -92,6 +98,33 @@ function groupsForKind(caseResult, kind) {
 	return [...grouped.entries()]
 		.map(([order, vectors]) => ({ order, vectors: compactVectors(vectors) }))
 		.sort((left, right) => left.order.localeCompare(right.order));
+}
+
+function aggregateComponents(result) {
+	const totalWeight = Object.values(TRACK_WEIGHTS).reduce(
+		(sum, value) => sum + value,
+		0,
+	);
+	const tracks = Object.entries(TRACK_WEIGHTS).map(([kind, weight]) => ({
+		weight,
+		values: components(result.tracks[kind]),
+	}));
+	return tracks[0].values.map(
+		(_, index) =>
+			tracks.reduce(
+				(sum, track) => sum + track.weight * track.values[index],
+				0,
+			) / totalWeight,
+	);
+}
+
+function groupsForAggregate(caseResult) {
+	return caseResult.results.map((result) => ({
+		order: [result.policy.word2, result.policy.word3, result.policy.word4].join(
+			"/",
+		),
+		vectors: [aggregateComponents(result)],
+	}));
 }
 
 function ranksFor(groups, multipliers) {
@@ -183,7 +216,7 @@ function baseline(groups) {
 }
 
 function analyzeCase(caseResult) {
-	return Object.fromEntries(
+	const byKind = Object.fromEntries(
 		KINDS.map((kind) => {
 			const groups = groupsForKind(caseResult, kind);
 			return [
@@ -200,6 +233,15 @@ function analyzeCase(caseResult) {
 			];
 		}),
 	);
+	const aggregateGroups = groupsForAggregate(caseResult);
+	return {
+		aggregate: {
+			baseline: baseline(aggregateGroups),
+			synchronized: synchronizedSweep(aggregateGroups),
+			independent: independentGrid(aggregateGroups),
+		},
+		...byKind,
+	};
 }
 
 function main() {
@@ -220,8 +262,9 @@ function main() {
 		}
 	}
 	const output = {
-		version: "ckt5-aux-order-sensitivity-1",
+		version: "ckt5-aux-order-sensitivity-2",
 		pageSize: 6,
+		trackWeights: TRACK_WEIGHTS,
 		baselineCostsMs: BASELINE,
 		independentGrid: {
 			rangePercent: [0, 500],
@@ -231,7 +274,7 @@ function main() {
 		},
 		synchronizedSweep: { rangePercent: [0, 500], stepPercent: 1 },
 		method:
-			"For each word length and source order, minimize over companion orders in the unchanged joint candidate pool, then rank source orders.",
+			"The aggregate ranks complete policies at character/word2/word3/word4 weights 1:3:1:1. For each individual word length and source order, minimize over companion orders in the unchanged joint candidate pool, then rank source orders.",
 		cases,
 	};
 	const outputFile = path.resolve(
