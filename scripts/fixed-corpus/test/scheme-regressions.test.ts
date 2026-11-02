@@ -162,17 +162,16 @@ test("Three-Code and KeyTao share the Four-Code 23890 selection layout", () => {
 		assert.match(history, new RegExp(`char == "${key}"`, "u"));
 });
 
-test("Three-Code uses its ivuao tone-key order for stroke assist codes", () => {
+test("Three-Code derives stroke assist codes from AVUIO shape meanings", () => {
 	const filter = read("lua/snow/shape_filter.lua");
-	assert.match(
-		filter,
-		/local sanpin_stroke_map = \{ \["一"\] = "i", \["丨"\] = "v", \["丿"\] = "u", \["丶"\] = "a", \["乙"\] = "o" \}/u,
-	);
+	assert.match(filter, /sanpin_semantics = auxiliary_semantics\["21x21"\]/u);
 	assert.match(
 		filter,
 		/elseif state\.id == "snow_sanpin"[\s\S]+stroke_match\(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map\)/u,
 	);
-	assert.equal("hshh".replaceAll("h", "i").replaceAll("s", "v"), "ivii");
+	const semantics = read("lua/snow/auxiliary_semantics.lua");
+	assert.match(semantics, /stroke_keys_by_stroke = "viuoa"/u);
+	assert.equal("hshh".replaceAll("h", "v").replaceAll("s", "i"), "vivv");
 });
 
 test("word-initial and word-final selection runs before popping", () => {

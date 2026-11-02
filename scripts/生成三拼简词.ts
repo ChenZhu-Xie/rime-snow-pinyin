@@ -7,19 +7,18 @@ import {
 	readDictionary,
 	wordLength,
 } from "./固顶编译器";
+import {
+	keysByDigits,
+	loadAuxiliarySemantics,
+} from "./lib/auxiliary-semantics";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outputPath = join(root, "snow_sanpin.fixed.630.txt");
 const maximumWordsPerCode = 10;
-const toneKeys: Readonly<Record<string, string>> = {
-	"1": "i",
-	"2": "v",
-	"3": "u",
-	"4": "a",
-	"5": "o",
-};
+const auxiliarySemantics = loadAuxiliarySemantics("21x21");
+const toneKeys = keysByDigits(auxiliarySemantics.toneKeysByTone);
 const mainKeys = [..."bpmfdtnlgkhjqxzcsrwye"];
-const auxiliaryKeys = [..."ivuao"];
+const auxiliaryKeys = [...auxiliarySemantics.toneKeysByTone];
 const dictionaries = [
 	"snow_pinyin.dict.yaml",
 	"snow_pinyin.base.dict.yaml",

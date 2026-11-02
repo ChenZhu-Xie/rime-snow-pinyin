@@ -312,15 +312,13 @@ test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
 		{ match_shape: "1", accept: "[a-z]" },
 	]);
 	const lua = read("lua/snow/shenyun.lua");
-	assert.match(
-		lua,
-		/local tone_keys = \{ \["1"\] = "i", \["2"\] = "e", \["3"\] = "u", \["4"\] = "a", \["5"\] = "o" \}/u,
-	);
+	assert.match(lua, /local tone_keys = shenyun_semantics\.tone_keys_by_digit/u);
 	assert.match(lua, /local bihua = require "snow\.bihua"/u);
 	assert.match(
 		lua,
-		/local stroke_keys = \{ \["1"\] = "e", \["2"\] = "i", \["3"\] = "u", \["4"\] = "o", \["5"\] = "a" \}/u,
+		/local stroke_keys = shenyun_semantics\.stroke_keys_by_digit/u,
 	);
+	assert.match(lua, /auxiliary_semantics\["21x26"\]/u);
 	assert.match(lua, /ipairs\(bihua\.codes\(character, env\)\)/u);
 	assert.match(lua, /bihua\.load_strokes\(env\)/u);
 	assert.match(lua, /radical_input:sub\(1, 1\) ~= "1"/u);

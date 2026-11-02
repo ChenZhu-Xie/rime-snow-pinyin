@@ -35,16 +35,16 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
-      # 笔画反查按三拼声调键序映射：横竖撇捺折 → ivuao。
-      - send: ui
-        assert: has("一")
+      # 笔画反查按 21×21 形义序映射：横竖撇点折 → viuoa。
       - send: uv
+        assert: has("一")
+      - send: ui
         assert: has("丨")
       - send: uu
         assert: has("丿")
-      - send: ua
-        assert: has("丶")
       - send: uo
+        assert: has("丶")
+      - send: ua
         assert: has("乙")
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
       - send: r
@@ -58,10 +58,10 @@ deploy:
       # 组词规则
       - send: bti
         assert: cand[1].text == "冰"
-      # 单字 IR+B1+B2：冰首笔丶 → a；当首笔丨 → v。
-      - send: btia
+      # 单字 IR+B1+B2：冰首笔丶 → o；当首笔丨 → i。
+      - send: btio
         assert: has("冰")
-      - send: dniv
+      - send: dnii
         assert: has("当")
       - send: btxk
         assert: has("冰雪")
@@ -317,8 +317,8 @@ deploy:
     tests:
       - send: azhe
         assert: cand[1].text == "这" and has("着")
-      # 本地横竖撇点折依次为 i/v/u/a/o（上游为 v/i/u/o/a）。
-      - send: uivuao
+      # 横竖撇点折依次为 v/i/u/o/a，与 21×21 形义序 AVUIO 一致。
+      - send: uviuoa
         assert: cand[1].text == "札"
       - send: "wpfh i"
         assert: cand[1].text == "重复"
@@ -380,26 +380,26 @@ deploy:
     patch:
       translator/shape_sources: [G]
     tests:
-      # 本地三拼笔画键为 ivuao；令的 G/T/J 笔顺分别为 34454/34154/34152。
-      - send: "uuaaoa"
+      # 三拼笔画键为 viuoa；令的 G/T/J 笔顺分别为 34454/34154/34152。
+      - send: "uuooao"
         assert: has("令")
-      - send: "uuaioa"
+      - send: "uuovao"
         assert: not has("令")
-      - send: ltauaaoa
+      - send: ltauooao
         assert: has("令")
-      - send: ltauaioa
+      - send: ltauovao
         assert: not has("令")
   shape_t:
     patch:
       translator/shape_sources: [T]
     tests:
-      - send: "uuaioa"
+      - send: "uuovao"
         assert: has("令")
-      - send: "uuaaoa"
+      - send: "uuooao"
         assert: not has("令")
-      - send: ltauaioa
+      - send: ltauovao
         assert: has("令")
-      - send: ltauaaoa
+      - send: ltauooao
         assert: not has("令")
   shape_none:
     patch:

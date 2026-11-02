@@ -3,6 +3,7 @@
 
 local snow = require "snow.snow"
 local bihua = require "snow.bihua"
+local auxiliary_semantics = require "snow.auxiliary_semantics"
 
 ---@class ShapeFilterEnv: BihuaEnv
 ---@field shape_elements ReverseLookup|nil
@@ -37,8 +38,17 @@ end
 
 local stroke_names = { ["1"] = "一", ["2"] = "丨", ["3"] = "丿", ["4"] = "丶", ["5"] = "乙" }
 local sipin_stroke_map = { ["一"] = "e", ["丨"] = "i", ["丿"] = "u", ["丶"] = "o", ["乙"] = "a" }
-local sanpin_stroke_map = { ["一"] = "i", ["丨"] = "v", ["丿"] = "u", ["丶"] = "a", ["乙"] = "o" }
-local sanpin_tones = { i = "1", v = "2", u = "3", a = "4", o = "5" }
+local sanpin_semantics = auxiliary_semantics["21x21"]
+---@type table<string, string>
+local sanpin_stroke_map = {}
+---@type table<string, string>
+local sanpin_tones = {}
+for digit, key in pairs(sanpin_semantics.stroke_keys_by_digit) do
+  sanpin_stroke_map[stroke_names[digit]] = key
+end
+for digit, key in pairs(sanpin_semantics.tone_keys_by_digit) do
+  sanpin_tones[key] = digit
+end
 
 ---@param map table<string, string>
 ---@return table<string, string>, table<string, string>

@@ -37,6 +37,10 @@ import {
 	preferredEverydayWords,
 	rejectedFixedWords,
 } from "./固顶选优策略";
+import {
+	keysByDigits,
+	loadAuxiliarySemantics,
+} from "./lib/auxiliary-semantics";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const root = join(scriptDirectory, "..");
@@ -211,11 +215,13 @@ for (const line of readFileSync(
 	if (element && code) shapeElementKeys.set(element, code);
 }
 
+const auxiliarySemantics = loadAuxiliarySemantics("21x21");
+
 const layout: FixedLayout = {
 	id: fixture.scheme,
 	mainKeys: [..."bpmfdtnlgkhjqxzcsrwye"],
-	auxiliaryKeys: [..."ivuao"],
-	toneKeys: { "1": "i", "2": "v", "3": "u", "4": "a", "5": "o" },
+	auxiliaryKeys: [...auxiliarySemantics.toneKeysByTone],
+	toneKeys: keysByDigits(auxiliarySemantics.toneKeysByTone),
 	syllableCodes: Object.fromEntries(
 		Object.entries(fixture.codes).map(([syllable, code]) => [
 			syllable,

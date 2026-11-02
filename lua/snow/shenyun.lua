@@ -9,6 +9,10 @@
 local snow = require "snow.snow"
 local bihua = require "snow.bihua"
 local vacancy = require "snow.vacancy"
+local auxiliary_semantics = require "snow.auxiliary_semantics"
+
+local jiandao_semantics = auxiliary_semantics["21x21"]
+local shenyun_semantics = auxiliary_semantics["21x26"]
 
 local this = {}
 
@@ -60,9 +64,13 @@ local function encode_elements(character, env)
 end
 
 local function encode_radical(character, env)
-  -- 键道的五部物理键 avuio 迁移到神韵的 aeuio，小集合仍与 A 键互斥。
-  local code = encode_elements(character, env):gsub("v", "e")
-  return code
+  -- radical_jiandao.txt 使用 21×21 形义键；逐义迁移到 21×26，不能把调序当成形序。
+  local source = jiandao_semantics.shape_keys_by_meaning
+  local target = shenyun_semantics.shape_keys_by_meaning
+  return (encode_elements(character, env):gsub(".", function(key)
+    local index = source:find(key, 1, true)
+    return index and target:sub(index, index) or ""
+  end))
 end
 
 local function first_or_empty(value)
@@ -107,9 +115,9 @@ local function shape_codes(text, env)
 end
 
 ---@type table<string, string>
-local tone_keys = { ["1"] = "i", ["2"] = "e", ["3"] = "u", ["4"] = "a", ["5"] = "o" }
+local tone_keys = shenyun_semantics.tone_keys_by_digit
 ---@type table<string, string>
-local stroke_keys = { ["1"] = "e", ["2"] = "i", ["3"] = "u", ["4"] = "o", ["5"] = "a" }
+local stroke_keys = shenyun_semantics.stroke_keys_by_digit
 
 local function unique(values)
   local seen = {}
