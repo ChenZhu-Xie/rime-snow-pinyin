@@ -124,6 +124,61 @@
       "runtimeWord3AppendsRemainingPosition": true,
       "runtimeWord4MaximumAuxiliaries": 2,
       "laterAuxiliariesIncluded": false
+    },
+    "cktV51": {
+      "contract": {
+        "name": "unified-six-code",
+        "word2": "four main plus two auxiliaries",
+        "word3": "three main plus three auxiliaries from distinct source positions",
+        "word4": "four main plus two auxiliaries",
+        "word3Pools": "separate at lengths 3, 4, 5, and 6 for every layout",
+        "pageSize": 6
+      },
+      "referencePolicies": {
+        "keytao": {
+          "case": "s005-keytao",
+          "policy": "12/213/24"
+        },
+        "sanpin": {
+          "case": "s005-sanpin",
+          "policy": "12/213/23"
+        }
+      },
+      "independentGrid": {
+        "rangePercent": [
+          0,
+          500
+        ],
+        "stepPercent": 50,
+        "coefficients": [
+          "firstAuxMs",
+          "secondAuxMs",
+          "thirdAuxMs",
+          "selectionDecisionMs",
+          "scanPerCandidateMs",
+          "pageActionMs"
+        ],
+        "pointsPerCoefficient": 11,
+        "combinations": 1771561
+      },
+      "auxiliaryOrders": {
+        "Overall17": {
+          "keytao": "12/231/24",
+          "sanpin": "12/231/13"
+        },
+        "U357": {
+          "keytao": "12/231/24",
+          "sanpin": "12/213/23"
+        },
+        "S005": {
+          "keytao": "12/231/24",
+          "sanpin": "12/213/23"
+        },
+        "B04": {
+          "keytao": "12/231/24",
+          "sanpin": "12/231/23"
+        }
+      }
     }
   },
   "flyingKeyComponents": {
@@ -784,6 +839,12 @@
       "U357": 9.715586951861038,
       "S005": 10,
       "B04": 9.195421507104937
+    },
+    "cktV51": {
+      "Overall17": 9.477660885075332,
+      "U357": 9.717167494529612,
+      "S005": 9.999357236116698,
+      "B04": 9.331755687293944
     }
   },
   "stagedResidualNonfirstRates": {

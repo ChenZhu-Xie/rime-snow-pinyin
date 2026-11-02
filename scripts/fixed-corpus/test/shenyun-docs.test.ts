@@ -121,6 +121,14 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 		report,
 		"| 综合补全 CKT v5 | **9.195026** ★★ 🥇 | **9.715587** ★ | 10.000000 | 9.195422 |",
 	);
+	includes(
+		report,
+		"| 综合补全 CKT v5.1 | **9.477661** ★★ | **9.717167** ★ | 9.999357 | 9.331756 🥇 |",
+	);
+	includes(report, "统一的最大六码合同");
+	includes(report, "`11⁶=1,771,561` 点");
+	includes(report, "四布局的形／调稳健辅序依次为");
+	includes(report, "`12/231/24`、`12/231/13`");
 	includes(report, "形辅／调辅分别为 `12/12/23`、`21/12/23`");
 	includes(report, "每段两位数字表示 CKT v5 优化并计分的前两辅");
 	includes(report, "不含三字词第三辅的成本与消歧收益");
@@ -149,6 +157,36 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 		report.split("## 二／三／四字词的终局碰撞桶")[1]?.split("\n## ")[0] ?? "";
 	assert.ok(!buckets.includes("★"));
 	assert.ok(!buckets.includes("🥇"));
+});
+
+test("CKT v5.1 使用统一六码合同并保存八模式稳健辅序", () => {
+	const result = JSON.parse(
+		read("reports/ckt51-aux-order-robustness.json"),
+	) as {
+		independentGrid: { combinations: number; coefficients: string[] };
+		cases: Record<string, { robustPolicy: string }>;
+		normalized: { pairs: Record<string, { score: number }> };
+	};
+	assert.equal(result.independentGrid.combinations, 11 ** 6);
+	assert.deepEqual(result.independentGrid.coefficients, [
+		"firstAuxMs",
+		"secondAuxMs",
+		"thirdAuxMs",
+		"selectionDecisionMs",
+		"scanPerCandidateMs",
+		"pageActionMs",
+	]);
+	assert.equal(result.cases["21x21-keytao"].robustPolicy, "12/231/24");
+	assert.equal(result.cases["21x21-sanpin"].robustPolicy, "12/213/23");
+	assert.equal(result.cases["21x26-keytao"].robustPolicy, "12/231/24");
+	assert.equal(result.cases["21x26-sanpin"].robustPolicy, "12/231/13");
+	assert.equal(result.cases["b04-keytao"].robustPolicy, "12/231/24");
+	assert.equal(result.cases["b04-sanpin"].robustPolicy, "12/231/23");
+	assert.equal(result.cases["s005-keytao"].robustPolicy, "12/231/24");
+	assert.equal(result.cases["s005-sanpin"].robustPolicy, "12/213/23");
+	assert.ok(
+		result.normalized.pairs.b04.score < result.normalized.pairs["21x26"].score,
+	);
 });
 
 test("两张纯双拼热力图使用相同裁剪、背景和短标题", () => {
@@ -237,6 +275,9 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔");
 		includes(readme, "CKT v5");
 		includes(readme, "9.195422");
+		includes(readme, "CKT v5.1");
+		includes(readme, "9.331756");
+		includes(readme, "research-notes/2026-11-02-ckt-v5.1-six-code.md");
 		includes(readme, "冰雪神韵·形二／三／四字词的前两辅字位顺序为 `12/21/42`");
 		includes(readme, "运行时三字词按剩余字位补第三辅，四字词最多两辅");
 		includes(

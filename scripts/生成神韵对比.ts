@@ -15,6 +15,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jsonPath = join(root, "reports", "shenyun-comparison.json");
 const reportPath = join(root, "reports", "shenyun-comparison.md");
 const cktV5Path = join(root, "output", "ckt5-scheme-specific.json");
+const cktV51Path = join(root, "reports", "ckt51-aux-order-robustness.json");
 // biome-ignore lint/suspicious/noExplicitAny: 报告 JSON 是既有的异构复算快照，此脚本只补写已知字段。
 const data = JSON.parse(readFileSync(jsonPath, "utf8")) as any;
 const cktV5 = existsSync(cktV5Path)
@@ -39,6 +40,9 @@ const cktV5 = existsSync(cktV5Path)
 				},
 			},
 		};
+if (!existsSync(cktV51Path))
+	throw new Error(`缺少 CKT v5.1 结果：${cktV51Path}`);
+const cktV51 = JSON.parse(readFileSync(cktV51Path, "utf8"));
 const html = readFileSync(resolve(benchmarkPath), "utf8");
 const payloadMatch = html.match(
 	/<script id="payload"[^>]*>([\s\S]*?)<\/script>/u,
@@ -231,6 +235,29 @@ data.comparisonPolicy = {
 		S005: "fixed normalization anchor",
 		B04: "complete-policy lowest mean rank under the independent 0%-500% five-coefficient perturbation grid",
 	},
+	cktV51: {
+		contract: cktV51.contract,
+		referencePolicies: cktV51.referencePolicies,
+		independentGrid: cktV51.independentGrid,
+		auxiliaryOrders: {
+			Overall17: {
+				keytao: cktV51.cases["21x26-keytao"].robustPolicy,
+				sanpin: cktV51.cases["21x26-sanpin"].robustPolicy,
+			},
+			U357: {
+				keytao: cktV51.cases["21x21-keytao"].robustPolicy,
+				sanpin: cktV51.cases["21x21-sanpin"].robustPolicy,
+			},
+			S005: {
+				keytao: cktV51.cases["s005-keytao"].robustPolicy,
+				sanpin: cktV51.cases["s005-sanpin"].robustPolicy,
+			},
+			B04: {
+				keytao: cktV51.cases["b04-keytao"].robustPolicy,
+				sanpin: cktV51.cases["b04-sanpin"].robustPolicy,
+			},
+		},
+	},
 	groupPeakTracks: {
 		...comparisonPolicy.groupPeakTracks,
 		leftPinkyQAZ: {
@@ -246,6 +273,12 @@ data.comparisonPolicy = {
 			...comparisonPolicy.groupPeakTracks.indexFingerTYB,
 		},
 	},
+};
+data.metrics.cktV51 = {
+	Overall17: cktV51.normalized.pairs["21x26"].score,
+	U357: cktV51.normalized.pairs["21x21"].score,
+	S005: cktV51.normalized.pairs["s005-optimized"].score,
+	B04: cktV51.normalized.pairs.b04.score,
 };
 data.flyingKeyComponents[overallKey] = {
 	counts: { initials: 0, zeroInitialGroups: 0, finals: 0 },
@@ -369,6 +402,13 @@ const metricTable = table(
 			"cktV5",
 			"number",
 			"越低越好；六候选页与方案专属辅序",
+			"min",
+		],
+		[
+			"综合补全 CKT v5.1",
+			"cktV51",
+			"number",
+			"越低越好；统一六码合同并计入三字词第三辅",
 			"min",
 		],
 		["A7E-v3 系综当量", "ensembleV3", "number", "越低越好；冻结历史轴", "min"],
@@ -587,6 +627,8 @@ const report = `# 神韵两代布局与 S005、B04 四方案比较
 ${metricTable}
 
 CKT v5 使用 6 项候选页；神韵(Overall-17)的冰雪神韵·形／冰雪神韵·调辅序为 \`12/21/42\`、\`12/21/13\`，无飞键道(U357)的冰雪键道／冰雪三拼辅序为 \`12/23/24\`、\`12/21/23\`，S005 固定为 \`12/21/24\`、\`12/21/23\`。首道 B04 按原生 \`AEUIO\` 形辅、\`IEUAO\` 调辅与五项认知系数 0%～500% 独立扰动网格，对 144 套完整规则按平均名次取稳健综合第一，形辅／调辅分别为 \`12/12/23\`、\`21/12/23\`。每段两位数字表示 CKT v5 优化并计分的前两辅；运行时冰雪键道、冰雪三拼的三字词会按剩余字位补第三辅，四字词最多两辅。CKT v5 在第二辅后直接按选重计费，因此不含三字词第三辅的成本与消歧收益。
+
+CKT v5.1 改用统一的最大六码合同：二／四字词均为 4 主码＋2 辅码，三字词为 3 主码＋3 辅码；三字词从三个字位的 6 个完整排列中选择，第三辅的成本与消歧均进入模型。第一、第二、第三辅键与选重决策、候选扫描、翻页六项系数分别在 0%～500%、步长 50% 上独立扰动，共 \`11⁶=1,771,561\` 点；每个成员在 144 套完整规则中按最低平均名次取稳健第一。四布局的形／调稳健辅序依次为：神韵(Overall-17) \`12/231/24\`、\`12/231/13\`；无飞键道(U357) \`12/231/24\`、\`12/213/23\`；S005 \`12/231/24\`、\`12/213/23\`；首道 B04 \`12/231/24\`、\`12/231/23\`。CKT v5.1 是跨布局统一比较合同，不表示四码顶方案的实际运行编码已经改成该路由。
 
 四方案的飞键成分（声母／零声母组／韵母）依次为：${schemes.map((scheme, index) => `${labels[scheme]} ${flyingDisplays[index]}`).join("、")}。飞键按 Common399 实际二键码统计；不同成分共用一键或成分整体移位不计飞键。
 
