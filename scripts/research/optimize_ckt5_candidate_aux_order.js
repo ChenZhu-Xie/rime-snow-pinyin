@@ -378,9 +378,7 @@ function main() {
 		scorer,
 	});
 	if (global.gc) global.gc();
-	const policyLimit = args["policy-limit"]
-		? Number(args["policy-limit"])
-		: 144;
+	const policyLimit = args["policy-limit"] ? Number(args["policy-limit"]) : 144;
 	const requestedPolicy = args.policy ? parsePolicy(args.policy) : null;
 	const progressEvery = Number(args["progress-every"] || 12);
 	if (

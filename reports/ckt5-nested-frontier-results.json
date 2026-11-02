@@ -1,6 +1,6 @@
 {
-  "version": "ckt5-nested-source-frontier-condensed-1",
-  "generatedAt": "2026-11-02T04:28:09.433Z",
+  "version": "ckt5-nested-source-frontier-results-v2",
+  "updatedAt": "2026-11-02T05:11:39.882Z",
   "contract": {
     "pageSize": 6,
     "trackWeights": {
@@ -15,21 +15,139 @@
       "sanpin": "12/21/23"
     }
   },
-  "summary": {
+  "audit": {
     "totalLayouts": 56,
     "totalModes": 112,
     "totalPolicyEvaluations": 16128,
-    "domains": {
-      "21x21": {
-        "count": 6,
-        "baseline": "source rank 4 (U357)",
-        "baselineCktV5": 9.715586951861038,
-        "bestLayout": {
+    "all112ModesComplete": true,
+    "all112Modes144Policies": true,
+    "all56PairsComplete": true
+  },
+  "tradeoffSummary": {
+    "21x21": {
+      "baseline": "U357 (sourceRank 4)",
+      "baselineMetrics": {
+        "cktV5": 9.715586951861038,
+        "homeFloor": 0.3762039577208698,
+        "mxScore": 143.37998127078376,
+        "memory": 40
+      },
+      "betterCktV5CandidatesCount": 3,
+      "comprehensivelyDominatingCandidatesCount": 0,
+      "conclusion": "虽然 Rank 2、1、3 在各自自选最优辅序下 CKT v5 击键成本微幅低于 U357，但其 U 值（354, 353, 356）、主行率下限 (0.3752, 0.3752, 0.3723) 与移动手得分 (141.316, 141.034, 141.633) 均落后于 U357。没有任何候选综合支配 U357。"
+    },
+    "21x26": {
+      "baseline": "Overall-17 (sourceRank 17)",
+      "baselineMetrics": {
+        "cktV5": 9.195026476171616,
+        "homeFloor": 0.24733118234751789,
+        "mxScore": 132.2185188145348,
+        "memory": 36
+      },
+      "betterCktV5CandidatesCount": 15,
+      "comprehensivelyDominatingCandidatesCount": 0,
+      "conclusion": "虽然 Rank 1～15 的 CKT v5 低于 Overall-17，但它们全部为 M=37（Overall-17 为 M=36），且移动手最高仅 130.317（Overall-17 为 132.219）。没有任何候选综合支配 Overall-17。逐布局自选辅序没有改变原先的投产折中结论。"
+    }
+  },
+  "domains": {
+    "21x21": {
+      "count": 6,
+      "baseline": "source rank 4 (U357)",
+      "baselineSourceRank": 4,
+      "baselineFinalRank": 4,
+      "baselineCktV5": 9.715586951861038,
+      "baselineCandidate": {
+        "finalRank": 4,
+        "sourceRank": 4,
+        "identifier": "21x21-r04-6882fe5d",
+        "stateKeyHash": "6882fe5d",
+        "stateKey": "1515010f0c0503130d0b060a070910170a160411190212111111121818160a090d0512040c11040b050f09021901130d03030f10070203171306011806110a04081514000e",
+        "layoutId": "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
+        "complete": true,
+        "policyCountPerMode": 144,
+        "cktV4": 9.716420811869073,
+        "cktV5": 9.715586951861038,
+        "deltaVsBaseline": 0,
+        "relativePctVsBaseline": 0,
+        "candidate": {
+          "memory": 40,
+          "displacedInitials": 0,
+          "displacedVowels": 5,
+          "ergonomics": {
+            "homeFloor": 0.3762039577208698,
+            "mxScore": 143.37998127078376,
+            "rpMax": 0.051044914723866866,
+            "rpS2": 0.0418079455791114,
+            "wMax": 0.036232262304036644,
+            "yMax": 0.06392364530990335
+          }
+        },
+        "bestPolicies": {
+          "keytao": {
+            "word2": "12",
+            "word3": "23",
+            "word4": "24"
+          },
+          "sanpin": {
+            "word2": "12",
+            "word3": "21",
+            "word4": "23"
+          }
+        },
+        "modeResults": {
+          "keytao": {
+            "complete": true,
+            "resultCount": 144,
+            "powerSum": 5.35633554050607,
+            "elapsedSeconds": 274.42
+          },
+          "sanpin": {
+            "complete": true,
+            "resultCount": 144,
+            "powerSum": 5.335626736509117,
+            "elapsedSeconds": 274.532
+          }
+        },
+        "elapsedSeconds": 548.952,
+        "peakRssBytes": 3576594432
+      },
+      "policyDistributions": {
+        "keytao": {
+          "12/23/41": 3,
+          "12/23/24": 3
+        },
+        "sanpin": {
+          "12/21/13": 3,
+          "12/21/23": 3
+        }
+      },
+      "candidates": [
+        {
+          "finalRank": 1,
           "sourceRank": 2,
+          "identifier": "21x21-r02-d2a7839d",
+          "stateKeyHash": "d2a7839d",
+          "stateKey": "1515010f0c0503130d0b060a070910170a160411190212111111121818160a0c0d1205040911040b050f09021901130d03030f10070201031306171806110a04081514000e",
           "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f4_5",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.704071772970739,
           "cktV5": 9.7013765463423,
           "deltaVsBaseline": -0.014210405518738867,
           "relativePctVsBaseline": -0.1462639940247443,
+          "candidate": {
+            "memory": 40,
+            "displacedInitials": 0,
+            "displacedVowels": 5,
+            "ergonomics": {
+              "homeFloor": 0.37515572500684075,
+              "mxScore": 141.31582455324423,
+              "rpMax": 0.051044914723866866,
+              "rpS2": 0.0418079455791114,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335
+            }
+          },
           "bestPolicies": {
             "keytao": {
               "word2": "12",
@@ -41,219 +159,400 @@
               "word3": "21",
               "word4": "13"
             }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.333268917766095,
+              "elapsedSeconds": 266.316
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.296276502101261,
+              "elapsedSeconds": 271.545
+            }
+          },
+          "elapsedSeconds": 537.861,
+          "peakRssBytes": 3587743744
+        },
+        {
+          "finalRank": 2,
+          "sourceRank": 1,
+          "identifier": "21x21-r01-5c430879",
+          "stateKeyHash": "5c430879",
+          "stateKey": "1515010f0c0503130d0b060a070910170a160411190212111111121818160a0c0d0512040911040b050f09021901130d03030f10070217031306011806110a04081514000e",
+          "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f25_29",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.703547533132962,
+          "cktV5": 9.70293794918092,
+          "deltaVsBaseline": -0.012649002680118926,
+          "relativePctVsBaseline": -0.13019288224985714,
+          "candidate": {
+            "memory": 40,
+            "displacedInitials": 0,
+            "displacedVowels": 5,
+            "ergonomics": {
+              "homeFloor": 0.37515572500684075,
+              "mxScore": 141.03384602128477,
+              "rpMax": 0.051044914723866866,
+              "rpS2": 0.0418079455791114,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "23",
+              "word4": "41"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.333006003793018,
+              "elapsedSeconds": 261.782
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.303384221896374,
+              "elapsedSeconds": 256.034
+            }
+          },
+          "elapsedSeconds": 517.816,
+          "peakRssBytes": 3586342912
+        },
+        {
+          "finalRank": 3,
+          "sourceRank": 3,
+          "identifier": "21x21-r03-42b9fb02",
+          "stateKeyHash": "42b9fb02",
+          "stateKey": "1515010f0c0503130d0b060a070910170a160411190212111111121818160a0d090512040c11040b050f09021901130d03030f10070203011306171806110a04081514000e",
+          "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_3-d4-f25_26",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.713832369310046,
+          "cktV5": 9.712949224104644,
+          "deltaVsBaseline": -0.002637727756393815,
+          "relativePctVsBaseline": -0.027149443152156172,
+          "candidate": {
+            "memory": 40,
+            "displacedInitials": 0,
+            "displacedVowels": 5,
+            "ergonomics": {
+              "homeFloor": 0.3722521678795211,
+              "mxScore": 141.63311514968768,
+              "rpMax": 0.051044914723866866,
+              "rpS2": 0.0418079455791114,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "23",
+              "word4": "24"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.354246668098267,
+              "elapsedSeconds": 274.913
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.326109103757732,
+              "elapsedSeconds": 272.569
+            }
+          },
+          "elapsedSeconds": 547.482,
+          "peakRssBytes": 3592146944
+        },
+        {
+          "finalRank": 4,
+          "sourceRank": 4,
+          "identifier": "21x21-r04-6882fe5d",
+          "stateKeyHash": "6882fe5d",
+          "stateKey": "1515010f0c0503130d0b060a070910170a160411190212111111121818160a090d0512040c11040b050f09021901130d03030f10070203171306011806110a04081514000e",
+          "layoutId": "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.716420811869073,
+          "cktV5": 9.715586951861038,
+          "deltaVsBaseline": 0,
+          "relativePctVsBaseline": 0,
+          "candidate": {
+            "memory": 40,
+            "displacedInitials": 0,
+            "displacedVowels": 5,
+            "ergonomics": {
+              "homeFloor": 0.3762039577208698,
+              "mxScore": 143.37998127078376,
+              "rpMax": 0.051044914723866866,
+              "rpS2": 0.0418079455791114,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "23",
+              "word4": "24"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "23"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.35633554050607,
+              "elapsedSeconds": 274.42
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.335626736509117,
+              "elapsedSeconds": 274.532
+            }
+          },
+          "elapsedSeconds": 548.952,
+          "peakRssBytes": 3576594432
+        },
+        {
+          "finalRank": 5,
+          "sourceRank": 5,
+          "identifier": "21x21-r05-5cd65a5c",
+          "stateKeyHash": "5cd65a5c",
+          "stateKey": "1515010f0c0503130d0b060a070910170a160411190212111111121818160a090d1012040c11040b090f05021901130d03030f05070203171306011806110a04081514000e",
+          "layoutId": "gen0107-p5-f1h-11_13-d2-f25_26",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.720904837323744,
+          "cktV5": 9.71668196507458,
+          "deltaVsBaseline": 0.0010950132135416624,
+          "relativePctVsBaseline": 0.011270685126562638,
+          "candidate": {
+            "memory": 40,
+            "displacedInitials": 0,
+            "displacedVowels": 5,
+            "ergonomics": {
+              "homeFloor": 0.3758392182419183,
+              "mxScore": 141.35376566919118,
+              "rpMax": 0.051044914723866866,
+              "rpS2": 0.0418079455791114,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "23",
+              "word4": "24"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "23"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.362278473338727,
+              "elapsedSeconds": 273.961
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.33450484825542,
+              "elapsedSeconds": 277.683
+            }
+          },
+          "elapsedSeconds": 551.644,
+          "peakRssBytes": 3595657216
+        },
+        {
+          "finalRank": 6,
+          "sourceRank": 6,
+          "identifier": "21x21-r06-082b01d7",
+          "stateKeyHash": "082b01d7",
+          "stateKey": "1515010f0c0503130d0b060a070910170a160411190212111111121818160c090d1712040a11040b090f05021901130d03030f05070203101306011806110a04081514000e",
+          "layoutId": "gen0107-p5-f1h-11_13-d2-f4_25-d3-f1_7-d4-f25_26",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.74220384265198,
+          "cktV5": 9.737622913411638,
+          "deltaVsBaseline": 0.022035961550599836,
+          "relativePctVsBaseline": 0.2268103992047419,
+          "candidate": {
+            "memory": 40,
+            "displacedInitials": 0,
+            "displacedVowels": 5,
+            "ergonomics": {
+              "homeFloor": 0.3735679214405345,
+              "mxScore": 141.1739253821773,
+              "rpMax": 0.051044914723866866,
+              "rpS2": 0.0418079455791114,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "23",
+              "word4": "41"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "23"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.413297247966078,
+              "elapsedSeconds": 274.744
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 5.3759974733265485,
+              "elapsedSeconds": 271.412
+            }
+          },
+          "elapsedSeconds": 546.156,
+          "peakRssBytes": 3609280512
+        }
+      ]
+    },
+    "21x26": {
+      "count": 50,
+      "baseline": "source rank 17 (Overall-17)",
+      "baselineSourceRank": 17,
+      "baselineFinalRank": 16,
+      "baselineCktV5": 9.195026476171616,
+      "baselineCandidate": {
+        "finalRank": 16,
+        "sourceRank": 17,
+        "identifier": "21x26-r17-d0c6548f",
+        "stateKeyHash": "d0c6548f",
+        "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e18120416090d14080a0f0b0319021110170c0a05141711100f0b130c15130601080414000e",
+        "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+        "complete": true,
+        "policyCountPerMode": 144,
+        "cktV4": 9.185254321702468,
+        "cktV5": 9.195026476171616,
+        "deltaVsBaseline": 0,
+        "relativePctVsBaseline": 0,
+        "candidate": {
+          "memory": 36,
+          "displacedInitials": 1,
+          "displacedVowels": 1,
+          "ergonomics": {
+            "homeFloor": 0.24733118234751789,
+            "mxScore": 132.2185188145348,
+            "rpMax": 0.03516423185567739,
+            "rpS2": 0.025518214912535617,
+            "wMax": 0.06395887732528338,
+            "yMax": 0.07695774976451161
           }
         },
-        "candidates": [
-          {
-            "finalRank": 1,
-            "sourceRank": 2,
-            "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f4_5",
-            "cktV4": 9.704071772970739,
-            "cktV5": 9.7013765463423,
-            "deltaVsBaseline": -0.014210405518738867,
-            "relativePctVsBaseline": -0.1462639940247443,
-            "modeCktV5": {
-              "keytao": 9.709806115362554,
-              "sanpin": 9.692924946396447
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "23",
-                "word4": "41"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "rpS2": 0.0418079455791114,
-              "rpMax": 0.051044914723866866,
-              "homeFloor": 0.37515572500684075,
-              "wMax": 0.036232262304036644,
-              "yMax": 0.06392364530990335,
-              "mxScore": 141.31582455324423
-            }
+        "bestPolicies": {
+          "keytao": {
+            "word2": "12",
+            "word3": "21",
+            "word4": "42"
           },
-          {
-            "finalRank": 2,
-            "sourceRank": 1,
-            "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f25_29",
-            "cktV4": 9.703547533132962,
-            "cktV5": 9.70293794918092,
-            "deltaVsBaseline": -0.012649002680118926,
-            "relativePctVsBaseline": -0.13019288224985714,
-            "modeCktV5": {
-              "keytao": 9.709686447156379,
-              "sanpin": 9.696175340792882
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "23",
-                "word4": "41"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "rpS2": 0.0418079455791114,
-              "rpMax": 0.051044914723866866,
-              "homeFloor": 0.37515572500684075,
-              "wMax": 0.036232262304036644,
-              "yMax": 0.06392364530990335,
-              "mxScore": 141.03384602128477
-            }
-          },
-          {
-            "finalRank": 3,
-            "sourceRank": 3,
-            "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_3-d4-f25_26",
-            "cktV4": 9.713832369310046,
-            "cktV5": 9.712949224104644,
-            "deltaVsBaseline": -0.002637727756393815,
-            "relativePctVsBaseline": -0.027149443152156172,
-            "modeCktV5": {
-              "keytao": 9.719340142864343,
-              "sanpin": 9.706545665109534
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "23",
-                "word4": "24"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "rpS2": 0.0418079455791114,
-              "rpMax": 0.051044914723866866,
-              "homeFloor": 0.3722521678795211,
-              "wMax": 0.036232262304036644,
-              "yMax": 0.06392364530990335,
-              "mxScore": 141.63311514968768
-            }
-          },
-          {
-            "finalRank": 4,
-            "sourceRank": 4,
-            "layoutId": "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
-            "cktV4": 9.716420811869073,
-            "cktV5": 9.715586951861038,
-            "deltaVsBaseline": 0,
-            "relativePctVsBaseline": 0,
-            "modeCktV5": {
-              "keytao": 9.720287964898292,
-              "sanpin": 9.710879104962357
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "23",
-                "word4": "24"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "23"
-              }
-            },
-            "ergonomics": {
-              "rpS2": 0.0418079455791114,
-              "rpMax": 0.051044914723866866,
-              "homeFloor": 0.3762039577208698,
-              "wMax": 0.036232262304036644,
-              "yMax": 0.06392364530990335,
-              "mxScore": 143.37998127078376
-            }
-          },
-          {
-            "finalRank": 5,
-            "sourceRank": 5,
-            "layoutId": "gen0107-p5-f1h-11_13-d2-f25_26",
-            "cktV4": 9.720904837323744,
-            "cktV5": 9.71668196507458,
-            "deltaVsBaseline": 0.0010950132135416624,
-            "relativePctVsBaseline": 0.011270685126562638,
-            "modeCktV5": {
-              "keytao": 9.722983044332217,
-              "sanpin": 9.710368603531835
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "23",
-                "word4": "24"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "23"
-              }
-            },
-            "ergonomics": {
-              "rpS2": 0.0418079455791114,
-              "rpMax": 0.051044914723866866,
-              "homeFloor": 0.3758392182419183,
-              "wMax": 0.036232262304036644,
-              "yMax": 0.06392364530990335,
-              "mxScore": 141.35376566919118
-            }
-          },
-          {
-            "finalRank": 6,
-            "sourceRank": 6,
-            "layoutId": "gen0107-p5-f1h-11_13-d2-f4_25-d3-f1_7-d4-f25_26",
-            "cktV4": 9.74220384265198,
-            "cktV5": 9.737622913411638,
-            "deltaVsBaseline": 0.022035961550599836,
-            "relativePctVsBaseline": 0.2268103992047419,
-            "modeCktV5": {
-              "keytao": 9.74602803219199,
-              "sanpin": 9.729195973231347
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "23",
-                "word4": "41"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "23"
-              }
-            },
-            "ergonomics": {
-              "rpS2": 0.0418079455791114,
-              "rpMax": 0.051044914723866866,
-              "homeFloor": 0.3735679214405345,
-              "wMax": 0.036232262304036644,
-              "yMax": 0.06392364530990335,
-              "mxScore": 141.1739253821773
-            }
+          "sanpin": {
+            "word2": "12",
+            "word3": "21",
+            "word4": "13"
           }
-        ]
+        },
+        "modeResults": {
+          "keytao": {
+            "complete": true,
+            "resultCount": 144,
+            "powerSum": 4.313024353852038,
+            "elapsedSeconds": 310.737
+          },
+          "sanpin": {
+            "complete": true,
+            "resultCount": 144,
+            "powerSum": 4.265116683045397,
+            "elapsedSeconds": 310.364
+          }
+        },
+        "elapsedSeconds": 621.101,
+        "peakRssBytes": 3640303616
       },
-      "21x26": {
-        "count": 50,
-        "baseline": "source rank 17 (Overall-17)",
-        "baselineCktV5": 9.195026476171616,
-        "bestLayout": {
+      "policyDistributions": {
+        "keytao": {
+          "12/21/14": 38,
+          "12/21/42": 11,
+          "12/21/41": 1
+        },
+        "sanpin": {
+          "12/21/13": 40,
+          "21/21/13": 10
+        }
+      },
+      "candidates": [
+        {
+          "finalRank": 1,
           "sourceRank": 1,
+          "identifier": "21x26-r01-324f94e0",
+          "stateKeyHash": "324f94e0",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0d120416091014080f0a010219151317060c0f0b140201030a11050c11051803080414000e",
           "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.167862175046617,
           "cktV5": 9.179502111489438,
           "deltaVsBaseline": -0.01552436468217877,
           "relativePctVsBaseline": -0.16883436630018708,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.23986253737328267,
+              "mxScore": 126.44668688003028,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.0595834334948803
+            }
+          },
           "bestPolicies": {
             "keytao": {
               "word2": "12",
@@ -265,586 +564,2720 @@
               "word3": "21",
               "word4": "13"
             }
-          }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.2826162453919405,
+              "elapsedSeconds": 277.3
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.237739938370283,
+              "elapsedSeconds": 280.717
+            }
+          },
+          "elapsedSeconds": 558.017,
+          "peakRssBytes": 3645456384
         },
-        "baselinePositionInFrontier": {
-          "sourceRank": 17,
+        {
+          "finalRank": 2,
+          "sourceRank": 2,
+          "identifier": "21x26-r02-898a4217",
+          "stateKeyHash": "898a4217",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f0a120416090d14080b0e150210011317030c0b05141006190e11180c11180619080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.17189736233716,
+          "cktV5": 9.181881667076768,
+          "deltaVsBaseline": -0.013144809094848497,
+          "relativePctVsBaseline": -0.14295564160595423,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24759922821937985,
+              "mxScore": 125.82787232175085,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.288088298366706,
+              "elapsedSeconds": 283.858
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.241106075452023,
+              "elapsedSeconds": 284.676
+            }
+          },
+          "elapsedSeconds": 568.534,
+          "peakRssBytes": 3648733184
+        },
+        {
+          "finalRank": 3,
+          "sourceRank": 3,
+          "identifier": "21x26-r03-875ff79c",
+          "stateKeyHash": "875ff79c",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f18120416100d14080a0e0b1902031109150c0a05141103090e0b130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.172714497907611,
+          "cktV5": 9.18207979773803,
+          "deltaVsBaseline": -0.0129466784335861,
+          "relativePctVsBaseline": -0.14080088259818146,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24523419354164055,
+              "mxScore": 127.9198319850082,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.283564406616962,
+              "elapsedSeconds": 278.685
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.246366177787492,
+              "elapsedSeconds": 285.689
+            }
+          },
+          "elapsedSeconds": 564.374,
+          "peakRssBytes": 3649335296
+        },
+        {
+          "finalRank": 4,
+          "sourceRank": 4,
+          "identifier": "21x26-r04-b754ca2f",
+          "stateKeyHash": "b754ca2f",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f18120416100d14080a0e0b1902031109150c0a05141101090e0b130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.173901625552686,
+          "cktV5": 9.18327940932227,
+          "deltaVsBaseline": -0.01174706684934712,
+          "relativePctVsBaseline": -0.1277545734075804,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2445502733937737,
+              "mxScore": 127.92144242585282,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.285776315028811,
+              "elapsedSeconds": 279.832
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.248612783886963,
+              "elapsedSeconds": 280.598
+            }
+          },
+          "elapsedSeconds": 560.4300000000001,
+          "peakRssBytes": 3646951424
+        },
+        {
+          "finalRank": 5,
+          "sourceRank": 6,
+          "identifier": "21x26-r06-2837a2a0",
+          "stateKeyHash": "2837a2a0",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f0a120416090d14080b0e151002011317030c0b05140215190e11180c11180619080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.176563464077311,
+          "cktV5": 9.186245151855445,
+          "deltaVsBaseline": -0.00878132431617118,
+          "relativePctVsBaseline": -0.09550080512467776,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24691530807151296,
+              "mxScore": 128.6800519034719,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.297314513898764,
+              "elapsedSeconds": 279.82
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.248104659765449,
+              "elapsedSeconds": 280.942
+            }
+          },
+          "elapsedSeconds": 560.762,
+          "peakRssBytes": 3637657600
+        },
+        {
+          "finalRank": 6,
+          "sourceRank": 5,
+          "identifier": "21x26-r05-889b6d42",
+          "stateKeyHash": "889b6d42",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f0a1204160d1014080b0e150902011317030c0b05140215190e11180c11180619080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.17625796252673,
+          "cktV5": 9.186265087797574,
+          "deltaVsBaseline": -0.008761388374042056,
+          "relativePctVsBaseline": -0.09528399289275231,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24335599393335527,
+              "mxScore": 128.44332395598465,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.297401046772322,
+              "elapsedSeconds": 277.375
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.248092308032875,
+              "elapsedSeconds": 291.076
+            }
+          },
+          "elapsedSeconds": 568.451,
+          "peakRssBytes": 3647774720
+        },
+        {
+          "finalRank": 7,
+          "sourceRank": 7,
+          "identifier": "21x26-r07-cb666350",
+          "stateKeyHash": "cb666350",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f18120416100d14080a0e0b0302151109190c0a05141117090e0b130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.176681574667745,
+          "cktV5": 9.186554507647772,
+          "deltaVsBaseline": -0.008471968523844353,
+          "relativePctVsBaseline": -0.09213642337843152,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2450012588904253,
+              "mxScore": 128.90677905062446,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.294824202810751,
+              "elapsedSeconds": 278.828
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.2517461304038475,
+              "elapsedSeconds": 284.743
+            }
+          },
+          "elapsedSeconds": 563.5709999999999,
+          "peakRssBytes": 3640041472
+        },
+        {
+          "finalRank": 8,
+          "sourceRank": 11,
+          "identifier": "21x26-r11-14619ff3",
+          "stateKeyHash": "14619ff3",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f18120416030d14080a0e0b1002151109190c0a05141117090e0b130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.178884679860635,
+          "cktV5": 9.187531768112422,
+          "deltaVsBaseline": -0.007494708059194721,
+          "relativePctVsBaseline": -0.08150828144559265,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24856057302858295,
+              "mxScore": 127.01633556261368,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.297080537337073,
+              "elapsedSeconds": 334.202
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.253127093469374,
+              "elapsedSeconds": 310.274
+            }
+          },
+          "elapsedSeconds": 644.476,
+          "peakRssBytes": 3640258560
+        },
+        {
+          "finalRank": 9,
+          "sourceRank": 9,
+          "identifier": "21x26-r09-f920d7dc",
+          "stateKeyHash": "f920d7dc",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f0a120416090d14080b0e15021001131703070b05141006190e11180711180619080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.177458758705724,
+          "cktV5": 9.187840585418023,
+          "deltaVsBaseline": -0.007185890753593327,
+          "relativePctVsBaseline": -0.07814975598183595,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.26698242496929786,
+              "mxScore": 124.9407042439168,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.3001405660863625,
+              "elapsedSeconds": 321.732
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.251216703287397,
+              "elapsedSeconds": 310.48
+            }
+          },
+          "elapsedSeconds": 632.212,
+          "peakRssBytes": 3653152768
+        },
+        {
+          "finalRank": 10,
+          "sourceRank": 8,
+          "identifier": "21x26-r08-3df99d6e",
+          "stateKeyHash": "3df99d6e",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070b0c120416091014080e0f0a1902031118010d0e05140206180f0a130d06131517080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.1773606302488,
+          "cktV5": 9.188574415346222,
+          "deltaVsBaseline": -0.006452060825393957,
+          "relativePctVsBaseline": -0.07016902933465284,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.247905434878001,
+              "mxScore": 129.3837209358722,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06044111468943438
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.302777930582739,
+              "elapsedSeconds": 278.284
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.251311642938034,
+              "elapsedSeconds": 286.473
+            }
+          },
+          "elapsedSeconds": 564.7570000000001,
+          "peakRssBytes": 3644547072
+        },
+        {
+          "finalRank": 11,
+          "sourceRank": 10,
+          "identifier": "21x26-r10-f9d014e9",
+          "stateKeyHash": "f9d014e9",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f0a120416090d14080b0e150210010617030c0b05141006190e11180c11181319080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.17845428406802,
+          "cktV5": 9.18922336814458,
+          "deltaVsBaseline": -0.00580310802703643,
+          "relativePctVsBaseline": -0.06311137920129813,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24800113561995735,
+              "mxScore": 126.26292536752888,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.300987876873158,
+              "elapsedSeconds": 309.218
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.255518519206578,
+              "elapsedSeconds": 314.415
+            }
+          },
+          "elapsedSeconds": 623.633,
+          "peakRssBytes": 3647787008
+        },
+        {
+          "finalRank": 12,
+          "sourceRank": 12,
+          "identifier": "21x26-r12-99498b3a",
+          "stateKeyHash": "99498b3a",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f0a120416100d14080b0e150902011317030c0b05140215190e11180c11180619080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.17898228481166,
+          "cktV5": 9.189342990402874,
+          "deltaVsBaseline": -0.005683485768742003,
+          "relativePctVsBaseline": -0.06181043397178279,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24335599393335527,
+              "mxScore": 129.45897138032177,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.302821751901664,
+              "elapsedSeconds": 310.797
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.25413019591349,
+              "elapsedSeconds": 316.071
+            }
+          },
+          "elapsedSeconds": 626.868,
+          "peakRssBytes": 3657670656
+        },
+        {
+          "finalRank": 13,
+          "sourceRank": 14,
+          "identifier": "21x26-r14-1ff47a7c",
+          "stateKeyHash": "1ff47a7c",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f18120416100d14080a0e0b190203110915070a05141117090e0b130706130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.181919464999096,
+          "cktV5": 9.191358563782881,
+          "deltaVsBaseline": -0.003667912388735317,
+          "relativePctVsBaseline": -0.03989017756762856,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.26393347014369173,
+              "mxScore": 127.00302681055116,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.301656354228841,
+              "elapsedSeconds": 312.933
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.262805527582363,
+              "elapsedSeconds": 311.793
+            }
+          },
+          "elapsedSeconds": 624.726,
+          "peakRssBytes": 3646566400
+        },
+        {
+          "finalRank": 14,
+          "sourceRank": 13,
+          "identifier": "21x26-r13-49d5fb92",
+          "stateKeyHash": "49d5fb92",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f10120416090d14080a0e0b0302151118190c0a05141117180e0b130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.181076234442022,
+          "cktV5": 9.192070637795776,
+          "deltaVsBaseline": -0.002955838375839903,
+          "relativePctVsBaseline": -0.032146056169602,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2492933720891518,
+              "mxScore": 130.31700643473013,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06044111468943438
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.306080423828928,
+              "elapsedSeconds": 315.254
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.261035794415301,
+              "elapsedSeconds": 309.766
+            }
+          },
+          "elapsedSeconds": 625.02,
+          "peakRssBytes": 3642986496
+        },
+        {
+          "finalRank": 15,
+          "sourceRank": 15,
+          "identifier": "21x26-r15-352a2f1b",
+          "stateKeyHash": "352a2f1b",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f18120410090d14080a0e0b190203111601070a05141117160e0b130706131517080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.183523838240085,
+          "cktV5": 9.193188548202887,
+          "deltaVsBaseline": -0.0018379279687295025,
+          "relativePctVsBaseline": -0.019988283595402227,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2682255833424182,
+              "mxScore": 128.406497984391,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.05542784601280391,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.309137763593439,
+              "elapsedSeconds": 318.886
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.26214683674175,
+              "elapsedSeconds": 320.887
+            }
+          },
+          "elapsedSeconds": 639.773,
+          "peakRssBytes": 3644743680
+        },
+        {
           "finalRank": 16,
-          "total": 50
+          "sourceRank": 17,
+          "identifier": "21x26-r17-d0c6548f",
+          "stateKeyHash": "d0c6548f",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e18120416090d14080a0f0b0319021110170c0a05141711100f0b130c15130601080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.185254321702468,
+          "cktV5": 9.195026476171616,
+          "deltaVsBaseline": 0,
+          "relativePctVsBaseline": 0,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24733118234751789,
+              "mxScore": 132.2185188145348,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.313024353852038,
+              "elapsedSeconds": 310.737
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.265116683045397,
+              "elapsedSeconds": 310.364
+            }
+          },
+          "elapsedSeconds": 621.101,
+          "peakRssBytes": 3640303616
         },
-        "topFrontier": [
-          {
-            "finalRank": 1,
-            "sourceRank": 1,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.167862175046617,
-            "cktV5": 9.179502111489438,
-            "deltaVsBaseline": -0.01552436468217877,
-            "relativePctVsBaseline": -0.16883436630018708,
-            "modeCktV5": {
-              "keytao": 9.191565310701165,
-              "sanpin": 9.1673911655129
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
+        {
+          "finalRank": 17,
+          "sourceRank": 19,
+          "identifier": "21x26-r19-93f4a90e",
+          "stateKeyHash": "93f4a90e",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0d1204160c0314080f0a18050201111715090f10141113190a0b060913060b19080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.186008567075502,
+          "cktV5": 9.195524394103877,
+          "deltaVsBaseline": 0.0004979179322610605,
+          "relativePctVsBaseline": 0.005415078831489896,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
             "ergonomics": {
-              "loads": {
-                "rp_s2": 0.029186550619427185,
-                "rp_max": 0.0339375618821707,
-                "home_s2": 0.3582005478855803,
-                "home_c4": 0.23986253737328267,
-                "home_wx": 0.2904608372858063,
-                "home_floor": 0.23986253737328267,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.0595834334948803
-              },
-              "mxScore": 126.44668688003028
+              "homeFloor": 0.26156861060995223,
+              "mxScore": 131.53704708459117,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06821645182519298
             }
           },
-          {
-            "finalRank": 2,
-            "sourceRank": 2,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.17189736233716,
-            "cktV5": 9.181881667076768,
-            "deltaVsBaseline": -0.013144809094848497,
-            "relativePctVsBaseline": -0.14295564160595423,
-            "modeCktV5": {
-              "keytao": 9.194500003400542,
-              "sanpin": 9.169211092415482
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.36801379108158694,
-                "home_c4": 0.24759922821937985,
-                "home_wx": 0.2910168763857261,
-                "home_floor": 0.24759922821937985,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06606539427326755
-              },
-              "mxScore": 125.82787232175085
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
             }
           },
-          {
-            "finalRank": 3,
-            "sourceRank": 3,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.172714497907611,
-            "cktV5": 9.18207979773803,
-            "deltaVsBaseline": -0.0129466784335861,
-            "relativePctVsBaseline": -0.14080088259818146,
-            "modeCktV5": {
-              "keytao": 9.19207401623632,
-              "sanpin": 9.172052837694158
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.308213980015594,
+              "elapsedSeconds": 312.274
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.36611734474254154,
-                "home_c4": 0.24523419354164055,
-                "home_wx": 0.2961764537677211,
-                "home_floor": 0.24523419354164055,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.07695774976451161
-              },
-              "mxScore": 127.9198319850082
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.271785260207489,
+              "elapsedSeconds": 310.49
             }
           },
-          {
-            "finalRank": 4,
-            "sourceRank": 4,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.173901625552686,
-            "cktV5": 9.18327940932227,
-            "deltaVsBaseline": -0.01174706684934712,
-            "relativePctVsBaseline": -0.1277545734075804,
-            "modeCktV5": {
-              "keytao": 9.193260416627389,
-              "sanpin": 9.173265751396645
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
+          "elapsedSeconds": 622.764,
+          "peakRssBytes": 3642957824
+        },
+        {
+          "finalRank": 18,
+          "sourceRank": 20,
+          "identifier": "21x26-r20-969dce34",
+          "stateKeyHash": "969dce34",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0d1204160c0314080f0a06010205111715090f10141113190a0b180913180b19080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.186032559047808,
+          "cktV5": 9.195664328906382,
+          "deltaVsBaseline": 0.000637852734765687,
+          "relativePctVsBaseline": 0.006936932007957191,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
             "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.3652177876720528,
-                "home_c4": 0.2445502733937737,
-                "home_wx": 0.29526780804914604,
-                "home_floor": 0.2445502733937737,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.07695774976451161
-              },
-              "mxScore": 127.92144242585282
+              "homeFloor": 0.2632174849070946,
+              "mxScore": 130.58867511681953,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
             }
           },
-          {
-            "finalRank": 5,
-            "sourceRank": 6,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.176563464077311,
-            "cktV5": 9.186245151855445,
-            "deltaVsBaseline": -0.00878132431617118,
-            "relativePctVsBaseline": -0.09550080512467776,
-            "modeCktV5": {
-              "keytao": 9.199441720632294,
-              "sanpin": 9.17299146382904
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "41"
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.36711423401109816,
-                "home_c4": 0.24691530807151296,
-                "home_wx": 0.290108230667151,
-                "home_floor": 0.24691530807151296,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06606539427326755
-              },
-              "mxScore": 128.6800519034719
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
             }
           },
-          {
-            "finalRank": 6,
-            "sourceRank": 5,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.17625796252673,
-            "cktV5": 9.186265087797574,
-            "deltaVsBaseline": -0.008761388374042056,
-            "relativePctVsBaseline": -0.09528399289275231,
-            "modeCktV5": {
-              "keytao": 9.199488031422066,
-              "sanpin": 9.172984796004794
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.309354486409513,
+              "elapsedSeconds": 302.115
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.35370359318982997,
-                "home_c4": 0.24335599393335527,
-                "home_wx": 0.2859969628508805,
-                "home_floor": 0.24335599393335527,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06606539427326755
-              },
-              "mxScore": 128.44332395598465
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.271167037417843,
+              "elapsedSeconds": 306.624
             }
           },
-          {
-            "finalRank": 7,
-            "sourceRank": 7,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.176681574667745,
-            "cktV5": 9.186554507647772,
-            "deltaVsBaseline": -0.008471968523844353,
-            "relativePctVsBaseline": -0.09213642337843152,
-            "modeCktV5": {
-              "keytao": 9.19810865251038,
-              "sanpin": 9.1749566017955
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
+          "elapsedSeconds": 608.739,
+          "peakRssBytes": 3672514560
+        },
+        {
+          "finalRank": 19,
+          "sourceRank": 18,
+          "identifier": "21x26-r18-aee0a92b",
+          "stateKeyHash": "aee0a92b",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070b0c1204160d1014080e0f0a190203131815090e05140203180f0a110906110117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.185469980409923,
+          "cktV5": 9.1961998145483,
+          "deltaVsBaseline": 0.0011733383766845407,
+          "relativePctVsBaseline": 0.012760576380341913,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
             "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.3622565147301261,
-                "home_c4": 0.2450012588904253,
-                "home_wx": 0.2938276931697508,
-                "home_floor": 0.2450012588904253,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.07695774976451161
-              },
-              "mxScore": 128.90677905062446
+              "homeFloor": 0.27665166501072597,
+              "mxScore": 128.28104979148847,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06044111468943438
             }
           },
-          {
-            "finalRank": 8,
-            "sourceRank": 11,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.178884679860635,
-            "cktV5": 9.187531768112422,
-            "deltaVsBaseline": -0.007494708059194721,
-            "relativePctVsBaseline": -0.08150828144559265,
-            "modeCktV5": {
-              "keytao": 9.199316497211607,
-              "sanpin": 9.175701515347695
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.37566715555139424,
-                "home_c4": 0.24856057302858295,
-                "home_wx": 0.29793896098602135,
-                "home_floor": 0.24856057302858295,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.07695774976451161
-              },
-              "mxScore": 127.01633556261368
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
             }
           },
-          {
-            "finalRank": 9,
-            "sourceRank": 9,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.177458758705724,
-            "cktV5": 9.187840585418023,
-            "deltaVsBaseline": -0.007185890753593327,
-            "relativePctVsBaseline": -0.07814975598183595,
-            "modeCktV5": {
-              "keytao": 9.200953809945757,
-              "sanpin": 9.174670972226835
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.31649466958944,
+              "elapsedSeconds": 304.23
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.37149990407213096,
-                "home_c4": 0.26698242496929786,
-                "home_wx": 0.2898167118670604,
-                "home_floor": 0.26698242496929786,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06606539427326755
-              },
-              "mxScore": 124.9407042439168
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.266025686414502,
+              "elapsedSeconds": 314.088
             }
           },
-          {
-            "finalRank": 10,
-            "sourceRank": 8,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.1773606302488,
-            "cktV5": 9.188574415346222,
-            "deltaVsBaseline": -0.006452060825393957,
-            "relativePctVsBaseline": -0.07016902933465284,
-            "modeCktV5": {
-              "keytao": 9.202364269058014,
-              "sanpin": 9.17472219478399
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
+          "elapsedSeconds": 618.318,
+          "peakRssBytes": 3654250496
+        },
+        {
+          "finalRank": 20,
+          "sourceRank": 16,
+          "identifier": "21x26-r16-c0e497df",
+          "stateKeyHash": "c0e497df",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f0d120416030a14080b0e090219111310010c0b05140218100e11060c15061817080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.184897669106316,
+          "cktV5": 9.19645685246635,
+          "deltaVsBaseline": 0.0014303762947331933,
+          "relativePctVsBaseline": 0.015555977989187213,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
             "ergonomics": {
-              "loads": {
-                "rp_s2": 0.025518214912535617,
-                "rp_max": 0.03516423185567739,
-                "home_s2": 0.37678986854260793,
-                "home_c4": 0.247905434878001,
-                "home_wx": 0.30168111091807903,
-                "home_floor": 0.247905434878001,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06044111468943438
-              },
-              "mxScore": 129.3837209358722
+              "homeFloor": 0.24451216755415167,
+              "mxScore": 127.1070973904516,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.059991014436620145
             }
           },
-          {
-            "finalRank": 11,
-            "sourceRank": 10,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.17845428406802,
-            "cktV5": 9.18922336814458,
-            "deltaVsBaseline": -0.00580310802703643,
-            "relativePctVsBaseline": -0.06311137920129813,
-            "modeCktV5": {
-              "keytao": 9.201407021375674,
-              "sanpin": 9.176991059666856
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.38107948094443694,
-                "home_c4": 0.24800113561995735,
-                "home_wx": 0.30177914160836355,
-                "home_floor": 0.24800113561995735,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06606539427326755
-              },
-              "mxScore": 126.26292536752888
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
             }
           },
-          {
-            "finalRank": 12,
-            "sourceRank": 12,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.17898228481166,
-            "cktV5": 9.189342990402874,
-            "deltaVsBaseline": -0.005683485768742003,
-            "relativePctVsBaseline": -0.06181043397178279,
-            "modeCktV5": {
-              "keytao": 9.202387699165605,
-              "sanpin": 9.176242491109358
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.312765499640335,
+              "elapsedSeconds": 330.84
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.35370359318982997,
-                "home_c4": 0.24335599393335527,
-                "home_wx": 0.2859969628508805,
-                "home_floor": 0.24335599393335527,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06606539427326755
-              },
-              "mxScore": 129.45897138032177
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.27071443779923,
+              "elapsedSeconds": 309.805
             }
           },
-          {
-            "finalRank": 13,
-            "sourceRank": 14,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.181919464999096,
-            "cktV5": 9.191358563782881,
-            "deltaVsBaseline": -0.003667912388735317,
-            "relativePctVsBaseline": -0.03989017756762856,
-            "modeCktV5": {
-              "keytao": 9.20176453073989,
-              "sanpin": 9.18091713305347
-            },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
+          "elapsedSeconds": 640.645,
+          "peakRssBytes": 3641344000
+        },
+        {
+          "finalRank": 21,
+          "sourceRank": 22,
+          "identifier": "21x26-r22-79ba880e",
+          "stateKeyHash": "79ba880e",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f16120410090d14080a0e0b0302151118190c0a05141117180e0b130c01130617080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.187562048382908,
+          "cktV5": 9.197267715772394,
+          "deltaVsBaseline": 0.0022412396007780444,
+          "relativePctVsBaseline": 0.024374476860790865,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
             "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.36870390066259673,
-                "home_c4": 0.26393347014369173,
-                "home_wx": 0.2940676435304803,
-                "home_floor": 0.26393347014369173,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.07695774976451161
-              },
-              "mxScore": 127.00302681055116
+              "homeFloor": 0.24733118234751789,
+              "mxScore": 130.50430779551283,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.07194448108788115,
+              "yMax": 0.06044111468943438
             }
           },
-          {
-            "finalRank": 14,
-            "sourceRank": 13,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.181076234442022,
-            "cktV5": 9.192070637795776,
-            "deltaVsBaseline": -0.002955838375839903,
-            "relativePctVsBaseline": -0.032146056169602,
-            "modeCktV5": {
-              "keytao": 9.204129524151405,
-              "sanpin": 9.179964104374479
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "42"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.37669104375829376,
-                "home_c4": 0.2492933720891518,
-                "home_wx": 0.2989580845143702,
-                "home_floor": 0.2492933720891518,
-                "w_max": 0.06395887732528338,
-                "y_max": 0.06044111468943438
-              },
-              "mxScore": 130.31700643473013
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
             }
           },
-          {
-            "finalRank": 15,
-            "sourceRank": 15,
-            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
-            "cktV4": 9.183523838240085,
-            "cktV5": 9.193188548202887,
-            "deltaVsBaseline": -0.0018379279687295025,
-            "relativePctVsBaseline": -0.019988283595402227,
-            "modeCktV5": {
-              "keytao": 9.205762834444858,
-              "sanpin": 9.180562452524804
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.319073967308286,
+              "elapsedSeconds": 311.46
             },
-            "bestPolicies": {
-              "keytao": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "14"
-              },
-              "sanpin": {
-                "word2": "12",
-                "word3": "21",
-                "word4": "13"
-              }
-            },
-            "ergonomics": {
-              "loads": {
-                "rp_s2": 0.02542454539132587,
-                "rp_max": 0.033759385949270665,
-                "home_s2": 0.3831384296907645,
-                "home_c4": 0.2682255833424182,
-                "home_wx": 0.2991980348750997,
-                "home_floor": 0.2682255833424182,
-                "w_max": 0.05542784601280391,
-                "y_max": 0.07695774976451161
-              },
-              "mxScore": 128.406497984391
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.267433635936548,
+              "elapsedSeconds": 317.358
             }
-          }
-        ]
-      }
+          },
+          "elapsedSeconds": 628.818,
+          "peakRssBytes": 3646128128
+        },
+        {
+          "finalRank": 22,
+          "sourceRank": 21,
+          "identifier": "21x26-r21-c2adad64",
+          "stateKeyHash": "c2adad64",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070a18120416090d14080e0f0b0319021110010c0e05141702100f0b130c15130617080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.187400401774116,
+          "cktV5": 9.198317484154842,
+          "deltaVsBaseline": 0.003291007983225569,
+          "relativePctVsBaseline": 0.035791174628523666,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2457103104851518,
+              "mxScore": 132.46944437427385,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.318692255512337,
+              "elapsedSeconds": 332.812
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.271736245913319,
+              "elapsedSeconds": 316.727
+            }
+          },
+          "elapsedSeconds": 649.539,
+          "peakRssBytes": 3656286208
+        },
+        {
+          "finalRank": 23,
+          "sourceRank": 24,
+          "identifier": "21x26-r24-4f972895",
+          "stateKeyHash": "4f972895",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0d1204160c0314080f0a06050201111715090f10141113190a0b180913180b19080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.188326830464938,
+          "cktV5": 9.198324194365881,
+          "deltaVsBaseline": 0.0032977181942648315,
+          "relativePctVsBaseline": 0.0358641511561786,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.26366847040374625,
+              "mxScore": 131.61933421385916,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.313790702230758,
+              "elapsedSeconds": 316.504
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.276662866236278,
+              "elapsedSeconds": 311.07
+            }
+          },
+          "elapsedSeconds": 627.5740000000001,
+          "peakRssBytes": 3646943232
+        },
+        {
+          "finalRank": 24,
+          "sourceRank": 25,
+          "identifier": "21x26-r25-34b7e359",
+          "stateKeyHash": "34b7e359",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e18120416090d14080a0f0b1917021110030c0a05141911100f0b130c15130601080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.188882642962543,
+          "cktV5": 9.19844816675527,
+          "deltaVsBaseline": 0.0034216905836537137,
+          "relativePctVsBaseline": 0.037212405994923765,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2503387482420565,
+              "mxScore": 131.5519911381327,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.316577197240392,
+              "elapsedSeconds": 314.113
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.274339499319427,
+              "elapsedSeconds": 315.005
+            }
+          },
+          "elapsedSeconds": 629.1179999999999,
+          "peakRssBytes": 3640102912
+        },
+        {
+          "finalRank": 25,
+          "sourceRank": 27,
+          "identifier": "21x26-r27-62e56bf3",
+          "stateKeyHash": "62e56bf3",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e18120416090d14080a0f0b0317021110190c0a05141911100f0b130c15130601080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.190070029880244,
+          "cktV5": 9.19981139908884,
+          "deltaVsBaseline": 0.004784922917224321,
+          "relativePctVsBaseline": 0.05203816356183611,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24733118234751789,
+              "mxScore": 132.31596937713894,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.321775120541249,
+              "elapsedSeconds": 307.207
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.274235487057001,
+              "elapsedSeconds": 332.609
+            }
+          },
+          "elapsedSeconds": 639.816,
+          "peakRssBytes": 3658158080
+        },
+        {
+          "finalRank": 26,
+          "sourceRank": 26,
+          "identifier": "21x26-r26-145dad70",
+          "stateKeyHash": "145dad70",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070b10120416090d14080a0e0f0302151118190c0a05141117180e0f130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.189633046685003,
+          "cktV5": 9.199828293670102,
+          "deltaVsBaseline": 0.004801817498485406,
+          "relativePctVsBaseline": 0.05222189964247564,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24725716168536815,
+              "mxScore": 132.372444024299,
+              "rpMax": 0.029131640389386017,
+              "rpS2": 0.022736465052702444,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06044111468943438
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.320333271190648,
+              "elapsedSeconds": 313.868
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.275740479614987,
+              "elapsedSeconds": 311.316
+            }
+          },
+          "elapsedSeconds": 625.184,
+          "peakRssBytes": 3653046272
+        },
+        {
+          "finalRank": 27,
+          "sourceRank": 23,
+          "identifier": "21x26-r23-4bc685be",
+          "stateKeyHash": "4bc685be",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f0d120416030a14080b0e09021911131001070b05140206100e11180715180617080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.18825920134749,
+          "cktV5": 9.200096271922048,
+          "deltaVsBaseline": 0.005069795750431538,
+          "relativePctVsBaseline": 0.05513628224529449,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2646086571309459,
+              "mxScore": 126.1382817899436,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.32303952618114,
+              "elapsedSeconds": 307.586
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.274035835261158,
+              "elapsedSeconds": 310.425
+            }
+          },
+          "elapsedSeconds": 618.011,
+          "peakRssBytes": 3631022080
+        },
+        {
+          "finalRank": 28,
+          "sourceRank": 28,
+          "identifier": "21x26-r28-00fb9e98",
+          "stateKeyHash": "00fb9e98",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0c120410180d14080f0a06030201111917090f16141106190a0b130905130b15080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.192414094286482,
+          "cktV5": 9.201795014472685,
+          "deltaVsBaseline": 0.006768538301068716,
+          "relativePctVsBaseline": 0.07361086255280498,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.26386924724293725,
+              "mxScore": 129.44453588944975,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.07514029572269361,
+              "yMax": 0.0679982984455534
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.321173339715891,
+              "elapsedSeconds": 306.339
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.28225337400159,
+              "elapsedSeconds": 315.826
+            }
+          },
+          "elapsedSeconds": 622.165,
+          "peakRssBytes": 3645259776
+        },
+        {
+          "finalRank": 29,
+          "sourceRank": 32,
+          "identifier": "21x26-r32-488cc68a",
+          "stateKeyHash": "488cc68a",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0b100416090d1408120a060219011317150c120f140219030a11050c11051803080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.193974656153884,
+          "cktV5": 9.20241761221353,
+          "deltaVsBaseline": 0.007391136041913882,
+          "relativePctVsBaseline": 0.08038188972122687,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.22756563937785212,
+              "mxScore": 124.84388806648528,
+              "rpMax": 0.027808863630305936,
+              "rpS2": 0.02272909816615143,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.0595834334948803
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.320392364577025,
+              "elapsedSeconds": 323.22
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.285363032917426,
+              "elapsedSeconds": 312.49
+            }
+          },
+          "elapsedSeconds": 635.71,
+          "peakRssBytes": 3653574656
+        },
+        {
+          "finalRank": 30,
+          "sourceRank": 30,
+          "identifier": "21x26-r30-bb851c15",
+          "stateKeyHash": "bb851c15",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0d0f0410090b1408120a060302010517150c1216140518190a11130c11131819080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.192869100766726,
+          "cktV5": 9.202435076220471,
+          "deltaVsBaseline": 0.0074086000488549075,
+          "relativePctVsBaseline": 0.08057181855923819,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2287753967599699,
+              "mxScore": 128.72734300690664,
+              "rpMax": 0.028361729508467708,
+              "rpS2": 0.02267450844657153,
+              "wMax": 0.07514029572269361,
+              "yMax": 0.059991014436620145
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.32349038296096,
+              "elapsedSeconds": 308.616
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.2823303414535125,
+              "elapsedSeconds": 308.549
+            }
+          },
+          "elapsedSeconds": 617.165,
+          "peakRssBytes": 3642109952
+        },
+        {
+          "finalRank": 31,
+          "sourceRank": 33,
+          "identifier": "21x26-r33-18f80d0f",
+          "stateKeyHash": "18f80d0f",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0b100416090d1408120a150219011317060c120f140219030a11050c11051803080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.194041767316715,
+          "cktV5": 9.203144910273853,
+          "deltaVsBaseline": 0.00811843410223645,
+          "relativePctVsBaseline": 0.08829157940191805,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.22925457357218193,
+              "mxScore": 125.01115494982972,
+              "rpMax": 0.027808863630305936,
+              "rpS2": 0.02272909816615143,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.0595834334948803
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.322362262263418,
+              "elapsedSeconds": 331.479
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.286114025114476,
+              "elapsedSeconds": 316.658
+            }
+          },
+          "elapsedSeconds": 648.137,
+          "peakRssBytes": 3660476416
+        },
+        {
+          "finalRank": 32,
+          "sourceRank": 35,
+          "identifier": "21x26-r35-38148a22",
+          "stateKeyHash": "38148a22",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f0d1204030b0914080a06011002110e1715070a16140106190e11050713051819080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.194666370689482,
+          "cktV5": 9.203504085063717,
+          "deltaVsBaseline": 0.008477608892100363,
+          "relativePctVsBaseline": 0.09219776489028716,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2582573141121608,
+              "mxScore": 128.69774524300257,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.07514029572269361,
+              "yMax": 0.0595834334948803
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.324760185035185,
+              "elapsedSeconds": 316.847
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.285060046701917,
+              "elapsedSeconds": 317.085
+            }
+          },
+          "elapsedSeconds": 633.932,
+          "peakRssBytes": 3641012224
+        },
+        {
+          "finalRank": 33,
+          "sourceRank": 39,
+          "identifier": "21x26-r39-6328126a",
+          "stateKeyHash": "6328126a",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0b190403090d1408120a060210011317150c120f140210160a11050c11051816080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.194977190137328,
+          "cktV5": 9.203570811228447,
+          "deltaVsBaseline": 0.008544335056830832,
+          "relativePctVsBaseline": 0.09292344159065757,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2322946200931756,
+              "mxScore": 122.7792091226458,
+              "rpMax": 0.027808863630305936,
+              "rpS2": 0.02272909816615143,
+              "wMax": 0.05658516011264354,
+              "yMax": 0.0595834334948803
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.32400906284767,
+              "elapsedSeconds": 317.118
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.286060859235877,
+              "elapsedSeconds": 334.146
+            }
+          },
+          "elapsedSeconds": 651.264,
+          "peakRssBytes": 3634753536
+        },
+        {
+          "finalRank": 34,
+          "sourceRank": 34,
+          "identifier": "21x26-r34-2ad30ee9",
+          "stateKeyHash": "2ad30ee9",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f18120410090d14080a0e0b190203111701070a05141116170e0b130706131516080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.194115099392969,
+          "cktV5": 9.203741383070694,
+          "deltaVsBaseline": 0.008714906899077945,
+          "relativePctVsBaseline": 0.09477848619209664,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2682255833424182,
+              "mxScore": 128.50858704686635,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.05342197750178461,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.327548515790046,
+              "elapsedSeconds": 317.347
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.283159713466631,
+              "elapsedSeconds": 312.627
+            }
+          },
+          "elapsedSeconds": 629.9739999999999,
+          "peakRssBytes": 3648536576
+        },
+        {
+          "finalRank": 35,
+          "sourceRank": 37,
+          "identifier": "21x26-r37-57e9b96a",
+          "stateKeyHash": "57e9b96a",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0c120410180d14080f0a06030201111917090f16141106190a0b150905150b13080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.194876220457685,
+          "cktV5": 9.204532065581278,
+          "deltaVsBaseline": 0.009505589409661397,
+          "relativePctVsBaseline": 0.10337750994295217,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.26386924724293725,
+              "mxScore": 129.90376127324635,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.07514029572269361,
+              "yMax": 0.0679982984455534
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.326062983921179,
+              "elapsedSeconds": 307.802
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.287604569597936,
+              "elapsedSeconds": 312.074
+            }
+          },
+          "elapsedSeconds": 619.876,
+          "peakRssBytes": 3629412352
+        },
+        {
+          "finalRank": 36,
+          "sourceRank": 40,
+          "identifier": "21x26-r40-1d4ce38f",
+          "stateKeyHash": "1d4ce38f",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f0b1204030d0914080a0e01100211061715070a16140106190e11130705131819080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.19544881454469,
+          "cktV5": 9.204669311870159,
+          "deltaVsBaseline": 0.00964283569854274,
+          "relativePctVsBaseline": 0.10487012433875634,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2576687203788784,
+              "mxScore": 128.7879960771869,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.07514029572269361,
+              "yMax": 0.0595834334948803
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.32481414167806,
+              "elapsedSeconds": 307.369
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.289367167603226,
+              "elapsedSeconds": 310.217
+            }
+          },
+          "elapsedSeconds": 617.586,
+          "peakRssBytes": 3648315392
+        },
+        {
+          "finalRank": 37,
+          "sourceRank": 38,
+          "identifier": "21x26-r38-708455a0",
+          "stateKeyHash": "708455a0",
+          "stateKey": "151a010f0c0903130d0b060a070910171615051119021217171710181800090e0d1204030c1014080f0a060219011118170b0f16140213180a0b050713051507080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.194885425940472,
+          "cktV5": 9.205260094202966,
+          "deltaVsBaseline": 0.010233618031350034,
+          "relativePctVsBaseline": 0.11129514480322453,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.282491683707863,
+              "mxScore": 130.5912310691985,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.06586831732062867,
+              "yMax": 0.06044111468943438
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.3301888320415785,
+              "elapsedSeconds": 314.017
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.2862042225737325,
+              "elapsedSeconds": 313.925
+            }
+          },
+          "elapsedSeconds": 627.942,
+          "peakRssBytes": 3642064896
+        },
+        {
+          "finalRank": 38,
+          "sourceRank": 29,
+          "identifier": "21x26-r29-fba4d6de",
+          "stateKeyHash": "fba4d6de",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000c0f0d120416100a14080b0e09021911130301070b05140206030e11180715180617080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.19261066700276,
+          "cktV5": 9.205298281763202,
+          "deltaVsBaseline": 0.010271805591585803,
+          "relativePctVsBaseline": 0.1117104514946705,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.26031654393221937,
+              "mxScore": 126.69786512060232,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.331435859226914,
+              "elapsedSeconds": 302.593
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.285100174977425,
+              "elapsedSeconds": 310.543
+            }
+          },
+          "elapsedSeconds": 613.136,
+          "peakRssBytes": 3647938560
+        },
+        {
+          "finalRank": 39,
+          "sourceRank": 42,
+          "identifier": "21x26-r42-eba2b8ac",
+          "stateKeyHash": "eba2b8ac",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e0b100416090d1408120a010219151317060c120f140219030a11050c11051803080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.195860516763911,
+          "cktV5": 9.205342946748539,
+          "deltaVsBaseline": 0.010316470576922754,
+          "relativePctVsBaseline": 0.1121962030632244,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.22925457357218193,
+              "mxScore": 125.59076261941216,
+              "rpMax": 0.027808863630305936,
+              "rpS2": 0.02272909816615143,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.0595834334948803
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.327256145640008,
+              "elapsedSeconds": 303.894
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.289447122800486,
+              "elapsedSeconds": 306.145
+            }
+          },
+          "elapsedSeconds": 610.039,
+          "peakRssBytes": 3634135040
+        },
+        {
+          "finalRank": 40,
+          "sourceRank": 36,
+          "identifier": "21x26-r36-9f44befd",
+          "stateKeyHash": "9f44befd",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070a18120416090d14080e0f0b0319021110170c0e05141711100f0b130c15130601080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.19482299061546,
+          "cktV5": 9.205412590408837,
+          "deltaVsBaseline": 0.010386114237221022,
+          "relativePctVsBaseline": 0.1129536088246841,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2457103104851518,
+              "mxScore": 132.8654233732502,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.332571732042335,
+              "elapsedSeconds": 314.773
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.284392300421382,
+              "elapsedSeconds": 318.707
+            }
+          },
+          "elapsedSeconds": 633.48,
+          "peakRssBytes": 3632173056
+        },
+        {
+          "finalRank": 41,
+          "sourceRank": 43,
+          "identifier": "21x26-r43-0d787a51",
+          "stateKeyHash": "0d787a51",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f18120416090d14080a0e0b1917031110010c0a06141103100e0b130c05131502080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.196086958022027,
+          "cktV5": 9.205452271858427,
+          "deltaVsBaseline": 0.010425795686810346,
+          "relativePctVsBaseline": 0.11338516222686468,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.24952630674036705,
+              "mxScore": 129.20828034556246,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.329072735375734,
+              "elapsedSeconds": 308.727
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.288039877428719,
+              "elapsedSeconds": 310.363
+            }
+          },
+          "elapsedSeconds": 619.0899999999999,
+          "peakRssBytes": 3642167296
+        },
+        {
+          "finalRank": 42,
+          "sourceRank": 46,
+          "identifier": "21x26-r46-75910f17",
+          "stateKeyHash": "75910f17",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f18120416090d14080b0e06030205110c170a0b10140311190e0a130c15130119080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.196602669596324,
+          "cktV5": 9.2055507534681,
+          "deltaVsBaseline": 0.010524277296482865,
+          "relativePctVsBaseline": 0.11445619350586891,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.26392666013287974,
+              "mxScore": 129.14341825389192,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.328323461766178,
+              "elapsedSeconds": 313.805
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.289157906733926,
+              "elapsedSeconds": 312.137
+            }
+          },
+          "elapsedSeconds": 625.942,
+          "peakRssBytes": 3643338752
+        },
+        {
+          "finalRank": 43,
+          "sourceRank": 41,
+          "identifier": "21x26-r41-13a0c3ae",
+          "stateKeyHash": "13a0c3ae",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f18120416100d14080e0a0b191702110c15090e051411190c0a0b130906130103080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.195742951817705,
+          "cktV5": 9.206027143686978,
+          "deltaVsBaseline": 0.011000667515361329,
+          "relativePctVsBaseline": 0.11963714888552988,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.27259592409348343,
+              "mxScore": 129.2042425071918,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.328671503452917,
+              "elapsedSeconds": 311.594
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.290593833277188,
+              "elapsedSeconds": 313.162
+            }
+          },
+          "elapsedSeconds": 624.756,
+          "peakRssBytes": 3644260352
+        },
+        {
+          "finalRank": 44,
+          "sourceRank": 31,
+          "identifier": "21x26-r31-d2aab46e",
+          "stateKeyHash": "d2aab46e",
+          "stateKey": "151a010f0c0903130d0b060a0709101705151611190212171717101818000a0f0d120416030c14080b0e09021911131001070b05140206100e11180715180617080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.193717537269244,
+          "cktV5": 9.206624371438616,
+          "deltaVsBaseline": 0.011597895267000169,
+          "relativePctVsBaseline": 0.12613226614469736,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2758375270161766,
+              "mxScore": 126.86301058582288,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.335009865755902,
+              "elapsedSeconds": 306.598
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.2864923383308255,
+              "elapsedSeconds": 304.743
+            }
+          },
+          "elapsedSeconds": 611.341,
+          "peakRssBytes": 3630018560
+        },
+        {
+          "finalRank": 45,
+          "sourceRank": 45,
+          "identifier": "21x26-r45-98894a4a",
+          "stateKeyHash": "98894a4a",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070f181204160c0d14080e0a0b191702111015090e05140119100a0b130906130103080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.196561913041888,
+          "cktV5": 9.206872182011058,
+          "deltaVsBaseline": 0.011845705839441223,
+          "relativePctVsBaseline": 0.12882731626862293,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.27259592409348343,
+              "mxScore": 131.56980474915943,
+              "rpMax": 0.033759385949270665,
+              "rpS2": 0.02542454539132587,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.333139208961089,
+              "elapsedSeconds": 334.15
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.289291277011655,
+              "elapsedSeconds": 314.511
+            }
+          },
+          "elapsedSeconds": 648.6610000000001,
+          "peakRssBytes": 3633700864
+        },
+        {
+          "finalRank": 46,
+          "sourceRank": 44,
+          "identifier": "21x26-r44-a040fce6",
+          "stateKeyHash": "a040fce6",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070a18120416090d14080e0f0b0315021110170c0e05141706100f0b130c06130119080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.196560021832031,
+          "cktV5": 9.207190699013232,
+          "deltaVsBaseline": 0.012164222841615668,
+          "relativePctVsBaseline": 0.1322913302440026,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2483564203746526,
+              "mxScore": 132.12573129001694,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.336116223953342,
+              "elapsedSeconds": 309.447
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.287507515570994,
+              "elapsedSeconds": 313.438
+            }
+          },
+          "elapsedSeconds": 622.885,
+          "peakRssBytes": 3647922176
+        },
+        {
+          "finalRank": 47,
+          "sourceRank": 49,
+          "identifier": "21x26-r49-44466b34",
+          "stateKeyHash": "44466b34",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070e091204160d0314080f0a011502051117060c0f10141117190a0b180c13180b19080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.197973939207698,
+          "cktV5": 9.20738632976541,
+          "deltaVsBaseline": 0.012359853593792991,
+          "relativePctVsBaseline": 0.13441890162929757,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2349791861102979,
+              "mxScore": 132.9605441151858,
+              "rpMax": 0.0339375618821707,
+              "rpS2": 0.029186550619427185,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06606539427326755
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "21",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.330852850159957,
+              "elapsedSeconds": 310.283
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.293503838131543,
+              "elapsedSeconds": 314.438
+            }
+          },
+          "elapsedSeconds": 624.721,
+          "peakRssBytes": 3643973632
+        },
+        {
+          "finalRank": 48,
+          "sourceRank": 48,
+          "identifier": "21x26-r48-7fd9c602",
+          "stateKeyHash": "7fd9c602",
+          "stateKey": "151a010f0c0903130d0b060a07091017051516111902121717171018180007090f120416100d14080a0e0b0302151118190c0a05141117180e0b130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.197426527281625,
+          "cktV5": 9.207411338187502,
+          "deltaVsBaseline": 0.01238486201588529,
+          "relativePctVsBaseline": 0.134690879335475,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2494995989975101,
+              "mxScore": 131.52951961928918,
+              "rpMax": 0.027738358671465325,
+              "rpS2": 0.02151829403258567,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06044111468943438
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.331934010924316,
+              "elapsedSeconds": 311.667
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.292516377109253,
+              "elapsedSeconds": 313.766
+            }
+          },
+          "elapsedSeconds": 625.433,
+          "peakRssBytes": 3648593920
+        },
+        {
+          "finalRank": 49,
+          "sourceRank": 47,
+          "identifier": "21x26-r47-73f3da15",
+          "stateKeyHash": "73f3da15",
+          "stateKey": "151a010f0c0903130d0b060a07091017051516111902121717171018180007100f120416090d14080a0e0b0302151118190c0a05141117180e0b130c06130117080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.197118381005303,
+          "cktV5": 9.207620486167883,
+          "deltaVsBaseline": 0.01259400999626692,
+          "relativePctVsBaseline": 0.13696545658572679,
+          "candidate": {
+            "memory": 37,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2492933720891518,
+              "mxScore": 129.22430928056357,
+              "rpMax": 0.027738358671465325,
+              "rpS2": 0.02151829403258567,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.06044111468943438
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.3339704538518475,
+              "elapsedSeconds": 313.985
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.29126358455867,
+              "elapsedSeconds": 312.494
+            }
+          },
+          "elapsedSeconds": 626.479,
+          "peakRssBytes": 3651493888
+        },
+        {
+          "finalRank": 50,
+          "sourceRank": 50,
+          "identifier": "21x26-r50-6d53bab0",
+          "stateKeyHash": "6d53bab0",
+          "stateKey": "151a010f0c0903130d0b060a070910170515161119021217171710181800070d18120416090c14080e0f0b1903021110010a0e05141702100f0b130a15130617080414000e",
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "complete": true,
+          "policyCountPerMode": 144,
+          "cktV4": 9.19895146770825,
+          "cktV5": 9.208431065665078,
+          "deltaVsBaseline": 0.013404589493461572,
+          "relativePctVsBaseline": 0.14578086890993514,
+          "candidate": {
+            "memory": 36,
+            "displacedInitials": 1,
+            "displacedVowels": 1,
+            "ergonomics": {
+              "homeFloor": 0.2744333529259943,
+              "mxScore": 127.5791269752392,
+              "rpMax": 0.03516423185567739,
+              "rpS2": 0.025518214912535617,
+              "wMax": 0.06395887732528338,
+              "yMax": 0.07695774976451161
+            }
+          },
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "42"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "modeResults": {
+            "keytao": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.333583570301721,
+              "elapsedSeconds": 323.216
+            },
+            "sanpin": {
+              "complete": true,
+              "resultCount": 144,
+              "powerSum": 4.29468810900911,
+              "elapsedSeconds": 323.53
+            }
+          },
+          "elapsedSeconds": 646.746,
+          "peakRssBytes": 3643273216
+        }
+      ]
     }
   }
 }
