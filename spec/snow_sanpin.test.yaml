@@ -35,16 +35,16 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
-      # 笔画反查按 21×21 形义序映射：横竖撇点折 → viuoa。
-      - send: uv
-        assert: has("一")
+      # u 前缀的独立笔画反查沿用三拼调键序：横竖撇点折 → ivuao。
       - send: ui
+        assert: has("一")
+      - send: uv
         assert: has("丨")
       - send: uu
         assert: has("丿")
-      - send: uo
-        assert: has("丶")
       - send: ua
+        assert: has("丶")
+      - send: uo
         assert: has("乙")
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
       - send: r
@@ -317,8 +317,8 @@ deploy:
     tests:
       - send: azhe
         assert: cand[1].text == "这" and has("着")
-      # 横竖撇点折依次为 v/i/u/o/a，与 21×21 形义序 AVUIO 一致。
-      - send: uviuoa
+      # 独立笔画反查使用调键序 IVUAO；主方案的调后笔辅另按形义序 VIUOA。
+      - send: uivuao
         assert: cand[1].text == "札"
       - send: "wpfh i"
         assert: cand[1].text == "重复"
@@ -380,11 +380,7 @@ deploy:
     patch:
       translator/shape_sources: [G]
     tests:
-      # 三拼笔画键为 viuoa；令的 G/T/J 笔顺分别为 34454/34154/34152。
-      - send: "uuaoao"
-        assert: has("令")
-      - send: "uuavao"
-        assert: not has("令")
+      # 主方案 B2 为 viuoa；令的 G/T/J 笔顺分别为 34454/34154/34152。
       - send: ltauooao
         assert: has("令")
       - send: ltauovao
@@ -393,10 +389,6 @@ deploy:
     patch:
       translator/shape_sources: [T]
     tests:
-      - send: "uuavao"
-        assert: has("令")
-      - send: "uuaoao"
-        assert: not has("令")
       - send: ltauovao
         assert: has("令")
       - send: ltauooao

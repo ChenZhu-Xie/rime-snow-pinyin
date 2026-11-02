@@ -74,7 +74,7 @@ test("四个生产方案逐位使用形义序、声调序和笔画序", () => {
 	});
 });
 
-test("生成的运行时语义表和三拼笔画棱镜消费当前配置", () => {
+test("生成的运行时语义表区分三拼 B2 与独立笔画反查", () => {
 	const lua = readFileSync(
 		new URL("lua/snow/auxiliary_semantics.lua", root),
 		"utf8",
@@ -94,16 +94,19 @@ test("生成的运行时语义表和三拼笔画棱镜消费当前配置", () =>
 	const sanpinSemantics = loadAuxiliarySemantics("21x21");
 	assert.match(
 		sanpinStroke,
-		new RegExp(`xlit/12345/${sanpinSemantics.strokeKeysByStroke}/`, "u"),
+		new RegExp(`xlit/12345/${sanpinSemantics.toneKeysByTone}/`, "u"),
 	);
-	assert.doesNotMatch(sanpinStroke, /xlit\/12345\/ivuao\//u);
 	const sanpin = readFileSync(new URL("snow_sanpin.schema.yaml", root), "utf8");
 	assert.match(
 		sanpin,
 		new RegExp(
-			`stroke/preedit_format: \\[xlit/${sanpinSemantics.strokeKeysByStroke}/`,
+			`stroke/preedit_format: \\[xlit/${sanpinSemantics.toneKeysByTone}/`,
 			"u",
 		),
+	);
+	assert.match(
+		readFileSync(new URL("lua/snow/shape_filter.lua", root), "utf8"),
+		/auxiliary_semantics\["21x21"\][\s\S]*stroke_keys_by_digit/u,
 	);
 });
 

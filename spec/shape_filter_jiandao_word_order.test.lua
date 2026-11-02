@@ -16,7 +16,9 @@ utf8 = {
 package.loaded["snow.snow"] = {
   current = function(context) return context.current end,
 }
-package.loaded["snow.bihua"] = {}
+package.loaded["snow.bihua"] = {
+  codes = function() return { "12G" }, true end,
+}
 rime_api = { regex_match = function() return false end }
 
 local filter = require "snow.shape_filter"
@@ -61,5 +63,15 @@ assert(match and comment == "bd", "four-character Keytao order must stop after s
 context.current = "b"
 match, _, comment = filter.handle_candidate("XY", "bo", env, active_state("b"))
 assert(match and comment == "", "630 shorthand must keep its separate second-character rule")
+
+local sanpin_state = {
+  id = "snow_sanpin",
+  sanpin_initial_pair = false,
+  sanpin_passthrough = false,
+}
+match, _, comment = filter.handle_candidate("X", "vi", {}, sanpin_state)
+assert(match and comment == "vi", "Three-Code B2 must map horizontal-vertical strokes to VI")
+assert(not filter.handle_candidate("X", "iv", {}, sanpin_state),
+  "Three-Code B2 must not reuse the IV tone-key order for horizontal-vertical strokes")
 
 print("shape_filter Keytao word-order tests passed")
