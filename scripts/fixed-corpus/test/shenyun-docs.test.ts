@@ -317,13 +317,34 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "CKT v5.1");
 		includes(readme, "9.202834");
 		includes(readme, "research-notes/2026-11-02-ckt-v5.1-six-code.md");
-		includes(readme, "冰雪神韵·形二／三／四字词的前两辅字位顺序为 `12/21/42`");
+		includes(
+			readme,
+			"冰雪神韵·形二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`",
+		);
+		assert.match(
+			readme,
+			/### \[神韵\(Overall-17\) 21×26 双拼\]\([^)]+\)\n\n冰雪神韵·形二／三／四字词当前运行的前两辅字位顺序/u,
+		);
+		includes(
+			readme,
+			"CKT v5.1 保留四码顶的两辅合同，第二辅后按选重计费；其宽网格稳健第一为形 `12/21/14`、调 `12/21/13`",
+		);
+		includes(
+			readme,
+			"二／三／四字词的四键主码分别为 `A₁U₁A₂U₂`、`A₁A₂A₃U₃`、`A₁A₂A₃A₄`",
+		);
+		assert.ok(!readme.includes("A₁A₂A₃U₃[B₂B₁]"));
+		assert.ok(!readme.includes("A₁A₂A₃A₄[B₄B₂]"));
 		includes(readme, "运行时三字词按剩余字位补第三辅，四字词最多两辅");
+		includes(
+			readme,
+			"CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪键道 `12/231/24`、冰雪三拼 `12/213/23`",
+		);
 		includes(
 			readme,
 			"three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries",
 		);
-		includes(readme, "執行時三字詞按剩餘字位補第三輔，四字詞最多兩輔");
+		includes(readme, "運行時三字詞按剩餘字位補第三輔，四字詞最多兩輔");
 		includes(readme, "143 个空 `AU`，其中 134 个为空 `AA`、9 个为空 `AB`");
 		includes(
 			readme,

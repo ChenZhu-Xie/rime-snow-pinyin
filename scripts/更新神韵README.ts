@@ -13,6 +13,8 @@ const files = [join(root, "README.md"), join(root, "README_CN.md")];
 
 const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
+冰雪神韵·形二／三／四字词当前运行的前两辅字位顺序为 \`12/21/42\`，冰雪神韵·调为 \`12/21/13\`；二／三／四字词均在四键主码后最多追加两辅。CKT v5.1 保留四码顶的两辅合同，第二辅后按选重计费；其宽网格稳健第一为形 \`12/21/14\`、调 \`12/21/13\`。
+
 冰雪神韵·形（\`snow_shenyun_shape\`）与冰雪神韵·调（\`snow_shenyun_tone\`）共用 **神韵(Overall-17) 21×26 双拼**。该方案出自双拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿于提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本节映射与键盘图均以该定稿方案为准。
 
 > [!NOTE]
@@ -58,14 +60,15 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 - Common399 全覆盖且 399 个二键码全部唯一，21×26 共保留 147 个空码；M-R2 为 36，普通声母仅 \`f→J\` 偏移，基础元音仅 \`o→M\` 偏移。
 - 冰雪神韵·形辅键为 \`A/E/U/I/O\`，冰雪神韵·调声调键为 \`I/E/U/A/O → 一/二/三/四/轻\`。
-- 冰雪神韵·形二／三／四字词的前两辅字位顺序为 \`12/21/42\`，冰雪神韵·调为 \`12/21/13\`。
-- 小写输入遵循飞花式四码顶：单字为 \`A_ / AU_ / AUB / AUBB\`，二字词为 \`A₁U₁A₂U₂[B₁B₂]\`，三字词为 \`A₁A₂A₃U₃[B₂B₁]\`；四字词的冰雪神韵·形为 \`A₁A₂A₃A₄[B₄B₂]\`，冰雪神韵·调为 \`A₁A₂A₃A₄[B₁B₃]\`。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若 \`A₃B₂\` 运行时为空桶，三字词还可用 \`A₁A₂A₃B₂[B₁]\`。
+- 小写输入遵循飞花式四码顶：单字为 \`A_ / AU_ / AUB / AUBB\`，二／三／四字词的四键主码分别为 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主码后最多追加两辅，具体辅码字位顺序见本节首段。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若第三音节的 \`AU\` 为运行时空桶，三字词还可在三个声码后直接追加辅码。
 - 完成编码后按 \`;\` 或 \`/\` 会先顶出当前候选，再分别追加“的”或“了”，与 21×21 方案的强制上屏尾字键一致。
 - 两组 21×26 方案的空桶均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 \`AU\`，其中 134 个为空 \`AA\`、9 个为空 \`AB\`；单键只固顶一个一简字，其余候选自然排序。
 
 `;
 
 const enOverall = `### Shenyun(Overall-17) 21×26 double pinyin
+
+Snow Shenyun Shape currently uses first-two auxiliary-source orders \`12/21/42\` for two-/three-/four-character words, while Snow Shenyun Tone uses \`12/21/13\`; all three word lengths append at most two auxiliaries after their four-key main code. CKT v5.1 retains this two-auxiliary four-code-top contract and charges selection after the second auxiliary; its wide-grid robust policies are \`12/21/14\` for Shape and \`12/21/13\` for Tone.
 
 Snow Shenyun Shape (\`snow_shenyun_shape\`) and Snow Shenyun Tone (\`snow_shenyun_tone\`) share **Shenyun(Overall-17) 21×26 double pinyin**. The layout comes from the Shuangpin Layout Benchmark branch \`production/ckt-v4-2126-strict-d0-20261030\` and was finalized in commit \`7a7e154\`; \`2026-10-30-strict-d0-production-closure-report.md\` records the search constraints, derivation, and winning mapping. This repository freezes it as \`SNOW-SHENYUN-21X26-PRODUCTION\`, and this section's mapping and keyboard figures use that finalized layout.
 
@@ -86,11 +89,13 @@ Both SVGs are exported from the finalized entry in the benchmark page: the first
 
 Ordinary initials use their own letter except \`f→J\` and \`zh/ch/sh→F/V/W\`; zero-onset carriers are \`AOE→X\`, \`W→Q\`, and \`Y/YU→Y\`. The final keys are \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`.
 
-Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. The first-two auxiliary-source orders for two-/three-/four-character words are \`12/21/42\` in Snow Shenyun Shape and \`12/21/13\` in Snow Shenyun Tone. Lowercase input follows the Feihua four-code-top contract: characters use \`A_ / AU_ / AUB / AUBB\`; two-character words use \`A₁U₁A₂U₂[B₁B₂]\`; three-character words use \`A₁A₂A₃U₃[B₂B₁]\`; four-character words use \`A₁A₂A₃A₄[B₄B₂]\` in Snow Shenyun Shape and \`A₁A₂A₃A₄[B₁B₃]\` in Snow Shenyun Tone. When \`A₃B₂\` is vacant at runtime, a three-character word may also use \`A₁A₂A₃B₂[B₁]\`. After a completed code, \`;\` or \`/\` first commits the current candidate and then appends “的” or “了”, matching the forced tail-character keys in the 21×21 schemes. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial.
+Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. Lowercase input follows the Feihua four-code-top contract: characters use \`A_ / AU_ / AUB / AUBB\`; the four-key main codes for two-, three-, and four-character words are \`A₁U₁A₂U₂\`, \`A₁A₂A₃U₃\`, and \`A₁A₂A₃A₄\`, followed by at most two auxiliaries in the source orders stated in this section's opening paragraph. A following initial commits only after a complete code, while an incomplete main code continues directly; if the third syllable's \`AU\` is a runtime-vacant bucket, a three-character word may append auxiliaries immediately after its three initials. After a completed code, \`;\` or \`/\` first commits the current candidate and then appends “的” or “了”, matching the forced tail-character keys in the 21×21 schemes. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial.
 
 `;
 
 const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
+
+冰雪神韻·形二／三／四字詞當前運行的前兩輔字位順序為 \`12/21/42\`，冰雪神韻·調為 \`12/21/13\`；二／三／四字詞均在四鍵主碼後最多追加兩輔。CKT v5.1 保留四碼頂的兩輔合同，第二輔後按選重計費；其寬網格穩健第一為形 \`12/21/14\`、調 \`12/21/13\`。
 
 冰雪神韻·形（\`snow_shenyun_shape\`）與冰雪神韻·調（\`snow_shenyun_tone\`）共用 **神韻(Overall-17) 21×26 雙拼**。該方案出自雙拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿於提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本節映射與鍵盤圖均以該定稿方案為準。
 
@@ -111,7 +116,7 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 普通聲母除 \`f→J\`、\`zh/ch/sh→F/V/W\` 外使用本字母；零聲母載體為 \`AOE→X\`、\`W→Q\`、\`Y/YU→Y\`。韻母鍵為 \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`。
 
-Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。冰雪神韻·形二／三／四字詞的前兩輔字位順序為 \`12/21/42\`，冰雪神韻·調為 \`12/21/13\`。小寫輸入遵循飛花式四碼頂：單字 \`A_ / AU_ / AUB / AUBB\`；二字詞 \`A₁U₁A₂U₂[B₁B₂]\`；三字詞 \`A₁A₂A₃U₃[B₂B₁]\`；四字詞的冰雪神韻·形為 \`A₁A₂A₃A₄[B₄B₂]\`，冰雪神韻·調為 \`A₁A₂A₃A₄[B₁B₃]\`。若 \`A₃B₂\` 運行時為空桶，三字詞亦可使用 \`A₁A₂A₃B₂[B₁]\`。完成編碼後按 \`;\` 或 \`/\` 會先頂出當前候選，再分別追加「的」或「了」，與 21×21 方案的強制上屏尾字鍵一致。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。
+Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式四碼頂：單字為 \`A_ / AU_ / AUB / AUBB\`，二／三／四字詞的四鍵主碼分別為 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主碼後最多追加兩輔，具體輔碼字位順序見本節首段。完整碼之後輸入下一字聲碼才頂屏，未完成主碼直接續寫；若第三音節的 \`AU\` 為運行時空桶，三字詞還可在三個聲碼後直接追加輔碼。完成編碼後按 \`;\` 或 \`/\` 會先頂出當前候選，再分別追加「的」或「了」，與 21×21 方案的強制上屏尾字鍵一致。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。
 
 `;
 
@@ -250,6 +255,18 @@ function addOverallColumn(markdown: string) {
 
 function normalizeTerms(markdown: string) {
 	markdown = normalizeSourceProvenance(markdown)
+		.replaceAll(
+			"冰雪键道的二／三／四字前两位形辅字位顺序为 `12/23/24`，冰雪三拼的前两位调码字位顺序为 `12/21/23`；运行时三字词按剩余字位补第三辅，四字词最多两辅。CKT v5 只优化并计分前两辅，第二辅后直接按选重计费。",
+			"冰雪键道的二／三／四字前两位形辅字位顺序为 `12/23/24`，冰雪三拼的前两位调码字位顺序为 `12/21/23`；运行时三字词按剩余字位补第三辅，四字词最多两辅。CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪键道 `12/231/24`、冰雪三拼 `12/213/23`；三字词第三辅后、四字词第二辅后按选重计费。",
+		)
+		.replaceAll(
+			"Snow KeyTao uses first-two shape-source orders `12/23/24` for two-/three-/four-character words; Snow Three-Code uses first-two tone-source orders `12/21/23`. At runtime, three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries. CKT v5 optimizes and scores only the first two auxiliaries, then switches directly to selection.",
+			"Snow KeyTao uses first-two shape-source orders `12/23/24` for two-/three-/four-character words; Snow Three-Code uses first-two tone-source orders `12/21/23`. At runtime, three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries. CKT v5.1 includes the third auxiliary in three-character-word optimization and scoring, giving full policies `12/231/24` for Snow KeyTao and `12/213/23` for Snow Three-Code; selection is charged after the third auxiliary for three-character words and after the second for four-character words.",
+		)
+		.replaceAll(
+			"冰雪鍵道的二／三／四字前兩位形輔字位順序為 `12/23/24`，冰雪三拼的前兩位調碼字位順序為 `12/21/23`；執行時三字詞按剩餘字位補第三輔，四字詞最多兩輔。CKT v5 只優化並計分前兩輔，第二輔後直接按選重計費。",
+			"冰雪鍵道的二／三／四字前兩位形輔字位順序為 `12/23/24`，冰雪三拼的前兩位調碼字位順序為 `12/21/23`；運行時三字詞按剩餘字位補第三輔，四字詞最多兩輔。CKT v5.1 將三字詞第三輔納入優化和計分，完整輔序為冰雪鍵道 `12/231/24`、冰雪三拼 `12/213/23`；三字詞第三輔後、四字詞第二輔後按選重計費。",
+		)
 		.replaceAll("**声韵键盘图**", "**声韵辅-键 映射**")
 		.replaceAll("**声韵映射**", "**声韵辅-键 映射**")
 		.replaceAll(
