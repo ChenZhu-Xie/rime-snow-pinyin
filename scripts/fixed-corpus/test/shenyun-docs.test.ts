@@ -115,7 +115,15 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	includes(report, "第 2 名数值加粗并标 ★");
 	includes(report, "🥇 独立比较全部四方案，可以与星标同时出现");
 	includes(report, "原生遵循[飞花式四码顶]");
-	includes(report, "原方案只提供双拼映射");
+	includes(report, "采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅");
+	includes(report, "综合补全 CKT v5");
+	includes(
+		report,
+		"| 综合补全 CKT v5 | **9.195026** ★★ 🥇 | **9.715587** ★ | 10.000000 | 9.195422 |",
+	);
+	includes(report, "形辅／调辅分别为 `12/12/23`、`21/12/23`");
+	includes(report, "每段两位数字只表示 CKT v5 优化并计分的前两辅");
+	includes(report, "不含第三及后续辅键的成本与消歧收益");
 	assert.ok(!report.includes("神韵(Overall-17)与 B04 采用四码顶合同"));
 	assert.ok(!report.includes("★ ★★"));
 	includes(report, "🥇");
@@ -224,15 +232,26 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "second place is bold with ★");
 		includes(readme, "第 1 名數值加粗並標 ★★");
 		includes(readme, "第 2 名數值加粗並標 ★");
-		includes(readme, "本身只提供双拼映射");
-		includes(readme, "supplies only a double-pinyin mapping");
-		includes(readme, "本身只提供雙拼映射");
+		includes(readme, "采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅");
+		includes(readme, "uses its documented `AEUIO` shape and `IEUAO` tone keys");
+		includes(readme, "採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔");
+		includes(readme, "CKT v5");
+		includes(readme, "9.195422");
+		includes(readme, "运行时三字词按剩余字位补第三辅");
+		includes(
+			readme,
+			"three-character words append the remaining third auxiliary",
+		);
+		includes(readme, "執行時三字詞按剩餘字位補第三輔");
 		includes(readme, "143 个空 `AU`，其中 134 个为空 `AA`、9 个为空 `AB`");
 		includes(
 			readme,
 			"143 runtime `AU` vacancies: 134 vacant `AA` codes and 9 vacant `AB` codes",
 		);
-		includes(readme, "143 個運行時空 `AU`，其中 134 個為空 `AA`、9 個為空 `AB`");
+		includes(
+			readme,
+			"143 個運行時空 `AU`，其中 134 個為空 `AA`、9 個為空 `AB`",
+		);
 		includes(
 			readme,
 			"| 频率加权 S2 miss[^zh-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |",

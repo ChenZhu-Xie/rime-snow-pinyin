@@ -1,13 +1,18 @@
 {
-  "version": "shenyun-four-scheme-comparison-v1",
+  "version": "shenyun-four-scheme-comparison-v2",
   "comparisonPolicy": {
     "baselines": [
       "S005",
       "B04"
     ],
     "commonSupport": "Common399、冻结 20 合同、同一字词与形码数据、CKT v4 模型及日常八场景文稿",
-    "boundary": "无飞键道(U357)与S005按传统21×21合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04只提供双拼映射，本比较为其套用同一飞花式四码顶合同。四者共用语料和模型，但不同键域与合同不是同键域胜负。",
-    "cktV4AuxiliarySources": "键道轨统一使用 snowshape，三拼轨统一使用同一笔画数据，再映射到各方案的五辅键；B04 不使用首道自身辅码数据",
+    "boundary": "无飞键道(U357)与S005按传统21×21合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04采用原资料记录的AEUIO形辅与IEUAO调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。四者共用语料和模型，但不同键域与合同不是同键域胜负。",
+    "cktV4AuxiliarySources": {
+      "Overall17": "native key mapping with shared snowshape/stroke character data",
+      "U357": "native key mapping with shared snowshape/stroke character data",
+      "S005": "native key mapping with shared snowshape/stroke character data",
+      "B04": "documented AEUIO/IEUAO key mapping with shared snowshape/stroke character data"
+    },
     "cktV4Contracts": {
       "Overall17": "four-code-top",
       "U357": "traditional-21x21",
@@ -57,6 +62,67 @@
       "U357": "native-traditional-21x21",
       "S005": "native-traditional-21x21",
       "B04": "benchmark-applied-feihua-four-code-top"
+    },
+    "cktV5AuxiliaryOrders": {
+      "Overall17": {
+        "21x26-keytao": {
+          "word2": "12",
+          "word3": "21",
+          "word4": "42"
+        },
+        "21x26-sanpin": {
+          "word2": "12",
+          "word3": "21",
+          "word4": "13"
+        }
+      },
+      "U357": {
+        "21x21-keytao": {
+          "word2": "12",
+          "word3": "23",
+          "word4": "24"
+        },
+        "21x21-sanpin": {
+          "word2": "12",
+          "word3": "21",
+          "word4": "23"
+        }
+      },
+      "S005": {
+        "s005-keytao": {
+          "word2": "12",
+          "word3": "21",
+          "word4": "24"
+        },
+        "s005-sanpin": {
+          "word2": "12",
+          "word3": "21",
+          "word4": "23"
+        }
+      },
+      "B04": {
+        "b04-keytao": {
+          "word2": "12",
+          "word3": "12",
+          "word4": "23"
+        },
+        "b04-sanpin": {
+          "word2": "21",
+          "word3": "12",
+          "word4": "23"
+        }
+      }
+    },
+    "cktV5OrderSelection": {
+      "Overall17": "layout-specific minimum under the complete CKT v5 objective",
+      "U357": "layout-specific minimum under the complete CKT v5 objective",
+      "S005": "fixed normalization anchor",
+      "B04": "complete-policy lowest mean rank under the independent 0%-500% five-coefficient perturbation grid"
+    },
+    "cktV5AuxiliaryDepth": {
+      "optimizedAndScored": 2,
+      "runtimeLongerWordsAppendUnusedPositions": true,
+      "laterAuxiliariesIncluded": false
     }
   },
   "flyingKeyComponents": {
@@ -710,6 +776,13 @@
       "S005": 138.67226692391787,
       "B04": 135.3104607733463,
       "Overall17": 132.2185188145348
+    },
+    "cktV5": {
+      "better": "lower",
+      "Overall17": 9.195026476171616,
+      "U357": 9.715586951861038,
+      "S005": 10,
+      "B04": 9.195421507104937
     }
   },
   "stagedResidualNonfirstRates": {

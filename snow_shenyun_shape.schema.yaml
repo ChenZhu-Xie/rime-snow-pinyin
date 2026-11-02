@@ -12,6 +12,7 @@ schema:
   description: |
     AUBB 飞花式 21×26 顶功方案
     共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
+    二／三／四字词形辅字位顺序：12/21/42
   dependencies:
     - snow_pinyin
     - snow_bihua

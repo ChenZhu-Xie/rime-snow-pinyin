@@ -54,7 +54,7 @@ deploy:
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
         assert: commit == nil and has("测试")
-      # AU 空桶回退为声声二字词；第三码按第二字声调筛选。
+      # AU 空桶回退为声声二字词；第三码按第一字声调筛选。
       - send: cw
         assert: all_have_length(2) and has("测试")
       # be 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
@@ -63,13 +63,13 @@ deploy:
       - send: bea
         assert: "#cand == 0 and commit == nil"
       - send: yxu
-        assert: has("也许") and not has("一些") and not has("也需")
+        assert: has("也许") and has("也需") and not has("一些")
       - send: yxe
         assert: not has("也需")
       - send: yxa
         assert: not has("也需")
       - send: yxi
-        assert: has("一些") and has("也需") and not has("也许")
+        assert: has("一些") and not has("也需") and not has("也许")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: brxg
         assert: has("冰雪")
@@ -85,15 +85,15 @@ deploy:
       # yi 是合法完整音节，cwyi 仍应走 AAAU 得到三字词。
       - send: cwyi
         assert: all_have_length(3) and has("测试仪")
-      # xk 是合法的 xia 音节；dyxku 走标准 AAAU+B1。调辅只给出首字三声，实测「等一下」排第 2。
-      - send: dyxku
+      # xk 是合法的 xia 音节；dyxki 走标准 AAAU+B2。调辅只给出第二字一声，实测「等一下」排第 2。
+      - send: dyxki
         assert: rank("等一下") == 2
       # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
       - send: cewi;
         assert: commit == "测试的"
       - send: cewi/
         assert: commit == "测试了"
-      # 第三音节的 yu 空桶可把第一字三声辅键 u 前移，ykyu 是 AAA+B 的可选短码。
+      # 第三音节的 yu 空桶可把第二字三声辅键 u 前移，ykyu 是 AAA+B 的可选短码。
       - send: ykyu
         assert: has("也可以")
       - send: brio

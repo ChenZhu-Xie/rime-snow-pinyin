@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
@@ -14,8 +14,31 @@ if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jsonPath = join(root, "reports", "shenyun-comparison.json");
 const reportPath = join(root, "reports", "shenyun-comparison.md");
+const cktV5Path = join(root, "output", "ckt5-scheme-specific.json");
 // biome-ignore lint/suspicious/noExplicitAny: 报告 JSON 是既有的异构复算快照，此脚本只补写已知字段。
 const data = JSON.parse(readFileSync(jsonPath, "utf8")) as any;
+const cktV5 = existsSync(cktV5Path)
+	? JSON.parse(readFileSync(cktV5Path, "utf8"))
+	: {
+			pairs: {
+				"21x26": {
+					normalized: { score: data.metrics.cktV5.Overall17 },
+					memberPolicies: data.comparisonPolicy.cktV5AuxiliaryOrders.Overall17,
+				},
+				"21x21": {
+					normalized: { score: data.metrics.cktV5.U357 },
+					memberPolicies: data.comparisonPolicy.cktV5AuxiliaryOrders.U357,
+				},
+				s005: {
+					normalized: { score: data.metrics.cktV5.S005 },
+					memberPolicies: data.comparisonPolicy.cktV5AuxiliaryOrders.S005,
+				},
+				b04: {
+					normalized: { score: data.metrics.cktV5.B04 },
+					memberPolicies: data.comparisonPolicy.cktV5AuxiliaryOrders.B04,
+				},
+			},
+		};
 const html = readFileSync(resolve(benchmarkPath), "utf8");
 const payloadMatch = html.match(
 	/<script id="payload"[^>]*>([\s\S]*?)<\/script>/u,
@@ -157,14 +180,21 @@ setMetric("indexFingerTYBPeak20Contracts", indexFingerPeak.value);
 setMetric("homeFloor20Contracts", load.homeFloor);
 setMetric("dailyEightScenarioMovingHand", macro.score);
 
-data.version = "shenyun-four-scheme-comparison-v1";
+data.version = "shenyun-four-scheme-comparison-v2";
+data.metrics.cktV5 = {
+	better: "lower",
+	Overall17: cktV5.pairs["21x26"].normalized.score,
+	U357: cktV5.pairs["21x21"].normalized.score,
+	S005: cktV5.pairs.s005.normalized.score,
+	B04: cktV5.pairs.b04.normalized.score,
+};
 const { target: _legacyTarget, ...comparisonPolicy } = data.comparisonPolicy;
 data.comparisonPolicy = {
 	...comparisonPolicy,
 	targets: [overallId, "U357-21X21-M40-D0"],
 	baselines: ["S005", "B04"],
 	boundary:
-		"无飞键道(U357)与S005按传统21×21合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04只提供双拼映射，本比较为其套用同一飞花式四码顶合同。四者共用语料和模型，但不同键域与合同不是同键域胜负。",
+		"无飞键道(U357)与S005按传统21×21合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04采用原资料记录的AEUIO形辅与IEUAO调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。四者共用语料和模型，但不同键域与合同不是同键域胜负。",
 	cktV4Contracts: {
 		Overall17: "four-code-top",
 		U357: "traditional-21x21",
@@ -176,6 +206,29 @@ data.comparisonPolicy = {
 		U357: "native-traditional-21x21",
 		S005: "native-traditional-21x21",
 		B04: "benchmark-applied-feihua-four-code-top",
+	},
+	cktV4AuxiliarySources: {
+		Overall17: "native key mapping with shared snowshape/stroke character data",
+		U357: "native key mapping with shared snowshape/stroke character data",
+		S005: "native key mapping with shared snowshape/stroke character data",
+		B04: "documented AEUIO/IEUAO key mapping with shared snowshape/stroke character data",
+	},
+	cktV5AuxiliaryOrders: {
+		Overall17: cktV5.pairs["21x26"].memberPolicies,
+		U357: cktV5.pairs["21x21"].memberPolicies,
+		S005: cktV5.pairs.s005.memberPolicies,
+		B04: cktV5.pairs.b04.memberPolicies,
+	},
+	cktV5AuxiliaryDepth: {
+		optimizedAndScored: 2,
+		runtimeLongerWordsAppendUnusedPositions: true,
+		laterAuxiliariesIncluded: false,
+	},
+	cktV5OrderSelection: {
+		Overall17: "layout-specific minimum under the complete CKT v5 objective",
+		U357: "layout-specific minimum under the complete CKT v5 objective",
+		S005: "fixed normalization anchor",
+		B04: "complete-policy lowest mean rank under the independent 0%-500% five-coefficient perturbation grid",
 	},
 	groupPeakTracks: {
 		...comparisonPolicy.groupPeakTracks,
@@ -310,6 +363,13 @@ const metricTable = table(
 		],
 		["综合补全 CKT v3", "cktV3", "number", "越低越好；历史情景", "min"],
 		["综合补全 CKT v4", "cktV4", "number", "越低越好；现行主指标", "min"],
+		[
+			"综合补全 CKT v5",
+			"cktV5",
+			"number",
+			"越低越好；六候选页与方案专属辅序",
+			"min",
+		],
 		["A7E-v3 系综当量", "ensembleV3", "number", "越低越好；冻结历史轴", "min"],
 		["A7E-v4 系综当量", "ensembleV4", "number", "越低越好；冻结历史轴", "min"],
 		["A7E-v5 系综当量", "ensembleV5", "number", "越低越好；CKT-only", "min"],
@@ -517,13 +577,15 @@ const report = `# 神韵两代布局与 S005、B04 四方案比较
 
 本文把两个现行专有名词置于同等地位：**无飞键道(U357) 21×21 双拼**与**神韵(Overall-17) 21×26 双拼**。另以星空键道 S005、首道 B04 为参照。四方案共用 Common399、冻结 20 合同、同一字词与形码数据、CKT v4 模型及日常八场景文稿。
 
-必须同时注意合同边界：无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 原方案只提供双拼映射，本报告为其套用同一飞花式四码顶路由和统一辅码数据。21×26／26×26 相比 21×21 扩大了韵码域，不能把跨键域领先直接解释成同键域映射胜负。
+必须同时注意合同边界：无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 采用原资料记录的 \`AEUIO\` 形辅与 \`IEUAO\` 调辅，本报告为其套用同一飞花式四码顶路由和统一字形／笔画源。21×26／26×26 相比 21×21 扩大了韵码域，不能把跨键域领先直接解释成同键域映射胜负。
 
 表中在神韵(Overall-17)、无飞键道(U357)与原键道 S005 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；首道 B04 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
 
 ## 总览
 
 ${metricTable}
+
+CKT v5 使用 6 项候选页；神韵(Overall-17)的冰雪神韵·形／冰雪神韵·调辅序为 \`12/21/42\`、\`12/21/13\`，无飞键道(U357)的冰雪键道／冰雪三拼辅序为 \`12/23/24\`、\`12/21/23\`，S005 固定为 \`12/21/24\`、\`12/21/23\`。首道 B04 按原生 \`AEUIO\` 形辅、\`IEUAO\` 调辅与五项认知系数 0%～500% 独立扰动网格，对 144 套完整规则按平均名次取稳健综合第一，形辅／调辅分别为 \`12/12/23\`、\`21/12/23\`。每段两位数字只表示 CKT v5 优化并计分的前两辅；运行时冰雪键道、冰雪三拼的三字词会按剩余字位补第三辅，四字词也继续补齐。CKT v5 在第二辅后直接按选重计费，不含第三及后续辅键的成本与消歧收益。
 
 四方案的飞键成分（声母／零声母组／韵母）依次为：${schemes.map((scheme, index) => `${labels[scheme]} ${flyingDisplays[index]}`).join("、")}。飞键按 Common399 实际二键码统计；不同成分共用一键或成分整体移位不计飞键。
 
@@ -557,7 +619,7 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 
 - 神韵(Overall-17)以 21×26 声韵域实现 Common399 399 个唯一码、M-R2＝36，并采用飞花式四码顶；它在现行 CKT v4 中与 B04 接近，同时保持零飞键，但日常文稿移动手分数及主键区指标不如无飞键道(U357)。
 - 无飞键道(U357)在 21×21 键域中保留 42 个音节重码桶，换来更高的日常纯双拼移动手分数、较高主键区占比和较低最大单指峰值；它与 S005 才是直接的同键域比较。
-- B04 的 26×26 大码域以及本报告套用的飞花式四码顶合同带来零音节重码及较低补全成本；这不是 B04 原方案的顶功声明，其飞键、记忆项和日常路径指标也采用另一种取舍。
+- B04 的 26×26 大码域、原资料记录的辅键映射以及本报告套用的飞花式四码顶路由带来零音节重码及较低补全成本；这不是 B04 原方案的顶功声明，其飞键、记忆项和日常路径指标也采用另一种取舍。
 - 所有模型分数都用于同语料、同模型横向复算，不等同真人输入速度。
 
 机器可复核数据见 [\`shenyun-comparison.json\`](shenyun-comparison.json)。神韵(Overall-17)的底层方案 ID 为 \`${overallId}\`。两代方案的来源、得来过程与定稿映射以上述固定提交报告为准。

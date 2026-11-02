@@ -4,6 +4,7 @@
 -- 两个方案共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
+-- 二／三／四字最优辅序分别为形 12/21/42、调 12/21/13。
 
 local snow = require "snow.snow"
 local bihua = require "snow.bihua"
@@ -68,6 +69,29 @@ local function first_or_empty(value)
   return value:sub(1, 1)
 end
 
+---@param length integer
+---@param mode string
+---@return integer[]
+local function auxiliary_positions(length, mode)
+  if length == 2 then return { 1, 2 } end
+  if length == 3 then return { 2, 1 } end
+  if length == 4 then
+    return mode == "tone" and { 1, 3 } or { 4, 2 }
+  end
+  return { 1, 2 }
+end
+
+---@param codes string[]
+---@param positions integer[]
+---@return string
+local function ordered_initials(codes, positions)
+  local result = ""
+  for _, position in ipairs(positions) do
+    result = result .. first_or_empty(codes[position] or "")
+  end
+  return result
+end
+
 local function shape_codes(text, env)
   local chars = characters(text)
   local codes = {}
@@ -76,12 +100,8 @@ local function shape_codes(text, env)
   end
   if #codes == 1 then
     return { codes[1] }
-  elseif #codes == 2 then
-    -- 飞花式二字扩展：先第二字 B2，再第一字 B1。
-    return { first_or_empty(codes[2]) .. first_or_empty(codes[1]) }
-  elseif #codes >= 3 then
-    -- 三、四字词的标准四码后，依次取第一、第二字形辅。
-    return { first_or_empty(codes[1]) .. first_or_empty(codes[2]) }
+  elseif #codes >= 2 then
+    return { ordered_initials(codes, auxiliary_positions(#codes, "shape")) }
   end
   return { "" }
 end
@@ -146,17 +166,10 @@ local function tone_codes(text, env, spellings)
         table.insert(result, tone .. stroke)
       end
     end
-  elseif #chars == 2 then
-    -- 飞花式二字扩展顺序 B2B1。
-    for _, second in ipairs(tones[2]) do
-      for _, first in ipairs(tones[1]) do
-        table.insert(result, second .. first)
-      end
-    end
   else
-    -- 三、四字词标准四码后的 B1B2。
-    for _, first in ipairs(tones[1]) do
-      for _, second in ipairs(tones[2]) do
+    local positions = auxiliary_positions(#chars, "tone")
+    for _, first in ipairs(tones[positions[1]]) do
+      for _, second in ipairs(tones[positions[2]]) do
         table.insert(result, first .. second)
       end
     end
@@ -299,7 +312,7 @@ local function routes_for(input, segment, env)
     add_route(routes, "AU", input:sub(1, 2), input:sub(3), 1)
   end
   if first_vacant and all_in(input, 3, B) then
-    -- AA 只在同码 AU 没有完整单字候选时启用；B 沿用二字词的 B2、B1 顺序。
+    -- AA 只在同码 AU 没有完整单字候选时启用；B 沿用二字词的 B1、B2 顺序。
     add_route(routes, "AA", input:sub(1, 1) .. " " .. input:sub(2, 2), input:sub(3), 2)
   end
   if n >= 4 and contains(A, input:sub(1, 1)) and contains(U, input:sub(2, 2))
@@ -316,7 +329,7 @@ local function routes_for(input, segment, env)
   end
   if n >= 4 and all_in(input:sub(1, 3), 1, A) and contains(B, input:sub(4, 4))
       and third_vacant and all_in(input, 4, B) then
-    -- 第三音节 AU 空桶时，第四码直接作为三字词第一辅码，回收为 AAA+B。
+    -- 第三音节 AU 空桶时，第四码直接作为三字词第二字辅码，回收为 AAA+B。
     add_route(routes, "AAA+B", input:sub(1, 1) .. " " .. input:sub(2, 2) .. " " .. input:sub(3, 3), input:sub(4), 3)
   end
   if n >= 4 and all_in(input:sub(1, 4), 1, A) and all_in(input, 5, B) then
@@ -386,7 +399,12 @@ function this.func(input, segment, env)
       candidate._end = segment._end
       candidate.preedit = input
       local length = utf8.len(candidate.text)
-      local order = length == 2 and "₂₁" or length >= 3 and "₁₂" or ""
+      local order = ""
+      if length and length >= 2 then
+        local positions = auxiliary_positions(length, env.auxiliary_mode)
+        local raw_order = ("%d%d"):format(positions[1], positions[2])
+        order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
+      end
       local label = (env.auxiliary_mode == "tone" and "调" or "形") .. order
       if stream.auxiliary ~= "" then
         snow.comment(candidate, ("〔%s %s〕"):format(label, stream.auxiliary))

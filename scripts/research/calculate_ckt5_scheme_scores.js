@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 
-/* Calculate scheme-specific CKT v5 values for the selected robust word orders. */
+/* Calculate scheme-specific CKT v5 values for the selected word orders. */
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -21,17 +21,20 @@ const TRACK_WEIGHTS = Object.freeze({
 	word3: 1,
 	word4: 1,
 });
-const ROBUST_POLICIES = Object.freeze({
+const SELECTED_POLICIES = Object.freeze({
 	"21x21-keytao": { word2: "12", word3: "23", word4: "24" },
 	"21x21-sanpin": { word2: "12", word3: "21", word4: "23" },
-	"21x26-keytao": { word2: "12", word3: "21", word4: "14" },
+	"21x26-keytao": { word2: "12", word3: "21", word4: "42" },
 	"21x26-sanpin": { word2: "12", word3: "21", word4: "13" },
+	"b04-keytao": { word2: "12", word3: "12", word4: "23" },
+	"b04-sanpin": { word2: "21", word3: "12", word4: "23" },
 	"s005-keytao": { word2: "12", word3: "21", word4: "24" },
 	"s005-sanpin": { word2: "12", word3: "21", word4: "23" },
 });
 const PAIRS = Object.freeze({
 	"21x21": ["21x21-keytao", "21x21-sanpin"],
 	"21x26": ["21x26-keytao", "21x26-sanpin"],
+	b04: ["b04-keytao", "b04-sanpin"],
 	s005: ["s005-keytao", "s005-sanpin"],
 });
 
@@ -146,7 +149,7 @@ function normalizedScore(cases, members, referenceMembers, power = 4) {
 
 function evaluateCase(context, specification) {
 	const { data, words, strokes, model, scorer, snapshot } = context;
-	const policy = ROBUST_POLICIES[specification.label];
+	const policy = SELECTED_POLICIES[specification.label];
 	const entry = data.entries.find((value) => value.id === specification.id);
 	if (!entry || !policy) throw new Error(`missing case ${specification.label}`);
 	const nativeMotor = model.upstreamMotor(snapshot);

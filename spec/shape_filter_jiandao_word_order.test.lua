@@ -16,6 +16,7 @@ utf8 = {
 package.loaded["snow.snow"] = {
   current = function(context) return context.current end,
 }
+package.loaded["snow.bihua"] = {}
 rime_api = { regex_match = function() return false end }
 
 local filter = require "snow.shape_filter"
@@ -28,17 +29,37 @@ local context = {
 local env = {
   engine = { schema = { schema_id = "snow_jiandao" }, context = context },
   shape_elements = { lookup = function(_, char)
-    return ({ X = "rs", Y = "tu" })[char]
+    return ({ X = "rs", Y = "tu", Z = "vw", W = "xy" })[char]
   end },
-  shape_mapping = { r = "a", s = "i", t = "b", u = "o" },
+  shape_mapping = { r = "a", s = "i", t = "b", u = "o", v = "c", w = "u", x = "d", y = "e" },
+  jiandao_shape_cache = {},
 }
 
-local match, _, comment = filter.handle_candidate("XY", "ab", env)
+local function active_state(current)
+  return {
+    id = "snow_jiandao",
+    current = current,
+    is_pinyin = false,
+    show_chaifen = false,
+    initial_pair = false,
+    jiandao_active = true,
+  }
+end
+
+local match, _, comment = filter.handle_candidate("XY", "ab", env, active_state("bkxh"))
 assert(match and comment == "ab", "full two-character Keytao code must be first B then second B")
-assert(not filter.handle_candidate("XY", "ba", env), "reverse B order must not match")
+assert(not filter.handle_candidate("XY", "ba", env, active_state("bkxh")), "reverse B order must not match")
+
+context.current = "xyz"
+match, _, comment = filter.handle_candidate("XYZ", "bca", env, active_state("xyz"))
+assert(match and comment == "bca", "three-character Keytao order must be second, third, first")
+
+context.current = "xyzw"
+match, _, comment = filter.handle_candidate("XYZW", "bdac", env, active_state("xyzw"))
+assert(match and comment == "bdac", "four-character Keytao order must be second, fourth, first, third")
 
 context.current = "b"
-match, _, comment = filter.handle_candidate("XY", "bo", env)
+match, _, comment = filter.handle_candidate("XY", "bo", env, active_state("b"))
 assert(match and comment == "", "630 shorthand must keep its separate second-character rule")
 
 print("shape_filter Keytao word-order tests passed")

@@ -28,6 +28,8 @@ const DEFAULT_FILES = [
 	"ckt-v4-word-aux-order-2121-sanpin.json",
 	"ckt-v4-word-aux-order-2126-keytao.json",
 	"ckt-v4-word-aux-order-2126-sanpin.json",
+	"ckt-v4-word-aux-order-b04-keytao.json",
+	"ckt-v4-word-aux-order-b04-sanpin.json",
 ];
 
 function parseArgs(argv) {

@@ -20,8 +20,9 @@ local auxiliary_keys = {
 
 ---@param input string
 ---@param word_length integer
+---@param schema_id? string
 ---@return integer[]
-function navigator.logical_positions(input, word_length)
+function navigator.logical_positions(input, word_length, schema_id)
   local input_length = #input
   local positions = {}
   if input_length == 0 or word_length < 1 then
@@ -34,11 +35,19 @@ function navigator.logical_positions(input, word_length)
 
   if word_length == 2 then
     if input_length >= 4 then
-      -- 二字全码：A1A1 A2A2 [B2 [B1]]。
       positions[1] = 2
       positions[2] = 4
-      if input_length >= 5 then positions[2] = 5 end
-      if input_length >= 6 then positions[1] = 6 end
+      local first_then_second = schema_id == "snow_jiandao" or schema_id == "snow_sanpin"
+          or schema_id == "snow_shenyun_shape" or schema_id == "snow_shenyun_tone"
+      if first_then_second then
+        -- 本轮四个方案的二字全码：A1A1 A2A2 [B1 [B2]]。
+        if input_length >= 5 then positions[1] = 5 end
+        if input_length >= 6 then positions[2] = 6 end
+      else
+        -- 其他方案保留原顺序：A1A1 A2A2 [B2 [B1]]。
+        if input_length >= 5 then positions[2] = 5 end
+        if input_length >= 6 then positions[1] = 6 end
+      end
       return positions
     end
 
@@ -50,6 +59,15 @@ function navigator.logical_positions(input, word_length)
     end
   end
 
+  if (schema_id == "snow_shenyun_shape" or schema_id == "snow_shenyun_tone")
+      and word_length == 3 and input_length >= word_length then
+    -- 神韵标准三字主码为 AAAU；第 4 码仍属于第三字，后置辅码从第 5 码开始按 B2、B1 排列。
+    positions[1] = input_length >= 6 and 6 or 1
+    positions[2] = input_length >= 5 and 5 or 2
+    positions[3] = input_length >= 4 and 4 or 3
+    return positions
+  end
+
   -- 简码无法恢复不存在的字位；已有的每个物理码位仍可作为逻辑落点。
   if input_length < word_length then
     for index = 1, input_length do
@@ -58,14 +76,30 @@ function navigator.logical_positions(input, word_length)
     return positions
   end
 
-  -- 三字及以上：A1...An [Bn [B1 [B2]]]。
+  -- 三字及以上按各方案的最优辅序还原字位；最多解释三个后置辅码。
   for index = 1, word_length do
     positions[index] = index
   end
   local auxiliary_count = math.min(input_length - word_length, 3)
-  if auxiliary_count >= 1 then positions[word_length] = word_length + 1 end
-  if auxiliary_count >= 2 then positions[1] = word_length + 2 end
-  if auxiliary_count >= 3 and word_length >= 2 then positions[2] = word_length + 3 end
+  local auxiliary_positions
+  if schema_id == "snow_jiandao" and word_length == 3 then
+    auxiliary_positions = { 2, 3, 1 }
+  elseif schema_id == "snow_jiandao" and word_length == 4 then
+    auxiliary_positions = { 2, 4, 1 }
+  elseif schema_id == "snow_sanpin" and word_length == 3 then
+    auxiliary_positions = { 2, 1, 3 }
+  elseif schema_id == "snow_sanpin" and word_length == 4 then
+    auxiliary_positions = { 2, 3, 1 }
+  elseif schema_id == "snow_shenyun_shape" and word_length == 4 then
+    auxiliary_positions = { 4, 2, 1 }
+  elseif schema_id == "snow_shenyun_tone" and word_length == 4 then
+    auxiliary_positions = { 1, 3, 2 }
+  else
+    auxiliary_positions = { word_length, 1, 2 }
+  end
+  for index = 1, auxiliary_count do
+    positions[auxiliary_positions[index]] = word_length + index
+  end
   return positions
 end
 
@@ -135,7 +169,7 @@ local function prepare_snapshot(context, env)
   if not word_length or word_length < 1 then return true end
 
   local input = context.input:sub(start_pos + 1, end_pos)
-  env.positions = navigator.logical_positions(input, word_length)
+  env.positions = navigator.logical_positions(input, word_length, env.engine.schema.schema_id)
   for index, relative_pos in ipairs(env.positions) do
     if start_pos + relative_pos == context.caret_pos then
       env.logical_index = index

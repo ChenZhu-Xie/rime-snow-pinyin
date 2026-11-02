@@ -150,6 +150,7 @@ speller:
   initials: bpmfdtnlgkhjqxzcsrwye
   delimiter: " "
   shape:
+    # 二／三／四字词的前两位后置调码字位顺序为 12/21/23，后续按剩余字位补齐。
     # 运行时空音码的 AA 是声声二字词；仅接受一个第二字声调辅码。
     - vacant: true
       match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"

@@ -48,7 +48,7 @@ const policies = {
 		sanpin: { word2: "12", word3: "21", word4: "23" },
 	},
 	"21x26": {
-		keytao: { word2: "12", word3: "21", word4: "14" },
+		keytao: { word2: "12", word3: "21", word4: "42" },
 		sanpin: { word2: "12", word3: "21", word4: "13" },
 	},
 };

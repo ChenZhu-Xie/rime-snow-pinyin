@@ -94,7 +94,7 @@ deploy:
         assert: eq(preedit, "wms")
       - send: "wmxs{Control+o}{Control+o}{BackSpace}"
         assert: eq(preedit, "m x s")
-      - send: jjjwui
+      - send: jjjwai
         assert: has("经济基础")
       - send: kserF
         assert: has("中文输入法")
@@ -105,22 +105,22 @@ deploy:
         assert: cand[1].text == "并"
       - send: bb
         assert: cand[1].text == "宾"
-      # 上游 bgxhu/bg xhuv：双字简码（4/5）与全码（6），末字调在前。
-      - send: btxku
+      # 双字简码（4/5）与全码（6），声调按第一字、第二字排列。
+      - send: btxki
         assert: has("冰雪")
-      - send: btxkui
+      - send: btxkiu
         assert: page("冰雪")
-      # 上游 erf / erfu / erfuv / erfuvo：三字简码 3/4/5 与全码 6。
-      - send: erfu
+      # 三字简码 3/4/5 与全码 6，声调字位顺序为 2、1、3。
+      - send: erfa
         assert: page("输入法")
-      - send: erfui
+      - send: erfai
         assert: page("输入法")
-      - send: erfuia
+      - send: erfaiu
         assert: page("输入法")
-      # 上游 wmxw / wmxwo / wmxwov：四字简码 4/5 与全码 6。
-      - send: wmxsa
+      # 四字简码 4/5 与全码 6，前两个声调取第二、第三字。
+      - send: wmxsu
         assert: page("充满希望")
-      - send: wmxsai
+      - send: wmxsui
         assert: page("充满希望")
       # 上游 b/d/s/y：一码固顶；本地三码 630 与两简词取本地固顶词表。
       - send: b
@@ -257,11 +257,11 @@ deploy:
   # 六码二字词选完首字后，第二字可由下一个词顶屏，并与首字一起完成造词。
   encoding_popping:
     tests:
-      - send: "btslai b{Escape}btsl"
+      - send: "btslia b{Escape}btsl"
         assert: cand[1].text == "冰四"
   encoding_buffered:
     tests:
-      - send: "o btslai   btsl"
+      - send: "o btslia   btsl"
         assert: cand[1].text == "冰四"
   # 上游 buffered：分片组词、字母候选与英数混输；本地选择 o 命令切换缓冲。
   buffered:

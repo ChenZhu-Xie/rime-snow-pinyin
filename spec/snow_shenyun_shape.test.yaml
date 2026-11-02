@@ -47,7 +47,7 @@ deploy:
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
         assert: commit == nil and has("测试")
-      # AU 空桶回退为声声二字词；第三码按第二字首形辅筛选。
+      # AU 空桶回退为声声二字词；第三码按第一字首形辅筛选。
       - send: cw
         assert: all_have_length(2) and has("测试")
       # be 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
@@ -55,9 +55,9 @@ deploy:
         assert: "#cand == 0 and commit == nil"
       - send: bea
         assert: "#cand == 0 and commit == nil"
-      - send: yxo
+      - send: yxa
         assert: has("也许") and not has("一些")
-      - send: yxi
+      - send: yxe
         assert: has("一些") and not has("也许")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: brxg
@@ -74,15 +74,15 @@ deploy:
       # yi 是合法完整音节，cwyi 仍应走 AAAU 得到三字词。
       - send: cwyi
         assert: all_have_length(3) and has("测试仪")
-      - send: dyxku
+      - send: dyxke
         assert: cand[1].text == "等一下"
       # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
       - send: cewi;
         assert: commit == "测试的"
       - send: cewi/
         assert: commit == "测试了"
-      # 「管理员」首字形辅为 u；第三音节的 yu 空桶回收为 AAA+B。
-      - send: glyu
+      # 「管理员」第二字形辅为 e；第三音节的 yu 空桶回收为 AAA+B。
+      - send: glye
         assert: has("管理员")
       - send: "br,"
         assert: commit and commit:find("，", 1, true)

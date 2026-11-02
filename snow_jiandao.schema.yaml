@@ -92,6 +92,7 @@ speller:
       match_shape: ".+"
       accept: "[viuoa]"
       block: true
+    # 二／三／四字词的前两位形辅字位顺序为 12/23/24，后续按剩余字位补齐。
     - match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}[viuoa]*"
       accept: "[viuoa]"
     - match: "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?[viuoa]*"

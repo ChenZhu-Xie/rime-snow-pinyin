@@ -44,6 +44,20 @@ const DEFAULT_CASES = [
 		slotKeys: "IEUAO",
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
+	{
+		id: "B04",
+		label: "b04-keytao",
+		mode: "keytao",
+		slotKeys: "IEUAO",
+		current: { word2: "21", word3: "12", word4: "12" },
+	},
+	{
+		id: "B04",
+		label: "b04-sanpin",
+		mode: "sanpin",
+		slotKeys: "IEUAO",
+		current: { word2: "21", word3: "12", word4: "12" },
+	},
 ];
 const REFERENCE_CASES = [
 	{
@@ -578,6 +592,7 @@ function main() {
 			"The two source positions must be distinct; repeated positions add no information under this code family.",
 			"Candidate pools, early commit, terminal rank, motor tables, and cognitive parameters are otherwise identical to CKT v4.",
 			"21x26 Keytao uses deployed AEUIO shape keys; 21x26 Sanpin uses deployed IEUAO tone keys.",
+			"B04 uses its documented AEUIO shape keys and IEUAO tone keys under the same four-code-top contract used by the comparison report.",
 			"Candidate pages contain six candidates.",
 		],
 		cases: Object.fromEntries(evaluated.map((value) => [value.label, value])),

@@ -58,7 +58,7 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 - Common399 全覆盖且 399 个二键码全部唯一，21×26 共保留 147 个空码；M-R2 为 36，普通声母仅 \`f→J\` 偏移，基础元音仅 \`o→M\` 偏移。
 - 冰雪神韵·形辅键为 \`A/E/U/I/O\`，冰雪神韵·调声调键为 \`I/E/U/A/O → 一/二/三/四/轻\`。
-- 小写输入遵循飞花式四码顶：单字为 \`A_ / AU_ / AUB / AUBB\`，二字词为 \`A₁U₁A₂U₂[B₂B₁]\`，三字词为 \`A₁A₂A₃U₃[B₁B₂]\`，四字词为 \`A₁A₂A₃A₄[B₁B₂]\`。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若 \`A₃B₁\` 运行时为空桶，三字词还可用 \`A₁A₂A₃B₁[B₂]\`。
+- 小写输入遵循飞花式四码顶：单字为 \`A_ / AU_ / AUB / AUBB\`，二字词为 \`A₁U₁A₂U₂[B₁B₂]\`，三字词为 \`A₁A₂A₃U₃[B₂B₁]\`；四字词的冰雪神韵·形为 \`A₁A₂A₃A₄[B₄B₂]\`，冰雪神韵·调为 \`A₁A₂A₃A₄[B₁B₃]\`。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若 \`A₃B₂\` 运行时为空桶，三字词还可用 \`A₁A₂A₃B₂[B₁]\`。
 - 两组 21×26 方案的空桶均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 \`AU\`，其中 134 个为空 \`AA\`、9 个为空 \`AB\`；单键只固顶一个一简字，其余候选自然排序。
 
 `;
@@ -84,7 +84,7 @@ Both SVGs are exported from the finalized entry in the benchmark page: the first
 
 Ordinary initials use their own letter except \`f→J\` and \`zh/ch/sh→F/V/W\`; zero-onset carriers are \`AOE→X\`, \`W→Q\`, and \`Y/YU→Y\`. The final keys are \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`.
 
-Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. Lowercase input follows the Feihua four-code-top contract: characters use \`A_ / AU_ / AUB / AUBB\`; two-character words use \`A₁U₁A₂U₂[B₂B₁]\`; three-character words use \`A₁A₂A₃U₃[B₁B₂]\`; four-character words use \`A₁A₂A₃A₄[B₁B₂]\`. When \`A₃B₁\` is vacant at runtime, a three-character word may also use \`A₁A₂A₃B₁[B₂]\`. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial.
+Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. Lowercase input follows the Feihua four-code-top contract: characters use \`A_ / AU_ / AUB / AUBB\`; two-character words use \`A₁U₁A₂U₂[B₁B₂]\`; three-character words use \`A₁A₂A₃U₃[B₂B₁]\`; four-character words use \`A₁A₂A₃A₄[B₄B₂]\` in Snow Shenyun Shape and \`A₁A₂A₃A₄[B₁B₃]\` in Snow Shenyun Tone. When \`A₃B₂\` is vacant at runtime, a three-character word may also use \`A₁A₂A₃B₂[B₁]\`. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial.
 
 `;
 
@@ -109,7 +109,7 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 普通聲母除 \`f→J\`、\`zh/ch/sh→F/V/W\` 外使用本字母；零聲母載體為 \`AOE→X\`、\`W→Q\`、\`Y/YU→Y\`。韻母鍵為 \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`。
 
-Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式四碼頂：單字 \`A_ / AU_ / AUB / AUBB\`；二字詞 \`A₁U₁A₂U₂[B₂B₁]\`；三字詞 \`A₁A₂A₃U₃[B₁B₂]\`；四字詞 \`A₁A₂A₃A₄[B₁B₂]\`。若 \`A₃B₁\` 運行時為空桶，三字詞亦可使用 \`A₁A₂A₃B₁[B₂]\`。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。
+Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式四碼頂：單字 \`A_ / AU_ / AUB / AUBB\`；二字詞 \`A₁U₁A₂U₂[B₁B₂]\`；三字詞 \`A₁A₂A₃U₃[B₂B₁]\`；四字詞的冰雪神韻·形為 \`A₁A₂A₃A₄[B₄B₂]\`，冰雪神韻·調為 \`A₁A₂A₃A₄[B₁B₃]\`。若 \`A₃B₂\` 運行時為空桶，三字詞亦可使用 \`A₁A₂A₃B₂[B₁]\`。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。
 
 `;
 
@@ -181,11 +181,11 @@ function normalizeSourceProvenance(markdown: string) {
 function normalizeContractClaims(markdown: string) {
 	const lines = markdown.split("\n").map((line) => {
 		if (line.startsWith("四方案共用 ") && line.includes("冻结 20 合同"))
-			return "四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 本身只提供双拼映射，本比较为其套用同一飞花式四码顶合同。";
+			return "四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。";
 		if (line.startsWith("All four layouts use "))
-			return "All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it.";
+			return "All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources.";
 		if (line.startsWith("四方案共用 ") && line.includes("凍結 20 合同"))
-			return "四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 本身只提供雙拼映射，本比較為其套用同一飛花式四碼頂合同。";
+			return "四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔，本比較為其套用同一飛花式四碼頂路由和統一字形／筆畫源。";
 		return line;
 	});
 	return lines
@@ -359,19 +359,19 @@ function normalizeTerms(markdown: string) {
 		)
 		.replaceAll(
 			"B04 is nevertheless scored under the 26×26 four-code-top contract, while U357 and S005 use the 21×21 contract",
-			"Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it; Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract",
+			"Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources; Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract",
 		)
 		.replaceAll(
 			"无飞键道(U357)与 S005 采用传统 21×21 合同，神韵(Overall-17)与 B04 采用四码顶合同。",
-			"无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 本身只提供双拼映射，本比较为其套用同一飞花式四码顶合同。",
+			"无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。",
 		)
 		.replaceAll(
 			"無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
-			"無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 本身只提供雙拼映射，本比較為其套用同一飛花式四碼頂合同。",
+			"無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔，本比較為其套用同一飛花式四碼頂路由和統一字形／筆畫源。",
 		)
 		.replaceAll(
 			"Wufei KeyTao(U357) and S005 use the traditional 21×21 contract; Shenyun(Overall-17) and B04 use the four-code-top contract.",
-			"Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it.",
+			"Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources.",
 		)
 		.replaceAll(
 			"神韵(Overall-17)与 B04 按四码顶合同，无飞键道(U357)与 S005 按传统 21×21 合同",
@@ -413,35 +413,36 @@ function normalizeTerms(markdown: string) {
 }
 
 const readmeDirections = [
-	"min",
-	"triple-sum",
-	"max",
-	"max",
-	"max",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"closest-to-half",
-	"min",
-	"min",
-	"min",
-	"min",
-	"min",
-	"max",
-	"max",
-	"min",
-	"max",
+	"min", // M-R2
+	"triple-sum", // 飞键成分
+	"max", // FA-1
+	"max", // LU-v1r
+	"max", // Common399 唯一码
+	"min", // 重码盈余
+	"min", // 重码桶
+	"min", // S2 miss
+	"min", // S2 平均码长
+	"min", // S2 中心时间
+	"min", // CKT v3
+	"min", // CKT v4
+	"min", // CKT v5
+	"min", // A7E-v3
+	"min", // A7E-v4
+	"min", // A7E-v5
+	"min", // A7E-v6-CW150
+	"min", // 选重率
+	"min", // 第一辅键率
+	"min", // 第二辅键率
+	"closest-to-half", // 左手占比
+	"min", // 同手率
+	"min", // 平均有效距离
+	"min", // QAZ 左小指组峰值
+	"min", // P 区右小指组峰值
+	"min", // 最大单指峰值
+	"max", // S2 主键区占比
+	"max", // TYB 双食指组峰值
+	"min", // 20 合同主键区下限
+	"max", // 日常移动手分数
 ] as const satisfies readonly ComparisonDirection[];
 
 function decorateReadmeTables(markdown: string) {
@@ -566,15 +567,15 @@ function update(markdown: string, host: "github" | "gitee") {
 		)
 		.replace(
 			/三方案共用 Common399[^\n]*/gu,
-			"四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 本身只提供双拼映射，本比较为其套用同一飞花式四码顶合同。",
+			"四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。",
 		)
 		.replace(
 			/All three layouts use Common399[^\n]*/gu,
-			"All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 supplies only a double-pinyin mapping, so this comparison applies the same Feihua four-code-top contract to it.",
+			"All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources.",
 		)
 		.replace(
 			/三方案共用 Common399、凍結 20 合同[^\n]*/gu,
-			"四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 本身只提供雙拼映射，本比較為其套用同一飛花式四碼頂合同。",
+			"四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔，本比較為其套用同一飛花式四碼頂路由和統一字形／筆畫源。",
 		)
 		.replaceAll(
 			"reports/shenyun-u357-comparison.md",

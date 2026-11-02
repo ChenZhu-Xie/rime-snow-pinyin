@@ -70,13 +70,14 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function t12.func(input, segment, env)
-  -- 六码二字词选完首字后，剩下「声₂韵₂调₂调₁」。末码已记在首字读音里，
-  -- 查第二字时忽略它，确认时一并消耗；原始输入不变，退格仍可撤销首字选择。
+  -- 六码二字词选完首字后，原始输入剩下「声₂韵₂调₁调₂」。调₁已记在首字读音里，
+  -- 查第二字时跳过它并使用「声₂韵₂调₂」；原始输入不变，退格仍可撤销首字选择。
   local previous = env.engine.context.composition:toSegmentation():get_at(-2)
   local selected = previous and previous:get_selected_candidate()
   if previous and previous._end == segment.start and selected
       and selected:get_genuine().type == "sanpin_partial" and input:len() == 4 then
-    translate(input:sub(1, -2), segment, env, env.preserve_t12_proxy_quality, function(candidate)
+    local proxy = input:sub(1, 2) .. input:sub(4, 4)
+    translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
       if candidate._end ~= segment._end - 1 then
         return false
       end
@@ -97,7 +98,8 @@ function t12.func(input, segment, env)
   if rime_api.regex_match(input, env.pattern2) then
     local proxy = ("%s %s"):format(input:sub(1, 2), input:sub(3))
     if input:len() == 6 then
-      proxy = ("%s%s %s"):format(input:sub(1, 2), input:sub(-1, -1), input:sub(3, -2))
+      proxy = ("%s%s %s%s"):format(
+        input:sub(1, 2), input:sub(5, 5), input:sub(3, 4), input:sub(6, 6))
     end
     translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
       local length = utf8.len(candidate.text)
@@ -120,6 +122,17 @@ end
 
 local jianpin = {}
 
+---@param length integer
+---@return integer[]
+local function sanpin_auxiliary_positions(length)
+  if length == 2 then return { 1, 2 } end
+  if length == 3 then return { 2, 1, 3 } end
+  if length == 4 then return { 2, 3, 1, 4 } end
+  local positions = { length, 1, 2 }
+  for index = 3, length - 1 do table.insert(positions, index) end
+  return positions
+end
+
 ---@param env TableLikeEnv
 function jianpin.init(env)
   env.translator = Component.Translator(env.engine, "jianpin", "script_translator")
@@ -141,10 +154,13 @@ function jianpin.func(input, segment, env)
     table.insert(groups, group)
   end
   local initial_count = #groups
-  -- 后置声调依次分配给最后、第一、第二个音节
-  for i, group in ipairs(groups) do
-    local tone = i == initial_count and tones:sub(1, 1) or tones:sub(i + 1, i + 1)
-    groups[i] = group .. (tone ~= "" and "?" .. tone or "")
+  -- 二／三／四字最优调序为 12/21/23；后续调码按未使用字位补齐。
+  local positions = sanpin_auxiliary_positions(initial_count)
+  for tone_index, position in ipairs(positions) do
+    local tone = tones:sub(tone_index, tone_index)
+    if tone ~= "" and groups[position] then
+      groups[position] = groups[position] .. "?" .. tone
+    end
   end
   local proxy = table.concat(groups)
   translate(proxy, segment, env, false, function(candidate)
