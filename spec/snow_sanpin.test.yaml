@@ -193,8 +193,8 @@ deploy:
         assert: commit == "个"
       - send: nwyn
         assert: cand[1].text == "那样"
-      - send: tpviv
-        assert: has("填") and cand[rank("填")].comment:find("ivii")
+      - send: tpvvi
+        assert: has("填") and cand[rank("填")].comment:find("vivv")
       # 首选后置
       - send: elel
         assert: cand[1].text == "事实"
@@ -338,8 +338,8 @@ deploy:
         assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
-      # 芫 yuan2：上游 ytivi → 本地 ye + v + iv。
-      - send: yrviv
+      # 芫 yuan2：U357 声韵调为 yrv，前两笔横横 → vv。
+      - send: yrvvv
         assert: page("芫")
       # 嶅 ao2：U357 为 rfv，与“饶”等音节碰撞；山部首首码 e 将它保留在首页。
       - send: rfvvv

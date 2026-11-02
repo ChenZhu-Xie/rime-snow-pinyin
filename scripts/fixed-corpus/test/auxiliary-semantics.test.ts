@@ -89,6 +89,8 @@ test("生成的运行时语义表和三拼笔画棱镜消费当前配置", () =>
 	);
 	assert.match(sanpinStroke, /xlit\/12345\/viuoa\//u);
 	assert.doesNotMatch(sanpinStroke, /xlit\/12345\/ivuao\//u);
+	const sanpin = readFileSync(new URL("snow_sanpin.schema.yaml", root), "utf8");
+	assert.match(sanpin, /stroke\/algebra:[\s\S]*xlit\/12345\/viuoa\//u);
 });
 
 test("键道二分形辅保留折横撇竖点含义", () => {

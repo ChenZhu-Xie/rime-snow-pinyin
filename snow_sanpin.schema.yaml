@@ -258,4 +258,10 @@ patch:
   menu/alternative_select_keys: "_23890"
   stroke/prism: snow_sanpin_bihua
   # 笔画按形义序 AVUIO 映射：横竖撇点折 → VIUOA；不得沿用声调序 IVUAO。
+  stroke/algebra:
+    - xform/[A-Z]+$//
+    - xlit/12345/viuoa/
   stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]
+  stroke/comment_format:
+    - xform/[A-Z]+$//
+    - xlit/12345/viuoa/
