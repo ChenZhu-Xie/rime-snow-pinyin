@@ -11,6 +11,7 @@ const {
 	buildRowsForOrder,
 	semanticMapping,
 } = require("./evaluate_ckt_v4_word_aux_order.js");
+const { auxiliarySemantics } = require("./auxiliary_semantics.js");
 
 const DEFAULT_BENCHMARK =
 	"D:/C2D/Desktop/Code/Lua/inputMethod/shuangpin-layout-benchmark";
@@ -158,7 +159,7 @@ function evaluateCase(context, specification) {
 		snapshot.keys,
 		data.ckt.calibration.extension_maps,
 	);
-	const cloned = { ...entry, tone: specification.slotKeys };
+	const cloned = { ...entry, tone: specification.toneKeysByTone };
 	const characterRows = scorer
 		.buildRows(cloned, data, strokes, words, specification.mode)
 		.filter((row) => row.kind === "character");
@@ -168,7 +169,7 @@ function evaluateCase(context, specification) {
 			data,
 			words,
 			specification.mode,
-			specification.slotKeys,
+			specification.toneKeysByTone,
 			kind,
 			order,
 			model,
@@ -186,10 +187,10 @@ function evaluateCase(context, specification) {
 		schemeId: specification.id,
 		schemeName: entry.name,
 		mode: specification.mode,
-		slotKeys: specification.slotKeys,
+		...auxiliarySemantics(specification.toneKeysByTone),
 		semanticMapping: semanticMapping(
 			specification.mode,
-			specification.slotKeys,
+			specification.toneKeysByTone,
 		),
 		policy,
 		tracks: Object.fromEntries(

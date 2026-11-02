@@ -23,7 +23,6 @@ const scheme = JSON.parse(
 	candidateId?: string;
 	name: string;
 	capacity: [number, number];
-	toneKeys: string;
 	initialMap: Record<string, string>;
 	finalMap: Record<string, string>;
 };

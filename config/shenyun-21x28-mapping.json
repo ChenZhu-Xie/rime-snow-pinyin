@@ -33,8 +33,8 @@
     "zhei",
     "ê"
   ],
-  "auxiliaryKeys": "AEUIO",
-  "toneKeys": "IEUAO",
+  "shapeKeysByMeaning": "AEUIO",
+  "toneKeysByTone": "IEUAO",
   "initialMap": {
     "b": "B",
     "p": "P",

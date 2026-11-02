@@ -7,6 +7,7 @@ const path = require('path');
 const zlib = require('zlib');
 const crypto = require('crypto');
 const vm = require('vm');
+const {physicalShape} = require('./auxiliary_semantics.js');
 
 function argumentsFrom(argv) {
   const args = {};
@@ -98,11 +99,7 @@ function strokeOptions(file) {
 }
 
 const TONE = 'IVUAO';
-const SHAPE_FROM = 'IEUAO';
 const STROKE_SLOT = {s:0, h:1, p:2, z:3, n:4};
-function physicalShape(abstract, toneKeys) {
-  return [...(abstract || '')].map(key => toneKeys[SHAPE_FROM.indexOf(key)] || '').join('');
-}
 function physicalStroke(stroke, toneKeys) {
   return stroke && toneKeys[STROKE_SLOT[stroke]] || null;
 }

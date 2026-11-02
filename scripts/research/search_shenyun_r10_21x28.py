@@ -330,7 +330,7 @@ def state_from_mapping(mapping: dict) -> np.ndarray:
     return np.array(
         [KEYS.index(mapping["initialMap"][head]) for head in opt.HEADS]
         + [KEYS.index(mapping["finalMap"][final]) for final in opt.F]
-        + [KEYS.index(key) for key in mapping["toneKeys"]],
+        + [KEYS.index(key) for key in mapping["toneKeysByTone"]],
         dtype=np.int32,
     )
 

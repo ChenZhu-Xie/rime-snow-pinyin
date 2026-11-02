@@ -12,6 +12,10 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const {
+	auxiliarySemantics,
+	physicalShape,
+} = require("./auxiliary_semantics.js");
 
 const DEFAULT_BENCHMARK =
 	"D:/C2D/Desktop/Code/Lua/inputMethod/shuangpin-layout-benchmark";
@@ -20,42 +24,42 @@ const DEFAULT_CASES = [
 		id: "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
 		label: "21x21-keytao",
 		mode: "keytao",
-		slotKeys: "IVUAO",
+		toneKeysByTone: "IVUAO",
 		current: { word2: "12", word3: "12", word4: "12" },
 	},
 	{
 		id: "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
 		label: "21x21-sanpin",
 		mode: "sanpin",
-		slotKeys: "IVUAO",
+		toneKeysByTone: "IVUAO",
 		current: { word2: "21", word3: "31", word4: "41" },
 	},
 	{
 		id: "SNOW-SHENYUN-21X26-PRODUCTION",
 		label: "21x26-keytao",
 		mode: "keytao",
-		slotKeys: "IEUAO",
+		toneKeysByTone: "IEUAO",
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
 	{
 		id: "SNOW-SHENYUN-21X26-PRODUCTION",
 		label: "21x26-sanpin",
 		mode: "sanpin",
-		slotKeys: "IEUAO",
+		toneKeysByTone: "IEUAO",
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
 	{
 		id: "B04",
 		label: "b04-keytao",
 		mode: "keytao",
-		slotKeys: "IEUAO",
+		toneKeysByTone: "IEUAO",
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
 	{
 		id: "B04",
 		label: "b04-sanpin",
 		mode: "sanpin",
-		slotKeys: "IEUAO",
+		toneKeysByTone: "IEUAO",
 		current: { word2: "21", word3: "12", word4: "12" },
 	},
 ];
@@ -64,20 +68,18 @@ const REFERENCE_CASES = [
 		id: "S005",
 		label: "s005-keytao",
 		mode: "keytao",
-		slotKeys: "IVUAO",
+		toneKeysByTone: "IVUAO",
 		current: { word2: "12", word3: "12", word4: "12" },
 	},
 	{
 		id: "S005",
 		label: "s005-sanpin",
 		mode: "sanpin",
-		slotKeys: "IVUAO",
+		toneKeysByTone: "IVUAO",
 		current: { word2: "21", word3: "31", word4: "41" },
 	},
 ];
 
-const SHAPE_FROM = "IEUAO";
-const SHAPE_SEMANTIC_FROM = "AEUIO";
 const TRACK_WEIGHTS = Object.freeze({
 	word2: 3,
 	word3: 1,
@@ -109,18 +111,11 @@ function orderedDistinctPairs(length) {
 	return result;
 }
 
-// The payload stores abstract shape symbols in SHAPE_FROM slot order. slotKeys
-// is indexed by those slots; it is not the displayed 折横撇竖点 key sequence.
-function physicalShape(abstract, slotKeys) {
-	return [...(abstract || "")]
-		.map((key) => slotKeys[SHAPE_FROM.indexOf(key)] || "")
-		.join("");
-}
-
-function semanticMapping(mode, slotKeys) {
+function semanticMapping(mode, toneKeysByTone) {
+	const semantics = auxiliarySemantics(toneKeysByTone);
 	return mode === "keytao"
-		? `折横撇竖点→${physicalShape(SHAPE_SEMANTIC_FROM, slotKeys)}`
-		: `一二三四轻→${slotKeys}`;
+		? `折横撇竖点→${semantics.shapeKeysByMeaning}`
+		: `一二三四轻→${semantics.toneKeysByTone}`;
 }
 
 function stage(code) {
@@ -138,10 +133,11 @@ function wordRow(model, contract, id, text, kind, weight, baseLength, codes) {
 	};
 }
 
-function auxiliaryFor(item, chars, position, mode, slotKeys, shape) {
+function auxiliaryFor(item, chars, position, mode, toneKeysByTone, shape) {
 	const index = position - 1;
-	if (mode === "keytao") return physicalShape(shape[chars[index]], slotKeys)[0];
-	return slotKeys[item.tones[index] - 1];
+	if (mode === "keytao")
+		return physicalShape(shape[chars[index]], toneKeysByTone)[0];
+	return toneKeysByTone[item.tones[index] - 1];
 }
 
 function buildRowsForOrder(
@@ -149,7 +145,7 @@ function buildRowsForOrder(
 	data,
 	words,
 	mode,
-	slotKeys,
+	toneKeysByTone,
 	kind,
 	order,
 	model,
@@ -170,7 +166,7 @@ function buildRowsForOrder(
 			chars,
 			firstPosition,
 			mode,
-			slotKeys,
+			toneKeysByTone,
 			shape,
 		);
 		const second = auxiliaryFor(
@@ -178,7 +174,7 @@ function buildRowsForOrder(
 			chars,
 			secondPosition,
 			mode,
-			slotKeys,
+			toneKeysByTone,
 			shape,
 		);
 		if (!first || !second) continue;
@@ -294,14 +290,14 @@ function verifyCurrentPolicy({
 	words,
 	strokes,
 	mode,
-	slotKeys,
+	toneKeysByTone,
 	current,
 	motor,
 	model,
 	scorer,
 	rowsByKind,
 }) {
-	const cloned = { ...entry, tone: slotKeys };
+	const cloned = { ...entry, tone: toneKeysByTone };
 	const upstreamRows = scorer
 		.buildRows(cloned, data, strokes, words, mode)
 		.filter((row) => WORD_KINDS.includes(row.kind));
@@ -445,7 +441,7 @@ function evaluateCase(context, specification) {
 					data,
 					words,
 					specification.mode,
-					specification.slotKeys,
+					specification.toneKeysByTone,
 					kind,
 					order,
 					model,
@@ -459,7 +455,7 @@ function evaluateCase(context, specification) {
 		words,
 		strokes,
 		mode: specification.mode,
-		slotKeys: specification.slotKeys,
+		toneKeysByTone: specification.toneKeysByTone,
 		current: specification.current,
 		motor,
 		model,
@@ -513,10 +509,10 @@ function evaluateCase(context, specification) {
 		schemeName: entry.name,
 		capacity: entry.capacity,
 		mode: specification.mode,
-		slotKeys: specification.slotKeys,
+		...auxiliarySemantics(specification.toneKeysByTone),
 		semanticMapping: semanticMapping(
 			specification.mode,
-			specification.slotKeys,
+			specification.toneKeysByTone,
 		),
 		currentPolicy: specification.current,
 		policySpace: Object.fromEntries(

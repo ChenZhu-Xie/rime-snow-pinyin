@@ -21,8 +21,8 @@ const source = JSON.parse(
 	memory: number;
 	ordinaryInitialDisplacements: number;
 	vowelDisplacements: number;
-	auxiliaryKeys: string;
-	toneKeys: string;
+	shapeKeysByMeaning: string;
+	toneKeysByTone: string;
 	cktV4: number;
 	movingHandScore: number;
 	initialMap: Record<string, string>;

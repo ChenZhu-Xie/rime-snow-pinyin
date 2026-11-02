@@ -14,8 +14,8 @@
   "memory": 36,
   "ordinaryInitialDisplacements": 1,
   "vowelDisplacements": 1,
-  "auxiliaryKeys": "AEUIO",
-  "toneKeys": "IEUAO",
+  "shapeKeysByMeaning": "AEUIO",
+  "toneKeysByTone": "IEUAO",
   "initialMap": {
     "b": "B", "p": "P", "m": "M", "f": "J", "d": "D", "t": "T",
     "n": "N", "l": "L", "g": "G", "k": "K", "h": "H", "j": "J",

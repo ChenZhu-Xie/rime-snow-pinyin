@@ -14,8 +14,8 @@
   "memory": 40,
   "ordinaryInitialDisplacements": 0,
   "vowelDisplacements": 5,
-  "auxiliaryKeys": "IVUAO",
-  "toneKeys": "IVUAO",
+  "shapeKeysByMeaning": "AVUIO",
+  "toneKeysByTone": "IVUAO",
   "cktV4": 9.716420811869073,
   "movingHandScore": 143.37998127078376,
   "initialMap": {

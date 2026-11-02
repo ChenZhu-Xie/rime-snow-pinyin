@@ -7,6 +7,13 @@
 - Before accepting an upstream encoding change, measure collisions or vacant-code usage in both layouts and add regression coverage for the locally adapted behavior.
 - Keep generators, generated artifacts, documentation, and tests synchronized with every semantic migration.
 
+## 五辅键语义
+
+- 机器可读映射必须分开命名：`shapeKeysByMeaning` 始终按“折、横、撇、竖、点”排列，`toneKeysByTone` 始终按“一、二、三、四、轻”排列；禁止使用无语义的 `slotKeys`，也不要用 `auxiliaryKeys` 表示有序映射。
+- 两个序列必须互相映射，并满足“按折横撇竖点观察声调”为 `42310`。标准 21×26 是 `AEUIO` ↔ `IEUAO`，标准 21×21 是 `AVUIO` ↔ `IVUAO`。
+- 上游 benchmark 的 `entry.tone` 是 `toneKeysByTone`。`snowshape` 的抽象符号必须通过 `scripts/research/auxiliary_semantics.js` 转成物理形辅键，不能把 `entry.tone` 的字面顺序当作折横撇竖点。
+- 历史方案 ID、`auxiliaryClass` 及其中的 `AEUIO`／`AVUIO` 只表示键集类别，不是有序映射；不得据此批量改名。新增或迁移映射必须通过五辅语义往返和 `42310` 回归测试。
+
 ## Releases
 
 - Before every release, fetch and inspect the upstream repository's tags.

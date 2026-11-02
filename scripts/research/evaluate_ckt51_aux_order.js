@@ -18,6 +18,10 @@ const {
 	orderedDistinctPairs,
 	semanticMapping,
 } = require("./evaluate_ckt_v4_word_aux_order.js");
+const {
+	auxiliarySemantics,
+	physicalShape,
+} = require("./auxiliary_semantics.js");
 
 const DEFAULT_BENCHMARK =
 	"D:/C2D/Desktop/Code/Lua/inputMethod/shuangpin-layout-benchmark";
@@ -44,7 +48,6 @@ const TARGET_CASES = new Set([
 	"b04-keytao",
 	"b04-sanpin",
 ]);
-const SHAPE_FROM = "IEUAO";
 
 function parseArgs(argv) {
 	const result = {};
@@ -79,16 +82,11 @@ function permutations(length) {
 	return result;
 }
 
-function physicalShape(abstract, slotKeys) {
-	return [...(abstract || "")]
-		.map((key) => slotKeys[SHAPE_FROM.indexOf(key)] || "")
-		.join("");
-}
-
-function auxiliaryFor(item, chars, position, mode, slotKeys, shape) {
+function auxiliaryFor(item, chars, position, mode, toneKeysByTone, shape) {
 	const index = position - 1;
-	if (mode === "keytao") return physicalShape(shape[chars[index]], slotKeys)[0];
-	return slotKeys[item.tones[index] - 1];
+	if (mode === "keytao")
+		return physicalShape(shape[chars[index]], toneKeysByTone)[0];
+	return toneKeysByTone[item.tones[index] - 1];
 }
 
 function stage(code, pool) {
@@ -100,7 +98,14 @@ function stage(code, pool) {
 	};
 }
 
-function buildExtendedWord3Rows(entry, data, words, mode, slotKeys, order) {
+function buildExtendedWord3Rows(
+	entry,
+	data,
+	words,
+	mode,
+	toneKeysByTone,
+	order,
+) {
 	if (!/^([123])(?!\1)([123])(?!\1|\2)([123])$/u.test(order)) {
 		throw new Error(`invalid word3 permutation: ${order}`);
 	}
@@ -111,7 +116,7 @@ function buildExtendedWord3Rows(entry, data, words, mode, slotKeys, order) {
 		if (item.py.some((py) => !entry.codeList[py])) continue;
 		const chars = [...item.text];
 		const auxiliaries = [...order].map((position) =>
-			auxiliaryFor(item, chars, Number(position), mode, slotKeys, shape),
+			auxiliaryFor(item, chars, Number(position), mode, toneKeysByTone, shape),
 		);
 		if (auxiliaries.some((value) => !value)) continue;
 		const stem = item.py.map((py) => entry.codeList[py][0]).join("");
@@ -186,7 +191,7 @@ function evaluateCase(context, specification) {
 	const { data, words, strokes, model, scorer, motor } = context;
 	const entry = data.entries.find((value) => value.id === specification.id);
 	if (!entry) throw new Error(`missing scheme ${specification.id}`);
-	const cloned = { ...entry, tone: specification.slotKeys };
+	const cloned = { ...entry, tone: specification.toneKeysByTone };
 	const characterRows = scorer
 		.buildRows(cloned, data, strokes, words, specification.mode)
 		.filter((row) => row.kind === "character");
@@ -196,9 +201,7 @@ function evaluateCase(context, specification) {
 	const contract = model.classifyContract(entry.capacity);
 	const extendsWord3 = contract !== "four-code-top";
 	const word2Orders = orderedDistinctPairs(2);
-	const word3Orders = extendsWord3
-		? permutations(3)
-		: orderedDistinctPairs(3);
+	const word3Orders = extendsWord3 ? permutations(3) : orderedDistinctPairs(3);
 	const word4Orders = orderedDistinctPairs(4);
 	const wordRows = {
 		word2: new Map(
@@ -209,7 +212,7 @@ function evaluateCase(context, specification) {
 					data,
 					words,
 					specification.mode,
-					specification.slotKeys,
+					specification.toneKeysByTone,
 					"word2",
 					order,
 					model,
@@ -225,7 +228,7 @@ function evaluateCase(context, specification) {
 							data,
 							words,
 							specification.mode,
-							specification.slotKeys,
+							specification.toneKeysByTone,
 							order,
 						)
 					: buildRowsForOrder(
@@ -233,7 +236,7 @@ function evaluateCase(context, specification) {
 							data,
 							words,
 							specification.mode,
-							specification.slotKeys,
+							specification.toneKeysByTone,
 							"word3",
 							order,
 							model,
@@ -248,7 +251,7 @@ function evaluateCase(context, specification) {
 					data,
 					words,
 					specification.mode,
-					specification.slotKeys,
+					specification.toneKeysByTone,
 					"word4",
 					order,
 					model,
@@ -318,15 +321,9 @@ function evaluateCase(context, specification) {
 						policyKey: policyKey(word2, word3, word4),
 						tracks: {
 							character,
-							word2: summarize(
-								outcomes.filter((row) => row.kind === "word2"),
-							),
-							word3: summarize(
-								outcomes.filter((row) => row.kind === "word3"),
-							),
-							word4: summarize(
-								outcomes.filter((row) => row.kind === "word4"),
-							),
+							word2: summarize(outcomes.filter((row) => row.kind === "word2")),
+							word3: summarize(outcomes.filter((row) => row.kind === "word3")),
+							word4: summarize(outcomes.filter((row) => row.kind === "word4")),
 						},
 					});
 				}
@@ -338,10 +335,10 @@ function evaluateCase(context, specification) {
 		schemeId: specification.id,
 		schemeName: entry.name,
 		mode: specification.mode,
-		slotKeys: specification.slotKeys,
+		...auxiliarySemantics(specification.toneKeysByTone),
 		semanticMapping: semanticMapping(
 			specification.mode,
-			specification.slotKeys,
+			specification.toneKeysByTone,
 		),
 		word3Contract: extendsWord3 ? "AAA+BBB" : "AAAU+BB",
 		policySpace: {

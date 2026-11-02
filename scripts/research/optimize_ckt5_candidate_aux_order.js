@@ -99,7 +99,7 @@ function decodeState(stateKey) {
 		capacity: [bytes[0], bytes[1]],
 		headKeys: [...bytes.subarray(2, 29)],
 		finalKeys: [...bytes.subarray(29, 64)],
-		slotKeys: [...bytes.subarray(64, 69)]
+		toneKeysByTone: [...bytes.subarray(64, 69)]
 			.map((index) => alphabet[index])
 			.join(""),
 	};
@@ -111,7 +111,7 @@ function entryFromCandidate(candidate, data, template, splitPinyin) {
 		id: candidate.candidateId || candidate.layoutId || "source-candidate",
 		name: candidate.candidateId || candidate.layoutId || "source-candidate",
 		capacity: state.capacity,
-		tone: state.slotKeys,
+		tone: state.toneKeysByTone,
 		codeList: data.pinyin.map((pinyin, index) => {
 			if (template.codeList[index] == null) return null;
 			const [head, final] = splitPinyin(pinyin);
@@ -145,14 +145,14 @@ function summarizePolicy({
 	words,
 	strokes,
 	mode,
-	slotKeys,
+	toneKeysByTone,
 	policy,
 	motor,
 	model,
 	scorer,
 }) {
 	const characterRows = scorer
-		.buildRows({ ...entry, tone: slotKeys }, data, strokes, words, mode)
+		.buildRows({ ...entry, tone: toneKeysByTone }, data, strokes, words, mode)
 		.filter((row) => row.kind === "character");
 	const wordRows = wordKinds.flatMap((kind) =>
 		buildRowsForOrder(
@@ -160,7 +160,7 @@ function summarizePolicy({
 			data,
 			words,
 			mode,
-			slotKeys,
+			toneKeysByTone,
 			kind,
 			policy[kind],
 			model,
@@ -217,7 +217,7 @@ function optimizeMode({
 	words,
 	strokes,
 	mode,
-	slotKeys,
+	toneKeysByTone,
 	reference,
 	motor,
 	model,
@@ -238,7 +238,7 @@ function optimizeMode({
 		peakRssBytes = Math.max(peakRssBytes, process.memoryUsage().rss);
 	};
 	const characterRows = scorer
-		.buildRows({ ...entry, tone: slotKeys }, data, strokes, words, mode)
+		.buildRows({ ...entry, tone: toneKeysByTone }, data, strokes, words, mode)
 		.filter((row) => row.kind === "character");
 	const rowsByKind = {};
 	for (const kind of wordKinds) {
@@ -251,7 +251,7 @@ function optimizeMode({
 					data,
 					words,
 					mode,
-					slotKeys,
+					toneKeysByTone,
 					kind,
 					order,
 					model,
@@ -371,7 +371,7 @@ function main() {
 		words,
 		strokes,
 		mode,
-		slotKeys: "IVUAO",
+		toneKeysByTone: "IVUAO",
 		policy: referencePolicies[mode],
 		motor,
 		model,
@@ -399,7 +399,7 @@ function main() {
 		words,
 		strokes,
 		mode,
-		slotKeys: entry.tone,
+		toneKeysByTone: entry.tone,
 		reference,
 		motor,
 		model,
@@ -435,7 +435,7 @@ function main() {
 			pageSize: 6,
 			trackWeights,
 			referencePolicy: referencePolicies[mode],
-			slotKeys: entry.tone,
+			toneKeysByTone: entry.tone,
 			semanticMapping: semanticMapping(mode, entry.tone),
 			objective:
 				"minimize the mode contribution to normalized CKT v5 after full character/word2/word3/word4 competition",
