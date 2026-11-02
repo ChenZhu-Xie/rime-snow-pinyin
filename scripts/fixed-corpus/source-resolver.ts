@@ -43,18 +43,22 @@ export interface ResolveSourceOptions {
 
 function listAllFiles(root: string, current = root): string[] {
 	const files: string[] = [];
-	for (const entry of readdirSync(current, { withFileTypes: true }).sort((a, b) =>
-		a.name.localeCompare(b.name, "en"),
+	for (const entry of readdirSync(current, { withFileTypes: true }).sort(
+		(a, b) => a.name.localeCompare(b.name, "en"),
 	)) {
 		if (entry.name === ".git") continue;
 		const path = resolve(current, entry.name);
 		if (entry.isDirectory()) files.push(...listAllFiles(root, path));
-		else if (entry.isFile()) files.push(relative(root, path).split(sep).join("/"));
+		else if (entry.isFile())
+			files.push(relative(root, path).split(sep).join("/"));
 	}
 	return files;
 }
 
-export function readSourceRevision(root: string, selectedFiles?: string[]): string {
+export function readSourceRevision(
+	root: string,
+	selectedFiles?: string[],
+): string {
 	try {
 		return execFileSync("git", ["-C", root, "rev-parse", "HEAD"], {
 			encoding: "utf8",

@@ -16,7 +16,8 @@ export interface CollectCliOptions {
 
 function requiredValue(args: string[], index: number, option: string): string {
 	const value = args[index + 1];
-	if (!value || value.startsWith("--")) throw new Error(`${option} 需要路径参数`);
+	if (!value || value.startsWith("--"))
+		throw new Error(`${option} 需要路径参数`);
 	return value;
 }
 
@@ -101,14 +102,18 @@ export async function runCollectCli(args: string[]): Promise<number> {
 	return 0;
 }
 
-const invokedPath = process.argv[1] ? pathToFileURL(resolve(process.argv[1])).href : "";
+const invokedPath = process.argv[1]
+	? pathToFileURL(resolve(process.argv[1])).href
+	: "";
 if (import.meta.url === invokedPath) {
 	runCollectCli(process.argv.slice(2)).then(
 		(code) => {
 			process.exitCode = code;
 		},
 		(error: unknown) => {
-			process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
+			process.stderr.write(
+				`${error instanceof Error ? error.message : String(error)}\n`,
+			);
 			process.exitCode = 1;
 		},
 	);

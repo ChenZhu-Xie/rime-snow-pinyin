@@ -503,12 +503,19 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		.flatMap((first) => keys.map((second) => first + second))
 		.filter((code) => !occupied.has(code));
 	assert.equal(vacant.length, 75);
-	const sanpinRules = parseAlgebraRules(read("snow_sanpin.schema.yaml"), "sanpin_algebra");
+	const sanpinRules = parseAlgebraRules(
+		read("snow_sanpin.schema.yaml"),
+		"sanpin_algebra",
+	);
 	const runtimeOccupied = new Set<string>();
 	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
 		const [word, spelling, rawWeight] = line.split("\t");
-		if ([...(word ?? "")].length !== 1 || !spelling || Number(rawWeight) <= 1) continue;
-		const code = applyAlgebra(spelling, sanpinRules).canonical?.replace(/[ivuao]$/u, "");
+		if ([...(word ?? "")].length !== 1 || !spelling || Number(rawWeight) <= 1)
+			continue;
+		const code = applyAlgebra(spelling, sanpinRules).canonical?.replace(
+			/[ivuao]$/u,
+			"",
+		);
 		if (code?.length === 2) runtimeOccupied.add(code);
 	}
 	const runtimeVacant = keys
@@ -523,14 +530,20 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		};
 		assert.equal(schema.vacancy.enable_user_dict, false, file);
 		assert.doesNotMatch(read(file), /vacant_initial_pattern/u);
-		assert.match(read(file), /vacant: true[\s\S]+match_shape: "\^\$"[\s\S]+block: true/u);
+		assert.match(
+			read(file),
+			/vacant: true[\s\S]+match_shape: "\^\$"[\s\S]+block: true/u,
+		);
 		assert.match(read(file), /status: initial_pair/u);
 	}
 	const vacancySource = read("lua/snow/vacancy.lua");
 	assert.match(vacancySource, /translator:query\(input, segment\)/u);
 	assert.match(vacancySource, /memory:decode\(entry\.code\)/u);
 	assert.match(vacancySource, /spelling:sub\(1, 1\) ~= "~"/u);
-	assert.match(vacancySource, /projection:apply\(spelling\):sub\(1, input:len\(\)\) == input/u);
+	assert.match(
+		vacancySource,
+		/projection:apply\(spelling\):sub\(1, input:len\(\)\) == input/u,
+	);
 	assert.doesNotMatch(vacancySource, /entry\.weight/u);
 	const shapeProcessor = read("lua/snow/shape_processor.lua");
 	assert.match(shapeProcessor, /input:len\(\) ~= 2/u);
@@ -566,7 +579,10 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		read("lua/snow/table_like.lua"),
 		/candidate\.type = "initial_pair"/u,
 	);
-	assert.match(read("lua/snow/table_like.lua"), /translate\(input, segment, env, false/u);
+	assert.match(
+		read("lua/snow/table_like.lua"),
+		/translate\(input, segment, env, false/u,
+	);
 	assert.match(read("lua/snow/table_like.lua"), /if input:len\(\) ~= 2/u);
 	assert.match(
 		read("lua/snow/table_like.lua"),
@@ -625,5 +641,8 @@ test("U357 three-character words allow a third auxiliary but four-character word
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(sanpin, /\{3\}\[ivuao\]\{0,3\}/u);
 	assert.match(sanpin, /\{4,\}\[ivuao\]\{0,2\}/u);
-	assert.match(read("lua/snow/table_like.lua"), /length == 4 then return \{ 2, 3 \}/u);
+	assert.match(
+		read("lua/snow/table_like.lua"),
+		/length == 4 then return \{ 2, 3 \}/u,
+	);
 });

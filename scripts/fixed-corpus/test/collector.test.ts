@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+	existsSync,
+	mkdtempSync,
+	readFileSync,
+	rmSync,
+	writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
@@ -18,13 +24,15 @@ function removeTemporaryDirectory(path: string): void {
 	rmSync(resolved, { recursive: true, force: true });
 }
 
-function manifestFor(sources: Array<{
-	id: string;
-	family: string;
-	root: string;
-	file: string;
-	adapter: SourceAdapter;
-}>): CorpusManifest {
+function manifestFor(
+	sources: Array<{
+		id: string;
+		family: string;
+		root: string;
+		file: string;
+		adapter: SourceAdapter;
+	}>,
+): CorpusManifest {
 	return {
 		schemaVersion: 1,
 		globalPolicy: { deny: [], requireExplicitInclude: [] },
@@ -34,7 +42,9 @@ function manifestFor(sources: Array<{
 			family: source.family,
 			required: true,
 			localPaths: [source.root],
-			inputs: [{ adapter: source.adapter, include: [source.file], codeMarkers: ["/"] }],
+			inputs: [
+				{ adapter: source.adapter, include: [source.file], codeMarkers: ["/"] },
+			],
 		})),
 	};
 }
@@ -60,19 +70,57 @@ test("collection is deterministic and preserves source versus family coverage", 
 		"---\nname: first\n...\n共同词\tgt\t99\n坏行\n",
 		"utf8",
 	);
-	writeFileSync(join(secondRoot, "second.fixed.txt"), "gt\t共同词 次选\n", "utf8");
-	writeFileSync(join(thirdRoot, "third.txt"), "共同词\tgt/\t50\n独立词\tdl/\t40\n", "utf8");
+	writeFileSync(
+		join(secondRoot, "second.fixed.txt"),
+		"gt\t共同词 次选\n",
+		"utf8",
+	);
+	writeFileSync(
+		join(thirdRoot, "third.txt"),
+		"共同词\tgt/\t50\n独立词\tdl/\t40\n",
+		"utf8",
+	);
 	const manifest = manifestFor([
-		{ id: "first", family: "related", root: firstRoot, file: "first.dict.yaml", adapter: "rime-table" },
-		{ id: "second", family: "related", root: secondRoot, file: "second.fixed.txt", adapter: "ordered-fixed" },
-		{ id: "third", family: "independent", root: thirdRoot, file: "third.txt", adapter: "custom-phrase" },
+		{
+			id: "first",
+			family: "related",
+			root: firstRoot,
+			file: "first.dict.yaml",
+			adapter: "rime-table",
+		},
+		{
+			id: "second",
+			family: "related",
+			root: secondRoot,
+			file: "second.fixed.txt",
+			adapter: "ordered-fixed",
+		},
+		{
+			id: "third",
+			family: "independent",
+			root: thirdRoot,
+			file: "third.txt",
+			adapter: "custom-phrase",
+		},
 	]);
 
-	const first = await collectCorpus(manifest, { cacheRoot: cacheOne, offline: true });
-	const second = await collectCorpus(manifest, { cacheRoot: cacheTwo, offline: true });
+	const first = await collectCorpus(manifest, {
+		cacheRoot: cacheOne,
+		offline: true,
+	});
+	const second = await collectCorpus(manifest, {
+		cacheRoot: cacheTwo,
+		offline: true,
+	});
 
 	assert.deepEqual(
-		first.records.map((record) => [record.sourceId, record.sourcePath, record.line, record.word, record.rank]),
+		first.records.map((record) => [
+			record.sourceId,
+			record.sourcePath,
+			record.line,
+			record.word,
+			record.rank,
+		]),
 		[
 			["first", "first.dict.yaml", 4, "共同词", 1],
 			["second", "second.fixed.txt", 1, "次选", 2],
@@ -88,7 +136,9 @@ test("collection is deterministic and preserves source versus family coverage", 
 	for (const id of ["first", "second", "third"]) {
 		assert.equal(existsSync(join(cacheOne, "normalized", `${id}.jsonl`)), true);
 	}
-	const coverage = first.summary.wordCoverage.find((entry) => entry.word === "共同词");
+	const coverage = first.summary.wordCoverage.find(
+		(entry) => entry.word === "共同词",
+	);
 	assert.deepEqual(coverage, {
 		word: "共同词",
 		sourceCount: 3,
@@ -105,9 +155,15 @@ test("collection is deterministic and preserves source versus family coverage", 
 	assert.equal(provenanceOne, provenanceTwo);
 	assert.equal(provenanceOne.includes(fixtureRoot), false);
 	const provenance = JSON.parse(provenanceOne) as {
-		sources: Array<{ id: string; files: Array<{ path: string; sha256: string }> }>;
+		sources: Array<{
+			id: string;
+			files: Array<{ path: string; sha256: string }>;
+		}>;
 	};
-	assert.deepEqual(provenance.sources.map((source) => source.id), ["first", "second", "third"]);
+	assert.deepEqual(
+		provenance.sources.map((source) => source.id),
+		["first", "second", "third"],
+	);
 	assert.match(provenance.sources[0].files[0].sha256, /^[0-9a-f]{64}$/u);
 });
 
@@ -168,7 +224,11 @@ test("collection follows imports from a header-only encoder dictionary", async (
 	const result = await collectCorpus(manifest, { cacheRoot, offline: true });
 
 	assert.deepEqual(
-		result.records.map((record) => [record.word, record.originalCode, record.sourcePath]),
+		result.records.map((record) => [
+			record.word,
+			record.originalCode,
+			record.sourcePath,
+		]),
 		[["一些", "yx", "child.dict.yaml"]],
 	);
 });
@@ -205,25 +265,28 @@ test("JSONL serialization yields bounded deterministic chunks", () => {
 });
 
 test("summary bounds detailed word coverage while reporting omissions", () => {
-	const records: CorpusRecord[] = Array.from({ length: 10_005 }, (_, index) => ({
-		schemaVersion: 1,
-		sourceId: "fixture",
-		family: "fixture",
-		sourcePath: "fixture.txt",
-		sourceRevision: "revision",
-		line: index + 1,
-		word: `词${index.toString().padStart(5, "0")}`,
-		originalCode: "z",
-		normalizedCode: "z",
-		wordLength: 2,
-		codeLength: 1,
-		category: "shortcut",
-		level: "one-code",
-		rank: 1,
-		weight: null,
-		derived: false,
-		metadata: {},
-	}));
+	const records: CorpusRecord[] = Array.from(
+		{ length: 10_005 },
+		(_, index) => ({
+			schemaVersion: 1,
+			sourceId: "fixture",
+			family: "fixture",
+			sourcePath: "fixture.txt",
+			sourceRevision: "revision",
+			line: index + 1,
+			word: `词${index.toString().padStart(5, "0")}`,
+			originalCode: "z",
+			normalizedCode: "z",
+			wordLength: 2,
+			codeLength: 1,
+			category: "shortcut",
+			level: "one-code",
+			rank: 1,
+			weight: null,
+			derived: false,
+			metadata: {},
+		}),
+	);
 
 	const summary = summarizeCorpus(records, []);
 

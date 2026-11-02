@@ -1,0 +1,6 @@
+# Keep Biome-managed source and configuration files stable across platforms.
+/.gitattributes text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf

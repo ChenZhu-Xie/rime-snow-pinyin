@@ -56,12 +56,17 @@ export function parseEncoderRules(text: string): EncoderRule[] {
 	});
 }
 
-function matchingRule(length: number, rules: EncoderRule[]): EncoderRule | null {
+function matchingRule(
+	length: number,
+	rules: EncoderRule[],
+): EncoderRule | null {
 	return (
 		rules.find((rule) => {
 			if (rule.lengthEqual !== undefined) return rule.lengthEqual === length;
 			if (rule.lengthInRange) {
-				return length >= rule.lengthInRange[0] && length <= rule.lengthInRange[1];
+				return (
+					length >= rule.lengthInRange[0] && length <= rule.lengthInRange[1]
+				);
 			}
 			return false;
 		}) ?? null
@@ -81,9 +86,10 @@ function parseFormula(formula: string, wordLength: number): FormulaToken[] {
 	for (let index = 0; index < formula.length; index += 2) {
 		const characterToken = formula[index];
 		const codeToken = formula[index + 1];
-		const characterIndex = characterToken === "Z"
-			? wordLength - 1
-			: characterToken.charCodeAt(0) - "A".charCodeAt(0);
+		const characterIndex =
+			characterToken === "Z"
+				? wordLength - 1
+				: characterToken.charCodeAt(0) - "A".charCodeAt(0);
 		const codeIndex = codeToken.charCodeAt(0) - "a".charCodeAt(0);
 		if (characterIndex < 0 || characterIndex >= wordLength) {
 			throw new Error(`encoder formula ${formula} 引用了词长之外的字符`);
@@ -119,9 +125,11 @@ export function deriveWordCode(
 		};
 	}
 	const tokens = parseFormula(rule.formula, characters.length);
-	const referencedIndexes = [...new Set(tokens.map((token) => token.characterIndex))];
+	const referencedIndexes = [
+		...new Set(tokens.map((token) => token.characterIndex)),
+	];
 	const missingCharacters = referencedIndexes
-		.filter((index) => !(charCodes.get(characters[index])?.length))
+		.filter((index) => !charCodes.get(characters[index])?.length)
 		.map((index) => characters[index]);
 	if (missingCharacters.length > 0) {
 		return {
@@ -134,12 +142,17 @@ export function deriveWordCode(
 		};
 	}
 
-	const codeSets = referencedIndexes.map((index) => charCodes.get(characters[index]) ?? []);
-	const indexPositions = new Map(referencedIndexes.map((value, index) => [value, index]));
+	const codeSets = referencedIndexes.map(
+		(index) => charCodes.get(characters[index]) ?? [],
+	);
+	const indexPositions = new Map(
+		referencedIndexes.map((value, index) => [value, index]),
+	);
 	const codes = cartesian(codeSets).map((combination) => {
 		return tokens
 			.map((token) => {
-				const code = combination[indexPositions.get(token.characterIndex) ?? -1];
+				const code =
+					combination[indexPositions.get(token.characterIndex) ?? -1];
 				const character = code?.[token.codeIndex];
 				if (!character) {
 					throw new Error(

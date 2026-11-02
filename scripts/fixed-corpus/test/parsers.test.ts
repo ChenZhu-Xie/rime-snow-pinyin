@@ -59,9 +59,30 @@ test("expands ordered fixed candidates with ranks", () => {
 			level: record.level,
 		})),
 		[
-			{ word: "不", code: "b", rank: 1, line: 1, category: "single", level: "one-code" },
-			{ word: "办", code: "b", rank: 2, line: 1, category: "single", level: "one-code" },
-			{ word: "本", code: "b", rank: 3, line: 1, category: "single", level: "one-code" },
+			{
+				word: "不",
+				code: "b",
+				rank: 1,
+				line: 1,
+				category: "single",
+				level: "one-code",
+			},
+			{
+				word: "办",
+				code: "b",
+				rank: 2,
+				line: 1,
+				category: "single",
+				level: "one-code",
+			},
+			{
+				word: "本",
+				code: "b",
+				rank: 3,
+				line: 1,
+				category: "single",
+				level: "one-code",
+			},
 		],
 	);
 });

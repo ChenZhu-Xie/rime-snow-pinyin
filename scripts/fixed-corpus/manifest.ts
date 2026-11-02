@@ -43,7 +43,10 @@ export interface CorpusManifest {
 
 type Environment = Record<string, string | undefined>;
 
-export function expandCandidatePath(value: string, environment: Environment): string {
+export function expandCandidatePath(
+	value: string,
+	environment: Environment,
+): string {
 	let expanded = value.replace(/%([^%]+)%/gu, (match, name: string) => {
 		return environment[name] ?? environment[name.toUpperCase()] ?? match;
 	});
@@ -113,15 +116,24 @@ export function isAllowedSourcePath(
 	return true;
 }
 
-function assertStringArray(value: unknown, field: string): asserts value is string[] {
+function assertStringArray(
+	value: unknown,
+	field: string,
+): asserts value is string[] {
 	if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) {
 		throw new Error(`${field} 必须是字符串数组`);
 	}
 }
 
-export function loadManifest(path: string, environment: Environment): CorpusManifest {
-	const raw = load(readFileSync(path, "utf8")) as Partial<CorpusManifest> | undefined;
-	if (!raw || raw.schemaVersion !== 1) throw new Error("语料来源清单 schemaVersion 必须为 1");
+export function loadManifest(
+	path: string,
+	environment: Environment,
+): CorpusManifest {
+	const raw = load(readFileSync(path, "utf8")) as
+		| Partial<CorpusManifest>
+		| undefined;
+	if (!raw || raw.schemaVersion !== 1)
+		throw new Error("语料来源清单 schemaVersion 必须为 1");
 	if (!raw.globalPolicy || !Array.isArray(raw.sources)) {
 		throw new Error("语料来源清单缺少 globalPolicy 或 sources");
 	}
@@ -131,10 +143,14 @@ export function loadManifest(path: string, environment: Environment): CorpusMani
 		"globalPolicy.requireExplicitInclude",
 	);
 	const repoRoot = resolve(dirname(path), "..");
-	const expandedEnvironment = { ...environment, REPO_ROOT: environment.REPO_ROOT ?? repoRoot };
+	const expandedEnvironment = {
+		...environment,
+		REPO_ROOT: environment.REPO_ROOT ?? repoRoot,
+	};
 	const ids = new Set<string>();
 	for (const [index, source] of raw.sources.entries()) {
-		if (!source || typeof source !== "object") throw new Error(`sources[${index}] 无效`);
+		if (!source || typeof source !== "object")
+			throw new Error(`sources[${index}] 无效`);
 		for (const field of ["id", "name", "family"] as const) {
 			if (typeof source[field] !== "string" || source[field].length === 0) {
 				throw new Error(`sources[${index}].${field} 必须是非空字符串`);
@@ -147,7 +163,10 @@ export function loadManifest(path: string, environment: Environment): CorpusMani
 			throw new Error(`sources[${index}].inputs 不能为空`);
 		}
 		for (const [inputIndex, input] of source.inputs.entries()) {
-			assertStringArray(input.include, `sources[${index}].inputs[${inputIndex}].include`);
+			assertStringArray(
+				input.include,
+				`sources[${index}].inputs[${inputIndex}].include`,
+			);
 		}
 		source.required = source.required ?? false;
 		source.localPaths = source.localPaths.map((candidate) =>

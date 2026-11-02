@@ -47,7 +47,9 @@ export function loadWeightedCohort(
 
 	for (const path of paths) {
 		const source = basename(path);
-		const lines = readFileSync(path, "utf8").replace(/^\uFEFF/u, "").split(/\r?\n/u);
+		const lines = readFileSync(path, "utf8")
+			.replace(/^\uFEFF/u, "")
+			.split(/\r?\n/u);
 		let inBody = false;
 		for (let index = 0; index < lines.length; index += 1) {
 			const raw = lines[index] ?? "";
@@ -68,7 +70,10 @@ export function loadWeightedCohort(
 				continue;
 			}
 			const characters = [...word];
-			if (!acceptedLengths.has(characters.length) || !/^\p{Script=Han}+$/u.test(word)) {
+			if (
+				!acceptedLengths.has(characters.length) ||
+				!/^\p{Script=Han}+$/u.test(word)
+			) {
 				continue;
 			}
 			const syllables = rawReading.trim().split(/\s+/u);
@@ -94,7 +99,8 @@ export function loadWeightedCohort(
 			}
 
 			const reading = syllables.join(" ");
-			const wordReadings = readingsByWord.get(word) ?? new Map<string, MutableReading>();
+			const wordReadings =
+				readingsByWord.get(word) ?? new Map<string, MutableReading>();
 			const previous = wordReadings.get(reading);
 			if (previous) {
 				previous.weight = Math.max(previous.weight, weight);
@@ -126,7 +132,10 @@ export function loadWeightedCohort(
 			readings: normalizedReadings,
 		};
 	});
-	words.sort((left, right) => right.weight - left.weight || compareText(left.word, right.word));
+	words.sort(
+		(left, right) =>
+			right.weight - left.weight || compareText(left.word, right.word),
+	);
 	words.forEach((word, index) => {
 		word.rank = index + 1;
 	});

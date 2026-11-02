@@ -1,13 +1,16 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+	mkdirSync,
+	mkdtempSync,
+	readFileSync,
+	rmSync,
+	writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
-import {
-	readSourceRevision,
-	resolveSource,
-} from "../source-resolver";
+import { readSourceRevision, resolveSource } from "../source-resolver";
 import type { SourceDefinition } from "../manifest";
 
 function temporaryDirectory(prefix: string): string {
@@ -41,7 +44,13 @@ test("prefers a local source and never mutates its dirty Git state", async (t) =
 	});
 
 	execFileSync("git", ["init", "--quiet", root]);
-	execFileSync("git", ["-C", root, "config", "user.email", "fixture@example.test"]);
+	execFileSync("git", [
+		"-C",
+		root,
+		"config",
+		"user.email",
+		"fixture@example.test",
+	]);
 	execFileSync("git", ["-C", root, "config", "user.name", "Fixture"]);
 	writeFileSync(join(root, "fixture.dict.yaml"), "词\tci\n", "utf8");
 	execFileSync("git", ["-C", root, "add", "fixture.dict.yaml"]);
@@ -103,16 +112,26 @@ test("clones only into the selected repository cache", async (t) => {
 		{
 			cacheRoot,
 			cloneRepository: async (_repository, destination, ref) => {
-				assert.equal(destination, join(resolve(cacheRoot), "repositories", "fixture"));
+				assert.equal(
+					destination,
+					join(resolve(cacheRoot), "repositories", "fixture"),
+				);
 				assert.equal(ref, "stable");
 				mkdirSync(destination, { recursive: true });
-				writeFileSync(join(destination, "fixture.dict.yaml"), "词\tci\n", "utf8");
+				writeFileSync(
+					join(destination, "fixture.dict.yaml"),
+					"词\tci\n",
+					"utf8",
+				);
 			},
 		},
 	);
 
 	assert.equal(result.resolution, "cloned");
-	assert.equal(result.root, join(resolve(cacheRoot), "repositories", "fixture"));
+	assert.equal(
+		result.root,
+		join(resolve(cacheRoot), "repositories", "fixture"),
+	);
 	assert.match(result.revision ?? "", /^sha256:[0-9a-f]{64}$/u);
 });
 

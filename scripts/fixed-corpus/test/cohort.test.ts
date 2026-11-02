@@ -50,7 +50,11 @@ test("cohort merges duplicate readings by maximum weight and preserves polyphone
 			["zhong4 qing4", 90],
 		],
 	);
-	assert.equal(cohort.diagnostics.filter(({ code }) => code === "READING_LENGTH_MISMATCH").length, 1);
+	assert.equal(
+		cohort.diagnostics.filter(({ code }) => code === "READING_LENGTH_MISMATCH")
+			.length,
+		1,
+	);
 });
 
 test("cohort ranking has stable lexical tie-breaking", (t) => {

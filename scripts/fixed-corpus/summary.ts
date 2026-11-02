@@ -39,7 +39,10 @@ export function summarizeCorpus(
 	sources: SourceCollectionSummary[],
 	inspectedWords: string[] = [],
 ): CorpusSummary {
-	const coverage = new Map<string, { sources: Set<string>; families: Set<string> }>();
+	const coverage = new Map<
+		string,
+		{ sources: Set<string>; families: Set<string> }
+	>();
 	const categoryCounts: Record<string, number> = {};
 	for (const record of records) {
 		const entry = coverage.get(record.word) ?? {
@@ -49,7 +52,8 @@ export function summarizeCorpus(
 		entry.sources.add(record.sourceId);
 		entry.families.add(record.family);
 		coverage.set(record.word, entry);
-		categoryCounts[record.category] = (categoryCounts[record.category] ?? 0) + 1;
+		categoryCounts[record.category] =
+			(categoryCounts[record.category] ?? 0) + 1;
 	}
 	const allWordCoverage = [...coverage.entries()]
 		.map(([word, entry]) => ({
@@ -66,7 +70,8 @@ export function summarizeCorpus(
 				a.word.localeCompare(b.word, "zh-CN"),
 		);
 	const availableSources = sources.filter(
-		(source) => source.resolution !== "missing" && source.resolution !== "failed",
+		(source) =>
+			source.resolution !== "missing" && source.resolution !== "failed",
 	);
 	const coverageFor = (word: string): WordCoverage => {
 		const entry = coverage.get(word) ?? {
@@ -93,7 +98,8 @@ export function summarizeCorpus(
 		),
 		sources,
 		missingSources: sources.filter(
-			(source) => source.resolution === "missing" || source.resolution === "failed",
+			(source) =>
+				source.resolution === "missing" || source.resolution === "failed",
 		),
 		wordCoverage: allWordCoverage.slice(0, MAX_DETAILED_WORD_COVERAGE),
 		omittedWordCoverageCount: Math.max(
@@ -148,9 +154,17 @@ export function renderSummaryMarkdown(summary: CorpusSummary): string {
 			);
 		}
 	}
-	lines.push("", "## 多来源覆盖最高的字词", "", "| 字词 | 来源数 | 家族数 |", "|---|---:|---:|");
+	lines.push(
+		"",
+		"## 多来源覆盖最高的字词",
+		"",
+		"| 字词 | 来源数 | 家族数 |",
+		"|---|---:|---:|",
+	);
 	for (const entry of summary.wordCoverage.slice(0, 50)) {
-		lines.push(`| ${entry.word.replace(/\|/gu, "\\|")} | ${entry.sourceCount} | ${entry.familyCount} |`);
+		lines.push(
+			`| ${entry.word.replace(/\|/gu, "\\|")} | ${entry.sourceCount} | ${entry.familyCount} |`,
+		);
 	}
 	return `${lines.join("\n")}\n`;
 }

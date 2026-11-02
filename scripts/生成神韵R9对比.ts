@@ -36,8 +36,7 @@ const common399Url =
 	"https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin";
 const s005Url =
 	"https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts";
-const cktUrl =
-	"https://github.com/zhanghaozhecn/conditional-keystroke-timing";
+const cktUrl = "https://github.com/zhanghaozhecn/conditional-keystroke-timing";
 const shoudaoUrl = "https://sspai.com/post/108949";
 const mx34Url = "https://macroxue.github.io/shuangpin/eval.html";
 const markdownLink = (text: string, url: string) => `[${text}](${url})`;
@@ -151,15 +150,30 @@ const overview = metricTable([
 		"number",
 		"越低越好；仅为固定五进制补全模型",
 	],
-	[markdownLink("系综当量 v5", benchmarkUrl), (id) => data.ensembleV5.values[id].score, "number", "越低越好"],
-	[markdownLink("系综当量 v4", benchmarkUrl), (id) => data.ensembleV4.values[id].score, "number", "越低越好"],
+	[
+		markdownLink("系综当量 v5", benchmarkUrl),
+		(id) => data.ensembleV5.values[id].score,
+		"number",
+		"越低越好",
+	],
+	[
+		markdownLink("系综当量 v4", benchmarkUrl),
+		(id) => data.ensembleV4.values[id].score,
+		"number",
+		"越低越好",
+	],
 	[
 		markdownLink("系综当量 v4-C", benchmarkUrl),
 		(id) => pairMetrics.values[id]._v4PublicSensitivity,
 		"number",
 		"越低越好；公开例外键表敏感性",
 	],
-	[markdownLink("系综当量 v6-CW150", benchmarkUrl), (id) => v6(id).score, "number", "越低越好；排除 S2"],
+	[
+		markdownLink("系综当量 v6-CW150", benchmarkUrl),
+		(id) => v6(id).score,
+		"number",
+		"越低越好；排除 S2",
+	],
 	[
 		markdownLink("LU-v1r", benchmarkUrl),
 		(id) => entries[id].logicUniformity?.score,
@@ -248,8 +262,18 @@ const loadTable = metricTable([
 ]);
 
 const fairnessTable = metricTable([
-	[`${markdownLink("共同 399", common399Url)} 唯一码`, (id) => fair(id).unique399, "number", "越高越好"],
-	[`${markdownLink("共同 399", common399Url)} 碰撞音节`, (id) => 399 - fair(id).unique399, "number", "越低越好"],
+	[
+		`${markdownLink("共同 399", common399Url)} 唯一码`,
+		(id) => fair(id).unique399,
+		"number",
+		"越高越好",
+	],
+	[
+		`${markdownLink("共同 399", common399Url)} 碰撞音节`,
+		(id) => 399 - fair(id).unique399,
+		"number",
+		"越低越好",
+	],
 	[
 		"补全后平均键数",
 		(id) => fair(id).S2Completion.meanKeys,
@@ -480,9 +504,7 @@ const macroMetricRows = (track: string) => {
 const pairRows: Array<Array<string | number>> = [];
 for (const contract of Object.keys(pairMetrics.values[ids[0]])) {
 	if (contract.startsWith("_")) continue;
-	for (const model of Object.keys(
-		pairMetrics.values[ids[0]][contract],
-	)) {
+	for (const model of Object.keys(pairMetrics.values[ids[0]][contract])) {
 		pairRows.push([
 			contract,
 			model,

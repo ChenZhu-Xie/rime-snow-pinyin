@@ -35,20 +35,24 @@ test("privacy deny-list wins over broad includes", () => {
 		include: ["sbxh.dict.yaml", "**/*.yaml", "**/*.txt"],
 	};
 	const policy: GlobalSourcePolicy = {
-		deny: [
-			"build/**",
-			"sync/**",
-			"**/*.userdb/**",
-			"**/*.user.dict.yaml",
-		],
+		deny: ["build/**", "sync/**", "**/*.userdb/**", "**/*.user.dict.yaml"],
 		requireExplicitInclude: ["**/custom_phrase*.txt"],
 	};
 
 	assert.equal(isAllowedSourcePath("sbxh.dict.yaml", input, policy), true);
-	assert.equal(isAllowedSourcePath("build/sbxh.schema.yaml", input, policy), false);
-	assert.equal(isAllowedSourcePath("sync/x/sbxh.dict.yaml", input, policy), false);
+	assert.equal(
+		isAllowedSourcePath("build/sbxh.schema.yaml", input, policy),
+		false,
+	);
+	assert.equal(
+		isAllowedSourcePath("sync/x/sbxh.dict.yaml", input, policy),
+		false,
+	);
 	assert.equal(isAllowedSourcePath("foo.userdb/x", input, policy), false);
-	assert.equal(isAllowedSourcePath("snow_pinyin.user.dict.yaml", input, policy), false);
+	assert.equal(
+		isAllowedSourcePath("snow_pinyin.user.dict.yaml", input, policy),
+		false,
+	);
 	assert.equal(isAllowedSourcePath("custom_phrase.txt", input, policy), false);
 	assert.equal(isAllowedSourcePath("../sbxh.dict.yaml", input, policy), false);
 });
@@ -97,7 +101,11 @@ test("tracked policy blocks scheme-local personal dictionaries", () => {
 	};
 
 	assert.equal(
-		isAllowedSourcePath("cn_dicts/my_user.dict.yaml", broadInput, manifest.globalPolicy),
+		isAllowedSourcePath(
+			"cn_dicts/my_user.dict.yaml",
+			broadInput,
+			manifest.globalPolicy,
+		),
 		false,
 	);
 });
@@ -147,7 +155,9 @@ test("Ice Snow and KeyTao derivatives share one ancestry family", () => {
 
 	assert.deepEqual(
 		new Set(
-			sourceIds.map((id) => manifest.sources.find((source) => source.id === id)?.family),
+			sourceIds.map(
+				(id) => manifest.sources.find((source) => source.id === id)?.family,
+			),
 		),
 		new Set(["keytao"]),
 	);

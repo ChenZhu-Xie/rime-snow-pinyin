@@ -1,9 +1,5 @@
 import type { DictionaryWord } from "./cohort";
-import {
-	encodeWord,
-	type EncodingMode,
-	type LayoutDefinition,
-} from "./layout";
+import { encodeWord, type EncodingMode, type LayoutDefinition } from "./layout";
 
 export interface EncodedCode {
 	code: string;
@@ -115,18 +111,23 @@ function identity(word: Pick<EncodedWord, "word" | "length">): string {
 	return `${word.length}:${word.word}`;
 }
 
-function buildIndex(words: EncodedWord[]): Map<string, Map<string, CollisionMember>> {
+function buildIndex(
+	words: EncodedWord[],
+): Map<string, Map<string, CollisionMember>> {
 	const index = new Map<string, Map<string, CollisionMember>>();
 	for (const word of encodable(words)) {
 		for (const encoded of word.codes) {
-			const members = index.get(encoded.code) ?? new Map<string, CollisionMember>();
+			const members =
+				index.get(encoded.code) ?? new Map<string, CollisionMember>();
 			const key = identity(word);
 			const previous = members.get(key);
 			members.set(key, {
 				word: word.word,
 				length: word.length,
 				weight: word.weight,
-				readings: [...new Set([...(previous?.readings ?? []), ...encoded.readings])].sort(compareText),
+				readings: [
+					...new Set([...(previous?.readings ?? []), ...encoded.readings]),
+				].sort(compareText),
 			});
 			index.set(encoded.code, members);
 		}
@@ -134,9 +135,12 @@ function buildIndex(words: EncodedWord[]): Map<string, Map<string, CollisionMemb
 	return index;
 }
 
-function sortedMembers(members: Map<string, CollisionMember>): CollisionMember[] {
+function sortedMembers(
+	members: Map<string, CollisionMember>,
+): CollisionMember[] {
 	return [...members.values()].sort(
-		(left, right) => left.length - right.length || compareText(left.word, right.word),
+		(left, right) =>
+			left.length - right.length || compareText(left.word, right.word),
 	);
 }
 
@@ -168,7 +172,10 @@ function makeMetric(
 		for (const member of bucket.members) affected.set(identity(member), member);
 	}
 	const totalWeight = encodedWords.reduce((sum, word) => sum + word.weight, 0);
-	const affectedWeight = [...affected.values()].reduce((sum, word) => sum + word.weight, 0);
+	const affectedWeight = [...affected.values()].reduce(
+		(sum, word) => sum + word.weight,
+		0,
+	);
 	const maxBuckets = options.maxBuckets ?? Number.POSITIVE_INFINITY;
 	return {
 		codeCount: index.size,
@@ -196,13 +203,25 @@ export function measureCollisions(
 	const combined = buildIndex([...words2, ...words4]);
 	return {
 		coverage: { two: coverage(words2), four: coverage(words4) },
-		withinTwo: makeMetric(index2, words2, (members) => members.size > 1, options),
-		withinFour: makeMetric(index4, words4, (members) => members.size > 1, options),
+		withinTwo: makeMetric(
+			index2,
+			words2,
+			(members) => members.size > 1,
+			options,
+		),
+		withinFour: makeMetric(
+			index4,
+			words4,
+			(members) => members.size > 1,
+			options,
+		),
 		crossLength: makeMetric(
 			combined,
 			[...words2, ...words4],
 			(members) => {
-				const lengths = new Set([...members.values()].map(({ length }) => length));
+				const lengths = new Set(
+					[...members.values()].map(({ length }) => length),
+				);
 				return lengths.size > 1;
 			},
 			options,

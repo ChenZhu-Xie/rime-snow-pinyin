@@ -41,4 +41,3 @@ export interface ParseResult {
 	records: CorpusRecord[];
 	diagnostics: ParseDiagnostic[];
 }
-

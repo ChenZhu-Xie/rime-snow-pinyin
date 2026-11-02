@@ -50,17 +50,22 @@ function parseRule(expression: unknown): AlgebraRule {
 		throw new Error(`无效的拼写代数规则：${expression}`);
 	}
 	if (operator === "erase") {
-		if (replacement !== undefined) throw new Error(`erase 规则不能包含替换串：${expression}`);
+		if (replacement !== undefined)
+			throw new Error(`erase 规则不能包含替换串：${expression}`);
 		return { operator, pattern };
 	}
-	if (replacement === undefined) throw new Error(`规则缺少替换串：${expression}`);
+	if (replacement === undefined)
+		throw new Error(`规则缺少替换串：${expression}`);
 	if (operator === "xlit" && [...pattern].length !== [...replacement].length) {
 		throw new Error(`xlit 字符表长度不一致：${expression}`);
 	}
 	return { operator, pattern, replacement };
 }
 
-export function parseAlgebraRules(yaml: string, section: string): AlgebraRule[] {
+export function parseAlgebraRules(
+	yaml: string,
+	section: string,
+): AlgebraRule[] {
 	const document = load(yaml);
 	if (!document || typeof document !== "object") {
 		throw new Error("拼写代数 YAML 必须是映射");
@@ -70,13 +75,21 @@ export function parseAlgebraRules(yaml: string, section: string): AlgebraRule[] 
 	return value.map(parseRule);
 }
 
-function replaceRegex(value: string, pattern: string, replacement: string): string {
+function replaceRegex(
+	value: string,
+	pattern: string,
+	replacement: string,
+): string {
 	return value.replace(new RegExp(pattern, "u"), replacement);
 }
 
 function transliterate(value: string, source: string, target: string): string {
-	const replacements = new Map([...source].map((character, index) => [character, [...target][index]]));
-	return [...value].map((character) => replacements.get(character) ?? character).join("");
+	const replacements = new Map(
+		[...source].map((character, index) => [character, [...target][index]]),
+	);
+	return [...value]
+		.map((character) => replacements.get(character) ?? character)
+		.join("");
 }
 
 function transform(value: string, rule: AlgebraRule): string | null {
@@ -100,7 +113,10 @@ function deduplicate(values: Array<string | null>): string[] {
 	return result;
 }
 
-export function applyAlgebra(input: string, rules: AlgebraRule[]): AlgebraResult {
+export function applyAlgebra(
+	input: string,
+	rules: AlgebraRule[],
+): AlgebraResult {
 	let canonical: string | null = input;
 	let accepted = [input];
 	for (const rule of rules) {

@@ -11,11 +11,7 @@ import {
 import { dirname, join, resolve, sep } from "node:path";
 import { load } from "js-yaml";
 import { deriveWordCode, parseEncoderRules } from "./encoder";
-import type {
-	CorpusManifest,
-	SourceDefinition,
-	SourceInput,
-} from "./manifest";
+import type { CorpusManifest, SourceDefinition, SourceInput } from "./manifest";
 import { isAllowedSourcePath } from "./manifest";
 import {
 	classifyRecord,
@@ -33,18 +29,9 @@ import {
 	resolveSource,
 	listSourceFiles,
 } from "./source-resolver";
-import type {
-	ResolveSourceOptions,
-	ResolvedSource,
-} from "./source-resolver";
-import {
-	renderSummaryMarkdown,
-	summarizeCorpus,
-} from "./summary";
-import type {
-	CorpusSummary,
-	SourceCollectionSummary,
-} from "./summary";
+import type { ResolveSourceOptions, ResolvedSource } from "./source-resolver";
+import { renderSummaryMarkdown, summarizeCorpus } from "./summary";
+import type { CorpusSummary, SourceCollectionSummary } from "./summary";
 import type { CorpusRecord, ParseDiagnostic, ParseResult } from "./types";
 
 export interface CollectionDiagnostic {
@@ -108,25 +95,37 @@ function normalizeRelative(path: string): string {
 	return path.split(sep).join("/");
 }
 
-function parseDictionaryDocument(text: string, sourcePath: string): DictionaryDocument {
+function parseDictionaryDocument(
+	text: string,
+	sourcePath: string,
+): DictionaryDocument {
 	const lines = text.replace(/^\uFEFF/u, "").split(/\r?\n/u);
 	const headerStart = lines.findIndex((line) => line.trim() === "---");
 	const headerEnd = lines.findIndex(
 		(line, index) => index > headerStart && line.trim() === "...",
 	);
 	const headerLimit = headerEnd > headerStart ? headerEnd : lines.length;
-	const header = headerStart >= 0
-		? (load(lines.slice(headerStart + 1, headerLimit).join("\n")) as DictionaryDocument["header"])
-		: {};
+	const header =
+		headerStart >= 0
+			? (load(
+					lines.slice(headerStart + 1, headerLimit).join("\n"),
+				) as DictionaryDocument["header"])
+			: {};
 	const columns = header.columns ?? ["text", "code", "weight"];
 	const entries: DictionaryEntry[] = [];
-	const dataStart = headerEnd >= 0 ? headerEnd + 1 : headerStart >= 0 ? lines.length : 0;
+	const dataStart =
+		headerEnd >= 0 ? headerEnd + 1 : headerStart >= 0 ? lines.length : 0;
 	for (let index = dataStart; index < lines.length; index += 1) {
 		const raw = lines[index];
 		const trimmed = raw.trim();
 		if (!trimmed || trimmed.startsWith("#")) continue;
 		const values = raw.split("\t");
-		const byColumn = new Map(columns.map((column, columnIndex) => [column, values[columnIndex]?.trim()]));
+		const byColumn = new Map(
+			columns.map((column, columnIndex) => [
+				column,
+				values[columnIndex]?.trim(),
+			]),
+		);
 		const word = byColumn.get("text") ?? values[0]?.trim();
 		if (!word) continue;
 		const rawWeight = byColumn.get("weight");
@@ -134,7 +133,10 @@ function parseDictionaryDocument(text: string, sourcePath: string): DictionaryDo
 			word,
 			code: byColumn.get("code") || null,
 			stem: byColumn.get("stem") || null,
-			weight: rawWeight && /^\d+(?:\.\d+)?$/u.test(rawWeight) ? Number(rawWeight) : null,
+			weight:
+				rawWeight && /^\d+(?:\.\d+)?$/u.test(rawWeight)
+					? Number(rawWeight)
+					: null,
 			line: index + 1,
 			sourcePath,
 		});
@@ -143,10 +145,14 @@ function parseDictionaryDocument(text: string, sourcePath: string): DictionaryDo
 }
 
 function importedPath(currentPath: string, table: string): string {
-	const withExtension = table.endsWith(".dict.yaml") ? table : `${table}.dict.yaml`;
-	return normalizeRelative(withExtension.startsWith("./")
-		? join(dirname(currentPath), withExtension)
-		: withExtension);
+	const withExtension = table.endsWith(".dict.yaml")
+		? table
+		: `${table}.dict.yaml`;
+	return normalizeRelative(
+		withExtension.startsWith("./")
+			? join(dirname(currentPath), withExtension)
+			: withExtension,
+	);
 }
 
 function loadEncoderDocuments(
@@ -163,10 +169,14 @@ function loadEncoderDocuments(
 		if (seen.has(normalized)) return;
 		seen.add(normalized);
 		const syntheticInput: SourceInput = { ...input, include: [normalized] };
-		if (!isAllowedSourcePath(normalized, syntheticInput, manifest.globalPolicy)) return;
+		if (!isAllowedSourcePath(normalized, syntheticInput, manifest.globalPolicy))
+			return;
 		const fullPath = resolve(root, normalized);
 		if (!existsSync(fullPath)) return;
-		const document = parseDictionaryDocument(readFileSync(fullPath, "utf8"), normalized);
+		const document = parseDictionaryDocument(
+			readFileSync(fullPath, "utf8"),
+			normalized,
+		);
 		documents.push(document);
 		files.push(normalized);
 		for (const imported of document.header.import_tables ?? []) {
@@ -213,7 +223,8 @@ function parseEncoderInput(
 	input: SourceInput,
 	mainPath: string,
 ): ParsedSource {
-	if (!source.root || !source.revision) return { records: [], diagnostics: [], files: [] };
+	if (!source.root || !source.revision)
+		return { records: [], diagnostics: [], files: [] };
 	const { documents, files } = loadEncoderDocuments(
 		source.root,
 		mainPath,
@@ -237,9 +248,16 @@ function parseEncoderInput(
 	for (const entry of entries) {
 		if (entry.code) {
 			records.push(
-				createDerivedRecord(entry, entry.code, source.definition, source.revision, false, {
-					...(entry.stem ? { stem: entry.stem } : {}),
-				}),
+				createDerivedRecord(
+					entry,
+					entry.code,
+					source.definition,
+					source.revision,
+					false,
+					{
+						...(entry.stem ? { stem: entry.stem } : {}),
+					},
+				),
 			);
 			continue;
 		}
@@ -247,9 +265,16 @@ function parseEncoderInput(
 		const result = deriveWordCode(entry, rules, charCodes);
 		for (const code of result.codes) {
 			records.push(
-				createDerivedRecord(entry, code, source.definition, source.revision, true, {
-					formula: result.rule?.formula,
-				}),
+				createDerivedRecord(
+					entry,
+					code,
+					source.definition,
+					source.revision,
+					true,
+					{
+						formula: result.rule?.formula,
+					},
+				),
 			);
 		}
 		for (const message of result.diagnostics) {
@@ -266,7 +291,9 @@ function parseEncoderInput(
 	return { records, diagnostics, files };
 }
 
-function convertDiagnostics(diagnostics: ParseDiagnostic[]): CollectionDiagnostic[] {
+function convertDiagnostics(
+	diagnostics: ParseDiagnostic[],
+): CollectionDiagnostic[] {
 	return diagnostics.map((diagnostic) => ({
 		sourceId: diagnostic.sourceId,
 		sourcePath: diagnostic.sourcePath,
@@ -283,7 +310,8 @@ function parseExplicitInput(
 	input: SourceInput,
 	path: string,
 ): ParsedSource {
-	if (!source.root || !source.revision) return { records: [], diagnostics: [], files: [] };
+	if (!source.root || !source.revision)
+		return { records: [], diagnostics: [], files: [] };
 	const context = {
 		sourceId: source.definition.id,
 		family: source.definition.family,
@@ -307,11 +335,12 @@ function parseExplicitInput(
 		);
 	} else {
 		const text = readFileSync(fullPath, "utf8");
-		result = input.adapter === "ordered-fixed"
-			? parseOrderedFixed(text, context)
-			: input.adapter === "custom-phrase"
-				? parseCustomPhrase(text, context)
-				: parseRimeTable(text, context);
+		result =
+			input.adapter === "ordered-fixed"
+				? parseOrderedFixed(text, context)
+				: input.adapter === "custom-phrase"
+					? parseCustomPhrase(text, context)
+					: parseRimeTable(text, context);
 	}
 	return {
 		records: result.records,
@@ -359,7 +388,8 @@ export function writeJsonLines(records: CorpusRecord[], path: string): void {
 	mkdirSync(dirname(path), { recursive: true });
 	const handle = openSync(path, "w");
 	try {
-		for (const chunk of serializeJsonLineChunks(records)) writeSync(handle, chunk, null, "utf8");
+		for (const chunk of serializeJsonLineChunks(records))
+			writeSync(handle, chunk, null, "utf8");
 	} finally {
 		closeSync(handle);
 	}
@@ -378,7 +408,9 @@ export async function collectCorpus(
 	const diagnostics: CollectionDiagnostic[] = [];
 	const provenanceSources: SourceProvenance[] = [];
 	const sourceSummaries: SourceCollectionSummary[] = [];
-	const sourceOrder = new Map(manifest.sources.map((source, index) => [source.id, index]));
+	const sourceOrder = new Map(
+		manifest.sources.map((source, index) => [source.id, index]),
+	);
 
 	for (const definition of manifest.sources) {
 		let source: ResolvedSource;
@@ -419,32 +451,49 @@ export async function collectCorpus(
 					message: diagnostic.message,
 				});
 			}
-			if (definition.required) throw new Error(`必需来源缺失：${definition.id}`);
+			if (definition.required)
+				throw new Error(`必需来源缺失：${definition.id}`);
 			continue;
 		}
 
 		const sourceRecords: CorpusRecord[] = [];
 		const files = new Set<string>();
 		for (const input of definition.inputs) {
-			const matchedFiles = listSourceFiles(source, input, manifest.globalPolicy);
+			const matchedFiles = listSourceFiles(
+				source,
+				input,
+				manifest.globalPolicy,
+			);
 			for (const path of matchedFiles) {
-				const parsed = input.adapter === "encoder-derived"
-					? parseEncoderInput(manifest, source, input, path)
-					: parseExplicitInput(source, input, path);
+				const parsed =
+					input.adapter === "encoder-derived"
+						? parseEncoderInput(manifest, source, input, path)
+						: parseExplicitInput(source, input, path);
 				appendAll(sourceRecords, parsed.records);
 				appendAll(diagnostics, parsed.diagnostics);
 				for (const file of parsed.files) files.add(file);
 			}
 		}
 		sourceRecords.sort(recordComparator(sourceOrder));
-		writeJsonLines(sourceRecords, join(normalizedRoot, `${definition.id}.jsonl`));
+		writeJsonLines(
+			sourceRecords,
+			join(normalizedRoot, `${definition.id}.jsonl`),
+		);
 		appendAll(records, sourceRecords);
 		const provenanceFiles = [...files]
 			.sort((a, b) => a.localeCompare(b, "en"))
-			.map((path) => ({ path, sha256: sha256(resolve(source.root as string, path)) }));
-		const revision = source.resolution === "local" && !/^[0-9a-f]{40,64}$/u.test(source.revision)
-			? readSourceRevision(source.root, provenanceFiles.map((file) => file.path))
-			: source.revision;
+			.map((path) => ({
+				path,
+				sha256: sha256(resolve(source.root as string, path)),
+			}));
+		const revision =
+			source.resolution === "local" &&
+			!/^[0-9a-f]{40,64}$/u.test(source.revision)
+				? readSourceRevision(
+						source.root,
+						provenanceFiles.map((file) => file.path),
+					)
+				: source.revision;
 		provenanceSources.push({
 			id: definition.id,
 			family: definition.family,
@@ -465,9 +514,21 @@ export async function collectCorpus(
 	records.sort(recordComparator(sourceOrder));
 	writeJsonLines(records, join(cacheRoot, "corpus.jsonl"));
 	const provenance = { schemaVersion: 1 as const, sources: provenanceSources };
-	writeFileSync(join(cacheRoot, "provenance.json"), `${JSON.stringify(provenance, null, 2)}\n`, "utf8");
-	const summary = summarizeCorpus(records, sourceSummaries, options.inspectWords);
-	writeFileSync(join(reportsRoot, "summary.json"), `${JSON.stringify(summary, null, 2)}\n`, "utf8");
+	writeFileSync(
+		join(cacheRoot, "provenance.json"),
+		`${JSON.stringify(provenance, null, 2)}\n`,
+		"utf8",
+	);
+	const summary = summarizeCorpus(
+		records,
+		sourceSummaries,
+		options.inspectWords,
+	);
+	writeFileSync(
+		join(reportsRoot, "summary.json"),
+		`${JSON.stringify(summary, null, 2)}\n`,
+		"utf8",
+	);
 	const markdown = renderSummaryMarkdown(summary);
 	return { records, diagnostics, summary, provenance, markdown };
 }

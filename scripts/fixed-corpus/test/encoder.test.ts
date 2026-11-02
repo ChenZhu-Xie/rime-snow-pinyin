@@ -40,9 +40,16 @@ test("derives two, three, and four-character formula codes", () => {
 		["丁", ["gh"]],
 	]);
 
-	assert.deepEqual(deriveWordCode({ word: "甲乙" }, rules, charCodes).codes, ["abcd"]);
-	assert.deepEqual(deriveWordCode({ word: "甲乙丙" }, rules, charCodes).codes, ["acef"]);
-	assert.deepEqual(deriveWordCode({ word: "甲乙丙丁" }, rules, charCodes).codes, ["aceg"]);
+	assert.deepEqual(deriveWordCode({ word: "甲乙" }, rules, charCodes).codes, [
+		"abcd",
+	]);
+	assert.deepEqual(deriveWordCode({ word: "甲乙丙" }, rules, charCodes).codes, [
+		"acef",
+	]);
+	assert.deepEqual(
+		deriveWordCode({ word: "甲乙丙丁" }, rules, charCodes).codes,
+		["aceg"],
+	);
 });
 
 test("supports the three-initial encoder formula", () => {
@@ -53,7 +60,9 @@ test("supports the three-initial encoder formula", () => {
 		["丙", ["ef"]],
 	]);
 
-	assert.deepEqual(deriveWordCode({ word: "甲乙丙" }, rules, charCodes).codes, ["ace"]);
+	assert.deepEqual(deriveWordCode({ word: "甲乙丙" }, rules, charCodes).codes, [
+		"ace",
+	]);
 });
 
 test("reports missing character codes instead of fabricating output", () => {

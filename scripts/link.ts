@@ -95,9 +95,7 @@ function same(src: string, dest: string): boolean {
 function link(force: boolean) {
 	const list = pairs();
 	const conflicts = list.filter(({ src, dest }) =>
-		isLink(dest)
-			? !pointsIntoRepo(dest)
-			: existsSync(dest) && !same(src, dest),
+		isLink(dest) ? !pointsIntoRepo(dest) : existsSync(dest) && !same(src, dest),
 	);
 	if (conflicts.length > 0 && !force) {
 		console.error("以下文件与仓库内容不一致，软链会丢弃用户目录里的版本：");

@@ -138,7 +138,17 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 	);
 	assert.equal(vacant.length, 147);
 	assert.equal(vacantAA.length, 138);
-	assert.deepEqual(vacantAB, ["be", "pe", "gi", "ki", "hi", "je", "qe", "ra", "yu"]);
+	assert.deepEqual(vacantAB, [
+		"be",
+		"pe",
+		"gi",
+		"ki",
+		"hi",
+		"je",
+		"qe",
+		"ra",
+		"yu",
+	]);
 	const vacantAUB = vacantAB.flatMap((code) =>
 		[...auxiliary].map((suffix) => code + suffix),
 	);
@@ -153,15 +163,18 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 });
 
 test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码清单", () => {
-	assert.match(commonSource, /vacancy:[\s\S]*canonical_format:\r?\n    __include: \/shenyun_algebra/u);
+	assert.match(
+		commonSource,
+		/vacancy:[\s\S]*canonical_format:\r?\n    __include: \/shenyun_algebra/u,
+	);
 	const vacancySource = read("lua/snow/vacancy.lua");
 	assert.match(vacancySource, /translator:query\(input, segment\)/u);
 	assert.match(vacancySource, /memory:decode\(entry\.code\)/u);
 	assert.doesNotMatch(vacancySource, /entry\.weight/u);
 	const actualFallbacks = new Set(
-		[...vacancySource.matchAll(/^\s+(?:\["([^"]+)"\]|([a-z]+)) = true,$/gmu)].map(
-			(match) => match[1] ?? match[2],
-		),
+		[
+			...vacancySource.matchAll(/^\s+(?:\["([^"]+)"\]|([a-z]+)) = true,$/gmu),
+		].map((match) => match[1] ?? match[2]),
 	);
 	const maxWeightBySyllable = new Map<string, number>();
 	const occupied = new Set<string>();
@@ -184,7 +197,9 @@ test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码�
 	);
 	assert.deepEqual(actualFallbacks, expectedFallbacks);
 	const runtimeVacant = [..."bpmfdtnlgkhjqwvxrzcsy"]
-		.flatMap((initial) => [..."abcdefghijklmnopqrstuvwxyz"].map((final) => initial + final))
+		.flatMap((initial) =>
+			[..."abcdefghijklmnopqrstuvwxyz"].map((final) => initial + final),
+		)
 		.filter((code) => !occupied.has(code));
 	const { aa: runtimeVacantAA, ab: runtimeVacantAB } = partitionVacancies(
 		runtimeVacant,
@@ -405,11 +420,7 @@ test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", 
 			keys.add(key);
 
 			const candidates = candidatesStr.trim().split(/\s+/);
-			assert.equal(
-				candidates.length,
-				1,
-				`键 ${key} 只应固顶 1 个首选一简`,
-			);
+			assert.equal(candidates.length, 1, `键 ${key} 只应固顶 1 个首选一简`);
 			assert.equal(
 				candidates[0],
 				expectedFirst[key],

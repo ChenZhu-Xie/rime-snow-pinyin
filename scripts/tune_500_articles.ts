@@ -6,5 +6,7 @@ for (const a of exact500Articles) {
 			sum + [...line].filter((c) => /\p{Script=Han}/u.test(c)).length,
 		0,
 	);
-	console.log(`篇${a.id} [${a.genre}]: 当前 ${count} 汉字, 差额 ${500 - count}`);
+	console.log(
+		`篇${a.id} [${a.genre}]: 当前 ${count} 汉字, 差额 ${500 - count}`,
+	);
 }

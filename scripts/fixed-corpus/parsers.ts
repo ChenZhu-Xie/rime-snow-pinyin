@@ -119,24 +119,34 @@ function parseTabular(text: string, context: ParseContext): ParseResult {
 		const word = columns[0].trim();
 		const code = columns[1].trim();
 		const rawWeight = columns[2]?.trim();
-		const weight = rawWeight && /^\d+(?:\.\d+)?$/u.test(rawWeight)
-			? Number(rawWeight)
-			: null;
+		const weight =
+			rawWeight && /^\d+(?:\.\d+)?$/u.test(rawWeight)
+				? Number(rawWeight)
+				: null;
 		records.push(createRecord(word, code, line, 1, weight, context));
 	}
 
 	return { records, diagnostics };
 }
 
-export function parseRimeTable(text: string, context: ParseContext): ParseResult {
+export function parseRimeTable(
+	text: string,
+	context: ParseContext,
+): ParseResult {
 	return parseTabular(text, context);
 }
 
-export function parseCustomPhrase(text: string, context: ParseContext): ParseResult {
+export function parseCustomPhrase(
+	text: string,
+	context: ParseContext,
+): ParseResult {
 	return parseTabular(text, context);
 }
 
-export function parseOrderedFixed(text: string, context: ParseContext): ParseResult {
+export function parseOrderedFixed(
+	text: string,
+	context: ParseContext,
+): ParseResult {
 	const records: CorpusRecord[] = [];
 	const diagnostics: ParseDiagnostic[] = [];
 	for (const [index, raw] of physicalLines(text).entries()) {
