@@ -129,7 +129,7 @@ const overallValues = [
 	"9.630039",
 	"9.185254",
 	"9.195026",
-	"9.477661",
+	"9.204752",
 	"10.620559",
 	"10.684702",
 	"10.821925",
@@ -496,36 +496,52 @@ function addComparisonLegends(markdown: string) {
 }
 
 function ensureCktV51Documentation(markdown: string) {
+	const definitionRows = [
+		"[^zh-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)保留各布局原生主码路由并统一最长六码：传统 21×21 三字词补足第三辅，四码顶仍为 `AAAU+BB`；六项参数在 0%～500% 的 `11⁶` 网格中选最低平均名次辅序。",
+		"[^en-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md) preserves each layout family's native main-code route while making six the maximum length: traditional 21×21 three-character words gain a third auxiliary, whereas four-code-top remains `AAAU+BB`; source orders are selected by mean rank over the six-parameter `11⁶` grid from 0% to 500%.",
+		"[^zht-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)保留各布局原生主碼路由並統一最長六碼：傳統 21×21 三字詞補足第三輔，四碼頂仍為 `AAAU+BB`；六項參數在 0%～500% 的 `11⁶` 網格中選最低平均名次輔序。",
+	];
 	if (!markdown.includes("[^zh-ckt51]:")) {
-		const definitions = [
-			"[^zh-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)统一按二／四字词 4 主码＋2 辅、三字词 3 主码＋3 辅计分，将第三辅纳入成本与消歧；六项参数在 0%～500% 的 `11⁶` 网格中选最低平均名次辅序。",
-			"[^en-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md) uses a unified six-code contract—four main plus two auxiliary codes for two-/four-character words and three plus three for three-character words—and selects source orders by mean rank over the six-parameter `11⁶` grid from 0% to 500%.",
-			"[^zht-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)統一按二／四字詞 4 主碼＋2 輔、三字詞 3 主碼＋3 輔計分，將第三輔納入成本與消歧；六項參數在 0%～500% 的 `11⁶` 網格中選最低平均名次輔序。",
-		].join("\n");
 		markdown = markdown.replace(
 			/^(\[\^zht-ckt5\]:.*)$/mu,
-			`$1\n${definitions}`,
+			`$1\n${definitionRows.join("\n")}`,
 		);
+	} else {
+		markdown = markdown
+			.split("\n")
+			.map((line) => {
+				const index = definitionRows.findIndex((row) =>
+					line.startsWith(row.slice(0, row.indexOf(":") + 1)),
+				);
+				return index >= 0 ? definitionRows[index] : line;
+			})
+			.join("\n");
 	}
 	for (const [marker, prior, row] of [
 		[
 			"| 综合补全 [CKT v5.1]",
 			/^(\| 综合补全 \[CKT v5\].*)$/mu,
-			"| 综合补全 [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^zh-ckt51] | 9.477661 | 9.717167 | 9.999357 | 9.331756 | 越低越好；统一六码合同并计入三字词第三辅 |",
+			"| 综合补全 [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^zh-ckt51] | 9.204752 | 9.717167 | 9.999357 | 9.202834 | 越低越好；原生路由最长六码 |",
 		],
 		[
 			"| Completion [CKT v5.1]",
 			/^(\| Completion \[CKT v5\].*)$/mu,
-			"| Completion [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^en-ckt51] | 9.477661 | 9.717167 | 9.999357 | 9.331756 | Lower; unified six-code contract including the third auxiliary for three-character words |",
+			"| Completion [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^en-ckt51] | 9.204752 | 9.717167 | 9.999357 | 9.202834 | Lower; native routes with a six-code maximum |",
 		],
 		[
 			"| 綜合補全 [CKT v5.1]",
 			/^(\| 綜合補全 \[CKT v5\].*)$/mu,
-			"| 綜合補全 [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^zht-ckt51] | 9.477661 | 9.717167 | 9.999357 | 9.331756 | 越低越好；統一六碼合同並計入三字詞第三輔 |",
+			"| 綜合補全 [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^zht-ckt51] | 9.204752 | 9.717167 | 9.999357 | 9.202834 | 越低越好；原生路由最長六碼 |",
 		],
 	] as const) {
-		if (!markdown.includes(marker))
+		if (!markdown.includes(marker)) {
 			markdown = markdown.replace(prior, `$1\n${row}`);
+		} else {
+			markdown = markdown
+				.split("\n")
+				.map((line) => (line.startsWith(marker) ? row : line))
+				.join("\n");
+		}
 	}
 	return markdown;
 }

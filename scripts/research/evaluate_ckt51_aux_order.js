@@ -3,11 +3,10 @@
 /*
  * Build the CKT v5.1 auxiliary-order component table.
  *
- * The v5.1 comparison contract gives every word six total code positions:
- * word2 = four main + two auxiliaries, word3 = three main + three auxiliaries,
- * and word4 = four main + two auxiliaries.  Three-character words use their
- * own pools for all four stages so every layout is compared under the same
- * AAA/AAAB/AAABB/AAABBB routing contract.
+ * The v5.1 comparison contract gives every word at most six total code
+ * positions while preserving each layout family's native main-code route.
+ * Traditional 21x21 three-character words extend AAA+BB to AAA+BBB; native
+ * four-code-top layouts keep their existing AAAU+BB route unchanged.
  */
 
 const fs = require("node:fs");
@@ -101,7 +100,7 @@ function stage(code, pool) {
 	};
 }
 
-function buildWord3Rows(entry, data, words, mode, slotKeys, order) {
+function buildExtendedWord3Rows(entry, data, words, mode, slotKeys, order) {
 	if (!/^([123])(?!\1)([123])(?!\1|\2)([123])$/u.test(order)) {
 		throw new Error(`invalid word3 permutation: ${order}`);
 	}
@@ -194,8 +193,12 @@ function evaluateCase(context, specification) {
 	const character = summarize(
 		model.resolveCompetition(characterRows, { motorCost: motor }),
 	);
+	const contract = model.classifyContract(entry.capacity);
+	const extendsWord3 = contract !== "four-code-top";
 	const word2Orders = orderedDistinctPairs(2);
-	const word3Orders = permutations(3);
+	const word3Orders = extendsWord3
+		? permutations(3)
+		: orderedDistinctPairs(3);
 	const word4Orders = orderedDistinctPairs(4);
 	const wordRows = {
 		word2: new Map(
@@ -216,14 +219,25 @@ function evaluateCase(context, specification) {
 		word3: new Map(
 			word3Orders.map((order) => [
 				order,
-				buildWord3Rows(
-					entry,
-					data,
-					words,
-					specification.mode,
-					specification.slotKeys,
-					order,
-				),
+				extendsWord3
+					? buildExtendedWord3Rows(
+							entry,
+							data,
+							words,
+							specification.mode,
+							specification.slotKeys,
+							order,
+						)
+					: buildRowsForOrder(
+							entry,
+							data,
+							words,
+							specification.mode,
+							specification.slotKeys,
+							"word3",
+							order,
+							model,
+						),
 			]),
 		),
 		word4: new Map(
@@ -243,44 +257,79 @@ function evaluateCase(context, specification) {
 		),
 	};
 
-	const pairTracks = new Map();
-	for (const word2 of word2Orders) {
-		for (const word4 of word4Orders) {
-			const outcomes = model.resolveCompetition(
-				[...wordRows.word2.get(word2), ...wordRows.word4.get(word4)],
-				{ motorCost: motor },
-			);
-			pairTracks.set(`${word2}/${word4}`, {
-				word2: summarize(outcomes.filter((row) => row.kind === "word2")),
-				word4: summarize(outcomes.filter((row) => row.kind === "word4")),
-			});
-		}
-	}
-	const word3Tracks = new Map(
-		word3Orders.map((order) => [
-			order,
-			summarize(
-				model.resolveCompetition(wordRows.word3.get(order), {
-					motorCost: motor,
-				}),
-			),
-		]),
-	);
 	const results = [];
-	for (const word2 of word2Orders) {
-		for (const word3 of word3Orders) {
+	if (extendsWord3) {
+		const pairTracks = new Map();
+		for (const word2 of word2Orders) {
 			for (const word4 of word4Orders) {
-				const pair = pairTracks.get(`${word2}/${word4}`);
-				results.push({
-					policy: { word2, word3, word4 },
-					policyKey: policyKey(word2, word3, word4),
-					tracks: {
-						character,
-						word2: pair.word2,
-						word3: word3Tracks.get(word3),
-						word4: pair.word4,
-					},
+				const outcomes = model.resolveCompetition(
+					[...wordRows.word2.get(word2), ...wordRows.word4.get(word4)],
+					{ motorCost: motor },
+				);
+				pairTracks.set(`${word2}/${word4}`, {
+					word2: summarize(outcomes.filter((row) => row.kind === "word2")),
+					word4: summarize(outcomes.filter((row) => row.kind === "word4")),
 				});
+			}
+		}
+		const word3Tracks = new Map(
+			word3Orders.map((order) => [
+				order,
+				summarize(
+					model.resolveCompetition(wordRows.word3.get(order), {
+						motorCost: motor,
+					}),
+				),
+			]),
+		);
+		for (const word2 of word2Orders) {
+			for (const word3 of word3Orders) {
+				for (const word4 of word4Orders) {
+					const pair = pairTracks.get(`${word2}/${word4}`);
+					results.push({
+						policy: { word2, word3, word4 },
+						policyKey: policyKey(word2, word3, word4),
+						tracks: {
+							character,
+							word2: pair.word2,
+							word3: word3Tracks.get(word3),
+							word4: pair.word4,
+						},
+					});
+				}
+			}
+		}
+	} else {
+		// Four-code-top word lengths share candidate pools under the native CKT
+		// contract, so resolve all three word tracks together exactly as CKT v5.
+		for (const word2 of word2Orders) {
+			for (const word3 of word3Orders) {
+				for (const word4 of word4Orders) {
+					const outcomes = model.resolveCompetition(
+						[
+							...wordRows.word2.get(word2),
+							...wordRows.word3.get(word3),
+							...wordRows.word4.get(word4),
+						],
+						{ motorCost: motor },
+					);
+					results.push({
+						policy: { word2, word3, word4 },
+						policyKey: policyKey(word2, word3, word4),
+						tracks: {
+							character,
+							word2: summarize(
+								outcomes.filter((row) => row.kind === "word2"),
+							),
+							word3: summarize(
+								outcomes.filter((row) => row.kind === "word3"),
+							),
+							word4: summarize(
+								outcomes.filter((row) => row.kind === "word4"),
+							),
+						},
+					});
+				}
 			}
 		}
 	}
@@ -294,6 +343,7 @@ function evaluateCase(context, specification) {
 			specification.mode,
 			specification.slotKeys,
 		),
+		word3Contract: extendsWord3 ? "AAA+BBB" : "AAAU+BB",
 		policySpace: {
 			word2: word2Orders,
 			word3: word3Orders,
@@ -348,11 +398,14 @@ function main() {
 	const output = {
 		version: "ckt5.1-aux-order-components-1",
 		contract: {
-			name: "unified-six-code",
+			name: "native-route-six-code",
 			word2: "four main plus two auxiliaries",
-			word3: "three main plus three auxiliaries from distinct source positions",
+			word3Traditional21x21:
+				"three main plus three auxiliaries from distinct source positions",
+			word3FourCodeTop: "four main plus two auxiliaries",
 			word4: "four main plus two auxiliaries",
-			word3Pools: "separate at lengths 3, 4, 5, and 6 for every layout",
+			word3Routing:
+				"traditional 21x21 uses AAA/AAAB/AAABB/AAABBB; four-code-top keeps AAA/AAAU/AAAUB/AAAUBB",
 			pageSize: PAGE_SIZE,
 		},
 		trackWeights: TRACK_WEIGHTS,
@@ -376,4 +429,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { buildWord3Rows, permutations, summarize };
+module.exports = { buildExtendedWord3Rows, permutations, summarize };

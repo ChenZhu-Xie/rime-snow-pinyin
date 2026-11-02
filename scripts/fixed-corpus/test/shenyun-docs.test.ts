@@ -123,12 +123,12 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	);
 	includes(
 		report,
-		"| 综合补全 CKT v5.1 | **9.477661** ★★ | **9.717167** ★ | 9.999357 | 9.331756 🥇 |",
+		"| 综合补全 CKT v5.1 | **9.204752** ★★ | **9.717167** ★ | 9.999357 | 9.202834 🥇 |",
 	);
-	includes(report, "统一的最大六码合同");
+	includes(report, "保留各布局的原生主码路由");
 	includes(report, "`11⁶=1,771,561` 点");
 	includes(report, "四布局的形／调稳健辅序依次为");
-	includes(report, "`12/231/24`、`12/231/13`");
+	includes(report, "`12/21/14`、`12/21/13`");
 	includes(report, "形辅／调辅分别为 `12/12/23`、`21/12/23`");
 	includes(report, "每段两位数字表示 CKT v5 优化并计分的前两辅");
 	includes(report, "不含三字词第三辅的成本与消歧收益");
@@ -159,14 +159,23 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	assert.ok(!buckets.includes("🥇"));
 });
 
-test("CKT v5.1 使用统一六码合同并保存八模式稳健辅序", () => {
+test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健辅序", () => {
 	const result = JSON.parse(
 		read("reports/ckt51-aux-order-robustness.json"),
 	) as {
+		contract: { name: string };
 		independentGrid: { combinations: number; coefficients: string[] };
-		cases: Record<string, { robustPolicy: string }>;
+		cases: Record<
+			string,
+			{
+				robustPolicy: string;
+				word3Contract: string;
+				v5PolicyTracks: Record<string, { thirdAuxRate: number }>;
+			}
+		>;
 		normalized: { pairs: Record<string, { score: number }> };
 	};
+	assert.equal(result.contract.name, "native-route-six-code");
 	assert.equal(result.independentGrid.combinations, 11 ** 6);
 	assert.deepEqual(result.independentGrid.coefficients, [
 		"firstAuxMs",
@@ -178,12 +187,22 @@ test("CKT v5.1 使用统一六码合同并保存八模式稳健辅序", () => {
 	]);
 	assert.equal(result.cases["21x21-keytao"].robustPolicy, "12/231/24");
 	assert.equal(result.cases["21x21-sanpin"].robustPolicy, "12/213/23");
-	assert.equal(result.cases["21x26-keytao"].robustPolicy, "12/231/24");
-	assert.equal(result.cases["21x26-sanpin"].robustPolicy, "12/231/13");
-	assert.equal(result.cases["b04-keytao"].robustPolicy, "12/231/24");
-	assert.equal(result.cases["b04-sanpin"].robustPolicy, "12/231/23");
+	assert.equal(result.cases["21x26-keytao"].robustPolicy, "12/21/14");
+	assert.equal(result.cases["21x26-sanpin"].robustPolicy, "12/21/13");
+	assert.equal(result.cases["b04-keytao"].robustPolicy, "12/12/23");
+	assert.equal(result.cases["b04-sanpin"].robustPolicy, "21/12/23");
 	assert.equal(result.cases["s005-keytao"].robustPolicy, "12/231/24");
 	assert.equal(result.cases["s005-sanpin"].robustPolicy, "12/213/23");
+	assert.equal(result.cases["21x21-keytao"].word3Contract, "AAA+BBB");
+	assert.equal(result.cases["21x26-keytao"].word3Contract, "AAAU+BB");
+	assert.equal(
+		result.cases["21x26-keytao"].v5PolicyTracks.word3.thirdAuxRate,
+		0,
+	);
+	assert.equal(
+		result.cases["21x26-sanpin"].v5PolicyTracks.word3.thirdAuxRate,
+		0,
+	);
 	assert.ok(
 		result.normalized.pairs.b04.score < result.normalized.pairs["21x26"].score,
 	);
@@ -276,7 +295,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "CKT v5");
 		includes(readme, "9.195422");
 		includes(readme, "CKT v5.1");
-		includes(readme, "9.331756");
+		includes(readme, "9.202834");
 		includes(readme, "research-notes/2026-11-02-ckt-v5.1-six-code.md");
 		includes(readme, "冰雪神韵·形二／三／四字词的前两辅字位顺序为 `12/21/42`");
 		includes(readme, "运行时三字词按剩余字位补第三辅，四字词最多两辅");

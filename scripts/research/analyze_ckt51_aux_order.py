@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rank all 144 CKT v5.1 policies on the exact six-dimensional grid."""
+"""Rank all 144 native-route CKT v5.1 policies on the exact grid."""
 
 from __future__ import annotations
 
@@ -16,10 +16,10 @@ WEIGHTS = {"character": 1, "word2": 3, "word3": 1, "word4": 1}
 CURRENT = {
     "21x21-keytao": "12/231/24",
     "21x21-sanpin": "12/213/23",
-    "21x26-keytao": "12/213/42",
-    "21x26-sanpin": "12/213/13",
-    "b04-keytao": "12/123/23",
-    "b04-sanpin": "21/123/23",
+    "21x26-keytao": "12/21/42",
+    "21x26-sanpin": "12/21/13",
+    "b04-keytao": "12/12/23",
+    "b04-sanpin": "21/12/23",
     "s005-keytao": "12/213/24",
     "s005-sanpin": "12/213/23",
 }
@@ -178,23 +178,30 @@ def rank_case(
         result for result in case["results"] if result["policyKey"] == selected["policy"]
     )
     current = next(item for item in ranking if item["policy"] == CURRENT[case_id])
+    current_result = next(
+        result for result in case["results"] if result["policyKey"] == CURRENT[case_id]
+    )
     print(
         f"{case_id}: robust={selected['policy']} meanRank={selected['meanRank']:.6f}",
         file=sys.stderr,
     )
     return {
         "name": NAMES[case_id],
-        "currentV5ExtendedPolicy": CURRENT[case_id],
+        "v5Policy": CURRENT[case_id],
+        "word3Contract": case["word3Contract"],
         "robustPolicy": selected["policy"],
         "robust": selected,
         "current": current,
         "robustTop10": ranking[:10],
         "baselineTop10": baseline_top10,
         "selectedTracks": selected_result["tracks"],
+        "v5PolicyTracks": current_result["tracks"],
     }
 
 
-def normalized_scores(results: dict, references: dict) -> dict:
+def normalized_track_set(
+    results: dict, references: dict, track_field: str
+) -> tuple[dict, dict]:
     mode_scores = {}
     mode_power_sums = {}
     for case_id, result in results.items():
@@ -204,7 +211,7 @@ def normalized_scores(results: dict, references: dict) -> dict:
         reference_tracks = references[mode]["tracks"]
         for track, weight in WEIGHTS.items():
             ratio = (
-                result["selectedTracks"][track]["effectiveMs"]
+                result[track_field][track]["effectiveMs"]
                 / reference_tracks[track]["effectiveMs"]
             )
             ratios[track] = ratio
@@ -226,11 +233,24 @@ def normalized_scores(results: dict, references: dict) -> dict:
             "members": list(members),
             "score": 10 * (power_sum / (2 * sum(WEIGHTS.values()))) ** 0.25,
         }
+    return mode_scores, pairs
+
+
+def normalized_scores(results: dict, references: dict) -> dict:
+    modes, pairs = normalized_track_set(results, references, "selectedTracks")
+    v5_policy_modes, v5_policy_pairs = normalized_track_set(
+        results, references, "v5PolicyTracks"
+    )
     pairs["s005-anchor"] = {
         "members": ["s005-keytao", "s005-sanpin"],
         "score": 10,
     }
-    return {"modes": mode_scores, "pairs": pairs}
+    return {
+        "modes": modes,
+        "pairs": pairs,
+        "v5PolicyModes": v5_policy_modes,
+        "v5PolicyPairs": v5_policy_pairs,
+    }
 
 
 def main() -> None:
@@ -293,8 +313,9 @@ def main() -> None:
             "top-one rate, lower worst rank, then lexical policy order"
         ),
         "policyNotation": (
-            "word2/word3/word4 source positions; word3 has all three positions, "
-            "so 12/231/24 means 12, then 2-3-1, then 24"
+            "word2/word3/word4 source positions; traditional 21x21 word3 uses "
+            "three positions (for example 12/231/24), while four-code-top word3 "
+            "keeps two auxiliaries after AAAU (for example 12/21/42)"
         ),
         "referencePolicies": {
             mode: {"case": case_id, "policy": policy}
