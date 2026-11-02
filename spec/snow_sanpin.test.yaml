@@ -338,8 +338,8 @@ deploy:
         assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
-      # 芫 yuan2：U357 声韵调为 yrv，前两笔横横 → vv。
-      - send: yrvvv
+      # 芫 yuan2：U357 声韵调为 yrv，前两笔横竖 → vi。
+      - send: yrvvi
         assert: page("芫")
       # 嶅 ao2：U357 为 rfv，与“饶”等音节碰撞；山部首首码 e 将它保留在首页。
       - send: rfvvv
@@ -381,9 +381,9 @@ deploy:
       translator/shape_sources: [G]
     tests:
       # 三拼笔画键为 viuoa；令的 G/T/J 笔顺分别为 34454/34154/34152。
-      - send: "uuooao"
+      - send: "uuaoao"
         assert: has("令")
-      - send: "uuovao"
+      - send: "uuavao"
         assert: not has("令")
       - send: ltauooao
         assert: has("令")
@@ -393,9 +393,9 @@ deploy:
     patch:
       translator/shape_sources: [T]
     tests:
-      - send: "uuovao"
+      - send: "uuavao"
         assert: has("令")
-      - send: "uuooao"
+      - send: "uuaoao"
         assert: not has("令")
       - send: ltauovao
         assert: has("令")

@@ -3,6 +3,8 @@
 // snowshape 语料中的抽象符号按 IEUAO 槽位编码；它们不是方案实际的
 // “折、横、撇、竖、点”键序。所有评测都必须经这里转换到物理键。
 const SHAPE_SYMBOLS_BY_MEANING = "AEUIO";
+// 笔画字典的 1..5 固定为横、竖、撇、点、折；按形义符号重排后为 EIUOA。
+const STROKE_SYMBOLS_BY_STROKE = "EIUOA";
 const SNOWSHAPE_SLOT_SYMBOLS = "IEUAO";
 const TONE_DIGITS_BY_SHAPE_MEANING = "42310";
 
@@ -31,6 +33,11 @@ function physicalShape(abstract, toneKeysByTone) {
 function shapeKeysFromToneKeys(toneKeysByTone) {
 	assertFiveDistinctKeys(toneKeysByTone, "toneKeysByTone");
 	return physicalShape(SHAPE_SYMBOLS_BY_MEANING, toneKeysByTone);
+}
+
+function strokeKeysFromToneKeys(toneKeysByTone) {
+	assertFiveDistinctKeys(toneKeysByTone, "toneKeysByTone");
+	return physicalShape(STROKE_SYMBOLS_BY_STROKE, toneKeysByTone);
 }
 
 function toneKeysFromShapeKeys(shapeKeysByMeaning) {
@@ -71,11 +78,13 @@ function auxiliarySemantics(toneKeysByTone) {
 
 module.exports = {
 	SHAPE_SYMBOLS_BY_MEANING,
+	STROKE_SYMBOLS_BY_STROKE,
 	SNOWSHAPE_SLOT_SYMBOLS,
 	TONE_DIGITS_BY_SHAPE_MEANING,
 	auxiliarySemantics,
 	physicalShape,
 	shapeKeysFromToneKeys,
+	strokeKeysFromToneKeys,
 	toneDigitsAtShapeKeys,
 	toneKeysFromShapeKeys,
 };

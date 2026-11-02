@@ -15,6 +15,7 @@ const {
 	TONE_DIGITS_BY_SHAPE_MEANING,
 	auxiliarySemantics,
 	shapeKeysFromToneKeys,
+	strokeKeysFromToneKeys,
 	toneKeysFromShapeKeys,
 } = require("../../research/auxiliary_semantics.js") as {
 	TONE_DIGITS_BY_SHAPE_MEANING: string;
@@ -24,6 +25,7 @@ const {
 		toneDigitsByShapeMeaning: string;
 	};
 	shapeKeysFromToneKeys: (toneKeysByTone: string) => string;
+	strokeKeysFromToneKeys: (toneKeysByTone: string) => string;
 	toneKeysFromShapeKeys: (shapeKeysByMeaning: string) => string;
 };
 
@@ -48,6 +50,8 @@ test("标准 21×26 与 21×21 五辅映射保持 42310 语义不变量", () => 
 		toneDigitsByShapeMeaning: "42310",
 	});
 	assert.equal(TONE_DIGITS_BY_SHAPE_MEANING, "42310");
+	assert.equal(strokeKeysFromToneKeys("IVUAO"), "VIUOA");
+	assert.equal(strokeKeysFromToneKeys("IEUAO"), "EIUOA");
 });
 
 test("四个生产方案逐位使用形义序、声调序和笔画序", () => {
@@ -87,10 +91,20 @@ test("生成的运行时语义表和三拼笔画棱镜消费当前配置", () =>
 		new URL("snow_sanpin_bihua.schema.yaml", root),
 		"utf8",
 	);
-	assert.match(sanpinStroke, /xlit\/12345\/viuoa\//u);
+	const sanpinSemantics = loadAuxiliarySemantics("21x21");
+	assert.match(
+		sanpinStroke,
+		new RegExp(`xlit/12345/${sanpinSemantics.strokeKeysByStroke}/`, "u"),
+	);
 	assert.doesNotMatch(sanpinStroke, /xlit\/12345\/ivuao\//u);
 	const sanpin = readFileSync(new URL("snow_sanpin.schema.yaml", root), "utf8");
-	assert.match(sanpin, /stroke\/algebra:[\s\S]*xlit\/12345\/viuoa\//u);
+	assert.match(
+		sanpin,
+		new RegExp(
+			`stroke/preedit_format: \\[xlit/${sanpinSemantics.strokeKeysByStroke}/`,
+			"u",
+		),
+	);
 });
 
 test("键道二分形辅保留折横撇竖点含义", () => {
