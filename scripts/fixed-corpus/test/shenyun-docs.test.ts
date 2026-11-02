@@ -165,6 +165,14 @@ test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健�
 	) as {
 		contract: { name: string };
 		independentGrid: { combinations: number; coefficients: string[] };
+		comparisonToCkt5Robust: Record<
+			string,
+			{
+				ckt5RobustPolicy: string;
+				ckt51RobustPolicy: string;
+				change: string;
+			}
+		>;
 		cases: Record<
 			string,
 			{
@@ -203,6 +211,18 @@ test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健�
 		result.cases["21x26-sanpin"].v5PolicyTracks.word3.thirdAuxRate,
 		0,
 	);
+	assert.deepEqual(result.comparisonToCkt5Robust["21x26-keytao"], {
+		name: "冰雪神韵·形",
+		ckt5RobustPolicy: "12/21/14",
+		ckt51RobustPolicy: "12/21/14",
+		change: "unchanged",
+	});
+	assert.deepEqual(result.comparisonToCkt5Robust["s005-keytao"], {
+		name: "S005 键道",
+		ckt5RobustPolicy: "12/21/24",
+		ckt51RobustPolicy: "12/231/24",
+		change: "word3 first-two order changed and third auxiliary appended",
+	});
 	assert.ok(
 		result.normalized.pairs.b04.score < result.normalized.pairs["21x26"].score,
 	);

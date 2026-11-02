@@ -61,7 +61,7 @@
   "cases": {
     "21x21-keytao": {
       "name": "冰雪键道",
-      "v5Policy": "12/231/24",
+      "v5PolicyProjectedToCkt51": "12/231/24",
       "word3Contract": "AAA+BBB",
       "robustPolicy": "12/231/24",
       "robust": {
@@ -313,7 +313,7 @@
     },
     "21x21-sanpin": {
       "name": "冰雪三拼",
-      "v5Policy": "12/213/23",
+      "v5PolicyProjectedToCkt51": "12/213/23",
       "word3Contract": "AAA+BBB",
       "robustPolicy": "12/213/23",
       "robust": {
@@ -565,7 +565,7 @@
     },
     "21x26-keytao": {
       "name": "冰雪神韵·形",
-      "v5Policy": "12/21/42",
+      "v5PolicyProjectedToCkt51": "12/21/42",
       "word3Contract": "AAAU+BB",
       "robustPolicy": "12/21/14",
       "robust": {
@@ -817,7 +817,7 @@
     },
     "21x26-sanpin": {
       "name": "冰雪神韵·调",
-      "v5Policy": "12/21/13",
+      "v5PolicyProjectedToCkt51": "12/21/13",
       "word3Contract": "AAAU+BB",
       "robustPolicy": "12/21/13",
       "robust": {
@@ -1069,7 +1069,7 @@
     },
     "b04-keytao": {
       "name": "首道 B04·形",
-      "v5Policy": "12/12/23",
+      "v5PolicyProjectedToCkt51": "12/12/23",
       "word3Contract": "AAAU+BB",
       "robustPolicy": "12/12/23",
       "robust": {
@@ -1321,7 +1321,7 @@
     },
     "b04-sanpin": {
       "name": "首道 B04·调",
-      "v5Policy": "21/12/23",
+      "v5PolicyProjectedToCkt51": "21/12/23",
       "word3Contract": "AAAU+BB",
       "robustPolicy": "21/12/23",
       "robust": {
@@ -1573,7 +1573,7 @@
     },
     "s005-keytao": {
       "name": "S005 键道",
-      "v5Policy": "12/213/24",
+      "v5PolicyProjectedToCkt51": "12/213/24",
       "word3Contract": "AAA+BBB",
       "robustPolicy": "12/231/24",
       "robust": {
@@ -1825,7 +1825,7 @@
     },
     "s005-sanpin": {
       "name": "S005 三拼",
-      "v5Policy": "12/213/23",
+      "v5PolicyProjectedToCkt51": "12/213/23",
       "word3Contract": "AAA+BBB",
       "robustPolicy": "12/213/23",
       "robust": {
@@ -2074,6 +2074,56 @@
           "effectiveMs": 557.073572170859
         }
       }
+    }
+  },
+  "comparisonToCkt5Robust": {
+    "21x21-keytao": {
+      "name": "冰雪键道",
+      "ckt5RobustPolicy": "12/23/24",
+      "ckt51RobustPolicy": "12/231/24",
+      "change": "third auxiliary appended; first two unchanged"
+    },
+    "21x21-sanpin": {
+      "name": "冰雪三拼",
+      "ckt5RobustPolicy": "12/21/23",
+      "ckt51RobustPolicy": "12/213/23",
+      "change": "third auxiliary appended; first two unchanged"
+    },
+    "21x26-keytao": {
+      "name": "冰雪神韵·形",
+      "ckt5RobustPolicy": "12/21/14",
+      "ckt51RobustPolicy": "12/21/14",
+      "change": "unchanged"
+    },
+    "21x26-sanpin": {
+      "name": "冰雪神韵·调",
+      "ckt5RobustPolicy": "12/21/13",
+      "ckt51RobustPolicy": "12/21/13",
+      "change": "unchanged"
+    },
+    "b04-keytao": {
+      "name": "首道 B04·形",
+      "ckt5RobustPolicy": "12/12/23",
+      "ckt51RobustPolicy": "12/12/23",
+      "change": "unchanged"
+    },
+    "b04-sanpin": {
+      "name": "首道 B04·调",
+      "ckt5RobustPolicy": "21/12/23",
+      "ckt51RobustPolicy": "21/12/23",
+      "change": "unchanged"
+    },
+    "s005-keytao": {
+      "name": "S005 键道",
+      "ckt5RobustPolicy": "12/21/24",
+      "ckt51RobustPolicy": "12/231/24",
+      "change": "word3 first-two order changed and third auxiliary appended"
+    },
+    "s005-sanpin": {
+      "name": "S005 三拼",
+      "ckt5RobustPolicy": "12/21/23",
+      "ckt51RobustPolicy": "12/213/23",
+      "change": "third auxiliary appended; first two unchanged"
     }
   },
   "normalized": {

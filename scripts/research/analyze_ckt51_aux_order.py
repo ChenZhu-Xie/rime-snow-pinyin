@@ -23,6 +23,16 @@ CURRENT = {
     "s005-keytao": "12/213/24",
     "s005-sanpin": "12/213/23",
 }
+V5_ROBUST = {
+    "21x21-keytao": "12/23/24",
+    "21x21-sanpin": "12/21/23",
+    "21x26-keytao": "12/21/14",
+    "21x26-sanpin": "12/21/13",
+    "b04-keytao": "12/12/23",
+    "b04-sanpin": "21/12/23",
+    "s005-keytao": "12/21/24",
+    "s005-sanpin": "12/21/23",
+}
 REFERENCES = {
     "keytao": ("s005-keytao", "12/213/24"),
     "sanpin": ("s005-sanpin", "12/213/23"),
@@ -187,7 +197,7 @@ def rank_case(
     )
     return {
         "name": NAMES[case_id],
-        "v5Policy": CURRENT[case_id],
+        "v5PolicyProjectedToCkt51": CURRENT[case_id],
         "word3Contract": case["word3Contract"],
         "robustPolicy": selected["policy"],
         "robust": selected,
@@ -251,6 +261,34 @@ def normalized_scores(results: dict, references: dict) -> dict:
         "v5PolicyModes": v5_policy_modes,
         "v5PolicyPairs": v5_policy_pairs,
     }
+
+
+def compare_to_v5_robust(results: dict) -> dict:
+    comparison = {}
+    for case_id, result in results.items():
+        v5_policy = V5_ROBUST[case_id]
+        ckt51_policy = result["robustPolicy"]
+        v5_word2, v5_word3, v5_word4 = v5_policy.split("/")
+        ckt51_word2, ckt51_word3, ckt51_word4 = ckt51_policy.split("/")
+        if ckt51_policy == v5_policy:
+            change = "unchanged"
+        elif (
+            ckt51_word2 == v5_word2
+            and ckt51_word4 == v5_word4
+            and len(v5_word3) == 2
+            and len(ckt51_word3) == 3
+            and ckt51_word3.startswith(v5_word3)
+        ):
+            change = "third auxiliary appended; first two unchanged"
+        else:
+            change = "word3 first-two order changed and third auxiliary appended"
+        comparison[case_id] = {
+            "name": NAMES[case_id],
+            "ckt5RobustPolicy": v5_policy,
+            "ckt51RobustPolicy": ckt51_policy,
+            "change": change,
+        }
+    return comparison
 
 
 def main() -> None:
@@ -322,6 +360,7 @@ def main() -> None:
             for mode, (case_id, policy) in REFERENCES.items()
         },
         "cases": results,
+        "comparisonToCkt5Robust": compare_to_v5_robust(results),
         "normalized": normalized_scores(results, references),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
