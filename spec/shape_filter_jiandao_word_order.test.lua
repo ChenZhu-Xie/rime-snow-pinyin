@@ -55,8 +55,8 @@ match, _, comment = filter.handle_candidate("XYZ", "bca", env, active_state("xyz
 assert(match and comment == "bca", "three-character Keytao order must be second, third, first")
 
 context.current = "xyzw"
-match, _, comment = filter.handle_candidate("XYZW", "bdac", env, active_state("xyzw"))
-assert(match and comment == "bdac", "four-character Keytao order must be second, fourth, first, third")
+match, _, comment = filter.handle_candidate("XYZW", "bd", env, active_state("xyzw"))
+assert(match and comment == "bd", "four-character Keytao order must stop after second, fourth")
 
 context.current = "b"
 match, _, comment = filter.handle_candidate("XY", "bo", env, active_state("b"))

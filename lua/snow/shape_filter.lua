@@ -160,7 +160,8 @@ local function jiandao_encode(text, current, radicals_map, map, cache)
     -- 如果只有一个字符，直接返回对应的编码
     return codes[1] or "??"
   end
-  -- 普通词组取每个字的形码首码；二／三／四字最优前两辅为 12/23/24，后续按剩余字位补齐。
+  -- 普通词组取每个字的形码首码；二／三／四字最优前两辅为 12/23/24。
+  -- 三字词第三辅取剩余第一字；四字词按六码上限只使用前两辅。
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
   end
@@ -170,7 +171,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache)
   elseif #codes == 3 then
     positions = { 2, 3, 1 }
   elseif #codes == 4 then
-    positions = { 2, 4, 1, 3 }
+    positions = { 2, 4 }
   else
     return table.concat(codes)
   end

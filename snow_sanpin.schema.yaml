@@ -150,7 +150,7 @@ speller:
   initials: bpmfdtnlgkhjqxzcsrwye
   delimiter: " "
   shape:
-    # 二／三／四字词的前两位后置调码字位顺序为 12/21/23，后续按剩余字位补齐。
+    # 二／三／四字词的前两位后置调码字位顺序为 12/21/23；三字词最多三辅，四字词最多两辅。
     # 运行时空音码的 AA 是声声二字词；仅接受一个第二字声调辅码。
     - vacant: true
       match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
@@ -243,7 +243,7 @@ patch:
   translator/reserved_letter_pattern: "^(?:zco|cco|sco|yco|xho|xwo)$"
   translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[ivuao]?"
   translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[ivuao]{0,2}"
-  translator/jianpin_pattern: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}[ivuao]{0,3}"
+  translator/jianpin_pattern: "^(?:(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3}[ivuao]{0,3}|(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){4,}[ivuao]{0,2})$"
   # 神韵四声母简拼碰撞较多；显式保留双字代理码原有的长度质量，避免简拼压过双字全码。
   translator/t12_preserve_proxy_quality: true
   # 与四拼一致：先顶出当前候选，再直接提交高频尾字。

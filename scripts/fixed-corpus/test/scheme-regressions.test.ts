@@ -615,3 +615,15 @@ test("KeyTao keeps three-initial jianpin on the abc segment", () => {
 	assert.doesNotMatch(schema, /recognizer\/patterns\/jianpin/u);
 	assert.match(read("lua/snow/shape_filter.lua"), /jiandao_shape_cache/u);
 });
+
+test("U357 three-character words allow a third auxiliary but four-character words stop at two", () => {
+	const keytao = read("snow_jiandao.schema.yaml");
+	assert.match(keytao, /\{3\}"\r?\n\s+match_shape: "\^\.\{0,2\}\$"/u);
+	assert.match(keytao, /\{4,\}"\r?\n\s+match_shape: "\^\.\{0,1\}\$"/u);
+	assert.match(read("lua/snow/shape_filter.lua"), /positions = \{ 2, 4 \}/u);
+
+	const sanpin = read("snow_sanpin.schema.yaml");
+	assert.match(sanpin, /\{3\}\[ivuao\]\{0,3\}/u);
+	assert.match(sanpin, /\{4,\}\[ivuao\]\{0,2\}/u);
+	assert.match(read("lua/snow/table_like.lua"), /length == 4 then return \{ 2, 3 \}/u);
+});

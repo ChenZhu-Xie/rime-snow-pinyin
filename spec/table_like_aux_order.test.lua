@@ -49,6 +49,10 @@ queries = {}
 table_like.jianpin.func("wmxsui", segment, env)
 assert(queries[1] == "wm?ux?is", "four-character tone order must start with second, third")
 
+queries = {}
+table_like.jianpin.func("wmxsuiu", segment, env)
+assert(queries[1] == "wm?ux?is", "four-character tone order must ignore auxiliaries beyond two")
+
 local selected = { get_genuine = function() return { type = "sanpin_partial" } end }
 local previous = { _end = 2, get_selected_candidate = function() return selected end }
 context.composition = { toSegmentation = function()

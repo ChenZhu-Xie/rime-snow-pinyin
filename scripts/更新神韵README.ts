@@ -58,7 +58,9 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 - Common399 全覆盖且 399 个二键码全部唯一，21×26 共保留 147 个空码；M-R2 为 36，普通声母仅 \`f→J\` 偏移，基础元音仅 \`o→M\` 偏移。
 - 冰雪神韵·形辅键为 \`A/E/U/I/O\`，冰雪神韵·调声调键为 \`I/E/U/A/O → 一/二/三/四/轻\`。
+- 冰雪神韵·形二／三／四字词的前两辅字位顺序为 \`12/21/42\`，冰雪神韵·调为 \`12/21/13\`。
 - 小写输入遵循飞花式四码顶：单字为 \`A_ / AU_ / AUB / AUBB\`，二字词为 \`A₁U₁A₂U₂[B₁B₂]\`，三字词为 \`A₁A₂A₃U₃[B₂B₁]\`；四字词的冰雪神韵·形为 \`A₁A₂A₃A₄[B₄B₂]\`，冰雪神韵·调为 \`A₁A₂A₃A₄[B₁B₃]\`。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若 \`A₃B₂\` 运行时为空桶，三字词还可用 \`A₁A₂A₃B₂[B₁]\`。
+- 完成编码后按 \`;\` 或 \`/\` 会先顶出当前候选，再分别追加“的”或“了”，与 21×21 方案的强制上屏尾字键一致。
 - 两组 21×26 方案的空桶均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 \`AU\`，其中 134 个为空 \`AA\`、9 个为空 \`AB\`；单键只固顶一个一简字，其余候选自然排序。
 
 `;
@@ -84,7 +86,7 @@ Both SVGs are exported from the finalized entry in the benchmark page: the first
 
 Ordinary initials use their own letter except \`f→J\` and \`zh/ch/sh→F/V/W\`; zero-onset carriers are \`AOE→X\`, \`W→Q\`, and \`Y/YU→Y\`. The final keys are \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`.
 
-Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. Lowercase input follows the Feihua four-code-top contract: characters use \`A_ / AU_ / AUB / AUBB\`; two-character words use \`A₁U₁A₂U₂[B₁B₂]\`; three-character words use \`A₁A₂A₃U₃[B₂B₁]\`; four-character words use \`A₁A₂A₃A₄[B₄B₂]\` in Snow Shenyun Shape and \`A₁A₂A₃A₄[B₁B₃]\` in Snow Shenyun Tone. When \`A₃B₂\` is vacant at runtime, a three-character word may also use \`A₁A₂A₃B₂[B₁]\`. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial.
+Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. The first-two auxiliary-source orders for two-/three-/four-character words are \`12/21/42\` in Snow Shenyun Shape and \`12/21/13\` in Snow Shenyun Tone. Lowercase input follows the Feihua four-code-top contract: characters use \`A_ / AU_ / AUB / AUBB\`; two-character words use \`A₁U₁A₂U₂[B₁B₂]\`; three-character words use \`A₁A₂A₃U₃[B₂B₁]\`; four-character words use \`A₁A₂A₃A₄[B₄B₂]\` in Snow Shenyun Shape and \`A₁A₂A₃A₄[B₁B₃]\` in Snow Shenyun Tone. When \`A₃B₂\` is vacant at runtime, a three-character word may also use \`A₁A₂A₃B₂[B₁]\`. After a completed code, \`;\` or \`/\` first commits the current candidate and then appends “的” or “了”, matching the forced tail-character keys in the 21×21 schemes. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial.
 
 `;
 
@@ -109,7 +111,7 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 普通聲母除 \`f→J\`、\`zh/ch/sh→F/V/W\` 外使用本字母；零聲母載體為 \`AOE→X\`、\`W→Q\`、\`Y/YU→Y\`。韻母鍵為 \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`。
 
-Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式四碼頂：單字 \`A_ / AU_ / AUB / AUBB\`；二字詞 \`A₁U₁A₂U₂[B₁B₂]\`；三字詞 \`A₁A₂A₃U₃[B₂B₁]\`；四字詞的冰雪神韻·形為 \`A₁A₂A₃A₄[B₄B₂]\`，冰雪神韻·調為 \`A₁A₂A₃A₄[B₁B₃]\`。若 \`A₃B₂\` 運行時為空桶，三字詞亦可使用 \`A₁A₂A₃B₂[B₁]\`。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。
+Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。冰雪神韻·形二／三／四字詞的前兩輔字位順序為 \`12/21/42\`，冰雪神韻·調為 \`12/21/13\`。小寫輸入遵循飛花式四碼頂：單字 \`A_ / AU_ / AUB / AUBB\`；二字詞 \`A₁U₁A₂U₂[B₁B₂]\`；三字詞 \`A₁A₂A₃U₃[B₂B₁]\`；四字詞的冰雪神韻·形為 \`A₁A₂A₃A₄[B₄B₂]\`，冰雪神韻·調為 \`A₁A₂A₃A₄[B₁B₃]\`。若 \`A₃B₂\` 運行時為空桶，三字詞亦可使用 \`A₁A₂A₃B₂[B₁]\`。完成編碼後按 \`;\` 或 \`/\` 會先頂出當前候選，再分別追加「的」或「了」，與 21×21 方案的強制上屏尾字鍵一致。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。
 
 `;
 
@@ -533,17 +535,29 @@ function update(markdown: string, host: "github" | "gitee") {
 		return finalizeReadme(normalizeTerms(markdown), host);
 	markdown = markdown
 		.replace(
-			/(## 简体中文[\s\S]*?)(### 无\[飞键\])/u,
+			/### \[神韵\(Overall-17\)[^\n]*\n[\s\S]*?(?=### \[无飞键道\(U357\))/u,
+			zhOverall,
+		)
+		.replace(
+			/### \[Shenyun\(Overall-17\)[^\n]*\n[\s\S]*?(?=### \[Wufei KeyTao\(U357\))/u,
+			enOverall,
+		)
+		.replace(
+			/### \[神韻\(Overall-17\)[^\n]*\n[\s\S]*?(?=### \[無飛鍵道\(U357\))/u,
+			zhtOverall,
+		)
+		.replace(
+			/(## 简体中文[\s\S]*?)(### (?:无\[飞键\]|\[无飞键道\(U357\)[^\n]*))/u,
 			(_match, prefix: string, heading: string) =>
 				`${prefix}${zhOverall}${heading}`,
 		)
 		.replace(
-			/(## English[\s\S]*?)(### Wufei KeyTao)/u,
+			/(## English[\s\S]*?)(### (?:Wufei KeyTao|\[Wufei KeyTao\(U357\)[^\n]*))/u,
 			(_match, prefix: string, heading: string) =>
 				`${prefix}${enOverall}${heading}`,
 		)
 		.replace(
-			/(## 繁體中文[\s\S]*?)(### 無\[飛鍵\])/u,
+			/(## 繁體中文[\s\S]*?)(### (?:無\[飛鍵\]|\[無飛鍵道\(U357\)[^\n]*))/u,
 			(_match, prefix: string, heading: string) =>
 				`${prefix}${zhtOverall}${heading}`,
 		)

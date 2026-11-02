@@ -122,8 +122,8 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 		"| 综合补全 CKT v5 | **9.195026** ★★ 🥇 | **9.715587** ★ | 10.000000 | 9.195422 |",
 	);
 	includes(report, "形辅／调辅分别为 `12/12/23`、`21/12/23`");
-	includes(report, "每段两位数字只表示 CKT v5 优化并计分的前两辅");
-	includes(report, "不含第三及后续辅键的成本与消歧收益");
+	includes(report, "每段两位数字表示 CKT v5 优化并计分的前两辅");
+	includes(report, "不含三字词第三辅的成本与消歧收益");
 	assert.ok(!report.includes("神韵(Overall-17)与 B04 采用四码顶合同"));
 	assert.ok(!report.includes("★ ★★"));
 	includes(report, "🥇");
@@ -237,12 +237,13 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔");
 		includes(readme, "CKT v5");
 		includes(readme, "9.195422");
-		includes(readme, "运行时三字词按剩余字位补第三辅");
+		includes(readme, "冰雪神韵·形二／三／四字词的前两辅字位顺序为 `12/21/42`");
+		includes(readme, "运行时三字词按剩余字位补第三辅，四字词最多两辅");
 		includes(
 			readme,
-			"three-character words append the remaining third auxiliary",
+			"three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries",
 		);
-		includes(readme, "執行時三字詞按剩餘字位補第三輔");
+		includes(readme, "執行時三字詞按剩餘字位補第三輔，四字詞最多兩輔");
 		includes(readme, "143 个空 `AU`，其中 134 个为空 `AA`、9 个为空 `AB`");
 		includes(
 			readme,

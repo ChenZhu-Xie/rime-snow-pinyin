@@ -1,0 +1,808 @@
+{
+  "version": "ckt5-current-policy-gap-1",
+  "objective": "per-mode normalized CKT v5 contribution against the matching S005 mode, with word-length weights 1:3:1:1",
+  "baselineCostsMs": {
+    "firstAuxMs": 300,
+    "secondAuxMs": 300,
+    "selectionDecisionMs": 600,
+    "scanPerCandidateMs": 50,
+    "pageActionMs": 300
+  },
+  "practicalGrid": {
+    "rangePercent": [
+      50,
+      150
+    ],
+    "stepPercent": 25,
+    "pointsPerCoefficient": 5,
+    "combinations": 3125
+  },
+  "stressGrid": {
+    "rangePercent": [
+      0,
+      500
+    ],
+    "stepPercent": 50,
+    "pointsPerCoefficient": 11,
+    "combinations": 161051
+  },
+  "gapDefinition": "100 * (best alternative score - selected score) / selected score; positive means the deployed policy leads",
+  "results": {
+    "21x21-keytao": {
+      "name": "冰雪键道",
+      "selectedPolicy": "12/23/24",
+      "baseline": {
+        "selectedPolicy": "12/23/24",
+        "selectedRank": 1,
+        "selectedScore": 9.720287964898292,
+        "nearestAlternative": "12/23/23",
+        "alternativeScore": 9.72051383974877,
+        "gapPct": 0.002323746490786296,
+        "top5": [
+          {
+            "policy": "12/23/24",
+            "score": 9.720287964898292
+          },
+          {
+            "policy": "12/23/23",
+            "score": 9.72051383974877
+          },
+          {
+            "policy": "12/23/21",
+            "score": 9.721106872137284
+          },
+          {
+            "policy": "12/23/41",
+            "score": 9.721212394399007
+          },
+          {
+            "policy": "12/23/42",
+            "score": 9.721592790759498
+          }
+        ]
+      },
+      "practicalGrid": {
+        "points": 3125,
+        "selected": {
+          "policy": "12/23/24",
+          "top1Rate": 0.80768,
+          "top3Rate": 1,
+          "meanRank": 1.19712,
+          "worstRank": 3
+        },
+        "robustTop5": [
+          {
+            "policy": "12/23/24",
+            "top1Rate": 0.80768,
+            "top3Rate": 1,
+            "meanRank": 1.19712,
+            "worstRank": 3
+          },
+          {
+            "policy": "12/23/23",
+            "top1Rate": 0,
+            "top3Rate": 0.91872,
+            "meanRank": 2.28128,
+            "worstRank": 4
+          },
+          {
+            "policy": "12/23/41",
+            "top1Rate": 0.19232,
+            "top3Rate": 0.46592,
+            "meanRank": 3.14944,
+            "worstRank": 5
+          },
+          {
+            "policy": "12/23/21",
+            "top1Rate": 0,
+            "top3Rate": 0.53408,
+            "meanRank": 3.7824,
+            "worstRank": 5
+          },
+          {
+            "policy": "12/23/42",
+            "top1Rate": 0,
+            "top3Rate": 0.08128,
+            "meanRank": 4.88832,
+            "worstRank": 7
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": -0.0023120219516155863,
+          "p05": -0.0012189889745846034,
+          "median": 0.002201706189801618,
+          "mean": 0.0016894065870910915,
+          "p95": 0.0028698903543870205,
+          "maximum": 0.0031740551435972477
+        },
+        "winningGapPct": {
+          "minimum": 0.000002261776183261481,
+          "p05": 0.001774658424076188,
+          "median": 0.002311177606562415,
+          "mean": 0.0023053544461672185,
+          "p95": 0.0029009306375076625,
+          "maximum": 0.0031740551435972477
+        },
+        "winningPoints": 2524,
+        "nearestAlternatives": [
+          {
+            "policy": "12/23/23",
+            "rate": 0.8
+          },
+          {
+            "policy": "12/23/41",
+            "rate": 0.2
+          }
+        ]
+      },
+      "stressGrid": {
+        "points": 161051,
+        "selected": {
+          "policy": "12/23/24",
+          "top1Rate": 0.5909432415818592,
+          "top3Rate": 0.9936666025047967,
+          "meanRank": 1.5304220402232833,
+          "worstRank": 19
+        },
+        "robustTop5": [
+          {
+            "policy": "12/23/24",
+            "top1Rate": 0.5909432415818592,
+            "top3Rate": 0.9936666025047967,
+            "meanRank": 1.5304220402232833,
+            "worstRank": 19
+          },
+          {
+            "policy": "12/23/23",
+            "top1Rate": 0.2588683087965924,
+            "top3Rate": 0.9484635301860901,
+            "meanRank": 1.9559394229157223,
+            "worstRank": 23
+          },
+          {
+            "policy": "12/23/21",
+            "top1Rate": 0,
+            "top3Rate": 0.5566000832034573,
+            "meanRank": 4.007742888898548,
+            "worstRank": 25
+          },
+          {
+            "policy": "12/21/24",
+            "top1Rate": 0,
+            "top3Rate": 0.02208617146121415,
+            "meanRank": 5.190740821230542,
+            "worstRank": 43
+          },
+          {
+            "policy": "12/23/41",
+            "top1Rate": 0.13095851624640642,
+            "top3Rate": 0.2533545274478271,
+            "meanRank": 5.4037292534662935,
+            "worstRank": 10
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": -0.036439063817401786,
+          "p05": -0.008410069079968021,
+          "median": 0.0003241510687221012,
+          "mean": -0.00041894338780731953,
+          "p95": 0.0023794068246909715,
+          "maximum": 0.004290159897652906
+        },
+        "winningGapPct": {
+          "minimum": 4.955276083281322e-9,
+          "p05": 0.00010415879046608525,
+          "median": 0.0010720910071339961,
+          "mean": 0.0011710745032926203,
+          "p95": 0.0026711751405499107,
+          "maximum": 0.004290159897652906
+        },
+        "winningPoints": 95172,
+        "nearestAlternatives": [
+          {
+            "policy": "12/23/23",
+            "rate": 0.8320221544728067
+          },
+          {
+            "policy": "12/23/41",
+            "rate": 0.14535147251491765
+          },
+          {
+            "policy": "12/23/42",
+            "rate": 0.02037242860957088
+          },
+          {
+            "policy": "12/31/42",
+            "rate": 0.0016392322928761697
+          },
+          {
+            "policy": "12/32/42",
+            "rate": 0.0006147121098285637
+          }
+        ]
+      }
+    },
+    "21x21-sanpin": {
+      "name": "冰雪三拼",
+      "selectedPolicy": "12/21/23",
+      "baseline": {
+        "selectedPolicy": "12/21/23",
+        "selectedRank": 1,
+        "selectedScore": 9.710879104962357,
+        "nearestAlternative": "12/21/13",
+        "alternativeScore": 9.711007014402378,
+        "gapPct": 0.0013171767317718304,
+        "top5": [
+          {
+            "policy": "12/21/23",
+            "score": 9.710879104962357
+          },
+          {
+            "policy": "12/21/13",
+            "score": 9.711007014402378
+          },
+          {
+            "policy": "12/21/12",
+            "score": 9.71119132348988
+          },
+          {
+            "policy": "12/21/21",
+            "score": 9.711364820715481
+          },
+          {
+            "policy": "21/21/13",
+            "score": 9.711486046043476
+          }
+        ]
+      },
+      "practicalGrid": {
+        "points": 3125,
+        "selected": {
+          "policy": "12/21/23",
+          "top1Rate": 0.53472,
+          "top3Rate": 0.75648,
+          "meanRank": 2.63808,
+          "worstRank": 9
+        },
+        "robustTop5": [
+          {
+            "policy": "12/21/13",
+            "top1Rate": 0.39264,
+            "top3Rate": 0.88384,
+            "meanRank": 2.1552,
+            "worstRank": 5
+          },
+          {
+            "policy": "12/21/23",
+            "top1Rate": 0.53472,
+            "top3Rate": 0.75648,
+            "meanRank": 2.63808,
+            "worstRank": 9
+          },
+          {
+            "policy": "12/21/12",
+            "top1Rate": 0.07264,
+            "top3Rate": 0.64512,
+            "meanRank": 3.02272,
+            "worstRank": 6
+          },
+          {
+            "policy": "21/21/13",
+            "top1Rate": 0,
+            "top3Rate": 0.20896,
+            "meanRank": 4.62592,
+            "worstRank": 8
+          },
+          {
+            "policy": "12/21/21",
+            "top1Rate": 0,
+            "top3Rate": 0.40128,
+            "meanRank": 5.10144,
+            "worstRank": 10
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": -0.01612761963292888,
+          "p05": -0.011721420008517043,
+          "median": 0.0011302057689397374,
+          "mean": -0.0005338619767275408,
+          "p95": 0.005648354827966809,
+          "maximum": 0.006257032680098524
+        },
+        "winningGapPct": {
+          "minimum": 0.000008498740035711995,
+          "p05": 0.0009370429644758437,
+          "median": 0.004618879167260046,
+          "mean": 0.0041664119614851,
+          "p95": 0.005839069472924133,
+          "maximum": 0.006257032680098524
+        },
+        "winningPoints": 1671,
+        "nearestAlternatives": [
+          {
+            "policy": "12/21/13",
+            "rate": 0.54304
+          },
+          {
+            "policy": "12/21/21",
+            "rate": 0.32736
+          },
+          {
+            "policy": "12/21/12",
+            "rate": 0.1296
+          }
+        ]
+      },
+      "stressGrid": {
+        "points": 161051,
+        "selected": {
+          "policy": "12/21/23",
+          "top1Rate": 0.8480046693283494,
+          "top3Rate": 0.9264767061365654,
+          "meanRank": 1.540158086568851,
+          "worstRank": 24
+        },
+        "robustTop5": [
+          {
+            "policy": "12/21/23",
+            "top1Rate": 0.8480046693283494,
+            "top3Rate": 0.9264767061365654,
+            "meanRank": 1.540158086568851,
+            "worstRank": 24
+          },
+          {
+            "policy": "12/21/21",
+            "top1Rate": 0,
+            "top3Rate": 0.8668247946302724,
+            "meanRank": 2.7985482859466875,
+            "worstRank": 31
+          },
+          {
+            "policy": "12/21/24",
+            "top1Rate": 0,
+            "top3Rate": 0.6589527540965284,
+            "meanRank": 4.582722243264556,
+            "worstRank": 41
+          },
+          {
+            "policy": "12/21/12",
+            "top1Rate": 0.09868923508702213,
+            "top3Rate": 0.3061514675475471,
+            "meanRank": 4.73244500189381,
+            "worstRank": 15
+          },
+          {
+            "policy": "12/21/13",
+            "top1Rate": 0.052548571570496305,
+            "top3Rate": 0.12835064668955798,
+            "meanRank": 5.910717722957324,
+            "worstRank": 11
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": -0.039260966112078396,
+          "p05": -0.009073728325255995,
+          "median": 0.00354935187168324,
+          "mean": 0.0025724228383446316,
+          "p95": 0.008120782813128929,
+          "maximum": 0.01248061476060248
+        },
+        "winningGapPct": {
+          "minimum": 0.000004969610454978503,
+          "p05": 0.002188178467222585,
+          "median": 0.003919984814790743,
+          "mean": 0.004412466438418536,
+          "p95": 0.008368171785038469,
+          "maximum": 0.01248061476060248
+        },
+        "winningPoints": 136572,
+        "nearestAlternatives": [
+          {
+            "policy": "12/21/21",
+            "rate": 0.7950959633904788
+          },
+          {
+            "policy": "12/21/12",
+            "rate": 0.14087462977566112
+          },
+          {
+            "policy": "12/21/13",
+            "rate": 0.06247710352621219
+          },
+          {
+            "policy": "21/21/13",
+            "rate": 0.001552303307647888
+          }
+        ]
+      }
+    },
+    "21x26-keytao": {
+      "name": "冰雪神韵·形",
+      "selectedPolicy": "12/21/42",
+      "baseline": {
+        "selectedPolicy": "12/21/42",
+        "selectedRank": 1,
+        "selectedScore": 9.207837897659877,
+        "nearestAlternative": "12/21/14",
+        "alternativeScore": 9.207948859549969,
+        "gapPct": 0.0012050808379293748,
+        "top5": [
+          {
+            "policy": "12/21/42",
+            "score": 9.207837897659877
+          },
+          {
+            "policy": "12/21/14",
+            "score": 9.207948859549969
+          },
+          {
+            "policy": "12/21/41",
+            "score": 9.208043151115044
+          },
+          {
+            "policy": "12/21/13",
+            "score": 9.208747327707414
+          },
+          {
+            "policy": "12/21/12",
+            "score": 9.209421179611164
+          }
+        ]
+      },
+      "practicalGrid": {
+        "points": 3125,
+        "selected": {
+          "policy": "12/21/42",
+          "top1Rate": 0.5408,
+          "top3Rate": 1,
+          "meanRank": 1.6592,
+          "worstRank": 3
+        },
+        "robustTop5": [
+          {
+            "policy": "12/21/42",
+            "top1Rate": 0.5408,
+            "top3Rate": 1,
+            "meanRank": 1.6592,
+            "worstRank": 3
+          },
+          {
+            "policy": "12/21/14",
+            "top1Rate": 0.4592,
+            "top3Rate": 0.992,
+            "meanRank": 2.0256,
+            "worstRank": 4
+          },
+          {
+            "policy": "12/21/41",
+            "top1Rate": 0,
+            "top3Rate": 0.78656,
+            "meanRank": 2.7392,
+            "worstRank": 5
+          },
+          {
+            "policy": "12/21/13",
+            "top1Rate": 0,
+            "top3Rate": 0.21344,
+            "meanRank": 3.73824,
+            "worstRank": 6
+          },
+          {
+            "policy": "12/21/12",
+            "top1Rate": 0,
+            "top3Rate": 0,
+            "meanRank": 5.56128,
+            "worstRank": 8
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": -0.015982622374046112,
+          "p05": -0.012562065435469044,
+          "median": 0.0005783912382896652,
+          "mean": -0.00219919310865159,
+          "p95": 0.0035592427411884793,
+          "maximum": 0.004915654347797311
+        },
+        "winningGapPct": {
+          "minimum": 0.00002396167121425669,
+          "p05": 0.0004523239328557811,
+          "median": 0.0018465956322768792,
+          "mean": 0.0019993112514698264,
+          "p95": 0.003838268794536724,
+          "maximum": 0.004915654347797311
+        },
+        "winningPoints": 1690,
+        "nearestAlternatives": [
+          {
+            "policy": "12/21/14",
+            "rate": 0.5232
+          },
+          {
+            "policy": "12/21/41",
+            "rate": 0.4768
+          }
+        ]
+      },
+      "stressGrid": {
+        "points": 161051,
+        "selected": {
+          "policy": "12/21/42",
+          "top1Rate": 0.19855201147462606,
+          "top3Rate": 0.3351547025476402,
+          "meanRank": 5.040999434961596,
+          "worstRank": 21
+        },
+        "robustTop5": [
+          {
+            "policy": "12/21/14",
+            "top1Rate": 0.7840497730532564,
+            "top3Rate": 0.9541387510788508,
+            "meanRank": 1.5023377687813178,
+            "worstRank": 19
+          },
+          {
+            "policy": "12/21/13",
+            "top1Rate": 0,
+            "top3Rate": 0.5998534625677581,
+            "meanRank": 3.6829699908724565,
+            "worstRank": 23
+          },
+          {
+            "policy": "12/21/24",
+            "top1Rate": 0.012586075218409076,
+            "top3Rate": 0.5391708216651868,
+            "meanRank": 3.823993641765652,
+            "worstRank": 58
+          },
+          {
+            "policy": "12/21/42",
+            "top1Rate": 0.19855201147462606,
+            "top3Rate": 0.3351547025476402,
+            "meanRank": 5.040999434961596,
+            "worstRank": 21
+          },
+          {
+            "policy": "12/21/23",
+            "top1Rate": 0,
+            "top3Rate": 0.09357284338501469,
+            "meanRank": 5.520108537047271,
+            "worstRank": 60
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": -0.1312800471244514,
+          "p05": -0.08827158964974954,
+          "median": -0.029497477796923372,
+          "mean": -0.03230089055269106,
+          "p95": 0.006408164107070983,
+          "maximum": 0.018492721953973546
+        },
+        "winningGapPct": {
+          "minimum": 0.0000010253016061092343,
+          "p05": 0.0005552013825465599,
+          "median": 0.004093002373580714,
+          "mean": 0.00463095235348784,
+          "p95": 0.010629710467607334,
+          "maximum": 0.018492721953973546
+        },
+        "winningPoints": 31977,
+        "nearestAlternatives": [
+          {
+            "policy": "12/21/14",
+            "rate": 0.8292342177322711
+          },
+          {
+            "policy": "12/21/41",
+            "rate": 0.14402891009680163
+          },
+          {
+            "policy": "12/21/24",
+            "rate": 0.024911363481133306
+          },
+          {
+            "policy": "21/12/24",
+            "rate": 0.001633023079645578
+          },
+          {
+            "policy": "12/12/42",
+            "rate": 0.00013660269107301413
+          }
+        ]
+      }
+    },
+    "21x26-sanpin": {
+      "name": "冰雪神韵·调",
+      "selectedPolicy": "12/21/13",
+      "baseline": {
+        "selectedPolicy": "12/21/13",
+        "selectedRank": 1,
+        "selectedScore": 9.182161279309636,
+        "nearestAlternative": "12/21/14",
+        "alternativeScore": 9.183026430381776,
+        "gapPct": 0.009422085343786702,
+        "top5": [
+          {
+            "policy": "12/21/13",
+            "score": 9.182161279309636
+          },
+          {
+            "policy": "12/21/14",
+            "score": 9.183026430381776
+          },
+          {
+            "policy": "21/21/13",
+            "score": 9.18339318561917
+          },
+          {
+            "policy": "12/21/12",
+            "score": 9.183717188674416
+          },
+          {
+            "policy": "21/21/14",
+            "score": 9.184441000962476
+          }
+        ]
+      },
+      "practicalGrid": {
+        "points": 3125,
+        "selected": {
+          "policy": "12/21/13",
+          "top1Rate": 1,
+          "top3Rate": 1,
+          "meanRank": 1,
+          "worstRank": 1
+        },
+        "robustTop5": [
+          {
+            "policy": "12/21/13",
+            "top1Rate": 1,
+            "top3Rate": 1,
+            "meanRank": 1,
+            "worstRank": 1
+          },
+          {
+            "policy": "12/21/14",
+            "top1Rate": 0,
+            "top3Rate": 0.9952,
+            "meanRank": 2.29248,
+            "worstRank": 4
+          },
+          {
+            "policy": "21/21/13",
+            "top1Rate": 0,
+            "top3Rate": 0.8304,
+            "meanRank": 2.88192,
+            "worstRank": 4
+          },
+          {
+            "policy": "12/21/12",
+            "top1Rate": 0,
+            "top3Rate": 0.1696,
+            "meanRank": 3.86112,
+            "worstRank": 5
+          },
+          {
+            "policy": "21/21/14",
+            "top1Rate": 0,
+            "top3Rate": 0,
+            "meanRank": 5.10816,
+            "worstRank": 6
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": 0.002885496071552418,
+          "p05": 0.005361096280820254,
+          "median": 0.008918999366971688,
+          "mean": 0.008615682821339348,
+          "p95": 0.010335126963608889,
+          "maximum": 0.010757389813022815
+        },
+        "winningGapPct": {
+          "minimum": 0.002885496071552418,
+          "p05": 0.005361096280820254,
+          "median": 0.008918999366971688,
+          "mean": 0.008615682821339348,
+          "p95": 0.010335126963608889,
+          "maximum": 0.010757389813022815
+        },
+        "winningPoints": 3125,
+        "nearestAlternatives": [
+          {
+            "policy": "12/21/14",
+            "rate": 0.71232
+          },
+          {
+            "policy": "21/21/13",
+            "rate": 0.28768
+          }
+        ]
+      },
+      "stressGrid": {
+        "points": 161051,
+        "selected": {
+          "policy": "12/21/13",
+          "top1Rate": 0.968835958795661,
+          "top3Rate": 0.9976032436929917,
+          "meanRank": 1.0407138111529888,
+          "worstRank": 17
+        },
+        "robustTop5": [
+          {
+            "policy": "12/21/13",
+            "top1Rate": 0.968835958795661,
+            "top3Rate": 0.9976032436929917,
+            "meanRank": 1.0407138111529888,
+            "worstRank": 17
+          },
+          {
+            "policy": "12/21/14",
+            "top1Rate": 0,
+            "top3Rate": 0.9610558146177298,
+            "meanRank": 2.2297595171715794,
+            "worstRank": 22
+          },
+          {
+            "policy": "12/21/12",
+            "top1Rate": 0,
+            "top3Rate": 0.7990388137919044,
+            "meanRank": 3.3475048276632866,
+            "worstRank": 23
+          },
+          {
+            "policy": "21/21/13",
+            "top1Rate": 0.02673066295769663,
+            "top3Rate": 0.19648434346883906,
+            "meanRank": 3.679114069456259,
+            "worstRank": 14
+          },
+          {
+            "policy": "21/21/14",
+            "top1Rate": 0,
+            "top3Rate": 0.015020086804800964,
+            "meanRank": 5.220414651259539,
+            "worstRank": 20
+          }
+        ],
+        "signedGapToBestAlternativePct": {
+          "minimum": -0.03620020649908718,
+          "p05": 0.0009531712378080712,
+          "median": 0.004710008356153142,
+          "mean": 0.004698543358639003,
+          "p95": 0.009044814549246962,
+          "maximum": 0.011941720965524094
+        },
+        "winningGapPct": {
+          "minimum": 3.5561006008958596e-7,
+          "p05": 0.0015018376352585034,
+          "median": 0.004799071457412769,
+          "mean": 0.004968888511383039,
+          "p95": 0.009078834587938771,
+          "maximum": 0.011941720965524094
+        },
+        "winningPoints": 156032,
+        "nearestAlternatives": [
+          {
+            "policy": "12/21/14",
+            "rate": 0.8792928947973002
+          },
+          {
+            "policy": "21/21/13",
+            "rate": 0.11356030077428889
+          },
+          {
+            "policy": "21/12/13",
+            "rate": 0.005178483834313354
+          },
+          {
+            "policy": "12/23/13",
+            "rate": 0.001092821528584113
+          },
+          {
+            "policy": "21/23/13",
+            "rate": 0.0006830134553650707
+          }
+        ]
+      }
+    }
+  }
+}

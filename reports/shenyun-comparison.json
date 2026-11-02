@@ -121,7 +121,8 @@
     },
     "cktV5AuxiliaryDepth": {
       "optimizedAndScored": 2,
-      "runtimeLongerWordsAppendUnusedPositions": true,
+      "runtimeWord3AppendsRemainingPosition": true,
+      "runtimeWord4MaximumAuxiliaries": 2,
       "laterAuxiliariesIncluded": false
     }
   },

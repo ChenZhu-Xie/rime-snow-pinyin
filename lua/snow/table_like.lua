@@ -127,7 +127,7 @@ local jianpin = {}
 local function sanpin_auxiliary_positions(length)
   if length == 2 then return { 1, 2 } end
   if length == 3 then return { 2, 1, 3 } end
-  if length == 4 then return { 2, 3, 1, 4 } end
+  if length == 4 then return { 2, 3 } end
   local positions = { length, 1, 2 }
   for index = 3, length - 1 do table.insert(positions, index) end
   return positions
@@ -154,7 +154,7 @@ function jianpin.func(input, segment, env)
     table.insert(groups, group)
   end
   local initial_count = #groups
-  -- 二／三／四字最优调序为 12/21/23；后续调码按未使用字位补齐。
+  -- 二／三／四字最优前两调序为 12/21/23；三字词第三辅取剩余第三字，四字词止于两辅。
   local positions = sanpin_auxiliary_positions(initial_count)
   for tone_index, position in ipairs(positions) do
     local tone = tones:sub(tone_index, tone_index)

@@ -221,7 +221,8 @@ data.comparisonPolicy = {
 	},
 	cktV5AuxiliaryDepth: {
 		optimizedAndScored: 2,
-		runtimeLongerWordsAppendUnusedPositions: true,
+		runtimeWord3AppendsRemainingPosition: true,
+		runtimeWord4MaximumAuxiliaries: 2,
 		laterAuxiliariesIncluded: false,
 	},
 	cktV5OrderSelection: {
@@ -585,7 +586,7 @@ const report = `# 神韵两代布局与 S005、B04 四方案比较
 
 ${metricTable}
 
-CKT v5 使用 6 项候选页；神韵(Overall-17)的冰雪神韵·形／冰雪神韵·调辅序为 \`12/21/42\`、\`12/21/13\`，无飞键道(U357)的冰雪键道／冰雪三拼辅序为 \`12/23/24\`、\`12/21/23\`，S005 固定为 \`12/21/24\`、\`12/21/23\`。首道 B04 按原生 \`AEUIO\` 形辅、\`IEUAO\` 调辅与五项认知系数 0%～500% 独立扰动网格，对 144 套完整规则按平均名次取稳健综合第一，形辅／调辅分别为 \`12/12/23\`、\`21/12/23\`。每段两位数字只表示 CKT v5 优化并计分的前两辅；运行时冰雪键道、冰雪三拼的三字词会按剩余字位补第三辅，四字词也继续补齐。CKT v5 在第二辅后直接按选重计费，不含第三及后续辅键的成本与消歧收益。
+CKT v5 使用 6 项候选页；神韵(Overall-17)的冰雪神韵·形／冰雪神韵·调辅序为 \`12/21/42\`、\`12/21/13\`，无飞键道(U357)的冰雪键道／冰雪三拼辅序为 \`12/23/24\`、\`12/21/23\`，S005 固定为 \`12/21/24\`、\`12/21/23\`。首道 B04 按原生 \`AEUIO\` 形辅、\`IEUAO\` 调辅与五项认知系数 0%～500% 独立扰动网格，对 144 套完整规则按平均名次取稳健综合第一，形辅／调辅分别为 \`12/12/23\`、\`21/12/23\`。每段两位数字表示 CKT v5 优化并计分的前两辅；运行时冰雪键道、冰雪三拼的三字词会按剩余字位补第三辅，四字词最多两辅。CKT v5 在第二辅后直接按选重计费，因此不含三字词第三辅的成本与消歧收益。
 
 四方案的飞键成分（声母／零声母组／韵母）依次为：${schemes.map((scheme, index) => `${labels[scheme]} ${flyingDisplays[index]}`).join("、")}。飞键按 Common399 实际二键码统计；不同成分共用一键或成分整体移位不计飞键。
 
