@@ -309,9 +309,7 @@ async function main() {
 					"--progress-every",
 					String(progressEvery),
 				];
-				if (policyLimit < 144) {
-					workerArgs.push("--policy-limit", String(policyLimit));
-				}
+				workerArgs.push("--policy-limit", String(policyLimit));
 				const workerSummary = await runWorker(worker, workerArgs, heapMib);
 				manifest.completedModes.push({
 					...item,

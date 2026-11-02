@@ -1,0 +1,850 @@
+{
+  "version": "ckt5-nested-source-frontier-condensed-1",
+  "generatedAt": "2026-11-02T04:28:09.433Z",
+  "contract": {
+    "pageSize": 6,
+    "trackWeights": {
+      "character": 1,
+      "word2": 3,
+      "word3": 1,
+      "word4": 1
+    },
+    "auxOrderScope": "nested exhaustive 144 auxiliary order search per member; separate optimal policy per layout member",
+    "s005Reference": {
+      "keytao": "12/21/24",
+      "sanpin": "12/21/23"
+    }
+  },
+  "summary": {
+    "totalLayouts": 56,
+    "totalModes": 112,
+    "totalPolicyEvaluations": 16128,
+    "domains": {
+      "21x21": {
+        "count": 6,
+        "baseline": "source rank 4 (U357)",
+        "baselineCktV5": 9.715586951861038,
+        "bestLayout": {
+          "sourceRank": 2,
+          "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f4_5",
+          "cktV5": 9.7013765463423,
+          "deltaVsBaseline": -0.014210405518738867,
+          "relativePctVsBaseline": -0.1462639940247443,
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "23",
+              "word4": "41"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          }
+        },
+        "candidates": [
+          {
+            "finalRank": 1,
+            "sourceRank": 2,
+            "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f4_5",
+            "cktV4": 9.704071772970739,
+            "cktV5": 9.7013765463423,
+            "deltaVsBaseline": -0.014210405518738867,
+            "relativePctVsBaseline": -0.1462639940247443,
+            "modeCktV5": {
+              "keytao": 9.709806115362554,
+              "sanpin": 9.692924946396447
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "23",
+                "word4": "41"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "rpS2": 0.0418079455791114,
+              "rpMax": 0.051044914723866866,
+              "homeFloor": 0.37515572500684075,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335,
+              "mxScore": 141.31582455324423
+            }
+          },
+          {
+            "finalRank": 2,
+            "sourceRank": 1,
+            "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_7-d4-f25_29",
+            "cktV4": 9.703547533132962,
+            "cktV5": 9.70293794918092,
+            "deltaVsBaseline": -0.012649002680118926,
+            "relativePctVsBaseline": -0.13019288224985714,
+            "modeCktV5": {
+              "keytao": 9.709686447156379,
+              "sanpin": 9.696175340792882
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "23",
+                "word4": "41"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "rpS2": 0.0418079455791114,
+              "rpMax": 0.051044914723866866,
+              "homeFloor": 0.37515572500684075,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335,
+              "mxScore": 141.03384602128477
+            }
+          },
+          {
+            "finalRank": 3,
+            "sourceRank": 3,
+            "layoutId": "gen0107-p5-f1h-25_29-d2-f4_22-d3-f2_3-d4-f25_26",
+            "cktV4": 9.713832369310046,
+            "cktV5": 9.712949224104644,
+            "deltaVsBaseline": -0.002637727756393815,
+            "relativePctVsBaseline": -0.027149443152156172,
+            "modeCktV5": {
+              "keytao": 9.719340142864343,
+              "sanpin": 9.706545665109534
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "23",
+                "word4": "24"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "rpS2": 0.0418079455791114,
+              "rpMax": 0.051044914723866866,
+              "homeFloor": 0.3722521678795211,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335,
+              "mxScore": 141.63311514968768
+            }
+          },
+          {
+            "finalRank": 4,
+            "sourceRank": 4,
+            "layoutId": "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
+            "cktV4": 9.716420811869073,
+            "cktV5": 9.715586951861038,
+            "deltaVsBaseline": 0,
+            "relativePctVsBaseline": 0,
+            "modeCktV5": {
+              "keytao": 9.720287964898292,
+              "sanpin": 9.710879104962357
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "23",
+                "word4": "24"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "23"
+              }
+            },
+            "ergonomics": {
+              "rpS2": 0.0418079455791114,
+              "rpMax": 0.051044914723866866,
+              "homeFloor": 0.3762039577208698,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335,
+              "mxScore": 143.37998127078376
+            }
+          },
+          {
+            "finalRank": 5,
+            "sourceRank": 5,
+            "layoutId": "gen0107-p5-f1h-11_13-d2-f25_26",
+            "cktV4": 9.720904837323744,
+            "cktV5": 9.71668196507458,
+            "deltaVsBaseline": 0.0010950132135416624,
+            "relativePctVsBaseline": 0.011270685126562638,
+            "modeCktV5": {
+              "keytao": 9.722983044332217,
+              "sanpin": 9.710368603531835
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "23",
+                "word4": "24"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "23"
+              }
+            },
+            "ergonomics": {
+              "rpS2": 0.0418079455791114,
+              "rpMax": 0.051044914723866866,
+              "homeFloor": 0.3758392182419183,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335,
+              "mxScore": 141.35376566919118
+            }
+          },
+          {
+            "finalRank": 6,
+            "sourceRank": 6,
+            "layoutId": "gen0107-p5-f1h-11_13-d2-f4_25-d3-f1_7-d4-f25_26",
+            "cktV4": 9.74220384265198,
+            "cktV5": 9.737622913411638,
+            "deltaVsBaseline": 0.022035961550599836,
+            "relativePctVsBaseline": 0.2268103992047419,
+            "modeCktV5": {
+              "keytao": 9.74602803219199,
+              "sanpin": 9.729195973231347
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "23",
+                "word4": "41"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "23"
+              }
+            },
+            "ergonomics": {
+              "rpS2": 0.0418079455791114,
+              "rpMax": 0.051044914723866866,
+              "homeFloor": 0.3735679214405345,
+              "wMax": 0.036232262304036644,
+              "yMax": 0.06392364530990335,
+              "mxScore": 141.1739253821773
+            }
+          }
+        ]
+      },
+      "21x26": {
+        "count": 50,
+        "baseline": "source rank 17 (Overall-17)",
+        "baselineCktV5": 9.195026476171616,
+        "bestLayout": {
+          "sourceRank": 1,
+          "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+          "cktV5": 9.179502111489438,
+          "deltaVsBaseline": -0.01552436468217877,
+          "relativePctVsBaseline": -0.16883436630018708,
+          "bestPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "14"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          }
+        },
+        "baselinePositionInFrontier": {
+          "sourceRank": 17,
+          "finalRank": 16,
+          "total": 50
+        },
+        "topFrontier": [
+          {
+            "finalRank": 1,
+            "sourceRank": 1,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.167862175046617,
+            "cktV5": 9.179502111489438,
+            "deltaVsBaseline": -0.01552436468217877,
+            "relativePctVsBaseline": -0.16883436630018708,
+            "modeCktV5": {
+              "keytao": 9.191565310701165,
+              "sanpin": 9.1673911655129
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.029186550619427185,
+                "rp_max": 0.0339375618821707,
+                "home_s2": 0.3582005478855803,
+                "home_c4": 0.23986253737328267,
+                "home_wx": 0.2904608372858063,
+                "home_floor": 0.23986253737328267,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.0595834334948803
+              },
+              "mxScore": 126.44668688003028
+            }
+          },
+          {
+            "finalRank": 2,
+            "sourceRank": 2,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.17189736233716,
+            "cktV5": 9.181881667076768,
+            "deltaVsBaseline": -0.013144809094848497,
+            "relativePctVsBaseline": -0.14295564160595423,
+            "modeCktV5": {
+              "keytao": 9.194500003400542,
+              "sanpin": 9.169211092415482
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.36801379108158694,
+                "home_c4": 0.24759922821937985,
+                "home_wx": 0.2910168763857261,
+                "home_floor": 0.24759922821937985,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06606539427326755
+              },
+              "mxScore": 125.82787232175085
+            }
+          },
+          {
+            "finalRank": 3,
+            "sourceRank": 3,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.172714497907611,
+            "cktV5": 9.18207979773803,
+            "deltaVsBaseline": -0.0129466784335861,
+            "relativePctVsBaseline": -0.14080088259818146,
+            "modeCktV5": {
+              "keytao": 9.19207401623632,
+              "sanpin": 9.172052837694158
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.36611734474254154,
+                "home_c4": 0.24523419354164055,
+                "home_wx": 0.2961764537677211,
+                "home_floor": 0.24523419354164055,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.07695774976451161
+              },
+              "mxScore": 127.9198319850082
+            }
+          },
+          {
+            "finalRank": 4,
+            "sourceRank": 4,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.173901625552686,
+            "cktV5": 9.18327940932227,
+            "deltaVsBaseline": -0.01174706684934712,
+            "relativePctVsBaseline": -0.1277545734075804,
+            "modeCktV5": {
+              "keytao": 9.193260416627389,
+              "sanpin": 9.173265751396645
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.3652177876720528,
+                "home_c4": 0.2445502733937737,
+                "home_wx": 0.29526780804914604,
+                "home_floor": 0.2445502733937737,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.07695774976451161
+              },
+              "mxScore": 127.92144242585282
+            }
+          },
+          {
+            "finalRank": 5,
+            "sourceRank": 6,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.176563464077311,
+            "cktV5": 9.186245151855445,
+            "deltaVsBaseline": -0.00878132431617118,
+            "relativePctVsBaseline": -0.09550080512467776,
+            "modeCktV5": {
+              "keytao": 9.199441720632294,
+              "sanpin": 9.17299146382904
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.36711423401109816,
+                "home_c4": 0.24691530807151296,
+                "home_wx": 0.290108230667151,
+                "home_floor": 0.24691530807151296,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06606539427326755
+              },
+              "mxScore": 128.6800519034719
+            }
+          },
+          {
+            "finalRank": 6,
+            "sourceRank": 5,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.17625796252673,
+            "cktV5": 9.186265087797574,
+            "deltaVsBaseline": -0.008761388374042056,
+            "relativePctVsBaseline": -0.09528399289275231,
+            "modeCktV5": {
+              "keytao": 9.199488031422066,
+              "sanpin": 9.172984796004794
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.35370359318982997,
+                "home_c4": 0.24335599393335527,
+                "home_wx": 0.2859969628508805,
+                "home_floor": 0.24335599393335527,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06606539427326755
+              },
+              "mxScore": 128.44332395598465
+            }
+          },
+          {
+            "finalRank": 7,
+            "sourceRank": 7,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.176681574667745,
+            "cktV5": 9.186554507647772,
+            "deltaVsBaseline": -0.008471968523844353,
+            "relativePctVsBaseline": -0.09213642337843152,
+            "modeCktV5": {
+              "keytao": 9.19810865251038,
+              "sanpin": 9.1749566017955
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.3622565147301261,
+                "home_c4": 0.2450012588904253,
+                "home_wx": 0.2938276931697508,
+                "home_floor": 0.2450012588904253,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.07695774976451161
+              },
+              "mxScore": 128.90677905062446
+            }
+          },
+          {
+            "finalRank": 8,
+            "sourceRank": 11,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.178884679860635,
+            "cktV5": 9.187531768112422,
+            "deltaVsBaseline": -0.007494708059194721,
+            "relativePctVsBaseline": -0.08150828144559265,
+            "modeCktV5": {
+              "keytao": 9.199316497211607,
+              "sanpin": 9.175701515347695
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.37566715555139424,
+                "home_c4": 0.24856057302858295,
+                "home_wx": 0.29793896098602135,
+                "home_floor": 0.24856057302858295,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.07695774976451161
+              },
+              "mxScore": 127.01633556261368
+            }
+          },
+          {
+            "finalRank": 9,
+            "sourceRank": 9,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.177458758705724,
+            "cktV5": 9.187840585418023,
+            "deltaVsBaseline": -0.007185890753593327,
+            "relativePctVsBaseline": -0.07814975598183595,
+            "modeCktV5": {
+              "keytao": 9.200953809945757,
+              "sanpin": 9.174670972226835
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.37149990407213096,
+                "home_c4": 0.26698242496929786,
+                "home_wx": 0.2898167118670604,
+                "home_floor": 0.26698242496929786,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06606539427326755
+              },
+              "mxScore": 124.9407042439168
+            }
+          },
+          {
+            "finalRank": 10,
+            "sourceRank": 8,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.1773606302488,
+            "cktV5": 9.188574415346222,
+            "deltaVsBaseline": -0.006452060825393957,
+            "relativePctVsBaseline": -0.07016902933465284,
+            "modeCktV5": {
+              "keytao": 9.202364269058014,
+              "sanpin": 9.17472219478399
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.025518214912535617,
+                "rp_max": 0.03516423185567739,
+                "home_s2": 0.37678986854260793,
+                "home_c4": 0.247905434878001,
+                "home_wx": 0.30168111091807903,
+                "home_floor": 0.247905434878001,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06044111468943438
+              },
+              "mxScore": 129.3837209358722
+            }
+          },
+          {
+            "finalRank": 11,
+            "sourceRank": 10,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.17845428406802,
+            "cktV5": 9.18922336814458,
+            "deltaVsBaseline": -0.00580310802703643,
+            "relativePctVsBaseline": -0.06311137920129813,
+            "modeCktV5": {
+              "keytao": 9.201407021375674,
+              "sanpin": 9.176991059666856
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.38107948094443694,
+                "home_c4": 0.24800113561995735,
+                "home_wx": 0.30177914160836355,
+                "home_floor": 0.24800113561995735,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06606539427326755
+              },
+              "mxScore": 126.26292536752888
+            }
+          },
+          {
+            "finalRank": 12,
+            "sourceRank": 12,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.17898228481166,
+            "cktV5": 9.189342990402874,
+            "deltaVsBaseline": -0.005683485768742003,
+            "relativePctVsBaseline": -0.06181043397178279,
+            "modeCktV5": {
+              "keytao": 9.202387699165605,
+              "sanpin": 9.176242491109358
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.35370359318982997,
+                "home_c4": 0.24335599393335527,
+                "home_wx": 0.2859969628508805,
+                "home_floor": 0.24335599393335527,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06606539427326755
+              },
+              "mxScore": 129.45897138032177
+            }
+          },
+          {
+            "finalRank": 13,
+            "sourceRank": 14,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.181919464999096,
+            "cktV5": 9.191358563782881,
+            "deltaVsBaseline": -0.003667912388735317,
+            "relativePctVsBaseline": -0.03989017756762856,
+            "modeCktV5": {
+              "keytao": 9.20176453073989,
+              "sanpin": 9.18091713305347
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.36870390066259673,
+                "home_c4": 0.26393347014369173,
+                "home_wx": 0.2940676435304803,
+                "home_floor": 0.26393347014369173,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.07695774976451161
+              },
+              "mxScore": 127.00302681055116
+            }
+          },
+          {
+            "finalRank": 14,
+            "sourceRank": 13,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.181076234442022,
+            "cktV5": 9.192070637795776,
+            "deltaVsBaseline": -0.002955838375839903,
+            "relativePctVsBaseline": -0.032146056169602,
+            "modeCktV5": {
+              "keytao": 9.204129524151405,
+              "sanpin": 9.179964104374479
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "42"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.37669104375829376,
+                "home_c4": 0.2492933720891518,
+                "home_wx": 0.2989580845143702,
+                "home_floor": 0.2492933720891518,
+                "w_max": 0.06395887732528338,
+                "y_max": 0.06044111468943438
+              },
+              "mxScore": 130.31700643473013
+            }
+          },
+          {
+            "finalRank": 15,
+            "sourceRank": 15,
+            "layoutId": "SY26-V3-R2-M35-D1-V0-LP-01",
+            "cktV4": 9.183523838240085,
+            "cktV5": 9.193188548202887,
+            "deltaVsBaseline": -0.0018379279687295025,
+            "relativePctVsBaseline": -0.019988283595402227,
+            "modeCktV5": {
+              "keytao": 9.205762834444858,
+              "sanpin": 9.180562452524804
+            },
+            "bestPolicies": {
+              "keytao": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "14"
+              },
+              "sanpin": {
+                "word2": "12",
+                "word3": "21",
+                "word4": "13"
+              }
+            },
+            "ergonomics": {
+              "loads": {
+                "rp_s2": 0.02542454539132587,
+                "rp_max": 0.033759385949270665,
+                "home_s2": 0.3831384296907645,
+                "home_c4": 0.2682255833424182,
+                "home_wx": 0.2991980348750997,
+                "home_floor": 0.2682255833424182,
+                "w_max": 0.05542784601280391,
+                "y_max": 0.07695774976451161
+              },
+              "mxScore": 128.406497984391
+            }
+          }
+        ]
+      }
+    }
+  }
+}

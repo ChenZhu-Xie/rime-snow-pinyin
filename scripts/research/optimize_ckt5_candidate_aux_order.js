@@ -380,7 +380,7 @@ function main() {
 	if (global.gc) global.gc();
 	const policyLimit = args["policy-limit"]
 		? Number(args["policy-limit"])
-		: Number.POSITIVE_INFINITY;
+		: 144;
 	const requestedPolicy = args.policy ? parsePolicy(args.policy) : null;
 	const progressEvery = Number(args["progress-every"] || 12);
 	if (
