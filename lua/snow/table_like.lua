@@ -97,7 +97,8 @@ function t12.func(input, segment, env)
   -- 二字词
   if rime_api.regex_match(input, env.pattern2) then
     local proxy = ("%s %s"):format(input:sub(1, 2), input:sub(3))
-    if input:len() == 6 then
+    if input:len() >= 5 then
+      -- 后置调码按第一、第二字分配；五码已有第一字调，六码再补第二字调。
       proxy = ("%s%s %s%s"):format(
         input:sub(1, 2), input:sub(5, 5), input:sub(3, 4), input:sub(6, 6))
     end

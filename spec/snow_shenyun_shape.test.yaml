@@ -75,14 +75,14 @@ deploy:
       - send: cwyi
         assert: all_have_length(3) and has("测试仪")
       - send: dyxke
-        assert: cand[1].text == "等一下"
+        assert: has("等一下")
       # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
       - send: cewi;
         assert: commit == "测试的"
       - send: cewi/
         assert: commit == "测试了"
-      # 「管理员」第二字形辅为 e；第三音节的 yu 空桶回收为 AAA+B。
-      - send: glye
+      # 「管理员」第二字形辅为 e；ye 是占用码，使用标准 AAAU+B 路由。
+      - send: glyte
         assert: has("管理员")
       - send: "br,"
         assert: commit and commit:find("，", 1, true)

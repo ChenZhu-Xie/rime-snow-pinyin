@@ -232,11 +232,11 @@ deploy:
       - send: bco2
         assert: commit == "b"
       # 上游 ekekvo / ekekvu / ekekvuekek：动态码长、组词及顶功。
-      - send: "eleliaelel"
+      - send: "elelaielel"
         assert: cand[1].text == "誓师"
-      - send: eleliu
+      - send: elelui
         assert: cand[1].text == "史诗"
-      - send: eleliuelel
+      - send: eleluielel
         assert: commit == "史诗" and cand[1].text == "史诗"
   buffered_command:
     tests:

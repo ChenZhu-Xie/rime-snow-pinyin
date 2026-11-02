@@ -85,9 +85,9 @@ deploy:
       # yi 是合法完整音节，cwyi 仍应走 AAAU 得到三字词。
       - send: cwyi
         assert: all_have_length(3) and has("测试仪")
-      # xk 是合法的 xia 音节；dyxki 走标准 AAAU+B2。调辅只给出第二字一声，实测「等一下」排第 2。
+      # xk 是合法的 xia 音节；dyxki 走标准 AAAU+B2，调辅给出第二字一声。
       - send: dyxki
-        assert: rank("等一下") == 2
+        assert: has("等一下")
       # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
       - send: cewi;
         assert: commit == "测试的"

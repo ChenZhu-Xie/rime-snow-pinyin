@@ -38,6 +38,10 @@ local env = {
 }
 local segment = { start = 0, _end = 6 }
 
+table_like.t12.func("btxki", segment, env)
+assert(queries[#queries] == "bti xk", "two-character first auxiliary must belong to the first character")
+
+queries = {}
 table_like.t12.func("btxkiu", segment, env)
 assert(queries[#queries] == "bti xku", "two-character full code must assign tones first, second")
 
