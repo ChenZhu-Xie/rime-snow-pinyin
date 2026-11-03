@@ -77,6 +77,8 @@ build
 installation.yaml
 user.yaml
 output/
+radical_pinyin.schema.yaml
+radical_pinyin.dict.yaml
 # 上游已将这两个旧子模块替换为仓内生成产物；保留本地检出供历史研究脚本使用。
 /pinyin-data/
 /rime-stroke/

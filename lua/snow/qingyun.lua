@@ -147,12 +147,15 @@ function filter.func(translation, env)
           count = count + 1
           prettify_preedit(c, env)
           yield(c)
-          return
+          if not buffered then
+            return
+          end
+          goto continue
         else
           snow.comment(candidate, hint)
         end
       else
-        return
+        goto continue
       end
       count = count + 1
     elseif utf8.len(candidate.text) == 1 and (is_pinyin(candidate) or (segment and (segment:has_tag("pinyin") or segment:has_tag("stroke")))) then -- 生成反查提示
@@ -188,6 +191,10 @@ function filter.func(translation, env)
       prettify_preedit(candidate, env)
     end
     yield(candidate)
+    -- 普通模式一简十重只显示首个候选；缓冲模式仍需继续输出形码字的读音。
+    if is_short_code and not buffered then
+      return
+    end
     ::continue::
   end
 end

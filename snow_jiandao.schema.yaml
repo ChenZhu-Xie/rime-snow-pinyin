@@ -15,6 +15,7 @@ schema:
     双拼编码：无飞键道·神韵
   dependencies:
     - snow_pinyin
+    - radical_pinyin
     - snow_jiandao_bihua
     - snow_jiandao_jianpin
     - snow_jiandao_chaifen
@@ -53,6 +54,7 @@ engine:
     # 空置 AA 码仍在 abc 段上，由此补入真正的声声二字词候选；xh/xw 保留给 U/A 字母入口。
     - lua_translator@*snow.table_like*initial_pair
     - table_translator@stroke
+    - table_translator@radical
     - script_translator@pinyin
     - lua_translator@*snow.buffered
     - lua_translator@*snow.datetime

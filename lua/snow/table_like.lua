@@ -40,13 +40,19 @@ end
 ---@param env TableLikeEnv
 ---@param preserve_proxy_quality boolean
 ---@param accept? fun(candidate: Candidate): boolean
-local function translate(proxy, segment, env, preserve_proxy_quality, accept)
+---@param complete_only? boolean
+local function translate(proxy, segment, env, preserve_proxy_quality, accept, complete_only)
   -- 代理码不是合法拼写时 query 返回 nil，这一路当作没有候选
   local translation = env.translator:query(proxy, segment)
   if not translation then
     return
   end
   for candidate in translation:iter() do
+    -- 原生 script_translator 按消耗长度降序输出；简拼只查完整编码，
+    -- 遇到短片段即可结束，避免把大量前缀候选取到 Lua 再逐个丢弃。
+    if complete_only and candidate._end - candidate._start < proxy:len() then
+      return
+    end
     candidate = prepare(candidate, proxy, preserve_proxy_quality)
     if not accept or accept(candidate) then
       yield(candidate)
@@ -166,7 +172,7 @@ function jianpin.func(input, segment, env)
   local proxy = table.concat(groups)
   translate(proxy, segment, env, false, function(candidate)
     return utf8.len(candidate.text) >= initial_count and candidate.type ~= "sentence"
-  end)
+  end, true)
 end
 
 ---@param env TableLikeEnv

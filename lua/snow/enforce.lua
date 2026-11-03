@@ -31,7 +31,13 @@ function filter.func(translation, env)
   local is_two_code = rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{2}[vioua]*")
   local is_four_code = rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{4}[vioua]*")
   for candidate in translation:iter() do
-    local is_phrase = candidate:get_dynamic_type() == "Phrase" or candidate:get_dynamic_type() == "Sentence"
+    -- 同段原生翻译结果按消耗长度降序排列。简拼只接受完整编码，遇到短候选即可结束，
+    -- 不必逐个生成 preedit 再丢弃整批前缀词；四码仍保留单字，供选择造词使用。
+    if not is_four_code and candidate._end - candidate._start < input:len() then
+      return
+    end
+    local dynamic_type = candidate:get_dynamic_type()
+    local is_phrase = dynamic_type == "Phrase" or dynamic_type == "Sentence"
     local is_normal_spelling = false
     local preedit = candidate.preedit:gsub(" 形.+$", "")
     local is_character = utf8.len(candidate.text) == 1 and preedit:len() == 2

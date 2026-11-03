@@ -25,6 +25,8 @@
 
 发布页面同时提供同文（Android）的 `.trime.yaml` 皮肤包和元书（iOS、Android）的 `.cskin` 皮肤包；皮肤需与输入方案分别安装，布局预览、选择与导入说明见[手机皮肤](https://input.tansongchen.com/#手机皮肤)。触屏布局暂不提供冰雪一拼专用的并击键盘。
 
+冰雪四拼、冰雪三拼和冰雪键道可用 `u` 引导部件全拼反查，例如输入 `uwangyan` 查“琰”（王＋炎），候选旁显示 `yan3`；冰雪清韵用反引号引导，例如 `` `wangyan ``。此入口同时保留原有笔画反查，冰雪清韵还可查拼音。部件词库来自 [rime-radical-pinyin](https://github.com/mirtlecn/rime-radical-pinyin)，发布包已包含所需文件。
+
 ### [神韵(Overall-17) 21×26 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)
 
 冰雪神韵·形二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`，冰雪神韵·调为 `12/21/13`；二／三／四字词均在四键主码后最多追加两辅。CKT v5.1 保留四码顶的两辅合同，第二辅后按选重计费；其宽网格稳健第一为形 `12/21/14`、调 `12/21/13`。

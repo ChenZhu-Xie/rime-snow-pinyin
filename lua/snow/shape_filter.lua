@@ -135,7 +135,8 @@ local function radical_match(text, partial_code, env)
   local code = encode(element, env.shape_mapping)
   local prompt = " 部首 [" .. partial_code .. "]"
   local comment = code .. " " .. element
-  local match = not code or code:sub(1, #partial_code) == partial_code
+  -- 查不到部首时 encode 返回空串；Lua 中空串为真，不能用 not code 判空。
+  local match = code == "" or code:sub(1, #partial_code) == partial_code
   return match, prompt, comment
 end
 
@@ -226,8 +227,9 @@ local function current_state(env)
     sanpin_passthrough = shape_input:len() == 0
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]")
   elseif id == "snow_jiandao" then
-    jiandao_active = shape_input:len() > 0 or current:find("[A-Z]") ~= nil
-        or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?")
+    jiandao_active = shape_input:len() > 0
+        or current:find("[BPMFDTNLGKHJQXZCSRYWE]") ~= nil
+        or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe]{2,4}")
   end
   return {
     id = id,

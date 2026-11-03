@@ -108,9 +108,13 @@ test("fixed-candidate filtering streams through codes without custom entries", (
 	assert.doesNotMatch(filter, /collectgarbage\(\)/u);
 });
 
-test("Clear Rhyme stops short-code translation after its only visible candidate", () => {
+test("Clear Rhyme stops ordinary short codes while preserving buffered readings", () => {
 	const filter = read("lua/snow/qingyun.lua");
-	assert.match(filter, /if is_short_code then[\s\S]+yield\(c\)\s+return/u);
+	assert.match(
+		filter,
+		/yield\(c\)\s+if not buffered then\s+return\s+end\s+goto continue/u,
+	);
+	assert.match(filter, /if is_short_code and not buffered then\s+return/u);
 	assert.match(filter, /env\.chaifen_cache\[candidate\.text\]/u);
 });
 
@@ -643,5 +647,17 @@ test("U357 three-character words allow a third auxiliary but four-character word
 	assert.match(
 		read("lua/snow/table_like.lua"),
 		/length == 4 then return \{ 2, 3 \}/u,
+	);
+});
+
+test("latency cases follow the active U357 layout and repository fixture", () => {
+	const cases = read("scripts/data/latency-cases.ts");
+	for (const code of ["btxkiu", "erfaiu", "wmxsui", "btov", "kxfkG"])
+		assert.ok(cases.includes(`keys: "${code}"`), `缺少当前 U357 用例 ${code}`);
+	for (const obsolete of ["bgxhuv", "wmxwov", "bgov", "kxfquoaaa"])
+		assert.ok(!cases.includes(obsolete), `仍有旧布局用例 ${obsolete}`);
+	assert.match(
+		read("scripts/benchmark-latency.ts"),
+		/join\(source, "spec", "fixtures", "default\.yaml"\)/u,
 	);
 });

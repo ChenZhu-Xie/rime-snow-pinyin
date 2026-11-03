@@ -22,6 +22,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { checkPinyinDictionary } from "./check-pinyin-dict";
 import { ROOT } from "./lib/paths";
+import { copyRimeDependencies } from "./lib/rime-dependencies";
 
 const SCHEMAS = [
 	"snow_sipin",
@@ -52,6 +53,7 @@ function prepareSource(dest: string, schema: string) {
 		if (!file || !existsSync(src) || !statSync(src).isFile()) continue;
 		clone(src, join(dest, file));
 	}
+	copyRimeDependencies(ROOT, dest);
 	// 每个部署默认会检查 schema_list 里的全部方案，只留被测方案能把部署从约 4 秒降到约 1.4 秒
 	writeFileSync(
 		join(dest, "default.custom.yaml"),
