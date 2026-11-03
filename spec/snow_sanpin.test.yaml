@@ -198,9 +198,9 @@ deploy:
       # 首选后置
       - send: elel
         assert: cand[1].text == "事实"
-      - send: elelv
+      - send: elela
         assert: cand[2].text == "事实"
-      # 上游 ekeki：首选后置的触发调键因本地神韵映射变为 v。
+      # 二字词首辅取第一字；「事」为四声，故追加 a 后将短码首选「事实」后置。
       # 顶功
       - send: ylgsylgs
         assert: commit == "一个" and cand[1].text == "一个"
@@ -231,13 +231,14 @@ deploy:
       # 上游 bja2：选字键 2 选择小写拉丁字母。
       - send: bco2
         assert: commit == "b"
-      # 上游 ekekvo / ekekvu / ekekvuekek：动态码长、组词及顶功。
+      # 动态码长、组词及顶功。「史诗」在新 12 辅序下五码已成为首选，
+      # 第六码会按首选后置规则将其移开；改用五码尚非首选、六码才首选的「实时」。
       - send: "elelaielel"
         assert: cand[1].text == "誓师"
-      - send: elelui
-        assert: cand[1].text == "史诗"
-      - send: eleluielel
-        assert: commit == "史诗" and cand[1].text == "史诗"
+      - send: elelvv
+        assert: cand[1].text == "实时"
+      - send: elelvvelel
+        assert: commit == "实时" and cand[1].text == "实时"
   buffered_command:
     tests:
       - send: o
