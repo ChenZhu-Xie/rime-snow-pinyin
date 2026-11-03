@@ -100,4 +100,4 @@ jobs:
       - name: ${{ matrix.name }}
         run: |
           cp deps/rime-radical-pinyin/radical_pinyin.{schema,dict}.yaml .
-          ./mira -C cache spec/${{ matrix.schema }}.test.yaml
+          ./mira -C build spec/${{ matrix.schema }}.test.yaml
