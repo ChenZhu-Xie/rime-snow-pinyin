@@ -8,6 +8,11 @@ import {
 	STROKES,
 	TONES,
 } from "../../lib/auxiliary-semantics";
+import {
+	BENCHMARK_SCHEMES,
+	pronunciationCodes,
+} from "../../lib/benchmark-schemes";
+import { rankBenchmarkCodes } from "../../lib/benchmark-ranking";
 
 const root = new URL("../../../", import.meta.url);
 const require = createRequire(import.meta.url);
@@ -165,4 +170,89 @@ test("神韵机器可读配置显式区分形义序与声调序", () => {
 test("AEUIO 或 AVUIO 类别名不能直接当成声调序", () => {
 	assert.equal(shapeKeysFromToneKeys("AEUIO"), "IEUAO");
 	assert.equal(shapeKeysFromToneKeys("AVUIO"), "IVUAO");
+});
+
+test("benchmark schemes use the current main-code contracts and auxiliary orders", () => {
+	assert.deepEqual(
+		BENCHMARK_SCHEMES.map(({ id, auxiliaryOrder }) => [id, auxiliaryOrder]),
+		[
+			["u357-shape", "12/231/24"],
+			["u357-tone", "12/213/23"],
+			["overall17-shape", "12/21/42"],
+			["overall17-tone", "12/21/13"],
+		],
+	);
+	const u357Three = pronunciationCodes("u357-tone", "天地人", [
+		"tian1",
+		"di2",
+		"ren3",
+	]);
+	assert.equal(u357Three[0].mainLength, 3);
+	assert.equal(u357Three.at(-1)?.code.slice(-3), "viu");
+	const overallThree = pronunciationCodes("overall17-tone", "天地人", [
+		"tian1",
+		"di2",
+		"ren3",
+	]);
+	assert.deepEqual(
+		overallThree
+			.filter(({ auxiliaryLength }) => auxiliaryLength === 0)
+			.map(({ mainLength }) => mainLength),
+		[3, 4],
+	);
+	assert.equal(overallThree.at(-1)?.code.slice(-2), "ei");
+	const u357Four = pronunciationCodes("u357-tone", "天地人和", [
+		"tian1",
+		"di2",
+		"ren3",
+		"he2",
+	]);
+	assert.equal(u357Four.at(-1)?.code.slice(-2), "vu");
+	const overallFour = pronunciationCodes("overall17-tone", "天地人和", [
+		"tian1",
+		"di2",
+		"ren3",
+		"he2",
+	]);
+	assert.equal(overallFour.at(-1)?.code.slice(-2), "iu");
+
+	const jiandaoSingle = pronunciationCodes("u357-shape", "时", ["shi2"]);
+	const shenyunShapeSingle = pronunciationCodes("overall17-shape", "时", [
+		"shi2",
+	]);
+	const shenyunToneSingle = pronunciationCodes("overall17-tone", "时", [
+		"shi2",
+	]);
+	assert.equal(jiandaoSingle.at(-1)?.auxiliaryLength, 4);
+	assert.equal(shenyunShapeSingle.at(-1)?.auxiliaryLength, 4);
+	assert.equal(shenyunToneSingle.at(-1)?.auxiliaryLength, 4);
+	assert.equal(jiandaoSingle.at(-1)?.code.slice(-4), "oivi");
+	assert.equal(shenyunShapeSingle.at(-1)?.code.slice(-4), "oiei");
+	assert.equal(shenyunToneSingle.at(-1)?.code.slice(-4), "eiae");
+});
+
+test("21×26 单字明确支持 AU 后连续追加四辅", () => {
+	const schema = readFileSync(
+		new URL("snow_shenyun_common.yaml", root),
+		"utf8",
+	);
+	assert.match(
+		schema,
+		/- match: "\^\[bpmfdtnlgkhjqwvxrzcsy\]\[a-z\]\[aeuio\]\{3\}\$"\r?\n\s+accept: "\[aeuio\]"\r?\n\s+strategy: append/u,
+	);
+});
+
+test("benchmark 逐级模拟首选后置并保留最短合法单字码", () => {
+	const entries = [
+		{ word: "是", syllables: ["shi4"], weight: 100 },
+		{ word: "时", syllables: ["shi2"], weight: 10 },
+	];
+	const ranked = rankBenchmarkCodes(
+		"overall17-shape",
+		[entries[1]],
+		entries,
+		new Map([["w", { word: "是" }]]),
+	);
+	assert.equal(ranked.find(({ code }) => code === "w")?.rank, 2);
+	assert.equal(ranked.find(({ code }) => code === "wi")?.rank, 1);
 });

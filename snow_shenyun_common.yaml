@@ -158,8 +158,14 @@ speller:
     - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy]$"
       accept: "[a-z]"
       strategy: append
-    # 单字 AUB 可以继续追加第二个辅码。
+    # 单字 AU 后最多追加四个辅码，与 21×21 的 AABBBB 单字合同一致。
     - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$"
+      accept: "[aeuio]"
+      strategy: append
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]{2}$"
+      accept: "[aeuio]"
+      strategy: append
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]{3}$"
       accept: "[aeuio]"
       strategy: append
     # 二、三、四字词的四码主码后依次追加 B1、B2（其中二字词实际为 B2、B1）。

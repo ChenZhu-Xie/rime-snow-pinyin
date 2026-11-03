@@ -60,9 +60,9 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 - Common399 全覆盖且 399 个二键码全部唯一，21×26 共保留 147 个空码；M-R2 为 36，普通声母仅 \`f→J\` 偏移，基础元音仅 \`o→M\` 偏移。
 - 冰雪神韵·形辅键为 \`A/E/U/I/O\`，冰雪神韵·调声调键为 \`I/E/U/A/O → 一/二/三/四/轻\`。
-- 小写输入遵循飞花式四码顶：单字为 \`A_ / AU_ / AUB / AUBB\`，二／三／四字词的四键主码分别为 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主码后最多追加两辅，具体辅码字位顺序见本节首段。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若第三音节的 \`AU\` 为运行时空桶，三字词还可在三个声码后直接追加辅码。
+- 小写输入遵循飞花式顶功：单字为 \`A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB\`，即双拼主码后最多追加四辅；二／三／四字词的四键主码分别为 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主码后最多追加两辅，具体辅码字位顺序见本节首段。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若第三音节的 \`AU\` 为运行时空桶，三字词还可在三个声码后直接追加辅码。
 - 完成编码后按 \`;\` 或 \`/\` 会先顶出当前候选，再分别追加“的”或“了”，与 21×21 方案的强制上屏尾字键一致。
-- 两组 21×26 方案的空桶均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 \`AU\`，其中 134 个为空 \`AA\`、9 个为空 \`AB\`；单键只固顶一个一简字，其余候选自然排序。
+- 两组 21×26 方案的空桶均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 \`AU\`，其中 134 个为空 \`AA\`、9 个为空 \`AB\`；单键只固顶一个一简字，其余候选先按词典权重排序，编码逐级延长时会将此前出现过的首选后置，因此字词可停在目标首次升为首选的最短合法编码，不必默认补满最长码。
 
 `;
 
@@ -89,7 +89,7 @@ Both SVGs are exported from the finalized entry in the benchmark page: the first
 
 Ordinary initials use their own letter except \`f→J\` and \`zh/ch/sh→F/V/W\`; zero-onset carriers are \`AOE→X\`, \`W→Q\`, and \`Y/YU→Y\`. The final keys are \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`.
 
-Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. Lowercase input follows the Feihua four-code-top contract: characters use \`A_ / AU_ / AUB / AUBB\`; the four-key main codes for two-, three-, and four-character words are \`A₁U₁A₂U₂\`, \`A₁A₂A₃U₃\`, and \`A₁A₂A₃A₄\`, followed by at most two auxiliaries in the source orders stated in this section's opening paragraph. A following initial commits only after a complete code, while an incomplete main code continues directly; if the third syllable's \`AU\` is a runtime-vacant bucket, a three-character word may append auxiliaries immediately after its three initials. After a completed code, \`;\` or \`/\` first commits the current candidate and then appends “的” or “了”, matching the forced tail-character keys in the 21×21 schemes. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial.
+Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. Lowercase input follows the Feihua popping contract: characters use \`A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB\`, with at most four auxiliaries after the double-pinyin main code; the four-key main codes for two-, three-, and four-character words are \`A₁U₁A₂U₂\`, \`A₁A₂A₃U₃\`, and \`A₁A₂A₃A₄\`, followed by at most two auxiliaries in the source orders stated in this section's opening paragraph. A following initial commits only after a complete code, while an incomplete main code continues directly; if the third syllable's \`AU\` is a runtime-vacant bucket, a three-character word may append auxiliaries immediately after its three initials. After a completed code, \`;\` or \`/\` first commits the current candidate and then appends “的” or “了”, matching the forced tail-character keys in the 21×21 schemes. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial. Other candidates start in dictionary-weight order; as a legal code grows, previous first choices are postponed, so a character or word can stop at the shortest prefix that first promotes it instead of filling its maximum code.
 
 `;
 
@@ -116,7 +116,7 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 普通聲母除 \`f→J\`、\`zh/ch/sh→F/V/W\` 外使用本字母；零聲母載體為 \`AOE→X\`、\`W→Q\`、\`Y/YU→Y\`。韻母鍵為 \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`。
 
-Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式四碼頂：單字為 \`A_ / AU_ / AUB / AUBB\`，二／三／四字詞的四鍵主碼分別為 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主碼後最多追加兩輔，具體輔碼字位順序見本節首段。完整碼之後輸入下一字聲碼才頂屏，未完成主碼直接續寫；若第三音節的 \`AU\` 為運行時空桶，三字詞還可在三個聲碼後直接追加輔碼。完成編碼後按 \`;\` 或 \`/\` 會先頂出當前候選，再分別追加「的」或「了」，與 21×21 方案的強制上屏尾字鍵一致。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。
+Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式頂功：單字為 \`A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB\`，即雙拼主碼後最多追加四輔；二／三／四字詞的四鍵主碼分別為 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主碼後最多追加兩輔，具體輔碼字位順序見本節首段。完整碼之後輸入下一字聲碼才頂屏，未完成主碼直接續寫；若第三音節的 \`AU\` 為運行時空桶，三字詞還可在三個聲碼後直接追加輔碼。完成編碼後按 \`;\` 或 \`/\` 會先頂出當前候選，再分別追加「的」或「了」，與 21×21 方案的強制上屏尾字鍵一致。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。其餘候選先按詞典權重排序，編碼逐級延長時會將此前出現過的首選後置，因此字詞可停在目標首次升為首選的最短合法編碼，不必預設補滿最長碼。
 
 `;
 
@@ -566,6 +566,14 @@ function ensureCktV51Documentation(markdown: string) {
 function finalizeReadme(markdown: string, host: "github" | "gitee") {
 	let output = decorateReadmeTables(ensureCktV51Documentation(markdown));
 	output = addComparisonLegends(output);
+	const overallSource =
+		host === "gitee"
+			? "https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md"
+			: "https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md";
+	output = output.replace(
+		/^### (神韵\(Overall-17\) 21×26 双拼|Shenyun\(Overall-17\) 21×26 double pinyin|神韻\(Overall-17\) 21×26 雙拼)$/gmu,
+		`### [$1](${overallSource})`,
+	);
 	output = linkReadmeFiles(output, host);
 	output = linkShenyunTerms(output, "zh", host);
 	output = linkShenyunTerms(output, "en", host);

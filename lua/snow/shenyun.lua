@@ -1,6 +1,6 @@
 -- 冰雪神韵·形 / 冰雪神韵·调的飞码式翻译器
 --
--- 主码族：一简 A、单字 AU、空桶二字 AA、二字 AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA。
+-- 主码族：一简 A、单字 AU / AUBBBB、空桶二字 AA、二字 AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA。
 -- 两个方案共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。

@@ -2,7 +2,15 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { generateAbbreviations } from "./固顶替代";
-import { plainSyllable, readShapeCodes, toneOf } from "./固顶编译器";
+import {
+	BENCHMARK_SCHEMES,
+	type BenchmarkSchemeId,
+	isPoppableFixedCode,
+} from "./lib/benchmark-schemes";
+import {
+	type BenchmarkDictionaryEntry,
+	rankBenchmarkCodes,
+} from "./lib/benchmark-ranking";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const compareRoot =
@@ -14,64 +22,17 @@ const fivePath = join(
 const sbxhPath = join(compareRoot, "声笔小鹤_500字_最优分词_最短键码回放.txt");
 const outputPath = resolve(
 	process.argv[3] ??
-		join(root, "reports", "神韵双拼八方案_500字_最短键码实战测评.txt"),
+		join(root, "reports", "冰雪双拼十方案_500字_最短键码实战测评.txt"),
 );
 
-const mainKeys = new Set([..."bpmfdtnlgkhjqxzcsrwye"]);
-const auxiliaryKeys = new Set([..."ivuao"]);
-const toneKeys: Readonly<Record<string, string>> = {
-	"1": "i",
-	"2": "v",
-	"3": "u",
-	"4": "a",
-	"5": "o",
-};
-const mapping = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-u357-mapping.json"), "utf8"),
-) as { scheme: string; codes: Record<string, string | null> };
-const shapeElementKeys = new Map<string, string>();
-for (const line of readFileSync(
-	join(root, "lua", "snow", "radical_jiandao.txt"),
-	"utf8",
-).split(/\r?\n/)) {
-	const [element, code] = line.split("\t");
-	if (element && code) shapeElementKeys.set(element, code);
-}
-const shapeCodes = readShapeCodes(
-	join(root, "snow_jiandao_chaifen.dict.yaml"),
-	Object.fromEntries(shapeElementKeys),
-);
-const strokeCodes = new Map<string, string[]>();
-const strokeKeyMap: Readonly<Record<string, string>> = {
-	h: "v",
-	s: "i",
-	p: "u",
-	n: "o",
-	z: "a",
-};
-for (const line of readFileSync(
-	join(root, "rime-stroke", "stroke.dict.yaml"),
-	"utf8",
-).split(/\r?\n/)) {
-	if (!line.includes("\t") || line.startsWith("#")) continue;
-	const [character, strokes] = line.split("\t");
-	if (!character || [...character].length !== 1 || !strokes) continue;
-	const code = [...strokes]
-		.map((stroke) => strokeKeyMap[stroke] ?? "")
-		.join("");
-	if (!code) continue;
-	const values = strokeCodes.get(character) ?? [];
-	if (!values.includes(code)) values.push(code);
-	strokeCodes.set(character, values);
-}
-
-type SchemeId = "sanpin" | "jiandao";
+type SchemeId = BenchmarkSchemeId;
 type SourceKind =
 	| "一简"
 	| "二简单字"
 	| "二简词"
 	| "630"
 	| "普通码"
+	| "次选"
 	| "结构略码"
 	| "尾字键";
 
@@ -239,90 +200,8 @@ function readFixed(file: string) {
 	return result;
 }
 
-function soundCode(syllable: string) {
-	return mapping.codes[plainSyllable(syllable)] ?? null;
-}
-
 function countUpper(str: string): number {
 	return [...str].filter((c) => /[A-Z]/u.test(c)).length;
-}
-
-function pronunciationCodes(
-	scheme: SchemeId,
-	word: string,
-	syllables: string[],
-) {
-	if ([...word].length !== syllables.length || syllables.length === 0)
-		return [];
-	const sounds = syllables.map(soundCode);
-	if (sounds.some((code) => !code)) return [];
-	const safeSounds = sounds as string[];
-	let base = "";
-	let suffixes: string[] = [];
-	if (syllables.length === 1) {
-		base = safeSounds[0];
-		if (scheme === "sanpin") {
-			const tone = toneOf(syllables[0]);
-			if (tone && toneKeys[tone]) {
-				const toned = base + toneKeys[tone];
-				const codes = [base, toned];
-				for (const strokes of strokeCodes.get(word) ?? []) {
-					let code = toned;
-					for (const stroke of strokes) {
-						code += stroke;
-						codes.push(code);
-					}
-				}
-				return [...new Set(codes)];
-			}
-		} else {
-			suffixes = [...(shapeCodes.get(word) ?? "")].slice(0, 3);
-		}
-	} else if (syllables.length === 2) {
-		base = safeSounds.join("");
-		if (scheme === "sanpin") {
-			const secondTone = toneOf(syllables[1]);
-			const firstTone = toneOf(syllables[0]);
-			suffixes = [secondTone, firstTone]
-				.map((tone) => (tone ? toneKeys[tone] : undefined))
-				.filter((value): value is string => Boolean(value));
-		} else {
-			suffixes = [...word].map(
-				(character) => shapeCodes.get(character)?.[0] ?? "",
-			);
-		}
-	} else {
-		// 三字及以上词：5 字及以上词前 4 码小写，第 5 码及以后的码必须大写
-		base = safeSounds
-			.map((code, idx) => {
-				const initial = code[0];
-				return idx < 4 ? initial.toLowerCase() : initial.toUpperCase();
-			})
-			.join("");
-
-		if (scheme === "sanpin") {
-			if ([...word].length <= 4) {
-				const indexes = [syllables.length - 1, 0, 1];
-				suffixes = indexes
-					.map((index) => toneOf(syllables[index]))
-					.map((tone) => (tone ? toneKeys[tone] : undefined))
-					.filter((value): value is string => Boolean(value));
-			}
-		} else {
-			if ([...word].length <= 4) {
-				const limit = syllables.length === 3 ? 3 : 2;
-				suffixes = [...word]
-					.slice(0, limit)
-					.map((character) => shapeCodes.get(character)?.[0] ?? "");
-			}
-		}
-	}
-	const codes = [base];
-	for (const suffix of suffixes) {
-		if (!suffix) break;
-		codes.push(codes.at(-1) + suffix);
-	}
-	return codes;
 }
 
 function parseDictionaryLine(line: string) {
@@ -336,11 +215,6 @@ function parseDictionaryLine(line: string) {
 	};
 }
 
-function isPoppable(rawCode: string) {
-	if ([...rawCode].some((key) => auxiliaryKeys.has(key))) return true;
-	return rawCode.length >= 4 && [...rawCode].every((key) => mainKeys.has(key));
-}
-
 function compareAlternative(a: Alternative, b: Alternative) {
 	const priority: Readonly<Record<SourceKind, number>> = {
 		一简: 0,
@@ -350,6 +224,7 @@ function compareAlternative(a: Alternative, b: Alternative) {
 		结构略码: 4,
 		尾字键: 5,
 		普通码: 6,
+		次选: 7,
 	};
 	return (
 		a.keyCost - b.keyCost ||
@@ -387,12 +262,15 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 		string,
 		{ word: string; syllables: string[]; weight: number }
 	>();
+	const allEntries: BenchmarkDictionaryEntry[] = [];
 	for (const dictionary of dictionaries) {
 		for (const line of readFileSync(join(root, dictionary), "utf8").split(
 			/\r?\n/,
 		)) {
 			const entry = parseDictionaryLine(line);
-			if (!entry || !targetWords.has(entry.word)) continue;
+			if (!entry) continue;
+			allEntries.push(entry);
+			if (!targetWords.has(entry.word)) continue;
 			const key = `${entry.word}\t${entry.syllables.join(" ")}`;
 			const previous = targetEntries.get(key);
 			if (!previous || entry.weight > previous.weight)
@@ -400,9 +278,9 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 		}
 	}
 
-	const fixed = readFixed(
-		scheme === "sanpin" ? "snow_sanpin.fixed.txt" : "snow_jiandao.fixed.txt",
-	);
+	const schemeConfig = BENCHMARK_SCHEMES.find((item) => item.id === scheme);
+	if (!schemeConfig) throw new Error(`未知实测方案：${scheme}`);
+	const fixed = readFixed(schemeConfig.fixedFile);
 	const alternatives = new Map<string, Alternative[]>();
 	const add = (alternative: Alternative) => {
 		if (!targetWords.has(alternative.word)) return;
@@ -423,76 +301,29 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 			rawCode: code,
 			keyCost: code.length + upper,
 			instant: upper > 0,
-			popppable: upper === 0 && isPoppable(code),
+			popppable: upper === 0 && isPoppableFixedCode(scheme, code),
 			source: value.source,
 			shift: upper,
 		});
 	}
 
-	const relevantCodes = new Set<string>();
-	const targetCodeOwners = new Map<string, Set<string>>();
-	for (const entry of targetEntries.values()) {
-		for (const code of pronunciationCodes(
-			scheme,
-			entry.word,
-			entry.syllables,
-		)) {
-			relevantCodes.add(code);
-			const owners = targetCodeOwners.get(code) ?? new Set<string>();
-			owners.add(entry.word);
-			targetCodeOwners.set(code, owners);
-		}
-	}
-	const top = new Map<
-		string,
-		{ word: string; weight: number; reading: string }
-	>();
-	for (const dictionary of dictionaries) {
-		for (const line of readFileSync(join(root, dictionary), "utf8").split(
-			/\r?\n/,
-		)) {
-			const entry = parseDictionaryLine(line);
-			if (!entry) continue;
-			for (const code of pronunciationCodes(
-				scheme,
-				entry.word,
-				entry.syllables,
-			)) {
-				if (!relevantCodes.has(code)) continue;
-				const fixedOwner = fixed.get(code)?.word;
-				if (fixedOwner) {
-					top.set(code, {
-						word: fixedOwner,
-						weight: Number.MAX_SAFE_INTEGER,
-						reading: "固顶",
-					});
-					continue;
-				}
-				const previous = top.get(code);
-				const reading = entry.syllables.join(" ");
-				if (
-					!previous ||
-					entry.weight > previous.weight ||
-					(entry.weight === previous.weight &&
-						entry.word.localeCompare(previous.word, "zh-CN") < 0)
-				) {
-					top.set(code, { word: entry.word, weight: entry.weight, reading });
-				}
-			}
-		}
-	}
-	for (const [code, owners] of targetCodeOwners) {
-		const winner = top.get(code)?.word;
-		if (!winner || !owners.has(winner) || fixed.has(code)) continue;
-		const upper = countUpper(code);
+	for (const ranked of rankBenchmarkCodes(
+		scheme,
+		targetEntries.values(),
+		allEntries,
+		fixed,
+	)) {
+		if (ranked.rank > 3) continue;
+		const first = ranked.rank === 1;
+		const upper = countUpper(ranked.code);
 		add({
-			word: winner,
-			displayCode: code,
-			rawCode: code,
-			keyCost: code.length + upper,
-			instant: upper > 0,
-			popppable: upper === 0 && isPoppable(code),
-			source: "普通码",
+			word: ranked.word,
+			displayCode: first ? ranked.code : `${ranked.code}[${ranked.rank}]`,
+			rawCode: ranked.code,
+			keyCost: ranked.code.length + upper + (first ? 0 : 1),
+			instant: !first || upper > 0,
+			popppable: first && upper === 0 && ranked.popppable,
+			source: first ? "普通码" : "次选",
 			shift: upper,
 		});
 	}
@@ -632,7 +463,15 @@ function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
 			}
 		}
 	}
-	if (!best[0]) throw new Error(`无法编码：${text}`);
+	if (!best[0]) {
+		const missing = [...text].filter(
+			(character) =>
+				/\p{Script=Han}/u.test(character) && !alternatives.has(character),
+		);
+		throw new Error(
+			`无法编码：${text}；缺少单字候选：${[...new Set(missing)].join("")}`,
+		);
+	}
 	return best[0];
 }
 
@@ -710,11 +549,9 @@ if (hanCount !== 500 || punctuationCount !== 43)
 	);
 
 const generated = new Map<string, { paths: PathResult[]; total: PathResult }>();
-for (const [label, scheme] of [
-	["神韵三拼", "sanpin"],
-	["神韵键道", "jiandao"],
-] as const) {
-	const alternatives = buildAlternatives(replay, scheme);
+for (const scheme of BENCHMARK_SCHEMES) {
+	console.log(`正在重算 ${scheme.name}...`);
+	const alternatives = buildAlternatives(replay, scheme.id);
 	const paths = replay.map(({ text }) => optimizeLine(text, alternatives));
 	const total = paths.reduce<PathResult>(
 		(summary, path) => ({
@@ -725,9 +562,9 @@ for (const [label, scheme] of [
 		}),
 		{ tokens: [], keys: 0, spaces: 0, shifts: 0 },
 	);
-	generated.set(label, { paths, total });
+	generated.set(scheme.name, { paths, total });
 	for (const [index, path] of paths.entries())
-		replay[index].schemes.set(label, replayTokens(path));
+		replay[index].schemes.set(scheme.name, replayTokens(path));
 }
 
 const frozenStats = [
@@ -760,24 +597,24 @@ const detail = generatedStats.map((stat) => {
 		const length = Math.min(5, [...token.word].length);
 		lengths.set(length, (lengths.get(length) ?? 0) + 1);
 	}
-	return `${stat.scheme}：总实际按键 ${stat.keys}；平均码长 ${(stat.keys / 500).toFixed(4)}；Space ${stat.spaces}；Shift ${stat.shifts}；标点 ${punctuationCount}；非标点编码动作 ${stat.segments}（1字 ${lengths.get(1) ?? 0}；2字 ${lengths.get(2) ?? 0}；3字 ${lengths.get(3) ?? 0}；4字 ${lengths.get(4) ?? 0}；5字以上 ${lengths.get(5) ?? 0}）。\n  简码命中：一简 ${counts.get("一简") ?? 0}；二简单字 ${counts.get("二简单字") ?? 0}；二简词 ${counts.get("二简词") ?? 0}；630 ${counts.get("630") ?? 0}；结构略码 ${counts.get("结构略码") ?? 0}；尾字键 ${counts.get("尾字键") ?? 0}；普通码 ${counts.get("普通码") ?? 0}。`;
+	return `${stat.scheme}：总实际按键 ${stat.keys}；平均码长 ${(stat.keys / 500).toFixed(4)}；Space ${stat.spaces}；Shift ${stat.shifts}；标点 ${punctuationCount}；非标点编码动作 ${stat.segments}（1字 ${lengths.get(1) ?? 0}；2字 ${lengths.get(2) ?? 0}；3字 ${lengths.get(3) ?? 0}；4字 ${lengths.get(4) ?? 0}；5字以上 ${lengths.get(5) ?? 0}）。\n  简码命中：一简 ${counts.get("一简") ?? 0}；二简单字 ${counts.get("二简单字") ?? 0}；二简词 ${counts.get("二简词") ?? 0}；630 ${counts.get("630") ?? 0}；结构略码 ${counts.get("结构略码") ?? 0}；尾字键 ${counts.get("尾字键") ?? 0}；普通码 ${counts.get("普通码") ?? 0}；次选 ${counts.get("次选") ?? 0}。`;
 });
 
 const order = [
 	"四拼",
 	"三拼",
 	"键道",
-	"神韵三拼",
-	"神韵键道",
+	...BENCHMARK_SCHEMES.map((scheme) => scheme.name),
 	"声笔小鹤",
 	"清韵",
 	"小鹤",
 ];
-const output = `神韵双拼加持的键道、三拼：500 字赛文八方案最短键码实战测评
+const output = `冰雪双拼四套当前方案：500 字赛文十方案最短键码实战测评
 ====================================================================================================
 口径：500 个汉字；中文逗号/句号 43 个；标点计键；均码 = 总实际按键 / 500。
-新增轨：${mapping.scheme} 神韵三拼、神韵键道；其余六轨逐键沿用两份指定冻结回放。
-优化目标：先最少实际按键，再少分词段、少 Space；禁用数字选重，只使用首选、各级简码、630、尾字键和原生结构略码。
+当前轨：冰雪键道、冰雪三拼、冰雪神韵·形、冰雪神韵·调；其余六轨逐键沿用两份指定冻结回放。
+辅序：冰雪键道 12/231/24，冰雪三拼 12/213/23，冰雪神韵·形 12/21/42，冰雪神韵·调 12/21/13。
+优化目标：先最少实际按键，再少分词段、少 Space；允许前三候选选重（选重计 +1 键），并使用各级简码、630、尾字键和原生结构略码。
 记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。
 
 Benchmark 排名表
@@ -790,7 +627,7 @@ ${stats
 	)
 	.join("\n")}
 
-新增两轨简码使用统计
+当前四轨最短路径使用统计
 ----------------------------------------------------------------------------------------------------
 ${detail.join("\n")}
 
@@ -800,10 +637,10 @@ ${replay.map((line, index) => `[${String(index + 1).padStart(2, "0")}]\n${render
 
 核验说明
 ====================================================================================================
-1. 新增两轨直接读取当前仓库 snow_sanpin.fixed.txt、snow_jiandao.fixed.txt、神韵 R9 映射和现行五部词典。
-2. 固顶简码按码表首选；普通码按现行权重逐码比较首选；三拼追加声调、键道追加形码消歧。
+1. 四条当前轨直接读取当前仓库四份 fixed 表、U357/Overall-17 映射、五辅语义和现行五部词典。
+2. 单字与二／三／四字词均枚举合法标准码、空桶短码和逐级扩展码；每条路径先按现行权重生成原始候选，再逐键模拟首选后置，交由全文动态规划选取总按键最少的分词与编码。
 3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
-4. 原冰雪三拼/键道与神韵三拼/键道分列；前者是指定旧回放，后者是本仓库当前布局的新回放。
+4. 冻结回放中的“三拼/键道”保留为历史对照；带 U357/Overall-17 标识的四条轨为本仓库当前方案重算结果。
 `;
 
 writeFileSync(outputPath, output, "utf8");

@@ -10,9 +10,9 @@ schema:
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
-    AUBB 飞花式 21×26 顶功方案
+    AUBBBB 飞花式 21×26 顶功方案
     共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局；单字首 B 为声调，后续 B 为笔画，1 独立进入部首码
-    二／三／四字词调辅字位顺序：12/21/13
+    单字 AU 后依次追加声调和最多三笔画；二／三／四字词调辅字位顺序：12/21/13
   dependencies:
     - snow_pinyin
     - snow_bihua

@@ -3,61 +3,16 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exact500Articles } from "./exact_500_articles";
 import { generateAbbreviations } from "./固顶替代";
-import { plainSyllable, readShapeCodes, toneOf } from "./固顶编译器";
+import {
+	BENCHMARK_SCHEMES,
+	type BenchmarkSchemeId,
+	isPoppableFixedCode,
+} from "./lib/benchmark-schemes";
+import { rankBenchmarkCodes } from "./lib/benchmark-ranking";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-const mainKeys = new Set([..."bpmfdtnlgkhjqxzcsrwye"]);
-const auxiliaryKeys = new Set([..."ivuao"]);
-const toneKeys: Readonly<Record<string, string>> = {
-	"1": "i",
-	"2": "v",
-	"3": "u",
-	"4": "a",
-	"5": "o",
-};
-const mapping = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-u357-mapping.json"), "utf8"),
-) as { scheme: string; codes: Record<string, string | null> };
-
-const shapeElementKeys = new Map<string, string>();
-for (const line of readFileSync(
-	join(root, "lua", "snow", "radical_jiandao.txt"),
-	"utf8",
-).split(/\r?\n/)) {
-	const [element, code] = line.split("\t");
-	if (element && code) shapeElementKeys.set(element, code);
-}
-const shapeCodes = readShapeCodes(
-	join(root, "snow_jiandao_chaifen.dict.yaml"),
-	Object.fromEntries(shapeElementKeys),
-);
-
-const strokeCodes = new Map<string, string[]>();
-const strokeKeyMap: Readonly<Record<string, string>> = {
-	h: "v",
-	s: "i",
-	p: "u",
-	n: "o",
-	z: "a",
-};
-for (const line of readFileSync(
-	join(root, "rime-stroke", "stroke.dict.yaml"),
-	"utf8",
-).split(/\r?\n/)) {
-	if (!line.includes("\t") || line.startsWith("#")) continue;
-	const [character, strokes] = line.split("\t");
-	if (!character || [...character].length !== 1 || !strokes) continue;
-	const code = [...strokes]
-		.map((stroke) => strokeKeyMap[stroke] ?? "")
-		.join("");
-	if (!code) continue;
-	const values = strokeCodes.get(character) ?? [];
-	if (!values.includes(code)) values.push(code);
-	strokeCodes.set(character, values);
-}
-
-type SchemeId = "sanpin" | "jiandao";
+type SchemeId = BenchmarkSchemeId;
 type SourceKind =
 	| "一简"
 	| "二简单字"
@@ -93,6 +48,18 @@ interface PathResult {
 	fixedCount: number;
 }
 
+interface SingleCharacterFirstChoiceAudit {
+	targetCharacters: number;
+	fixedCodeFirst: number;
+	mainCodeFirst: number;
+	promotedByAuxiliaryLength: Record<"1" | "2" | "3" | "4", number>;
+	unresolved: number;
+	unresolvedWithFourAuxiliaries: number;
+	unresolvedWithoutFourAuxiliaries: number;
+	unresolvedOccurrences: number;
+	unresolvedExamples: string[];
+}
+
 function readFixed(file: string) {
 	const result = new Map<string, { word: string; source: SourceKind }>();
 	let section = "";
@@ -115,90 +82,8 @@ function readFixed(file: string) {
 	return result;
 }
 
-function soundCode(syllable: string) {
-	return mapping.codes[plainSyllable(syllable)] ?? null;
-}
-
 function countUpper(str: string): number {
 	return [...str].filter((c) => /[A-Z]/u.test(c)).length;
-}
-
-function pronunciationCodes(
-	scheme: SchemeId,
-	word: string,
-	syllables: string[],
-) {
-	if ([...word].length !== syllables.length || syllables.length === 0)
-		return [];
-	const sounds = syllables.map(soundCode);
-	if (sounds.some((code) => !code)) return [];
-	const safeSounds = sounds as string[];
-	let base = "";
-	let suffixes: string[] = [];
-	if (syllables.length === 1) {
-		base = safeSounds[0];
-		if (scheme === "sanpin") {
-			const tone = toneOf(syllables[0]);
-			if (tone && toneKeys[tone]) {
-				const toned = base + toneKeys[tone];
-				const codes = [base, toned];
-				for (const strokes of strokeCodes.get(word) ?? []) {
-					let code = toned;
-					for (const stroke of strokes) {
-						code += stroke;
-						codes.push(code);
-					}
-				}
-				return [...new Set(codes)];
-			}
-		} else {
-			suffixes = [...(shapeCodes.get(word) ?? "")].slice(0, 3);
-		}
-	} else if (syllables.length === 2) {
-		base = safeSounds.join("");
-		if (scheme === "sanpin") {
-			const secondTone = toneOf(syllables[1]);
-			const firstTone = toneOf(syllables[0]);
-			suffixes = [secondTone, firstTone]
-				.map((tone) => (tone ? toneKeys[tone] : undefined))
-				.filter((value): value is string => Boolean(value));
-		} else {
-			suffixes = [...word].map(
-				(character) => shapeCodes.get(character)?.[0] ?? "",
-			);
-		}
-	} else {
-		// 三字及以上词：5 字及以上词前 4 码小写，第 5 码及以后的码必须大写
-		base = safeSounds
-			.map((code, idx) => {
-				const initial = code[0];
-				return idx < 4 ? initial.toLowerCase() : initial.toUpperCase();
-			})
-			.join("");
-
-		if (scheme === "sanpin") {
-			if ([...word].length <= 4) {
-				const indexes = [syllables.length - 1, 0, 1];
-				suffixes = indexes
-					.map((index) => toneOf(syllables[index]))
-					.map((tone) => (tone ? toneKeys[tone] : undefined))
-					.filter((value): value is string => Boolean(value));
-			}
-		} else {
-			if ([...word].length <= 4) {
-				const limit = syllables.length === 3 ? 3 : 2;
-				suffixes = [...word]
-					.slice(0, limit)
-					.map((character) => shapeCodes.get(character)?.[0] ?? "");
-			}
-		}
-	}
-	const codes = [base];
-	for (const suffix of suffixes) {
-		if (!suffix) break;
-		codes.push(codes.at(-1) + suffix);
-	}
-	return codes;
 }
 
 function parseDictionaryLine(line: string) {
@@ -210,11 +95,6 @@ function parseDictionaryLine(line: string) {
 		syllables: reading.split(" "),
 		weight: Number(weightText) || 0,
 	};
-}
-
-function isPoppable(rawCode: string) {
-	if ([...rawCode].some((key) => auxiliaryKeys.has(key))) return true;
-	return rawCode.length >= 4 && [...rawCode].every((key) => mainKeys.has(key));
 }
 
 function compareAlternative(a: Alternative, b: Alternative) {
@@ -269,8 +149,17 @@ console.log(`载入完成，词典条目共 ${allDictEntries.length} 条。`);
 
 function buildAlternatives(allLines: string[], scheme: SchemeId) {
 	const targetWords = new Set<string>();
+	const characterOccurrences = new Map<string, number>();
 	for (const text of allLines) {
 		const characters = [...text];
+		for (const character of characters) {
+			if (/\p{Script=Han}/u.test(character)) {
+				characterOccurrences.set(
+					character,
+					(characterOccurrences.get(character) ?? 0) + 1,
+				);
+			}
+		}
 		for (let start = 0; start < characters.length; start += 1) {
 			if (!/\p{Script=Han}/u.test(characters[start])) continue;
 			for (
@@ -298,11 +187,9 @@ function buildAlternatives(allLines: string[], scheme: SchemeId) {
 		}
 	}
 
-	const fixed = readFixed(
-		scheme === "sanpin" ? "snow_sanpin.fixed.txt" : "snow_jiandao.fixed.txt",
-	);
-	// 数字化显式作为 630 固顶词（编码 ezh）
-	fixed.set("ezh", { word: "数字化", source: "630" });
+	const schemeConfig = BENCHMARK_SCHEMES.find((item) => item.id === scheme);
+	if (!schemeConfig) throw new Error(`未知实测方案：${scheme}`);
+	const fixed = readFixed(schemeConfig.fixedFile);
 	const alternatives = new Map<string, Alternative[]>();
 	const add = (alternative: Alternative) => {
 		if (!targetWords.has(alternative.word)) return;
@@ -323,75 +210,128 @@ function buildAlternatives(allLines: string[], scheme: SchemeId) {
 			rawCode: code,
 			keyCost: code.length + upper,
 			instant: upper > 0,
-			popppable: upper === 0 && isPoppable(code),
+			popppable: upper === 0 && isPoppableFixedCode(scheme, code),
 			source: value.source,
 			shift: upper,
 		});
 	}
 
-	const relevantCodes = new Set<string>();
-	const targetCodeOwners = new Map<string, Set<string>>();
-	for (const entry of targetEntries.values()) {
-		for (const code of pronunciationCodes(
-			scheme,
-			entry.word,
-			entry.syllables,
-		)) {
-			relevantCodes.add(code);
-			const owners = targetCodeOwners.get(code) ?? new Set<string>();
-			owners.add(entry.word);
-			targetCodeOwners.set(code, owners);
-		}
-	}
-
-	const top = new Map<string, Array<{ word: string; weight: number }>>();
-	for (const entry of allDictEntries) {
-		for (const code of pronunciationCodes(
-			scheme,
-			entry.word,
-			entry.syllables,
-		)) {
-			if (!relevantCodes.has(code)) continue;
-			const fixedOwner = fixed.get(code)?.word;
-			if (fixedOwner) {
-				top.set(code, [{ word: fixedOwner, weight: Number.MAX_SAFE_INTEGER }]);
-				continue;
-			}
-			const list = top.get(code) ?? [];
-			const existingIndex = list.findIndex((item) => item.word === entry.word);
-			if (existingIndex >= 0) {
-				if (entry.weight > list[existingIndex].weight) {
-					list[existingIndex].weight = entry.weight;
-				}
-			} else {
-				list.push({ word: entry.word, weight: entry.weight });
-			}
-			list.sort(
-				(a, b) => b.weight - a.weight || a.word.localeCompare(b.word, "zh-CN"),
-			);
-			if (list.length > 3) list.length = 3;
-			top.set(code, list);
-		}
-	}
-
-	for (const [code, owners] of targetCodeOwners) {
-		const candidates = top.get(code) ?? [];
-		candidates.forEach((cand, rank) => {
-			if (!owners.has(cand.word) || fixed.has(code)) return;
-			const isFirst = rank === 0;
-			const upper = countUpper(code);
-			add({
-				word: cand.word,
-				displayCode: isFirst ? code : `${code}[${rank + 1}]`,
-				rawCode: code,
-				keyCost: code.length + upper + (isFirst ? 0 : 1),
-				instant: !isFirst || upper > 0,
-				popppable: isFirst && upper === 0 && isPoppable(code),
-				source: isFirst ? "普通码" : "次选",
-				shift: upper,
-			});
+	const rankedCodes = rankBenchmarkCodes(
+		scheme,
+		targetEntries.values(),
+		allDictEntries,
+		fixed,
+	);
+	for (const ranked of rankedCodes) {
+		if (ranked.rank > 3) continue;
+		const isFirst = ranked.rank === 1;
+		const upper = countUpper(ranked.code);
+		add({
+			word: ranked.word,
+			displayCode: isFirst ? ranked.code : `${ranked.code}[${ranked.rank}]`,
+			rawCode: ranked.code,
+			keyCost: ranked.code.length + upper + (isFirst ? 0 : 1),
+			instant: !isFirst || upper > 0,
+			popppable: isFirst && upper === 0 && ranked.popppable,
+			source: isFirst ? "普通码" : "次选",
+			shift: upper,
 		});
 	}
+
+	let fixedCodeFirst = 0;
+	let mainCodeFirst = 0;
+	const promotedByAuxiliaryLength = {
+		"1": 0,
+		"2": 0,
+		"3": 0,
+		"4": 0,
+	} satisfies Record<"1" | "2" | "3" | "4", number>;
+	let unresolved = 0;
+	let unresolvedWithFourAuxiliaries = 0;
+	let unresolvedWithoutFourAuxiliaries = 0;
+	let unresolvedOccurrences = 0;
+	const unresolvedExamples: string[] = [];
+	const fixedCharacters = new Set(
+		[...fixed.values()]
+			.map((value) => value.word)
+			.filter((word) => [...word].length === 1),
+	);
+	for (const character of characterOccurrences.keys()) {
+		if (fixedCharacters.has(character)) {
+			fixedCodeFirst += 1;
+			continue;
+		}
+		const characterCodes = rankedCodes.filter(
+			(ranked) => ranked.word === character,
+		);
+		const bestByAuxiliaryLength = new Map<
+			number,
+			{ code: string; rank: number; candidates: string }
+		>();
+		for (const auxiliaryLength of [0, 1, 2, 3, 4]) {
+			const stageCodes = characterCodes
+				.filter((ranked) => ranked.auxiliaryLength === auxiliaryLength)
+				.map((ranked) => ({
+					code: ranked.code,
+					rank: ranked.rank,
+					candidates: ranked.candidates.join("/"),
+				}));
+			stageCodes.sort(
+				(left, right) =>
+					left.rank - right.rank ||
+					left.code.length - right.code.length ||
+					left.code.localeCompare(right.code),
+			);
+			if (stageCodes[0]) {
+				bestByAuxiliaryLength.set(auxiliaryLength, stageCodes[0]);
+			}
+		}
+		const firstChoiceLength = [0, 1, 2, 3, 4].find(
+			(auxiliaryLength) =>
+				bestByAuxiliaryLength.get(auxiliaryLength)?.rank === 1,
+		);
+		if (firstChoiceLength === 0) {
+			mainCodeFirst += 1;
+			continue;
+		}
+		if (firstChoiceLength !== undefined) {
+			const key = String(firstChoiceLength) as "1" | "2" | "3" | "4";
+			promotedByAuxiliaryLength[key] += 1;
+			continue;
+		}
+		unresolved += 1;
+		if (bestByAuxiliaryLength.has(4)) {
+			unresolvedWithFourAuxiliaries += 1;
+		} else {
+			unresolvedWithoutFourAuxiliaries += 1;
+		}
+		unresolvedOccurrences += characterOccurrences.get(character) ?? 0;
+		const path = [...bestByAuxiliaryLength.entries()]
+			.sort(([left], [right]) => left - right)
+			.map(([, ranked]) =>
+				ranked.rank === 1
+					? ranked.code
+					: `${ranked.code}[${ranked.rank > 3 ? ">3" : ranked.rank}]`,
+			)
+			.join("→");
+		const finalCandidates = [...bestByAuxiliaryLength.entries()].sort(
+			([left], [right]) => right - left,
+		)[0]?.[1].candidates;
+		unresolvedExamples.push(
+			`${character}\t${path || "无可用编码"}\t${finalCandidates || "前三无此字"}`,
+		);
+	}
+	const singleCharacterFirstChoiceAudit: SingleCharacterFirstChoiceAudit = {
+		targetCharacters: characterOccurrences.size,
+		fixedCodeFirst,
+		mainCodeFirst,
+		promotedByAuxiliaryLength,
+		unresolved,
+		unresolvedWithFourAuxiliaries,
+		unresolvedWithoutFourAuxiliaries,
+		unresolvedOccurrences,
+		unresolvedExamples,
+	};
 
 	const directSnapshot = new Map(
 		[...alternatives].map(([word, values]) => [word, [...values]]),
@@ -442,7 +382,7 @@ function buildAlternatives(allLines: string[], scheme: SchemeId) {
 		}
 	}
 
-	return alternatives;
+	return { alternatives, singleCharacterFirstChoiceAudit };
 }
 
 function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
@@ -764,455 +704,358 @@ function analyzePaths(
 	};
 }
 
+interface ArticleResult {
+	article: (typeof exact500Articles)[0];
+	paths: Record<SchemeId, PathResult[]>;
+	stats: Record<SchemeId, ArticleStat>;
+}
+
+function schemeRecord<T>(
+	factory: (scheme: SchemeId) => T,
+): Record<SchemeId, T> {
+	return Object.fromEntries(
+		BENCHMARK_SCHEMES.map((scheme) => [scheme.id, factory(scheme.id)]),
+	) as Record<SchemeId, T>;
+}
+
+function statSummary(stat: ArticleStat): string {
+	return `按键 ${stat.keys}；均码 ${stat.avgLength.toFixed(4)}；Space ${stat.spaces}；1字 ${stat.tokenRatios.c1.toFixed(1)}%（覆盖 ${stat.charRatios.c1.toFixed(1)}%）；2字 ${stat.tokenRatios.c2.toFixed(1)}%（覆盖 ${stat.charRatios.c2.toFixed(1)}%）；3字 ${stat.tokenRatios.c3.toFixed(1)}%（覆盖 ${stat.charRatios.c3.toFixed(1)}%）；4字 ${stat.tokenRatios.c4.toFixed(1)}%（覆盖 ${stat.charRatios.c4.toFixed(1)}%）；5字+ ${stat.tokenRatios.c5plus.toFixed(1)}%（覆盖 ${stat.charRatios.c5plus.toFixed(1)}%）`;
+}
+
+function replayMap(result: ArticleResult, lineIndex: number) {
+	return new Map(
+		BENCHMARK_SCHEMES.map((scheme) => [
+			scheme.name,
+			replayTokens(result.paths[scheme.id][lineIndex]),
+		]),
+	);
+}
+
+function aggregateStats(results: ArticleResult[], scheme: SchemeId) {
+	const fields = ["c1", "c2", "c3", "c4", "c5plus"] as const;
+	const tokens = Object.fromEntries(
+		fields.map((field) => [
+			field,
+			results.reduce(
+				(sum, result) => sum + result.stats[scheme].tokenCounts[field],
+				0,
+			),
+		]),
+	) as Record<(typeof fields)[number], number>;
+	const characters = Object.fromEntries(
+		fields.map((field) => [
+			field,
+			results.reduce(
+				(sum, result) => sum + result.stats[scheme].charCounts[field],
+				0,
+			),
+		]),
+	) as Record<(typeof fields)[number], number>;
+	const selectedTokens = results
+		.flatMap((result) => result.paths[scheme])
+		.flatMap((path) => path.tokens)
+		.filter((token) => token.source === "次选");
+	const byCodeLength = (items: Token[]) =>
+		Object.fromEntries(
+			[...new Set(items.map((token) => token.rawCode.length))]
+				.sort((left, right) => left - right)
+				.map((length) => [
+					String(length),
+					items.filter((token) => token.rawCode.length === length).length,
+				]),
+		);
+	const singleSelections = selectedTokens.filter(
+		(token) => [...token.word].length === 1,
+	);
+	const multiSelections = selectedTokens.filter(
+		(token) => [...token.word].length > 1,
+	);
+	const examples = (items: Token[]) => [
+		...new Set(items.map((token) => `${token.word}\t${token.displayCode}`)),
+	];
+	return {
+		keys: results.reduce((sum, result) => sum + result.stats[scheme].keys, 0),
+		spaces: results.reduce(
+			(sum, result) => sum + result.stats[scheme].spaces,
+			0,
+		),
+		shifts: results.reduce(
+			(sum, result) => sum + result.stats[scheme].shifts,
+			0,
+		),
+		tokens,
+		characters,
+		totalTokens: Object.values(tokens).reduce((sum, count) => sum + count, 0),
+		selections: {
+			total: selectedTokens.length,
+			singleCharacter: singleSelections.length,
+			multiCharacter: multiSelections.length,
+			byCodeLength: byCodeLength(selectedTokens),
+			singleByCodeLength: byCodeLength(singleSelections),
+			multiByCodeLength: byCodeLength(multiSelections),
+			fullCodeSingleExamples: examples(
+				singleSelections.filter((token) => token.rawCode.length === 6),
+			),
+			fullCodeMultiExamples: examples(
+				multiSelections.filter((token) => token.rawCode.length === 6),
+			).slice(0, 20),
+			examples: examples(selectedTokens).slice(0, 20),
+		},
+	};
+}
+
 async function run() {
-	const allLines = exact500Articles.flatMap((a) => a.lines);
+	const allLines = exact500Articles.flatMap((article) => article.lines);
+	const order = BENCHMARK_SCHEMES.map((scheme) => scheme.name);
 	console.log(`总行数: ${allLines.length}，文章数: ${exact500Articles.length}`);
 
-	const order = ["神韵三拼", "神韵键道"];
-	const schemes: SchemeId[] = ["sanpin", "jiandao"];
-	const schemeNames: Record<SchemeId, string> = {
-		sanpin: "神韵三拼",
-		jiandao: "神韵键道",
-	};
-
-	const alternativesMap = new Map<SchemeId, Map<string, Alternative[]>>();
-	for (const scheme of schemes) {
-		console.log(`构建【${schemeNames[scheme]}】候选集...`);
-		const alts = buildAlternatives(allLines, scheme);
-		alternativesMap.set(scheme, alts);
-		console.log(`【${schemeNames[scheme]}】候选集完成，收录词条: ${alts.size}`);
+	const alternatives = new Map<SchemeId, Map<string, Alternative[]>>();
+	const singleCharacterFirstChoiceAudits = new Map<
+		SchemeId,
+		SingleCharacterFirstChoiceAudit
+	>();
+	for (const scheme of BENCHMARK_SCHEMES) {
+		console.log(`构建【${scheme.name}】候选集...`);
+		const result = buildAlternatives(allLines, scheme.id);
+		alternatives.set(scheme.id, result.alternatives);
+		singleCharacterFirstChoiceAudits.set(
+			scheme.id,
+			result.singleCharacterFirstChoiceAudit,
+		);
+		console.log(
+			`【${scheme.name}】候选集完成，收录词条: ${result.alternatives.size}`,
+		);
 	}
 
-	// 针对每篇文章进行求解
-	interface ArticleResult {
-		article: (typeof exact500Articles)[0];
-		sanpinPaths: PathResult[];
-		jiandaoPaths: PathResult[];
-		sanpinStat: ArticleStat;
-		jiandaoStat: ArticleStat;
-	}
-
-	const articleResults: ArticleResult[] = [];
-	for (const article of exact500Articles) {
-		const sanpinAlts = alternativesMap.get("sanpin")!;
-		const jiandaoAlts = alternativesMap.get("jiandao")!;
-
-		const sanpinPaths = article.lines.map((l) => optimizeLine(l, sanpinAlts));
-		const jiandaoPaths = article.lines.map((l) => optimizeLine(l, jiandaoAlts));
-
-		const sanpinStat = analyzePaths(article, sanpinPaths);
-		const jiandaoStat = analyzePaths(article, jiandaoPaths);
-
-		articleResults.push({
+	const articleResults = exact500Articles.map((article): ArticleResult => {
+		const paths = schemeRecord((scheme) =>
+			article.lines.map((line) =>
+				optimizeLine(line, alternatives.get(scheme)!),
+			),
+		);
+		return {
 			article,
-			sanpinPaths,
-			jiandaoPaths,
-			sanpinStat,
-			jiandaoStat,
+			paths,
+			stats: schemeRecord((scheme) => analyzePaths(article, paths[scheme])),
+		};
+	});
+
+	const replayDir = join(root, "reports", "十篇五百字_四方案逐键对齐回放");
+	mkdirSync(replayDir, { recursive: true });
+	for (const result of articleResults) {
+		const article = result.article;
+		const firstStat = result.stats[BENCHMARK_SCHEMES[0].id];
+		const lines = [
+			`# 篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}·500 字）四方案实战回放`,
+			"",
+			`- 口径：汉字 ${firstStat.hanCount} 个；标点 ${firstStat.punctCount} 个；均码 = 总实际按键 / ${firstStat.hanCount}。`,
+			...BENCHMARK_SCHEMES.map((scheme) => {
+				const stat = result.stats[scheme.id];
+				return `- ${scheme.name}（辅序 \`${scheme.auxiliaryOrder}\`）：总按键 **${stat.keys}**，平均码长 **${stat.avgLength.toFixed(4)}**，空格 ${stat.spaces}，Shift ${stat.shifts}。`;
+			}),
+			"",
+			"## 词长切分对比",
+			"",
+			"| 方案 | 维度 | 单字 | 二字词 | 三字词 | 四字词 | 五字及以上 |",
+			"| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+		];
+		for (const scheme of BENCHMARK_SCHEMES) {
+			const stat = result.stats[scheme.id];
+			lines.push(
+				`| ${scheme.shortName} | 词次 | ${stat.tokenRatios.c1.toFixed(1)}%（${stat.tokenCounts.c1}） | ${stat.tokenRatios.c2.toFixed(1)}%（${stat.tokenCounts.c2}） | ${stat.tokenRatios.c3.toFixed(1)}%（${stat.tokenCounts.c3}） | ${stat.tokenRatios.c4.toFixed(1)}%（${stat.tokenCounts.c4}） | ${stat.tokenRatios.c5plus.toFixed(1)}%（${stat.tokenCounts.c5plus}） |`,
+			);
+			lines.push(
+				`| ${scheme.shortName} | 汉字覆盖 | ${stat.charRatios.c1.toFixed(1)}%（${stat.charCounts.c1} 字） | ${stat.charRatios.c2.toFixed(1)}%（${stat.charCounts.c2} 字） | ${stat.charRatios.c3.toFixed(1)}%（${stat.charCounts.c3} 字） | ${stat.charRatios.c4.toFixed(1)}%（${stat.charCounts.c4} 字） | ${stat.charRatios.c5plus.toFixed(1)}%（${stat.charCounts.c5plus} 字） |`,
+			);
+		}
+		lines.push("", "## 逐句最优切分 / 键码对齐回放", "", "```text");
+		article.lines.forEach((text, lineIndex) => {
+			lines.push(`[${String(lineIndex + 1).padStart(2, "0")}]`);
+			lines.push(renderAligned(text, replayMap(result, lineIndex), order), "");
+		});
+		lines.push("```");
+		const filename = `篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_四方案逐键对齐.md`;
+		writeFileSync(join(replayDir, filename), lines.join("\n"), "utf8");
+	}
+
+	const comparison = [
+		"冰雪双拼四方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
+		"====================================================================================================",
+		"口径：10 篇不同文体长文，每篇严格 500 汉字；标点计键；先最少实际按键，再少分词段、少 Space；允许前三候选选重（+1 键）。",
+		"记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。",
+		"",
+	];
+	for (const result of articleResults) {
+		const article = result.article;
+		comparison.push(
+			"====================================================================================================",
+		);
+		comparison.push(
+			`【篇 ${String(article.id).padStart(2, "0")}】${article.title}（${article.genre}·500 汉字）`,
+		);
+		for (const scheme of BENCHMARK_SCHEMES)
+			comparison.push(
+				`${scheme.name}：${statSummary(result.stats[scheme.id])}。`,
+			);
+		comparison.push(
+			"----------------------------------------------------------------------------------------------------",
+		);
+		article.lines.forEach((text, lineIndex) => {
+			comparison.push(
+				`[${String(article.id).padStart(2, "0")}-${String(lineIndex + 1).padStart(2, "0")}]`,
+			);
+			comparison.push(
+				renderAligned(text, replayMap(result, lineIndex), order),
+				"",
+			);
 		});
 	}
-
-	console.log(
-		"全部 10 篇文章 DP 求解完毕，正在生成对齐回放与 Markdown 报告...",
-	);
-
-	// 1. 创建回放目录
-	const replayDir = join(
-		root,
-		"reports",
-		"十篇五百字_实战最优分词逐键对齐回放",
-	);
-	mkdirSync(replayDir, { recursive: true });
-
-	// 生成 10 篇独立对齐 Markdown 文件
-	for (let i = 0; i < articleResults.length; i++) {
-		const res = articleResults[i];
-		const a = res.article;
-		const s1 = res.sanpinStat;
-		const s2 = res.jiandaoStat;
-
-		const mdLines: string[] = [];
-		mdLines.push(
-			`# 篇 ${String(a.id).padStart(2, "0")}：${a.title}（${a.genre}·500字）实战回放`,
-		);
-		mdLines.push("");
-		mdLines.push(
-			`- **口径**：汉字 ${s1.hanCount} 个；标点 ${s1.punctCount} 个；均码 = 总实际按键 / ${s1.hanCount}。`,
-		);
-		mdLines.push(
-			`- **神韵三拼**：总按键 **${s1.keys}** 键，平均码长 **${s1.avgLength.toFixed(4)}**，空格 ${s1.spaces}，Shift ${s1.shifts}。`,
-		);
-		mdLines.push(
-			`- **神韵键道**：总按键 **${s2.keys}** 键，平均码长 **${s2.avgLength.toFixed(4)}**，空格 ${s2.spaces}，Shift ${s2.shifts}。`,
-		);
-		mdLines.push("");
-		mdLines.push("### 词长切分对比（词次占比 vs 汉字覆盖率）");
-		mdLines.push("| 方案 | 单字 | 二字词 | 三字词 | 四字词 | 五字及以上 |");
-		mdLines.push("| :--- | :---: | :---: | :---: | :---: | :---: |");
-		mdLines.push(
-			`| **神韵三拼 词次** | ${s1.tokenRatios.c1.toFixed(1)}% (${s1.tokenCounts.c1}) | ${s1.tokenRatios.c2.toFixed(1)}% (${s1.tokenCounts.c2}) | ${s1.tokenRatios.c3.toFixed(1)}% (${s1.tokenCounts.c3}) | ${s1.tokenRatios.c4.toFixed(1)}% (${s1.tokenCounts.c4}) | ${s1.tokenRatios.c5plus.toFixed(1)}% (${s1.tokenCounts.c5plus}) |`,
-		);
-		mdLines.push(
-			`| **神韵三拼 汉字** | ${s1.charRatios.c1.toFixed(1)}% (${s1.charCounts.c1}字) | ${s1.charRatios.c2.toFixed(1)}% (${s1.charCounts.c2}字) | ${s1.charRatios.c3.toFixed(1)}% (${s1.charCounts.c3}字) | ${s1.charRatios.c4.toFixed(1)}% (${s1.charCounts.c4}字) | ${s1.charRatios.c5plus.toFixed(1)}% (${s1.charCounts.c5plus}字) |`,
-		);
-		mdLines.push(
-			`| **神韵键道 词次** | ${s2.tokenRatios.c1.toFixed(1)}% (${s2.tokenCounts.c1}) | ${s2.tokenRatios.c2.toFixed(1)}% (${s2.tokenCounts.c2}) | ${s2.tokenRatios.c3.toFixed(1)}% (${s2.tokenCounts.c3}) | ${s2.tokenRatios.c4.toFixed(1)}% (${s2.tokenCounts.c4}) | ${s2.tokenRatios.c5plus.toFixed(1)}% (${s2.tokenCounts.c5plus}) |`,
-		);
-		mdLines.push(
-			`| **神韵键道 汉字** | ${s2.charRatios.c1.toFixed(1)}% (${s2.charCounts.c1}字) | ${s2.charRatios.c2.toFixed(1)}% (${s2.charCounts.c2}字) | ${s2.charRatios.c3.toFixed(1)}% (${s2.charCounts.c3}字) | ${s2.charRatios.c4.toFixed(1)}% (${s2.charCounts.c4}字) | ${s2.charRatios.c5plus.toFixed(1)}% (${s2.charCounts.c5plus}字) |`,
-		);
-		mdLines.push("");
-		mdLines.push("### 逐句最优切分 / 键码对齐回放");
-		mdLines.push("```text");
-
-		for (let lineIdx = 0; lineIdx < a.lines.length; lineIdx++) {
-			const rawText = a.lines[lineIdx];
-			const s1Tokens = replayTokens(res.sanpinPaths[lineIdx]);
-			const s2Tokens = replayTokens(res.jiandaoPaths[lineIdx]);
-
-			const schemesMap = new Map<string, typeof s1Tokens>();
-			schemesMap.set("神韵三拼", s1Tokens);
-			schemesMap.set("神韵键道", s2Tokens);
-
-			mdLines.push(`[${String(lineIdx + 1).padStart(2, "0")}]`);
-			mdLines.push(renderAligned(rawText, schemesMap, order));
-			mdLines.push("");
-		}
-		mdLines.push("```");
-
-		const fileName = `篇${String(a.id).padStart(2, "0")}_${a.genre}_500字_最优分词逐键对齐.md`;
-		writeFileSync(join(replayDir, fileName), mdLines.join("\n"), "utf8");
-	}
-
-	// 2. 生成 5000 字汇编回放大文本文件（与神韵双拼八方案完全同一风格）
-	const compFileLines: string[] = [];
-	compFileLines.push(
-		"神韵三拼与神韵键道：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
-	);
-	compFileLines.push(
-		"====================================================================================================",
-	);
-	compFileLines.push(
-		"口径：10 篇不同文体长文，每篇严格 500 汉字，总计 5000 汉字；标点计键；均码 = 总实际按键 / 汉字数。",
-	);
-	compFileLines.push(
-		"优化目标：先最少实际按键，再少分词段、少 Space；允许前三候选选重（选重计 +1 键）。",
-	);
-	compFileLines.push(
-		"记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。",
-	);
-	compFileLines.push("");
-
-	for (let i = 0; i < articleResults.length; i++) {
-		const res = articleResults[i];
-		const a = res.article;
-		const s1 = res.sanpinStat;
-		const s2 = res.jiandaoStat;
-
-		compFileLines.push(
-			`====================================================================================================`,
-		);
-		compFileLines.push(
-			`【篇 ${String(a.id).padStart(2, "0")}】${a.title}（${a.genre}·500 汉字）`,
-		);
-		compFileLines.push(
-			`神韵三拼：按键 ${s1.keys}；均码 ${s1.avgLength.toFixed(4)}；Space ${s1.spaces}；1字 ${s1.tokenRatios.c1.toFixed(1)}% (覆盖 ${s1.charRatios.c1.toFixed(1)}%)；2字 ${s1.tokenRatios.c2.toFixed(1)}% (覆盖 ${s1.charRatios.c2.toFixed(1)}%)；3字 ${s1.tokenRatios.c3.toFixed(1)}% (覆盖 ${s1.charRatios.c3.toFixed(1)}%)；4字 ${s1.tokenRatios.c4.toFixed(1)}% (覆盖 ${s1.charRatios.c4.toFixed(1)}%)；5字+ ${s1.tokenRatios.c5plus.toFixed(1)}% (覆盖 ${s1.charRatios.c5plus.toFixed(1)}%)。`,
-		);
-		compFileLines.push(
-			`神韵键道：按键 ${s2.keys}；均码 ${s2.avgLength.toFixed(4)}；Space ${s2.spaces}；1字 ${s2.tokenRatios.c1.toFixed(1)}% (覆盖 ${s2.charRatios.c1.toFixed(1)}%)；2字 ${s2.tokenRatios.c2.toFixed(1)}% (覆盖 ${s2.charRatios.c2.toFixed(1)}%)；3字 ${s2.tokenRatios.c3.toFixed(1)}% (覆盖 ${s2.charRatios.c3.toFixed(1)}%)；4字 ${s2.tokenRatios.c4.toFixed(1)}% (覆盖 ${s2.charRatios.c4.toFixed(1)}%)；5字+ ${s2.tokenRatios.c5plus.toFixed(1)}% (覆盖 ${s2.charRatios.c5plus.toFixed(1)}%)。`,
-		);
-		compFileLines.push(
-			`----------------------------------------------------------------------------------------------------`,
-		);
-
-		for (let lineIdx = 0; lineIdx < a.lines.length; lineIdx++) {
-			const rawText = a.lines[lineIdx];
-			const s1Tokens = replayTokens(res.sanpinPaths[lineIdx]);
-			const s2Tokens = replayTokens(res.jiandaoPaths[lineIdx]);
-
-			const schemesMap = new Map<string, typeof s1Tokens>();
-			schemesMap.set("神韵三拼", s1Tokens);
-			schemesMap.set("神韵键道", s2Tokens);
-
-			compFileLines.push(
-				`[${String(a.id).padStart(2, "0")}-${String(lineIdx + 1).padStart(2, "0")}]`,
-			);
-			compFileLines.push(renderAligned(rawText, schemesMap, order));
-			compFileLines.push("");
-		}
-	}
-
+	const comparisonFilename =
+		"十篇五百字_5000字_四方案最优切分实战测评对齐汇编.txt";
 	writeFileSync(
-		join(
-			root,
-			"reports",
-			"十篇五百字_5000字_三拼与键道最优切分实战测评对齐汇编.txt",
-		),
-		compFileLines.join("\n"),
+		join(root, "reports", comparisonFilename),
+		comparison.join("\n"),
 		"utf8",
 	);
 
-	// 3. 生成主报告 Markdown 文件
-	const totalSanpinKeys = articleResults.reduce(
-		(s, r) => s + r.sanpinStat.keys,
-		0,
+	const aggregates = schemeRecord((scheme) =>
+		aggregateStats(articleResults, scheme),
 	);
-	const totalJiandaoKeys = articleResults.reduce(
-		(s, r) => s + r.jiandaoStat.keys,
-		0,
+	writeFileSync(
+		join(root, "reports", "5000字_四方案最优切分实测结果.json"),
+		`${JSON.stringify(
+			{
+				contract: "current-four-scheme-benchmark-v1",
+				schemes: Object.fromEntries(
+					BENCHMARK_SCHEMES.map((scheme) => [
+						scheme.id,
+						{
+							name: scheme.name,
+							capacity: scheme.capacity,
+							auxiliaryMode: scheme.auxiliaryMode,
+							auxiliaryOrder: scheme.auxiliaryOrder,
+							singleCharacterFirstChoiceAudit:
+								singleCharacterFirstChoiceAudits.get(scheme.id),
+							total: aggregates[scheme.id],
+							articles: articleResults.map((result) => result.stats[scheme.id]),
+						},
+					]),
+				),
+			},
+			null,
+			2,
+		)}\n`,
+		"utf8",
 	);
-	const totalSanpinSpaces = articleResults.reduce(
-		(s, r) => s + r.sanpinStat.spaces,
-		0,
+	const report = [
+		"# 十篇五百字（5000 字全语料）：冰雪双拼四方案最优切分实战测评",
+		"",
+		"> 本报告按当前运行合同重算冰雪键道、冰雪三拼、冰雪神韵·形、冰雪神韵·调。21×21 与 21×26 分别使用各自声韵映射、五辅语义、词语主码路由和辅序；结果是理论最短击键路径，不等同真人输入速度。",
+		"",
+		"## 方案与总结果",
+		"",
+		"| 方案 | 键域 | 辅序（二/三/四字） | 总按键 | 平均码长 | Space | Shift | 选重 |",
+		"| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |",
+		...BENCHMARK_SCHEMES.map((scheme) => {
+			const aggregate = aggregates[scheme.id];
+			return `| ${scheme.name} | ${scheme.capacity.replace("x", "×")} | \`${scheme.auxiliaryOrder}\` | ${aggregate.keys} | ${(aggregate.keys / 5000).toFixed(4)} | ${aggregate.spaces} | ${aggregate.shifts} | ${aggregate.selections.total} |`;
+		}),
+		"",
+		"选重审计按最终采用的最短路径统计；四方案单字均为双拼主码后最多追加四辅、总长最多六码，21×26 词语也最多六码。完整码后仍非首选的候选会明确计入选重，不把 Common399 音节无重误写成字词无重。",
+		"",
+		"## 选重审计",
+		"",
+		"| 方案 | 选重合计 | 单字 | 多字词 | 满六码单字 | 满六码多字词 |",
+		"| --- | ---: | ---: | ---: | ---: | ---: |",
+		...BENCHMARK_SCHEMES.map((scheme) => {
+			const selections = aggregates[scheme.id].selections;
+			return `| ${scheme.name} | ${selections.total} | ${selections.singleCharacter} | ${selections.multiCharacter} | ${selections.singleByCodeLength["6"] ?? 0} | ${selections.multiByCodeLength["6"] ?? 0} |`;
+		}),
+		"",
+		...BENCHMARK_SCHEMES.filter((scheme) => scheme.capacity === "21x26").map(
+			(scheme) => {
+				const examples =
+					aggregates[scheme.id].selections.fullCodeSingleExamples;
+				return `- ${scheme.name}的最短路径中，打满六码后仍需选重的单字：${examples.length > 0 ? examples.map((example) => `\`${example}\``).join("、") : "无"}。`;
+			},
+		),
+		"",
+		"### 单字不选重升首选审计",
+		"",
+		"下表逐一检查语料出现过的不同单字，从固顶码和各方案合法音码开始，再依次检查最多四个辅码；每一步均模拟首选后置，任一前缀成为首选就立即停止，不会为了凑满六码而继续输入。“仍非首选”表示该字的所有可用前缀都未升到首选；其中“有四辅”才表示补满六码后仍未解决，“无四辅”表示可用形码或笔画不足四辅。",
+		"",
+		"| 方案 | 不同单字 | 固顶首选 | 主码首选 | +1 辅 | +2 辅 | +3 辅 | +4 辅 | 仍非首选 | 有四辅仍未解 | 无四辅未解 | 未解出现次数 |",
+		"| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+		...BENCHMARK_SCHEMES.map((scheme) => {
+			const audit = singleCharacterFirstChoiceAudits.get(scheme.id)!;
+			return `| ${scheme.name} | ${audit.targetCharacters} | ${audit.fixedCodeFirst} | ${audit.mainCodeFirst} | ${audit.promotedByAuxiliaryLength["1"]} | ${audit.promotedByAuxiliaryLength["2"]} | ${audit.promotedByAuxiliaryLength["3"]} | ${audit.promotedByAuxiliaryLength["4"]} | ${audit.unresolved} | ${audit.unresolvedWithFourAuxiliaries} | ${audit.unresolvedWithoutFourAuxiliaries} | ${audit.unresolvedOccurrences} |`;
+		}),
+		"",
+		...BENCHMARK_SCHEMES.map((scheme) => {
+			const audit = singleCharacterFirstChoiceAudits.get(scheme.id)!;
+			return `- ${scheme.name}所有可用前缀仍非首选样例：${
+				audit.unresolvedExamples.length > 0
+					? audit.unresolvedExamples
+							.slice(0, 20)
+							.map((example) => `\`${example}\``)
+							.join("、")
+					: "无"
+			}。`;
+		}),
+		"",
+		"## 分文体结果",
+		"",
+		"| 篇号 | 文体 | 方案 | 按键 | 均码 | Space | 回放 |",
+		"| ---: | --- | --- | ---: | ---: | ---: | --- |",
+	];
+	for (const result of articleResults) {
+		const article = result.article;
+		const link = `./十篇五百字_四方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_四方案逐键对齐.md`;
+		for (const [index, scheme] of BENCHMARK_SCHEMES.entries()) {
+			const stat = result.stats[scheme.id];
+			report.push(
+				`| P${article.id} | ${article.genre} | ${scheme.shortName} | ${stat.keys} | ${stat.avgLength.toFixed(4)} | ${stat.spaces} | ${index === 0 ? `[查看](${link})` : "同上"} |`,
+			);
+		}
+	}
+	report.push(
+		"",
+		"## 5000 字词长分布",
+		"",
+		"| 方案 | 维度 | 单字 | 二字 | 三字 | 四字 | 五字+ |",
+		"| --- | --- | ---: | ---: | ---: | ---: | ---: |",
 	);
-	const totalJiandaoSpaces = articleResults.reduce(
-		(s, r) => s + r.jiandaoStat.spaces,
-		0,
-	);
-
-	const reportMd: string[] = [];
-	reportMd.push(
-		"# 十篇五百字（5000字全语料）：三拼与键道最优切分实战测评及字词比率深度分析报告",
-	);
-	reportMd.push("");
-	reportMd.push(
-		"> **报告摘要**：本报告针对冰雪/神韵三拼与神韵键道输入方案，使用当前仓库完整的 191 万条真实词典、形码/笔画库与固顶规则，构建了覆盖政论时事、科技科普、现代散文、财经分析、日常口语、法律公文、历史社科、教育心理、体育竞技、输入法标准赛文等 10 种代表性文体、**严格整整 5,000 个汉字**的测试集。通过动态规划求得全局最短击键路径，统计了各词长在“考虑词频前（静态词条）”与“考虑词频后（动态加权）”的分布规律，并为方案词库构建和实战优化目标给出了明确的比率准则。",
-	);
-	reportMd.push("");
-	reportMd.push("---");
-	reportMd.push("");
-	reportMd.push("## 一、全景评测结果概览");
-	reportMd.push("");
-	reportMd.push(
-		`- **测试规模**：10 篇 × 500 汉字 = **5,000 汉字**；中文标点共 368 个。`,
-	);
-	reportMd.push(
-		`- **神韵三拼 5000 字总击键**：**${totalSanpinKeys} 键**，全文本平均码长 **${(totalSanpinKeys / 5000).toFixed(4)} 键/字**，空格 ${totalSanpinSpaces} 次。`,
-	);
-	reportMd.push(
-		`- **神韵键道 5000 字总击键**：**${totalJiandaoKeys} 键**，全文本平均码长 **${(totalJiandaoKeys / 5000).toFixed(4)} 键/字**，空格 ${totalJiandaoSpaces} 次。`,
-	);
-	reportMd.push("");
-	reportMd.push("### 1. 10 篇 500 字不同文体实测明细大表");
-	reportMd.push("");
-	reportMd.push(
-		"| 篇号 | 文体分类 | 方案 | 实际按键 | 平均码长 | 空格 | 单字词次% | 二字词次% | 三字词次% | 四字词次% | 五字+词次% | 单字覆盖% | 二字覆盖% | 三字覆盖% | 四字覆盖% | 五字+覆盖% | 逐句对齐详情 |",
-	);
-	reportMd.push(
-		"| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |",
-	);
-
-	for (const r of articleResults) {
-		const a = r.article;
-		const s1 = r.sanpinStat;
-		const s2 = r.jiandaoStat;
-		const link = `[查看回放](./十篇五百字_实战最优分词逐键对齐回放/篇${String(a.id).padStart(2, "0")}_${a.genre}_500字_最优分词逐键对齐.md)`;
-
-		reportMd.push(
-			`| P${a.id} | ${a.genre} | 神韵三拼 | ${s1.keys} | ${s1.avgLength.toFixed(4)} | ${s1.spaces} | ` +
-				`${s1.tokenRatios.c1.toFixed(1)}% | ${s1.tokenRatios.c2.toFixed(1)}% | ${s1.tokenRatios.c3.toFixed(1)}% | ${s1.tokenRatios.c4.toFixed(1)}% | ${s1.tokenRatios.c5plus.toFixed(1)}% | ` +
-				`${s1.charRatios.c1.toFixed(1)}% | ${s1.charRatios.c2.toFixed(1)}% | ${s1.charRatios.c3.toFixed(1)}% | ${s1.charRatios.c4.toFixed(1)}% | ${s1.charRatios.c5plus.toFixed(1)}% | ${link} |`,
+	for (const scheme of BENCHMARK_SCHEMES) {
+		const aggregate = aggregates[scheme.id];
+		const tokenRatio = (field: keyof typeof aggregate.tokens) =>
+			`${((aggregate.tokens[field] / aggregate.totalTokens) * 100).toFixed(2)}%（${aggregate.tokens[field]} 段）`;
+		const characterRatio = (field: keyof typeof aggregate.characters) =>
+			`${((aggregate.characters[field] / 5000) * 100).toFixed(2)}%（${aggregate.characters[field]} 字）`;
+		report.push(
+			`| ${scheme.shortName} | 词次 | ${tokenRatio("c1")} | ${tokenRatio("c2")} | ${tokenRatio("c3")} | ${tokenRatio("c4")} | ${tokenRatio("c5plus")} |`,
 		);
-		reportMd.push(
-			`| P${a.id} | ${a.genre} | 神韵键道 | ${s2.keys} | ${s2.avgLength.toFixed(4)} | ${s2.spaces} | ` +
-				`${s2.tokenRatios.c1.toFixed(1)}% | ${s2.tokenRatios.c2.toFixed(1)}% | ${s2.tokenRatios.c3.toFixed(1)}% | ${s2.tokenRatios.c4.toFixed(1)}% | ${s2.tokenRatios.c5plus.toFixed(1)}% | ` +
-				`${s2.charRatios.c1.toFixed(1)}% | ${s2.charRatios.c2.toFixed(1)}% | ${s2.charRatios.c3.toFixed(1)}% | ${s2.charRatios.c4.toFixed(1)}% | ${s2.charRatios.c5plus.toFixed(1)}% | 同上 |`,
+		report.push(
+			`| ${scheme.shortName} | 汉字覆盖 | ${characterRatio("c1")} | ${characterRatio("c2")} | ${characterRatio("c3")} | ${characterRatio("c4")} | ${characterRatio("c5plus")} |`,
 		);
 	}
-
-	// 计算全局平均与汇总
-	const sumS1 = {
-		c1T: articleResults.reduce((s, r) => s + r.sanpinStat.tokenCounts.c1, 0),
-		c2T: articleResults.reduce((s, r) => s + r.sanpinStat.tokenCounts.c2, 0),
-		c3T: articleResults.reduce((s, r) => s + r.sanpinStat.tokenCounts.c3, 0),
-		c4T: articleResults.reduce((s, r) => s + r.sanpinStat.tokenCounts.c4, 0),
-		c5T: articleResults.reduce(
-			(s, r) => s + r.sanpinStat.tokenCounts.c5plus,
-			0,
-		),
-		c1C: articleResults.reduce((s, r) => s + r.sanpinStat.charCounts.c1, 0),
-		c2C: articleResults.reduce((s, r) => s + r.sanpinStat.charCounts.c2, 0),
-		c3C: articleResults.reduce((s, r) => s + r.sanpinStat.charCounts.c3, 0),
-		c4C: articleResults.reduce((s, r) => s + r.sanpinStat.charCounts.c4, 0),
-		c5C: articleResults.reduce((s, r) => s + r.sanpinStat.charCounts.c5plus, 0),
-	};
-	const sumS2 = {
-		c1T: articleResults.reduce((s, r) => s + r.jiandaoStat.tokenCounts.c1, 0),
-		c2T: articleResults.reduce((s, r) => s + r.jiandaoStat.tokenCounts.c2, 0),
-		c3T: articleResults.reduce((s, r) => s + r.jiandaoStat.tokenCounts.c3, 0),
-		c4T: articleResults.reduce((s, r) => s + r.jiandaoStat.tokenCounts.c4, 0),
-		c5T: articleResults.reduce(
-			(s, r) => s + r.jiandaoStat.tokenCounts.c5plus,
-			0,
-		),
-		c1C: articleResults.reduce((s, r) => s + r.jiandaoStat.charCounts.c1, 0),
-		c2C: articleResults.reduce((s, r) => s + r.jiandaoStat.charCounts.c2, 0),
-		c3C: articleResults.reduce((s, r) => s + r.jiandaoStat.charCounts.c3, 0),
-		c4C: articleResults.reduce((s, r) => s + r.jiandaoStat.charCounts.c4, 0),
-		c5C: articleResults.reduce(
-			(s, r) => s + r.jiandaoStat.charCounts.c5plus,
-			0,
-		),
-	};
-	const totalTokensS1 =
-		sumS1.c1T + sumS1.c2T + sumS1.c3T + sumS1.c4T + sumS1.c5T;
-	const totalTokensS2 =
-		sumS2.c1T + sumS2.c2T + sumS2.c3T + sumS2.c4T + sumS2.c5T;
-
-	reportMd.push("");
-	reportMd.push("### 2. 5,000 汉字总体词长切分分布（全量汇总）");
-	reportMd.push("");
-	reportMd.push(
-		"| 指标维度 | 词长分类 | 神韵三拼 (5000字汇总) | 神韵键道 (5000字汇总) | 语言学与工程特征解读 |",
-	);
-	reportMd.push("| :---: | :---: | :---: | :---: | :--- |");
-	reportMd.push(
-		`| **词次占比**<br>*(切出词段数)* | **单字** | **${((sumS1.c1T / totalTokensS1) * 100).toFixed(2)}%** (${sumS1.c1T}段) | **${((sumS2.c1T / totalTokensS2) * 100).toFixed(2)}%** (${sumS2.c1T}段) | 一简、二简及无词孤立字构成的稳态下限 |`,
-	);
-	reportMd.push(
-		`| | **二字词** | **${((sumS1.c2T / totalTokensS1) * 100).toFixed(2)}%** (${sumS1.c2T}段) | **${((sumS2.c2T / totalTokensS2) * 100).toFixed(2)}%** (${sumS2.c2T}段) | 汉语词段结构的第一主力中枢 |`,
-	);
-	reportMd.push(
-		`| | **三字词** | **${((sumS1.c3T / totalTokensS1) * 100).toFixed(2)}%** (${sumS1.c3T}段) | **${((sumS2.c3T / totalTokensS2) * 100).toFixed(2)}%** (${sumS2.c3T}段) | 核心语法块、三字熟语及固定搭配 |`,
-	);
-	reportMd.push(
-		`| | **四字词** | **${((sumS1.c4T / totalTokensS1) * 100).toFixed(2)}%** (${sumS1.c4T}段) | **${((sumS2.c4T / totalTokensS2) * 100).toFixed(2)}%** (${sumS2.c4T}段) | 成语及高频四字复合实词短语 |`,
-	);
-	reportMd.push(
-		`| | **五字及以上** | **${((sumS1.c5T / totalTokensS1) * 100).toFixed(2)}%** (${sumS1.c5T}段) | **${((sumS2.c5T / totalTokensS2) * 100).toFixed(2)}%** (${sumS2.c5T}段) | 专有名词、政经长词及长句略码 |`,
-	);
-	reportMd.push(
-		`| **汉字覆盖率**<br>*(占文本位置)* | **单字覆盖** | **${((sumS1.c1C / 5000) * 100).toFixed(2)}%** (${sumS1.c1C}字) | **${((sumS2.c1C / 5000) * 100).toFixed(2)}%** (${sumS2.c1C}字) | 全文中仅有约 6% 的字是以单字形态录入 |`,
-	);
-	reportMd.push(
-		`| | **二字覆盖** | **${((sumS1.c2C / 5000) * 100).toFixed(2)}%** (${sumS1.c2C}字) | **${((sumS2.c2C / 5000) * 100).toFixed(2)}%** (${sumS2.c2C}字) | 覆盖约三分之一的文本文字 |`,
-	);
-	reportMd.push(
-		`| | **三字覆盖** | **${((sumS1.c3C / 5000) * 100).toFixed(2)}%** (${sumS1.c3C}字) | **${((sumS2.c3C / 5000) * 100).toFixed(2)}%** (${sumS2.c3C}字) | |`,
-	);
-	reportMd.push(
-		`| | **四字覆盖** | **${((sumS1.c4C / 5000) * 100).toFixed(2)}%** (${sumS1.c4C}字) | **${((sumS2.c4C / 5000) * 100).toFixed(2)}%** (${sumS2.c4C}字) | 在字数覆盖上与二字词并驾齐驱 |`,
-	);
-	reportMd.push(
-		`| | **五字及以上覆盖**| **${((sumS1.c5C / 5000) * 100).toFixed(2)}%** (${sumS1.c5C}字) | **${((sumS2.c5C / 5000) * 100).toFixed(2)}%** (${sumS2.c5C}字) | 拉低平均码长的关键动力源 |`,
-	);
-	reportMd.push("");
-	reportMd.push("---");
-	reportMd.push("");
-	reportMd.push("## 二、核心理论结论：词长比例应该如何设定？");
-	reportMd.push("");
-	reportMd.push(
-		"在输入法设计中，必须严格区分**「考虑字词频前（静态词条构建口径）」**与**「考虑字词频后（动态文本切分口径）」**两个截然不同的物理维度：",
-	);
-	reportMd.push("");
-	reportMd.push("### 1. 考虑字词频前（词表静态词条配比，Type Distribution）");
-	reportMd.push(
-		"这是**词库维护与收词剪枝时的静态准入红线**。词库不能无节制地收录长短语，必须维持健康的金字塔形结构：",
-	);
-	reportMd.push("");
-	reportMd.push(
-		"| 词长级别 | 推荐词条种数占比 | 推荐词条数量级 | 工程作用与准入原则 |",
-	);
-	reportMd.push("| :--- | :---: | :---: | :--- |");
-	reportMd.push(
-		"| **单字** | **6% ～ 10%** | 约 7,000 ～ 10,000 条 | **全覆盖底座**：必须全覆盖《通用规范汉字表》8,105 级。虽然在词典条目中占比小，却是输入法的不可或缺的兜底支撑。 |",
-	);
-	reportMd.push(
-		"| **二字词** | **65% ～ 75%** | 约 70,000 ～ 150,000 条 | **主力骨干**：现代汉语构词的最稳定核心。编码容量充裕，宁可适度放宽收录，不可缺词断链。 |",
-	);
-	reportMd.push(
-		"| **三字词** | **10% ～ 15%** | 约 15,000 ～ 25,000 条 | **准入收紧**：只收录高频语法搭配、三字专有名词、熟语。严格拒绝生僻、临时组合短语。 |",
-	);
-	reportMd.push(
-		"| **四字词** | **6% ～ 10%** | 约 10,000 ～ 20,000 条 | **严格控制**：只收录通用四字成语和极高频固定术语。防止长词编码前段侵蚀二字词顶屏空间。 |",
-	);
-	reportMd.push(
-		"| **五字及以上** | **≤ 2%** | 约 1,000 ～ 3,000 条 | **极高门槛**：仅限绝对封闭的法定名称、政治经济固定搭配及特定结构略码。 |",
-	);
-	reportMd.push("");
-	reportMd.push("> **为什么静态比例绝不能让长词泛滥？**");
-	reportMd.push(
-		"> 在不考虑词频时，每盲目收录一个四字或五字短语，其 3 码、4 码前缀就会与无数高频二字词抢夺首选位置。若没有极高的实际词频背书，这种静态膨胀只会导致键盘重码率暴增，摧毁盲打确定性。",
-	);
-	reportMd.push("");
-	reportMd.push("---");
-	reportMd.push("");
-	reportMd.push(
-		"### 2. 考虑字词频后（动态文本切分期望比例，Token & Char Coverage）",
-	);
-	reportMd.push(
-		"经高频语料加权与 DP 求解后，文本实际切分的词长分布会发生翻天覆地的剧变。针对不同的优化导向，推荐以下两套目标基准：",
-	);
-	reportMd.push("");
-	reportMd.push(
-		"#### 目标取向 A：极限码长最优（做题家/赛文刷分导向，基于本次 5000 字实测涌现结果）",
-	);
-	reportMd.push(
-		"- **单字词次 14%～16%（汉字覆盖 5%～7%）**：极限压缩单字，仅保留一简、二简及无法组词的孤立字；",
-	);
-	reportMd.push("- **二字词次 45%～48%（汉字覆盖 35%～37%）**；");
-	reportMd.push("- **三字词次 14%～16%（汉字覆盖 16%～18%）**；");
-	reportMd.push("- **四字词次 13%～15%（汉字覆盖 19%～22%）**；");
-	reportMd.push("- **五字及以上词次 8%～10%（汉字覆盖 19%～22%）**。");
-	reportMd.push(
-		"> **评价**：在该分布下，理论平均码长可以压至 **1.70 ～ 1.72 键/字**（如 P1、P6 政论公文甚至可达 1.37）。但在实战中，高度依赖打字员对长词的预判，认知负荷极大。",
-	);
-	reportMd.push("");
-	reportMd.push(
-		"#### 目标取向 B：击键时间与心智手感最优（推荐的实用盲打基准模型）",
-	);
-	reportMd.push(
-		"人类打字员不是动态规划程序，面临长词踩空（退格回退惩罚高达 8~10 键）和切词犹豫成本（~150ms 认知延迟）。因此实战最优分布应向稳定二字词倾斜：",
-	);
-	reportMd.push("");
-	reportMd.push(
-		"| 词长级别 | 期望词次占比 (Token Ratio) | 期望汉字覆盖率 (Char Coverage) | 盲打手感与节奏特征 |",
-	);
-	reportMd.push("| :--- | :---: | :---: | :--- |");
-	reportMd.push(
-		"| **单字** | **18% ～ 25%** | **8% ～ 12%** | **轻盈守门员**：高频简码即打即走，不刻意强行拼凑生僻长词。 |",
-	);
-	reportMd.push(
-		"| **二字词** | **55% ～ 62%** | **50% ～ 60%** | **绝对主力节拍**：左右手击键节律最稳定，无意识肌肉反射输入。 |",
-	);
-	reportMd.push(
-		"| **三字词** | **12% ～ 15%** | **15% ～ 20%** | **高效调速器**：用于连接二字词的常见虚词短语。 |",
-	);
-	reportMd.push(
-		"| **四字词** | **4% ～ 6%** | **8% ～ 12%** | **自然大块**：仅打熟知的成语与极高频固定搭配。 |",
-	);
-	reportMd.push(
-		"| **五字及以上** | **1% ～ 2%** | **2% ～ 5%** | **安全略码**：确信 100% 存在且首选的超长略码才连打。 |",
-	);
-	reportMd.push("");
-	reportMd.push("---");
-	reportMd.push("");
-	reportMd.push("## 三、十篇 500 字逐篇对齐回放索引");
-	reportMd.push("");
-	reportMd.push(
-		"为了方便人工逐键校对各词长的切分与编码对齐情况，10 篇 500 字的详细逐句回放已拆分至专属子文件：",
-	);
-	reportMd.push("");
-	for (const r of articleResults) {
-		const a = r.article;
-		const s1 = r.sanpinStat;
-		const s2 = r.jiandaoStat;
-		reportMd.push(
-			`- [篇 ${String(a.id).padStart(2, "0")}：${a.title}（${a.genre}）](./十篇五百字_实战最优分词逐键对齐回放/篇${String(a.id).padStart(2, "0")}_${a.genre}_500字_最优分词逐键对齐.md) —— 三拼 ${s1.avgLength.toFixed(4)} 键/字，键道 ${s2.avgLength.toFixed(4)} 键/字`,
+	report.push("", "## 回放索引", "");
+	for (const result of articleResults) {
+		const article = result.article;
+		report.push(
+			`- [篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}）](./十篇五百字_四方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_四方案逐键对齐.md)`,
 		);
 	}
-	reportMd.push("");
-	reportMd.push(
-		`- **全局纯文本对齐汇编**：已生成一览式校对文本 [十篇五百字_5000字_三拼与键道最优切分实战测评对齐汇编.txt](./十篇五百字_5000字_三拼与键道最优切分实战测评对齐汇编.txt)，格式与 \`reports/神韵双拼八方案_500字_最短键码实战测评.txt\` 保持 100% 一致。`,
-	);
-
-	const mainReportPath = join(
+	report.push("", `- [5000 字纯文本对齐汇编](./${comparisonFilename})`);
+	const reportPath = join(
 		root,
 		"reports",
-		"十篇五百字_三拼与键道最优切分及字词比率深度分析报告.md",
+		"十篇五百字_四方案最优切分及字词比率报告.md",
 	);
-	writeFileSync(mainReportPath, reportMd.join("\n"), "utf8");
-	console.log(`\n主报告生成成功: ${mainReportPath}`);
+	writeFileSync(reportPath, report.join("\n"), "utf8");
+	console.log(`主报告生成成功: ${reportPath}`);
 }
 
-run().catch(console.error);
+run().catch((error) => {
+	console.error(error);
+	process.exitCode = 1;
+});
