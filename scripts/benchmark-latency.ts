@@ -376,6 +376,8 @@ async function main() {
 			);
 			const log = join(output, `${schema}.log`);
 			writeFileSync(log, "");
+			const opencc = join(shared, "opencc");
+			if (existsSync(opencc)) clone(opencc, join(dir, "opencc"));
 			driver = new ConsoleDriver(binary, dir, schema, log);
 			await driver.request([`select schema ${schema}`], 180_000);
 			rimeVersions[schema] = readFileSync(
