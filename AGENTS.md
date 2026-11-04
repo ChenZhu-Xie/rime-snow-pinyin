@@ -6,6 +6,9 @@
 - When an upstream feature depends on a keyboard layout, remap its initials, finals, tones, auxiliary keys, empty slots, and candidate behavior to the equivalent semantics of this repository's current layouts.
 - Before accepting an upstream encoding change, measure collisions or vacant-code usage in both layouts and add regression coverage for the locally adapted behavior.
 - Keep generators, generated artifacts, documentation, and tests synchronized with every semantic migration.
+- Follow [`docs/upstream-integration.md`](docs/upstream-integration.md) when upstream and fork behavior diverge. Treat the Mira/librime version as an experimental variable, first reduce the failure to one schema, one deploy, one case, and compare an exact upstream checkout with the fork before changing schema or Lua routing.
+- Upstream tests provide scenarios and target characters, words, or sentences, not ready-made local input strings or candidate expectations. Re-derive every migrated test from this repository's current schema, auxiliary order, physical key mapping, vacant slots, and candidate behavior.
+- Candidate tests must express the actual contract: use `cand[1]` for a required first choice, and test continued presence separately only when upstream promises it. A passing broad `page()` assertion does not prove ranking alignment.
 
 ## 五辅键语义
 
