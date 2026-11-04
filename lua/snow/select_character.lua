@@ -29,12 +29,25 @@ function processor.func(key_event, env)
   if context:get_selected_candidate() then
     text = context:get_selected_candidate().text
   end
-  if utf8.len(text) > 1 then
-    if key_event:eq(env.first_key) then
+  local first = key_event:eq(env.first_key)
+  local last = key_event:eq(env.last_key)
+  local length = utf8.len(text)
+  if length == 1 then
+    if first then
+      snow.commit_text(engine, text .. text)
+    elseif last then
+      snow.commit_text(engine, text .. "得")
+    else
+      return snow.kNoop
+    end
+    context:clear()
+    return snow.kAccepted
+  elseif length > 1 then
+    if first then
       snow.commit_text(engine, text:sub(1, utf8.offset(text, 2) - 1))
       context:clear()
       return snow.kAccepted
-    elseif key_event:eq(env.last_key) then
+    elseif last then
       snow.commit_text(engine, text:sub(utf8.offset(text, -1)))
       context:clear()
       return snow.kAccepted

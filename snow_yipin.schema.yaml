@@ -23,6 +23,7 @@ engine:
     - ascii_composer
     - chord_composer
     - lua_processor@*snow.shape_processor
+    - lua_processor@*snow.select_character
     - lua_processor@*snow.combo_popping
     - recognizer
     - lua_processor@*snow.user_dict

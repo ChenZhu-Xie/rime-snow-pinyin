@@ -51,6 +51,11 @@ deploy:
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
+      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      - send: "p["
+        assert: commit == "平平"
+      - send: "p]"
+        assert: commit == "平得"
       - send: xh
         assert: cand[1].text == "学"
       - send: be

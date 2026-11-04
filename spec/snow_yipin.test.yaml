@@ -18,6 +18,13 @@ script: |
     return rank(something) <= 6
   end
 deploy:
+  select_character:
+    tests:
+      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      - send: sgi{Release+s}{Release+g}{Release+i}[
+        assert: commit == "冰冰"
+      - send: sgi{Release+s}{Release+g}{Release+i}]
+        assert: commit == "冰得"
   statistics:
     tests:
       - send: jkl{Release+j}{Release+k}{Release+l}

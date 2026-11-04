@@ -1,28 +1,35 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { generateAbbreviations } from "./固顶替代";
+import { exact500Articles } from "./exact_500_articles";
 import {
-	ALL_BENCHMARK_SCHEMES,
-	type BenchmarkSchemeId,
-	isPoppableFixedCode,
-} from "./lib/benchmark-schemes";
+	type BenchmarkAlternative,
+	type BenchmarkPathResult,
+	optimizeBenchmarkLine,
+	preferredRankedCodes,
+} from "./lib/benchmark-paths";
 import {
 	type BenchmarkDictionaryEntry,
 	rankBenchmarkCodes,
 } from "./lib/benchmark-ranking";
+import {
+	ALL_BENCHMARK_SCHEMES,
+	type BenchmarkSchemeId,
+	isPoppableFixedCode,
+	supportsStructuralAbbreviations,
+} from "./lib/benchmark-schemes";
+import { RimeCandidateOracle } from "./lib/rime-candidate-oracle";
+import { generateAbbreviations } from "./固顶替代";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const compareRoot =
-	process.argv[2] ?? "D:\\C2D\\Desktop\\输入法 对比 inputmethod compare";
-const fivePath = join(
-	compareRoot,
-	"冰雪+小鹤_五方案_500字_最优分词_最短键码对齐.txt",
-);
-const sbxhPath = join(compareRoot, "声笔小鹤_500字_最优分词_最短键码回放.txt");
 const outputPath = resolve(
-	process.argv[3] ??
-		join(root, "reports", "冰雪双拼十方案_500字_最短键码实战测评.txt"),
+	process.argv[2] ??
+		join(root, "reports", "冰雪双拼六方案_500字_最短键码实战测评.txt"),
+);
+const legacyOutputPath = join(
+	root,
+	"reports",
+	"冰雪双拼十方案_500字_最短键码实战测评.txt",
 );
 
 type SchemeId = BenchmarkSchemeId;
@@ -36,30 +43,8 @@ type SourceKind =
 	| "结构略码"
 	| "尾字键";
 
-interface Alternative {
-	word: string;
-	displayCode: string;
-	rawCode: string;
-	keyCost: number;
-	instant: boolean;
-	popppable: boolean;
-	source: SourceKind;
-	shift: number;
-}
-
-interface Token extends Alternative {
-	start: number;
-	end: number;
-	separator: boolean;
-}
-
-interface PathResult {
-	tokens: Token[];
-	keys: number;
-	spaces: number;
-	shifts: number;
-	fixedCount: number;
-}
+type Alternative = BenchmarkAlternative<SourceKind>;
+type PathResult = BenchmarkPathResult<SourceKind>;
 
 interface ReplayToken {
 	start: number;
@@ -81,101 +66,6 @@ function width(text: string) {
 		else result += 1;
 	}
 	return result;
-}
-
-function visiblePositions(text: string) {
-	const result: Array<{ character: string; position: number }> = [];
-	let position = 0;
-	for (const character of text) {
-		if (character !== " ") result.push({ character, position });
-		position += width(character);
-	}
-	return result;
-}
-
-function parseAlignedFive(content: string) {
-	const lines = content.split(/\r?\n/);
-	const result: ReplayLine[] = [];
-	for (let index = 0; index < lines.length; index += 1) {
-		if (!lines[index].startsWith("原文")) continue;
-		const originalBody = lines[index].slice("原文".length);
-		const visible = visiblePositions(originalBody);
-		const text = visible.map(({ character }) => character).join("");
-		const schemes = new Map<string, ReplayToken[]>();
-		for (let offset = 1; offset <= 5; offset += 1) {
-			const line = lines[index + offset];
-			if (!line || !/^(清韵|四拼|三拼|键道|小鹤)/u.test(line)) {
-				throw new Error(`五方案回放第 ${result.length + 1} 段格式异常。`);
-			}
-			const label = line.match(/^(清韵|四拼|三拼|键道|小鹤)/u)?.[0] as string;
-			const body = line.slice(label.length);
-			const starts: Array<{ code: string; position: number }> = [];
-			const matcher = /\S+/gu;
-			let match = matcher.exec(body);
-			while (match) {
-				starts.push({
-					code: match[0],
-					position: width(body.slice(0, match.index)),
-				});
-				match = matcher.exec(body);
-			}
-			const mapped = starts.map(({ code, position }) => {
-				const start = visible.findIndex((item) => item.position === position);
-				if (start < 0)
-					throw new Error(
-						`${label} 第 ${result.length + 1} 段编码 ${code} 未与原文字首对齐（列 ${position}）。`,
-					);
-				return { start, code };
-			});
-			schemes.set(
-				label,
-				mapped.map(({ start, code }, tokenIndex) => {
-					const end = mapped[tokenIndex + 1]?.start ?? [...text].length;
-					return {
-						start,
-						end,
-						word: [...text].slice(start, end).join(""),
-						code,
-					};
-				}),
-			);
-		}
-		result.push({ text, schemes });
-	}
-	return result;
-}
-
-function parseSbxh(content: string, target: ReplayLine[]) {
-	const sourceLines = content.split(/\r?\n/);
-	const originals = sourceLines.filter((line) => /^\[\d+\] 原文/u.test(line));
-	const codes = sourceLines.filter((line) => /^\s+声笔小鹤/u.test(line));
-	if (originals.length !== target.length || codes.length !== target.length)
-		throw new Error("声笔小鹤回放段数与五方案回放不一致。");
-	for (let index = 0; index < target.length; index += 1) {
-		const words = originals[index]
-			.replace(/^\[\d+\] 原文\s+/u, "")
-			.split(/\s+\/\s+/u);
-		const codeList = codes[index]
-			.replace(/^\s+声笔小鹤\s+/u, "")
-			.split(/\s+\/\s+/u);
-		if (words.length !== codeList.length)
-			throw new Error(`声笔小鹤第 ${index + 1} 段词码数不一致。`);
-		let start = 0;
-		const tokens = words.map((word, wordIndex) => {
-			const length = [...word].length;
-			const token = {
-				start,
-				end: start + length,
-				word,
-				code: codeList[wordIndex],
-			};
-			start += length;
-			return token;
-		});
-		if (words.join("") !== target[index].text)
-			throw new Error(`声笔小鹤第 ${index + 1} 段原文不一致。`);
-		target[index].schemes.set("声笔小鹤", tokens);
-	}
 }
 
 function readFixed(file: string) {
@@ -234,7 +124,11 @@ function compareAlternative(a: Alternative, b: Alternative) {
 	);
 }
 
-function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
+function buildAlternatives(
+	replay: ReplayLine[],
+	scheme: SchemeId,
+	candidateOracle: (code: string) => readonly string[],
+) {
 	const targetWords = new Set<string>();
 	for (const line of replay) {
 		const characters = [...line.text];
@@ -269,7 +163,7 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 		)) {
 			const entry = parseDictionaryLine(line);
 			if (!entry) continue;
-			allEntries.push(entry);
+			if ([...entry.word].length === 1) allEntries.push(entry);
 			if (!targetWords.has(entry.word)) continue;
 			const key = `${entry.word}\t${entry.syllables.join(" ")}`;
 			const previous = targetEntries.get(key);
@@ -304,16 +198,19 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 			popppable: upper === 0 && isPoppableFixedCode(scheme, code),
 			source: value.source,
 			shift: upper,
+			selectionCount: 0,
 		});
 	}
 
-	for (const ranked of rankBenchmarkCodes(
-		scheme,
-		targetEntries.values(),
-		allEntries,
-		fixed,
+	for (const ranked of preferredRankedCodes(
+		rankBenchmarkCodes(
+			scheme,
+			targetEntries.values(),
+			allEntries,
+			fixed,
+			candidateOracle,
+		),
 	)) {
-		if (ranked.rank > 3) continue;
 		const first = ranked.rank === 1;
 		const upper = countUpper(ranked.code);
 		add({
@@ -325,6 +222,7 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 			popppable: first && ranked.popppable,
 			source: first ? "普通码" : "次选",
 			shift: upper,
+			selectionCount: first ? 0 : 1,
 		});
 	}
 
@@ -332,23 +230,26 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 	const directSnapshot = new Map(
 		[...alternatives].map(([word, values]) => [word, [...values]]),
 	);
-	for (const [base, baseAlternatives] of directSnapshot) {
-		if ([...base].length > 3) continue;
-		for (const generated of generateAbbreviations(base)) {
-			if (!targetWords.has(generated.word)) continue;
-			for (const alternative of baseAlternatives) {
-				const shifted = /^[A-Z]$/u.test(generated.trigger);
-				const trigger = shifted ? `⇧${generated.trigger}` : generated.trigger;
-				add({
-					word: generated.word,
-					displayCode: alternative.displayCode + trigger,
-					rawCode: alternative.rawCode + generated.trigger,
-					keyCost: alternative.keyCost + (shifted ? 2 : 1),
-					instant: true,
-					popppable: false,
-					source: "结构略码",
-					shift: alternative.shift + (shifted ? 1 : 0),
-				});
+	if (supportsStructuralAbbreviations(scheme)) {
+		for (const [base, baseAlternatives] of directSnapshot) {
+			if ([...base].length > 3) continue;
+			for (const generated of generateAbbreviations(base)) {
+				if (!targetWords.has(generated.word)) continue;
+				for (const alternative of baseAlternatives) {
+					const shifted = /^[A-Z]$/u.test(generated.trigger);
+					const trigger = shifted ? `⇧${generated.trigger}` : generated.trigger;
+					add({
+						word: generated.word,
+						displayCode: alternative.displayCode + trigger,
+						rawCode: alternative.rawCode + generated.trigger,
+						keyCost: alternative.keyCost + (shifted ? 2 : 1),
+						instant: true,
+						popppable: false,
+						source: "结构略码",
+						shift: alternative.shift + (shifted ? 1 : 0),
+						selectionCount: alternative.selectionCount,
+					});
+				}
 			}
 		}
 	}
@@ -374,6 +275,7 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 					popppable: false,
 					source: "尾字键",
 					shift: alternative.shift,
+					selectionCount: alternative.selectionCount,
 				});
 			}
 		}
@@ -383,96 +285,7 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 }
 
 function optimizeLine(text: string, alternatives: Map<string, Alternative[]>) {
-	const characters = [...text];
-	const best: Array<PathResult | undefined> = new Array(characters.length + 1);
-	best[characters.length] = {
-		tokens: [],
-		keys: 0,
-		spaces: 0,
-		shifts: 0,
-		fixedCount: 0,
-	};
-	for (let start = characters.length - 1; start >= 0; start -= 1) {
-		const character = characters[start];
-		if (!/\p{Script=Han}/u.test(character)) {
-			const rest = best[start + 1];
-			if (!rest) continue;
-			best[start] = {
-				tokens: [
-					{
-						word: character,
-						displayCode:
-							character === "，" ? "," : character === "。" ? "." : character,
-						rawCode: character,
-						keyCost: 1,
-						instant: true,
-						popppable: false,
-						source: "普通码",
-						shift: 0,
-						start,
-						end: start + 1,
-						separator: false,
-					},
-					...rest.tokens,
-				],
-				keys: rest.keys + 1,
-				spaces: rest.spaces,
-				shifts: rest.shifts,
-				fixedCount: rest.fixedCount,
-			};
-			continue;
-		}
-		for (let end = start + 1; end <= characters.length; end += 1) {
-			const word = characters.slice(start, end).join("");
-			if (!/^\p{Script=Han}+$/u.test(word)) break;
-			const values = alternatives.get(word);
-			const rest = best[end];
-			if (!values || !rest) continue;
-			for (const alternative of values) {
-				const followedByHan =
-					end < characters.length && /\p{Script=Han}/u.test(characters[end]);
-				const separator =
-					followedByHan && !alternative.instant && !alternative.popppable;
-				const isFixed =
-					alternative.source === "一简" ||
-					alternative.source === "二简单字" ||
-					alternative.source === "二简词" ||
-					alternative.source === "630";
-				const candidate: PathResult = {
-					tokens: [{ ...alternative, start, end, separator }, ...rest.tokens],
-					keys: alternative.keyCost + Number(separator) + rest.keys,
-					spaces: Number(separator) + rest.spaces,
-					shifts: alternative.shift + rest.shifts,
-					fixedCount: rest.fixedCount + (isFixed ? 1 : 0),
-				};
-				const current = best[start];
-
-				const isBetter = (cand: PathResult, cur: PathResult) => {
-					if (cand.keys !== cur.keys) return cand.keys < cur.keys;
-					if (cand.tokens.length !== cur.tokens.length)
-						return cand.tokens.length < cur.tokens.length;
-					if (cand.fixedCount !== cur.fixedCount)
-						return cand.fixedCount > cur.fixedCount; // 固顶简码绝对优先！
-					if (cand.spaces !== cur.spaces) return cand.spaces < cur.spaces;
-					return cand.shifts < cur.shifts;
-				};
-
-				if (!current || isBetter(candidate, current)) {
-					best[start] = candidate;
-				}
-			}
-		}
-	}
-	if (!best[0]) {
-		const missing = [...text].filter(
-			(character) =>
-				/\p{Script=Han}/u.test(character) && !alternatives.has(character),
-		);
-		throw new Error(
-			`无法编码：${text}；缺少单字候选：${[...new Set(missing)].join("")}`,
-		);
-	}
-	return best[0];
+	return optimizeBenchmarkLine(text, alternatives);
 }
 
 function replayTokens(path: PathResult) {
@@ -530,8 +343,12 @@ function renderAligned(line: ReplayLine, order: string[]) {
 	return lines.join("\n");
 }
 
-const replay = parseAlignedFive(readFileSync(fivePath, "utf8"));
-parseSbxh(readFileSync(sbxhPath, "utf8"), replay);
+const benchmarkArticle = exact500Articles.find(({ id }) => id === 10);
+if (!benchmarkArticle) throw new Error("找不到第 10 篇 500 字输入法赛文。");
+const replay: ReplayLine[] = benchmarkArticle.lines.map((text) => ({
+	text,
+	schemes: new Map(),
+}));
 const hanCount = replay.reduce(
 	(sum, line) =>
 		sum +
@@ -549,30 +366,46 @@ if (hanCount !== 500 || punctuationCount !== 43)
 	);
 
 const generated = new Map<string, { paths: PathResult[]; total: PathResult }>();
-for (const scheme of ALL_BENCHMARK_SCHEMES) {
-	console.log(`正在重算 ${scheme.name}...`);
-	const alternatives = buildAlternatives(replay, scheme.id);
-	const paths = replay.map(({ text }) => optimizeLine(text, alternatives));
-	const total = paths.reduce<PathResult>(
-		(summary, path) => ({
-			tokens: [...summary.tokens, ...path.tokens],
-			keys: summary.keys + path.keys,
-			spaces: summary.spaces + path.spaces,
-			shifts: summary.shifts + path.shifts,
-		}),
-		{ tokens: [], keys: 0, spaces: 0, shifts: 0 },
-	);
-	generated.set(scheme.name, { paths, total });
-	for (const [index, path] of paths.entries())
-		replay[index].schemes.set(scheme.name, replayTokens(path));
+
+const oracle = new RimeCandidateOracle(
+	ALL_BENCHMARK_SCHEMES.map(({ schemaId }) => schemaId),
+);
+try {
+	for (const scheme of ALL_BENCHMARK_SCHEMES) {
+		console.log(`正在重算 ${scheme.name}（空白 Rime 实际候选）...`);
+		oracle.selectSchema(scheme.schemaId);
+		const alternatives = buildAlternatives(replay, scheme.id, (code) =>
+			oracle.candidates(code),
+		);
+		const paths = replay.map(({ text }) => optimizeLine(text, alternatives));
+		const total = paths.reduce<PathResult>(
+			(summary, path) => ({
+				tokens: [...summary.tokens, ...path.tokens],
+				keys: summary.keys + path.keys,
+				spaces: summary.spaces + path.spaces,
+				shifts: summary.shifts + path.shifts,
+				fixedCount: summary.fixedCount + path.fixedCount,
+				selectionCount: summary.selectionCount + path.selectionCount,
+				codeLength: summary.codeLength + path.codeLength,
+			}),
+			{
+				tokens: [],
+				keys: 0,
+				spaces: 0,
+				shifts: 0,
+				fixedCount: 0,
+				selectionCount: 0,
+				codeLength: 0,
+			},
+		);
+		generated.set(scheme.name, { paths, total });
+		for (const [index, path] of paths.entries())
+			replay[index].schemes.set(scheme.name, replayTokens(path));
+	}
+} finally {
+	oracle.close();
 }
 
-const frozenStats = [
-	{ scheme: "四拼", keys: 919, spaces: 49, shifts: 0, segments: 264 },
-	{ scheme: "声笔小鹤", keys: 960, spaces: 29, shifts: 0, segments: 238 },
-	{ scheme: "清韵", keys: 1045, spaces: 99, shifts: 42, segments: 325 },
-	{ scheme: "小鹤音形", keys: 1114, spaces: 110, shifts: 0, segments: 305 },
-];
 const generatedStats = [...generated].map(([scheme, value]) => ({
 	scheme,
 	keys: value.total.keys,
@@ -582,7 +415,7 @@ const generatedStats = [...generated].map(([scheme, value]) => ({
 		/^\p{Script=Han}+$/u.test(token.word),
 	).length,
 }));
-const stats = [...frozenStats, ...generatedStats].sort(
+const stats = [...generatedStats].sort(
 	(a, b) => a.keys - b.keys || a.scheme.localeCompare(b.scheme, "zh-CN"),
 );
 const detail = generatedStats.map((stat) => {
@@ -598,19 +431,14 @@ const detail = generatedStats.map((stat) => {
 	return `${stat.scheme}：总实际按键 ${stat.keys}；平均码长 ${(stat.keys / 500).toFixed(4)}；Space ${stat.spaces}；Shift ${stat.shifts}；标点 ${punctuationCount}；非标点编码动作 ${stat.segments}（1字 ${lengths.get(1) ?? 0}；2字 ${lengths.get(2) ?? 0}；3字 ${lengths.get(3) ?? 0}；4字 ${lengths.get(4) ?? 0}；5字以上 ${lengths.get(5) ?? 0}）。\n  简码命中：一简 ${counts.get("一简") ?? 0}；二简单字 ${counts.get("二简单字") ?? 0}；二简词 ${counts.get("二简词") ?? 0}；630 ${counts.get("630") ?? 0}；结构略码 ${counts.get("结构略码") ?? 0}；尾字键 ${counts.get("尾字键") ?? 0}；普通码 ${counts.get("普通码") ?? 0}；次选 ${counts.get("次选") ?? 0}。`;
 });
 
-const order = [
-	"四拼",
-	...ALL_BENCHMARK_SCHEMES.map((scheme) => scheme.name),
-	"声笔小鹤",
-	"清韵",
-	"小鹤",
-];
-const output = `冰雪双拼四套现行方案与两套经典方案：500 字赛文十方案最短键码实战测评
+const order = [...ALL_BENCHMARK_SCHEMES.map((scheme) => scheme.name)];
+const output = `冰雪双拼四套现行方案与两套经典方案：500 字赛文六方案最短键码实战测评
 ====================================================================================================
 口径：500 个汉字；中文逗号/句号 43 个；标点计键；均码 = 总实际按键 / 500。
-重算轨：冰雪健道、冰雪弎拼、冰雪简道、冰雪散拼，以及采用迁移前声韵布局的冰雪键道、冰雪三拼；六条本地轨均按现行功能与同一最短路径模型复算，其余四轨逐键沿用两份指定冻结回放。
+重算轨：冰雪健道、冰雪弎拼、冰雪简道、冰雪散拼，以及采用迁移前声韵布局的冰雪键道、冰雪三拼；六条轨均按现行功能与同一最短路径模型复算。
 辅序：冰雪健道与经典冰雪键道共用 12/231/24，冰雪弎拼与经典冰雪三拼共用 12/213/23；冰雪简道为 12/21/42，冰雪散拼为 12/21/13。
-优化目标：先最少实际按键，再少分词段、少 Space；允许前三候选选重（选重计 +1 键），并使用各级简码、630、尾字键和原生结构略码。
+优化目标：先最少选重次数，再最少实际按键；同为首选时优先最短标准码，不为节省一个 Space 多补辅助码。某字词存在首选编码时不保留其二、三选短码，只有完全没有首选打法时才允许前三候选选重兜底。
+结构略码：仅冰雪简道与冰雪散拼使用；四条 21×21 轨只使用大写补韵机制。
 记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。
 
 Benchmark 排名表
@@ -634,12 +462,20 @@ ${replay.map((line, index) => `[${String(index + 1).padStart(2, "0")}]\n${render
 核验说明
 ====================================================================================================
 1. 六条本地轨均读取当前发布 fixed 表与运行时合同；冰雪键道、冰雪三拼只从 scripts/data/legacy-schemes/3658e22 还原迁移前声韵代数。六轨共用当前五部词典和受版本控制的字形／笔画源。
-2. 单字与二／三／四字词均枚举合法标准码、空桶短码和逐级扩展码；每条路径先按现行权重生成原始候选，再逐键模拟首选后置，交由全文动态规划选取总按键最少的分词与编码。
+2. 单字与二／三／四字词均枚举合法标准码、空桶短码和逐级扩展码；每个编码都在独立空白 user dict、无提交、无调频的 librime 部署中查询实际候选，交由全文动态规划先最少化选重次数、再最少化总按键。
 3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
 4. 冰雪键道／冰雪三拼不再采用外部冻结统计；二者只保留迁移前声韵布局，AA/AAB、630、fixed、动态首选后置与辅序均按当前发布方案合同复算。
+5. 历史十方案报告中的冰雪四拼、冰雪清韵、声笔小鹤、小鹤音形来自两份外部冻结回放；回放仍含已知错误且未满足 snow-benchmark-frozen-v2 契约，因此本报告不导入、不排名。待四轨分别以空白用户词典、关闭调频和逐标准码首选截断重新生成后，另行恢复跨方案比较。
 `;
 
 writeFileSync(outputPath, output, "utf8");
 console.log(`已生成 ${outputPath}`);
+if (outputPath !== legacyOutputPath) {
+	writeFileSync(
+		legacyOutputPath,
+		`此历史十方案报告已失效，不再用于排名。\n\n其中四条外部冻结轨尚未按 snow-benchmark-frozen-v2 契约重新生成，旧回放含已知错误。当前仓库可完整复算的六方案 500 字结果见：冰雪双拼六方案_500字_最短键码实战测评.txt\n`,
+		"utf8",
+	);
+}
 for (const stat of stats)
 	console.log(`${stat.scheme}\t${stat.keys}\t${(stat.keys / 500).toFixed(4)}`);

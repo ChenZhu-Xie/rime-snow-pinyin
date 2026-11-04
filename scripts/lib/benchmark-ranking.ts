@@ -20,6 +20,8 @@ export interface RankedBenchmarkCode extends BenchmarkCode {
 	path: string[];
 }
 
+export type BenchmarkCandidateOracle = (code: string) => readonly string[];
+
 interface TargetRoute {
 	word: string;
 	generated: BenchmarkCode;
@@ -245,6 +247,7 @@ export function rankBenchmarkCodes(
 	targetEntries: Iterable<BenchmarkDictionaryEntry>,
 	allEntries: Iterable<BenchmarkDictionaryEntry>,
 	fixed: ReadonlyMap<string, { word: string }>,
+	candidateOracle?: BenchmarkCandidateOracle,
 ): RankedBenchmarkCode[] {
 	const targets = [...targetEntries];
 	const entries = [...allEntries];
@@ -281,6 +284,55 @@ export function rankBenchmarkCodes(
 				routes.set(key, values);
 			}
 		}
+	}
+	if (candidateOracle) {
+		const routesByWord = new Map<string, TargetRoute[]>();
+		for (const values of routes.values()) {
+			const route = values[0];
+			if (!route) continue;
+			const wordRoutes = routesByWord.get(route.word) ?? [];
+			wordRoutes.push(route);
+			routesByWord.set(route.word, wordRoutes);
+		}
+		const candidateCache = new Map<string, string[]>();
+		const result: RankedBenchmarkCode[] = [];
+		for (const [word, wordRoutes] of routesByWord) {
+			const byLength = Map.groupBy(
+				wordRoutes,
+				({ generated }) => generated.code.length,
+			);
+			const fallback: RankedBenchmarkCode[] = [];
+			for (const length of [...byLength.keys()].sort(
+				(left, right) => left - right,
+			)) {
+				const firstChoices: RankedBenchmarkCode[] = [];
+				for (const route of byLength.get(length) ?? []) {
+					let candidates = candidateCache.get(route.generated.code);
+					if (!candidates) {
+						candidates = [...candidateOracle(route.generated.code)];
+						candidateCache.set(route.generated.code, candidates);
+					}
+					const index = candidates.indexOf(word);
+					const ranked: RankedBenchmarkCode = {
+						...route.generated,
+						word,
+						rank: index >= 0 ? index + 1 : 11,
+						popppable: isPoppableCode(scheme, route.generated),
+						candidates: candidates.slice(0, 3),
+						path: route.path,
+					};
+					if (ranked.rank === 1) firstChoices.push(ranked);
+					else if (ranked.rank === 2 || ranked.rank === 3)
+						fallback.push(ranked);
+				}
+				if (firstChoices.length > 0) {
+					result.push(...firstChoices);
+					break;
+				}
+				if (length === Math.max(...byLength.keys())) result.push(...fallback);
+			}
+		}
+		return result;
 	}
 
 	const top = new Map<string, Array<{ word: string; weight: number }>>();

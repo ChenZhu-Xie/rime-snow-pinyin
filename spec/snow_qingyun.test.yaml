@@ -140,6 +140,11 @@ deploy:
         assert: commit == "一"
       - send: "yo]"
         assert: commit == "个"
+      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      - send: "kv["
+        assert: commit == "清清"
+      - send: "kv]"
+        assert: commit == "清得"
       # 单字的「韵」码：7 个，只有二根及以上字可能有此种编码
       - send: "e"
         assert: commit == "的"

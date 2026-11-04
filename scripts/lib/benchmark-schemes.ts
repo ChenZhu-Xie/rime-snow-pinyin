@@ -1,8 +1,8 @@
 import { readFileSync } from "node:fs";
-import { loadAuxiliarySemantics } from "./auxiliary-semantics";
-import { SpellingAlgebra } from "./algebra";
-import { rootPath } from "./paths";
 import { plainSyllable, readShapeCodes, toneOf } from "../固顶编译器";
+import { SpellingAlgebra } from "./algebra";
+import { loadAuxiliarySemantics } from "./auxiliary-semantics";
+import { rootPath } from "./paths";
 
 export type BenchmarkSchemeId =
 	| "classic-tone"
@@ -17,6 +17,7 @@ export type BenchmarkAuxiliaryMode = "tone" | "shape";
 
 export interface BenchmarkScheme {
 	id: BenchmarkSchemeId;
+	schemaId: string;
 	name: string;
 	shortName: string;
 	capacity: BenchmarkCapacity;
@@ -35,6 +36,7 @@ export interface BenchmarkCode {
 export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "u357-shape",
+		schemaId: "snow_jiandao",
 		name: "冰雪健道（U357 21×21）",
 		shortName: "冰雪健道",
 		capacity: "21x21",
@@ -45,6 +47,7 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	},
 	{
 		id: "u357-tone",
+		schemaId: "snow_sanpin",
 		name: "冰雪弎拼（U357 21×21）",
 		shortName: "冰雪弎拼",
 		capacity: "21x21",
@@ -55,6 +58,7 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	},
 	{
 		id: "overall17-shape",
+		schemaId: "snow_shenyun_shape",
 		name: "冰雪简道（Overall-17 21×26）",
 		shortName: "冰雪简道",
 		capacity: "21x26",
@@ -65,6 +69,7 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	},
 	{
 		id: "overall17-tone",
+		schemaId: "snow_shenyun_tone",
 		name: "冰雪散拼（Overall-17 21×26）",
 		shortName: "冰雪散拼",
 		capacity: "21x26",
@@ -78,6 +83,7 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 export const LEGACY_BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "classic-shape",
+		schemaId: "snow_jiandao_classic",
 		name: "冰雪键道",
 		shortName: "冰雪键道",
 		capacity: "21x21",
@@ -88,6 +94,7 @@ export const LEGACY_BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	},
 	{
 		id: "classic-tone",
+		schemaId: "snow_sanpin_classic",
 		name: "冰雪三拼",
 		shortName: "冰雪三拼",
 		capacity: "21x21",
@@ -162,6 +169,12 @@ function schemeById(id: BenchmarkSchemeId): BenchmarkScheme {
 	const scheme = schemesById.get(id);
 	if (!scheme) throw new Error(`未知实测方案：${id}`);
 	return scheme;
+}
+
+export function supportsStructuralAbbreviations(
+	id: BenchmarkSchemeId,
+): boolean {
+	return id === "overall17-shape" || id === "overall17-tone";
 }
 
 function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {

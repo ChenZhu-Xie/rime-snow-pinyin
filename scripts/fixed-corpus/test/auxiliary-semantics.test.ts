@@ -256,3 +256,52 @@ test("benchmark 逐级模拟首选后置并保留最短合法单字码", () => {
 	assert.equal(ranked.find(({ code }) => code === "w")?.rank, 2);
 	assert.equal(ranked.find(({ code }) => code === "wi")?.rank, 1);
 });
+
+test("固定候选覆盖首位时不后置底层翻译器候选", () => {
+	const entries = [
+		{ word: "城市", syllables: ["cheng2", "shi4"], weight: 501469 },
+		{ word: "超时", syllables: ["chao1", "shi2"], weight: 48970 },
+	];
+	const ranked = rankBenchmarkCodes(
+		"u357-shape",
+		entries,
+		entries,
+		new Map([["we", { word: "产生" }]]),
+	);
+	assert.equal(
+		ranked.find(({ word, code }) => word === "城市" && code === "wev")?.rank,
+		1,
+	);
+	assert.equal(
+		ranked.find(({ word, code }) => word === "超时" && code === "wev")?.rank,
+		2,
+	);
+});
+
+test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
+	const entries = [
+		{ word: "从", syllables: ["cong2"], weight: 195108 },
+		{ word: "刚醒来", syllables: ["gang1", "xing3", "lai2"], weight: 100 },
+	];
+	const actualCandidates = new Map([
+		["c", ["才", "从"]],
+		["ck", ["从", "葱"]],
+		["gNxl", ["钢箱梁", "刚醒来", "刚下来"]],
+	]);
+	const from = rankBenchmarkCodes(
+		"overall17-shape",
+		[entries[0]],
+		[entries[0]],
+		new Map([["c", { word: "才" }]]),
+		(code) => actualCandidates.get(code) ?? [],
+	);
+	assert.equal(from.find(({ code }) => code === "ck")?.rank, 1);
+	const waking = rankBenchmarkCodes(
+		"u357-tone",
+		[entries[1]],
+		[entries[1]],
+		new Map(),
+		(code) => actualCandidates.get(code) ?? [],
+	);
+	assert.equal(waking.find(({ code }) => code === "gNxl")?.rank, 2);
+});

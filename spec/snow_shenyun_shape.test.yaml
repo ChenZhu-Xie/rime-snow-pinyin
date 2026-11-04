@@ -33,6 +33,11 @@ deploy:
         assert: cand[1].text == "的" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: q
         assert: cand[1].text == "我"
+      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      - send: "q["
+        assert: commit == "我我"
+      - send: "q]"
+        assert: commit == "我得"
       - send: w
         assert: cand[1].text == "是"
       - send: r

@@ -178,21 +178,34 @@ test("Three-Code derives stroke assist codes from AVUIO shape meanings", () => {
 	assert.equal("hshh".replaceAll("h", "v").replaceAll("s", "i"), "vivv");
 });
 
-test("word-initial and word-final selection runs before popping", () => {
+test("all released schemes run word selection before popping", () => {
 	const processor = read("lua/snow/select_character.lua");
 	assert.match(processor, /or "bracketleft"/u);
 	assert.match(processor, /or "bracketright"/u);
-	for (const schema of [
-		"snow_sipin.schema.yaml",
-		"snow_sanpin.schema.yaml",
-		"snow_jiandao.schema.yaml",
-		"snow_qingyun.schema.yaml",
-	]) {
-		const source = read(schema);
+	for (const [schema, processorSource, poppingName] of [
+		["snow_sipin.schema.yaml", "snow_sipin.schema.yaml", "popping"],
+		["snow_sanpin.schema.yaml", "snow_sanpin.schema.yaml", "popping"],
+		["snow_yipin.schema.yaml", "snow_yipin.schema.yaml", "combo_popping"],
+		["snow_jiandao.schema.yaml", "snow_jiandao.schema.yaml", "popping"],
+		["snow_qingyun.schema.yaml", "snow_qingyun.schema.yaml", "popping"],
+		["snow_shenyun_shape.schema.yaml", "snow_shenyun_common.yaml", "popping"],
+		["snow_shenyun_tone.schema.yaml", "snow_shenyun_common.yaml", "popping"],
+		[
+			"snow_jiandao_classic.schema.yaml",
+			"snow_jiandao_classic.schema.yaml",
+			"popping",
+		],
+		[
+			"snow_sanpin_classic.schema.yaml",
+			"snow_sanpin_classic.schema.yaml",
+			"popping",
+		],
+	] as const) {
+		const source = read(processorSource);
 		const selectCharacter = source.indexOf(
 			"lua_processor@*snow.select_character",
 		);
-		const popping = source.indexOf("lua_processor@*snow.popping");
+		const popping = source.indexOf(`lua_processor@*snow.${poppingName}`);
 		assert.ok(selectCharacter >= 0, `${schema} 缺少以词定字处理器`);
 		assert.ok(popping > selectCharacter, `${schema} 的顶功处理过早`);
 	}

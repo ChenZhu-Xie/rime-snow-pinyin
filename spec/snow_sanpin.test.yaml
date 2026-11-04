@@ -191,6 +191,11 @@ deploy:
         assert: commit == "一"
       - send: "ylgs]"
         assert: commit == "个"
+      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      - send: "p["
+        assert: commit == "平平"
+      - send: "p]"
+        assert: commit == "平得"
       - send: nwyn
         assert: cand[1].text == "那样"
       - send: tpvvi
