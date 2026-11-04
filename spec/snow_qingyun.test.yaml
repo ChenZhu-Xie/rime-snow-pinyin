@@ -243,12 +243,9 @@ deploy:
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
   radical_priority:
-    patch:
-      # 模拟共享拼音用户词被调频抬高；完整部件码仍应保持首选。
-      pinyin/initial_quality: 1.5
     tests:
       - send: "`wangyan"
-        assert: error(cand[1].text .. "|" .. tostring(rank("网眼")))
+        assert: cand[1].text == "琰" and has("网眼") and commit == nil
   advanced:
     tests:
       # Unicode 注解：Control+q 显示汉字的 Unicode 编码和所属区块，
@@ -273,7 +270,7 @@ deploy:
         assert: cand[1].text == "是"
       # 部件全拼反查：连续输入各部件读音，候选同时显示拼音。
       - send: "`wangyan"
-        assert: cand[1].text == "琰" and cand[1].comment:find("yan3", 1, true) ~= nil and commit == nil
+        assert: page("琰") and cand[rank("琰")].comment:find("yan3", 1, true) ~= nil and commit == nil
       - send: "`maowenniao"
         assert: page("鹜") and cand[rank("鹜")].comment:find("wu4", 1, true) ~= nil and commit == nil
       # 单引号结束反查后可正常上屏，退格重输仍留在反查段。

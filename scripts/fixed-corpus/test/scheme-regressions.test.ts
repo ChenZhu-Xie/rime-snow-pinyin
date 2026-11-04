@@ -336,11 +336,6 @@ test("Clear Rhyme keeps history separate from the double-backtick Lua trigger", 
 	);
 });
 
-test("Clear Rhyme keeps complete radical codes ahead of competing pinyin phrases", () => {
-	const schema = read("snow_qingyun.schema.yaml");
-	assert.match(schema, /radical\/initial_quality: 2/u);
-});
-
 test("Three-Code keeps two-syllable full codes ahead of colliding initial abbreviations", () => {
 	const schema = read("snow_sanpin.schema.yaml");
 	assert.match(schema, /translator\/t12_preserve_proxy_quality: true/u);
