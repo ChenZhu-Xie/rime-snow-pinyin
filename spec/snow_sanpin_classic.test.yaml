@@ -31,7 +31,7 @@ deploy:
         assert: has("白花花")
       - send: wmxw
         assert: has("充满希望")
-      - send: jjjjuv
+      - send: jjjjov
         assert: has("经济基础")
       - send: fwerF
         assert: has("中文输入法")
@@ -60,7 +60,7 @@ deploy:
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"
-      - send: ekeki
+      - send: ekeko
         assert: cand[2].text == "事实"
       # 顶功
       - send: yoyo
@@ -70,8 +70,8 @@ deploy:
       - send: pbyberf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 动态码长
-      - send: "ekekvoekek"
+      - send: "ekekovekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "{Control+j}jp mzv  jpmz"
+      - send: "{Control+b}jp mzv  jpmz"
         assert: cand[1].text == "长猫"

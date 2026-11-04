@@ -67,5 +67,5 @@ deploy:
       - send: "ekekiiekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "{Control+j}jp mzua  jpmz"
+      - send: "{Control+b}jp mzua  jpmz"
         assert: cand[1].text == "长猫"

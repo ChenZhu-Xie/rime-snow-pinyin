@@ -314,6 +314,12 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 		readFileSync(rootPath("snow_jiandao_classic_jianpin.schema.yaml"), "utf8"),
 		/derive\/\^\(\.\)\(\.\)\[viuoa\]\$\/\$1\\u\$2\//u,
 	);
+	const classicJiandao = readFileSync(
+		rootPath("snow_jiandao_classic.schema.yaml"),
+		"utf8",
+	);
+	assert.match(classicJiandao, /lua_translator@\*snow\.table_like\*jianpin/u);
+	assert.doesNotMatch(classicJiandao, /jianpin:\r?\n\s+tag:/u);
 	const jiandao = fixedSections("snow_jiandao_classic.fixed.txt");
 	const sanpin = fixedSections("snow_sanpin_classic.fixed.txt");
 	const currentJiandao = fixedSections("snow_jiandao.fixed.txt");

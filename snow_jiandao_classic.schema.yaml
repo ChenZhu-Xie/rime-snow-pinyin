@@ -138,7 +138,6 @@ speller:
       - xform/[viuoa]$// # 无声调
 
 jianpin:
-  tag: jianpin
   dictionary: snow_pinyin
   prism: snow_jiandao_classic_jianpin
   packs:
