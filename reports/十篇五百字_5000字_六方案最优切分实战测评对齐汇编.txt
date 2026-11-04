@@ -1,0 +1,1561 @@
+冰雪双拼六方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编
+====================================================================================================
+口径：10 篇不同文体长文，每篇严格 500 汉字；标点计键；先最少实际按键，再少分词段、少 Space；允许前三候选选重（+1 键）。
+记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。
+
+====================================================================================================
+【篇 01】新时代推进经济高质量发展与科技创新的战略举措（政论时事·500 汉字）
+冰雪健道（U357 21×21）：按键 732；均码 1.4640；Space 9；1字 4.8%（覆盖 1.4%）；2字 29.9%（覆盖 17.6%）；3字 13.6%（覆盖 12.0%）；4字 34.7%（覆盖 40.8%）；5字+ 17.0%（覆盖 28.2%）。
+冰雪弎拼（U357 21×21）：按键 739；均码 1.4780；Space 10；1字 4.1%（覆盖 1.2%）；2字 29.0%（覆盖 16.8%）；3字 15.2%（覆盖 13.2%）；4字 34.5%（覆盖 40.0%）；5字+ 17.2%（覆盖 28.8%）。
+冰雪简道（Overall-17 21×26）：按键 790；均码 1.5800；Space 20；1字 5.9%（覆盖 2.0%）；2字 35.9%（覆盖 24.4%）；3字 19.4%（覆盖 19.8%）；4字 35.9%（覆盖 48.8%）；5字+ 2.9%（覆盖 5.0%）。
+冰雪散拼（Overall-17 21×26）：按键 794；均码 1.5880；Space 21；1字 6.9%（覆盖 2.4%）；2字 37.9%（覆盖 26.4%）；3字 19.0%（覆盖 19.8%）；4字 33.3%（覆盖 46.4%）；5字+ 2.9%（覆盖 5.0%）。
+冰雪键道：按键 745；均码 1.4900；Space 13；1字 4.9%（覆盖 1.4%）；2字 28.5%（覆盖 16.4%）；3字 13.9%（覆盖 12.0%）；4字 33.3%（覆盖 38.4%）；5字+ 19.4%（覆盖 31.8%）。
+冰雪三拼：按键 754；均码 1.5080；Space 14；1字 5.6%（覆盖 1.6%）；2字 27.3%（覆盖 15.6%）；3字 14.0%（覆盖 12.0%）；4字 32.2%（覆盖 36.8%）；5字+ 21.0%（覆盖 34.0%）。
+----------------------------------------------------------------------------------------------------
+[01-01]
+原文       在 新  时 代 的 发 展 进 程 中 ， 推 动 高 质 量 发 展 是 全 面 建 设 现 代 强 国 的 首 要 任 务 。
+冰雪健道（U357 21×21） z_ xedo[2];     fa    jwku     ,  tdgkL          fa    e_ qmjev       xpdk  qjgy;    eyrs        .
+冰雪弎拼（U357 21×21） z_ xedv[2];     fu    jwkv     ,  tdgkL          fu    e_ qmjea       xpdk  qjgy;    eyrs        .
+冰雪简道（Overall-17 21×26） z_ xwdh;        jfjvu       fk ,  tldk  gfl_     jafo  w_ qmjwo       xpdh  qlgm;    wyrq        .
+冰雪散拼（Overall-17 21×26） z_ xwdh;        jfjvi       fk ,  tldk  gfl_     jafo  w_ qmjwe       xpdh  qlgm;    wyrq        .
+冰雪键道　 z_ xedo[2];     fav   jjfu     ,  tdgfL          fav   e_ qmjev       xmdh  qxgl;    eyrw        .
+冰雪三拼　 z_ xb_ eddfQ          jjfi     ,  tbdy  gflfQ          e_ qmjeo       xmdh  qxgl;    eyrw        .
+
+[01-02]
+原文       必 须 完 整 准 确 全 面 贯 彻 新  发 展 理 念 ， 坚 持 以  供 给 侧 结 构 性 改 革 为 主 线 。
+冰雪健道（U357 21×21） bu    skkqv[3]    qmgw        xfklN           ,  jwyiai    gjcai    jgxgG          skxo     .
+冰雪弎拼（U357 21×21） bia   skkquu      qmgw        xfklN           ,  jwLyv     gjcui    jgxgG          skx[3]   .
+冰雪简道（Overall-17 21×26） bx_   qffqee[3]   qmgv        xc_ jfln[3]     ,  jvyiii[3] gjce     jgx_     gg_   qfxp     .
+冰雪散拼（Overall-17 21×26） bx_   qffqeu[2]   qmgv        xc_ jflni       ,  jvyiei[3] gjce     jgx_     gg_   qfxp     .
+冰雪键道　 buu   wqqqvv      qmgj        xfqlN           ,  jwyia     gjcai    jgxgG          wqxo     .
+冰雪三拼　 bvo   wqqquu      qmgj        xfqlN           ,  jwKyi     gjcuv    jgxgG          wqxu     .
+
+[01-03]
+原文       加 快 构 建 以  国 内 大 循 环 为 主 体 、 国 内 国 际 双 循 环 相 互 促 进 的 新 发 展 格 局 。
+冰雪健道（U357 21×21） jkgjo       sla gndxH          skto     \  gngji       exhxHCJ;                xfkgJ[2]       .
+冰雪弎拼（U357 21×21） jkgja[3]    ygnvu     dxhva    sktu     \  gngja       exhxHCJ;                xfkgJ[2]       .
+冰雪简道（Overall-17 21×26） jkgja       ygnwia    dxhqu    qfti     \  gngj        wxhqua   xhcj;          xjfoa    gejv  .
+冰雪散拼（Overall-17 21×26） jkgj[3]     ygnweu    dxhqe    qfti     \  gngj        wxhqei   xhcj;          xjfoi    gejv  .
+冰雪键道　 jkgjoa      yk_ gndxH          wqto     \  gngj        exhxHCJ;                xfqgJ[3]       .
+冰雪三拼　 jkgjoo      yk_ gndxH          wqtu     \  gngj        exhxHCJ;                xfqgJ[3]       .
+
+[01-04]
+原文       要  牢 牢 把 握 科 技 自 立 自 强 的 战 略 支 撑 ， 聚 焦 关 键 核 心 技 术 攻 坚 突 破 。
+冰雪健道（U357 21×21） yllbS           kjzlZQ;              klkwii      ,  jjgjii      hxje        gjtpiv      .
+冰雪弎拼（U357 21×21） yllbS           kjzlZQ;              klkwa       ,  jjgjii      hxje        gjtpii      .
+冰雪简道（Overall-17 21×26） ys_ llbq        keji  zlzq[2];       flfvi       ,  jvjd  gqjp  hxjwe       gjtpei      .
+冰雪散拼（Overall-17 21×26） ys_ llbq        keji  zlzq[2];       flfva       ,  jvjd  gqjp  hxjwe       gjtpii[3]   .
+冰雪键道　 yllbW           kjzlZQ;              qlfjii      ,  jjgjii      hxje        gjtpiv      .
+冰雪三拼　 yllbW           kjzlZQ;              qFlfjo      ,  jjCgj       hxje        gjtpvv      .
+
+[01-05]
+原文       健 全 新 型 举 国 体 制 ， 发 挥 国 家 实 验 室 引 领 作 用 ， 强 化 企 业 科 技 创 新 主 体 地 位 。
+冰雪健道（U357 21×21） jpqr  xxjgTK            ,  fiu   go    eye_     ylzyiu      ,  qhqy        kjwx        ktdLsi      .
+冰雪弎拼（U357 21×21） jpqr  xxjgTK            ,  fwhg  giv   eye_     yBlzy       ,  qhqy        kjwx        ktdsua[3]   .
+冰雪简道（Overall-17 21×26） jpqt  xcxr  jgtfui      ,  jahl  gmjk  wyw_     ylzyui      ,  qhqyii      kjvx        futio diqw  .
+冰雪散拼（Overall-17 21×26） jpqt  xcxr  jgtfuu      ,  jahl  gmjk  wyw_     ylzyu[3]    ,  qhqyeu      kjvx        futiu diqw  .
+冰雪键道　 jmqt  xxjgTF            ,  fshb  goo   eye_     ylzyi       ,  qhqyi       kjwx        qtdKwi      .
+冰雪三拼　 jmqt  xxjgTF            ,  fshb  gvi   eye_     ylzyuo      ,  qhqyo       kjwx        qtdKwu      .
+
+[01-06]
+原文       加 速 促 进 产 学 研 深 度 融 合 与  科 技 成 果 转 移 转 化 ， 打 造 现 代 化 产 业 创 新 体 系 。
+冰雪健道（U357 21×21） jfsh  chjb  wxyo     edrh        ykjui     wgkyKH            ,  dzxdH          wywxi       tua   .
+冰雪弎拼（U357 21×21） jfsh  chjb  wxyv     edrh        ykjiua    wgkyKH            ,  dzxdH          wa    wxtx        .
+冰雪简道（Overall-17 21×26） jksu  cujc  vxyo     wdrh        yv_ kjvg        fyfhiu      ,  dazs  xdh_     voye  vxtx        .
+冰雪散拼（Overall-17 21×26） jksu  cujc  vxyo     wdrh        yv_ kjvg        fyfhuu      ,  dazs  xdh_     voye  vxtx        .
+冰雪键道　 jssj  cjjb  jxyo     edrh        ykj[3]    jgfyFH            ,  dzxdH          jywxi       txi   .
+冰雪三拼　 jssj  cjjb  jxyi     edrh        ykj[3]    jgfyFH            ,  dzxdH          jywxo       txo   .
+
+[01-07]
+原文       全 面 深 化 重 点 领 域 改 革 ， 破 除 阻 碍 要 素 自 由 流 动 的 体 制 机 制 障 碍 。
+冰雪健道（U357 21×21） qmehv       kdlyGG            ,  pdwh  zhrk  yfshv zyldi[3];      tkjkKR            .
+冰雪弎拼（U357 21×21） qmeha       kdlyGG            ,  pdwh  zhrk  yfsha zyldvv[3];     tkjkKR            .
+冰雪简道（Overall-17 21×26） qmwhie      fdly        gg    ,  pmvu  zxa   yssu  zyldei;        tfjfuu[3]   fyxh  .
+冰雪散拼（Overall-17 21×26） qmwhei      fdly        gg    ,  pmvu  zuxh  yssu  zyldae;        tfjfu       fyxh  .
+冰雪键道　 qmehv       fdlyGG            ,  pljj  zxa   yzsj  zyldi[3];      tfjfQX            .
+冰雪三拼　 qmeho       fdlyGG            ,  pljj  zjxh  yzsj  zyldii[3];     tfjfQX            .
+
+[01-08]
+原文       持 续 营 造 市 场 化 、 法 治 化   、 国 际 化 一 流 营 商 环 境 ， 激 发 各 类 经 营 主 体 发 展 活 力 。
+冰雪健道（U357 21×21） wlxg  yzi   ewh      \  fkhai      \  gjh_     ylyeHJ            ,  jlfw  gljyKT[2]         fkhlaa      .
+冰雪弎拼（U357 21×21） wlxg  ytzf  ewh      \  fkhau      \  gjh_     ylyeHJ            ,  jlfw  gljyKT[2]         fkhlu[3]    .
+冰雪简道（Overall-17 21×26） vixv  yzi   wvh      \  jfhxa      \  gjh_     yilx  ywhjeo[3]   ,  jija  gelw  jyftii      jfhla[3]    .
+冰雪散拼（Overall-17 21×26） vixv  yze   wvh      \  jafi  hxau \  gjh_     yilx  ywhjee      ,  jija  gelw  jyftiu[3]   jfhli[3]    .
+冰雪键道　 wkxl  ygzz  ejh      \  ffhai      \  gjh_     ylyeHJ            ,  jkfs  gljyQT_           fqhlaa      .
+冰雪三拼　 wkxl  ygzz  ejh      \  ffhou      \  gjh_     ylyeHJ            ,  jkfs  gljyQT_           fqhlui[3]   .
+
+[01-09]
+原文       坚 持 统 筹 城 乡 区 域 协 调 发 展 ， 深 入 实 施 区 域 重  大 战 略 ， 扎 实 推 进 新 型 城 镇 化 建 设 。
+冰雪健道（U357 21×21） jiu   twwxu       qvo   xtfk        ,  eree        qvo   kdWkl        ,  ketj        xxwkHJE              .
+冰雪弎拼（U357 21×21） jpwl  twwxv       qyxta       fu    ,  eree        qya   kdWkl        ,  ketj        xxwkHJE              .
+冰雪简道（Overall-17 21×26） jpvi  tkvf  vxqye       xtjf        ,  wrww        qvyv  fdfli[3]     ,  fwtj        xxvf[3]     hjweai   .
+冰雪散拼（Overall-17 21×26） jpvi  tvu   vxqye       xtjf        ,  wrww        qvyv  vk_ dflg     ,  fwtj        xxvfi       hjweaa   .
+冰雪键道　 jmwk  tywd  jxqya       xtfq        ,  eree        qlyl  fYdqlv       ,  fetj        xxjqHJE              .
+冰雪三拼　 jmwk  twDjx       qyxtFQ            ,  eree        qlyl  fdqloo[3]    ,  fetj        xxjqHJE              .
+
+[01-10]
+原文       全 面 推 进 乡 村 振 兴 落 地 见 效 ， 促 进 共 同 富 裕 取 得 更 为 明 显 的 实 质 性 进 展 。
+冰雪健道（U357 21×21） qmtj        xckxv       lYdjx       ,  chjb  gtfy        qgds  gsmxo;         ekxjK          .
+冰雪弎拼（U357 21×21） qmtj        xckxi       lYdjx       ,  chjb  gtfy        qgds  gsmxv;         ekxjK          .
+冰雪简道（Overall-17 21×26） qmtj        xcfxo       ldjxoe[3]   ,  cujc  gtjyo       qvde  gqmxoo;        wfx_     jcfo  .
+冰雪散拼（Overall-17 21×26） qmtj        xcfxi       lmdi  jpxda ,  cujc  gtjya       qvde  gqmxa[3];      wfx_     jcfo  .
+冰雪键道　 qmtjv       xcqxvo      lLdjx       ,  cjgtFY_           qlde  gwmx[3];       efxjQ          .
+冰雪三拼　 qmtjo       xcqNx       lLdjx       ,  cjgtFY_           qlde  gwmx[3];       efxjQ          .
+
+[01-11]
+原文       我 们 要 保 持 战 略 定 力 ， 坚 持 稳 中 求 进 工 作 总 基 调  ， 统 筹 高 质 量 发 展 和 高 水 平 安 全 。
+冰雪健道（U357 21×21） smyi     bwklDL            ,  jiu   skqji       gz_   zjdC      ,  tpwq  gklfK          h_ gep_     rjqr  .
+冰雪弎拼（U357 21×21） smyo     bwklDL            ,  jwskQJ_           gz_   zjdC      ,  tpwq  gklfK          h_ gep_     rjqr  .
+冰雪简道（Overall-17 21×26） qmy[2]   bv_   fldlai      ,  jpvi  qfqjei      gz_   zjddeo[2] ,  tkvf  gfl_     jafo  h_ gwp_     xoqt  .
+冰雪散拼（Overall-17 21×26） qmy[2]   bv_   fldla[3]    ,  jpvi  qfqju       gz_   zjddiu    ,  tvu   gfl_     jafo  h_ gwp_     xoqt  .
+冰雪键道　 wmyi     bwqlDL            ,  jwwfQJ_           gi    zjdC      ,  tywd  gflfQ          h_ gep_     xiv   .
+冰雪三拼　 wmya     bwqlDL            ,  jwwfQJ_           go    zjdC      ,  tywd  gflfQ          h_ gep_     xfqt  .
+
+[01-12]
+原文       强 化 底 线 思 维 ， 有 效 防 范 化 解 重 点 领 域 重 大 风 险 ， 切 实 维 护 国 家 经 济 金 融 平 稳 运 行 。
+冰雪健道（U357 21×21） qha   dxss        ,  yqxc  ffhj        kdly        kdfxva      ,  qesho       go    jjjr        psyx        .
+冰雪弎拼（U357 21×21） qha   dxss        ,  yqxc  ffhj        kdly        kdfxai      ,  qzel  shgj        jjjr        psyx        .
+冰雪简道（Overall-17 21×26） qlhx  dxsq        ,  yfxd  jjhjui      fdly        fdjxa       ,  qzwi  qhgj        jjjre       pqyx        .
+冰雪散拼（Overall-17 21×26） qlhx  dxsq        ,  yfxd  jjhje       fdly        fdaa  jnxp  ,  qzwi  qhgj        jjjr[3]     pqyx        .
+冰雪键道　 qhdxSW            ,  ydxc  ffhji       fdly        fdfxva      ,  qdek  whgj        jjjra       pwyx        .
+冰雪三拼　 qhdxSW            ,  ydxc  ffhjo       fdly        fdfRx       ,  qdek  whgj        jjjro       pwyx        .
+
+[01-13]
+原文       以   新 气 象 新 作 为 开 创 中 国 式 现 代 化 崭 新 篇 章 ， 坚 定 不 移 沿 着 正 确 方 向 勇 毅 前 行 ， 汇 聚 全 民 族 攻 坚 克 难 的 磅 礴 力 量 。
+冰雪健道（U357 21×21） sla  xqx⇧Y       zyse  kkwt  kgei     xdh_     kxpko       ,  jdby        yjks  kqfx        yyqxo       ,  hgjg  qmz_     gjkn[2];       pbllv       .
+冰雪弎拼（U357 21×21） ylua xqx⇧Y       zv    kkwt  kgev     xdh_     kxpki       ,  jdby        yov   kqfx        yyqx[3]     ,  hgjg  qmz_     gjkn[2];       pbllv       .
+冰雪简道（Overall-17 21×26） yia  xqxl     xzqwio   khvp  fgwi     xdh_     fxpf        ,  jdby        yofe  fqjx        yyqxu[3]    ,  hljv  qmzu     gjkn[2];       pbll        .
+冰雪散拼（Overall-17 21×26） yiu  xqxl     xzqwai   khvp  fgwi     xdh_     fxpf        ,  jdby        yofe  fqjx        yyqxue      ,  hljv  qmzu     gjkn[2];       pbll        .
+冰雪键道　 yk_  xqxuu⇧Y     zou   khwm  fgei     xdh_     qxpqo       ,  jdby        yffe  qqfx        yyKqx       ,  hbjl  qmza     gjkn[2];       pbllv       .
+冰雪三拼　 yk_  xBqx⇧Y      zio   khwm  fgei     xdh_     qxpqv       ,  jdby        yffe  qqfx        yyKqx       ,  hbjl  qmzi     gjkn[2];       pblli       .
+
+[01-14]
+原文       我 们 要 坚 持 以  人 民 为 中 心 的 发 展 思 想 ， 着 力 解 决 人 民 群 众 急 难 愁 盼 问 题 ， 让   现 代 化 建 设 成 果 更 多 更 公 平 惠 及 全 体 人 民 。
+冰雪健道（U357 21×21） smyi     jiu   yrmsKX;               fksx[3]     ,  kljja       rmqk        jnwpa       st    ,  r[3] xdhjE          wggdi       ggpuvv   hgjlv qtrmi       .
+冰雪弎拼（U357 21×21） smyo     jwyrMSKX;                   fksxu       ,  kljja       rmqk        jnwpa       st    ,  r[3] xdhjE          wggd[3]     ggpia    hgjla qtrm[3]     .
+冰雪简道（Overall-17 21×26） qmy[2]   jvyiii[3] rjmc  qfx;        jfsx[3]     ,  fljjo       rmqf        jnvpi       qjti  ,  r[2] xdh_     jpwe  vggd[3]     ggpr     hljie qtrm        .
+冰雪散拼（Overall-17 21×26） qmy[2]   jvyiei[3] rjmc  qfx;        jfsxi       ,  fljje       rmqf        jnvpe       qjti  ,  r[2] xdh_     jwvga       gda   ggpr     hljia qtrm        .
+冰雪键道　 wi    yjwi     yrmwFX;               fqsx        ,  fljj        rmqfa       jnwpa       wo    ,  r[2] xdhjE          jggdi       ggpuvv   hbjkv qtrm        .
+冰雪三拼　 wa    yjwv     yrmwFX;               fqsx        ,  fljj        rmqfi       jnwpo       wi    ,  r[2] xdhjE          jggduo      ggpvo    hbjko qtrm        .
+
+[01-15]
+原文       以   昂 扬 姿 态 投 身 实 践 ， 书 写 强 国 建 设 崭 新 辉 煌 ， 谱 写 壮 丽 时 代 篇 章 ， 奋 进 新 时 代 。 勇 往 直 前 。
+冰雪健道（U357 21×21） sla  rnyn  zltk  tqem  eljpo ,  ehxz  qgjei       kjxb  hght  ,  phxz  ktll  edpki       ,  fjxeD          .  yskq        .
+冰雪弎拼（U357 21×21） ylua rnyn  zta   tqem  eljpv ,  ehxz  qgjev       kjxb  hght  ,  phxz  ktll  edpkai      ,  fjxeD          .  yskq        .
+冰雪简道（Overall-17 21×26） yia  xyyy  zith  tfwj  wijpo ,  wuxz  qgjwoi      foxc  hlhp  ,  puxz  fpli  wdpfo       ,  jjjc  xwdh     .  yqfq        .
+冰雪散拼（Overall-17 21×26） yiu  xyyy  zith  tfwj  wijpe ,  wuxz  qgjwea[2]   foxc  hlhp  ,  puxz  fpli  wdpfe       ,  jjjc  xwdh     .  yqfq        .
+冰雪键道　 yk_  xpyp  zkth  tden  ekjmo ,  ejxd  qgjMe       qfxb  hbhm  ,  pjxd  fmlk  edpq[3]     ,  fjxeD          .  ywfqu       .
+冰雪三拼　 yk_  xpyp  zkth  tden  ekjmi ,  ejxd  qgjeio      qfxb  hbhm  ,  pjxd  fmlk  edpq[3]     ,  fjxeD          .  ywfqu       .
+
+====================================================================================================
+【篇 02】大型语言模型与深度神经网络的算力演进之路（科技科普·500 汉字）
+冰雪健道（U357 21×21）：按键 894；均码 1.7880；Space 29；1字 15.0%（覆盖 6.2%）；2字 52.7%（覆盖 43.6%）；3字 15.0%（覆盖 18.6%）；4字 11.6%（覆盖 19.2%）；5字+ 5.8%（覆盖 12.4%）。
+冰雪弎拼（U357 21×21）：按键 901；均码 1.8020；Space 30；1字 15.4%（覆盖 6.4%）；2字 52.9%（覆盖 44.0%）；3字 14.4%（覆盖 18.0%）；4字 11.5%（覆盖 19.2%）；5字+ 5.8%（覆盖 12.4%）。
+冰雪简道（Overall-17 21×26）：按键 906；均码 1.8120；Space 31；1字 14.6%（覆盖 6.2%）；2字 54.0%（覆盖 46.0%）；3字 16.4%（覆盖 21.0%）；4字 12.2%（覆盖 20.8%）；5字+ 2.8%（覆盖 6.0%）。
+冰雪散拼（Overall-17 21×26）：按键 908；均码 1.8160；Space 32；1字 15.3%（覆盖 6.6%）；2字 55.1%（覆盖 47.6%）；3字 15.3%（覆盖 19.8%）；4字 11.6%（覆盖 20.0%）；5字+ 2.8%（覆盖 6.0%）。
+冰雪键道：按键 897；均码 1.7940；Space 26；1字 14.4%（覆盖 6.0%）；2字 53.8%（覆盖 44.8%）；3字 14.4%（覆盖 18.0%）；4字 12.0%（覆盖 20.0%）；5字+ 5.3%（覆盖 11.2%）。
+冰雪三拼：按键 905；均码 1.8100；Space 27；1字 14.4%（覆盖 6.0%）；2字 53.8%（覆盖 44.8%）；3字 14.4%（覆盖 18.0%）；4字 12.0%（覆盖 20.0%）；5字+ 5.3%（覆盖 11.2%）。
+----------------------------------------------------------------------------------------------------
+[02-01]
+原文       随 着 深 度 学 习 架 构 与  计 算 硬 件 的 飞 速   演 进 ， 大 型 语 言 模 型 展 现 出 通 用 推 理 能 力 。
+冰雪健道（U357 21×21） sgks  edxxo       jfgq  yg_ jso   ytjp;    fesh[3] yjjba ,  dwxt  yymxo       kxwv     tpyp  tlnlv       .
+冰雪弎拼（U357 21×21） sov   edxxa       jfgq  yg_ jsa   ytjp;    fesh[3] yjjbu ,  dwxt  yymxv       kxw[3]   tpyp  tlnlu       .
+冰雪简道（Overall-17 21×26） slfe  wdxxa       jkgf  yv_ js_   yrjp;    jwsu    yojca ,  daxr  yymxe       fxvu     tkyk  tlnl        .
+冰雪散拼（Overall-17 21×26） slfe  wdxxi       jkgf  yv_ js_   yrjp;    jwsu    yojcu ,  daxr  yymxu       fxvu     tkyk  tlnl        .
+冰雪键道　 sou   edxxo       jsgd  yl_ jkst  ygjm;    fwsj    yfjba ,  dsxg  yymxo       qxjv     tyyy  tlnl        .
+冰雪三拼　 sai   edxxo       jsgd  yl_ jkst  ygjm;    fwsj    yfjbu ,  dsxg  yymxi       qxjou    tyyy  tlnl        .
+
+[02-02]
+原文       基 于  自  注 意 力 机 制 的 变 换 器 架 构 突 破 了 传 统 循 环 神 经 网 络 在 长 距 离 依 赖 上 的 瓶 颈 。
+冰雪健道（U357 21×21） jyv    zl_ kyljK[2];         bhqioo   jfgq  tplwT          xhejSL_           z_ wjloo    yllki e[3]; ptjto .
+冰雪弎拼（U357 21×21） jyv[2] zl_ kyljK[2];         bhqaa    jfgq  tplwT          xhejSL_           z_ wjlav    yllki e[3]; ptjtv .
+冰雪简道（Overall-17 21×26） jiyve  ziu fyl_     jifi;    bhqi[3]  jkgf  tpl_     vqtk  xbhq  wjql        z_ vjlio    ylie  w[3]; prjro .
+冰雪散拼（Overall-17 21×26） jiyvi  zia fyl_     jifi;    bhqi[3]  jkgf  tpl_     vqtk  xbhq  wjql        z_ vjlia    yilhi w[3]; prjre .
+冰雪键道　 jkylv  zku qyljF[2];         bhqioo   jsgd  tplwT          xwht  ejwl        z_ jjloou   yklhi e[3]; pgjgo .
+冰雪三拼　 jkylv  zko qyljF[2];         bhqooo   jsgd  tplwT          xwht  ejwl        z_ jjloi    yklhv e[3]; pgjgi .
+
+[02-03]
+原文       海 量 模 型 参 数 与  大 规 模 无  监 督  预 训 练  语 料 的 高 效 并 行 处 理 由 此 成 为 可 能 。
+冰雪健道（U357 21×21） hklj  mxce        yg_ dgm_     sjdiiv[2]  yxElo     yglc[2]; gfxco bxwlu       yci   wskn        .
+冰雪弎拼（U357 21×21） hklj  mxce        yg_ dgm_     sjdivi[3]  yxEla     yglc[2]; gfxci bxwl[3]     ycu   wskn        .
+冰雪简道（Overall-17 21×26） hhll  mxcw        yv_ dgm_     qjduie[2]  yxlpo[3]  yvld[2]; gsxdo bxvle       yfci  vqkn        .
+冰雪散拼（Overall-17 21×26） hhll  mxcw        yv_ dgm_     qu_ jpdu   yxlpaa[2] yvld[2]; gsxdi bxvl[3]     yfci  vqkn        .
+冰雪键道　 hhlx  mxce        yl_ dgm_     wjdiiv     yxWlo     yllc[2]; gzxco bxjlu       yci   jwkn        .
+冰雪三拼　 hhlx  mxce        yl_ dgm_     wjdJv      yxWlo     yllc[2]; gzxcv bxjl[3]     ycu   jwkn        .
+
+[02-04]
+原文       在 分 布 式 训 练 集 群 中   ， 数 百 吉 字 节 的 模 型 权 重 被   切 分 并  部 署 至   海 量 图 形 处 理 器   核 心 。
+冰雪健道（U357 21×21） z_ fbexL          jlqe  k[3] ,  ehbko jzjo[2];    mdxt  qrkp  b[3] qzfm  bt_ bheh  dzv  hklj  thxt  wlqhX            .
+冰雪弎拼（U357 21×21） z_ fbexL          jlqe  k[3] ,  ehbka jzjav;      mxv   qrkp  b[3] qzfm  bt_ bheh  klav hklj  thxt  wlqhX            .
+冰雪简道（Overall-17 21×26） z_ jbwieu   xblp  jiqb  fk   ,  wubh  jzjzoe;     mmxr  qtfk  b[3] qzjj  br_ buwu  fiea hhll  tuxr  vlqie      hexc  .
+冰雪散拼（Overall-17 21×26） z_ jbwiai   xblp  jiqb  fk   ,  wbau  jzjza[2];   mmxr  qtfk  b[3] qzjj  br_ buwu  fiae hhll  txvle       qiai hexc  .
+冰雪键道　 z_ fbexL          jkqwi fy   ,  ejbh  jKzj;       mlxg  qtfy  b[3] qdfn  bg_ beo   fkv  hhlx  tjxg  jlqhX            .
+冰雪三拼　 z_ fbexL          jkqwi fy   ,  ejbh  jKzj;       mxi   qtfy  b[3] qdfn  bg_ bjej  fkov hhlx  tjxg  jlqhX            .
+
+[02-05]
+原文       利 用 张  量   并 行 与  流 水 线 调 度 降 低 节 点 间  通 信 开 销 ， 提 升 整 体 吞 吐 性 能 。
+冰雪健道（U357 21×21） llyp  kna lj_  btxt  yg_ lexa     dcdh  jjdl  jzdp  jpo tpxb  kkxc  ,  tei   krtl  tbth  xao   .
+冰雪弎拼（U357 21×21） llyp  kni lj_  btxt  yg_ lex[3]   dcdh  jjdl  jzdp  jpi tpxb  kkxc  ,  ti    krtl  tbth  xtnr  .
+冰雪简道（Overall-17 21×26） liyk  fy_ lloi brxr  yv_ lwxp     dddu  jldi  jzdp  jpo txa   khxd  ,  tw_   fnti  tttu  xn    .
+冰雪散拼（Overall-17 21×26） liyk  fy_ lla  brxr  yv_ lwxp     dddu  jldi  jzdp  jpi tkxc  khxd  ,  tw_   fnti  tttu  xn    .
+冰雪键道　 lkyy  qp_ lxo  bgxg  yl_ lexa     dcdj  jxdk  jddm  jm_ txa   khxc  ,  tker  qiv   twtj  xgnr  .
+冰雪三拼　 lkyy  qp_ lxai bgxg  yl_ lex[3]   dcdj  jxdk  jddm  jm_ tyxb  khxc  ,  tker  qrtk  twtj  xgnr  .
+
+[02-06]
+原文       梯 度 反 向 传 播 过 程 中 ， 混 合 精 度 浮 点 运 算 显 著 减 少 了 显 存 占 用 与  计 算 耗 时 。
+冰雪健道（U357 21×21） tldh  fxwb        gwk      ,  hbhs  jtdh  fdys[3]     xkjei/         xpcbo kjyp  yg_ jso   hfelv .
+冰雪弎拼（U357 21×21） tldh  fxwb        gwk      ,  hbhs  jtdh  fdysu       xkjea[2]/      xpcbu kjyp  yg_ jsa   hfela .
+冰雪简道（Overall-17 21×26） tidu  jxvb        gvf      ,  hthe  jrdu  jdysu       xfjwii/        xpcto foyk  yv_ js_   hswie .
+冰雪散拼（Overall-17 21×26） tidu  jxvb        gvf      ,  hthe  jrdu  jdys[3]     xfjwu[3]/      xpctu foyk  yv_ js_   hswia .
+冰雪键道　 tkdj  fxwbu       gjf      ,  hwhe  jgdj  fdys        xqJje/         xmcwo qfyy  yl_ jkst  hzekv .
+冰雪三拼　 tkdj  fxwbo       gjf      ,  hwhe  jgdj  fdys        xqjeo[2]/      xmcwu qfyy  yl_ jkst  hzeko .
+
+[02-07]
+原文       然  而 随 着 模 型 规 模 逼 近 万 亿 参 数 临 界 点 ， 算 力 集 群 的 功 耗 开 销 与  内 存 墙   瓶 颈 日 益 凸 显 。
+冰雪健道（U357 21×21） rju rska     mdxt  ggmd  bljb  sjylv cjeh  ljdii    ,  sxllu jlqe;    gphf  kkxc  yg_ necb  qjvo ptjto rlyl  thxp  .
+冰雪弎拼（U357 21×21） rjre   sov   mxv   ggmd  bljb  sjyla cjeh  ljdav    ,  sxlla jlqe;    gphf  kkxc  yg_ necb  qjv  ptjtv rlyl  thxp  .
+冰雪简道（Overall-17 21×26） rxu    slfe  mmxr  glmm  bijc  qoyie cowu  ljdpi    ,  sqliu jiqb;    gkhs  khxd  yv_ nwct  qleo prjro riyi  tuxp  .
+冰雪散拼（Overall-17 21×26） rxe    slfe  mmxr  glmm  bijc  qoyia cwi   ljdp[3]  ,  sqlia jiqb;    gkhs  khxd  yv_ nwct  qle  prjre riyi  tuxp  .
+冰雪键道　 rv     sou   mlxg  gm[3] bkjb  wfykv cfej  ljdii    ,  stlk  jkqw[2]; gyhz  khxc  yl_ nwcw  qxvo pgjgo rkyk  tjxm  .
+冰雪三拼　 rxi    sai   mxi   gmi   bkjb  wfyko cfej  ljdo[3]  ,  stlk  jkqw[2]; gyhz  khxc  yl_ nwcw  qxi  pgjgi rkyk  tjxm  .
+
+[02-08]
+原文       业 界 开 始 探 索 量 化 感 知 训 练 、 稀 疏 注 意 力 与  混 合 专 家 网 络 架 构 的 全 新 组 合 。
+冰雪健道（U357 21×21） ysjz  kau   tjsy  ljhc  gjkl  xelp  \  xlehu kyl_     yg_ hbhs  kxjf  sljga[2];      qxzho       .
+冰雪弎拼（U357 21×21） ysjz  kui   tjsy  ljhc  gjkl  xelp  \  xlehi kyl_     yg_ hbhs  kxjf  sljgaa;        qxzhi       .
+冰雪简道（Overall-17 21×26） yejz  khwi  tosm  llhx  gofi  xblp  \  xiwuu fyl_     yv_ hthe  fjqlao      jkgf;    qxzhio      .
+冰雪散拼（Overall-17 21×26） yejz  khwi  tosm  llhx  gofi  xblp  \  xiwui fyl_     yv_ hthe  fqjk  qljgu[3];      qxzhe       .
+冰雪键道　 yejd  kau   tfsl  lxhq  gffk  xwlm  \  xkeju qyl_     yl_ hwhe  ftjs  wljga;         qxzho       .
+冰雪三拼　 yejd  kuv   tfsl  lxhq  gffk  xwlm  \  xkejv qyl_     yl_ hwhe  ftjs  wljgo;         qxzhv       .
+
+[02-09]
+原文       通 过 动 态 激 活 子 网 络 来   平 衡 推 理 延 迟 与  表 征 质 量 ， 有 效 缓 解 计 算 集 群 的 硬 件 压 力 。
+冰雪健道（U357 21×21） tv    dptk  jlhy  zslia    l[2] puu   tgll  yjwl  yg_ bckr  kllj  ,  yqxc  hxjza jsjq[2];       ytjp  ywll  .
+冰雪弎拼（U357 21×21） tpgy  dptk  jlhy  zLslu    l[2] pthr  tgll  yjwl  yg_ bckr  kllj  ,  yqxc  hxjzu jsjq[2];       ytjp  ywll  .
+冰雪简道（Overall-17 21×26） tg_   dkth  jihm  zqlmi    l[2] prhn  tlli  yovi  yv_ bdfn  fill  ,  yfxd  hqjza jsjqa[2];      yrjp  yali  .
+冰雪散拼（Overall-17 21×26） tg_   dkth  jihm  zqlmu    l[2] prhn  tlli  yovi  yv_ bdfn  fill  ,  yfxd  hqjzu jsjqae[2];     yrjp  yli   .
+冰雪键道　 tvi   dyth  jkhl  zwlia    l[2] puu   tblk  yfwk  yl_ bcqr  fklx  ,  ydxc  htjda jsjqua;        ygjm  yslk  .
+冰雪三拼　 tygl  dyth  jkhl  zKwlu    l[2] pghr  tblk  yfwk  yl_ bcqr  fklx  ,  ydxc  htjdu jsjqoi[2];     ygjm  yslk  .
+
+[02-10]
+原文       未 来 的 人 工 智 能 系 统 将   不 再 仅   依 赖 单 纯 的 参 数 扩 张 与  海 量 算 力 堆 叠 。
+冰雪健道（U357 21×21） sld_     rgkn        xa    jbzvvo     jbia yllki djwb;    cjeh  kykn  yg_ hklj  sxllu dgdz  .
+冰雪弎拼（U357 21×21） sld_     rgkn        xu    jbzaia     jbu  yllki djwb;    cjeh  kykn  yg_ hklj  sxlla dgdz  .
+冰雪简道（Overall-17 21×26） qld_     rgi   fnxt        j[3] buzh  jcia ylie  dv[3];   cowu  kmfy  yv_ hhll  sqliu dldze .
+冰雪散拼（Overall-17 21×26） qld_     rge   fnxt        j[3] buzh  jcu  yilhi dv[3];   cwi   kmfy  yv_ hhll  sqlia dldzi .
+冰雪键道　 wvo;     rgfn        xaa   jbzvvo     jbia yklhi dfjw;    cfej  klqp  yl_ hhlx  stlk  dbdd  .
+冰雪三拼　 wio;     rg_   fnxti       jbzovo     jbu  yklhv dfjw;    cfej  klqp  yl_ hhlx  stlk  dbdd  .
+
+[02-11]
+原文       更 需 要 结 合 符 号 逻 辑 推 理 、 具   身    智 能 交 互 与  类  脑 神 经 形 态 计 算 的 前 沿 理 论 成 果 。
+冰雪健道（U357 21×21） gxy_     jha   fhhf  ljtl        \  jgia jru   knjCh       yg_ le_ nej_     xttk  js[2];   qylla       wia   .
+冰雪弎拼（U357 21×21） gxy_     jzhs  fhhf  ljtl        \  jgai em[3] knjhvi      yg_ le_ nej_     xttk  js[2];   qpyj  llwg        .
+冰雪简道（Overall-17 21×26） gxy_     jha   jhuo  ljtl        \  jvia wju   fnjhea      yv_ lwo nwj[3]   xrth  js;      qpyo  llvg        .
+冰雪散拼（Overall-17 21×26） gxy_     jhe   juhs  ljtl        \  jvai wj[3] fnjhai      yv_ lwa nwj[3]   xrth  js;      qpyo  llvg        .
+冰雪键道　 gxy_     jdhe  fjhz  ljtl        \  jlia enu   fnjCh       yl_ lw_ nejo     xgth  jkst;    qylla       jrgl  .
+冰雪三拼　 gxy_     jdhe  fjhz  ljtl        \  jlai en[3] fnjhiv      yl_ lw_ neji     xgth  jkst;    qylli       jrgl  .
+
+[02-12]
+原文       以 实 现 更 高 能 源 效 率 、 更 强 可 解 释 性 与  鲁 棒 泛 化 性 能 的 通 用 认 知 系 统 ， 推 动 机 器 智 能 迈 向 自 主 学 习 与  深 度 理 解 的 新 境 界 。
+冰雪健道（U357 21×21） yexo     grgf  nyxl        \  grqj  kjexu       yg_ lhbn  fjhca xao;     tpyp  rkxtua      ,  tgdp  jqkn        mkxj  zkxx        yg_ edljo[3];      xjjv     .
+冰雪弎拼（U357 21×21） yexv     grgf  nyxl        \  grqj  kjexu       yg_ lhbn  fjhca xtnr;    tpyp  rkxti       ,  tgdp  jqkn        mkxj  zkxx        yg_ edlLj;         xjja     .
+冰雪简道（Overall-17 21×26） ywxp     ggeo  nyxl        \  gnql  kjwxou      yv_ luby  johxa xn;      tkyk  rfxt[3]     ,  tldk  jqfna       mhxl  zfxx        yv_ wdlju[3];      xjjz     .
+冰雪散拼（Overall-17 21×26） ywxp     ggai  nyxl        \  gnql  kjwxu       yv_ luby  johxa xn;      tkyk  rfxt[3]     ,  tldk  jqfni       mhxl  zfxx        yv_ wjdu  lijz;    xjjz     .
+冰雪键道　 yexo     grgz  nyxl        \  grqx  kjexu       yl_ ljbp  ffhqa xgnr;    tyyy  rfxtu       ,  tbdy  jqfno       mhxx  zqxx        yl_ edljo[3];      xjjvi    .
+冰雪三拼　 yexi     grgz  nyxl        \  grqx  kjexu       yl_ ljbp  ffhqo xgnr;    tyyy  rfxtv       ,  tbdy  jqfno       mhxx  zqxx        yl_ edlKj;         xjjov    .
+
+[02-13]
+原文       这 不 仅 要 求 基 础 芯 片 工 艺 与  异 构 互 联 带 宽 的 持 续 升 级 突 破 ， 更  依 赖 于 软 硬 件 全  栈    协 同 优 化 策 略 的 深 入 推 进 与  架 构 革 新 。
+冰雪健道（U357 21×21） kbjv     yvi   jw_   xBpgy       yg_ ylgqa hlv   dkkx[2]; wxejaa      thpd  ,  gr_ ylyv     ryj_     qrkjiv    xztp  yhcl[3];       ertju       yg_ jfgq  gsxb  .
+冰雪弎拼（U357 21×21） kbja     yfqd  jw_   xpgyai      yg_ ylgqa hhlp  dkkx[2]; wxejai[3]   thpd  ,  gr_ yly[3]   ryj_     qr_ kjavi xztp  yhcl[3];       ertja       yg_ jfgq  gsxb  .
+冰雪简道（Overall-17 21×26） fbjc     yq_   jivu  xpgyiu      yv_ yigfa hulp  dhkq[2]; vxwjaa      tupm  ,  gn_ yly[3]   ryj_     qtfo[3]   xztk  yhcl[3];       wrtje       yv_ jkgf  gexc  .
+冰雪散拼（Overall-17 21×26） fbjc     yq_   jivu  xpgyii      yv_ yigfa hulp  dhkq[2]; vixv  wnji  tupm  ,  gn_ yly[3]   ryj_     qtfo[3]   xztk  yhcl[3];       wrtji       yv_ jkgf  gexc  .
+冰雪键道　 qbjv     yq_   jkjj  xpgyu       yl_ ykgda hjlm  dhkt[2]; wxejaa[3]   tjpl  ,  gr_ ylyv     ryj_     qtqf[3]   xdty  yhcl[3];       ertj[3]     yl_ jsgd  gexb  .
+冰雪三拼　 qbjo     yq_   jkjj  xpgyov      yl_ ykgdo hjlm  dhkt[2]; wxeRjo      tjpl  ,  gr_ yly[3]   ryj_     qtqf[3]   xdty  yhcl[3];       ertjo       yl_ jsgd  gexb  .
+
+[02-14]
+原文       唯 有 融 合 多 学 科 精 髓 ， 方 能 真 正 开 启 通 用 人 工 超 级 智 能 的 全 新 未 来 航 道 ， 开 辟 出 前 所 未 有 的 智 慧 新 天 地 。
+冰雪健道（U357 21×21） seyq  rphs  dxk_     jtsg  ,  fnnr  kkkqvo      tpyp  rmgp  wjkna;         qxslov      hndf  ,  kpwa     qssy;          klhgu xtd      .
+冰雪弎拼（U357 21×21） seyq  rphs  dxk_     jtsg  ,  fnnr  kMkkq       tpyp  rmgp  wjknv;         qxslia      hndf  ,  kpwa     qssy;          klhga xtd      .
+冰雪简道（Overall-17 21×26） qwyf  rhe   dxke     jrsl  ,  jynn  ffkq        tkyk  rgi   vjfna[3];      qxqleo[2]   hyds  ,  kpv_     qsqy;          fihlu xtd      .
+冰雪散拼（Overall-17 21×26） qwyf  rkhe  dxke     jrsl  ,  jynn  ffkq        tkyk  rge   vjfni[2];      qxqlea[2]   hyds  ,  kpv_     qsqy;          fihla xtd      .
+冰雪键道　 wwyd  rhv   dxko     jgsb  ,  fpnr  qqkqvo      tyyy  rg_   jjfna[3];      qxwlov      hpdz  ,  kpja     qswy;          fkhbu xtd      .
+冰雪三拼　 wwyd  ryhe  dxki     jgsb  ,  fpnr  qqkqo       tyyy  rg_   jjfni[2];      qxwlvo      hpdz  ,  kpjo     qswy;          fkhbo xtd      .
+
+====================================================================================================
+【篇 03】江南秋雨与石阶老巷的岁月浮沉随笔（现代散文·500 汉字）
+冰雪健道（U357 21×21）：按键 1001；均码 2.0020；Space 22；1字 19.8%（覆盖 9.2%）；2字 55.6%（覆盖 51.6%）；3字 17.2%（覆盖 24.0%）；4字 4.7%（覆盖 8.8%）；5字+ 2.6%（覆盖 6.4%）。
+冰雪弎拼（U357 21×21）：按键 998；均码 1.9960；Space 24；1字 20.6%（覆盖 9.6%）；2字 54.9%（覆盖 51.2%）；3字 17.2%（覆盖 24.0%）；4字 4.7%（覆盖 8.8%）；5字+ 2.6%（覆盖 6.4%）。
+冰雪简道（Overall-17 21×26）：按键 1035；均码 2.0700；Space 23；1字 20.3%（覆盖 9.6%）；2字 56.5%（覆盖 53.6%）；3字 16.9%（覆盖 24.0%）；4字 4.6%（覆盖 8.8%）；5字+ 1.7%（覆盖 4.0%）。
+冰雪散拼（Overall-17 21×26）：按键 1041；均码 2.0820；Space 21；1字 20.2%（覆盖 9.6%）；2字 57.1%（覆盖 54.4%）；3字 16.8%（覆盖 24.0%）；4字 4.2%（覆盖 8.0%）；5字+ 1.7%（覆盖 4.0%）。
+冰雪键道：按键 1008；均码 2.0160；Space 22；1字 19.8%（覆盖 9.2%）；2字 55.6%（覆盖 51.6%）；3字 17.2%（覆盖 24.0%）；4字 4.7%（覆盖 8.8%）；5字+ 2.6%（覆盖 6.4%）。
+冰雪三拼：按键 1005；均码 2.0100；Space 23；1字 20.2%（覆盖 9.4%）；2字 55.8%（覆盖 52.0%）；3字 16.7%（覆盖 23.4%）；4字 4.7%（覆盖 8.8%）；5字+ 2.6%（覆盖 6.4%）。
+----------------------------------------------------------------------------------------------------
+[03-01]
+原文       细 雨   淅 淅 沥 沥 地 下 了 一 整 夜 ， 青 石 板 铺  就 的 长 街 泛 着 清 冷 的 水 光 。
+冰雪健道（U357 21×21） xlyg[3] xxlla       dlxf/    ykyvo    ,  qeb_     phjd[3];  wnjz  fjks  qtlr;    eggt  .
+冰雪弎拼（U357 21×21） xlyga   xxlli       dlxf/    ykyuia   ,  qeb_     pho j;    wnjz  foa   qtlr;    eggt  .
+冰雪简道（Overall-17 21×26） xiyv[3] xxlla       dixk/    y_ fnye  ,  qwb[3]   pujx[3];  vyjzu jofe  qrln;    wlgp  .
+冰雪散拼（Overall-17 21×26） xiyva   xxlli       dixk/    yfyeu    ,  qwb[3]   puo j;    vyjze jofe  qrln;    wlgp  .
+冰雪键道　 xkyl[3] xxlla       dkxs/    yqyvo    ,  qebv     pjjq[3];  jpjd  ffqe  qglr;    ebgm  .
+冰雪三拼　 xkylo   xxllv       dkxs/    yqyuv    ,  qebi     pja j;    jpjd  ffqe  qglr;    ebgm  .
+
+[03-02]
+原文       晨 雾     穿 过 老 旧 屋 檐 下 雕 花 的 窗 棂 ， 将   庭 院 里 那   株      桂 花 树 的 幽 香 浸 染 得  愈 发 清 冽   。
+冰雪健道（U357 21×21） wmsho     wxgy  lfjd  syxvva   dchc;    wtlt  ,  j[3] tyla     n[2] khvuv   ghei[3];    yqxji jbrj  de_ ygfw  qtlz    .
+冰雪弎拼（U357 21×21） wmshva[3] wxgy  lfjd  syxv     dchc;    wtlt  ,  j[3] tylav    n[2] khiv[3] ghei;       yqxji jbrj  de_ ygfw  qtlz    .
+冰雪简道（Overall-17 21×26） vjquoe    vgo   ljui  qyxkea   ddhx[2]; vplr  ,  j[3] tylia    n[2] fueue   ghwu[3];    yfxli jcro  dwu yvja  qrlz    .
+冰雪散拼（Overall-17 21×26） vjquea    vgia  lsjx  qyxke    ddhx[2]; vplr  ,  j[3] tylia    n[2] fuiei   ghwu[3];    yfxli jcro  dwu yvja  qrlz    .
+冰雪键道　 jnwjo     wtgl  lzjq  wyxvva   dchq;    wmlg  ,  j[3] tyla     n[2] qjvu    ghei[3];    ydxxi jbrf  de_ ylfs  qglda   .
+冰雪三拼　 jnwji     wtgl  lzjq  wyxi     dchq;    wmlg  ,  j[3] tyloi    n[2] qjvvi   ghev;       ydxxv jbrf  de_ ylfs  qgld[3] .
+
+[03-03]
+原文       推 开 吱 呀 作 响 的 木 门 ， 巷 子 深 处 的 早 点 摊 已 经 升 起 袅 袅  白 烟 。
+冰雪健道（U357 21×21） tgkk  klywo zyxj;    mhmm  ,  xzewa;         zdtii    ya    erqlu nc[3][ bkyju .
+冰雪弎拼（U357 21×21） tgkk  klywi zyxj;    mhmm  ,  xzewu[2];      zdtu     yiu   erqli nc[3][ bkyjv .
+冰雪简道（Overall-17 21×26） tlkh  fiyao zmxl;    mumj  ,  xzwvu;         zdto     yja   wnqiu nd[3][ bhyou .
+冰雪散拼（Overall-17 21×26） tlkh  fiyai zmxl;    mumj  ,  xzwva[3];      zdto     yju   wnqii nd[3][ bhyoe .
+冰雪键道　 tbkh  fkyso zlxx;    mjmn  ,  xzeja[2];      zdtii    ya    erqku nc[3][ bhyfu .
+冰雪三拼　 tbkh  fkysv zlxx;    mjmn  ,  xzeju[3];      zdtu     yvu   erqkv nc[3][ bhyfi .
+
+[03-04]
+原文       蒸 笼 掀 开 的 刹 那 ， 麦   香   与  豆 浆 的 热 气 扑 面 而 来 ， 唤 醒 了 整 条 沉 睡 的 街 巷 。
+冰雪健道（U357 21×21） krlpi xpkk;    wwnw  ,  mkvv xjuv yg_ dqjj[2]; rsql  pmrl        ,  hxlv     krtc  wmeg;    jzxj  .
+冰雪弎拼（U357 21×21） krlpi xpkk;    wwnw  ,  mkav xji  yg_ dqjj[2]; rsql  pmrl        ,  hxlu     krtc  wmeg;    jzxj  .
+冰雪简道（Overall-17 21×26） fnlk  xpkh;    vana  ,  mhee xlue yv_ dfjl[2]; reqi  pmxl        ,  hxle     fntd  vjwl[2]; jzxl  .
+冰雪散拼（Overall-17 21×26） fnlk  xpkh;    vana  ,  mhae xli  yv_ dfjl[2]; reqi  pmxl        ,  hxle     fntd  vjwl[2]; jzxl  .
+冰雪键道　 qrly  xmkh;    wsns  ,  mhvv xxuv yl_ ddjx[2]; reqk  pmxl        ,  hxlv     qrtc  jneb;    jdxx  .
+冰雪三拼　 qrly  xmkh;    wsns  ,  mhov xxv  yl_ ddjx[2]; reqk  pmxl        ,  hxlu     qrtc  jneb;    jdxx  .
+
+[03-05]
+原文       撑 一 把 油 纸 伞 信 步 走 在 湿 漉 漉 的 巷   弄    里 ， 脚 下 磨 得     光 润 的 石 阶  留 下 了 百 年 的 履    痕   。
+冰雪健道（U357 21×21） wybyKS_           xbbhi zzv   ella[2];    hnvi npv   ll ,  jcxf  mddso     gtrb;    eljzv  lvi/     bknp;    lga   gmov .
+冰雪弎拼（U357 21×21） wybyKS_           xbbha zqzk  ella[3];    hna  npa   ll ,  jcxf  mddsv     gtrb;    eljzvi lxl_     bknp;    lguav hmv  .
+冰雪简道（Overall-17 21×26） vybaei   yfsoa    xcbui zze   wllu[3];    hyei lk[3] li ,  jdxk  mmdeou[2] gprt;    wijze  lxl_     bhnp;    lvaeu gjoe .
+冰雪散拼（Overall-17 21×26） vybai    yfsou    xcbua zfzh  wllu[3];    hya  lka   li ,  jdxk  mmdeee    gprt;    wijzei lxl_     bhnp;    lvuae hje  .
+冰雪键道　 jybyFS_           xbbji zdzh  ella[2];    hpvi ny_   lk ,  jcxs  mldeo     gmrw;    ekjdv  lvi/     bhnm;    llavu gnov .
+冰雪三拼　 jybyFS_           xbbjo zdzh  elldo       hpo  ny_   lk ,  jcxs  mldei     gmrw;    ekjdiv lxl_     bhnm;    lluav hni  .
+
+[03-06]
+原文       仿 佛 每 一 道 浅 浅 的 裂 纹 都 在 静 静 诉 说 着 古 老 而  幽 微 的  岁 月 往 事 。
+冰雪健道（U357 21×21） fnfh  mydvo    qqda     lzsm  dqzk  jtv[  seko     ghlf  nrv yqsei[2]; sgyk  snelu .
+冰雪弎拼（U357 21×21） ffv   mydi     qqdu     lzsm  dqzk  jtjt  sio      ghlf  nrv yqsei;    sgyk  snelu .
+冰雪简道（Overall-17 21×26） jyju  mydse    qpa[;    lzqj  dfzh  jre[  swf_     guls  nne yfqwi[2]; slyg  qywiu .
+冰雪散拼（Overall-17 21×26） jyju  mydsi    qpqp;    lzqj  dfzh  jrjr  swf_     guls  nne yfqwi[2]; slyg  qywiu .
+冰雪键道　 fpfj  mydvo    qmqm;    ldwn  ddzh  jgv[  seqo     gjlz  x_  ydwwi;    sbyh  wpek  .
+冰雪三拼　 fpfj  mydv     qmqm;    ldwn  ddzh  jgjg  sva      gjlz  x_  ydwwv;    sbyh  wpek  .
+
+[03-07]
+原文       河 道 两 岸 的 白 墙 黛 瓦 掩 映 在 蒙 蒙 烟 雨 之 中 ， 偶 尔 有   一 叶   乌 篷 船 划 破 如 镜 的 水 面 。
+冰雪健道（U357 21×21） hdlr[3];       bqds[3]     yjyti z_ mri[  yjygo klkp  ,  rqre  y[2] ylys[3] spwu     hcpd  rhjta;   egmpa .
+冰雪弎拼（U357 21×21） hdlr[3];       bqds[3]     yjytu z_ mri[  yjygi klkp  ,  rqre  y[2] ylys[3] spwv     hcpd  rhjtv;   egmpu .
+冰雪简道（Overall-17 21×26） hdlxi[2];      bqdqee      yoyri z_ mnmn  yoyvo fifk  ,  xfxu  y[2] yiye[3] qpvq     hxpm  rujra;   wlmpa .
+冰雪散拼（Overall-17 21×26） hdlxe[2];      bqdqe       yoyru z_ mni[  yoyvi fifk  ,  xfxu  y[2] yiye[3] qpvq     hxpm  rujre dewl  mp .
+冰雪键道　 hdlxo;         bqdwvv      yfygi z_ mri[  yfylo fkfy  ,  xdxj  y[2] ykye[3] wpwu     hqpl  rjjga;   ebmma .
+冰雪三拼　 hdlxo[3];      bqdwio      yfygu z_ mrv[  yfylv fkfy  ,  xdxj  y[2] ykye[3] wpwi     hqpl  rjjgi;   ebmmu .
+
+[03-08]
+原文       船    橹   摇 曳 发 出 吱 呀 的 单 调 声 响 ， 在 空 旷 宁 静 的 河 面 上 荡 起     一 圈 圈 浅 淡 的 波 纹 。
+冰雪健道（U357 21×21） wxu   lhvu yfys  fwwh  klyw[3]; djdc  erxj  ,  z_ kpkt  ntjt;    hmevia   dnqliv[3] yqqii    qpdj[2]; bdsm  .
+冰雪弎拼（U357 21×21） wxv   lhuv yfys  fwwh  klyw[3]; djdc  erxj  ,  z_ kpkt  ntjt;    hmeava   dnqlau    yqqi     qpdj[2]; bdsm  .
+冰雪简道（Overall-17 21×26） vqu   lueu ysye  javu  fiya[3]; dodd  wnxl  ,  z_ kkkp  nrjr;    hmwyea   dyqiie[3] yqqti    qpdo[2]; bmqj  .
+冰雪散拼（Overall-17 21×26） vq[3] luue ysye  javu  fiya[3]; dodd  wnxl  ,  z_ kkkp  nrjr;    hmwyae   dyqiau    yqqtii   qpdo[2]; bmqj  .
+冰雪键道　 wtu   ljvu yzye  fsjj  fkys[3]; dfdc  erxx  ,  z_ kykm  ngjg;    hmevia   dpqkiv[3] yqqii    qmdf[2]; blwn  .
+冰雪三拼　 wt[3] ljuv yzye  fsjj  fkys[3]; dfdc  erxx  ,  z_ kykm  ngjg;    hmeoio   dpqkou    yqqvv    qmdf[2]; blwn  .
+
+[03-09]
+原文       水 波 又 在  垂 柳 青 青 的 石   岸 边 缓 缓 散 开 ， 无 声 消  融 在 清 澈 见 底 的 流  水 深 处 。
+冰雪健道（U357 21×21） egbd  yqzk   wgld  qtqt[2]; djvu rjbp  hx[   sjkk  ,  sher  xca rpzk  qwjd;          ld_ eGew     .
+冰雪弎拼（U357 21×21） egbd  yqzk   wgld  qti[3][; djav rjbp  hx[   sjkk  ,  sher  xcrpi  z_ qwjd;          ld_ eGew     .
+冰雪简道（Overall-17 21×26） wlbm  yza[3] vllx  qre[2][; doeu xobp  hqa[  sokh  ,  quwn  xdrka  z_ qvjd[3];       lxwl   wvau  .
+冰雪散拼（Overall-17 21×26） wlbm  yfzha  vllx  qri[3][; doae xobp  hqu[  sokh  ,  quwn  xdrki  z_ qvjd[3];       lxwl   wvia  .
+冰雪键道　 ebbl  ydzh   wblq  qgqg[2]; dfvu xfbm  haa   sfkh  ,  wjer  xca ryzh  qjjd[2];       lqa eBeja    .
+冰雪三拼　 ebbl  ydzh   wblq  qgqg[2]; dfov xfbm  htu[  sfkh  ,  wjer  xcryv  z_ qjjd[2];       lqeb   enjjv .
+
+[03-10]
+原文       岁 月 便 是 在 这 般 静   水 深 流  中   悄 然 沉 淀 ， 将   年 轻 时 那 些 热 烈 澎 湃 的 心 绪 慢 慢  抚 平 。
+冰雪健道（U357 21×21） sgyk  boi   z_ ksbj  jeelaa         k[3] qcrj  wmdp  ,  j[3] nqe_     niv   rslz  prpk;    xbxgo mj[3][ fhpt  .
+冰雪弎拼（U357 21×21） sgyk  bpel  z_ ksbj  jeelui         k[3] qcrj  wmdp  ,  j[3] nqe_     ni    rslz  prpk;    xbxgi mj[3][ fhpt  .
+冰雪简道（Overall-17 21×26） slyg  bpwi  z_ febo  jre  wlwj  lxa f[2] qdro  vda   ,  j[3] nqw_     naxz  relz  pnph;    xcxvo mo[3][ jupr  .
+冰雪散拼（Overall-17 21×26） slyg  bpwi  z_ febo  jrae wlwj  lxe f[2] qdro  vjdp  ,  j[3] nqw_     naxz  relz  pnph;    xcxvi mo[3][ jupr  .
+冰雪键道　 sbyh  boi   z_ febf  jeelaa         f[2] qcrf  jndm  ,  j[3] nqe_     niv   rvu   prph;    xbxlo moo    fjpg  .
+冰雪三拼　 sbyh  bmek  z_ febf  jeeluv         f[2] qcrf  jndm  ,  j[3] nqe_     nv    reld  prph;    xbxlv moo    fjpg  .
+
+[03-11]
+原文       如 同 杯 盏  中   泛 着 淡 黄 色 泽 的 温 润 陈 茶 ， 褪  去 了 初  采   时 的 青 涩 与  苦   烈     。
+冰雪健道（U357 21×21） rta   bekjv  k[3] fjks  dhs_     zsa;  smrb  wmww  ,  tgo q/    who cku  el;   qtss  yg_ khi  lzvu   .
+冰雪弎拼（U357 21×21） rtv   bekji  k[3] foa   djhta szv;     smrb  wmww  ,  tba q/    whi ckau el;   qtss  yg_ khuv lzav   .
+冰雪简道（Overall-17 21×26） rutk  bwfoee f[2] jofe  dhs_     zea;  qjrt  vjvaa ,  tlqv[3]/  vuo chuo wi;   qrse  yv_ ku_  lze[3] .
+冰雪散拼（Overall-17 21×26） rutk  bwfoi  f[2] jofe  dhs_     zeeo; qjrt  vjvae ,  tlqv[3]/  vui chau wi;   qrse  yv_ ku_  lzaeu  .
+冰雪键道　 ria   bwqfv  f[2] ffqe  dhs_     zea;  wnrw  jnws  ,  tbo q/    jjo chu  ek;   qgse  yl_ kji  ldvuo  .
+冰雪三拼　 rjty  bwqfv  f[2] ffqe  dhs_     zeio; wnrw  jnws  ,  two q/    jjv chou ek;   qgse  yl_ kju  ldovua .
+
+[03-12]
+原文       倚 在 临 河 的 雕   花 木  窗 旁 静 静 凝 望 ， 心 头 那 些 浮 躁 与  喧 嚣 悄 然 散 尽 ， 只  余 下 一 缕 清  欢   在 眉 间 心 上 流 淌 ， 伴 着 秋 风 细 雨   沉  入 梦 乡 。
+冰雪健道（U357 21×21） ylzki lbhs;    dcu  hcmh   wtpn  jtv[  ntsn  ,  xbtq  niv   fhzf  yg_ xrxc  qcrj  sjjbv ,  kl_ ygxf  yllgv qta hxa  z_ mjxeo       ldtn  ,  bjks  qdfr  xlyg[3] wmrh   maa   .
+冰雪弎拼（U357 21×21） ylzku lbhs;    dchc    mha wtpn  jtjt  ntsn  ,  xbtq  ni    fhzf  yg_ xrxc  qcrj  sjjba ,  kl_ ygxf  yllgi qti hxi  z_ mjxei       ldtn  ,  bjks  qdfr  xlyga   wm_ rmRx     .
+冰雪简道（Overall-17 21×26） yizhi lche;    ddu  hxmu   vppy  jre[  nrqy  ,  xctf  naxz  juzs  yv_ xtxd  qdro  sojc  ,  fi_ yvxk  yilve qra hqao z_ mjxwio      lxty  ,  bofe  qxjn  xiyv[3] vjru   mnxle .
+冰雪散拼（Overall-17 21×26） yizhu lche;    ddiu hxmu   vppy  jrjr  nrqy  ,  xctf  naxz  juzs  yv_ xtxd  qdro  sojc  ,  fi_ yvxk  yilvi qri hqi  z_ mjxwei[3]   lxty  ,  bofe  qxjn  xiyva   vjru   mnxla .
+冰雪键道　 ykzhi lbhe;    dcu  hqmj   wmpp  jgv[  ngwp  ,  xbtdo niv   fjzz  yl_ xtxc  qcrf  sfjb  ,  fko ylxs  ykllv qga htao z_ mjxeo       lqtp  ,  bffe  qqfr  xkyl[3] jnrj   maa   .
+冰雪三拼　 ykzhu lbhe;    dchq    mjo wmpp  jgjg  ngwp  ,  xbtdv nv    fjzz  yl_ xtxc  qcrf  sfjb  ,  fku ylxs  ykllv qgv hta  z_ mjxev       lqtp  ,  bffe  qqfr  xkylo   jni rmRx     .
+
+[03-13]
+原文       远 处 古 寺 的 钟 声   穿 透 沉 沉  雨 幕   悠 然 传 来 ， 回 荡 在 空 旷 的 山 谷 与  幽 深 水 巷  之 间 ， 激 荡 起  人 们 对   往 昔 旧 梦 的 无 限 遐 思 与  眷 恋 。
+冰雪健道（U357 21×21） yrwh  ghsl;    kperi   wxtq  wm[    ygmh[3] yqrj  wxlk  ,  hdziv    kpkt;    ejgh  yg_ yqem  egxjav kljp  ,  jldn  ql_ rmmm  d[3] snxl  jdmr;    shxpv xfsla yg_ jrlp  .
+冰雪弎拼（U357 21×21） yrwh  ghsl;    kper[3] wxtq  wm[    ygmhu   yqrj  wxlk  ,  hdNza    kpkt;    ejgh  yg_ yqem  egxjua kljp  ,  jldn  ql_ ro    d[3] snxl  jdmr;    shxpv xfslv yg_ jrlp  .
+冰雪简道（Overall-17 21×26） ytvu  gusi;    fkwni   vqtf  vj[3][ yvmu[3] yfro  vqlh  ,  hldy  z_ kkkp;    wogu  yv_ yfwj  wlxlae fijp  ,  jidy  qi_ rjmj  d[3] qyxiu jxmn;    quxpe xksia yv_ jtlp  .
+冰雪散拼（Overall-17 21×26） ytvu  gusi;    fkwn[3] vqtf  vj[3][ yvmuu   yfro  vqlh  ,  hdzhae   kkkp;    wogu  yv_ yfwj  wlxlua fijp  ,  jidy  qi_ rjmj  d[3] qyxiu jxmn;    quxpe xksie yv_ jtlp  .
+冰雪键道　 ytjj  gjsk;    fyeri   wttd  jn[3][ ylmj[3] ydrf  wtlh  ,  hdziv    kykm;    efgj  yl_ yden  ebxxav fkjm  ,  jkdp  qk_ rm_   d[3] wpxk  jqmr;    wjxmv xsska yl_ jtlm  .
+冰雪三拼　 ytjj  gjsk;    fyer[3] wttd  jn[3][ ylmju   ydrf  wtlh  ,  hdPzo    kykm;    efgj  yl_ yden  ebxxuo fvv   ,  jkdp  qk_ ra    d[3] wpxk  jqmr;    wjxmi xsski yl_ jtlm  .
+
+[03-14]
+原文       生 活 本 该 如 此 从 容 淡 泊   ， 在 漫 漫 时 光 中   静 待 一 朵 花 开 ， 守 候 一 份 最 初 的 纯 净 与  安 详 。
+冰雪健道（U357 21×21） eau   bgrco       cprp  djbd[3] ,  z_ mmega       k[3] jtdkv ydhku       ,  eqhqo ylfm  zgwh;    wbjt  yg_ rjxj  .
+冰雪弎拼（U357 21×21） erhy  bgrci       cprp  djbd[3] ,  z_ mmega       k[3] jtdka ydhku       ,  eqhqu ylfm  zgwh;    wbjt  yg_ rjxj  .
+冰雪简道（Overall-17 21×26） wnhm  bgrci       cr[3] dbaa    ,  z_ mmwgi       f[2] jrdhe ydhke       ,  wfhfo yijj  zlvu;    vtjr  yv_ xoxl  .
+冰雪散拼（Overall-17 21×26） wnhm  bgrcu       cre   dobm[3] ,  z_ mmwga       f[2] jrdha ydhkii      ,  wfhfu yijj  zlvu;    vtjr  yv_ xoxl  .
+冰雪键道　 ea    bgrco       cyryi dfblaa  ,  z_ mmega       f[2] jgdhv ydhku       ,  edhdo ykfn  zbjj;    jwjg  yl_ xfxx  .
+冰雪三拼　 ei    bgrcv       cyryi dfbloi  ,  z_ mmego       f[2] jgdho ydhku       ,  edhdu ykfn  zbjj;    jwjg  yl_ xfxx  .
+
+[03-15]
+原文       漫 步 在 烟 雨 江 南 的 古 巷 深 处 ， 让   心 灵 在 此 栖 息 停 留 ， 静 静 感 受 岁 月 静 好 与  现 世     安 稳 。
+冰雪健道（U357 21×21） mbz_     yyjn;          ghxju emwha ,  r[3] xblt  zcv   qlxlv ttld  ,  jtv[  gesyJH_           yg_ xersv           .
+冰雪弎拼（U357 21×21） mbz_     yyjn;          ghxju emwhi ,  r[3] xblt  zcu   qlxli ttld  ,  jtjt  gesyJH_           yg_ xersa           .
+冰雪简道（Overall-17 21×26） mbz_     yyjnu;         guxlu wvau  ,  r[2] xclr  zce   qixie trlx  ,  jre[  gowf  syjhau      yv_ xwxque[3]       .
+冰雪散拼（Overall-17 21×26） mbz_     yyjni;         guxlu wvia  ,  r[2] xclr  zca   qixii trlx  ,  jrjr  gowf  syjhaa      yv_ xpwiaa[2] xoqj  .
+冰雪键道　 mbz_     yyjn[2];       gjxxu enjja ,  r[2] xblg  zc[3] qkxkv tglq  ,  jgv[  gesyJH_           yl_ xexwvu          .
+冰雪三拼　 mbz_     yyjn[2];       gjxxu enjjv ,  r[2] xblg  zcu   qkxkv tglq  ,  jgjg  gesyJH_           yl_ xexwov          .
+
+====================================================================================================
+【篇 04】全球宏观经济流动性与跨境产业链重构趋势分析（财经分析·500 汉字）
+冰雪健道（U357 21×21）：按键 814；均码 1.6280；Space 26；1字 14.9%（覆盖 5.4%）；2字 40.3%（覆盖 29.2%）；3字 12.7%（覆盖 13.8%）；4字 21.0%（覆盖 30.4%）；5字+ 11.0%（覆盖 21.2%）。
+冰雪弎拼（U357 21×21）：按键 822；均码 1.6440；Space 27；1字 14.4%（覆盖 5.2%）；2字 41.7%（覆盖 30.0%）；3字 11.7%（覆盖 12.6%）；4字 21.1%（覆盖 30.4%）；5字+ 11.1%（覆盖 21.8%）。
+冰雪简道（Overall-17 21×26）：按键 839；均码 1.6780；Space 30；1字 14.8%（覆盖 5.8%）；2字 44.4%（覆盖 34.8%）；3字 15.3%（覆盖 18.0%）；4字 21.9%（覆盖 34.4%）；5字+ 3.6%（覆盖 7.0%）。
+冰雪散拼（Overall-17 21×26）：按键 856；均码 1.7120；Space 32；1字 15.3%（覆盖 6.2%）；2字 47.5%（覆盖 38.4%）；3字 14.9%（覆盖 18.0%）；4字 18.8%（覆盖 30.4%）；5字+ 3.5%（覆盖 7.0%）。
+冰雪键道：按键 820；均码 1.6400；Space 23；1字 15.2%（覆盖 5.4%）；2字 38.8%（覆盖 27.6%）；3字 12.4%（覆盖 13.2%）；4字 21.3%（覆盖 30.4%）；5字+ 12.4%（覆盖 23.4%）。
+冰雪三拼：按键 829；均码 1.6580；Space 23；1字 14.7%（覆盖 5.2%）；2字 38.4%（覆盖 27.2%）；3字 12.4%（覆盖 13.2%）；4字 22.0%（覆盖 31.2%）；5字+ 12.4%（覆盖 23.2%）。
+----------------------------------------------------------------------------------------------------
+[04-01]
+原文       受   主 要 经 济 体 中 央 银 行 货 币 政 策 转 向 影 响 ， 全 球 金 融 市 场 流 动 性 呈 现 结 构 性 分 化 。
+冰雪健道（U357 21×21） equ  kyjjT          kyyh        hbkc        kxxj  yxo   ,  qqi   jrew        ldxv     wrxp  jgxfH          .
+冰雪弎拼（U357 21×21） eqau kyjjT          kyyh        hbkc        kxxj  yxu   ,  qqv   jrew        ldxa     wrxp  jgxfH          .
+冰雪简道（Overall-17 21×26） wfu  fuys  jjt_     fyyh        hbfc        fqxl  yxo   ,  qtqx  jrwv        ldxr     vnxp  jgx_     jjhx  .
+冰雪散拼（Overall-17 21×26） wfau fuys  jjt_     fyyh        hbfc        fqxl  yxu   ,  qtqx  jrwv        ldxr     vnxp  jgx_     jjhx  .
+冰雪键道　 edu  qyjjT          fyyh        hbqc        ftxx  yxo   ,  qqjrvv      ejldX          jrxm  jgxfH          .
+冰雪三拼　 edou qyjjT          fyyh        hbqc        ftxx  yxu   ,  qqjri       ejldX          jrxm  jgxfH          .
+
+[04-02]
+原文       长 期 国 债 收 益 率 的 宽 幅 震 荡 反 映 出 市 场 对   通 胀 粘   性  与 经 济 增 长 放 缓 的 复 杂 博 弈 。
+冰雪健道（U357 21×21） wqgk        eyl[3];     kfkdii      fyw_     elwn  d[3] tpkn  kjou xt_ yjj_     zkfh[2];       fhzw  bdyl  .
+冰雪弎拼（U357 21×21） wqgk        eyl[3];     kfkMd       fyw_     elwn  d[3] tpkn  kji  xt_ yjj_     zkfh[2];       fhzw  bdyl  .
+冰雪简道（Overall-17 21×26） vqgfi       wyl[3];     kjfdii      jyv_     wv_   d[3] tkfy  foo  xro yjj_     zfjh[2];       juza  bmyiu .
+冰雪散拼（Overall-17 21×26） vqgfe       wyl[3];     kjfdia[3]   jyv_     wv_   d[3] tkfy  foi  xra yjj_     zfjh[2];       juza  bmyie .
+冰雪键道　 jqgfv       eyl[3];     kfqNd       fyjo     ekjp  d[3] tyqp  nmo  xgo yjj_     zqfh[3];       fjzs  blyk  .
+冰雪三拼　 jqgfv       eyl[3];     kfqdio      fyj[3]   ekjp  d[3] tyqp  qfv  xgo yjj_     zqfh[3];       fjzs  blyk  .
+
+[04-03]
+原文       在 国 际 贸 易 维 度 ， 跨 国 产 业 链 正  经 历   深 刻 重 塑 与  全 方 位 布 局 调 整 。
+冰雪健道（U357 21×21） z_ gjmy        sedha ,  kcgy  wyl_     kr_ jtlla   emks  wpshu yg_ qfs_     bjtk        .
+冰雪弎拼（U357 21×21） z_ gjmy        sedhv ,  kcgy  wyl_     kr_ jtlli   emks  wpshv yg_ qfs_     bjtk        .
+冰雪简道（Overall-17 21×26） z_ gjmy        qwdua ,  kgoi  vyl_     fnjr   lieu wka   vksu  yv_ qjq_     bjtf        .
+冰雪散拼（Overall-17 21×26） z_ gjmy        qwdue ,  kgae  vyl_     fn_ jrlii   wki   vksu  yv_ qjq_     bjtf        .
+冰雪键道　 z_ gjmy        wwdja ,  kqgl  jyl_     qr_ jglka   enke  wysj  yl_ qfw_     bjtq        .
+冰雪三拼　 z_ gjmy        wwdji ,  kqgl  jyl_     qr_ jglkv   enke  wysj  yl_ qfw_     bjtq        .
+
+[04-04]
+原文       由  以 往 单 纯 追  求 比 较 成 本 优 势 ， 向    兼 顾 供 应 链 安 全 、 韧 性   与  多 元 化 方 向 快 速 演 进 。
+冰雪健道（U357 21×21） yfi ylsn  djwb  kgqd   bljc  wbyev       ,  xj_   jpgho gylrQ          \  rmxtv   yg_ dyh_     fu    kvi   yjjba .
+冰雪弎拼（U357 21×21） yqv ylsn  djwb  kgqd   bau   wbyeu       ,  xj_   jpghi gylrQ          \  rmxt[3] yg_ dyh_     fxa   kdsh  yjjbu .
+冰雪简道（Overall-17 21×26） yfi yiqy  dvo   dlu qbjde    vbyw        ,  xlu   jpguo gyl_     xoqt  \  rxe     yv_ dyh_     jyxl  krsu  yojca .
+冰雪散拼（Overall-17 21×26） yfe yiqy  dvi   flqx   bijd  vbyw        ,  xl[3] jpgui gyl_     xoqt  \  rjxr[3] yv_ dyh_     jyxl  krsu  yojcu .
+冰雪键道　 ydi ykwp  dfjw  fbqq   bjCjb       yiu   ,  xxu   jmgjo gylxQ          \  rxv     yl_ dyh_     fui   kvi   yfjba .
+冰雪三拼　 ydi ykwp  dfjw  fbqq   bou   jbyeu       ,  xx[3] jmgjv gylxQ          \  rnxg[3] yl_ dyh_     fpxx  kgsj  yfjbu .
+
+[04-05]
+原文       近 岸   外 包 与  友     岸    外 包 模 式 的 兴 起 ， 促 使 东 南 亚 及     拉 美 部 分 国 家 承 接 了 更 多 制 造 业 投 资 。
+冰雪健道（U357 21×21） jbrju   skbf  yg_ yqv[3] rjiav sbme[2];       xtql  ,  chel  dny_     jlua   lwmei buo   go    wrjz/    grdy  kzytZ          .
+冰雪弎拼（U357 21×21） jbrj[3] skbf  yg_ yqo    rjaia sbme[2];       xtql  ,  ceu   dny_     jlvu   lwmei bfgjav[2]   wrjz/    grdy  kzytZ          .
+冰雪简道（Overall-17 21×26） jcxo    qhbs  yv_ yfeu   xoia  qbmweu;        xrqi  ,  cuwi  dny_     ji[3]  lamwi bjgjou[3]   vnjz/    gde   fzy_     tfzi  .
+冰雪散拼（Overall-17 21×26） jcxo    qhbs  yv_ yfo    xoaia qbmwa[2];      xrqi  ,  cuwi  dny_     ji[3]  lamwi bujj  gmjk  vnjz/    gda   fzy_     tfzi  .
+冰雪键道　 jbxfu   whbz  yl_ ydvu   xfia  wbmeu;         xgqk  ,  cjek  dny_     jku[3] lsmwi buo   goo   jrjd/    gua   fzytZ          .
+冰雪三拼　 jbxfo   whbz  yl_ yda    xfoia wbmev[3];      xgqk  ,  cjek  dny_     jkiu   lsmwv bfgjoi[2]   jrjd/    grdl  fzytZ          .
+
+[04-06]
+原文       与 此 同 时 ， 大 宗 商 品 价 格 受   供 给 侧 产 能 约 束 与  绿 色 低 碳 转 型 双 重 影 响 。
+冰雪健道（U357 21×21） ycte        ,  dzep        jvu   equ  gjcai    wjnr  ykeh  yg_ lsdtKX_           ewyxuo      .
+冰雪弎拼（U357 21×21） ycte        ,  dwzp  epjg        eqau gjcui    wjnr  ykeh  yg_ lsdtKX_           ewyxvu      .
+冰雪简道（Overall-17 21×26） yctw        ,  dazk  wpjg        wfu  gjce     vonn  ygwu  yv_ lvse  dtfxe       wvyxou      .
+冰雪散拼（Overall-17 21×26） yctw        ,  dazk  wpjg        wfau gjce     vonn  ygwu  yv_ lvse  dtfxi       wvyxiu[2]   .
+冰雪键道　 ycte        ,  dszy  epjg        edu  gjcai    jfnr  yhej  yl_ lsdtFX_           eMwyx       .
+冰雪三拼　 ycte        ,  dszy  epjg        edou gjcuv    jfnr  yhej  yl_ lsdtFX_           ewyxiu      .
+
+[04-07]
+原文       价 格 中 枢 整 体 保 持 高 位 运 行 ， 对   中 下 游 实 体 企 业 的 营 业 利 润 率  构 成 了 持 续 挤 压 。
+冰雪健道（U357 21×21） jvu   kpeh  krtl  bwgsii      yext  ,  d[3] kxyva    etqyi;         yylrL           gwl_     wlxg  jlyw  .
+冰雪弎拼（U357 21×21） jfgs  kpeh  krtl  bwgsv[3]    yxv   ,  d[3] kxyai    etqyu;         yylrL           gwl_     wlxg  jlyw  .
+冰雪简道（Overall-17 21×26） jkge  fkwu  fnti  bvgq        ybxr  ,  d[3] fxyfe    wtqyii;        yylra       lgo gvl_     vixv  jiya  .
+冰雪散拼（Overall-17 21×26） jkge  fkwu  fnti  bvgq        yxa   ,  d[3] fxyfa    wtqyeu;        yylre       lva gvl_     vixv  jiya  .
+冰雪键道　 jsge  fyeji qiv   bwgwi       ywxg  ,  d[3] fxyva    etqyi[2];      yylrL           gjl_     wkxl  jkys  .
+冰雪三拼　 jsge  fyejv qrtk  bwgwi       yxi   ,  d[3] fxyov    etqyu[2];      yylrL           gjl_     wkxl  jkys  .
+
+[04-08]
+原文       面 对 复 杂 的 外 部 宏 观 环 境 ， 资 本 市 场 呈 现 出 更 加 明 显 的 防 御 型  资 产 配 置 倾 向 。
+冰雪健道（U357 21×21） mdfza;         skbh  hghja       ,  zbew        wxw_     gjmx;          fyxuva    zwpko       qtxj  .
+冰雪弎拼（U357 21×21） mdGfz;         skbh  hghjiv      ,  zbew        wxw_     gjmx;          fyxavv    zwpku       qtxj  .
+冰雪简道（Overall-17 21×26） mdjzu[2];      qhbu  hghje       ,  zbwv        vxvu     gjmx;          jyyv  xre zvpf        qrxl  .
+冰雪散拼（Overall-17 21×26） mdjzaa[2];     qhbu  hghjee[2]   ,  zbwv        vxvu     gjmx;          jyxrae[3] zvpf        qrxl  .
+冰雪键道　 mdfza;         whbj  hghja       ,  zbej        jxj_     gjmx;          fyxuva    zjpfoi      qgxx  .
+冰雪三拼　 mdBfz;         whbj  hghjv       ,  zbej        jxj_     gjmx;          fyxoii[2] zjpfu       qgxx  .
+
+[04-09]
+原文       高  股 息 红 利 资 产 与  核 心 现 金 流 资 产 受 到 稳 健 型  长 期 投 资 机 构 重 点 青 睐 。
+冰雪健道（U357 21×21） gfo gxhluu      zlwj  yg_ hsxb  xjli     zlwj  eqdfu sjxivu    wnql  tzjg        kpdp  qtlk  .
+冰雪弎拼（U357 21×21） gfi gxhliv      zlwj  yg_ hsxb  xjli     zlwj  eqdfa sjxauv    wnql  tzjg        kpdp  qtlk  .
+冰雪简道（Overall-17 21×26） ggxi      hkli  zvo   yv_ hexc  xjlx     zvo   wfdsu qjjpu xre vyqi  tzjg        fd[3] qrlh  .
+冰雪散拼（Overall-17 21×26） ggxi      hkli  zvi   yv_ hexc  xjlx     zvi   wfdsa qjjpu xre vyqi  tzjg        fda   qrlh  .
+冰雪键道　 gz_ gxhluu      zkjf  yl_ hexb  xjli     zkjf  eddzu wjxivu    jpqk  tzjg        fydm  qglh  .
+冰雪三拼　 gz_ gxhlvi      zkjf  yl_ hexb  xjlv     zkjf  eddzo wjxoui[2] jpqk  tzjg        fydm  qglh  .
+
+[04-10]
+原文       企 业 若 想 在 周 期 波 动 中   保 持 竞 争 力 ， 必 须 进 一 步 优 化 资 产 负 债 表 结 构 ， 提 升 运 营 周 转 效 率 。
+冰雪健道（U357 21×21） qy_   ryxj  z_ kqbDd       k[3] bwjkL          ,  bu    jybyH          zwfk        bjga     ,  teyyui      kQkxlv      .
+冰雪弎拼（U357 21×21） qy_   ryxj  z_ kqbdii      k[3] bwjkL          ,  bia   jybyH          zwfk        bjg[3]   ,  teyEy       kkxlua[3]   .
+冰雪简道（Overall-17 21×26） qiye  rmxl  z_ fqbdee[2]   f[2] bv_   jfl      ,  bx_   jyb_     yfhx  zvjf        bjgf     ,  twyyiu      ffxloe[3]   .
+冰雪散拼（Overall-17 21×26） qiye  rmxl  z_ ffqi  bmdk  f[2] bv_   jfl      ,  bx_   jyb_     yfhx  zvjf        bjgf     ,  twyyea      fffq  xdlv  .
+冰雪键道　 qkye  rlxx  z_ fqbdv       f[2] bwjqL          ,  buu   jybyH          zjff        bjga     ,  teyyui      fDfxl       .
+冰雪三拼　 qkye  rlxx  z_ fqbdvv      f[2] bwjqL          ,  bvo   jybyH          zjff        bjgiu    ,  teyWy       fDfxl       .
+
+[04-11]
+原文       加 大 自 主 创 新 与  数 字 化 转 型 投 入 力 度 ， 打 造 跨 周 期 可 持 续 发 展 的 核 心 竞 争 壁 垒 ， 防 范 化 解 潜 在 现 金 流 断 裂 与  债 务 违 约 风 险 。
+冰雪健道（U357 21×21） jfdw  zkwx        yg_ ezh_     kxxt  trld        ,  dwzf  kCkqu    kwxfK;            hsxb  jkblua      ,  ffhj        qpzk  xjldL          yg_ kssyFX            .
+冰雪弎拼（U357 21×21） jfdw  zkwx        yg_ ezh_     kxxt  trld        ,  dwzf  kCkqi    kwxfK;            hxjkia      blle  ,  ffhj        qpzk  xjldL          yg_ kssyFX            .
+冰雪简道（Overall-17 21×26） jkda  zfvx        yv_ wzh_     fqxre trld        ,  dazs  kfqiuo   k_ vxjf;          hexc  jfblau      ,  jjhjui      qpzh  xjlx     dqlz  yv_ fhqu  qyjxaa      .
+冰雪散拼（Overall-17 21×26） jkda  zfvx        yv_ wzh_     fqxru trld        ,  dazs  kfqii[3] k_ vxjf;          hxjfea      bilw  ,  jjhje       qpzh  xjlx     dqlz  yv_ fhqu  qyjxei[3]   .
+冰雪键道　 jsds  zqwx        yl_ ezh_     ftxg  trld        ,  dszz  kQfqu    kwxfQ;            hexb  jqblua      ,  ffhji       qmzh  xjldL          yl_ fwwyFX            .
+冰雪三拼　 jsds  zqwx        yl_ ezh_     ftxg  trld        ,  dszz  kQfqv    kwxfQ          dhxia    jqblv       ,  ffhjo       qmzh  xjldL          yl_ fwwyFX            .
+
+[04-12]
+原文       各 国 监 管 机 构 也   需 加 强 跨 境 宏 观 审 慎 监 管 合 作 ， 密 切 跟 踪 非 银 行 金 融 机 构 的 高 杠 杆 风 险 传 染 路 径 ， 维 护 国 际 金 融 体 系 整 体 稳 定 。
+冰雪健道（U357 21×21） gsgy  jgjg        ysxga   jq_   kcjt  hgeea       jghzu       ,  mqgzv       fyhi     jrjg;          gggvvo   fxwr        lhjt  ,  shgjia      jrtx        ktsdio      .
+冰雪弎拼（U357 21×21） gsgy  jgjg        ysxgu   jq_   kcjt  hgeMe       jghzu       ,  mqgza       fyhv     jrjg;          gggaiu   fxwr        lhjt  ,  sehh  gav   jrtx        ktsduu      .
+冰雪简道（Overall-17 21×26） gegm  jgjg        yexva   jkql  kxjr  hgwwoa      jghziu      ,  mqgzo       jyhy     jrjg;          gggoeo   jxvr        ljou  ,  qhgjai      jrtx        ftqdo       .
+冰雪散拼（Overall-17 21×26） gegm  jgjg        yexvu   jkql  kxjr  hkgq  wwjgu       hze   ,  mqgza       jyhy     jrjg;          gggoa    jxvr        lujr  ,  qhgjee[3]   jrtx        ftqd[3]     .
+冰雪键道　 ggjgJG_           y[3] xjqaav   kqjg  hgeea       jghzu       ,  mqgzv       fyhiu    jrjg;          gggvvo   fxwra       ljjg  ,  whgjia      jrtx        qRtwdi      .
+冰雪三拼　 ggjgJG_           y[3] xLjqv    kqjg  hgeNe       jghzui      ,  mqgzo       fyhi     jrjg;          gggovu   fxwru       ljjg  ,  whgjoi[3]   jrtx        qtwduu      .
+
+[04-13]
+原文       只 有 统 筹 增 长 与  防 范 系 统 性 风 险 ， 方  能 引 导 全 球 经 济 平 稳 穿 透 波 动 迷 雾 走 向 全 面 复 苏 繁 荣 。
+冰雪健道（U357 21×21） klyq  tpwq  zrkn  yg_ ffxtXFX              ,  fro nydaa    qqjj        psv   wxtq  bddp  mlsh  zui   qmfsvi[3]   fjrp  .
+冰雪弎拼（U357 21×21） klyq  tpwq  zrkn  yg_ ffxtXFX              ,  fnnr   ybdf  qqjj        psu   wxtq  bddp  mlsh  zqxj  qmfsaa      fjrp  .
+冰雪简道（Overall-17 21×26） fiyf  tkvf  znfy  yv_ jyjo  xtx_     jnxp  ,  jynn   yda   qqjj        pq_   vqtf  bmdk  miqu  zxe   qmjsie[3]   jork  .
+冰雪散拼（Overall-17 21×26） fiyf  tvu   znfy  yv_ jyjo  xtx_     jnxp  ,  jyi nydsu    qqjj        pq_   vqtf  bmdk  miqu  zxu   qmjsea[3]   jork  .
+冰雪键道　 fvu   tywd  zqv   yl_ ffxtXFX              ,  fpo nydaa    qqjj        pgwn  wttd  bldy  mkwj  zui   qmfJs       ffryu .
+冰雪三拼　 fu    tywd  zqu   yl_ ffxtXFX              ,  fpnr   ybdz  qqjj        pgwn  wttd  bldy  mkwj  zdxx  qmfJs       ffryi .
+
+[04-14]
+原文       积 极 深 化 改 革 开 放 ， 才 能 在 百 年 未 有 之 大 变 局 中   行 稳   致  远  把 握 未 来 发 展 主 动 权 。
+冰雪健道（U357 21×21） jljl  ehggKF            ,  cao   z_ bnsyK          dbjoav   k[3] xskyuv          bssEl       fa    kdq      .
+冰雪弎拼（U357 21×21） jljl  ehggKF            ,  cv    z_ bnsyKDBJ_               k[3] xskyua          bssEl       fu    kdq      .
+冰雪简道（Overall-17 21×26） jiji  whgg        khjy  ,  c_ nnzh  bnqye       fida  bjfkao     xqfyeu[3]       baqmi qljf        fdq      .
+冰雪散拼（Overall-17 21×26） jiji  whgg        khjy  ,  c_ nnzh  bnqy[3]     fida  bpjva fkhy    qjuu fia yt_ baqmu qljf        fdq      .
+冰雪键道　 jkjk  ehggKF            ,  cao   z_ bnwy        fkds  bjfaio     xwfyuv          bwwliv      fqqdQ          .
+冰雪三拼　 jkjk  ehggKF            ,  ci    z_ bnwy        fkds  bjLfi      xwfyu           bwwWl       fqqdQ          .
+
+====================================================================================================
+【篇 05】周末好友聚餐与生活琐事的轻松闲谈（日常口语·500 汉字）
+冰雪健道（U357 21×21）：按键 813；均码 1.6260；Space 27；1字 16.1%（覆盖 6.2%）；2字 41.7%（覆盖 32.0%）；3字 15.6%（覆盖 18.0%）；4字 19.3%（覆盖 29.6%）；5字+ 7.3%（覆盖 14.2%）。
+冰雪弎拼（U357 21×21）：按键 826；均码 1.6520；Space 28；1字 16.6%（覆盖 6.4%）；2字 40.4%（覆盖 31.2%）；3字 17.1%（覆盖 19.8%）；4字 19.7%（覆盖 30.4%）；5字+ 6.2%（覆盖 12.2%）。
+冰雪简道（Overall-17 21×26）：按键 855；均码 1.7100；Space 22；1字 17.3%（覆盖 7.0%）；2字 41.6%（覆盖 33.6%）；3字 19.3%（覆盖 23.4%）；4字 19.8%（覆盖 32.0%）；5字+ 2.0%（覆盖 4.0%）。
+冰雪散拼（Overall-17 21×26）：按键 860；均码 1.7200；Space 23；1字 17.4%（覆盖 7.0%）；2字 40.3%（覆盖 32.4%）；3字 20.4%（覆盖 24.6%）；4字 19.9%（覆盖 32.0%）；5字+ 2.0%（覆盖 4.0%）。
+冰雪键道：按键 809；均码 1.6180；Space 20；1字 15.7%（覆盖 6.0%）；2字 40.3%（覆盖 30.8%）；3字 17.8%（覆盖 20.4%）；4字 19.4%（覆盖 29.6%）；5字+ 6.8%（覆盖 13.2%）。
+冰雪三拼：按键 815；均码 1.6300；Space 22；1字 15.8%（覆盖 6.0%）；2字 39.5%（覆盖 30.0%）；3字 17.9%（覆盖 20.4%）；4字 20.0%（覆盖 30.4%）；5字+ 6.8%（覆盖 13.2%）。
+----------------------------------------------------------------------------------------------------
+[05-01]
+原文       上 周 末 几 个 老 同 学 好 不 容 易 凑 齐 了 时 间 ， 在 老 城 区 一 家 不 起 眼 的 小 馆   子  聚 了   一 次 。
+冰雪健道（U357 21×21） ekmu     jlgs  ltxi     hbry        cqql/    eljp  ,  z_ lwq_     yljf  bqyv[2];    xgXzu       jgv[2]/ yov   .
+冰雪弎拼（U357 21×21） ekmi     jlgs  ltx[3]   hbry        cqql/    eiv   ,  z_ lwq_     yljf  bqyduu      xgXzu       jglsa   yca   .
+冰雪简道（Overall-17 21×26） wfm[3]   jige  ltxg     hbry        cfqi/    wijp  ,  z_ lvqv     yijk  bqyo;       xdgq[3] zia jve[2]/ yici  .
+冰雪散拼（Overall-17 21×26） wfm[3]   jige  ltxg     hbry        cfqi/    wijp  ,  z_ lvqv     yijk  bqyo;       xdgqu   ziu jvlea   yici  .
+冰雪键道　 efmu     jii   ltxi     hbry        cdqk/    eo    ,  z_ ljqv     ykjs  bqyv[2];    xgTzu       jlv[2]/ yov   .
+冰雪三拼　 efmv     jou   ltx[3]   hbry        cdqk/    ev    ,  z_ ljqi     ykjs  bqyduu      xgTzu       jlle[3] yco   .
+
+[05-02]
+原文       大 家 平 时 工 作 都   特 别 忙 ， 有 的 天 天 在 公 司 加 班 写   方 案 ， 有 的 忙 着 到 处 出 差 跑 业 务 。
+冰雪健道（U357 21×21） doo   pegzo       d[2] to    mn ,  y[2]; ttzv     gsjbav      x[2] fo    ,  y[2]; mnks  dfwh  whwk  pysi     .
+冰雪弎拼（U357 21×21） dwjf  pegzv       d[2] tv    mn ,  y[2]; ttzi     gsjbii      x[2] fai   ,  y[2]; mnks  dfwh  whwk  pysa     .
+冰雪简道（Overall-17 21×26） dajk  pwgzi       d[2] tbmyo    ,  y[2]; tp[   zgs[3]   jkbo  xjxoo      ,  y[2]; myfe  dsvu  vuvh  pyqu     .
+冰雪散拼（Overall-17 21×26） dajk  pwgze       d[2] tbmye    ,  y[2]; tp[   zgs[3]   jkbo  xjxoiu     ,  y[2]; myfe  dsvu  vuvh  pyqu     .
+冰雪键道　 doo   pegzo       d[2] to    mp ,  yui   ttzv     gsjbav      xfxFo      ,  yui   mpfe  dzjj  jjjh  pywi     .
+冰雪三拼　 dv    pegzi       d[2] ti    mp ,  y[2]; ttzv     gsjSb       xDfxvu     ,  y[2]; mpfe  dzjj  jjjh  pywo     .
+
+[05-03]
+原文       好 不 容 易 能   坐 在 一 块 儿  痛 痛 快 快 吃 顿 饭 ， 刚 坐 下 那 会 儿 还 有 点 拘 谨 和 生 疏 。
+冰雪健道（U357 21×21） hbry        n[3] zz_   ykr_      ttkko       wdfv     ,  gzxi     nhri     hyd[3]   jgjbi h_ ereh  .
+冰雪弎拼（U357 21×21） hbry        n[3] zz_   ykr_      ttkka       wdfa     ,  gzx[3]   nhra     hyd[3]   jgjbi h_ ereh  .
+冰雪简道（Overall-17 21×26） hbry        n[3] zzyk        xuu ttkk        vdjo     ,  gzxk     nhxu     hydp     jvjci h_ wnwu  .
+冰雪散拼（Overall-17 21×26） hbry        n[3] zzyk        xue ttkk        vdjo     ,  gzxk     nhxu     hydp     jvjci h_ wnwu  .
+冰雪键道　 hbry        n[3] zvu   ykxv      ttkk        wdfvu    ,  gzxiv    nhxi     hyd[3]   jljbi h_ ereju .
+冰雪三拼　 hbry        n[3] zlzh  ykxo      ttkk        wdfF     ,  gzxo[3]  nhxo     hyd[3]   jljbv h_ erejv .
+
+[05-04]
+原文       等  热 气 腾 腾 的 铜    锅   端 上 来 ， 几 杯  冰 镇 饮 料 下 肚 ， 话 匣 子 一 下 就 全  打 开 了 。
+冰雪健道（U357 21×21） dr_ rqtt;          tpio  gyio deliv    ,  jlbeuv bTkyl       xfdhv ,  hxzva    yxjv     qdkivi/      .
+冰雪弎拼（U357 21×21） dr_ rqtt;          tpvuv gyiu delK     ,  jlbeui bTkyl       xfdha ,  hxzva    yxja     qdkuv[3]/    .
+冰雪简道（Overall-17 21×26） dnu rqtt;          tkio  gmio dwlh     ,  jibwue bfyloi      xkdue ,  hxzieo   yxjx     qt_ dkl      .
+冰雪散拼（Overall-17 21×26） dn_ rqtt;          tkeu  gmiu dwlh     ,  jibwui bfyliu[2]   xkdua ,  hxziea   yxjx     qt_ dkl      .
+冰雪键道　 dr_ rqtt;          tyi   glio deliv    ,  jkbwuv bqylio      xsdjv ,  hxzva    yxjv     qTdk/        .
+冰雪三拼　 dr_ rqtt;          tyiu  glvu delH     ,  jkbwuv bGqyl       xsdjo ,  hxzio    yxjo     qdkui/       .
+
+[05-05]
+原文       聊 起 上 学 那 会 儿  干 过 的 各 种 傻 事 ， 谁  上 课 打 瞌 睡 被 老 师 当 场 抓 包 ， 谁  踢 球 把  球 鞋 踢    坏 了 。
+冰雪健道（U357 21×21） lcql  exnhR           gjgy[2]; gu    eweli ,  ee_ ekdkE          bleui    dwkb[3]     ,  ee_ tlqd  bki qdxz  tl[2] hd/   .
+冰雪弎拼（U357 21×21） lcql  exnhR           gjgy[2]; gu    ewelu ,  ee_ ekdkE          bleu     dwkbu       ,  ee_ tlqd  bwu qdxz  tli   hd/   .
+冰雪简道（Overall-17 21×26） ldqi  wxnh        xuu gogm;    gefk  wawii ,  wlo wki   dkwl     blwiu    dvfb        ,  wlo tiqx  bai qxxz  tio   hr/   .
+冰雪散拼（Overall-17 21×26） ldqi  wxnh        xue gogm;    gefk  wawiu ,  wle wka   dkwl     blwiu    dvfb        ,  wle tiqx  bau qxxz  tii   hr/   .
+冰雪键道　 lcqk  exnhX           gfgl[2]; guv   eseki ,  ebo ekdkE          bleui    djfbvu      ,  ebo tkqq  bs_ qqxd  tk[3] hg/   .
+冰雪三拼　 lcqk  exnhX           gfgl[2]; gu    eseku ,  ew_ ekdkE          bleu     djfbu[3]    ,  ew_ tkqq  bs_ qqxd  tkv   hg/   .
+
+[05-06]
+原文       大 家 笑 得 前 仰 后 合 ， 眼 泪 都 快   流 出 来 了 ， 仿 佛 一 下 子 又 回 到 了 无 忧 无 虑 的 学 生 时 代 。
+冰雪健道（U357 21×21） doo   xdqyHH            ,  yjle  dqkd    lwl[3]/     ,  fnfh  yxz_     yhdiv/      sysl;          xeed        .
+冰雪弎拼（U357 21×21） dwjf  xdqyHH            ,  yjle  dqkd    lwl[3]/     ,  ffv   yxz_     yhdv/       sysl;          xeed        .
+冰雪简道（Overall-17 21×26） dajk  xddeu qyhhi       ,  yli   dfkr    lvl[3]/     ,  jyju  yxz_     yhds/       qyql;          xwwd        .
+冰雪散拼（Overall-17 21×26） dajk  xddea qyhhe       ,  yldfa    k[3] lvl[3]/     ,  jyju  yxz_     yhds/       qyql;          xwwd        .
+冰雪键道　 doo   xdqyHH            ,  yldaui   k[3] ljll[3]     ,  fpfj  yxz_     yhdiv/      wywl;          xeed        .
+冰雪三拼　 dv    xdqyHH            ,  yldouv   k[3] ljll[3]     ,  fpfj  yxz_     yhdi/       wywl;          xeed        .
+
+[05-07]
+原文       后 来 又  聊  到 最 近 买 房 装 修 的 麻 烦 事 ， 还 有 家 里 老 人 身 体 怎 么 样 、 孩 子 报 了 什 么 兴 趣 班  。
+冰雪健道（U357 21×21） hl_   yq_ lcdfv  zuu   mfkx;          mfeo     ,  hv    jllr[3]     etzmY          \  hzbai/      eua   xqbvvo[2] .
+冰雪弎拼（U357 21×21） hl_   yq_ lc_ dFzja    mfkx;          mfev     ,  huv   jllr[3]     eu    zmy      \  hzbF/       eo    xqbaai    .
+冰雪简道（Overall-17 21×26） hflh  yfa lddse  zljc  mjfxi;         mjwioo   ,  hhyf  jkli  lrwt        zmy      \  hzbs[2]/    wjme  xqboeo    .
+冰雪散拼（Overall-17 21×26） hflh  yfa ld_ dzjca    mjfxu[2];      mjwiee   ,  hhyf  jkli  lrwt        zmy      \  hzbs[2]/    wjme  xqboaa[3] .
+冰雪键道　 hdlh  yda lc_ dzjouv   mffx[2];       mfeov    ,  hv    jia   lret        zmy      \  hzbai/      eu    xqbvvo[3] .
+冰雪三拼　 hi    ydo lc_ dzBjo    mffx[2];       mfei     ,  hu    jllr[3]     etzmY          \  hzbZ/       ea    xqboov[3] .
+
+[05-08]
+原文       虽 然 都 是 些 柴 米 油 盐 的 琐 碎 日 常 ， 但  听 着   特 别 真 实 亲 切 ， 让 人 觉 得 格 外 踏 实  。
+冰雪健道（U357 21×21） su    dex_     wmyy[2];       ssrw        ,  dj_ ttks    tbkeoo[3]   qbqz  ,  rrjdi       gssk  tweloo .
+冰雪弎拼（U357 21×21） sv    dex_     wmyy[2];       ssrw        ,  dj_ toi     tbkevi      qqa   ,  rrjdvv      gssk  tev[2] .
+冰雪简道（Overall-17 21×26） sr_   dwx_     vmyy[2];       ssrv        ,  dotr   f[3] tbfwoo      qcqz  ,  rrjdu       geqh  tawioo .
+冰雪散拼（Overall-17 21×26） sr_   dwx_     vmyy[2];       ssrv        ,  dotr   f[3] tbfwai      qcqz  ,  rrjda       geqh  twie   .
+冰雪键道　 su    dex_     jmyy[2];       ssrjv       ,  dftg   f[3] tbqeoo      qbqd  ,  rrjd        gewh  tsekoo .
+冰雪三拼　 si    dex_     jmyy[2];       ssrjo       ,  dftg   f[3] tbqeiv[2]   qbqd  ,  rrjd        gewh  tsekvi .
+
+[05-09]
+原文       不 知 不 觉 就 吃 到 了 深 夜 ， 外 面 的 街 道 早 就 安 静 下 来 ， 大 家 站 在 十 字 路 口 依 依 不 舍 地  挥 手 告 别 。
+冰雪健道（U357 21×21） bkbj        j_ w_ dleya       ,  skmp;    jzdf  zfjd  rjxl        ,  doo   kzo   ezlk        yybeD           hegb        .
+冰雪弎拼（U357 21×21） bkbj        j_ w_ dleyo       ,  skmp;    jzdf  zfjd  rjxl        ,  dwjf  kjzk  ezlk        yybeD           hegb        .
+冰雪简道（Overall-17 21×26） bfbj        jxvi  dlwyoa      ,  qhmp;    jzds  zsjx  xjxl        ,  dajk  fzo   wzlk        yybw        dee hwgb        .
+冰雪散拼（Overall-17 21×26） bfbj        jxvi  dlwyai[3]   ,  qhmp;    jzds  zsjx  xjxl        ,  dajk  fozh  wzlk        yybw        deo hwgb        .
+冰雪键道　 bfbju       jqwk  dleya       ,  wvu;     jddz  zzjq  xjxl        ,  doo   qz[3] ezlk        yybeD           hegbi       .
+冰雪三拼　 bfbjv       jqwk  dleya       ,  wmo;     jddz  zzjq  xjxl        ,  dv    qz[3] ezlk        yybeD           hegbu       .
+
+[05-10]
+原文       虽 然 明 天 一 早 还 要 各 自 面 对 繁 重 的 工 作 任 务 和 生 活 琐 事 ， 但  心 里 却   觉 得 暖 洋 洋 的 ， 像 是 充   饱 了   电    一 样 充 满 干 劲 和 希 望 。
+冰雪健道（U357 21×21） su    mtyzvo[2]   hvi   gui   ma    fkdgZ          rua   h_ ehseav      ,  dj_ xbll  q[3] juu   nyyaa;      ,  xoi   wpov bfu[2]/ dpi   yy_   wmgj[3]     h_ xs    .
+冰雪弎拼（U357 21×21） sv    mtyzii[2]   hkyf  gszl  mpdg  fjkp;    gzrs        h_ ehsevu      ,  dj_ xui   q[3] jov   nyyv;       ,  xjel  wpio bfu[2]/ dpai  yy_   wmgj[3]     h_ xs    .
+冰雪简道（Overall-17 21×26） sr_   mtyzoe      hhys  gzu   mpdl  jofk;    gzrq        h_ whsw        ,  do_ xcli  qg_  jgde  nyyy;       ,  xlwi  vkoe bsu[2]/ dpi   yiyy  vmgja[3]    h_ xiqy  .
+冰雪散拼（Overall-17 21×26） sr_   mtyzei      hhys  gza   mpdl  jofk;    gzrq        h_ whsw        ,  do_ xcli  qjdeea[2]  nyyy;       ,  xlwi  vkio bsu[2]/ dp[3] yiyy  vmgjia      h_ xiqy  .
+冰雪键道　 su    mtyzvo[2]   hvi   gui   mao   ffdgZ          rua   h_ ehse        ,  df_ xblk  qh_  ju    nyyaa;      ,  xoi   wyo  bzu[2]/ dmi   yv    wmgja[3]    h_ xov   .
+冰雪三拼　 si    mtyzvv[2]   hhyz  gezk  mmdb  fffy;    gzrw        h_ ehse        ,  df_ xuv   qh_  ja    nyyi;       ,  xxek  wyv  bzu[2]/ dm[3] ykyp  wmgjuo      h_ xkwp  .
+
+[05-11]
+原文       生 活 虽 然 总 免 不 了 磕 磕 绊 绊 与  奔 波 辛 苦 ， 但 只 要 身 边 还 有 这 样 几 位  知 心 好 友 能   随 时 聚 在 一 起 聊 聊 天 喝 喝 酒 ， 日 子 便 有 了 无 穷 盼 头 与  欢 喜 滋 味 。
+冰雪健道（U357 21×21） eau   su    zmbl        kkbb        yg_ bmbd  xbkh  ,  dkyo     embp  hykyv       jsu[2] kxhFy       n[3] soi   jzyqv       llt_     hav⇧E    ,  rai   bpyq/    shqn  pjtqi yg_ hxxl  zlse  .
+冰雪弎拼（U357 21×21） erhy  sv    zmbl        kkbb        yg_ bmbd  xbkh  ,  dkyua    embp  hykyu       jlseu  kxhyiu      n[3] svv   jzyqa       llt_     hhjii    ,  rua   bpyq/    shqn  pjtqa yg_ hxxl  zlse  .
+冰雪简道（Overall-17 21×26） wnhm  sr_   zmbl        kkbb        yv_ bbea  xcku  ,  dfy[3]   wbu   hyfye       jiqwu  fxhye[3]    n[3] swa   jzyqe       llt_     hhjxoo   ,  rzo   bpyf/    quqq  potfi yv_ hqxi  ziqw  .
+冰雪散拼（Overall-17 21×26） wnhm  sr_   zmbl        kkbb        yv_ bjbm  xcku  ,  dfy[3]   wb[3] hyfyea      jiqwu  fxhyiu[2]   n[3] swe   jzyqa       llt_     hhjxii   ,  rza   bpyf/    quqq  potfa yv_ hqxi  ziqw  .
+冰雪键道　 ea    su    zmbl        kkbb        yl_ bnbl  xbkj  ,  dfyo     ebhyav      fv    jkwwu  fxhyov[2]   n[3] so    jzyq        llt_     hav⇧E    ,  rai   bmyd/    wjqy  pftdi yl_ htxk  zkww  .
+冰雪三拼　 ei    si    zmbl        kkbb        yl_ bnbl  xbkj  ,  dfyu     evv   hyfyu       jkwwu  fxhyvu      n[3] sii   jzyq        llt_     hhjvv    ,  rkzk  bmyd/    wjqy  pftdo yl_ htxk  zkww  .
+
+[05-12]
+原文       大 家 约 好 等  下 个 月 发 了 工 资 还 要 再 聚  ， 找 个 有 山 有 水 的 地 方 痛 痛 快 快 玩   上   一 整 天 ， 彻 底 把  积 压 的 烦 恼 全 抛 到  九 霄 云 外 去 。
+冰雪健道（U357 21×21） doo   ykhfa dRxgy        flgza       hvi   zkjgv  ,  kfgs  yeyei[2];      dov   ttkko       seykT[2]           ,  wsdl  bki jlyw[2]; foo   qrpf  df_ jxys        q  .
+冰雪弎拼（U357 21×21） dwjf  ykhfi dxgyaa       flgzo       hkyf  zkjgaa ,  kfgs  yeyei[3];      dia   ttkka       seykT[2]           ,  wsdl  bwu jlyw[2]; fjnf  qrpf  df_ jxys        q  .
+冰雪简道（Overall-17 21×26） dajk  yghsa dnu xgyg     jlgzoa      hhys  zhjvee ,  fgii  ywywa       ddjye    ttkk        q[3] w[3] yft[2]   ,  vduo  bai jiya[2]; jons  qtps  ds_ jxyqu       qv .
+冰雪散拼（Overall-17 21×26） dajk  yghsi dxgyua[3]    jlgzi       hhys  zhjvaa ,  fgua  ywywu       ddjya    ttkk        q[3] w[3] yft[2]   ,  vda   bau jiya[2]; jons  qtps  ds_ jxyqu       qv .
+冰雪键道　 doo   yhhza dRxgy        flgza       hvi   zhjlv  ,  fzge  yeyei;         dov   ttkk        weyqT              ,  jedk  bs_ jkys[2]; ffnz  qtpz  dz_ jxyw        q  .
+冰雪三拼　 dv    yhhzv dRxgy        flgza       hhyz  zhjlo  ,  fzge  yeyev[2];      dvo   ttkk        weyqT              ,  jedk  bs_ jkys[2]; ffnz  qtpz  dz_ jxyw        q  .
+
+[05-13]
+原文       生 活 虽 然 忙 碌 ， 但 只 要 心 怀 希 望 与  热 爱 ， 每 一 个 普 通 的 日 子 都 会 闪 闪 发 光 ， 散 发 出 迷 人 的 芬 芳 与  温 暖 。
+冰雪健道（U357 21×21） eau   su    mnlh  ,  dkyo     xhxso       yg_ ruo   ,  myg_     ptdrZ          di    eefg        ,  sfw_     mrdfF          yg_ smnx  .
+冰雪弎拼（U357 21×21） erhy  sv    mnlh  ,  dkyua    xhxsv       yg_ rsrk  ,  myg_     ptdrZ          dhhg  eefg        ,  sfw_     mrdfF          yg_ smnx  .
+冰雪简道（Overall-17 21×26） wnhm  sr_   mloe  ,  dfy[3]   xhxqoo      yv_ rexh  ,  myg_     pt;      rzo   dfhl  wwjg        ,  sjv_     mrd_     jjjy  yv_ qjnq  .
+冰雪散拼（Overall-17 21×26） wnhm  sr_   mylu  ,  dfy[3]   xchr  xiqy  yv_ rexh  ,  myg_     pt;      rza   dfhl  wwjg        ,  sjv_     mrd_     jjjy  yv_ qjnq  .
+冰雪键道　 ea    su    mplj  ,  dfyo     xhxwo       yl_ rxi   ,  myg_     ptdrZ          div   eefg        ,  sfj_     mrdfF          yl_ woi   .
+冰雪三拼　 ei    si    mplj  ,  dfyu     xhxwiv      yl_ rexh  ,  myg_     ptdrZ          ddhb  eefg        ,  sfj_     mrdfF          yl_ wuv   .
+
+====================================================================================================
+【篇 06】民事法律行为效力与违约赔偿责任解析（法律公文·500 汉字）
+冰雪健道（U357 21×21）：按键 736；均码 1.4720；Space 29；1字 12.6%（覆盖 4.4%）；2字 39.1%（覆盖 27.2%）；3字 9.2%（覆盖 9.6%）；4字 28.7%（覆盖 40.0%）；5字+ 10.3%（覆盖 18.8%）。
+冰雪弎拼（U357 21×21）：按键 759；均码 1.5180；Space 28；1字 10.7%（覆盖 3.6%）；2字 38.1%（覆盖 25.6%）；3字 11.3%（覆盖 11.4%）；4字 28.6%（覆盖 38.4%）；5字+ 11.3%（覆盖 21.0%）。
+冰雪简道（Overall-17 21×26）：按键 773；均码 1.5460；Space 33；1字 10.4%（覆盖 3.8%）；2字 41.2%（覆盖 30.0%）；3字 15.4%（覆盖 16.8%）；4字 29.1%（覆盖 42.4%）；5字+ 3.8%（覆盖 7.0%）。
+冰雪散拼（Overall-17 21×26）：按键 778；均码 1.5560；Space 37；1字 11.4%（覆盖 4.2%）；2字 42.7%（覆盖 31.6%）；3字 14.1%（覆盖 15.6%）；4字 28.1%（覆盖 41.6%）；5字+ 3.8%（覆盖 7.0%）。
+冰雪键道：按键 753；均码 1.5060；Space 27；1字 11.4%（覆盖 4.0%）；2字 40.0%（覆盖 28.0%）；3字 10.9%（覆盖 11.4%）；4字 28.6%（覆盖 40.0%）；5字+ 9.1%（覆盖 16.6%）。
+冰雪三拼：按键 761；均码 1.5220；Space 26；1字 10.6%（覆盖 3.6%）；2字 38.2%（覆盖 26.0%）；3字 11.8%（覆盖 12.0%）；4字 29.4%（覆盖 40.0%）；5字+ 10.0%（覆盖 18.4%）。
+----------------------------------------------------------------------------------------------------
+[06-01]
+原文       依 照 民 法 典 相 关 规 定 ， 民 事 主 体 从 事 民 事 活 动 应 当 遵 循 自 愿 、 公 平 、 诚 信 原 则 。
+冰雪健道（U357 21×21） ylkf  mfd_     xggd        ,  mektv       cv    mehd        ydzx        zlyru \  gppt  \  wxyz        .
+冰雪弎拼（U357 21×21） ylkf  mfd_     xggd        ,  mekta       cea   mehd        ytdn  zxzyv       \  gppt  \  wxyz        .
+冰雪简道（Overall-17 21×26） yifs  mjd_     xggd        ,  mwfti       cw_   mwhd        yd_   zxzye       \  gkpr  \  vxyz        .
+冰雪散拼（Overall-17 21×26） yifs  mjd_     xggd        ,  mwfte       cw_   mwhd        ydzx        ziyta \  gkpr  \  vxyz        .
+冰雪键道　 ykfz  mfda     xggd        ,  meqt        cvi   mehd        ydzx        zkytu \  gypg  \  jxyzi       .
+冰雪三拼　 ykfz  mfdu     xggd        ,  meqt        cyek  mehd        ygdp  zxzyi       \  gypg  \  jxyzo       .
+
+[06-02]
+原文       民 事 行 为 不 得 违 反 法 律 行 政 法 规 的 强 制 性 规 定 ， 不 得 违 背 公 序 良 俗 与  基 本 社 会 道 德 。
+冰雪健道（U357 21×21） mexs        buu   sffl        xkfg;          qkxgD          ,  buu   sbgxLS_           yg_ jlbm  ehdd        .
+冰雪弎拼（U357 21×21） mexs        bva   sffl        xkfg;          qkxgD          ,  bva   sbgxLS_           yg_ jui   ehdd        .
+冰雪简道（Overall-17 21×26） mwxq        bude  qjjl        xfjg[2];       qfx[3]   gd    ,  bude  qwbw  gxls        yv_ jibj  whdd        .
+冰雪散拼（Overall-17 21×26） mwxq        bude  qjjl        xfjg[2];       qfx[3]   gd    ,  bude  qwbw  gxls        yv_ jibj  whdd        .
+冰雪键道　 mexw        bjde  wffl        xqfg;          qfxgD          ,  bjde  wwbw  gxls        yl_ jkbn  ehdd        .
+冰雪三拼　 mexw        bjde  wffl        xqfg;          qfxgD          ,  bjde  wwbw  gxls        yl_ juv   ehdd        .
+
+[06-03]
+原文       民 事 法 律 行 为 自  成 立 时  生 效 ， 但  法 律 另 有 规 定 或 者 当 事 人 另 有 特 别 约 定 的 除 外 。
+冰雪健道（U357 21×21） mefl        xsu   zl_ wleo      erxc  ,  dj_ fl_   lygd        hu    der_     ltyq  tbydo[3];      whsk  .
+冰雪弎拼（U357 21×21） mefl        xvv   zl_ wleavv    erxc  ,  dj_ fl_   lygd        hu    der_     ltyq  tbyKd;         whsk  .
+冰雪简道（Overall-17 21×26） mcwi  jlxq        ziu vlwioe    wnxd  ,  do_ jalv  lygd        hmfe  dwr_     lryf  tbydo;         vuqh  .
+冰雪散拼（Overall-17 21×26） mcwi  jlxq        zia vlwiae[3] wnxd  ,  do_ jalv  lygd        hmfe  dwr_     lryf  tbyda[3];      vuqh  .
+冰雪键道　 mbek  flxw        zku jleoo     erxc  ,  df_ fsll  lygd        huo   der_     lgyd  tbydo[3];      jjwh  .
+冰雪三拼　 mbek  flxw        zko jleoii    erxc  ,  df_ fsll  lygd        huo   der_     lgyd  tbyHd;         jjwh  .
+
+[06-04]
+原文       无  民 事 行 为 能 力 人 实 施 的 民 事 法 律 行 为 一 律 无 效 ， 依 法 由  其  法 定 代 理 人 代 理 实 施 。
+冰雪健道（U357 21×21） mh_ mexs        na    r_ eed_     mefl        xsu   yllg  shxc  ,  ylfw  yfi jlv fddlR          dkll  elelo .
+冰雪弎拼（U357 21×21） smexSNLR_                eed_     mefl        xvv   yllg  shxc  ,  ylfw  yqv qlv fddlR          dkll  elelv .
+冰雪简道（Overall-17 21×26） qu_ mwxq        nlrjaa   wwd_     mcwi  jlxq        yilv  quxd  ,  yji   yfi qie jddle       r_ dhli  wiwio .
+冰雪散拼（Overall-17 21×26） qu_ mcwi  xqnl        r_ wwd_     mcwi  jlxq        yilv  quxd  ,  yji   yfe qie jddlu       r_ dhli  wiwie .
+冰雪键道　 wj_ mexw        na    r_ eed_     mbek  flxw        ykll  wjxc  ,  ykfs  ydi qkv fddlR          dhlk  ekeko .
+冰雪三拼　 wmexWNLR_                eed_     mbek  flxw        ykll  wjxc  ,  ykfs  ydi qki fddlR          dhlk  ekeki .
+
+[06-05]
+原文       限 制 民 事 行 为 能 力 人 实 施 的 纯 获 利 益 或 者 与 其 年 龄 智 力 相 适 应 的 民 事 法 律 行 为 依 法 有 效 。
+冰雪健道（U357 21×21） xpkl  mexs        na    r_ eed_     whlyi       hu    ygql  nplt  klllu xey;        mefl        xsu   yfyxao      .
+冰雪弎拼（U357 21×21） xpkl  mbel  xsnl        r_ eed_     whlya       hu    ygql  nplt  kllla xey;        mefl        xvv   yfyxuu      .
+冰雪简道（Overall-17 21×26） xpfi  mwxq        nlrjaa   wwd_     vhlyo       hmfe  yvqi  nplr  filiu xwy;        mcwi  jlxq        yji   yfxd  .
+冰雪散拼（Overall-17 21×26） xpfi  mcwi  xqnl        r_ wwd_     vhlyea      hmfe  yvqi  nplr  filia xwy;        mcwi  jlxq        yjyxiu      .
+冰雪键道　 xmfk  mexw        na    r_ eed_     jhlyio      huo   ylqk  nmlg  fklku xey;        mbek  flxw        yfyxao      .
+冰雪三拼　 xmfk  mbek  xwnl        r_ eed_     jhlyo       huo   ylqk  nmlg  fklko xey;        mbek  flxw        yfyxuu[2]   .
+
+[06-06]
+原文       在 合 同 订 立 与  履 行 过 程 中   ， 当 事 人 应 当 按 照 约 定 全 面 履 行 自 己 的 合 同 义 务 。
+冰雪健道（U357 21×21） z_ htdlio      yg_ lxgwu       k[3] ,  der_     ytdn  rkyd        qmlx        za;      htysiu      .
+冰雪弎拼（U357 21×21） z_ htdTl       yg_ lgxtu gwk        ,  der_     ytdn  rkyd        qmlx        zu;      htysva      .
+冰雪简道（Overall-17 21×26） z_ htdlo       yv_ lvxra gvf        ,  dwr_     yd_   xfyd        qmlxu       ziji;    htyq        .
+冰雪散拼（Overall-17 21×26） z_ htdlea      yv_ lvxru gvf        ,  dwr_     yd_   xfyd        qmlxe       ziji;    htyq        .
+冰雪键道　 z_ htdli       yl_ llxga gjf        ,  der_     ygdp  xfyd        qmlx        za;      htyw        .
+冰雪三拼　 z_ htdli       yl_ llxgu gjf        ,  der_     ygdp  xfyd        qmlx        zu;      htyw        .
+
+[06-07]
+原文       恪 守 信 用 原 则 ， 履 行 及 时 通 知 、 协 助 配 合 与  保 密 义 务 等  随 附 义 务 。
+冰雪健道（U357 21×21） kseqo xyi   yzv   ,  lgxta jetkou      \  xkph        yg_ bmysou      dr_ sfys        .
+冰雪弎拼（U357 21×21） kseqa xbyp  yzv   ,  lgxtu jetkvi      \  xkph        yg_ bmysa       dr_ sfys        .
+冰雪简道（Overall-17 21×26） kewf  xcyk  yz    ,  lvxra jwtfuo[3]   \  xfphi       yv_ bmyqu       dnu sjyq        .
+冰雪散拼（Overall-17 21×26） kewf  xcyk  yz    ,  lvxru jwtfei[3]   \  xfphe       yv_ bmyqua      dn_ sjyq        .
+冰雪键道　 keed  xbyy  ytze  ,  llxga joi   tuv   \  xqph        yl_ bmywo       dr_ sfyw        .
+冰雪三拼　 keed  xbyy  ytze  ,  llxgu jetfi[3]    \  xqph        yl_ bmywo       dr_ sfyw        .
+
+[06-08]
+原文       当 事 人 一 方 不 履 行 合 同 义 务 或 者 履 行 合 同 义 务 不 符 合 约 定 的 ， 应 当 承 担 继 续 履 行 的 责 任 。
+冰雪健道（U357 21×21） deryF          blxhT          ylsh  hu    lxht        ylsh  bfh_     ykdt;    ,  ytdn  wrdj  jxlx;          zi    .
+冰雪弎拼（U357 21×21） deryF          blxhT          ylsh  hu    lxht        ylsh  bfh_     ykdt;    ,  ytdn  wrdj  jxlx        dzrvo    .
+冰雪简道（Overall-17 21×26） dwr_     yijye blx_     htyq        hmfe  lxht        yqo   bjh_     yda[2];  ,  yd_   vd_   jxlx;          zr    .
+冰雪散拼（Overall-17 21×26） dwr_     yijyi blx_     htyq        hmfe  lxht        yiqu  bjh_     ygdr;    ,  yd_   vd_   jxlx;          zr    .
+冰雪键道　 deryF          blx_     htyw        huo   lxht        ykwj  bfh_     yhdg;    ,  ygdp  jrdf  jxlx;          ziu   .
+冰雪三拼　 deryF          blx_     htyw        huo   lxht        ykwj  bfh_     yhdg;    ,  ygdp  jrdf  jxlx        dzria    .
+
+[06-09]
+原文       采 取 必 要 补 救 措 施 或 者 赔 偿 损 失 等  违 约 责 任 ， 切 实 维 护 交 易 安 全 与  守 约 方 合 法 权 益 。
+冰雪健道（U357 21×21） cvi   byo   bjce        hu    pwse        dr_ syzr        ,  qesho       jyrqo       yg_ eyfao    hfqy        .
+冰雪弎拼（U357 21×21） ckqg  blyf  bjce        hu    pwse        dr_ syzr        ,  qeshvv      jCyrq       yg_ eyfiu    hfqy        .
+冰雪简道（Overall-17 21×26） chqv  biys  bjcw        hmfe  pvsw        dnu qyzr        ,  qwqhio      jyxqio[2]   yv_ wyjya    hjqy        .
+冰雪散拼（Overall-17 21×26） chqv  biys  bjcw        hmfe  pvsw        dn_ qyzr        ,  qwqha       jdyi  xoqt  yv_ wyjyiu   hjqy        .
+冰雪键道　 cq_   byo   bjce        huo   pjse        dr_ wyzr        ,  qewhoi      jyxqoi      yl_ eyfaoo   hfqy        .
+冰雪三拼　 cq_   bkyz  bjce        huo   pjse        dr_ wyzr        ,  qewhii      jCyxq       yl_ eyfvu    hfqy        .
+
+[06-10]
+原文       损 失 赔 偿 额 应 当 相 当 于 因  违 约 所 造 成 的 实 际 损 失 ， 包 括 合 同 履 行 后  本  可 以 获 得 的 财 产 利 益 。
+冰雪健道（U357 21×21） sepwR          ytdn  xdy_     yb_ seyk  szw;        ejse        ,  bfky  htlxi       hq_ bm_ kyhd;          cwlyo       .
+冰雪弎拼（U357 21×21） sepwR          ytdn  xdy_     yb_ seyk  szw;        ejse        ,  bfky  htlxv       hq_ bm_ kyhd;          cwlyu       .
+冰雪简道（Overall-17 21×26） sw_   pvxe     yd_   xdy_     yc_ qwyg  szv;        wjsw        ,  bk_   htlx        hf_ bj_ kyhd;          cvlyo       .
+冰雪散拼（Overall-17 21×26） sw_   pvxe     yd_   xdy_     yc_ qwyg  szv;        wjsw        ,  bk_   htlx        hf_ bj_ kyhd;          cvlye       .
+冰雪键道　 sepjX          ygdp  xdy_     yb_ wwyh  szj;        ejse        ,  bzkl  htlx        hd_ bn_ kyhd;          cjlyo       .
+冰雪三拼　 sepjX          ygdp  xdy_     yb_ wwyh  szj;        ejse        ,  bzkl  htlx        hd_ bn_ kyhd;          cjlyu       .
+
+[06-11]
+原文       但  不 得 超 过 违 约 一 方 订 立 合 同 时  预  见 到 或 者 应 当 预 见 到 的 可 能 因 违 约 导 致 的 潜 在 财 产 损 失 。
+冰雪健道（U357 21×21） dj_ bdwg        seyk  ylfnv dlht        el_ yga jva   hu    yTdyj       df;   kny_     seyk  dfkl;    qpzk  cwse        .
+冰雪弎拼（U357 21×21） dj_ bdwg        seyk  ylfni dlht        el_ yjdaaa[3] hu    ydyjia      df;   kny_     seyk  dfkl;    qpzk  cwse        .
+冰雪简道（Overall-17 21×26） do_ bdvg        qwyg  yijye dlht        wi_ yjdsia    hmfe  ydyjii[3]   ds;   kny_     qwyg  dsfi;    qpzh  cvsw        .
+冰雪散拼（Overall-17 21×26） do_ bdvg        qwyg  yijyi dlht        wi_ yjdsaa    hmfe  yd_   yjdsaa;     kny_     qwyg  dsfi;    qpzh  cvsw        .
+冰雪键道　 df_ bdjg        wwyh  ykfpv dlht        ek_ yjdZiv    huo   yGdyj       dz;   kny_     wwyh  dzfk;    qmzh  cjse        .
+冰雪三拼　 df_ bdjg        wwyh  ykfpv dlht        ek_ yjdZoo    huo   ydyjvo      dz;   kny_     wwyh  dzfk;    qmzh  cjse        .
+
+[06-12]
+原文       如 因 不 可 抗 力 导 致 合 同 不 能 履 行 的 ， 根 据 不 可 抗 力 的 实 际 影 响 范 围 ， 依 法 部 分 或 者 全 部 免 除 违 约 方 的 民 事 赔 偿 责 任 。
+冰雪健道（U357 21×21） rhyb  bkklv       dfkl  htbnLX;              ,  giu   bkklv;         eai   yxfsoi      ,  ylfw  buo   hu    qrbh  mpwh  syfa;       mepw        zi    .
+冰雪弎拼（U357 21×21） rhyb  bkklu       dfkl  htbnLX;              ,  gmjg  bkklu;         eljl  yxfsua      ,  ylfw  bhfm  hu    qrbh  mpwh  syfi[2];    mepwZR            .
+冰雪简道（Overall-17 21×26） ruyc  bkkl        dsfi  hetk  bnlx;          ,  gjjv  bkkl;          wiji  yxjqio      ,  yji   bujj  hmfe  qtbu  mpvu  qyjya;      mwpv        zr    .
+冰雪散拼（Overall-17 21×26） ruyc  bkkl        dsfi  hetk  bnlx;          ,  gjjv  bkkl;          wiji  yxu   joqw  ,  yji   bujj  hmfe  qtbu  mvu   qyjyi;      mwpv        zr    .
+冰雪键道　 rjyb  bkkl        dzfk  htbnLX;              ,  giu   bkkl;          ekjk  yxfwoi[3]   ,  ykfs  buo   huo   qtbj  mmjj  wyfa;       mepj        ziu   .
+冰雪三拼　 rjyb  bkkl        dzfk  htbnLX;              ,  gnjl  bkkl;          ekjk  yxfwu       ,  ykfs  bjfn  huo   qtbj  mmjj  wyfvi;      mepjZR            .
+
+[06-13]
+原文       当 事 人 一 方 因  不 可 抗 力 不 能 履 行 合 同 的 ， 应 当 及 时 通 知 对 方 以 减 轻 可 能 给 对 方 造 成 的 损 失 ， 并 应 当 在 合 理 期 限 内 提 供 合 法 有 效 证 明 。
+冰雪健道（U357 21×21） deryF          ybkkL[2]        ba    lxht;          ,  yTdje       tkdfu       yjqo     kao   gdf_     zwdsE          ,  bydo     z_ hlqxN          tlgp  hfyxa       krmt  .
+冰雪弎拼（U357 21×21） deryF          ybkkL[2]        bnlxHT;              ,  ydjei       tkdfi[3]    yjqu     kv    gdf_     zwdsE          ,  bydia    z_ hlqxN          tiv   hfyxu       krmt  .
+冰雪简道（Overall-17 21×26） dwr_     yijye yc_ bkkl        bunn  lxht;          ,  ydjwoi[2]   tfdjou      yjqr     kenn  gdj[3]   zv;      sw    ,  bydy     zhli     qxnw     tgi   hjyxoa      fnmr  .
+冰雪散拼（Overall-17 21×26） dwr_     yijyi yc_ bkkl        bunn  lxht;          ,  ydjwie[2]   tfdji       yjqr     kenn  gdj[3]   zv;      sw    ,  bydy     zhli     qxnw     tge   hjyxeu      fnmr  .
+冰雪键道　 deryF          ybkkL           ba    lxht;          ,  ydjeio[2]   tfdBf       yjqov    kao   gdf_     zjdsE          ,  bydo     z_ hlqxN          tkgy  hfyxa       qrmg  .
+冰雪三拼　 deryF          ybkkL           bi    lxht;          ,  ydjevi      tfdBf       yjqu     kiu   gdf_     zjdsE          ,  bydvo    z_ hlqxN          tvi   hfyxu       qrmg  .
+
+[06-14]
+原文       平 衡 双 方 权 利 义 务 ， 充 分 彰 显 法 治 公 平 正 义 精 神 。
+冰雪健道（U357 21×21） puu   efqlYS            ,  wfkxu       fwkl  gpky        joa   .
+冰雪弎拼（U357 21×21） pthr  efqlYS            ,  wpfm  kxfku       gpky        jtem  .
+冰雪简道（Overall-17 21×26） prhn  wpjy  qlyq        ,  vkjj  fxjfao      gpfy        jrwj  .
+冰雪散拼（Overall-17 21×26） prhn  wpjy  qlyq        ,  vkjj  fxjfi       gpfy        jrwj  .
+冰雪键道　 puu   efqlYW            ,  wuo   qPxff       gpqy        je[2] .
+冰雪三拼　 pghr  efqlYW            ,  wyfn  qxffuu      gpqy        jei   .
+
+====================================================================================================
+【篇 07】古丝绸之路上的文明交融与商贸史话（历史社科·500 汉字）
+冰雪健道（U357 21×21）：按键 835；均码 1.6700；Space 14；1字 10.2%（覆盖 3.8%）；2字 46.8%（覆盖 34.8%）；3字 15.6%（覆盖 17.4%）；4字 19.4%（覆盖 28.8%）；5字+ 8.1%（覆盖 15.2%）。
+冰雪弎拼（U357 21×21）：按键 840；均码 1.6800；Space 14；1字 9.7%（覆盖 3.6%）；2字 47.8%（覆盖 35.6%）；3字 15.1%（覆盖 16.8%）；4字 19.4%（覆盖 28.8%）；5字+ 8.1%（覆盖 15.2%）。
+冰雪简道（Overall-17 21×26）：按键 862；均码 1.7240；Space 15；1字 9.9%（覆盖 3.8%）；2字 49.0%（覆盖 37.6%）；3字 17.2%（覆盖 19.8%）；4字 18.8%（覆盖 28.8%）；5字+ 5.2%（覆盖 10.0%）。
+冰雪散拼（Overall-17 21×26）：按键 873；均码 1.7460；Space 17；1字 11.3%（覆盖 4.4%）；2字 50.3%（覆盖 39.2%）；3字 15.4%（覆盖 18.0%）；4字 16.9%（覆盖 26.4%）；5字+ 6.2%（覆盖 12.0%）。
+冰雪键道：按键 838；均码 1.6760；Space 18；1字 10.8%（覆盖 4.0%）；2字 45.7%（覆盖 34.0%）；3字 16.1%（覆盖 18.0%）；4字 19.4%（覆盖 28.8%）；5字+ 8.1%（覆盖 15.2%）。
+冰雪三拼：按键 834；均码 1.6680；Space 18；1字 11.2%（覆盖 4.2%）；2字 46.0%（覆盖 34.4%）；3字 15.5%（覆盖 17.4%）；4字 19.3%（覆盖 28.8%）；5字+ 8.0%（覆盖 15.2%）。
+----------------------------------------------------------------------------------------------------
+[07-01]
+原文       在 欧 亚 大 陆 辽 阔 的 地 理 空 间 上 ， 古 老 的 丝 绸 之 路 宛 如 一 条 沟 通  东  西 方 文 明 的 长 虹 。
+冰雪健道（U357 21×21） z_ rydl        lcky;    dLlkj       en ,  ghlf;    swkl        sjrh  ytgua    tpa dxfsM;             wnhp  .
+冰雪弎拼（U357 21×21） z_ rydl        lcky;    dLlkj       en ,  ghlf;    swkl        sjrh  yltc  gii    dxfsM;             wnhp  .
+冰雪简道（Overall-17 21×26） z_ xydla       ldkm;    dlkjoe[2]   wy ,  guls;    svfl        qoru  yitd  gftk   dxjy      qjmr;    vyhk  .
+冰雪散拼（Overall-17 21×26） z_ xydli       ldkm;    dili  kjwyii   ,  guls;    svfl        qoru  yitd  gftk   dki xjqm[2];       vyhk  .
+冰雪键道　 z_ xydl        lckl;    dlkjv[3]    ep ,  gjlz;    swfl        wfrj  ytgua    tya dxfwM;             jphy  .
+冰雪三拼　 z_ xydl        lckl;    dlkjuv      ep ,  gjlz;    swfl        wfrj  yktc  gdty   dxfwM;             jphy  .
+
+[07-02]
+原文       千 百 年 来 ， 无 数 商 队 牵 引 着 骆 驼 跋 涉 在 广 袤 的 戈 壁 沙 漠 与  高 耸 的 葱 岭 雪 峰 之 间 。
+冰雪健道（U357 21×21） qbnl        ,  sheh  endg  qyka     lyty  bwes  z_ gtmf;    gbem        yg_ gfsp;    cplti xkfr  kljp  .
+冰雪弎拼（U357 21×21） qbnl        ,  sheh  endg  qyku[3]  lyty  bwes  z_ gtmf;    gbem        yg_ gfsp;    cplti xkfr  kljp  .
+冰雪简道（Overall-17 21×26） qbnl        ,  quwu  wydlo qyfea    lmtm  bawe  z_ gpms;    gbwma       yv_ gssk;    cklri xgjn  fijp  .
+冰雪散拼（Overall-17 21×26） qbnl        ,  quwu  wydli qyfeui   lmtm  bawe  z_ gpms;    gbwmi       yv_ gssk;    cklri xgjn  fijp  .
+冰雪键道　 qbnl        ,  wjej  epdbo qyqa     lltl  bsee  z_ gmmz;    gbem        yl_ gzsy;    cylgi xhfr  fkjm  .
+冰雪三拼　 qbnl        ,  wjej  epdbv qyfuv    lltl  bsee  z_ gmmz;    gbem        yl_ gzsy;    cylgv xhfr  fvv   .
+
+[07-03]
+原文       将   东 方 的 精 美 丝 绸 、 温 润 瓷 器 和 清 香   茶 叶 源 源 不 断 地  运 往 中 亚 、 西 亚 乃 至 欧 洲 大 陆 各 地 。
+冰雪健道（U357 21×21） j[3] dpfn;    jmo   slwqa \  smrb  clql  h_ qtxja   wwys  yybdD           yesn  kpyw  \  xlywv nkkl  rqkq  dlgd[3]     .
+冰雪弎拼（U357 21×21） j[3] dpfn;    jmu   slwqi \  smrb  clql  h_ qtxji   wwys  yybdD           yesn  kpyw  \  xlywi nkkl  rqkq  dlgda       .
+冰雪简道（Overall-17 21×26） j[3] dkjy;    jrmw  sivfa \  qjrt  ciqi  h_ qrxla   vaye  yybdo       dee ybqy  fkya  \  xiyae nhfi  xfdl        gdu   .
+冰雪散拼（Overall-17 21×26） j[3] dkjy;    jrmw  sivfi \  qjrt  ciqi  h_ qrxli   vaye  yybde       deo ybqy  fkya  \  xiyai nhfi  xfdl        gdaa  .
+冰雪键道　 j[3] dyfp;    jgmw  skwda \  wnrw  cqo   h_ qgxx[3] wsye  yybdD           ywwp  fyysi \  xkysv nhfk  xfdl        gedk  .
+冰雪三拼　 j[3] dyfp;    jgmw  skwdv \  wnrw  ckqk  h_ qgxxv   wsye  yybdD           ywwp  fyysv \  xkysv nhfk  xfdl        gedk  .
+
+[07-04]
+原文       同 时 也 将   西 方 的 葡 萄 、 石 榴 、 苜 蓿  以 及 玻 璃 器 皿 等  异 域    物 产 带  入  中 原 腹 地 。
+冰雪健道（U357 21×21） tey_     j[3] xlfn;    phtf  \  elldv \  mhxgii yu    blqm        dr_ ylyga[3] shwj  dkrhv   kyfdvv      .
+冰雪弎拼（U357 21×21） tey_     j[3] xlfn;    phtf  \  elldv \  mxo    yv    blqm        dr_ ylygaa   shwj  dkrhaa  kyfdv[3]    .
+冰雪简道（Overall-17 21×26） twy_     j[3] xijy;    pti   \  wilxe \  muxvi  yj_   blqm        dnu yiyva[3] quvo  dhrue   fyjdee[3]   .
+冰雪散拼（Overall-17 21×26） twy_     j[3] xijy;    ptee  \  wilxe \  muxva  yj_   blqm        dn_ yiyvaa   quvo  dhrua   fkyt  judi  .
+冰雪键道　 tey_     j[3] xkfp;    pti   \  eklqv \  mjxlii yj_   blqmv       dr_ ykyla[3] wjjfu dhrjvu  fyfdvv      .
+冰雪三拼　 tey_     j[3] xkfp;    pti   \  eklqi \  mjxloa yj_   blqmi       dr_ ykyloo   wjjfo dho rjo fyfJdio     .
+
+[07-05]
+原文       这 不 仅 是 一 条 商 品 互 通 有 无 的 贸 易 通 道 ， 更 是 一 条 思 想 文 化 与 科 学 技 术 交 流 的 大 动 脉 。
+冰雪健道（U357 21×21） kbjv     eytvuo   epo   htysa;         mytdo       ,  goi   yltc  sxsh        ykx[3]   jejl;          ddm      .
+冰雪弎拼（U357 21×21） kbja     eytCi    eui   htysi[2];      mytdai      ,  grel  yltc  sxsh        ykx[3]   jejl;          ddm      .
+冰雪简道（Overall-17 21×26） fbjc     wytdeo   wypc  htyq[2];       mytdo       ,  gnwi  yitd  sxqh        ykxg     jwjl;          ddm      .
+冰雪散拼（Overall-17 21×26） fbjc     wytdia   wypc  htyq[2];       mytdai      ,  gnwi  yitd  sxqh        ykxg     jwjl;          ddm      .
+冰雪键道　 qbjv     eytvuo   eppb  htyw[2];       mytdo       ,  goi   yktc  sxwh        ykxu     jejl;          ddm      .
+冰雪三拼　 qbjo     eytCv    eppb  htyw[2];       mytdov      ,  grek  yktc  sxwh        ykxv     jejl;          ddm      .
+
+[07-06]
+原文       造 纸 术 、 印 刷 术 、 指 南 针 在 此 向 西 广 泛 传 播 ， 极 大 地  推 动 了 世 界 文 明 演 进 的 历 史 步 伐 。
+冰雪健道（U357 21×21） zkeavu   \  yeeav    \  knku     zcv   xjxlu gfwba       ,  jddvvv    tdlv     eia   sMmyj;         lia   bhfw  .
+冰雪弎拼（U357 21×21） zFkeu    \  yBee     \  knkv     zcu   xjxla gfwba       ,  jddavo    tdla     eljz  smyjvu;        lua   bhfw  .
+冰雪简道（Overall-17 21×26） zfwua    \  ywwua    \  fnf_     zce   xlxiu gjvb        ,  jddeee    tdle     wjqmo       yjae[3]; liwi  buja  .
+冰雪散拼（Overall-17 21×26） zfwuu    \  ywwui    \  fnf_     zca   xlxia gjvb        ,  jddeae[3] tdle     wijz  qmyjeu;        liwi  buja  .
+冰雪键道　 zfeav    \  yeeav    \  fnq_     zc[3] xxxku gfwb        ,  jddvvv    tdlv     eia   wmGyj;         lkek  bjfs  .
+冰雪三拼　 zfeuo    \  yBee     \  fnq_     zcu   xxxko gfwb        ,  jddoia    tdlo     eoo   wmyjiu;        luo   bjfs  .
+
+[07-07]
+原文       而  佛 教 艺 术 、 天 文 学 、 数 学 和 医 药 知 识 也   在 此 与 中 华 本 土 文 化 相 互 激 荡 深 度 融 合 。
+冰雪健道（U357 21×21） nrv fjyeu       \  tsx      \  ehxk  h_ yykei[3]    y[3] zcv   ykhi     btsh[3]     xhjdv       edrh        .
+冰雪弎拼（U357 21×21） nrv fjyea       \  tsx      \  ehxk  h_ yyFkea      y[3] zcu   ykhi     btsh[3]     xhjda       edrh        .
+冰雪简道（Overall-17 21×26） nne jjyweu      \  tqxg     \  wuxg  h_ yyfwoi[2]   y[3] zce   yfh_     btqh        xlhu  jidy  wdrh        .
+冰雪散拼（Overall-17 21×26） nne jjywea      \  tqxg     \  wuxg  h_ yiys  fwie  y[3] zca   yfh_     btqh        xlhu  jidy  wdrh        .
+冰雪键道　 x_  fjyeuv      \  twx      \  ejxh  h_ yyfeio[3]   y[3] zc[3] yfhi     btwh        xhjdv       edrh        .
+冰雪三拼　 x_  fjCye       \  twx      \  ejxh  h_ yyZfeo      y[3] zcu   yfhv     btwh        xhjdov      edrh        .
+
+[07-08]
+原文       催 生 出 敦 煌 莫 高 窟 那 般 绚 丽 璀 璨 的 艺 术 瑰 宝 与  举 世 闻 名 的 文 化 奇 迹 。
+冰雪健道（U357 21×21） cewuai   dhmgK          nwbj  xlcc[2];       yegbv       yg_ jesm[2];       smhc  qljl  .
+冰雪弎拼（U357 21×21） cewii    dhmgK          nwbj  xlcc[2];       yegba       yg_ jesm[2];       smhc  qljl  .
+冰雪简道（Overall-17 21×26） cwvuu    dthp  mgku     nabo  xlcc[2];       ywgb[3]     yv_ jwqmu[2];      qjhx  qiji  .
+冰雪散拼（Overall-17 21×26） cwvu[3]  dthp  mgku     nabo  xlcc[2];       ywgba       yv_ jwqmu;         qjhx  qiji  .
+冰雪键道　 cBeju    dhmgK          nsbf  xlcc[2];       yegbv       yl_ jewmv[3];      wnhq  qkjk  .
+冰雪三拼　 cejvvv   dhmgK          nsbf  xlcc[2];       yegbo       yl_ jewmo;         woi   qkjk  .
+
+[07-09]
+原文       历 史 充 分 表 明 ， 不 同 文 明 之 间 唯 有 交 流 互 鉴 才 能 历 久 弥 新 ， 封 闭 自 守 终  将 导 致 文 明 停 滞 。
+冰雪健道（U357 21×21） lia   wfbmu       ,  bi    sMmkjo      seyq  jlhjai      cao   ljmx        ,  frbl  zlequ kpjja  dfkl  smmt  ttkli .
+冰雪弎拼（U357 21×21） lua   wfbma       ,  bv    sMmkjv      seyq  jlhjv[3]    cv    ljmx        ,  frbl  zleqa kpjji  dfkl  smmt  ttklv .
+冰雪简道（Overall-17 21×26） liwi  vjbm[3]     ,  btqmoi      fijp  qwyf  jlhji       chnn  ljmx        ,  jnbi  ziwfu fkjla  dsfi  qjmr  trfii .
+冰雪散拼（Overall-17 21×26） liwi  vjbmi       ,  btqmae      fijp  qwyf  jlhj[3]     chnn  ljmx        ,  jnbi  ziwfa fkjli  dsfi  qjmr  trfie .
+冰雪键道　 lkek  wfbm        ,  btwmi       fkjm  wwyd  jlhja       cao   ljmx        ,  frbk  zkedu fya jdfavo   wm[3] tgfki .
+冰雪三拼　 luo   wfbm        ,  btwmi       fvv   wwyd  jlhji       ci    ljmx        ,  frbk  zkedo fyjxv  dzfk  wmi   tgfki .
+
+[07-10]
+原文       只 有 包 容 开 放 、 互 利 共 赢 的 商 贸 交 往 与  文 化 互 动 ， 方 能 让   人 类 文 明 的 百 花 园 始 终 生 机 勃 勃 ， 绽 放 出 跨 越 时 空 的 恒 久 光 彩 与  无 穷 魅 力 。
+冰雪健道（U357 21×21） klyq  brkf        \  hlgyu;         enmf  jcsn  yg_ shhdiv      ,  fnnr  r[3] rlsm[2];       bhyii    elkp  ejbb        ,  kfwoa    kyekvo;        hrjd  gtck  yg_ sqmlo       .
+冰雪弎拼（U357 21×21） klyq  brkf        \  hlgya[2];      enmf  jsu   yg_ shhdaa      ,  fnnr  r[3] rlsm[2];       bhyiu    elkp  ejbb        ,  kfwaa    kyekav;        hrjd  gtck  yg_ sqmlv       .
+冰雪简道（Overall-17 21×26） fiyf  brkj        \  hlgyou;        wyms  jdqy  yv_ qjhx  hde   ,  jynn  r[2] rlqm;          bhyti    wifk  wjbb        ,  fjvuoa   kywk;          hnjx  gciu  yv_ qqmlao      .
+冰雪散拼（Overall-17 21×26） fiyf  brkj        \  hlgya[2];      wyms  jdqy  yv_ qhhdea      ,  jynn  r[2] rlqm;          bhyti    wifk  wjbb        ,  fjvuaa   kywk;          hnjx  gciu  yv_ qqmlea      .
+冰雪键道　 fvu   brkf        \  hlgyu;         epmz  jcwp  yl_ whhJdi      ,  fpnr  r[2] rlwm;          bhyii    ekfy  ejbb        ,  qfjoaa   kyekv[2];      hrjq  gmch  yl_ wJqml       .
+冰雪三拼　 fu    brkf        \  hlgyo[2];      epmz  jcwp  yl_ whhdoo      ,  fpnr  r[2] rlwm;          bhyvu    ekfy  ejbb        ,  qfPjo    kyeko;         hrjq  gcu   yl_ wqmli       .
+
+[07-11]
+原文       千 载 岁 月 的 沧 桑 洗 礼 未 曾 磨 灭 古  道   上 的 风 沙 印 记 ， 反 而 在 历 史 深 处 凝 结 成 和 平 合 作 、 开 放 包 容 、 互 学 互 鉴 的 宝 贵 丝 路 精 神 财 富 。
+冰雪健道（U357 21×21） qpzku sydcS          xlll  secr  mdmz  ghdfu    e[3]; frewu ybjl  ,  frzv     leewiu      njwa     hphzv       \  kfbro       \  hxhj[2];       bfgg  sljeo       ckfh  .
+冰雪弎拼（U357 21×21） qpzki sydcS          xlll  secr  mdmz  ghdf[3]  e[3]; frewi ybjl  ,  frz_     leewui      njwv     hphzv       \  kfbra       \  hxhj[2];       bfgg  sllhi jecfv       .
+冰雪简道（Overall-17 21×26） qpzhu slyg;    cysy  xili  qwcn  mmmz  gudsu    w[3]; jnwau ycji  ,  jxzheu   lwwvu       njvn     hphzi       \  kjbro       \  hxhj[3];       bgoi  sljwo       chju  .
+冰雪散拼（Overall-17 21×26） qpzhi slyg;    cysy  xili  qwcn  mmmz  guds[3]  w[3]; jnwai ycji  ,  jxzhe    lwwvai      njvn     hphze       \  kjbri       \  hxhj[3];       bgua  sljwi       chju  .
+冰雪键道　 qmzhu sydcS          xklk  wwcr  mlmd  gjdzu    e[3]; fresu ybjk  ,  fxzvv    leejiu      njjav    hphzv       \  kfbr        \  hJxhj;         bzgb  slje        chfj  .
+冰雪三拼　 qmzhv sydcS          xklk  wwcr  mlmd  gj_ dedoo      fresv ybjk  ,  fxzi     leeNj       njjii    hphzi       \  kfbr        \  hxhji[2];      bzgb  slje        chfj  .
+
+[07-12]
+原文       激 励 着 后 人 沿 着 先 辈 足 迹 继 续 跨 越 崇 山 峻 岭 ， 共 同 书 写 互 联 互 通 的 人 类 命 运 共 同 体 壮 丽 时 代 篇 章 。
+冰雪健道（U357 21×21） jlkvo    hqrm  yjks  xpbe  zhjl  jx_   kcyk  wejl        ,  gia   ehxz  hlht;          rlmyo       gtt_     ktll  edpki       .
+冰雪弎拼（U357 21×21） jlkaio   hqrm  yov   xpbe  zhjl  jx_   kcyk  wejl        ,  gptp  ehxz  hlht;          rlmya       gtt_     ktll  edpkai      .
+冰雪简道（Overall-17 21×26） jlf[3]   hfrj  yofe  xpbwu zuji  jixv  kxyg  vwjl        ,  gktk  wuxz  hlht;          rlmy        gtt_     fpli  wdpfo       .
+冰雪散拼（Overall-17 21×26） jlf[3]   hfrj  yofe  xpbwi zuji  jixv  kxyg  vwjl        ,  gktk  wuxz  hlht;          rlmy        gtt_     fpli  wdpfe       .
+冰雪键道　 jlfvo    hdrn  yffe  xmbw  zjjk  ja    kqyh  wejli       ,  gyty  ejxd  hlht;          rlmy        gtt_     fmlk  edpq[3]     .
+冰雪三拼　 jlfova   hdrn  yffe  xmbw  zjjk  joo   kqyh  wejlv       ,  gyty  ejxd  hlht;          rlmy        gtt_     fmlk  edpq[3]     .
+
+[07-13]
+原文       文 明 因  交 流 而  多 彩 ， 文 明 因  互   鉴   而  丰 富 ， 让 我 们 携 手 同 心 弘 扬 丝 路 精 神 ， 不 断 谱 写 人 类 社 会 和 平 繁 荣 发 展 的 崭 新 时 代 壮 丽 乐 章 。
+冰雪健道（U357 21×21） smmt  yb_ jcld  nrv dyck  ,  smmt  yBhjv         nrv ffv   ,  rsm_     xetxi[3]    hpyn  sljeo       ,  bou   phxz  rleh        hspt  frfk;          kxedoi      ktll  ykkn  .
+冰雪弎拼（U357 21×21） smmt  yb_ jcld  nrv dyck  ,  smmt  yBhja         nrv ffa   ,  ruo      xetxuv      hpyn  slHje       ,  bhdx  phxz  rleh        hspt  frfk;          kxediv      ktll  ykkn  .
+冰雪简道（Overall-17 21×26） qjmr  yc_ jdlx  nne dcuu  ,  qjmr  yhjpe         nne jnju  ,  rqm_     xwtxo[3]    hkyy  sljwo       ,  budq  puxz  rlwh        hepr  jrjfa[2];      fxwdi       fpli  ygfy  .
+冰雪散拼（Overall-17 21×26） qjmr  yc_ jdlx  nne dciu  ,  qjmr  yc_ huae jpai nne jnju  ,  rqm_     xwtxee      hkyy  sljwi       ,  budq  puxz  rlwh        hepr  jrjfe;         fxwdu       fpli  ygfy  .
+冰雪键道　 wm[3] yb_ jclq  x_  dlch  ,  wm[3] yBhjv         x_  frfj  ,  rwm_     xetxio[2]   hyyp  slje        ,  bou   pjxd  rleh        hepg  frfq[3];       qFxed       fmlk  yhqp  .
+冰雪三拼　 wmi   yb_ jclq  x_  dlch  ,  wmi   yBhjo         x_  frfj  ,  rua      xetxui      hyyp  slje        ,  bjdt  pjxd  rleh        hepg  frfq[3];       qFxed       fmlk  yhqp  .
+
+====================================================================================================
+【篇 08】专注力养成与深度思考的认知心理机制（教育心理·500 汉字）
+冰雪健道（U357 21×21）：按键 846；均码 1.6920；Space 24；1字 13.1%（覆盖 5.0%）；2字 44.5%（覆盖 34.0%）；3字 16.8%（覆盖 19.2%）；4字 19.9%（覆盖 30.4%）；5字+ 5.8%（覆盖 11.4%）。
+冰雪弎拼（U357 21×21）：按键 861；均码 1.7220；Space 24；1字 13.1%（覆盖 5.0%）；2字 45.0%（覆盖 34.4%）；3字 16.8%（覆盖 19.2%）；4字 19.4%（覆盖 29.6%）；5字+ 5.8%（覆盖 11.8%）。
+冰雪简道（Overall-17 21×26）：按键 879；均码 1.7580；Space 27；1字 12.2%（覆盖 4.8%）；2字 47.2%（覆盖 37.2%）；3字 18.8%（覆盖 22.2%）；4字 18.3%（覆盖 28.8%）；5字+ 3.6%（覆盖 7.0%）。
+冰雪散拼（Overall-17 21×26）：按键 886；均码 1.7720；Space 29；1字 12.6%（覆盖 5.0%）；2字 47.5%（覆盖 37.6%）；3字 18.2%（覆盖 21.6%）；4字 18.2%（覆盖 28.8%）；5字+ 3.5%（覆盖 7.0%）。
+冰雪键道：按键 849；均码 1.6980；Space 25；1字 12.9%（覆盖 5.0%）；2字 45.9%（覆盖 35.6%）；3字 17.5%（覆盖 20.4%）；4字 19.1%（覆盖 29.6%）；5字+ 4.6%（覆盖 9.4%）。
+冰雪三拼：按键 855；均码 1.7100；Space 27；1字 13.2%（覆盖 5.0%）；2字 43.2%（覆盖 32.8%）；3字 17.9%（覆盖 20.4%）；4字 21.1%（覆盖 32.0%）；5字+ 4.7%（覆盖 9.8%）。
+----------------------------------------------------------------------------------------------------
+[08-01]
+原文       在 数 字 信 息 高 度 碎 片 的 当 代 社 会 ， 专 注 力  已 成 为 极 为 稀 缺 的 核 心 心 理 资 本 。
+冰雪健道（U357 21×21） z_ ezxx        gfdh  sui;     ddehi       ,  kkHla     yws_     jlse  xqdu     hsxb  xlzb        .
+冰雪弎拼（U357 21×21） z_ ezxx        gfdh  spda     ddeh[3]     ,  kXkla     yws_     jvv   xqdi     hsxb  xlzb        .
+冰雪简道（Overall-17 21×26） z_ wzxxu       gdoo  sp[2];   ddwh[3]     ,  ffliae    yvq_     jiqw  xiqg;    hexc  xlzb[3]     .
+冰雪散拼（Overall-17 21×26） z_ wzxxa       gdia  sp[2];   ddwhi       ,  fqfu  lia yvq_     jiqw  xiqg;    hexc  xlzbi       .
+冰雪键道　 z_ ezxxo       gzdj  sui;     ddehi       ,  fqlaav    yjw_     jkww  xqdu     hexb  xlzbv       .
+冰雪三拼　 z_ ezxxo       gzdj  spdo     ddeh[3]     ,  fTqlo     yjw_     jkww  xqdv     hexb  xlzb[3]     .
+
+[08-02]
+原文       人 类 大 脑 在 前 额 叶 皮 层 的 调 控 下   维 持 对   特 定 目 标 的 持 续 注 意 ， 抑 制 无 关 杂 念 干 扰 。
+冰雪健道（U357 21×21） rldno       z_ qrypC;            tckp  x[3] sewl  d[3] tdmb[2];       wlxg  khyl  ,  ylkli shgx  zwnp  gjrf  .
+冰雪弎拼（U357 21×21） rldna       z_ qrypC;            tckp  x[3] sewl  d[3] tdmb[2];       wlxg  khyl  ,  ylkla shgx  zwnp  gjrf  .
+冰雪简道（Overall-17 21×26） rldn        z_ qxyeo    picn;    tdkk  x_   qwvi  d[3] tdmb[2];       vixv  fuyi  ,  yifii qugq  zanp  gors  .
+冰雪散拼（Overall-17 21×26） rldn        z_ qxyee    picn;    tdkk  x_   qwvi  d[3] tdmb[2];       vixv  fuyi  ,  yifia qugq  zanp  gors  .
+冰雪键道　 rldn        z_ qxypC;            tcky  xs_  wwwk  d[3] tdmb[2];       wkxl  qjyk  ,  ykfki wjgt  zsnmu gfrz  .
+冰雪三拼　 rldn        z_ qxypC;            tcky  xs_  wwwk  d[3] tdmb[2];       wkxl  qjyk  ,  ykfko wjgt  zsnmi gfrz  .
+
+[08-03]
+原文       但  外 界 无 处 不 在 的 即 时  通  知   与  短 视 频  刺 激 极 易 触 发   多 巴 胺 奖 赏 回 路 。
+冰雪健道（U357 21×21） dj_ skjz  swbz;          jetkou[2]       yg_ dXep_     cau   jlylv whfw[3] dbra     jehli       .
+冰雪弎拼（U357 21×21） dj_ skjz  swbz;          jetkvi[2]       yg_ dXep_     cia   jlylv whfwa   dbrii    jehlu       .
+冰雪简道（Overall-17 21×26） do_ qhjz  qvbz[2];       jwtkoa[3]  fiue yv_ dwpcou    ciji  jiyie vuja[3] dbxo     jlwyo hllui .
+冰雪散拼（Overall-17 21×26） do_ qhjz  qvbz[2];       jiwiee tkfi     yv_ dwpcau[3] ciji  jiyie vujaa   dbxo     jlwyu hllue .
+冰雪键道　 df_ whjd  wjbz;          jetYf[3]        yl_ dTep_     cau   jkykv jjfs[3] dbxau    jehlio      .
+冰雪三拼　 df_ whjd  wjbz;          jetfiv[3]       yl_ dTep_     cvo   jkyki jjfso   dbxvvo   jehlui      .
+
+[08-04]
+原文       诱 使     思 维 陷 入 浅 层 分 散 的 被 动 响 应 之 中 ， 严 重 削 弱 自 主 控 制 与  深 度 加 工 能 力 。
+冰雪健道（U357 21×21） yqelo     saa   xprh  qpcr  fmsj;    bdxyvo      klkp  ,  ykxr        zkkkou      yg_ edjg        na    .
+冰雪弎拼（U357 21×21） yqelau    svi   xprh  qpcr  fmsj;    bdxyau      klkp  ,  ykxr        zkkkua[2]   yg_ emdh  jgnl        .
+冰雪简道（Overall-17 21×26） yfwioi[2] siqw  xpru  qpcn  jjso;    bdxyoe      fifk  ,  yfxrau[3]   zfkfu       yv_ wdao  jgnl        .
+冰雪散拼（Overall-17 21×26） yfwiau    siqw  xpru  qpcn  jjso;    bdxyau      fifk  ,  yfxrei[3]   zfkfaa      yv_ wjdu  jgnl        .
+冰雪键道　 ydeko     skww  xmrj  qmcr  fnsf;    bdxXy       fkfy  ,  yfxr        zqu   ku    yl_ edjgov      na    .
+冰雪三拼　 ydekou    siv   xmrj  qmcr  fnsf;    bdxyou      fkfy  ,  yfxr        zqkfuo      yl_ endj  jgnl        .
+
+[08-05]
+原文       心 理 学 研 究 表 明 ， 频 繁 的 任 务 切 换 会 导 致 显 著 的 注 意 力 残 留 效 应 。
+冰雪健道（U357 21×21） xlx_     yjbmo       ,  pbfj;    rsqh        hdkav    xkd_     kyl_     cjld  xcyt  .
+冰雪弎拼（U357 21×21） xlx_     yjbmi       ,  pbfj;    rsqh        hdkuaa   xkd_     kyl_     cjld  xcyt  .
+冰雪简道（Overall-17 21×26） xlx_     yjbmoo      ,  pcjo;    rqqh        hdfiai   xfd_     fyl_     colx  xdyr  .
+冰雪散拼（Overall-17 21×26） xlx_     yjbmeu      ,  pcjo;    rqqh        hdfiua   xfd_     fyl_     colx  xdyr  .
+冰雪键道　 xlx_     yjbmo       ,  pbff;    rwqh        hdfav    xqdi     qyl_     cflq  xcyg  .
+冰雪三拼　 xlx_     yjbmv       ,  pbff;    rwqh        hdfuo    xqdo     qyl_     cflq  xcyg  .
+
+[08-06]
+原文       每 一 次 分 心 都 需 要 耗 费 额 外 的 认 知 资 源 才 能 重 新 聚 焦 ， 从 而 大 幅 降 低 解 决 复 杂 问 题 的 效 率 。
+冰雪健道（U357 21×21） myc_     fmxb  dxy_     hffe  rssk;    rkzyua      cao   wxjjoi      ,  cpre  dfjdi       jov   fzst;          xclg  .
+冰雪弎拼（U357 21×21） mi       fmxb  dxy_     hffe  rssk;    rkzyii      cv    wxjjia[2]   ,  cpre  dfjdv       jjfzST;              xclg  .
+冰雪简道（Overall-17 21×26） myc_     jjxc  dxy_     hsjw  xeqh;    rfzya       chnn  vkxc  jvjd  ,  cx_   djjdi       jzjg  jzqt;          xdlv  .
+冰雪散拼（Overall-17 21×26） myc_     jjxc  dxy_     hsjw  xeqh;    rfzya       chnn  vkxc  jvjd  ,  cx_   djjdaa      jzjg  jzqt;          xdlv  .
+冰雪键道　 myc_     fnxb  dxy_     hzfw  xewh;    rfzy        cao   wov   jljc  ,  cxi   dfjdi       jov   fzwt;          xcll  .
+冰雪三拼　 myc_     fnxb  dxy_     hzfw  xewh;    rfzy        ci    wxjjvo[2]   ,  cxi   dfjdi       jjfzWT;              xcll  .
+
+[08-07]
+原文       若  想 摆 脱 这 种 专 注 力  困 境 ， 必 须 主 动 重 塑 个 人 心 智 环 境 ， 建 立 规 律 的 深 度 工 作 习 惯 。
+冰雪健道（U357 21×21） ry_ xbKti    kskp  kkHla     kbjt  ,  bu    khdp  wpshu gi    xbkl  hxjt  ,  jpll  gglg;    emdh  gzxgi       .
+冰雪弎拼（U357 21×21） ry_ xbtu[3]  kskp  kXkla     kbjt  ,  bia   khdp  wpshv gsrm  xbkl  hxjt  ,  jpll  gglg;    emdh  gzxgav      .
+冰雪简道（Overall-17 21×26） rmxl   btiu  fefk  ffliae    ktjr  ,  bx_   fdo   vksu  gerj  xcfi  hqjr  ,  jpli  gllv;    wdao  gzxgo       .
+冰雪散拼（Overall-17 21×26） rm_ xbtm[3]  fefk  fqfu  lia ktjr  ,  bx_   fudk  vksu  gerj  xcfi  hqjr  ,  jpli  gllv;    wjdu  gzxgie      .
+冰雪键道　 rl_ xbHti    fuv   fqlaav    kwjg  ,  buu   qjdy  wysj  gern  xbfk  htjg  ,  jmlk  gbll;    endj  gzxgio      .
+冰雪三拼　 rl_ xbtuuv   quo   fTqlo     kwjg  ,  bvo   qjdy  wysj  gern  xbfk  htjg  ,  jmlk  gbll;    endj  gzxgoi      .
+
+[08-08]
+原文       可 以 通 过 设 定 无 干 扰 时 间 窗 口 、 分 解 认 知 负 荷 、 进 行 刻 意 练 习 等  科 学 手 段 。
+冰雪健道（U357 21×21） kytg        esdt  sgrFv    ejwTk       \  fmjz  rkfhui      \  jxv   kylxo       dr_ kxedou      .
+冰雪弎拼（U357 21×21） kytg        esdt  sgrivu   ejwkii      \  fmjz  rkfhia      \  jva   kylxa       dr_ kxedvu      .
+冰雪简道（Overall-17 21×26） kytg        wdoo  qgrs[3]  wjvko       \  jjjz  rfjhi       \  jcxr  kylxao      dnu kxwdu       .
+冰雪散拼（Overall-17 21×26） kytg        wdaa  qgrs[3]  wjvkei      \  jjjz  rfjha       \  jcxr  kylxa       dn_ kxwdiu      .
+冰雪键道　 kytg        eedg  wgrZv    ejwkoo      \  fnjd  rffh        \  juu   kylxo       dr_ kxedou      .
+冰雪三拼　 kytg        eedg  wgrviu   ejMwk       \  fnjd  rffh        \  jbxg  kylxo       dr_ kxediu      .
+
+[08-09]
+原文       促 使 心 智 平 稳 进 入 高 度 投 入 的 心 流 状 态 ， 享 受 沉 浸 其 中 带 来 的 精 神 充 实 感 。
+冰雪健道（U357 21×21） chel  xbkl  psv   jrgduo      tqrh;    xlkta[3]    ,  xuo   wjqkai      dklk;    joa   wPeg     .
+冰雪弎拼（U357 21×21） ceu   xbkl  psu   jrgFd       tqrh;    xlktva      ,  xjeq  wjqka       dklk  djeio    wegvi    .
+冰雪简道（Overall-17 21×26） cuwi  xcfi  pq_   jrgdo       tfru;    xlftea[2]   ,  xlwf  vjqfi       dhlh;    jrwj  vwgooo   .
+冰雪散拼（Overall-17 21×26） cuwi  xcfi  pq_   jrgda       tfru;    xlftia[3]   ,  xlwf  vjqfe       dhlh;    jrwj  vwgoei   .
+冰雪键道　 cjek  xbfk  pgwn  jrgdu[3]    tdrj;    xlfta[3]    ,  xuo   jjBqf       dhlh;    je[2] wYeg     .
+冰雪三拼　 cjek  xbfk  pgwn  jrgZd       tdrj;    xlftio      ,  xxed  jjqfoi      dhlh;    jei   wegiv    .
+
+[08-10]
+原文       在 心 流 体 验 中   ， 个 体 的 自 我 意 识 暂 时 消 解 ， 对   时 间 流 逝 的 感 知 发 生 显 著 改 变 。
+冰雪健道（U357 21×21） z_ xlDty       k[3] ,  gstl;    zsyeu       zjel  xcjza ,  d[3] ejle[3];       gjkl  fuv   xkgbi       .
+冰雪弎拼（U357 21×21） z_ xltyv[3]    k[3] ,  gstl;    zsyeu       zjel  xcjzi ,  d[3] ejle[3];       gjkl  fii   xkgba       .
+冰雪简道（Overall-17 21×26） z_ xltya[3]    fk   ,  geti;    zqywo       zowi  xdjza ,  d[3] wjlwi[3];      gofi  jawn  xfgbo       .
+冰雪散拼（Overall-17 21×26） z_ xclxi tyfka      ,  geti;    zqywa       zowi  xdjzi ,  d[3] wjlwe;         gofi  jawn  xfgbu       .
+冰雪键道　 z_ xltyaa      fy   ,  getk;    zwyeu       zoi   xcjda ,  d[3] ejleo;         gffk  fser  xqgbi       .
+冰雪三拼　 z_ xltyi[3]    fy   ,  getk;    zwyeu       zfek  xcjdv ,  d[3] ejlev[3];      gffk  fv    xqgbo       .
+
+[08-11]
+原文       能 够 以   最  充 沛 的 情 绪 能 量 调 动 过 往 专 业 技 能 ， 最 终 实 现 认 知 结 构 的 深 刻 重 塑 与  自 我 效 能 感 的 全 面 提 升 ， 构 筑 应 对 复 杂 挑 战 的 心 智 基 石 。
+冰雪健道（U357 21×21） nrgq  sla  zg_ wppe;    qxnlao      dcdp  gysnv kyjni       ,  zkex        rkjg[2];       emks  wpshu yg_ zsxnG;            qmte        ,  gqkh  ytdg  fztku;         xbkl  jlelv .
+冰雪弎拼（U357 21×21） nrgq  ylua zg_ wppe;    qxnla[3]    dcdp  gysna kyjna       ,  zkex        rkjg[2];       emks  wpshv yg_ zsxnG;            qmte        ,  gqkh  ytdg  fztkv[3];      xbkl  jleli .
+冰雪简道（Overall-17 21×26） nngf  yia  zl_ vkpw;    qxnloa      dddk  gmqye fyjna       ,  zfwxe       rfjg[2];       wka   vksu  yzqmu     xngo[3];    qmtw        ,  gffu  ydoa  jztfi[2];      xcfi  jiwie .
+冰雪散拼（Overall-17 21×26） nngf  yiu  zl_ vkpw;    qxnlee[3]   dddk  gmqya fyjni       ,  zfwxa       rfjg[2];       wki   vksu  yzqma     xngo[3];    qmtw        ,  gffu  yrdl  jztfau[2];     xcfi  jiwii .
+冰雪键道　 nua   yk_  zb_ wypw;    qxnlao      dcdy  glwpv fyjni       ,  zfexa       rfjg;          enke  wysj  yl_ zwxnG;            qmte        ,  gdqj  ydfzau      tqi;     xbfk  jkekv .
+冰雪三拼　 nrgd  yk_  zb_ wypw;    qxnlo[3]    dcdy  glwpo fyjno       ,  zfexv       rfjg;          enke  wysj  yl_ zwxnG;            qmte        ,  gdqj  yGdfz       tqo;     xbfk  jkekv .
+
+[08-12]
+原文       我 们 要 学 会 在 喧 嚣 纷 扰 的 信 息 洪 流 中   守 护 内 心 的 秩 序 与  宁 静 ， 给   思 想 留 出 一 片 自 由 生 长 的 独 立 空 间 ， 品 味 深 度 专 注 带 来 的 无 穷 愉 悦 。
+冰雪健道（U357 21×21） sdmm  yxho     z_ xrxc  fmrf;    xxhlua      k[3] eqhh  nxdkX[2]       yg_ ntjt  ,  g[2] slxj  ldwhu yui   zyeki[3];      dHlkjo      ,  pso   emdh  kxkh  dklk;    shqn  ygyko .
+冰雪弎拼（U357 21×21） sdmm  yxhv     z_ xrxc  fmrf;    xxhPl       k[3] eqhh  nxdkX[2]       yg_ ntjt  ,  g[2] slxj  ldwhv ylpp  zyekv[3];      dhll  ki    ,  pbse  emdh  kxkh  dklk;    shqn  ygykv .
+冰雪简道（Overall-17 21×26） qmmj  yxhl     z_ xtxd  jjrs;    xxhlau      f[2] wfhu  nxd_     fixvu yv_ nrjr  ,  g[2] sx_   lxvuu ypzy        wnfy;    duli  kkjp  ,  pqo   wdao  fqfu  dhlh;    quqq  yvygo .
+冰雪散拼（Overall-17 21×26） qmmj  yxhl     z_ xtxd  jjrs;    xxhlae[3]   f[2] wfhu  nxd_     fixva yv_ nrjr  ,  g[2] sx_   lxvue ypzy        wnfy;    dlkje       ,  pqu   wjdu  fqfu  dhlh;    quqq  yvyge .
+冰雪键道　 wi    yxho     z_ xtxc  fnrz;    xxhYl       f[2] edhj  nxdfX          yl_ ngjg  ,  g[2] sx_   lqjju ypzyu       erqp;    dJlkjo      ,  pbww  endj  ftqj  dhlh;    wjqy  ylyho .
+冰雪三拼　 wa    yxhi     z_ xtxc  fnrz;    xxhYl       f[2] edhj  nxdfX          yl_ ngjg  ,  g[2] sx_   lqjji ypzyo       erqp;    dJlkjo      ,  pbww  endj  ftqj  dhlh;    wjqy  ylyhi .
+
+[08-13]
+原文       持 之 以 恒 砥 砺 前 行 ， 终  能 在 专 业 领 域 中   厚 积 薄 发 实 现 飞 跃 。
+冰雪健道（U357 21×21） wkyh        dlqxvu      ,  kpnr   z_ kylyi       k[3] hjbfua      evv   feyk  .
+冰雪弎拼（U357 21×21） wkyh        dlqPx       ,  kpnr   z_ kyly[3]     k[3] hjbfi       elxp  feyk  .
+冰雪简道（Overall-17 21×26） vfyh        dlqxue      ,  fknn   z_ fylye       f[2] hjbjau      wixp  jwyg  .
+冰雪散拼（Overall-17 21×26） vfyh        dlqxu       ,  fknn   z_ fylyi       f[2] hjbjae      wixp  jwyg  .
+冰雪键道　 wfyh        dlqMx       ,  fya nrzh  fyly        f[2] hjbfua      ekxm  fwyh  .
+冰雪三拼　 wfyh        dlqMx       ,  fynrv  z_ fyly        f[2] hjbfv       ekxm  fwyh  .
+
+[08-14]
+原文       只 要 我 们 保 持 内 心 的 笃 定 与  专 注 ， 不 被 外 界 浮 躁 所   裹 挟 ， 终 能 以 宁 静  心 境 在 属 于 自 己 的 赛 道 上 绽 放 出 独 特 璀 璨 光 彩 。
+冰雪健道（U357 21×21） kysmvi      bfwl  nxd_     dhdt  yg_ kxkh  ,  b_ bsju     fhzf  syu  gyxz  ,  kpnr  ynjo      xbjt  z_ eyzj;          sdeo     kfwoa    dhts  cgcj  gtck  .
+冰雪弎拼（U357 21×21） kysmau      bfwl  nxd_     dhdt  yg_ kxkh  ,  b_ bsjaaa   fhzf  syu  gyxz  ,  kpnr  ynTj_     xbjt  z_ eyzj;          sdeaa    kfwaa    dhts  cgcj  gtck  .
+冰雪简道（Overall-17 21×26） fyqmie      bv_   nxd_     dudr  yv_ fqfu  ,  b_ bqjzu    juzs  s[2] gmxz  ,  fknn  ynjro     xcjr  z_ wyzj;          sdwy     fjvuoa   dute  ccee  gciu  .
+冰雪散拼（Overall-17 21×26） fyqmuu      bv_   nxd_     dudr  yv_ fqfu  ,  b_ bqjz[3]  juzs  s[2] gmxz  ,  fknn  ynjreu[3] xcjr  z_ wyzj;          sdwy     fjvuaa   dute  ccu   gciu  .
+冰雪键道　 fvi   wi    bzwk  nxd_     djdg  yl_ ftqj  ,  b_ bwju     fjzz  s[2] glxd  ,  fynra ynjov     xbjg  z_ eyzj;          sdeo     qfjoaa   djte  cbcf  gmch  .
+冰雪三拼　 fKywm       bzwk  nxd_     djdg  yl_ ftqj  ,  b_ bwjoo    fjzz  s[2] glxd  ,  fynrv ynGj_     xbjg  z_ eyzj;          sdeo     qfPjo    djte  cbcf  gcu   .
+
+====================================================================================================
+【篇 09】终点冲刺与逆转夺冠的马拉松赛场实况（体育竞技·500 汉字）
+冰雪健道（U357 21×21）：按键 856；均码 1.7120；Space 23；1字 13.2%（覆盖 5.0%）；2字 46.3%（覆盖 35.2%）；3字 13.2%（覆盖 15.0%）；4字 19.5%（覆盖 29.6%）；5字+ 7.9%（覆盖 15.2%）。
+冰雪弎拼（U357 21×21）：按键 867；均码 1.7340；Space 23；1字 13.6%（覆盖 5.2%）；2字 45.5%（覆盖 34.8%）；3字 14.1%（覆盖 16.2%）；4字 19.4%（覆盖 29.6%）；5字+ 7.3%（覆盖 14.2%）。
+冰雪简道（Overall-17 21×26）：按键 876；均码 1.7520；Space 24；1字 15.2%（覆盖 6.0%）；2字 46.5%（覆盖 36.8%）；3字 15.2%（覆盖 18.0%）；4字 17.2%（覆盖 27.2%）；5字+ 6.1%（覆盖 12.0%）。
+冰雪散拼（Overall-17 21×26）：按键 895；均码 1.7900；Space 24；1字 13.6%（覆盖 5.4%）；2字 48.7%（覆盖 38.8%）；3字 16.1%（覆盖 19.2%）；4字 16.1%（覆盖 25.6%）；5字+ 5.5%（覆盖 11.0%）。
+冰雪键道：按键 862；均码 1.7240；Space 22；1字 13.5%（覆盖 5.2%）；2字 46.9%（覆盖 36.0%）；3字 13.5%（覆盖 15.6%）；4字 18.2%（覆盖 28.0%）；5字+ 7.8%（覆盖 15.2%）。
+冰雪三拼：按键 877；均码 1.7540；Space 22；1字 12.6%（覆盖 4.8%）；2字 46.3%（覆盖 35.2%）；3字 14.2%（覆盖 16.2%）；4字 19.5%（覆盖 29.6%）；5字+ 7.4%（覆盖 14.2%）。
+----------------------------------------------------------------------------------------------------
+[09-01]
+原文       初 秋 清 晨 的 城 市 马 拉 松 赛 道 上 ， 数 万 名 跑 者 在 发 令 枪 响 后  如  潮 水 般  向 前 涌 出 。
+冰雪健道（U357 21×21） whqd  qtwm;    wemlS          sdeo     ,  ehsj  mpkouu   z_ flqx        hq_ rh_ web[3]    xqu   ypwha .
+冰雪弎拼（U357 21×21） whqd  qtwm;    wemlS          sdeaa    ,  ehsj  mpkuv    z_ flqx        hq_ rh_ web[3]    xjqp  ypwhu .
+冰雪简道（Overall-17 21×26） vuqx  qrvj;    vw_   mls_     sdwy     ,  wuqo  mpfe[3]  z_ jlqxoi      hf_ rvwl      bou xlqp  ykvua .
+冰雪散拼（Overall-17 21×26） vuqx  qrvj;    vw_   mls_     sdwy     ,  wuqo  mpfe[3]  z_ jlqxii      hf_ ru_ vwbo      xlqp  ykvuu .
+冰雪键道　 jjqqo qgjn;    jemlS          sdeo     ,  ejwf  mpqou    z_ flqxi       hd_ rj_ weba      xxqm  yyjja .
+冰雪三拼　 jjqqv qgjn;    jemlS          sdeo     ,  ejwf  mpfui    z_ flGqx       hd_ rj_ webu      xxqm  yyjju .
+
+[09-02]
+原文       随 着 赛 程 过 半 ， 领 先 集 团 逐 渐 缩 小 至   四 名   实 力 出 众 的 精 英 长   跑   选 手 。
+冰雪健道（U357 21×21） sgks  swgb        ,  lxjtu       kjsxai      dzv  slmt[3] elwka[2];      jtyto wpFxe           .
+冰雪弎拼（U357 21×21） sov   swgb        ,  lxjtiv      kjsxai      klav slmta   elwka;         jyi   wpxeuu          .
+冰雪简道（Overall-17 21×26） slfe  svgb        ,  lxjtiu      fjsxi       fiea simri   wlvfi[2];      jryro v[3] p[2] xtwf  .
+冰雪散拼（Overall-17 21×26） slfe  svgb        ,  lxjtue      fjsxe       fiae simra   wlvfe[2];      jryri vpxweu          .
+冰雪键道　 sou   sjgbu       ,  lxjtu       qa    sxa   fkv  skmgi   eljfai;        jgygo jpZxe           .
+冰雪三拼　 sai   sjgbi       ,  lxjtvi      qjsxo       fkov skmgo   eljfov[2];     jgygv jpZxe           .
+
+[09-03]
+原文       在 迎 风 向 上 的 缓 坡 路 段 ， 领 跑 者 突 然 发 力 提 速 ， 步   频   陡 然 加 快 ， 试 图 甩 开 身 后 的 紧 随 者   。
+冰雪健道（U357 21×21） z_ ytfr  xjen;    hxpd  lhdx  ,  lpk_     trflua      tlsh  ,  bhi  pbi  dqrj  jfkd  ,  elth  edkk  ehdu     jbsg  ksuo .
+冰雪弎拼（U357 21×21） z_ ytfr  xjen;    hxpd  lhdx  ,  lpk_     trflvi      tlsh  ,  bhai pbvi dqrj  jfkd  ,  elth  edkk  ehd[3]   jbsg  ksuv .
+冰雪简道（Overall-17 21×26） z_ yrjn  xlwy;    hqpm  ludq  ,  lpf_     trjla[3]    tisu  ,  bui  pci  dfro  jkkr  ,  witu  wkue  whd[3]   jcsl  feu  .
+冰雪散拼（Overall-17 21×26） z_ yrjn  xlwy;    hqpm  ludq  ,  lpf_     trjlii      tisu  ,  buai pcei dfro  jkkr  ,  witu  wkui  whd[3]   jcsl  feu  .
+冰雪键道　 z_ ygfr  xxep;    htpl  ljdt  ,  lpf_     trflua      tksj  ,  bji  pbiv ddrf  jskg  ,  ektj  egkh  ehdu     jbsb  feu  .
+冰雪三拼　 z_ ygfr  xxep;    htpl  ljdt  ,  lpf_     trfliv      tksj  ,  bjoi pbii ddrf  jskg  ,  ektj  egkh  ehd[3]   jbsb  qe   .
+
+[09-04]
+原文       然 而 第 二 位 的 年 轻 选 手 沉 着 应 对 ， 始 终 保 持 稳 定 的 呼 吸 节 奏 与  跑 步 步 幅  。
+冰雪健道（U357 21×21） rvu   drs[2];     nqxe        wkyd[3]     ,  ekbw        sdd_     hxjzo       yg_ pfbh  bhfhi  .
+冰雪弎拼（U357 21×21） rjre  drs[2];     nqxe        wkydv       ,  ekbw        sdd_     hxjzi       yg_ pau   bhfhav .
+冰雪简道（Overall-17 21×26） rxu   dxq[2];     nqxw        vfyda       ,  wfbv        qdd_     hxjzeo      yv_ pboi  bujui  .
+冰雪散拼（Overall-17 21×26） rxe   dxq[2];     nqxw        vfyd[3]     ,  wfbv        qdd_     huxi  jzzf  yv_ pbu   bujuae .
+冰雪键道　 rv    dxw[2];     nqxe        jfydoa      ,  efbw        wdd_     hxjzo       yl_ pzbj  bjfji  .
+冰雪三拼　 rxi   dxw[2];     nqxe        jfydi       ,  efbw        wdd_     hxjzv       yl_ pou   bjfjoi .
+
+[09-05]
+原文       巧 妙 借 助 领 跑 者 的 身 形 破  风  借 力   ， 将   体 能 消 耗 控 制 在 极 其 精 准 的 生 理 阈 值  之 内 。
+冰雪健道（U357 21×21） qcmc  jzkh  lpk;        emxt  pd_ fru jzll[3] ,  j[3] tnxhav      kkz_     jqv   jtkb;    erllu ygkloi klne  .
+冰雪弎拼（U357 21×21） qcmc  jzkh  lpk;        emxt  pd_ fri jzlla   ,  j[3] tnxhv       kkz_     jqv   jtkb;    erlli ygklav klne  .
+冰雪简道（Overall-17 21×26） qdmd  jzfu  lpf;        wjxr  pm_ jnu jzliia  ,  j[3] tnxhea      kfz_     jiqi  jrft;    wnliu yvfioi finw  .
+冰雪散拼（Overall-17 21×26） qdmd  jzfu  lpf;        wjxr  pm_ jni jzlia   ,  j[3] tnxhui      kfz_     jiqi  jrft;    wnlii yvfiae finw  .
+冰雪键道　 qcmc  jdqj  lpf;        enxg  pl_ fr_ jdlk[3] ,  j[3] tnxhav      kfz_     jkqk  jgqw;    erlku ylfkoi fknw  .
+冰雪三拼　 qcmc  jdqj  lpf;        enxg  pl_ fr_ jdlko   ,  j[3] tnxhi       kfz_     jkqk  jgqw;    erlkv ylfkoi fknw  .
+
+[09-06]
+原文       当  比 赛 进 入 最 后 两  公 里 的 大  直 道  时 ， 两 人 展 开 了 扣 人 心 弦 的 正 面 速 度 决 胜 。
+冰雪健道（U357 21×21） dn_ bs_   juo   zu    lglui;       tk_ kldfuo el ,  ljrm  kkl[3]   krxx;          krmp  shdh  jker  .
+冰雪弎拼（U357 21×21） dn_ bs_   jbrh  za    lju gl[3];   tk_ kldfva el ,  ljrm  kkl[3]   krxx;          krmp  shdh  jker  .
+冰雪简道（Overall-17 21×26） dy_ bish  jcru  zlhf  lgliue    deda   fidsuo wi ,  llrj  fkle     krxx;          fnmp  sd_   jgwn  .
+冰雪散拼（Overall-17 21×26） dy_ bish  jcru  zlhf  lgliiu    deda   fidsea wi ,  llrj  fkle     krxx;          fnmp  sd_   jgwn  .
+冰雪键道　 dp_ bksh  juo   zuu   lglui;       ds_ fkdzuo ek ,  lxrn  qkl[3]   krxx;          qrmm  sov   jher  .
+冰雪三拼　 dp_ bksh  jbrj  zo    lXglv;       ds_ fkdzio ek ,  lxrn  qkl[3]   krxx;          qrmm  sjdj  jher  .
+
+[09-07]
+原文       现 场 观 众 震 耳 欲 聋 的 呐 喊 助 威 声  回 荡 在 赛 道 两 侧 ， 将   比 赛 气 氛 推 向 了 最 高 潮 。
+冰雪健道（U357 21×21） xwgkvi[3]   krylv[3];      nhks        erv hdziv    skdf  ljcs  ,  j[3] bs_   qlfm  tgxj/    zgwoa    .
+冰雪弎拼（U357 21×21） xwgXk[3]    krylu;         nhks        eri hdNza    skdf  ljcs  ,  j[3] bs_   qlfm  tgxj/    zgwF     .
+冰雪简道（Overall-17 21×26） xvgfie[3]   fxyl[2];       nhfq        wne hldy  z_ sdoo  llce  ,  j[3] bish  qijj  tlxl/    zgvso    .
+冰雪散拼（Overall-17 21×26） xvgfai[3]   fxyl[2];       nhfq        wni hdzhae   shds  llce  ,  j[3] bish  qijj  tlxl/    zgvsi    .
+冰雪键道　 xjgfvi      qxyl[3];       nhqw        erv hdziv    shdz  lxce  ,  j[3] bksh  qkfn  tbxx/    zgwoa    .
+冰雪三拼　 xjgfuv      qxyl[3];       nhqw        era hdPzo    shdz  lxce  ,  j[3] bksh  qkfn  tbxx/    zBgw     .
+
+[09-08]
+原文       在 距 离 终 点 线  仅 剩 三 百 米 的 关 键 弯 道 ， 落 后 半 个 身 位 的 年 轻 跑   者  果 断 切 入 内 道 。
+冰雪健道（U357 21×21） zjloo    kdxiaa    jberi sbmL[3];    gio   sjdfo ,  lyhq  bgesi[2];      npqt  pfksou   gydx  qzrh  nedf  .
+冰雪弎拼（U357 21×21） zjlaav   kdxuia    jberu sbmui[2];   gxjp  sjdfi ,  lyhq  bgesa[2];      niv   pfksu    gydx  qzrh  nedf  .
+冰雪简道（Overall-17 21×26） zjlio    fdxpia    jcwni sbmi[2];    gqjp  qods  ,  lmhf  bgwqi;         npqr  p[2] feu gmdq  qzru  nwds  .
+冰雪散拼（Overall-17 21×26） zjliaa   fdxpui    jcwnu sbmi[2];    gqjp  qods  ,  lmhf  bgwqa[3];      npqr  p[2] feu gmdq  qzru  nwds  .
+冰雪键道　 zjloov   fdxiaa    jberi sbmv[3];    gio   wfdz  ,  llhd  bgewi;         nmqg  p[2] feu gldt  qdrj  nwdz  .
+冰雪三拼　 zjlooi   fdxuvo[3] jberu sbmu[3];    gtjm  wfdz  ,  llhd  bgewo;         nvi   pzfeu    gldt  qdrj  nwdz  .
+
+[09-09]
+原文       凭 借 顽 强 的 意 志 品 质 和 惊 人 的 爆 发 力 完 成 强 势 外 线 反 超 ， 步 履 如 风 直 奔 终 点   。
+冰雪健道（U357 21×21） ptjz  sqda     ykpk        h_ jrdbFL_           sjwr  qjel  skxp  fjwf  ,  bhlg  rhfr  klbm  kpdpa   .
+冰雪弎拼（U357 21×21） ptjz  sjqj;    ykpk        h_ jrdbFL_           sjwr  qjel  skxp  fjwf  ,  bhlg  rhfr  klbm  kpdp[3] .
+冰雪简道（Overall-17 21×26） prjz  qoql;    yfpf        h_ jrd_     bjlia    qovn  qlwia qhxp  jovs  ,  bulv  rujn  fbue  fdai    .
+冰雪散拼（Overall-17 21×26） prjz  qoql;    yfpf        h_ jrd_     bjlii    qovn  qlwie qhxp  jovs  ,  bulv  rujn  fibj  fkdpi   .
+冰雪键道　 pgjd  wqda     yfpfv       h_ jrdbFL_           wv    qxek  whxm  ffjz  ,  bjlli rjfr  fkbn  fydma   .
+冰雪三拼　 pgjd  wqdi     yfpfo       h_ jrdbFL_           wii   qxek  whxm  ffjz  ,  bjllo rjfr  fkbn  fydmv   .
+
+[09-10]
+原文       迎 着 迎 风 招 展 的 红 色 终 点   缎 带 振 臂 高 呼 ， 以   微 弱 优 势 打 破 了 赛 会 尘 封 多 年 的 纪 录 。
+冰雪健道（U357 21×21） ytks  yfkku;         hpss  kpdpa   dxdk  kbgh        ,  sla  sryea       dpl_     skhgo wfdn;          jllha .
+冰雪弎拼（U357 21×21） ytks  yfkki;         hpss  kpdp[3] dxdk  kbgh        ,  ylua sryea       dpl_     skhga wfdn;          jllha .
+冰雪简道（Overall-17 21×26） yrfe  yjffa;         hkse  fdai    dqdha fbgh        ,  yia  qrywi       dpl_     shhl  vjdnue;        jilua .
+冰雪散拼（Overall-17 21×26） yrfe  yjffe[2];      hkse  fkdpi   dqdha fbgh        ,  yiu  qrywi       dpl_     shhl  vjdnei;        jilua .
+冰雪键道　 ygfe  yffq[3];       hyse  fydma   dtdha qbgh        ,  ywrua      yiu   dpl_     shhb  jfdn;          jklja .
+冰雪三拼　 ygfe  yffq[3];       hyse  fydmv   dtdho qbgh        ,  yk_  wryeo       dpl_     shhb  jfdn;          jkljo .
+
+[09-11]
+原文       为  这 场 充 满 坚 韧 毅 力 与  战 术 博 弈 的 精 彩 对 决 画 上 了 圆 满 句 号 ， 赢 得 了 全 场 观 众 发 自 内 心 的 敬 意 与  欢 呼 。
+冰雪健道（U357 21×21） se_ kswn  wai   jrylv       yg_ kjeh  bdyl;    jcdjuo      hcen/    ymjhao      ,  ydlu     qRwgk       fznx;          jtyl  yg_ hxhh  .
+冰雪弎拼（U357 21×21） se_ kswn  wpmj  jPryl       yg_ kjeh  bdyl;    jcdju[3]    hcen/    ymjhua      ,  ydlv     qwgku       fznx;          jtyl  yg_ hxhh  .
+冰雪简道（Overall-17 21×26） qw_ fevy  vkmo  jryla       yv_ fowu  bmyi[2]; jcdjou[2]   hxwy/    ymjho       ,  ydle     qvgfie      jznx;          jryi  yv_ hqhu  .
+冰雪散拼（Overall-17 21×26） qw_ fevy  vkmo  jryl[3]     yv_ fowu  bmyi[2]; jcdjia[3]   hxwy/    ymjhea[3]   ,  ydle     qtvy  gqfk  jznx;          jryi  yv_ hqhu  .
+冰雪键道　 ww_ fejp  wai   jrylv       yl_ qfej  blyk;    jcdjuo      hqep/    ymjhao      ,  ydlu     qjPgf       fznx;          jgyk  yl_ hthj  .
+冰雪三拼　 ww_ fejp  wmu   jryloo      yl_ qfej  blyk;    jcdjuo[3]   hqep/    ymjhuo      ,  ydli     qjgfuv      fznx;          jgyk  yl_ hthj  .
+
+[09-12]
+原文       这 场 扣 人 心 弦 的 终 极 较 量 完 美 展 现 了 超 越 极 限 、 永 不 言 弃 的 体 育 竞 技 魅 力 ， 激 励 着 每 一 位 在 漫 长 人 生 赛 道 上 不 畏  艰 辛 勇 往 直 前 的 平 凡 追 梦 者 。
+冰雪健道（U357 21×21） kswn  krxx;          kjjlvo      smkxo[2]/      wyjx        \  ybyqv;         tyjj        mellu ,  jlkvo    mys_     z_ mwreu       sdeo     bsjxi        yskq;          ptfj  kmkvu[3] .
+冰雪弎拼（U357 21×21） kswn  krxx;          kjjlva      smkxu/         wyjx        \  ybyqa[3];      tyjj        mella ,  jlkaio   mys_     z_ mwrev       sdeaa    bsEjx[3]     yskq;          ptfj  kGmka    .
+冰雪简道（Overall-17 21×26） fevy  krxx;          fkji  jdll  qmfxeo/        vyjxa       \  ybyqo[2];      tyjji       mlu   ,  jlf[3]   myq_     z_ mvrw        sdwy     bqjxoi       yqfq;          prjo  fmfee[3] .
+冰雪散拼（Overall-17 21×26） fevy  krxx;          fkji  jdll  qomw  fxle     vyjx[3]     \  ybyqu;         tyjju       mwlia ,  jlf[3]   myq_     z_ mvrw        sdwy     buqwaa jpxci yqfq;          prjo  fmfeai   .
+冰雪键道　 fejp  krxx;          fjjlvo[3]   wmqxo[3]/      jyjxv       \  ybyqv;         tyjjo       mwlku ,  jlfvo    myw_     z_ mjre        sdeo     bwjxio[3]    ywfq[2];       pgff  fBmf     .
+冰雪三拼　 fejp  krxx;          fjjClio     wmqxu[2]/      wyjxo       \  ybyqo[2];      tyjjo       mwlko ,  jlfova   myw_     zmjo     rv    sdeo     bwjMxo       ywfq[2];       pgff  fBmf     .
+
+[09-13]
+原文       挥 洒 汗 水 无 怨 无 悔 ， 全 力   奔 向 属 于 自 己 的 胜 利 终 点   与  灿 烂 荣 光 。
+冰雪健道（U357 21×21） hshea       sysh        ,  qrlli   bmxjv eyzj;          erll  kpdpa   yg_ cjlj  rpgt  .
+冰雪弎拼（U357 21×21） hsheu[3]    sysh        ,  qrll[3] bmxji eyzj        delao    kpdp[3] yg_ cjlj  rpgt  .
+冰雪简道（Overall-17 21×26） hshwaa      qyqho       ,  qtlii   bjxle wyzj;          wnli  fdai    yv_ colo  rgii  .
+冰雪散拼（Overall-17 21×26） hshwia      qyqhe       ,  qtli[3] bxia  wyzj;          wnli  fkdpi   yv_ colo  rkgp  .
+冰雪键道　 hshea       wywh        ,  qtlki   bnxxv eyzj;          erlk  fydma   yl_ cflf  rygm  .
+冰雪三拼　 hsheu       wywh        ,  qtlk[3] bnxxv eyzj        deloa    fydmv   yl_ cflf  rygm  .
+
+[09-14]
+原文       无 论 前 方 道 阻 且 长 ， 只 要 永 不 停 下 奔 跑 的 脚 步 ， 终 能 冲 破 重 重 迷 雾 战 胜 困 难 ， 迎 来 属 于 胜 利 者 的 无 上 荣 耀 与  生 命 喝 彩 。 创 造 奇 迹 。
+冰雪健道（U357 21×21） shlb  qpfn  dzqwa       ,  kv    ypbh  ttxf  bpdjB          ,  kpnr  wppd  wwms        kekn        ,  ytlk  ehyg  elk;        seryii      yg_ ermt  hsck  .  wzqj        .
+冰雪弎拼（U357 21×21） shlb  qpfn  dzqwu       ,  kau   ypbh  ttxf  bpdjB          ,  kpnr  wppd  wwms        kekn        ,  ytlk  evu   elk;        serPy       yg_ ermt  hsck  .  wzqj        .
+冰雪简道（Overall-17 21×26） qult  qpjy  dzqvu       ,  fiys  ybtre    x_ bjps;    jdbu  ,  fknn  vkpm  vvmq        fwkn        ,  ylue  wuyv  wlf;        qwryii      yv_ wnmr  hco   .  vzqj        .
+冰雪散拼（Overall-17 21×26） qult  qpjy  dzqvau      ,  fiys  ybtra    x_ bjps;    jdbu  ,  fknn  vkpm  vvmq        fwkn        ,  yrlh  wuyv  wlf;        qwrye[3]    yv_ wnmr  hcau  .  vzqj        .
+冰雪键道　 wjlw  qmfp  dzqjau[2]   ,  fvi   yybj  tgxs  bpdjB          ,  fynra wyplo wwmwu       qekn        ,  yglh  evv   elf;        weryii      yl_ emu   hco   .  wzqj        .
+冰雪三拼　 wjlw  qmfp  dzJqju      ,  fkyz  yybj  tgxs  bpdjB          ,  fynrv wyplv wwmwii      qekn        ,  yglh  eiu   elf;        wJery       yl_ emo   hcu   .  wzqj        .
+
+====================================================================================================
+【篇 10】神韵双拼加持的键道与三拼实战评测赛文（输入法赛文·500 汉字）
+冰雪健道（U357 21×21）：按键 902；均码 1.8040；Space 25；1字 14.2%（覆盖 6.4%）；2字 60.6%（覆盖 54.8%）；3字 16.4%（覆盖 22.2%）；4字 7.5%（覆盖 13.6%）；5字+ 1.3%（覆盖 3.0%）。
+冰雪弎拼（U357 21×21）：按键 898；均码 1.7960；Space 26；1字 13.7%（覆盖 6.2%）；2字 61.5%（覆盖 55.6%）；3字 15.9%（覆盖 21.6%）；4字 7.5%（覆盖 13.6%）；5字+ 1.3%（覆盖 3.0%）。
+冰雪简道（Overall-17 21×26）：按键 929；均码 1.8580；Space 30；1字 13.7%（覆盖 6.2%）；2字 59.3%（覆盖 53.6%）；3字 19.5%（覆盖 26.4%）；4字 7.1%（覆盖 12.8%）；5字+ 0.4%（覆盖 1.0%）。
+冰雪散拼（Overall-17 21×26）：按键 925；均码 1.8500；Space 28；1字 13.4%（覆盖 6.0%）；2字 58.9%（覆盖 52.8%）；3字 19.2%（覆盖 25.8%）；4字 8.0%（覆盖 14.4%）；5字+ 0.4%（覆盖 1.0%）。
+冰雪键道：按键 890；均码 1.7800；Space 23；1字 14.2%（覆盖 6.4%）；2字 60.2%（覆盖 54.4%）；3字 17.3%（覆盖 23.4%）；4字 7.1%（覆盖 12.8%）；5字+ 1.3%（覆盖 3.0%）。
+冰雪三拼：按键 901；均码 1.8020；Space 23；1字 12.9%（覆盖 5.8%）；2字 61.6%（覆盖 55.2%）；3字 16.1%（覆盖 21.6%）；4字 8.0%（覆盖 14.4%）；5字+ 1.3%（覆盖 3.0%）。
+----------------------------------------------------------------------------------------------------
+[10-01]
+原文       清 晨 的 城 市 刚 刚 醒 来 ，
+冰雪健道（U357 21×21） qtwm;    wev   ggxi     lk ,
+冰雪弎拼（U357 21×21） qtwm;    wav   gNxl⇧E      ,
+冰雪简道（Overall-17 21×26） qrvj;    vw_   gy[   xrlh  ,
+冰雪散拼（Overall-17 21×26） qrvj;    vw_   gxlhu⇧E     ,
+冰雪键道　 qgjn;    jrek  ggxi     lh ,
+冰雪三拼　 qgjn  djeia    gPxl⇧E      ,
+
+[10-02]
+原文       街 边 的 小 店 打 开 卷 帘 门 ，
+冰雪健道（U357 21×21） jzbp;    xcdpi dwkk  jlmo     ,
+冰雪弎拼（U357 21×21） jzbp;    xcdpu diu   jlmv     ,
+冰雪简道（Overall-17 21×26） jzbp;    xddpi dakh  jlm[3]   ,
+冰雪散拼（Overall-17 21×26） jzbp;    xddpu dakh  jlm[3]   ,
+冰雪键道　 jdbm[2]; xcdmi dskh  jlmo     ,
+冰雪三拼　 jdbm[2]; xcdmu dvu   jlmi     ,
+
+[10-03]
+原文       第 一 班  公 交 车 从   路 口 慢 慢 开 过 。
+冰雪健道（U357 21×21） dlyl  bjv gjw_     c[2] lhkq  mmkov    gy .
+冰雪弎拼（U357 21×21） dlyl  bji gjw_     c[2] lhkq  mmkaa    gy .
+冰雪简道（Overall-17 21×26） diyi  boe gjv_     c[2] lukf  mmkh     gm .
+冰雪散拼（Overall-17 21×26） diyi  boi gjv_     c[2] lukf  mmkh     gm .
+冰雪键道　 dkyk  bfv gjjo     c[2] ljkd  mmko     gl .
+冰雪三拼　 dkyk  bfv gjjv     c[2] ljkd  moo   khgl  .
+
+[10-04]
+原文       有 人 拿 着 早 餐 赶 去 上 班 ， 有 人 沿 着 河 边 跑 步 ，
+冰雪健道（U357 21×21） yqrm  nwks  zfcj  gjqg  enbj  ,  yqrm  ykhboa      pfbh  ,
+冰雪弎拼（U357 21×21） yqrm  nwks  zci   gjqg  eia   ,  yqrm  ykhbov      pau   ,
+冰雪简道（Overall-17 21×26） yfrj  nafe  zcoi  goqv  wbie  ,  yfrj  yfhbao      pboi  ,
+冰雪散拼（Overall-17 21×26） yfrj  nafe  zcui  goqv  wbai  ,  yfrj  yfhbee      pbu   ,
+冰雪键道　 yr_   nsfe  zzcf  gfql  epbf  ,  yr_   yqhboa      pzbj  ,
+冰雪三拼　 yr_   nsfe  zcv   gfql  epbf  ,  yr_   yfhbai      pou   ,
+
+[10-05]
+原文       也 有 人 坐 在 窗 前 整 理 今 天 的 计 划 。
+冰雪健道（U357 21×21） yyrv     zzwqv       krll  jtdjH          .
+冰雪弎拼（U357 21×21） yyru     zzwqa       krll  jtdjH          .
+冰雪简道（Overall-17 21×26） yyr_     zzvqo       fnli  jtde     jh    .
+冰雪散拼（Overall-17 21×26） yyr_     zzvqa       fnli  jtde     jh    .
+冰雪键道　 yyr_     zzwq        qrlk  jtdjH          .
+冰雪三拼　 yyr_     zzwq        qrlk  jtdjH          .
+
+[10-06]
+原文       输 入 法 像  一 件 不 起 眼 的 小 工 具 ，
+冰雪健道（U357 21×21） erf_     xji yiu   bqyv[2];    xgjvi    ,
+冰雪弎拼（U357 21×21） erf_     xja yljpi bqyduu      xgjiu    ,
+冰雪简道（Overall-17 21×26） wrj_     xli yijpe bqyo;       xgjve    ,
+冰雪散拼（Overall-17 21×26） wrj_     xla yijpi bqyo;       xgjvi    ,
+冰雪键道　 erf_     xxi ykjmv bqyv[2];    xgjvi    ,
+冰雪三拼　 eou      xxo ykjmv bqyduu      xCgj     ,
+
+[10-07]
+原文       却 会 在 每 天 的 工 作 和 聊 天 里   反 复 出 现 ，
+冰雪健道（U357 21×21） qkhg  zmt[2];     gz_   h_ lctp  l[3] ffwxuv      ,
+冰雪弎拼（U357 21×21） qkhg  zmt[2];     gz_   h_ lctp  l[3] ffwxa[3]    ,
+冰雪简道（Overall-17 21×26） qghl  zmt[2];     gz_   h_ ldtp  l[3] jjvxeu      ,
+冰雪散拼（Overall-17 21×26） qghl  zmt[2];     gz_   h_ ldtp  l[3] jjvxu[3]    ,
+冰雪键道　 qhhb  zmt[2];     gi    h_ lctm  l[3] ffjxuv      ,
+冰雪三拼　 qhhb  zmt[2];     go    h_ lctm  l[3] ffjJx       ,
+
+[10-08]
+原文       速 度 和 准 确 往 往  来 自 长 期 形 成 的 习 惯 。
+冰雪健道（U357 21×21） shdh  h_ kbqk  snu[   lkzl  wnql  xw;      xlgx  .
+冰雪弎拼（U357 21×21） shdh  h_ kbqk  snsn   lkzl  wnql  xw;      xlgx  .
+冰雪简道（Overall-17 21×26） sd_   h_ ftqg  qy[3][ lhzi  vyqi  xrvn;    xigq  .
+冰雪散拼（Overall-17 21×26） sd_   h_ ftqg  qy[3][ lhzi  vyqi  xrvn;    xigq  .
+冰雪键道　 sov   h_ qwqh  wuu    lui   jpqk  xgjr;    xkgt  .
+冰雪三拼　 sjdj  h_ qwqh  wuu    loi   jpqk  xgjr  dxgia    .
+
+[10-09]
+原文       好 的 编 码 不 只 要 短    ， 还 要 让   手 指 移 动 自 然 ，
+冰雪健道（U357 21×21） h[2]; bpmw  b_ kv    dx[2] ,  hvi   r[3] ekydiv      zlrj  ,
+冰雪弎拼（U357 21×21） h[2]; bpmw  b_ kau   dxu   ,  hkyf  r[3] ekyduv      zva   ,
+冰雪简道（Overall-17 21×26） h[2]; bpma  b_ fiys  dq    ,  hhys  r[2] wfydei      zru   ,
+冰雪散拼（Overall-17 21×26） h[2]; bpma  b_ fiys  dq    ,  hhys  r[2] wfydue      zra   ,
+冰雪键道　 hu    bmms  b_ fvi   dt    ,  hvi   r[2] efydiv      zkrf  ,
+冰雪三拼　 h[2]; bmms  b_ fkyz  dt    ,  hhyz  r[2] efydui      zi    ,
+
+[10-10]
+原文       让   常 用 词 能 够 顺 手 打 出 ，
+冰雪健道（U357 21×21） r[3] wycu     nrgq  ebeq  dwwh  ,
+冰雪弎拼（U357 21×21） r[3] wyca     nrgq  ebeq  dwwh  ,
+冰雪简道（Overall-17 21×26） r[2] vyc[2]   nngf  wtwf  davu  ,
+冰雪散拼（Overall-17 21×26） r[2] vyc[2]   nngf  wtwf  davu  ,
+冰雪键道　 r[2] jycu     nua   ewed  dsjj  ,
+冰雪三拼　 r[2] jycoi    nrgd  ewed  dsjj  ,
+
+[10-11]
+原文       让   连 续 输 入 时 少 一 点 停 顿 。 测 试 一 套 方 案 时 ，
+冰雪健道（U357 21×21） r[3] laa   ereu     eydvi    ttdb  .  co    ytfrv       el ,
+冰雪弎拼（U357 21×21） r[3] lpxg  erea     eydiu    ttdb  .  ca    ytfra       el ,
+冰雪简道（Overall-17 21×26） r[2] lpxv  wrwi     wydpe    trdt  .  cwa   ytjxoe      wi ,
+冰雪散拼（Overall-17 21×26） r[2] lpxv  wrwi     wydpi    trdt  .  cwa   ytjxi       wi ,
+冰雪键道　 r[2] laa   ereu     eydvi    tgdw  .  coa   ytfPx       ek ,
+冰雪三拼　 r[2] lmxl  ereo     eydvu    tgdw  .  coo   ytfxov      ek ,
+
+[10-12]
+原文       不 能 只 看 几 个 漂 亮 的 编 码 ，
+冰雪健道（U357 21×21） ba    klkjo jlgs  pov;     bpmw  ,
+冰雪弎拼（U357 21×21） bhnr  klkji jlgs  paa;     bpmw  ,
+冰雪简道（Overall-17 21×26） bunn  fiko  jige  pl[3];   bpma  ,
+冰雪散拼（Overall-17 21×26） bunn  fiko  jige  pl[3];   bpma  ,
+冰雪键道　 ba    fkkf  jii   po;      bmms  ,
+冰雪三拼　 bi    fkkf  jou   poo;     bmms  ,
+
+[10-13]
+原文       也   要 看 普 通 句 子 里 面 真  正 需 要 多 少 按 键 。
+冰雪健道（U357 21×21） y[3] yfkj  pa    jgzl  lm_   kmkr   xy_   diu   rjjp  .
+冰雪弎拼（U357 21×21） y[3] yfkj  pi    jgzl  lm_   kmkr   xy_   dui   rjjp  .
+冰雪简道（Overall-17 21×26） yykoe      pt_   jvzi  limp  fj_ fxys     dmws  xojp  .
+冰雪散拼（Overall-17 21×26） yykoa      pt_   jvzi  limp  fjfn   xydwii      xojp  .
+冰雪键道　 yykvia     pa    jlzk  lv    qnqr   xvi   di    xfjm  .
+冰雪三拼　 yykou      pvu   jlzk  lou   qnqr   xov   du    xfjm  .
+
+[10-14]
+原文       词 库 越 大 ， 可 选 的 分 词 就 越 多 ，
+冰雪健道（U357 21×21） clkh  ykdw  ,  ksxr;    fmclu jydvu    ,
+冰雪弎拼（U357 21×21） clkh  ykdw  ,  ksxr;    fmcli jydaa    ,
+冰雪简道（Overall-17 21×26） ciku  ygda  ,  kext;    jjciu jydm     ,
+冰雪散拼（Overall-17 21×26） ciku  ygda  ,  kext;    jjcii jydm     ,
+冰雪键道　 ckkj  yhds  ,  kext;    fncku jydvu    ,
+冰雪三拼　 ckkj  yhds  ,  kext;    fnckv jydoo    ,
+
+[10-15]
+原文       但  最 短 的 分 词 未 必 总 是 最 容 易 用 ，
+冰雪健道（U357 21×21） dj_ zgdx;    fmclu sebl  zoi   zry_     yp ,
+冰雪弎拼（U357 21×21） dj_ zdu;     fmcli sebl  zpel  zry_     yp ,
+冰雪简道（Overall-17 21×26） do_ zldq;    jjciu qwbi  zkwi  zry_     yk ,
+冰雪散拼（Overall-17 21×26） do_ zdau;    jjcii qwbi  zkwi  zry_     yk ,
+冰雪键道　 df_ zbdt;    fncku wwbk  zo    zry_     yy ,
+冰雪三拼　 df_ zbdt;    fnckv wwbk  zyek  zry_     yy ,
+
+[10-16]
+原文       也 未 必 符 合 真 实 使 用 习 惯 。
+冰雪健道（U357 21×21） ysbvoa   fiv   kmelu eyxguo[2]   .
+冰雪弎拼（U357 21×21） ysbaua   fvv   kmeli eyxgav      .
+冰雪简道（Overall-17 21×26） yqbiea   juhe  fjwiu wyxgou[2]   .
+冰雪散拼（Overall-17 21×26） yqbia    juhe  fjwii wyxgue      .
+冰雪键道　 ywbvoa   fh_   qneku eyxguo[2]   .
+冰雪三拼　 ywbouo   fh_   qnekv eyxgoi      .
+
+[10-17]
+原文       因 此 这 次 比 较 只  把 总  按 键 数 作 为 目 标 ，
+冰雪健道（U357 21×21） yc_   kscl  bljc  kl_ bwzp   rjeioi   zsmb        ,
+冰雪弎拼（U357 21×21） yc_   kscl  bau   kl_ bwzp   rJje[3]  zsmb        ,
+冰雪简道（Overall-17 21×26） ycci  fco   bijd  fi_ bazk   xjwui    zqmb        ,
+冰雪散拼（Overall-17 21×26） ycci  fc[3] bijd  fi_ bazk   xjwua    zqmb        ,
+冰雪键道　 yc_   fov   bkjc  fko bszy   xjeioi   zwmb        ,
+冰雪三拼　 yc_   fco   bou   fkbs   zy_ xjeJo    zwmb        ,
+
+[10-18]
+原文       把 每 个 空 格 和 每 次 按 下 换 挡 键 都   单 独 算 作 一 次 。
+冰雪健道（U357 21×21） bmgui    kpgs  h_ mov   rjxf  hdjiii   d[2] djdh  sxzy  yov   .
+冰雪弎拼（U357 21×21） bmguu    kpgs  h_ mau   rjxf  hdjua    d[2] djdh  sxzy  yca   .
+冰雪简道（Overall-17 21×26） bmge     kkge  h_ mwci  xoxk  hdjpi    d[2] dodu  sqzm  yici  .
+冰雪散拼（Overall-17 21×26） bmge     kkge  h_ mwci  xoxk  hdjpu    d[2] dodu  sqzm  yici  .
+冰雪键道　 bmgui    kyge  h_ mov   xfxs  hdjiii   d[2] dfdj  stzl  yov   .
+冰雪三拼　 bmguu    kyge  h_ mou   xfxs  hdjuo    d[2] dfdj  stzl  yco   .
+
+[10-19]
+原文       遇 到 可 以 由  后 续 的 按 键 顶  出 的 编 码 ，
+冰雪健道（U357 21×21） ygdf  ka    yfi hqxg;    rjjp  dt_ w[2]; bpmw  ,
+冰雪弎拼（U357 21×21） ygdf  ku    yqv hqxg;    rjjp  dt_ w[2]; bpmw  ,
+冰雪简道（Overall-17 21×26） ydi   kyyfae    hfxv;    xojp  dr_ v;    bpma  ,
+冰雪散拼（Overall-17 21×26） yvds  kyyfuu    hfxv;    xojp  dr_ v;    bpma  ,
+冰雪键道　 yldz  ka    ydi hdxl;    xfjm  dgv jj;   bmms  ,
+冰雪三拼　 yldz  ku    ydi hdxl;    xfjm  dgu jj;   bmms  ,
+
+[10-20]
+原文       就 不 额 外 加 入 空 格 ，
+冰雪健道（U357 21×21） jdbh  rssk  jfrh  kpgs  ,
+冰雪弎拼（U357 21×21） jdbh  rssk  jfrh  kpgs  ,
+冰雪简道（Overall-17 21×26） jxbu  xeqh  jkru  kkge  ,
+冰雪散拼（Overall-17 21×26） jxbu  xeqh  jkru  kkge  ,
+冰雪键道　 jqbj  xewh  jsrj  kyge  ,
+冰雪三拼　 jqbj  xewh  jsrj  kyge  ,
+
+[10-21]
+原文       遇 到 不 能 安 全  顶  出 的 编 码 ，
+冰雪健道（U357 21×21） ygdf  ba    rjqr   dt_ w[2]; bpmw  ,
+冰雪弎拼（U357 21×21） ygdf  b_ nrqi      dt_ w[2]; bpmw  ,
+冰雪简道（Overall-17 21×26） ydi   bnxo     qt_ dr_ v;    bpma  ,
+冰雪散拼（Overall-17 21×26） yvds  b_ nxqti     dr_ v;    bpma  ,
+冰雪键道　 yldz  ba    xiv    dgv jj;   bmms  ,
+冰雪三拼　 yldz  bi    xfqt   dgu jj;   bmms  ,
+
+[10-22]
+原文       则 用 空 格 明 确 上 屏 。
+冰雪健道（U357 21×21） zsyp  kpgs  mvu   enpt  .
+冰雪弎拼（U357 21×21） zsyp  kpgs  mtqk  enpt  .
+冰雪简道（Overall-17 21×26） zeyk  kkge  mqo   wypri .
+冰雪散拼（Overall-17 21×26） zeyk  kkge  mqe   wypra .
+冰雪键道　 zeyy  kyge  mvu   eppgi .
+冰雪三拼　 zeyy  kyge  mgqh  eppgo .
+
+[10-23]
+原文       这 样 得 到 的 结 果 更 接 近 连 续 跟 打  时 的 理 论 底 线 ，
+冰雪健道（U357 21×21） ksyn  dddjG          gjji     laa   gmdwoi el;   loa   dlxp  ,
+冰雪弎拼（U357 21×21） ksyn  dddjG          gjjia    lpxg  gmdwi  el;   lau   dlxp  ,
+冰雪简道（Overall-17 21×26） feyy  deds;    jzgm  gjjci    lpxv  gjdaoi wi;   lilt  dixp  ,
+冰雪散拼（Overall-17 21×26） feyy  deds  djgme    gjjc[3]  lpxv  gjdaiu wi;   lilt  dixp  ,
+冰雪键道　 fv    dddjG          gjji     laa   gndso  ek;   loa   dkxm  ,
+冰雪三拼　 qoo   dddjG          gjjvo    lmxl  gndsv  ek;   lklw  dkxm  ,
+
+[10-24]
+原文       同 时 保 留 了 可 以 人 工 检 查 的 编 码 路 径 。
+冰雪健道（U357 21×21） te[3] bfld/    ka    rgjw;          bpmw  lhjt  .
+冰雪弎拼（U357 21×21） tev   bfld/    ku    rgjw;          bpmw  lhjt  .
+冰雪简道（Overall-17 21×26） twi   bl[3]/   keyi  rgjv;          bpma  ljou  .
+冰雪散拼（Overall-17 21×26） twe   bl[3]/   keyi  rgjv;          bpma  lujr  .
+冰雪键道　 toi   bzlq/    ka    rgjw;          bmms  ljjg  .
+冰雪三拼　 tii   bzlq/    ku    rgjw;          bmms  ljjg  .
+
+[10-25]
+原文       四 种 方 案 使 用 同  一 段 文 字 ，
+冰雪健道（U357 21×21） slkp  fo    elyp  tpi ydszu       ,
+冰雪弎拼（U357 21×21） slkp  fai   eau   tpo ydsza       ,
+冰雪简道（Overall-17 21×26） sifk  jyxo  wiyk  tk_ ydqzou      ,
+冰雪散拼（Overall-17 21×26） sifk  jyxo  wiyk  tko ydqzie[2]   ,
+冰雪键道　 skfy  foo   ey_   ty_ ydwzu       ,
+冰雪三拼　 skfy  fpxf  ey_   ty_ ydwz[3]     ,
+
+[10-26]
+原文       标 点 位 置 完 全 相 同 ，
+冰雪健道（U357 21×21） bcdp  sekl  sqxt        ,
+冰雪弎拼（U357 21×21） bcdp  sekl  sqxt        ,
+冰雪简道（Overall-17 21×26） bddp  qfii  qqxt        ,
+冰雪散拼（Overall-17 21×26） bddp  qfa   qqxt        ,
+冰雪键道　 bcdm  wia   wqxt        ,
+冰雪三拼　 bcdm  wwfk  wqxt        ,
+
+[10-27]
+原文       但  它 们   会   选 择 不 同 长 度 的 词  ，
+冰雪健道（U357 21×21） dj_ twmmo   h[3] xzbti       wndh;    clo ,
+冰雪弎拼（U357 21×21） dj_ to      h[3] xv    bv    wndh  dscl   ,
+冰雪简道（Overall-17 21×26） do_ tamjo   hxze[3]    b_ tvdu     deci   ,
+冰雪散拼（Overall-17 21×26） do_ tamj[3] hxze[3]    b_ tvdu     dco    ,
+冰雪键道　 df_ tsmno   h[3] xzbti       jpdj;    cko ,
+冰雪三拼　 df_ tav     h[3] xzbti       jpdj  deck   ,
+
+[10-28]
+原文       有 的 偏 爱 二 字 词 ， 有 的 更 适 合 三 字 或  四 字 词 。
+冰雪健道（U357 21×21） y[2]; pprk  rzco     ,  y[2]; gehu     sjzl  hy_ szc      .
+冰雪弎拼（U357 21×21） y[2]; pprk  rzca     ,  y[2]; geha     sjzl  hy_ szc      .
+冰雪简道（Overall-17 21×26） y[2]; ppxh  xzc[3]   ,  y[2]; gwhe     sozi  hm_ szc      .
+冰雪散拼（Overall-17 21×26） y[2]; ppxh  xzc[3]   ,  y[2]; gwhe     sozi  hm_ szc      .
+冰雪键道　 yui   pmxh  xzco     ,  yui   gehu     sfzk  hl_ szc      .
+冰雪三拼　 y[2]; pmxh  xzc[3]   ,  y[2]; geho     sfzk  hl_ szc      .
+
+[10-29]
+原文       把 这 些 编 码 放 在 原 句 下 面 ，
+冰雪健道（U357 21×21） bkx_     bpmw  fzo   yrjgv xm    ,
+冰雪弎拼（U357 21×21） bkx_     bpmw  fza   yrjgv xm    ,
+冰雪简道（Overall-17 21×26） bfx_     bpma  jyzh  ytjv  xkmp  ,
+冰雪散拼（Overall-17 21×26） bfx_     bpma  jyzh  ytjv  xkmp  ,
+冰雪键道　 bfx_     bmms  fpzh  ytjl  xvu   ,
+冰雪三拼　 bfx_     bmms  fpzh  ytjl  xsmm  ,
+
+[10-30]
+原文       可 以 直 观 看 出 哪 里 节 省 了 按 键 ，
+冰雪健道（U357 21×21） ka    klgx  kai   nwllo jzer/    rjjp  ,
+冰雪弎拼（U357 21×21） ku    klgx  kia   nuu   jzer/    rjjp  ,
+冰雪简道（Overall-17 21×26） keyi  fgua  kovu  nalio jzwn/    xojp  ,
+冰雪散拼（Overall-17 21×26） keyi  fgei  kovu  naliu jzwn/    xojp  ,
+冰雪键道　 ka    fkgt  kai   nslko jder/    xfjm  ,
+冰雪三拼　 ku    fkgt  kvo   nuu   jder/    xfjm  ,
+
+[10-31]
+原文       哪 里 因 为 编 码 冲 突 需 要 多 一 次 确 认 。
+冰雪健道（U357 21×21） nwllo you   bpmw  wpth  xy_   dycvo    qkrm  .
+冰雪弎拼（U357 21×21） nuu   ya    bpmw  wpth  xy_   dycii    qkrm  .
+冰雪简道（Overall-17 21×26） nalio yqi   bpma  vktu  xvys  dycieu   qgrj  .
+冰雪散拼（Overall-17 21×26） naliu yqi   bpma  vktu  xvys  dyciii   qgrj  .
+冰雪键道　 nslko yo    bmms  wytj  xvi   dycvo    qhrn  .
+冰雪三拼　 nuu   yov   bmms  wytj  xov   dycvv    qhrn  .
+
+[10-32]
+原文       平 均 长 度 只 是 一 个 汇 总 数 字 ，
+冰雪健道（U357 21×21） pjwdv       keygo       hgzp  ezo   ,
+冰雪弎拼（U357 21×21） pjwdi       keyga       hzu   eza   ,
+冰雪简道（Overall-17 21×26） pjvdoe      fwygi       hlzk  wz    ,
+冰雪散拼（Overall-17 21×26） pjvdee      fwygu       hlzk  wz    ,
+冰雪键道　 pjjdvo      feygo       hzeooa   zk ,
+冰雪三拼　 pjjdvi      feygo       hzeuoo   zk ,
+
+[10-33]
+原文       真 正 影 响 手 感 的 还 有 左 右 手 分 布 ， 连 续 按 键 ，
+冰雪健道（U357 21×21） kkyxvo      eqgj;    hv    zyevi    fmbh  ,  laa   rjjp  ,
+冰雪弎拼（U357 21×21） kMkyxa      eqgj;    huv   zyeau    fmbh  ,  lpxg  rjjp  ,
+冰雪简道（Overall-17 21×26） ffyxoe      wfgo;    hhyf  zywf     jjbu  ,  lpxv  xojp  ,
+冰雪散拼（Overall-17 21×26） ffyxiu      wfgo;    hhyf  zywf     jjbu  ,  lpxv  xojp  ,
+冰雪键道　 qnqr  yxo   edgf;    hv    zyevi    fnbj  ,  laa   xfjm  ,
+冰雪三拼　 qqyxou      edgf;    hu    zyeou    fnbj  ,  lmxl  xfjm  ,
+
+[10-34]
+原文       跨  排  移 动 以 及 记 忆 负 担 。
+冰雪健道（U357 21×21） kco pki yldpu yu    jlyl  fhdj  .
+冰雪弎拼（U357 21×21） kca pku yldpv yv    jlyl  fhdj  .
+冰雪简道（Overall-17 21×26） kxo phi ydu   yj_   jiyi  judo  .
+冰雪散拼（Overall-17 21×26） kxa phe yde   yj_   jiyi  judo  .
+冰雪键道　 kqo ph_ ykdy  yj_   jkyk  fjdf  .
+冰雪三拼　 kqo ph_ ykdy  yj_   jkyk  fjdf  .
+
+[10-35]
+原文       若  把 这 些 因 素 也 加 入 目 标 函 数 ，
+冰雪健道（U357 21×21） ry_ bkx_     ybsh  yjra     mbhev       ,
+冰雪弎拼（U357 21×21） ry_ bkx_     ybsh  yjriu    mbhei       ,
+冰雪简道（Overall-17 21×26） rm_ bfx_     ycsu  yjrua    mbhwo       ,
+冰雪散拼（Overall-17 21×26） rm_ bfx_     ycsu  yjrui    mbhwa       ,
+冰雪键道　 rl_ bfx_     ybsj  yjra     mbhev       ,
+冰雪三拼　 rl_ bfx_     ybsj  yjrvu    mbhev       ,
+
+[10-36]
+原文       最 佳 分 词 可 能 会 发 生 变 化 ，
+冰雪健道（U357 21×21） zgjf  fmclu knh_     febh        ,
+冰雪弎拼（U357 21×21） zgjf  fmcli knh_     febh        ,
+冰雪简道（Overall-17 21×26） zljk  jjciu knh_     jwbh        ,
+冰雪散拼（Overall-17 21×26） zljk  jjcii knh_     jwbh        ,
+冰雪键道　 zbjs  fncku knh_     febh        ,
+冰雪三拼　 zbjs  fnckv knh_     febh        ,
+
+[10-37]
+原文       不 过 本 次 先  把 问 题 限 定 在 最 少 按 键 。
+冰雪健道（U357 21×21） bg_   bmcl  xpbw   st_   xpdt  z_ zgef  rjjp  .
+冰雪弎拼（U357 21×21） bg_   bmcl  xpbw   st_   xpdt  z_ zgef  rjjp  .
+冰雪简道（Overall-17 21×26） bge   bjci  xp_ bqt_     xpdr  z_ zlws  xojp  .
+冰雪散拼（Overall-17 21×26） bga   bjci  xp_ bqt_     xpdr  z_ zlws  xojp  .
+冰雪键道　 bv    bnck  xmbs   wo    xmdg  z_ zbez  xfjm  .
+冰雪三拼　 bjgl  bnck  xmbs   wi    xmdg  z_ zbez  xfjm  .

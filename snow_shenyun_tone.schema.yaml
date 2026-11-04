@@ -5,12 +5,13 @@ __include: snow_shenyun_common.yaml:/
 
 schema:
   schema_id: snow_shenyun_tone
-  name: 冰雪神韵·调
+  name: 冰雪散拼
   version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     AUBBBB 飞花式 21×26 顶功方案
+    “散拼”取“形散神不散”：不使用字形辅码，保留声调与笔画辅码
     共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局；单字首 B 为声调，后续 B 为笔画，1 独立进入部首码
     单字 AU 后依次追加声调和最多三笔画；二／三／四字词调辅字位顺序：12/21/13
   dependencies:

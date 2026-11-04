@@ -38,10 +38,10 @@ REFERENCES = {
     "sanpin": ("s005-sanpin", "12/213/23"),
 }
 NAMES = {
-    "21x21-keytao": "冰雪键道",
-    "21x21-sanpin": "冰雪三拼",
-    "21x26-keytao": "冰雪神韵·形",
-    "21x26-sanpin": "冰雪神韵·调",
+    "21x21-keytao": "冰雪健道",
+    "21x21-sanpin": "冰雪弎拼",
+    "21x26-keytao": "冰雪简道",
+    "21x26-sanpin": "冰雪散拼",
     "b04-keytao": "首道 B04·形",
     "b04-sanpin": "首道 B04·调",
     "s005-keytao": "S005 键道",

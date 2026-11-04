@@ -33,10 +33,14 @@
 | 全称 | 简称 | schema_id |
 | --- | --- | --- |
 | 冰雪四拼 | 四拼 | `snow_sipin` |
-| 冰雪三拼 | 三拼 | `snow_sanpin` |
+| 冰雪弎拼 | 弎拼 | `snow_sanpin` |
 | 冰雪一拼 | 一拼 | `snow_yipin` |
-| 冰雪键道 | 键道 | `snow_jiandao` |
+| 冰雪健道 | 健道 | `snow_jiandao` |
 | 冰雪清韵 | 清韵 | `snow_qingyun` |
+| 冰雪简道 | 简道 | `snow_shenyun_shape` |
+| 冰雪散拼 | 散拼 | `snow_shenyun_tone` |
+| 冰雪键道 | 键道 | `snow_jiandao_classic` |
+| 冰雪三拼 | 三拼 | `snow_sanpin_classic` |
 
 对话和报告里称呼方案时，优先用全称（冰雪四拼），其次用简称（四拼），再次用完整的 schema_id（`snow_sipin`）。不要用不带 `snow_` 前缀的 `sipin` 之类，除非是在引用代码或命令参数。
 
@@ -58,11 +62,11 @@ bun run --cwd scripts check:format    # 检查格式
 | 脚本与参数 | 输入与用途 | 默认输出 |
 | --- | --- | --- |
 | `generate-pinyin-dict.ts [输出文件]` | `data/tygf-pinyin.tsv` 与 `lib/character-pinyin.ts` 中固定版本的在线大字集拼音 | `snow_pinyin.dict.yaml` |
-| `check-pinyin-dict.ts` | 离线检查单字词典全部读音在五个方案中的完整音节编码，异常时退出失败 | 不写文件 |
+| `check-pinyin-dict.ts` | 离线检查单字词典全部读音在九个发布方案中的完整音节编码，异常时退出失败 | 不写文件 |
 | `generate-word-dicts.ts [base ext tencent] [--output-dir 目录]` | 雾凇子模块 `deps/rime-ice/cn_dicts/` 与当前单字词典；省略词库名时生成三份 | `snow_pinyin.*.dict.yaml`；未确定读音写入 `diff/` |
 | `generate-english-dict.ts [输入文件] [输出文件]` | 默认读取 `deps/rime-easy-en/easy_en.dict.yaml` | `snow_yingpin.dict.yaml` |
 | `generate-stroke-dict.ts <输入文件> [输出文件]` | 外部三列笔画 TSV，格式见「笔画与地区字形」 | `snow_bihua.dict.yaml` |
-| `generate-radical-codes.ts [输出目录]` | `data/radicals.tsv` 与冰雪四拼、冰雪三拼的拼写规则 | `lua/snow/radical_sipin.txt`、`radical_sanpin.txt` |
+| `generate-radical-codes.ts [输出目录]` | `data/radicals.tsv` 与冰雪四拼、冰雪弎拼的拼写规则 | `lua/snow/radical_sipin.txt`、`radical_sanpin.txt` |
 | `annotate-words.ts <词表> [输出文件]` | 每行一个词，可带后续 TSV 列；优先查现有词典，缺词时调用注音库 | `output/annotated-words.tsv` |
 | `export-user-dict.ts <用户词典快照> [输出文件]` | 读取 Rime 文本快照，按使用次数排序 | `output/user-dict.tsv`（词、编码、次数三列） |
 | `export-character-codes.ts [输出文件]` | 冰雪四拼单字评测码表，需联网下载大字集拼音 | `output/character-codes.tsv` |
@@ -81,13 +85,13 @@ bun run --cwd scripts check:format    # 检查格式
 
 ### 实验工具
 
-`scripts/experiments/` 依赖自行提供的外部语料，不参与发布：`generate-sanpin-shortcuts.ts <词频表> [输出文件]` 生成冰雪三拼简词候选，默认写入 `output/sanpin-shortcuts.tsv`；`frequency/derive-character-frequency.ts <语料目录> [输出文件]` 推导单字剩余词频，`frequency/resegment-word-frequency.ts <语料目录> <玲珑词表> [输出文件]` 重新分词。具体输入文件约定见各脚本。
+`scripts/experiments/` 依赖自行提供的外部语料，不参与发布：`generate-sanpin-shortcuts.ts <词频表> [输出文件]` 生成冰雪弎拼简词候选，默认写入 `output/sanpin-shortcuts.tsv`；`frequency/derive-character-frequency.ts <语料目录> [输出文件]` 推导单字剩余词频，`frequency/resegment-word-frequency.ts <语料目录> <玲珑词表> [输出文件]` 重新分词。具体输入文件约定见各脚本。
 
 ## 实际目录
 
 外部 Rime 方案子模块统一放在 `deps/`：雾凇拼音为 `deps/rime-ice`，英文词库为 `deps/rime-easy-en`，部件全拼为 `deps/rime-radical-pinyin`。
 
-部件全拼反查依赖子模块 `deps/rime-radical-pinyin`，首次克隆或更新依赖后运行 `git submodule update --init deps/rime-radical-pinyin`。发布、功能测试和性能测试会把其中的 `radical_pinyin.schema.yaml`、`radical_pinyin.dict.yaml` 复制到独立方案目录的根目录；不要手改或提交根目录里的副本。冰雪四拼、冰雪三拼和冰雪键道与笔画反查共用 `u` 和 `stroke` 标签，冰雪清韵与拼音、笔画反查共用反引号和 `pinyin` 标签；`lookup_pinyin` 为这些候选显示拼音。冰雪一拼不接入部件反查。
+部件全拼反查依赖子模块 `deps/rime-radical-pinyin`，首次克隆或更新依赖后运行 `git submodule update --init deps/rime-radical-pinyin`。发布、功能测试和性能测试会把其中的 `radical_pinyin.schema.yaml`、`radical_pinyin.dict.yaml` 复制到独立方案目录的根目录；不要手改或提交根目录里的副本。冰雪四拼、冰雪弎拼和冰雪健道与笔画反查共用 `u` 和 `stroke` 标签，冰雪清韵与拼音、笔画反查共用反引号和 `pinyin` 标签；`lookup_pinyin` 为这些候选显示拼音。冰雪一拼不接入部件反查。
 
 `~/.local/share/fcitx5/rime` 里的 `snow_*.schema.yaml`、`snow_*.dict.yaml`、`snow_*.fixed.txt`、`lua/snow` 都是指回本仓库的软链，**没有「同步」这一步**：改哪边都是改同一份文件，`git pull` 后重新部署即可。
 
@@ -127,7 +131,7 @@ bun scripts/version.ts          # 查看当前版本
 
 ## 笔画与地区字形
 
-笔画反查和冰雪四拼、冰雪三拼的笔画辅助码共用 `snow_bihua.dict.yaml`，由外部三列笔画表生成，不要手改。冰雪键道、冰雪一拼的部件辅助码及冰雪清韵的形码不使用此表。
+笔画反查和冰雪四拼、冰雪弎拼的笔画辅助码共用 `snow_bihua.dict.yaml`，由外部三列笔画表生成，不要手改。冰雪健道、冰雪一拼的部件辅助码及冰雪清韵的形码不使用此表。
 
 在所用方案的 `*.custom.yaml` 中选择字形来源，重新部署即可生效，无需重新生成词典：
 
@@ -148,21 +152,21 @@ patch:
 
 `bun scripts/benchmark-latency.ts --ci` 执行五方案统一发布预算（`scripts/lib/latency-budget.ts` 中的 `LATENCY_BUDGET`）：P50 < 10 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；每场景及按键位置的 P99 也须 < 50 ms，首次反馈最大值 < 100 ms。不得按方案放宽标准或用低耗时的并击按下、松开事件稀释反馈分布。CI 和发布共用 `.github/workflows/latency.yml`，发布必须依赖门禁成功。
 
-测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。日常用 `scripts/test.ts`，五个方案并行，全部跑完约 40 秒；失败时只打印失败用例，完整输出留在它给出的临时目录里：
+测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。日常用 `scripts/test.ts`，九个发布方案并行；失败时只打印失败用例，完整输出留在它给出的临时目录里：
 
 ```sh
-bun scripts/test.ts                  # 全部五个方案
+bun scripts/test.ts                  # 全部九个发布方案
 bun scripts/test.ts yipin qingyun    # 只跑指定方案，snow_ 前缀可省
 ```
 
-`generate-pinyin-dict.ts` 在写文件前校验全部输入读音；`scripts/test.ts`、CI 和发布流程也会离线检查现有词典在全部五个方案中的完整音节编码。各方案的正则定义在 `scripts/lib/pinyin-validation.ts`，依据 `../input` 中对应的拼写教程：冰雪四拼为声码加一至二码韵母加调码，冰雪三拼为声韵调三码，冰雪键道为声韵两码，冰雪清韵为声码加九键韵码，冰雪一拼为声介加可省略的韵基加四声标记。检查展开实际方案的拼写规则及引用，保留完整音节的 `derive` 分支，不检查 `abbrev`、简码、顶功或其他输入规则；字母伪音节不属于汉字音节，予以跳过。更新词典或拼写运算后运行 `bun scripts/check-pinyin-dict.ts`；结构异常应修正来源或运算，不应为已有异常放宽正则。
+`generate-pinyin-dict.ts` 在写文件前校验全部输入读音；`scripts/test.ts`、CI 和发布流程也会离线检查现有词典在全部九个发布方案中的完整音节编码。各方案的正则定义在 `scripts/lib/pinyin-validation.ts`，依据 `../input` 中对应的拼写教程及经典快照：冰雪四拼为声码加一至二码韵母加调码，冰雪弎拼与冰雪三拼为声韵调三码，冰雪健道与冰雪键道为声韵两码，冰雪简道与冰雪散拼为 21×26 声韵两码，冰雪清韵为声码加九键韵码，冰雪一拼为声介加可省略的韵基加四声标记。检查展开实际方案的拼写规则及引用，保留完整音节的 `derive` 分支，不检查 `abbrev`、简码、顶功或其他输入规则；字母伪音节不属于汉字音节，予以跳过。更新词典或拼写运算后运行 `bun scripts/check-pinyin-dict.ts`；结构异常应修正来源或运算，不应为已有异常放宽正则。
 
 `scripts/test.ts` 为每个方案准备一份独立环境，这几步都是为了提速或者能并行，不要省掉：
 
 - **精简的源目录**：mira 的每个 deploy 都会把整个 `source_dir`（spec 里写的是 `..`，也就是整个仓库，带 `.git`、`node_modules`、`cache`，约 1 GB）复制一遍。脚本只复制 `git ls-files -co --exclude-standard` 列出的文件，相当于 CI 的全新 checkout。本机的 `*.userdb`、`user.yaml` 自然被排除在外，不用再 `rm -rf *.userdb`。
-- **`default.custom.yaml` 只留被测方案**：否则每个 deploy 都要检查 `schema_list` 里的全部五个方案。这两项加起来，每个 deploy 从约 4 秒降到约 1.4 秒。
+- **`default.custom.yaml` 只留被测方案**：否则每个 deploy 都要检查 `schema_list` 里的全部九个发布方案。这两项加起来可显著缩短部署时间。
 - **独立的 `TMPDIR`**：mira 的工作目录写死为 `$TMPDIR/mira`，启动时整个删掉，两个 mira 同时跑会互相删目录然后崩溃。
-- **独立的缓存副本**：`-C` 指向的 staging 目录不能共用。带 `patch` 的 deploy（冰雪三拼、冰雪键道的 `sentence`，冰雪四拼的 `special`）会把改过的方案编译进缓存，改了词典后几个进程还会同时重建同一份 `.bin`。脚本先把仓库的 `cache/` 复制给每个方案，跑完再把更新过的文件写回去。
+- **独立的缓存副本**：`-C` 指向的 staging 目录不能共用。带 `patch` 的 deploy（冰雪弎拼、冰雪健道的 `sentence`，冰雪四拼的 `special`）会把改过的方案编译进缓存，改了词典后几个进程还会同时重建同一份 `.bin`。脚本先把仓库的 `cache/` 复制给每个方案，跑完再把更新过的文件写回去。
 
 只调一个 deploy 时直接用 mira 的 `-R` 更快，但这会用仓库本身作 `source_dir`，所以要自己清词频，同时也不能有别的 mira 在跑：
 
@@ -188,13 +192,13 @@ mira -C cache -R '^popping$' spec/snow_sipin.test.yaml
 
 本地神韵布局的英数字母入口与上游保持同一结构：键道使用 `辅音+c`、`x+元音韵键`，三拼沿用同一二键基码并追加轻声键 `o`。键道和三拼共用 `snow_jiandao_jianpin` 棱镜。当前大字集使 `tco`、`hco`、`xko` 分别与 `tiao5`、`hua5`、`xi5` 重合，字母固顶必须保持在这些读音之前；其余 23 个三拼字母全码为空槽。
 
-冰雪键道和冰雪三拼的三字及以上简拼都留在 `abc` 段，由 `table_like.jianpin` 查询；不要给冰雪键道恢复无前缀的 `recognizer/patterns/jianpin`、`affix_segmentor@jianpin` 和 `script_translator@jianpin`，否则输入第三个声母时会重分段并产生明显延迟。
+冰雪健道和冰雪弎拼的三字及以上简拼都留在 `abc` 段，由 `table_like.jianpin` 查询；不要给冰雪健道恢复无前缀的 `recognizer/patterns/jianpin`、`affix_segmentor@jianpin` 和 `script_translator@jianpin`，否则输入第三个声母时会重分段并产生明显延迟。
 
 改字母规则时，要同步修改两个方案的 `speller/algebra`、共享棱镜、两个 fixed 表及其生成器。英数混输回归统一以 `dlxm` 检查「哆啦A梦」。
 
 ## lua 的三处坑
 
-- **代理码路径必须走 `snow.prepare`，不要自己 yield。** 冰雪三拼的 `table_like.lua` 把输入改写成代理码（`dlxm` → `dl xm`、补 `?`）再查词，librime 会把补出来的 ` ` `?` `~` 算进 quality，`snow.prepare` 负责把这部分虚高和 `_end` 一起修正回来。
+- **代理码路径必须走 `snow.prepare`，不要自己 yield。** 冰雪弎拼的 `table_like.lua` 把输入改写成代理码（`dlxm` → `dl xm`、补 `?`）再查词，librime 会把补出来的 ` ` `?` `~` 算进 quality，`snow.prepare` 负责把这部分虚高和 `_end` 一起修正回来。
 - **`fini` 里不能读 `env.engine.schema`。** librime 切换方案时先换 `schema_` 再销毁旧组件，`fini` 读到的是新方案的 `schema_id`。`snow.get_db` / `release_db` 按方案名引用计数，名字要在 `init` 里记到 `env` 上（如 `env.user_dict_name`），`fini` 用记下的那个。记错名字时旧方案的 LevelDB 会一直占着 `LOCK`，表现为同步时「刚切走的那个方案」报 `Error opening db ... already held by process`。
 - **`LevelDb(name)` 建的库会被 Rime 同步当成用户词典。** 键必须是 `编码 \t词` 形式（恰好一个 `\t`，前面带空格），否则快照导出时被丢掉；值必须是 `c=… d=… t=…`，否则合并时被改写成 0。合并对同一个键取 `c` 的最大值，所以要跨设备同步的计数应带上 installation_id 且只增不减，参见 `statistics.lua`。
 
@@ -266,7 +270,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 
 ## processors 顺序
 
-五个顶功方案（冰雪四拼、冰雪三拼、冰雪一拼、冰雪键道、冰雪清韵）共用一套相对顺序，新增或移动处理器时按下表对齐：
+九个发布方案共用一套相对顺序，新增或移动处理器时按下表对齐；方案专属组件仍按表中注释增减：
 
 ```yaml
   processors:
@@ -311,7 +315,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 
 ### 验证
 
-改动 processors 后跑全部五份 spec：
+改动 processors 后跑全部九份发布方案 spec：
 
 ```sh
 bun scripts/test.ts
@@ -333,9 +337,9 @@ bun scripts/test.ts
 
   translators:
     - punct_translator
-    - <主翻译器>                           # script_translator；冰雪三拼用 *snow.table_like*t12
-    - <方案专属副翻译器>                    # 冰雪键道、冰雪清韵的 script_translator@<方案>、
-                                          # 冰雪三拼的 *snow.table_like*jianpin
+    - <主翻译器>                           # script_translator；冰雪弎拼用 *snow.table_like*t12
+    - <方案专属副翻译器>                    # 冰雪健道、冰雪清韵的 script_translator@<方案>、
+                                          # 冰雪弎拼的 *snow.table_like*jianpin
     - table_translator@stroke             # 冰雪一拼无
     - table_translator@radical            # 冰雪一拼无；与笔画共用反查入口
     - script_translator@pinyin            # 冰雪一拼无
@@ -350,7 +354,7 @@ bun scripts/test.ts
   filters:
     - lua_filter@*snow.placeholder        # 冰雪一拼无
     - lua_filter@*snow.bihua              # 冰雪一拼无；按词典语言名筛选笔画，须在反查过滤器之前
-    - lua_filter@*snow.enforce            # 仅冰雪键道
+    - lua_filter@*snow.enforce            # 仅冰雪健道
     - reverse_lookup_filter@lookup_pinyin # 冰雪一拼无
     - reverse_lookup_filter@lookup_<方案>  # 冰雪一拼、冰雪清韵无
     - lua_filter@*snow.fix

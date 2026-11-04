@@ -5,6 +5,8 @@ import { rootPath } from "./paths";
 import { plainSyllable, readShapeCodes, toneOf } from "../固顶编译器";
 
 export type BenchmarkSchemeId =
+	| "classic-tone"
+	| "classic-shape"
 	| "u357-tone"
 	| "u357-shape"
 	| "overall17-tone"
@@ -18,6 +20,7 @@ export interface BenchmarkScheme {
 	name: string;
 	shortName: string;
 	capacity: BenchmarkCapacity;
+	soundLayout: "classic" | "u357" | "overall17";
 	auxiliaryMode: BenchmarkAuxiliaryMode;
 	fixedFile: string;
 	auxiliaryOrder: string;
@@ -32,44 +35,76 @@ export interface BenchmarkCode {
 export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "u357-shape",
-		name: "冰雪键道（U357 21×21）",
-		shortName: "冰雪键道",
+		name: "冰雪健道（U357 21×21）",
+		shortName: "冰雪健道",
 		capacity: "21x21",
+		soundLayout: "u357",
 		auxiliaryMode: "shape",
 		fixedFile: "snow_jiandao.fixed.txt",
 		auxiliaryOrder: "12/231/24",
 	},
 	{
 		id: "u357-tone",
-		name: "冰雪三拼（U357 21×21）",
-		shortName: "冰雪三拼",
+		name: "冰雪弎拼（U357 21×21）",
+		shortName: "冰雪弎拼",
 		capacity: "21x21",
+		soundLayout: "u357",
 		auxiliaryMode: "tone",
 		fixedFile: "snow_sanpin.fixed.txt",
 		auxiliaryOrder: "12/213/23",
 	},
 	{
 		id: "overall17-shape",
-		name: "冰雪神韵·形（Overall-17 21×26）",
-		shortName: "冰雪神韵·形",
+		name: "冰雪简道（Overall-17 21×26）",
+		shortName: "冰雪简道",
 		capacity: "21x26",
+		soundLayout: "overall17",
 		auxiliaryMode: "shape",
 		fixedFile: "snow_shenyun_shape.fixed.txt",
 		auxiliaryOrder: "12/21/42",
 	},
 	{
 		id: "overall17-tone",
-		name: "冰雪神韵·调（Overall-17 21×26）",
-		shortName: "冰雪神韵·调",
+		name: "冰雪散拼（Overall-17 21×26）",
+		shortName: "冰雪散拼",
 		capacity: "21x26",
+		soundLayout: "overall17",
 		auxiliaryMode: "tone",
 		fixedFile: "snow_shenyun_tone.fixed.txt",
 		auxiliaryOrder: "12/21/13",
 	},
 ] as const;
 
+export const LEGACY_BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
+	{
+		id: "classic-shape",
+		name: "冰雪键道",
+		shortName: "冰雪键道",
+		capacity: "21x21",
+		soundLayout: "classic",
+		auxiliaryMode: "shape",
+		fixedFile: "snow_jiandao_classic.fixed.txt",
+		auxiliaryOrder: "12/231/24",
+	},
+	{
+		id: "classic-tone",
+		name: "冰雪三拼",
+		shortName: "冰雪三拼",
+		capacity: "21x21",
+		soundLayout: "classic",
+		auxiliaryMode: "tone",
+		fixedFile: "snow_sanpin_classic.fixed.txt",
+		auxiliaryOrder: "12/213/23",
+	},
+] as const;
+
+export const ALL_BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
+	...BENCHMARK_SCHEMES,
+	...LEGACY_BENCHMARK_SCHEMES,
+];
+
 const schemesById = new Map(
-	BENCHMARK_SCHEMES.map((scheme) => [scheme.id, scheme]),
+	ALL_BENCHMARK_SCHEMES.map((scheme) => [scheme.id, scheme]),
 );
 const semantics = {
 	"21x21": loadAuxiliarySemantics("21x21"),
@@ -82,6 +117,17 @@ const overall17Algebra = new SpellingAlgebra(
 	rootPath("snow_shenyun_common.yaml"),
 	"shenyun_algebra",
 	{ derive: false },
+);
+const classicAlgebra = new SpellingAlgebra(
+	rootPath(
+		"scripts",
+		"data",
+		"legacy-schemes",
+		"3658e22",
+		"schemas",
+		"snow_sanpin.schema.yaml",
+	),
+	"sanpin_algebra",
 );
 
 const shapeElementKeys = new Map<string, string>();
@@ -118,11 +164,25 @@ function schemeById(id: BenchmarkSchemeId): BenchmarkScheme {
 	return scheme;
 }
 
-function soundCode(scheme: BenchmarkScheme, syllable: string): string | null {
+function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
 	const plain = plainSyllable(syllable);
-	if (scheme.capacity === "21x21") return u357Mapping.codes[plain] ?? null;
+	if (scheme.soundLayout === "u357") {
+		const code = u357Mapping.codes[plain];
+		return code ? [code] : [];
+	}
+	if (scheme.soundLayout === "classic") {
+		const tone = toneOf(syllable) ?? "1";
+		return [
+			...new Set(
+				classicAlgebra
+					.applyAll(`${plain}${tone}`)
+					.filter((code) => /^[a-z]{3}$/u.test(code))
+					.map((code) => code.slice(0, 2)),
+			),
+		];
+	}
 	const code = overall17Algebra.apply(`${plain}1`);
-	return /^[a-z]{2}$/u.test(code) ? code : null;
+	return /^[a-z]{2}$/u.test(code) ? [code] : [];
 }
 
 function remapShapeCode(code: string, capacity: BenchmarkCapacity): string {
@@ -183,6 +243,27 @@ function mainCode(scheme: BenchmarkScheme, sounds: string[]): string | null {
 		.join("");
 }
 
+function mainCodes(scheme: BenchmarkScheme, sounds: string[]): string[] {
+	const base = mainCode(scheme, sounds);
+	if (!base) return [];
+	if (scheme.capacity !== "21x21" || sounds.length < 3 || sounds.length > 4)
+		return [base];
+	const result = new Set<string>();
+	for (let mask = 0; mask < 1 << 3; mask += 1) {
+		result.add(
+			sounds
+				.map((sound, index) => {
+					const initial = sound[0].toLowerCase();
+					return index < 3 && (mask & (1 << index)) !== 0
+						? initial + sound[1].toUpperCase()
+						: initial;
+				})
+				.join(""),
+		);
+	}
+	return [...result];
+}
+
 function auxiliarySequences(
 	scheme: BenchmarkScheme,
 	word: string,
@@ -194,7 +275,9 @@ function auxiliarySequences(
 		}
 		const tone = toneOf(syllables[0]);
 		const toneKey = tone
-			? semantics[scheme.capacity].toneKeysByTone[Number(tone) - 1]
+			? scheme.soundLayout === "classic"
+				? "viuoa"[Number(tone) - 1]
+				: semantics[scheme.capacity].toneKeysByTone[Number(tone) - 1]
 			: undefined;
 		if (!toneKey) return [[]];
 		const strokes = strokeCodes(word, scheme.capacity);
@@ -214,9 +297,10 @@ function auxiliarySequences(
 	return [
 		positions.map((position) => {
 			const tone = toneOf(syllables[position - 1] ?? "");
-			return tone
-				? (semantics[scheme.capacity].toneKeysByTone[Number(tone) - 1] ?? "")
-				: "";
+			if (!tone) return "";
+			return scheme.soundLayout === "classic"
+				? ("viuoa"[Number(tone) - 1] ?? "")
+				: (semantics[scheme.capacity].toneKeysByTone[Number(tone) - 1] ?? "");
 		}),
 	];
 }
@@ -229,36 +313,48 @@ export function pronunciationCodes(
 	if ([...word].length !== syllables.length || syllables.length === 0)
 		return [];
 	const scheme = schemeById(id);
-	const sounds = syllables.map((syllable) => soundCode(scheme, syllable));
-	if (sounds.some((code) => !code)) return [];
-	const main = mainCode(scheme, sounds as string[]);
-	if (!main) return [];
 	const result = new Map<string, BenchmarkCode>();
-	if (syllables.length === 1) {
-		result.set(main.slice(0, 1), {
-			code: main.slice(0, 1),
-			mainLength: 1,
-			auxiliaryLength: 0,
-		});
+	let soundCombinations: string[][] = [[]];
+	for (const syllable of syllables) {
+		const alternatives = soundCodes(scheme, syllable);
+		if (alternatives.length === 0) return [];
+		soundCombinations = soundCombinations.flatMap((prefix) =>
+			alternatives.map((code) => [...prefix, code]),
+		);
 	}
-	if (scheme.capacity === "21x26" && syllables.length === 3) {
-		result.set(main.slice(0, 3), {
-			code: main.slice(0, 3),
-			mainLength: 3,
-			auxiliaryLength: 0,
-		});
-	}
-	result.set(main, { code: main, mainLength: main.length, auxiliaryLength: 0 });
-	for (const sequence of auxiliarySequences(scheme, word, syllables)) {
-		let code = main;
-		for (const auxiliary of sequence) {
-			if (!auxiliary) break;
-			code += auxiliary;
-			result.set(code, {
-				code,
+	for (const sounds of soundCombinations) {
+		for (const main of mainCodes(scheme, sounds)) {
+			if (syllables.length === 1) {
+				result.set(main.slice(0, 1), {
+					code: main.slice(0, 1),
+					mainLength: 1,
+					auxiliaryLength: 0,
+				});
+			}
+			if (scheme.capacity === "21x26" && syllables.length === 3) {
+				result.set(main.slice(0, 3), {
+					code: main.slice(0, 3),
+					mainLength: 3,
+					auxiliaryLength: 0,
+				});
+			}
+			result.set(main, {
+				code: main,
 				mainLength: main.length,
-				auxiliaryLength: code.length - main.length,
+				auxiliaryLength: 0,
 			});
+			for (const sequence of auxiliarySequences(scheme, word, syllables)) {
+				let code = main;
+				for (const auxiliary of sequence) {
+					if (!auxiliary) break;
+					code += auxiliary;
+					result.set(code, {
+						code,
+						mainLength: main.length,
+						auxiliaryLength: code.length - main.length,
+					});
+				}
+			}
 		}
 	}
 	return [...result.values()];
@@ -271,10 +367,7 @@ export function isPoppableCode(
 	const scheme = schemeById(id);
 	if (code.auxiliaryLength > 0) return true;
 	if (scheme.capacity === "21x26") return code.mainLength >= 4;
-	const mainKeys = new Set([..."bpmfdtnlgkhjqxzcsrwye"]);
-	return (
-		code.mainLength >= 4 && [...code.code].every((key) => mainKeys.has(key))
-	);
+	return /^(?:[bpmfdtnlgkhjqxzcsrwye][A-Z]?){4}$/u.test(code.code);
 }
 
 export function isPoppableFixedCode(

@@ -60,7 +60,7 @@
   },
   "cases": {
     "21x21-keytao": {
-      "name": "冰雪键道",
+      "name": "冰雪健道",
       "v5PolicyProjectedToCkt51": "12/231/24",
       "word3Contract": "AAA+BBB",
       "robustPolicy": "12/231/24",
@@ -312,7 +312,7 @@
       }
     },
     "21x21-sanpin": {
-      "name": "冰雪三拼",
+      "name": "冰雪弎拼",
       "v5PolicyProjectedToCkt51": "12/213/23",
       "word3Contract": "AAA+BBB",
       "robustPolicy": "12/213/23",
@@ -564,7 +564,7 @@
       }
     },
     "21x26-keytao": {
-      "name": "冰雪神韵·形",
+      "name": "冰雪简道",
       "v5PolicyProjectedToCkt51": "12/21/42",
       "word3Contract": "AAAU+BB",
       "robustPolicy": "12/21/14",
@@ -816,7 +816,7 @@
       }
     },
     "21x26-sanpin": {
-      "name": "冰雪神韵·调",
+      "name": "冰雪散拼",
       "v5PolicyProjectedToCkt51": "12/21/13",
       "word3Contract": "AAAU+BB",
       "robustPolicy": "12/21/13",
@@ -2078,25 +2078,25 @@
   },
   "comparisonToCkt5Robust": {
     "21x21-keytao": {
-      "name": "冰雪键道",
+      "name": "冰雪健道",
       "ckt5RobustPolicy": "12/23/24",
       "ckt51RobustPolicy": "12/231/24",
       "change": "third auxiliary appended; first two unchanged"
     },
     "21x21-sanpin": {
-      "name": "冰雪三拼",
+      "name": "冰雪弎拼",
       "ckt5RobustPolicy": "12/21/23",
       "ckt51RobustPolicy": "12/213/23",
       "change": "third auxiliary appended; first two unchanged"
     },
     "21x26-keytao": {
-      "name": "冰雪神韵·形",
+      "name": "冰雪简道",
       "ckt5RobustPolicy": "12/21/14",
       "ckt51RobustPolicy": "12/21/14",
       "change": "unchanged"
     },
     "21x26-sanpin": {
-      "name": "冰雪神韵·调",
+      "name": "冰雪散拼",
       "ckt5RobustPolicy": "12/21/13",
       "ckt51RobustPolicy": "12/21/13",
       "change": "unchanged"

@@ -1,0 +1,54 @@
+{
+	"sourceCommit": "3658e22a151cfaa703a68e3a47a16101efd88e42",
+	"migrationCommit": "b8fd127da9ecb14d07da1ce9a680ca92d91837f0",
+	"purpose": "reproducible benchmark fixtures for the last complete Snow KeyTao and Snow Three-Code version before the Shenyun double-pinyin migration",
+	"releaseSchemas": true,
+	"sharedCurrentInputs": [
+		"snow_pinyin*.dict.yaml",
+		"snow_jiandao_chaifen.dict.yaml",
+		"lua/snow/radical_jiandao.txt",
+		"snow_bihua.dict.yaml"
+	],
+	"files": {
+		"fixed/snow_jiandao.fixed.txt": {
+			"gitBlob": "4dc944f29044b59958af7f6172a09f1bb4f11cd1",
+			"sha256": "7e8b40035899496927009ccd38e17791c9e98d7ced83f2131282ca482279892e"
+		},
+		"fixed/snow_sanpin.fixed.txt": {
+			"gitBlob": "4e9ccefb41c4379c894413022cebbd482f2778a8",
+			"sha256": "925dc30bad1b2b3ca2516e50b50336bb3306bc161726869def31f831ca0cad40"
+		},
+		"lua/snow/fix.lua": {
+			"gitBlob": "76dcbd8b9ee12ef7452c3e84e1016af1b4a06a2d",
+			"sha256": "089e680e75ebb1857bbc8bace424fb0ab2ebc983cc53322a55a40740c942f5ed"
+		},
+		"lua/snow/popping.lua": {
+			"gitBlob": "83362ee78ed786d258b9936e35f555139af11adb",
+			"sha256": "01223599070bc62549194c060194cc00324a663cb023e835c89fd1f4c7afac0c"
+		},
+		"lua/snow/postpone.lua": {
+			"gitBlob": "50710f716022d9feadabac1199286aba0ac3b1b7",
+			"sha256": "219619fc7d51b531b2488d5d2ed22d9a162540c2d2b83e8ac1780e32e1f62f68"
+		},
+		"lua/snow/shape_filter.lua": {
+			"gitBlob": "7007df7b4d8f8c19d26ac97751eb7e60837b3a16",
+			"sha256": "22d320eacacbd482d02ba78629144a9f1397188bea4655ebcabc1aec09a7f1a8"
+		},
+		"lua/snow/table_like.lua": {
+			"gitBlob": "5ec9693e1abbc866b161260583de19e5e9979da7",
+			"sha256": "0ed0e283ff824f3262ffb80b4f6658302c2f0e38640476f12bf2eabffd325e16"
+		},
+		"schemas/snow_jiandao.schema.yaml": {
+			"gitBlob": "b94bd305359123da2b19a12832da5d248368d86f",
+			"sha256": "99b0abc26c34c404b407e093e054fc5679d58983eca57302cae306c1b5129707"
+		},
+		"schemas/snow_jiandao_jianpin.schema.yaml": {
+			"gitBlob": "78496828a90ba799786a4ee94ea3946ebc5ca0c0",
+			"sha256": "0e9390f83564d7fbe1f1e277292c320627274cb6bd000ac551d99e6207b886aa"
+		},
+		"schemas/snow_sanpin.schema.yaml": {
+			"gitBlob": "afe349c8833e52b28abbfcef97caf25ecb5404bc",
+			"sha256": "fd06216b7d466ea2b7b46b548c8780cc5efa9aee685d45f17c440bb233907444"
+		}
+	}
+}

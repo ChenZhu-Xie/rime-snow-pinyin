@@ -18,7 +18,7 @@ function filter.init(env)
   env.page_size = config:get_int("menu/page_size") or 5
   if config:get_bool("translator/enable_schema_user_dict") then
     -- 记下方案名，fini 时 engine.schema 已是新方案，见 snow.get_db 的注释
-    env.user_dict_name = env.engine.schema.schema_id
+    env.user_dict_name = config:get_string("translator/user_dict_name") or env.engine.schema.schema_id
     env.user_dict = snow.get_db(env.user_dict_name)
   end
 end

@@ -43,6 +43,7 @@ local sanpin_semantics = auxiliary_semantics["21x21"]
 local sanpin_stroke_map = {}
 ---@type table<string, string>
 local sanpin_tones = {}
+local classic_sanpin_tones = { v = "1", i = "2", u = "3", o = "4", a = "5" }
 for digit, key in pairs(sanpin_semantics.stroke_keys_by_digit) do
   sanpin_stroke_map[stroke_names[digit]] = key
 end
@@ -72,8 +73,8 @@ local sanpin_reverse_stroke_map, sanpin_direct_stroke_map = stroke_maps(sanpin_s
 ---@param shape_input string
 ---@param env ShapeFilterEnv
 ---@param candidate Candidate?
-local function sanpin_initial_pair_match(text, shape_input, env, candidate)
-  local tone = sanpin_tones[shape_input]
+local function sanpin_initial_pair_match(text, shape_input, env, candidate, classic)
+  local tone = (classic and classic_sanpin_tones or sanpin_tones)[shape_input]
   local prompt = tone and " 调[" .. shape_input .. "]" or nil
   if not tone or utf8.len(text) ~= 2 then
     return false, prompt, nil
@@ -97,7 +98,7 @@ local function sanpin_initial_pair_match(text, shape_input, env, candidate)
   return false, prompt, nil
 end
 
---- 冰雪四拼和冰雪三拼的笔画匹配函数
+--- 冰雪四拼和冰雪弎拼的笔画匹配函数
 --- @param text string
 --- @param partial_code string
 --- @param env ShapeFilterEnv
@@ -171,8 +172,8 @@ local function jiandao_encode(text, current, radicals_map, map, cache)
     -- 如果只有一个字符，直接返回对应的编码
     return codes[1] or "??"
   end
-  -- 普通词组取每个字的形码首码；二／三／四字最优前两辅为 12/23/24。
-  -- 三字词第三辅取剩余第一字；四字词按六码上限只使用前两辅。
+  -- 普通词组取每个字的形码首码；冰雪键道与冰雪健道
+  -- 共用二／三／四字 CKT v5.1 辅序 12/231/24。
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
   end
@@ -221,15 +222,20 @@ local function current_state(env)
   if id == "snow_sipin" then
     sipin_passthrough = shape_input:len() == 0
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrwyv][aeiou]{3}")
-  elseif id == "snow_sanpin" then
+  elseif id == "snow_sanpin" or id == "snow_sanpin_classic" then
     sanpin_initial_pair = shape_input:len() == 1
         and context:get_property("shape_status") == "initial_pair"
     sanpin_passthrough = shape_input:len() == 0
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]")
-  elseif id == "snow_jiandao" then
-    jiandao_active = shape_input:len() > 0
-        or current:find("[BPMFDTNLGKHJQXZCSRYWE]") ~= nil
-        or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe]{2,4}")
+  elseif id == "snow_jiandao" or id == "snow_jiandao_classic" then
+    if id == "snow_jiandao_classic" then
+      jiandao_active = shape_input:len() > 0
+          or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?")
+    else
+      jiandao_active = shape_input:len() > 0
+          or current:find("[BPMFDTNLGKHJQXZCSRYWE]") ~= nil
+          or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe]{2,4}")
+    end
   end
   return {
     id = id,
@@ -249,10 +255,10 @@ function filter.init(env)
   local config = env.engine.schema.config
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
   local id = env.engine.schema.schema_id
-  if id == "snow_sipin" or id == "snow_sanpin" then
+  if id == "snow_sipin" or id == "snow_sanpin" or id == "snow_sanpin_classic" then
     bihua.load_strokes(env)
   end
-  if id == "snow_sanpin" then
+  if id == "snow_sanpin" or id == "snow_sanpin_classic" then
     env.pinyin = ReverseLookup("snow_pinyin")
     env.memory = Memory(env.engine, env.engine.schema, "translator")
   end
@@ -279,9 +285,10 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
     else
       return stroke_match(text, shape_input, env, sipin_reverse_stroke_map, sipin_direct_stroke_map)
     end
-  elseif state.id == "snow_sanpin" then -- 冰雪三拼
+  elseif state.id == "snow_sanpin" or state.id == "snow_sanpin_classic" then -- 冰雪弎拼／冰雪三拼
     if state.sanpin_initial_pair then
-      return sanpin_initial_pair_match(text, shape_input, env, candidate)
+      return sanpin_initial_pair_match(
+        text, shape_input, env, candidate, state.id == "snow_sanpin_classic")
     end
     if state.sanpin_passthrough then
       return true, nil, nil
@@ -291,11 +298,10 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
     else
       return stroke_match(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map)
     end
-  elseif state.id == "snow_jiandao" then -- 冰雪键道
+  elseif state.id == "snow_jiandao" or state.id == "snow_jiandao_classic" then -- 冰雪健道／冰雪键道
     if state.is_pinyin or state.jiandao_active then
       local code = jiandao_encode(
-        text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache
-      )
+        text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache)
       local prompt = shape_input:len() > 0
           and (state.initial_pair and " 形[" .. shape_input .. "]" or " 形 [" .. shape_input .. "]") or nil
       local match = code == "" or code:sub(1, #shape_input) == shape_input

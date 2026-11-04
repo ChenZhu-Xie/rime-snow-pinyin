@@ -11,9 +11,9 @@ export interface LatencyCase {
 
 export const SCHEMA_NAMES: Record<string, string> = {
 	snow_sipin: "冰雪四拼",
-	snow_sanpin: "冰雪三拼",
+	snow_sanpin: "冰雪弎拼",
 	snow_yipin: "冰雪一拼",
-	snow_jiandao: "冰雪键道",
+	snow_jiandao: "冰雪健道",
 	snow_qingyun: "冰雪清韵",
 };
 

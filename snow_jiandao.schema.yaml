@@ -5,7 +5,7 @@ __include: snow_pinyin.schema.yaml:/
 
 schema:
   schema_id: snow_jiandao
-  name: 冰雪键道
+  name: 冰雪健道
   version: "0.3.13"
   author:
     - 吅吅大山
@@ -13,6 +13,7 @@ schema:
   description: |
     单字三码起顶、词组四码起顶的双拼词顶功方案
     双拼编码：无飞键道·神韵
+    “健”取健步、矫健之意，突出击键效率与人体工学
   dependencies:
     - snow_pinyin
     - radical_pinyin

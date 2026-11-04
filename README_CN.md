@@ -19,16 +19,22 @@
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通话拼音为基础的中文输入方案。它们充分利用汉字的字音信息来实现自然优雅的编码；它们使用先进的离散优化技术和顶功技术来设计，使得编码十分高效；它们配备了智能算法，通过学习用户的语言习惯来个性化输入体验。
 
-[冰雪拼音](https://input.tansongchen.com)包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪三拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)输入方案。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
+[冰雪拼音](https://input.tansongchen.com)的发布列表包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪弎拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪健道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)、[冰雪简道](snow_shenyun_shape.schema.yaml)、[冰雪散拼](snow_shenyun_tone.schema.yaml)，以及经典的[冰雪键道](snow_jiandao_classic.schema.yaml)和[冰雪三拼](snow_sanpin_classic.schema.yaml)。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
+
+四套双拼顶功方案按合同分为两组：21×21 的冰雪健道与冰雪弎拼中，“健”取健步、矫健之意，突出击键效率与人体工学；“弎”兼具“三”与繁体形意，表示可简繁通打。21×26 的冰雪简道与冰雪散拼中，“简道”强调记忆更简单（M=36、无飞键、无音节重码、无 630）；“散拼”取“形散神不散”，不使用字形辅码，但保留声调与笔画辅码。schema_id 为兼容既有用户配置保持不变。
+
+双拼迁移前最后一个完整版本 `3658e22` 的冰雪键道与冰雪三拼已作为[经典 benchmark 快照](scripts/data/legacy-schemes/3658e22/README.md)纳入仓库，包含当时的 schema、fixed 表和影响动态码长、首选后置、辅码过滤及顶功的 Lua 合同；两者也以独立 schema_id 进入发布列表，与四套现行方案共享系统词典及对应的现有用户词典，并可按同一模型独立复算。
+
+经典发布版只保留迁移前声韵布局，不冻结旧功能：冰雪键道与冰雪健道共用辅序 `12/231/24`，冰雪三拼与冰雪弎拼共用辅序 `12/213/23`；AA/AAB 动态空桶、三字及以上简拼大写补韵、630、字母、临时数字、生僻字补空及上游通用修复均按经典音码重新迁移，详见[上游迁移审计](reports/经典键道三拼上游迁移审计.md)。
 
 ### [神韵(Overall-17) 21×26 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)
 
-冰雪神韵·形二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`，冰雪神韵·调为 `12/21/13`；二／三／四字词均在四键主码后最多追加两辅。CKT v5.1 保留四码顶的两辅合同，第二辅后按选重计费；其宽网格稳健第一为形 `12/21/14`、调 `12/21/13`。
+冰雪简道二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`，冰雪散拼为 `12/21/13`；二／三／四字词均在四键主码后最多追加两辅。CKT v5.1 保留四码顶的两辅合同，第二辅后按选重计费；其宽网格稳健第一为形 `12/21/14`、调 `12/21/13`。
 
-冰雪神韵·形（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪神韵·调（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）共用 **[神韵(Overall-17) 21×26 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**。该方案出自[双拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿于提交 [`7a7e154`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)；[`2026-10-30-strict-d0-production-closure-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json)，本节映射与键盘图均以该定稿方案为准。
+冰雪简道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪散拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）共用 **[神韵(Overall-17) 21×26 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**。该方案出自[双拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿于提交 [`7a7e154`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)；[`2026-10-30-strict-d0-production-closure-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json)，本节映射与键盘图均以该定稿方案为准。
 
 > [!NOTE]
-> 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪神韵·调](snow_shenyun_tone.schema.yaml)的五调辅键，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的顺序排列。
+> 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪散拼](snow_shenyun_tone.schema.yaml)的五调辅键，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的顺序排列。
 
 **声韵辅-键 映射**
 
@@ -69,19 +75,19 @@
 | G | ve（üe） | B | vn |  |  |
 
 - [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 全覆盖且 399 个二键码全部唯一，21×26 共保留 147 个空码；[M-R2](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 为 36，普通声母仅 `f→J` 偏移，基础元音仅 `o→M` 偏移。
-- 冰雪神韵·形辅键为 `A/E/U/I/O`，冰雪神韵·调声调键为 `I/E/U/A/O → 一/二/三/四/轻`。
+- 冰雪简道辅键为 `A/E/U/I/O`，冰雪散拼声调键为 `I/E/U/A/O → 一/二/三/四/轻`。
 - 小写输入遵循飞花式顶功：单字为 `A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB`，即双拼主码后最多追加四辅；二／三／四字词的四键主码分别为 `A₁U₁A₂U₂`、`A₁A₂A₃U₃`、`A₁A₂A₃A₄`，主码后最多追加两辅，具体辅码字位顺序见本节首段。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若第三音节的 `AU` 为运行时空桶，三字词还可在三个声码后直接追加辅码。
 - 完成编码后按 `;` 或 `/` 会先顶出当前候选，再分别追加“的”或“了”，与 21×21 方案的强制上屏尾字键一致。
 - 两组 21×26 方案的空桶均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 `AU`，其中 134 个为空 `AA`、9 个为空 `AB`；单键只固顶一个一简字，其余候选先按词典权重排序，编码逐级延长时会将此前出现过的首选后置，因此字词可停在目标首次升为首选的最短合法编码，不必默认补满最长码。
 
 ### [无飞键道(U357) 21×21 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)
 
-冰雪键道的二／三／四字前两位形辅字位顺序为 `12/23/24`，冰雪三拼的前两位调码字位顺序为 `12/21/23`；运行时三字词按剩余字位补第三辅，四字词最多两辅。CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪键道 `12/231/24`、冰雪三拼 `12/213/23`；三字词第三辅后、四字词第二辅后按选重计费。
+冰雪健道的二／三／四字前两位形辅字位顺序为 `12/23/24`，冰雪弎拼的前两位调码字位顺序为 `12/21/23`；运行时三字词按剩余字位补第三辅，四字词最多两辅。CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪健道 `12/231/24`、冰雪弎拼 `12/213/23`；三字词第三辅后、四字词第二辅后按选重计费。
 
-[冰雪键道](https://input.tansongchen.com/snow-jiandao/)和[冰雪三拼](https://input.tansongchen.com/snow3/)现共用 **[无飞键道(U357) 21×21 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。该方案出自[双拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿于提交 [`11713b6`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)；[`2026-10-29-prodgate-directed-repair-final-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) 给出了 U=357 候选的搜索过程、完整映射、指标和投产推荐。本仓库采用并实现该候选，本节映射与键盘图均以报告中的 U=357 方案为准。
+[冰雪健道](https://input.tansongchen.com/snow-jiandao/)和[冰雪弎拼](https://input.tansongchen.com/snow3/)现共用 **[无飞键道(U357) 21×21 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。该方案出自[双拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿于提交 [`11713b6`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)；[`2026-10-29-prodgate-directed-repair-final-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) 给出了 U=357 候选的搜索过程、完整映射、指标和投产推荐。本仓库采用并实现该候选，本节映射与键盘图均以报告中的 U=357 方案为准。
 
 > [!NOTE]
-> 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五调辅键按照与[冰雪四拼](https://input.tansongchen.com/snow4/)相近的顺序排列。
+> 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪弎拼](https://input.tansongchen.com/snow3/)的五调辅键按照与[冰雪四拼](https://input.tansongchen.com/snow4/)相近的顺序排列。
 
 **声韵辅-键 映射**
 
@@ -187,7 +193,7 @@
 [^zh-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是冻结的公开击键当量＋几何模型历史轴；v4 在 v3 上补齐至对称的 20 合同。它们保留作模型敏感性对照，不覆盖 v5/v6/[CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)。
 [^zh-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在冻结 20 合同上只以 CKT 计时模型归一并取四次幂均值；分数越低越好，但不含候选名次决策成本。
 [^zh-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 排除抽象 S2，在 19 合同的 CKT 上加入 `150 ms × 非首选率`，以 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)＝10 归一化；是情景指数，不是真人标定速度。
-[^zh-rates]: 八轨综合率在冰雪键道／冰雪三拼各四条单字、二／三／四字词轨上按 `1:3:1:1` 加权，两种模式等权；“第一／第二辅键率”是进入相应辅键阶段的加权比例。
+[^zh-rates]: 八轨综合率在冰雪健道／冰雪弎拼各四条单字、二／三／四字词轨上按 `1:3:1:1` 加权，两种模式等权；“第一／第二辅键率”是进入相应辅键阶段的加权比例。
 [^zh-daily]: 日常指标在同一八场景、2149 击键文稿上回放纯双拼与标点；不含五辅键、空格和选重。移动手分数、同手率及有效距离都只在该冻结文稿和同一 [moving-hand](https://github.com/macroxue/shuangpin) 模型内比较。
 [^zh-load]: 负载指标先在每个冻结合同内合计相应键／手指，再取 20 合同峰值；`QAZ` 为左小指组，P 区沿用 `P[]\\;'/`，`TYB` 为双食指组。它们衡量最差合同负载，不等同日常平均。
 [^zh-home]: S2 主键区占比只看 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 裸声韵二键；“20 合同主键区下限”则取所有含辅字词合同的最低主行占比，二者不可混用。
@@ -196,9 +202,9 @@
 
 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 不是八条重码率的简单平均。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 虽在单字、二字词终局选重率略低，U357 在键道／三拼三字词却分别低约 `0.550/0.662` 个百分点，远大于二字词约 `0.066/0.068` 个百分点的劣势，再加上四字词优势，即使二字词权重为 3，八轨综合仍为 `1.443% < 1.532%`。主因是字词候选池的残余碰撞与排名；对 21×21 两方案，二字词与四字词共享联合池，三字词使用独立池。冻结主分实际纳入键道／三拼单字 `6,233/6,238` 条、二字词全量 `132,814` 条、三字词 99% 频率质量 `72,923` 条、四字词 99% 频率质量 `77,674` 条。[完整对比](reports/shenyun-comparison.md#ckt-v4-成本分解)给出逐轨贡献、语料规模、终局碰撞桶和 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 成本分解。
 
-日常八场景移动手分数不含五辅键、空格和选重。[无飞键道(U357) 21×21 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)的优势集中在记忆项、QAZ 左小指组峰值、合同主键区下限和日常文稿路径，TYB 双食指组峰值低于 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、高于 [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)；代价是音节重码与 P 区右小指负载。[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 领先不是同键域下的辅码胜负；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 才提供同键域直接参照。U357 是面向冰雪键道与冰雪三拼的综合折中，不是全指标支配；模型分数也不等同真人测速。
+日常八场景移动手分数不含五辅键、空格和选重。[无飞键道(U357) 21×21 双拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)的优势集中在记忆项、QAZ 左小指组峰值、合同主键区下限和日常文稿路径，TYB 双食指组峰值低于 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、高于 [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)；代价是音节重码与 P 区右小指负载。[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 领先不是同键域下的辅码胜负；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 才提供同键域直接参照。U357 是面向冰雪健道与冰雪弎拼的综合折中，不是全指标支配；模型分数也不等同真人测速。
 
-[完整公平对比](reports/shenyun-comparison.md)另列冰雪键道、冰雪三拼的八轨加权非首选率；[原始 JSON](reports/shenyun-comparison.json)可供机器复核。
+[完整公平对比](reports/shenyun-comparison.md)另列冰雪健道、冰雪弎拼的八轨加权非首选率；[原始 JSON](reports/shenyun-comparison.json)可供机器复核。
 
 ```powershell
 bun scripts/生成神韵键盘图.ts "路径/a7_CKT_R11.html"
@@ -214,7 +220,7 @@ bun scripts/导出神韵热力图.ts "路径/a7_CKT_R11.html" --21x26
 - `AA` 的 441 个位置由 366 个二码单字和 75 个二简完整覆盖；75 个二简全部使用 U357 扩展域的天然空码，不再让音码下沉。
 - 三拼 630 当前为 105 个二码位＋505 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
 - 三拼二字词二、三码候选清单见 [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)：630 个理论码位中 550 个有合法候选，每码最多列 10 项，供逐级选词复核，不直接替代一码一候选的固顶表。
-- 声声二字词入口改为运行时查询不含用户词典的系统词典，完整单字词频大于 1 才占桶，当前词典得到 80 个空 `AA`；冰雪三拼按词条实际读音的第二字声调筛选，冰雪键道按首字首形码筛选。
+- 声声二字词入口改为运行时查询不含用户词典的系统词典，完整单字词频大于 1 才占桶，当前词典得到 80 个空 `AA`；冰雪弎拼按词条实际读音的第二字声调筛选，冰雪健道按首字首形码筛选。
 - [二字词逐级排序结果](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音。
 - 多字轻声 `de/le` 尾词改走 `;`/`/` 尾字键；已有结构略码、完整码首选或日常收益不足的词不强占固顶位。
 
@@ -305,7 +311,8 @@ bun scripts/验证神韵双拼.ts
 - [神韵 R9 公平对比原始 JSON](reports/shenyun-r9-comparison.json)：上述对比的机器可复核数据快照。
 - [当前方案快捷键审计与上游对照](reports/shortcut-audit.md)：四个方案的共享、专属及相对上游变化的快捷键。
 - [四拼二字词逐级排序对神韵固顶的参考调研](reports/sipin-bigram-ranking-research.md)：以四拼逐级候选名次为键道、三拼固顶提供有限旁证，不把四拼视为 R9 的组成部分。
-- [神韵双拼八方案 500 字最短键码实战测评](reports/神韵双拼八方案_500字_最短键码实战测评.txt)：同一篇 500 字赛文下八条冻结或现行回放轨的实际按键比较。
+- [冰雪双拼十方案 500 字最短键码实战测评](reports/冰雪双拼十方案_500字_最短键码实战测评.txt)：同一篇 500 字赛文下六条仓库内可复算轨与四条外部对照轨的实际按键比较。
+- [冰雪双拼六方案 5000 字最优切分报告](reports/十篇五百字_六方案最优切分及字词比率报告.md)：十种文体共 5000 汉字的最短路径、选重、单字逐级升首选与词长分布审计。
 
 ### 关于词库的说明
 
@@ -326,16 +333,16 @@ bun scripts/验证神韵双拼.ts
 
 Recipe: ℞ **snow-pinyin**
 
-[Snow Pinyin](https://input.tansongchen.com) is a family of Mandarin-based Chinese input methods. It combines phonetic information, discrete optimization, top-up coding, and adaptive learning for natural, efficient, and personalized input. The family includes [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Three-Code](https://input.tansongchen.com/snow3/), [Snow One-Code](https://input.tansongchen.com/snow1/), [Snow KeyTao](https://input.tansongchen.com/snow-jiandao/), and [Snow Qingyun](https://input.tansongchen.com/snow-qingyun/).
+[Snow Pinyin](https://input.tansongchen.com) is a family of Mandarin-based Chinese input methods. It combines phonetic information, discrete optimization, top-up coding, and adaptive learning for natural, efficient, and personalized input. The release includes [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪弎拼](https://input.tansongchen.com/snow3/), [Snow One-Code](https://input.tansongchen.com/snow1/), [冰雪健道](https://input.tansongchen.com/snow-jiandao/), [Snow Qingyun](https://input.tansongchen.com/snow-qingyun/), [冰雪简道](snow_shenyun_shape.schema.yaml), [冰雪散拼](snow_shenyun_tone.schema.yaml), and the classic [冰雪键道](snow_jiandao_classic.schema.yaml) and [冰雪三拼](snow_sanpin_classic.schema.yaml).
 
 ### [Shenyun(Overall-17) 21×26 double pinyin](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)
 
-Snow Shenyun Shape currently uses first-two auxiliary-source orders `12/21/42` for two-/three-/four-character words, while Snow Shenyun Tone uses `12/21/13`; all three word lengths append at most two auxiliaries after their four-key main code. CKT v5.1 retains this two-auxiliary four-code-top contract and charges selection after the second auxiliary; its wide-grid robust policies are `12/21/14` for Shape and `12/21/13` for Tone.
+冰雪简道 currently uses first-two auxiliary-source orders `12/21/42` for two-/three-/four-character words, while 冰雪散拼 uses `12/21/13`; all three word lengths append at most two auxiliaries after their four-key main code. CKT v5.1 retains this two-auxiliary four-code-top contract and charges selection after the second auxiliary; its wide-grid robust policies are `12/21/14` for Shape and `12/21/13` for Tone.
 
-Snow Shenyun Shape ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and Snow Shenyun Tone ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) share **[Shenyun(Overall-17) 21×26 double pinyin](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**. The layout comes from the [Shuangpin Layout Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) branch `production/ckt-v4-2126-strict-d0-20261030` and was finalized in commit [`7a7e154`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md); [`2026-10-30-strict-d0-production-closure-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) records the search constraints, derivation, and winning mapping. This repository freezes it as [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json), and this section's mapping and keyboard figures use that finalized layout.
+冰雪简道 ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and 冰雪散拼 ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) share **[Shenyun(Overall-17) 21×26 double pinyin](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**. The layout comes from the [Shuangpin Layout Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) branch `production/ckt-v4-2126-strict-d0-20261030` and was finalized in commit [`7a7e154`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md); [`2026-10-30-strict-d0-production-closure-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) records the search constraints, derivation, and winning mapping. This repository freezes it as [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json), and this section's mapping and keyboard figures use that finalized layout.
 
 > [!NOTE]
-> Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Shenyun Tone](snow_shenyun_tone.schema.yaml)'s five tone auxiliary keys are arranged directly in the order of [Snow Four-Code](https://input.tansongchen.com/snow4/).
+> Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪散拼](snow_shenyun_tone.schema.yaml)'s five tone auxiliary keys are arranged directly in the order of [Snow Four-Code](https://input.tansongchen.com/snow4/).
 
 **Initial/final/auxiliary-key mapping**
 
@@ -355,12 +362,12 @@ Ordinary initials use their own letter except `f→J` and `zh/ch/sh→F/V/W`; ze
 
 ### [Wufei KeyTao(U357) 21×21 double pinyin](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)
 
-Snow KeyTao uses first-two shape-source orders `12/23/24` for two-/three-/four-character words; Snow Three-Code uses first-two tone-source orders `12/21/23`. At runtime, three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries. CKT v5.1 includes the third auxiliary in three-character-word optimization and scoring, giving full policies `12/231/24` for Snow KeyTao and `12/213/23` for Snow Three-Code; selection is charged after the third auxiliary for three-character words and after the second for four-character words.
+冰雪健道 uses first-two shape-source orders `12/23/24` for two-/three-/four-character words; 冰雪弎拼 uses first-two tone-source orders `12/21/23`. At runtime, three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries. CKT v5.1 includes the third auxiliary in three-character-word optimization and scoring, giving full policies `12/231/24` for 冰雪健道 and `12/213/23` for 冰雪弎拼; selection is charged after the third auxiliary for three-character words and after the second for four-character words.
 
-[Snow KeyTao](https://input.tansongchen.com/snow-jiandao/) and [Snow Three-Code](https://input.tansongchen.com/snow3/) now share **[Wufei KeyTao(U357) 21×21 double pinyin](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`. The layout comes from the [Shuangpin Layout Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) branch `production/ckt-v4-2121-strict-avuio-20261024` and was finalized in commit [`11713b6`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md); [`2026-10-29-prodgate-directed-repair-final-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) records the U=357 candidate's search, full mapping, metrics, and production recommendation. This repository implements that candidate, and this section's mapping and keyboard figures use the reported U=357 layout.
+[冰雪健道](https://input.tansongchen.com/snow-jiandao/) and [冰雪弎拼](https://input.tansongchen.com/snow3/) now share **[Wufei KeyTao(U357) 21×21 double pinyin](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`. The layout comes from the [Shuangpin Layout Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) branch `production/ckt-v4-2121-strict-avuio-20261024` and was finalized in commit [`11713b6`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md); [`2026-10-29-prodgate-directed-repair-final-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) records the U=357 candidate's search, full mapping, metrics, and production recommendation. This repository implements that candidate, and this section's mapping and keyboard figures use the reported U=357 layout.
 
 > [!NOTE]
-> Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [Snow Three-Code](https://input.tansongchen.com/snow3/)'s five tone auxiliary keys are arranged in an order similar to [Snow Four-Code](https://input.tansongchen.com/snow4/)'s.
+> Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪弎拼](https://input.tansongchen.com/snow3/)'s five tone auxiliary keys are arranged in an order similar to [Snow Four-Code](https://input.tansongchen.com/snow4/)'s.
 
 **Initial/final/auxiliary-key mapping**
 
@@ -441,7 +448,7 @@ The tables rank [Shenyun(Overall-17)](https://gitee.com/xie-chenzhu/shuangpin-la
 [^en-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) are frozen historical axes combining public keystroke equivalents and geometry; v4 extends v3 to symmetric 20-contract coverage. They are model-sensitivity references, not replacements for v5/v6/[CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md).
 [^en-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) aggregates CKT-only timing over the frozen 20 contracts with a fourth-power mean. It omits rank-dependent candidate-choice costs.
 [^en-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README.md) excludes abstract S2, adds `150 ms × non-first rate` to CKT over 19 contracts, and normalizes [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) to 10. It is a scenario index, not human-calibrated speed.
-[^en-rates]: Aggregate rates weight character/two-/three-/four-character tracks `1:3:1:1` within both Snow KeyTao and Snow Three-Code, with the two modes weighted equally. First-/second-auxiliary rates are the weighted proportions reaching those stages.
+[^en-rates]: Aggregate rates weight character/two-/three-/four-character tracks `1:3:1:1` within both 冰雪健道 and 冰雪弎拼, with the two modes weighted equally. First-/second-auxiliary rates are the weighted proportions reaching those stages.
 [^en-daily]: Daily metrics replay the same 2,149-keystroke eight-scenario corpus with double pinyin and punctuation, excluding the five auxiliaries, spaces, and selection. Score, same-hand rate, and effective distance are comparable only within that corpus and the same [moving-hand](https://github.com/macroxue/shuangpin) model.
 [^en-load]: Load metrics sum the responsible keys/finger inside each frozen contract, then take the peak over 20 contracts: `QAZ` is the left-pinky group, the P zone is `P[]\\;'/`, and `TYB` is the two-index-finger group. They measure worst-contract load, not daily average.
 [^en-home]: S2 home-row share covers only bare [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) sound pairs; the 20-contract home-row floor is the minimum across auxiliary-bearing character/word contracts. They are distinct metrics.
@@ -450,9 +457,9 @@ The tables rank [Shenyun(Overall-17)](https://gitee.com/xie-chenzhu/shuangpin-la
 
 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) is not a simple average of eight collision rates. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) is slightly better on terminal character and two-character-word selection, but U357 is about `0.550/0.662` percentage points better on KeyTao/Three-Code three-character words—far larger than its roughly `0.066/0.068`-point two-character deficits—and also leads on four-character words. Hence U357 still reaches `1.443%` versus [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)'s `1.532%` after the threefold two-character weight. Residual word-pool competition and rank are the main cause: for the two 21×21 layouts, two- and four-character words share joint pools, while three-character words use a separate pool. The frozen score includes `6,233/6,238` KeyTao/Three-Code character entries, all `132,814` two-character entries, `72,923` three-character entries covering 99% frequency mass, and `77,674` four-character entries covering 99%. The [full comparison](reports/shenyun-comparison.md#ckt-v4-成本分解) provides per-track contributions, corpus sizes, terminal collision buckets, and the [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) cost decomposition.
 
-The daily moving-hand score excludes the five auxiliary keys, spaces, and candidate selection. U357 leads in memory cost, the QAZ left-pinky-group peak, home-area floor, and the daily-prose path; its TYB peak is below [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) but above [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md), at the cost of more syllable collisions and higher P-zone right-pinky load. [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)'s [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) lead is therefore not an auxiliary-code contest within the same key domain; [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) supplies the direct same-domain baseline. U357 is a balanced choice for Snow KeyTao and Snow Three-Code, not an all-metric dominator, and model scores are not human typing-speed results.
+The daily moving-hand score excludes the five auxiliary keys, spaces, and candidate selection. U357 leads in memory cost, the QAZ left-pinky-group peak, home-area floor, and the daily-prose path; its TYB peak is below [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) but above [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md), at the cost of more syllable collisions and higher P-zone right-pinky load. [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)'s [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) lead is therefore not an auxiliary-code contest within the same key domain; [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) supplies the direct same-domain baseline. U357 is a balanced choice for 冰雪健道 and 冰雪弎拼, not an all-metric dominator, and model scores are not human typing-speed results.
 
-The [full comparison](reports/shenyun-comparison.md) also lists the eight weighted non-first rates for Snow KeyTao and Snow Three-Code; the [raw JSON](reports/shenyun-comparison.json) is machine-reviewable.
+The [full comparison](reports/shenyun-comparison.md) also lists the eight weighted non-first rates for 冰雪健道 and 冰雪弎拼; the [raw JSON](reports/shenyun-comparison.json) is machine-reviewable.
 
 ```powershell
 bun scripts/生成神韵键盘图.ts "path/to/a7_CKT_R11.html"
@@ -480,7 +487,7 @@ bun scripts/验证神韵双拼.ts
 [`reports/`](reports/) collects reproducible layout measurements, fixed-candidate evidence, and feature audits:
 
 - [Fixed-candidate corpus summary](reports/fixed-corpus-summary.md): public sources, independent families, missing inputs, and coverage of selected words.
-- [Shenyun versus original Snow KeyTao collision comparison](reports/shenyun-collision-comparison.md): two-character, four-character, and cross-length collisions from Top 500 through the full corpus.
+- [Shenyun versus original 冰雪健道 collision comparison](reports/shenyun-collision-comparison.md): two-character, four-character, and cross-length collisions from Top 500 through the full corpus.
 - [Shenyun R9 collision interpretation and design lessons](reports/shenyun-collision-design-notes.md): tradeoffs, structural causes, and implications for double-pinyin layout design.
 - [Shenyun R9 constrained fixed-candidate optimization](reports/shenyun-fixed-optimization.md): two-key abbreviations, AA characters, Three-Code/KeyTao 630 spaces, and redundancy constraints.
 - [Complete four-scheme Shenyun comparison](reports/shenyun-comparison.md): current [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md), ergonomics, and eight-track non-first rates against [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md).
@@ -489,7 +496,8 @@ bun scripts/验证神韵双拼.ts
 - [Raw Shenyun R9 comparison JSON](reports/shenyun-r9-comparison.json): machine-reviewable snapshot underlying the comparison.
 - [Shortcut audit and upstream comparison](reports/shortcut-audit.md): shared and scheme-specific shortcuts plus local changes from upstream.
 - [Four-Code staged bigram ranking study](reports/sipin-bigram-ranking-research.md): limited ranking evidence for KeyTao and Three-Code fixed candidates; Four-Code itself is not part of R9.
-- [Eight-scheme 500-character shortest-code replay](reports/神韵双拼八方案_500字_最短键码实战测评.txt): actual keystroke comparison over one shared 500-character text.
+- [Ten-scheme 500-character shortest-code replay](reports/冰雪双拼十方案_500字_最短键码实战测评.txt): actual keystroke comparison across six locally reproducible schemes and four external reference tracks.
+- [Six-scheme 5,000-character optimal-segmentation report](reports/十篇五百字_六方案最优切分及字词比率报告.md): shortest paths, selections, progressive single-character promotion, and word-length distributions across ten genres.
 
 ### Dictionaries
 
@@ -502,16 +510,16 @@ bun scripts/验证神韵双拼.ts
 
 配方： ℞ **snow-pinyin**
 
-[冰雪拼音](https://input.tansongchen.com)是一系列以普通話拼音為基礎的中文輸入方案，結合字音資訊、離散最佳化、頂功技術與使用習慣學習，提供自然、高效且個人化的輸入體驗。系列包含[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪三拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)及[冰雪清韻](https://input.tansongchen.com/snow-qingyun/)。
+[冰雪拼音](https://input.tansongchen.com)是一系列以普通話拼音為基礎的中文輸入方案，結合字音資訊、離散最佳化、頂功技術與使用習慣學習，提供自然、高效且個人化的輸入體驗。發布列表包含[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪弎拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪健道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韻](https://input.tansongchen.com/snow-qingyun/)、[冰雪簡道](snow_shenyun_shape.schema.yaml)、[冰雪散拼](snow_shenyun_tone.schema.yaml)，以及經典的[冰雪鍵道](snow_jiandao_classic.schema.yaml)與[冰雪三拼](snow_sanpin_classic.schema.yaml)。
 
 ### [神韻(Overall-17) 21×26 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)
 
-冰雪神韻·形二／三／四字詞當前運行的前兩輔字位順序為 `12/21/42`，冰雪神韻·調為 `12/21/13`；二／三／四字詞均在四鍵主碼後最多追加兩輔。CKT v5.1 保留四碼頂的兩輔合同，第二輔後按選重計費；其寬網格穩健第一為形 `12/21/14`、調 `12/21/13`。
+冰雪簡道二／三／四字詞當前運行的前兩輔字位順序為 `12/21/42`，冰雪散拼為 `12/21/13`；二／三／四字詞均在四鍵主碼後最多追加兩輔。CKT v5.1 保留四碼頂的兩輔合同，第二輔後按選重計費；其寬網格穩健第一為形 `12/21/14`、調 `12/21/13`。
 
-冰雪神韻·形（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪神韻·調（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）共用 **[神韻(Overall-17) 21×26 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**。該方案出自[雙拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿於提交 [`7a7e154`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)；[`2026-10-30-strict-d0-production-closure-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json)，本節映射與鍵盤圖均以該定稿方案為準。
+冰雪簡道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪散拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）共用 **[神韻(Overall-17) 21×26 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)**。該方案出自[雙拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿於提交 [`7a7e154`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)；[`2026-10-30-strict-d0-production-closure-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 [`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json)，本節映射與鍵盤圖均以該定稿方案為準。
 
 > [!NOTE]
-> 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪神韻·調](snow_shenyun_tone.schema.yaml)的五調輔鍵，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的順序排列。
+> 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪散拼](snow_shenyun_tone.schema.yaml)的五調輔鍵，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的順序排列。
 
 **聲韻輔-鍵 映射**
 
@@ -531,12 +539,12 @@ bun scripts/验证神韵双拼.ts
 
 ### [無飛鍵道(U357) 21×21 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)
 
-冰雪鍵道的二／三／四字前兩位形輔字位順序為 `12/23/24`，冰雪三拼的前兩位調碼字位順序為 `12/21/23`；運行時三字詞按剩餘字位補第三輔，四字詞最多兩輔。CKT v5.1 將三字詞第三輔納入優化和計分，完整輔序為冰雪鍵道 `12/231/24`、冰雪三拼 `12/213/23`；三字詞第三輔後、四字詞第二輔後按選重計費。
+冰雪健道的二／三／四字前兩位形輔字位順序為 `12/23/24`，冰雪弎拼的前兩位調碼字位順序為 `12/21/23`；運行時三字詞按剩餘字位補第三輔，四字詞最多兩輔。CKT v5.1 將三字詞第三輔納入優化和計分，完整輔序為冰雪健道 `12/231/24`、冰雪弎拼 `12/213/23`；三字詞第三輔後、四字詞第二輔後按選重計費。
 
-[冰雪鍵道](https://input.tansongchen.com/snow-jiandao/)與[冰雪三拼](https://input.tansongchen.com/snow3/)現共用 **[無飛鍵道(U357) 21×21 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。該方案出自[雙拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿於提交 [`11713b6`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)；[`2026-10-29-prodgate-directed-repair-final-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) 給出了 U=357 候選的搜尋過程、完整映射、指標及投產建議。本倉庫採用並實作該候選，本節映射與鍵盤圖均以報告中的 U=357 方案為準。
+[冰雪健道](https://input.tansongchen.com/snow-jiandao/)與[冰雪弎拼](https://input.tansongchen.com/snow3/)現共用 **[無飛鍵道(U357) 21×21 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。該方案出自[雙拼布局 Benchmark](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿於提交 [`11713b6`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)；[`2026-10-29-prodgate-directed-repair-final-report.md`](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) 給出了 U=357 候選的搜尋過程、完整映射、指標及投產建議。本倉庫採用並實作該候選，本節映射與鍵盤圖均以報告中的 U=357 方案為準。
 
 > [!NOTE]
-> 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪三拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
+> 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪弎拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。
 
 **聲韻輔-鍵 映射**
 
@@ -617,7 +625,7 @@ bun scripts/验证神韵双拼.ts
 [^zht-ensemble34]: [A7E-v3/v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 是凍結的公開擊鍵當量＋幾何模型歷史軸；v4 在 v3 上補齊對稱 20 合同，保留作模型敏感性對照。
 [^zht-ensemble5]: [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 在凍結 20 合同上只以 CKT 計時模型歸一並取四次冪均值，不含候選名次決策成本。
 [^zht-ensemble6]: [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 排除抽象 S2，在 19 合同 CKT 上加入 `150 ms × 非首選率` 並以 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)＝10 歸一化；它是情景指數，不是真人標定速度。
-[^zht-rates]: 八軌綜合率在冰雪鍵道／冰雪三拼各四條單字、二／三／四字詞軌按 `1:3:1:1` 加權，兩模式等權；第一／第二輔鍵率是進入相應階段的加權比例。
+[^zht-rates]: 八軌綜合率在冰雪健道／冰雪弎拼各四條單字、二／三／四字詞軌按 `1:3:1:1` 加權，兩模式等權；第一／第二輔鍵率是進入相應階段的加權比例。
 [^zht-daily]: 日常指標以同一八場景、2149 擊鍵文稿回放純雙拼與標點，不含五輔鍵、空格及選重；只可在該文稿與同一 [moving-hand](https://github.com/macroxue/shuangpin) 模型內比較。
 [^zht-load]: 負載指標先在每個凍結合同合計相應鍵／手指，再取 20 合同峰值；`QAZ` 為左小指組，P 區沿用 `P[]\\;'/`，`TYB` 為雙食指組。
 [^zht-home]: S2 主鍵區占比只看 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 裸聲韻二鍵；20 合同主鍵區下限則取所有含輔字詞合同的最低主行占比，兩者不可混用。
@@ -626,9 +634,9 @@ bun scripts/验证神韵双拼.ts
 
 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 不是八條重碼率的簡單平均。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 雖在單字、二字詞終局選重率略低，U357 在鍵道／三拼三字詞卻分別低約 `0.550/0.662` 個百分點，遠大於二字詞約 `0.066/0.068` 個百分點的劣勢，再加上四字詞優勢，即使二字詞權重為 3，八軌綜合仍為 `1.443% < 1.532%`。主因是字詞候選池的殘餘碰撞與排名；對 21×21 兩方案，二字詞與四字詞共享聯合池，三字詞使用獨立池。凍結主分實際納入鍵道／三拼單字 `6,233/6,238` 條、二字詞全量 `132,814` 條、三字詞 99% 頻率質量 `72,923` 條、四字詞 99% 頻率質量 `77,674` 條。[完整比較](reports/shenyun-comparison.md#ckt-v4-成本分解)列出逐軌貢獻、語料規模、終局碰撞桶與 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 成本分解。
 
-日常八場景移動手分數不含五輔鍵、空格和選重。[無飛鍵道(U357) 21×21 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)的優勢集中在記憶項、QAZ 左小指組峰值、合同主鍵區下限和日常文稿路徑，TYB 雙食指組峰值低於 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、高於 [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)；代價是音節重碼與 P 區右小指負載。[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 領先不是同鍵域下的輔碼勝負；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 才提供同鍵域直接參照。U357 是面向冰雪鍵道與冰雪三拼的綜合折中，不是全指標支配；模型分數也不等同真人測速。
+日常八場景移動手分數不含五輔鍵、空格和選重。[無飛鍵道(U357) 21×21 雙拼](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)的優勢集中在記憶項、QAZ 左小指組峰值、合同主鍵區下限和日常文稿路徑，TYB 雙食指組峰值低於 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、高於 [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)；代價是音節重碼與 P 區右小指負載。[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 領先不是同鍵域下的輔碼勝負；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 才提供同鍵域直接參照。U357 是面向冰雪健道與冰雪弎拼的綜合折中，不是全指標支配；模型分數也不等同真人測速。
 
-[完整公平比較](reports/shenyun-comparison.md)另列冰雪鍵道、冰雪三拼的八軌加權非首選率；[原始 JSON](reports/shenyun-comparison.json)可供機器複核。
+[完整公平比較](reports/shenyun-comparison.md)另列冰雪健道、冰雪弎拼的八軌加權非首選率；[原始 JSON](reports/shenyun-comparison.json)可供機器複核。
 
 ```powershell
 bun scripts/生成神韵键盘图.ts "路徑/a7_CKT_R11.html"
@@ -641,7 +649,7 @@ bun scripts/导出神韵热力图.ts "路徑/a7_CKT_R11.html" --21x26
 
 目前方案以 366 個二碼單字與 75 個二簡完整覆蓋 441 個 AA 位置，二簡全部使用 U357 擴充域的自然空碼；三拼 630 為 105＋505，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
 
-聲聲二字詞空碼改為運行時查詢不含用戶詞典的系統詞典，完整單字詞頻大於 1 才占桶，當前詞典得到 80 個空 `AA`。冰雪三拼按詞條實際讀音的第二字聲調篩選，冰雪鍵道按首字首形碼篩選。
+聲聲二字詞空碼改為運行時查詢不含用戶詞典的系統詞典，完整單字詞頻大於 1 才占桶，當前詞典得到 80 個空 `AA`。冰雪弎拼按詞條實際讀音的第二字聲調篩選，冰雪健道按首字首形碼篩選。
 
 [二字詞逐級排序結果](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音。
 
@@ -665,7 +673,8 @@ bun scripts/验证神韵双拼.ts
 - [神韻 R9 公平對比原始 JSON](reports/shenyun-r9-comparison.json)：上述對比的機器可複核資料快照。
 - [目前方案快捷鍵稽核與上游對照](reports/shortcut-audit.md)：四個方案的共用、專屬及相對上游變更的快捷鍵。
 - [四拼二字詞逐級排序對神韻固頂的參考調研](reports/sipin-bigram-ranking-research.md)：以四拼逐級候選名次為鍵道、三拼固頂提供有限旁證，不把四拼視為 R9 的組成部分。
-- [神韻雙拼八方案 500 字最短鍵碼實戰測評](reports/神韵双拼八方案_500字_最短键码实战测评.txt)：同一篇 500 字賽文下八條凍結或現行回放軌的實際按鍵比較。
+- [冰雪雙拼十方案 500 字最短鍵碼實戰測評](reports/冰雪双拼十方案_500字_最短键码实战测评.txt)：同一篇 500 字賽文下六條倉庫內可復算軌與四條外部對照軌的實際按鍵比較。
+- [冰雪雙拼六方案 5000 字最優切分報告](reports/十篇五百字_六方案最优切分及字词比率报告.md)：十種文體共 5000 漢字的最短路徑、選重、單字逐級升首選與詞長分布審計。
 
 ### 詞庫說明
 

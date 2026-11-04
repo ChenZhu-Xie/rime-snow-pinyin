@@ -5,7 +5,7 @@ __include: snow_bihua.schema.yaml:/
 
 schema:
   schema_id: snow_jiandao_bihua
-  name: 冰雪键道笔画
+  name: 冰雪健道笔画
   version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>

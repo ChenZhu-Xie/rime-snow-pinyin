@@ -3,7 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { generateAbbreviations } from "./固顶替代";
 import {
-	BENCHMARK_SCHEMES,
+	ALL_BENCHMARK_SCHEMES,
 	type BenchmarkSchemeId,
 	isPoppableFixedCode,
 } from "./lib/benchmark-schemes";
@@ -278,7 +278,7 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 		}
 	}
 
-	const schemeConfig = BENCHMARK_SCHEMES.find((item) => item.id === scheme);
+	const schemeConfig = ALL_BENCHMARK_SCHEMES.find((item) => item.id === scheme);
 	if (!schemeConfig) throw new Error(`未知实测方案：${scheme}`);
 	const fixed = readFixed(schemeConfig.fixedFile);
 	const alternatives = new Map<string, Alternative[]>();
@@ -321,8 +321,8 @@ function buildAlternatives(replay: ReplayLine[], scheme: SchemeId) {
 			displayCode: first ? ranked.code : `${ranked.code}[${ranked.rank}]`,
 			rawCode: ranked.code,
 			keyCost: ranked.code.length + upper + (first ? 0 : 1),
-			instant: !first || upper > 0,
-			popppable: first && upper === 0 && ranked.popppable,
+			instant: !first,
+			popppable: first && ranked.popppable,
 			source: first ? "普通码" : "次选",
 			shift: upper,
 		});
@@ -549,7 +549,7 @@ if (hanCount !== 500 || punctuationCount !== 43)
 	);
 
 const generated = new Map<string, { paths: PathResult[]; total: PathResult }>();
-for (const scheme of BENCHMARK_SCHEMES) {
+for (const scheme of ALL_BENCHMARK_SCHEMES) {
 	console.log(`正在重算 ${scheme.name}...`);
 	const alternatives = buildAlternatives(replay, scheme.id);
 	const paths = replay.map(({ text }) => optimizeLine(text, alternatives));
@@ -569,8 +569,6 @@ for (const scheme of BENCHMARK_SCHEMES) {
 
 const frozenStats = [
 	{ scheme: "四拼", keys: 919, spaces: 49, shifts: 0, segments: 264 },
-	{ scheme: "三拼（原冰雪）", keys: 943, spaces: 55, shifts: 0, segments: 257 },
-	{ scheme: "键道（原冰雪）", keys: 944, spaces: 55, shifts: 0, segments: 256 },
 	{ scheme: "声笔小鹤", keys: 960, spaces: 29, shifts: 0, segments: 238 },
 	{ scheme: "清韵", keys: 1045, spaces: 99, shifts: 42, segments: 325 },
 	{ scheme: "小鹤音形", keys: 1114, spaces: 110, shifts: 0, segments: 305 },
@@ -602,18 +600,16 @@ const detail = generatedStats.map((stat) => {
 
 const order = [
 	"四拼",
-	"三拼",
-	"键道",
-	...BENCHMARK_SCHEMES.map((scheme) => scheme.name),
+	...ALL_BENCHMARK_SCHEMES.map((scheme) => scheme.name),
 	"声笔小鹤",
 	"清韵",
 	"小鹤",
 ];
-const output = `冰雪双拼四套当前方案：500 字赛文十方案最短键码实战测评
+const output = `冰雪双拼四套现行方案与两套经典方案：500 字赛文十方案最短键码实战测评
 ====================================================================================================
 口径：500 个汉字；中文逗号/句号 43 个；标点计键；均码 = 总实际按键 / 500。
-当前轨：冰雪键道、冰雪三拼、冰雪神韵·形、冰雪神韵·调；其余六轨逐键沿用两份指定冻结回放。
-辅序：冰雪键道 12/231/24，冰雪三拼 12/213/23，冰雪神韵·形 12/21/42，冰雪神韵·调 12/21/13。
+重算轨：冰雪健道、冰雪弎拼、冰雪简道、冰雪散拼，以及采用迁移前声韵布局的冰雪键道、冰雪三拼；六条本地轨均按现行功能与同一最短路径模型复算，其余四轨逐键沿用两份指定冻结回放。
+辅序：冰雪健道与经典冰雪键道共用 12/231/24，冰雪弎拼与经典冰雪三拼共用 12/213/23；冰雪简道为 12/21/42，冰雪散拼为 12/21/13。
 优化目标：先最少实际按键，再少分词段、少 Space；允许前三候选选重（选重计 +1 键），并使用各级简码、630、尾字键和原生结构略码。
 记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。
 
@@ -627,7 +623,7 @@ ${stats
 	)
 	.join("\n")}
 
-当前四轨最短路径使用统计
+六条仓库内可复算轨最短路径使用统计
 ----------------------------------------------------------------------------------------------------
 ${detail.join("\n")}
 
@@ -637,10 +633,10 @@ ${replay.map((line, index) => `[${String(index + 1).padStart(2, "0")}]\n${render
 
 核验说明
 ====================================================================================================
-1. 四条当前轨直接读取当前仓库四份 fixed 表、U357/Overall-17 映射、五辅语义和现行五部词典。
+1. 六条本地轨均读取当前发布 fixed 表与运行时合同；冰雪键道、冰雪三拼只从 scripts/data/legacy-schemes/3658e22 还原迁移前声韵代数。六轨共用当前五部词典和受版本控制的字形／笔画源。
 2. 单字与二／三／四字词均枚举合法标准码、空桶短码和逐级扩展码；每条路径先按现行权重生成原始候选，再逐键模拟首选后置，交由全文动态规划选取总按键最少的分词与编码。
 3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
-4. 冻结回放中的“三拼/键道”保留为历史对照；带 U357/Overall-17 标识的四条轨为本仓库当前方案重算结果。
+4. 冰雪键道／冰雪三拼不再采用外部冻结统计；二者只保留迁移前声韵布局，AA/AAB、630、fixed、动态首选后置与辅序均按当前发布方案合同复算。
 `;
 
 writeFileSync(outputPath, output, "utf8");

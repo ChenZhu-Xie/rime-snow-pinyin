@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { exact500Articles } from "./exact_500_articles";
 import { generateAbbreviations } from "./固顶替代";
 import {
-	BENCHMARK_SCHEMES,
+	ALL_BENCHMARK_SCHEMES,
 	type BenchmarkSchemeId,
 	isPoppableFixedCode,
 } from "./lib/benchmark-schemes";
@@ -187,7 +187,7 @@ function buildAlternatives(allLines: string[], scheme: SchemeId) {
 		}
 	}
 
-	const schemeConfig = BENCHMARK_SCHEMES.find((item) => item.id === scheme);
+	const schemeConfig = ALL_BENCHMARK_SCHEMES.find((item) => item.id === scheme);
 	if (!schemeConfig) throw new Error(`未知实测方案：${scheme}`);
 	const fixed = readFixed(schemeConfig.fixedFile);
 	const alternatives = new Map<string, Alternative[]>();
@@ -231,8 +231,8 @@ function buildAlternatives(allLines: string[], scheme: SchemeId) {
 			displayCode: isFirst ? ranked.code : `${ranked.code}[${ranked.rank}]`,
 			rawCode: ranked.code,
 			keyCost: ranked.code.length + upper + (isFirst ? 0 : 1),
-			instant: !isFirst || upper > 0,
-			popppable: isFirst && upper === 0 && ranked.popppable,
+			instant: !isFirst,
+			popppable: isFirst && ranked.popppable,
 			source: isFirst ? "普通码" : "次选",
 			shift: upper,
 		});
@@ -714,7 +714,7 @@ function schemeRecord<T>(
 	factory: (scheme: SchemeId) => T,
 ): Record<SchemeId, T> {
 	return Object.fromEntries(
-		BENCHMARK_SCHEMES.map((scheme) => [scheme.id, factory(scheme.id)]),
+		ALL_BENCHMARK_SCHEMES.map((scheme) => [scheme.id, factory(scheme.id)]),
 	) as Record<SchemeId, T>;
 }
 
@@ -724,7 +724,7 @@ function statSummary(stat: ArticleStat): string {
 
 function replayMap(result: ArticleResult, lineIndex: number) {
 	return new Map(
-		BENCHMARK_SCHEMES.map((scheme) => [
+		ALL_BENCHMARK_SCHEMES.map((scheme) => [
 			scheme.name,
 			replayTokens(result.paths[scheme.id][lineIndex]),
 		]),
@@ -806,7 +806,7 @@ function aggregateStats(results: ArticleResult[], scheme: SchemeId) {
 
 async function run() {
 	const allLines = exact500Articles.flatMap((article) => article.lines);
-	const order = BENCHMARK_SCHEMES.map((scheme) => scheme.name);
+	const order = ALL_BENCHMARK_SCHEMES.map((scheme) => scheme.name);
 	console.log(`总行数: ${allLines.length}，文章数: ${exact500Articles.length}`);
 
 	const alternatives = new Map<SchemeId, Map<string, Alternative[]>>();
@@ -814,7 +814,7 @@ async function run() {
 		SchemeId,
 		SingleCharacterFirstChoiceAudit
 	>();
-	for (const scheme of BENCHMARK_SCHEMES) {
+	for (const scheme of ALL_BENCHMARK_SCHEMES) {
 		console.log(`构建【${scheme.name}】候选集...`);
 		const result = buildAlternatives(allLines, scheme.id);
 		alternatives.set(scheme.id, result.alternatives);
@@ -840,16 +840,16 @@ async function run() {
 		};
 	});
 
-	const replayDir = join(root, "reports", "十篇五百字_四方案逐键对齐回放");
+	const replayDir = join(root, "reports", "十篇五百字_六方案逐键对齐回放");
 	mkdirSync(replayDir, { recursive: true });
 	for (const result of articleResults) {
 		const article = result.article;
-		const firstStat = result.stats[BENCHMARK_SCHEMES[0].id];
+		const firstStat = result.stats[ALL_BENCHMARK_SCHEMES[0].id];
 		const lines = [
-			`# 篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}·500 字）四方案实战回放`,
+			`# 篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}·500 字）六方案实战回放`,
 			"",
 			`- 口径：汉字 ${firstStat.hanCount} 个；标点 ${firstStat.punctCount} 个；均码 = 总实际按键 / ${firstStat.hanCount}。`,
-			...BENCHMARK_SCHEMES.map((scheme) => {
+			...ALL_BENCHMARK_SCHEMES.map((scheme) => {
 				const stat = result.stats[scheme.id];
 				return `- ${scheme.name}（辅序 \`${scheme.auxiliaryOrder}\`）：总按键 **${stat.keys}**，平均码长 **${stat.avgLength.toFixed(4)}**，空格 ${stat.spaces}，Shift ${stat.shifts}。`;
 			}),
@@ -859,7 +859,7 @@ async function run() {
 			"| 方案 | 维度 | 单字 | 二字词 | 三字词 | 四字词 | 五字及以上 |",
 			"| --- | --- | ---: | ---: | ---: | ---: | ---: |",
 		];
-		for (const scheme of BENCHMARK_SCHEMES) {
+		for (const scheme of ALL_BENCHMARK_SCHEMES) {
 			const stat = result.stats[scheme.id];
 			lines.push(
 				`| ${scheme.shortName} | 词次 | ${stat.tokenRatios.c1.toFixed(1)}%（${stat.tokenCounts.c1}） | ${stat.tokenRatios.c2.toFixed(1)}%（${stat.tokenCounts.c2}） | ${stat.tokenRatios.c3.toFixed(1)}%（${stat.tokenCounts.c3}） | ${stat.tokenRatios.c4.toFixed(1)}%（${stat.tokenCounts.c4}） | ${stat.tokenRatios.c5plus.toFixed(1)}%（${stat.tokenCounts.c5plus}） |`,
@@ -874,12 +874,12 @@ async function run() {
 			lines.push(renderAligned(text, replayMap(result, lineIndex), order), "");
 		});
 		lines.push("```");
-		const filename = `篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_四方案逐键对齐.md`;
+		const filename = `篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_六方案逐键对齐.md`;
 		writeFileSync(join(replayDir, filename), lines.join("\n"), "utf8");
 	}
 
 	const comparison = [
-		"冰雪双拼四方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
+		"冰雪双拼六方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
 		"====================================================================================================",
 		"口径：10 篇不同文体长文，每篇严格 500 汉字；标点计键；先最少实际按键，再少分词段、少 Space；允许前三候选选重（+1 键）。",
 		"记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。",
@@ -893,7 +893,7 @@ async function run() {
 		comparison.push(
 			`【篇 ${String(article.id).padStart(2, "0")}】${article.title}（${article.genre}·500 汉字）`,
 		);
-		for (const scheme of BENCHMARK_SCHEMES)
+		for (const scheme of ALL_BENCHMARK_SCHEMES)
 			comparison.push(
 				`${scheme.name}：${statSummary(result.stats[scheme.id])}。`,
 			);
@@ -911,7 +911,7 @@ async function run() {
 		});
 	}
 	const comparisonFilename =
-		"十篇五百字_5000字_四方案最优切分实战测评对齐汇编.txt";
+		"十篇五百字_5000字_六方案最优切分实战测评对齐汇编.txt";
 	writeFileSync(
 		join(root, "reports", comparisonFilename),
 		comparison.join("\n"),
@@ -922,12 +922,12 @@ async function run() {
 		aggregateStats(articleResults, scheme),
 	);
 	writeFileSync(
-		join(root, "reports", "5000字_四方案最优切分实测结果.json"),
+		join(root, "reports", "5000字_六方案最优切分实测结果.json"),
 		`${JSON.stringify(
 			{
 				contract: "current-four-scheme-benchmark-v1",
 				schemes: Object.fromEntries(
-					BENCHMARK_SCHEMES.map((scheme) => [
+					ALL_BENCHMARK_SCHEMES.map((scheme) => [
 						scheme.id,
 						{
 							name: scheme.name,
@@ -948,37 +948,36 @@ async function run() {
 		"utf8",
 	);
 	const report = [
-		"# 十篇五百字（5000 字全语料）：冰雪双拼四方案最优切分实战测评",
+		"# 十篇五百字（5000 字全语料）：冰雪双拼六方案最优切分实战测评",
 		"",
-		"> 本报告按当前运行合同重算冰雪键道、冰雪三拼、冰雪神韵·形、冰雪神韵·调。21×21 与 21×26 分别使用各自声韵映射、五辅语义、词语主码路由和辅序；结果是理论最短击键路径，不等同真人输入速度。",
+		"> 本报告按当前运行合同重算冰雪健道、冰雪弎拼、冰雪简道、冰雪散拼，以及采用迁移前声韵布局的冰雪键道、冰雪三拼。六方案分别使用各自声韵映射、五辅语义、词语主码路由和辅序；AA/AAB 空桶均由运行时规则推断，结果是理论最短击键路径，不等同真人输入速度。",
 		"",
 		"## 方案与总结果",
 		"",
 		"| 方案 | 键域 | 辅序（二/三/四字） | 总按键 | 平均码长 | Space | Shift | 选重 |",
 		"| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |",
-		...BENCHMARK_SCHEMES.map((scheme) => {
+		...ALL_BENCHMARK_SCHEMES.map((scheme) => {
 			const aggregate = aggregates[scheme.id];
 			return `| ${scheme.name} | ${scheme.capacity.replace("x", "×")} | \`${scheme.auxiliaryOrder}\` | ${aggregate.keys} | ${(aggregate.keys / 5000).toFixed(4)} | ${aggregate.spaces} | ${aggregate.shifts} | ${aggregate.selections.total} |`;
 		}),
 		"",
-		"选重审计按最终采用的最短路径统计；四方案单字均为双拼主码后最多追加四辅、总长最多六码，21×26 词语也最多六码。完整码后仍非首选的候选会明确计入选重，不把 Common399 音节无重误写成字词无重。",
+		"选重审计按最终采用的最短路径统计；六方案单字的标准编码均为双拼主码后最多追加四辅、标准总长最多六码，21×26 词语的标准编码也最多六码。21×21 三字及以上简拼还会比较前三字大写补韵扩展码，Shift 与字母分别计键；完整码后仍非首选的候选会明确计入选重，不把 Common399 音节无重误写成字词无重。",
 		"",
 		"## 选重审计",
 		"",
 		"| 方案 | 选重合计 | 单字 | 多字词 | 满六码单字 | 满六码多字词 |",
 		"| --- | ---: | ---: | ---: | ---: | ---: |",
-		...BENCHMARK_SCHEMES.map((scheme) => {
+		...ALL_BENCHMARK_SCHEMES.map((scheme) => {
 			const selections = aggregates[scheme.id].selections;
 			return `| ${scheme.name} | ${selections.total} | ${selections.singleCharacter} | ${selections.multiCharacter} | ${selections.singleByCodeLength["6"] ?? 0} | ${selections.multiByCodeLength["6"] ?? 0} |`;
 		}),
 		"",
-		...BENCHMARK_SCHEMES.filter((scheme) => scheme.capacity === "21x26").map(
-			(scheme) => {
-				const examples =
-					aggregates[scheme.id].selections.fullCodeSingleExamples;
-				return `- ${scheme.name}的最短路径中，打满六码后仍需选重的单字：${examples.length > 0 ? examples.map((example) => `\`${example}\``).join("、") : "无"}。`;
-			},
-		),
+		...ALL_BENCHMARK_SCHEMES.filter(
+			(scheme) => scheme.capacity === "21x26",
+		).map((scheme) => {
+			const examples = aggregates[scheme.id].selections.fullCodeSingleExamples;
+			return `- ${scheme.name}的最短路径中，打满六码后仍需选重的单字：${examples.length > 0 ? examples.map((example) => `\`${example}\``).join("、") : "无"}。`;
+		}),
 		"",
 		"### 单字不选重升首选审计",
 		"",
@@ -986,12 +985,12 @@ async function run() {
 		"",
 		"| 方案 | 不同单字 | 固顶首选 | 主码首选 | +1 辅 | +2 辅 | +3 辅 | +4 辅 | 仍非首选 | 有四辅仍未解 | 无四辅未解 | 未解出现次数 |",
 		"| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
-		...BENCHMARK_SCHEMES.map((scheme) => {
+		...ALL_BENCHMARK_SCHEMES.map((scheme) => {
 			const audit = singleCharacterFirstChoiceAudits.get(scheme.id)!;
 			return `| ${scheme.name} | ${audit.targetCharacters} | ${audit.fixedCodeFirst} | ${audit.mainCodeFirst} | ${audit.promotedByAuxiliaryLength["1"]} | ${audit.promotedByAuxiliaryLength["2"]} | ${audit.promotedByAuxiliaryLength["3"]} | ${audit.promotedByAuxiliaryLength["4"]} | ${audit.unresolved} | ${audit.unresolvedWithFourAuxiliaries} | ${audit.unresolvedWithoutFourAuxiliaries} | ${audit.unresolvedOccurrences} |`;
 		}),
 		"",
-		...BENCHMARK_SCHEMES.map((scheme) => {
+		...ALL_BENCHMARK_SCHEMES.map((scheme) => {
 			const audit = singleCharacterFirstChoiceAudits.get(scheme.id)!;
 			return `- ${scheme.name}所有可用前缀仍非首选样例：${
 				audit.unresolvedExamples.length > 0
@@ -1010,8 +1009,8 @@ async function run() {
 	];
 	for (const result of articleResults) {
 		const article = result.article;
-		const link = `./十篇五百字_四方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_四方案逐键对齐.md`;
-		for (const [index, scheme] of BENCHMARK_SCHEMES.entries()) {
+		const link = `./十篇五百字_六方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_六方案逐键对齐.md`;
+		for (const [index, scheme] of ALL_BENCHMARK_SCHEMES.entries()) {
 			const stat = result.stats[scheme.id];
 			report.push(
 				`| P${article.id} | ${article.genre} | ${scheme.shortName} | ${stat.keys} | ${stat.avgLength.toFixed(4)} | ${stat.spaces} | ${index === 0 ? `[查看](${link})` : "同上"} |`,
@@ -1025,7 +1024,7 @@ async function run() {
 		"| 方案 | 维度 | 单字 | 二字 | 三字 | 四字 | 五字+ |",
 		"| --- | --- | ---: | ---: | ---: | ---: | ---: |",
 	);
-	for (const scheme of BENCHMARK_SCHEMES) {
+	for (const scheme of ALL_BENCHMARK_SCHEMES) {
 		const aggregate = aggregates[scheme.id];
 		const tokenRatio = (field: keyof typeof aggregate.tokens) =>
 			`${((aggregate.tokens[field] / aggregate.totalTokens) * 100).toFixed(2)}%（${aggregate.tokens[field]} 段）`;
@@ -1042,14 +1041,14 @@ async function run() {
 	for (const result of articleResults) {
 		const article = result.article;
 		report.push(
-			`- [篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}）](./十篇五百字_四方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_四方案逐键对齐.md)`,
+			`- [篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}）](./十篇五百字_六方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_六方案逐键对齐.md)`,
 		);
 	}
 	report.push("", `- [5000 字纯文本对齐汇编](./${comparisonFilename})`);
 	const reportPath = join(
 		root,
 		"reports",
-		"十篇五百字_四方案最优切分及字词比率报告.md",
+		"十篇五百字_六方案最优切分及字词比率报告.md",
 	);
 	writeFileSync(reportPath, report.join("\n"), "utf8");
 	console.log(`主报告生成成功: ${reportPath}`);

@@ -1,0 +1,255 @@
+# Rime schema
+# encoding: utf-8
+
+__include: snow_pinyin.schema.yaml:/
+
+schema:
+  schema_id: snow_sanpin_classic
+  name: 冰雪三拼
+  version: "0.3.13"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    带调拼音词顶功输入方案
+    基于键道双拼改编
+    双拼迁移前最后完整版本 3658e22；与冰雪弎拼共享用户词典
+  dependencies:
+    - snow_pinyin
+    - radical_pinyin
+    - snow_sanpin_bihua
+    - snow_jiandao_classic_jianpin
+
+engine:
+  processors:
+    - lua_processor@*snow.statistics*processor
+    - ascii_composer
+    - lua_processor@*snow.shape_processor
+    - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
+    - recognizer
+    - lua_processor@*snow.code_navigator
+    - lua_processor@*snow.user_dict
+    - lua_processor@*snow.history
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - affix_segmentor@stroke
+    - affix_segmentor@pinyin
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - lua_translator@*snow.table_like*t12
+    - lua_translator@*snow.table_like*jianpin
+    - table_translator@stroke
+    - table_translator@radical
+    - script_translator@pinyin
+    - lua_translator@*snow.buffered
+    - lua_translator@*snow.datetime
+    - lua_translator@*snow.statistics*translator
+    - lua_translator@*snow.number
+    - lua_translator@*snow.unicode*translator
+    - lua_translator@*snow.calculator
+    - lua_translator@*snow.history
+  filters:
+    - lua_filter@*snow.placeholder
+    - lua_filter@*snow.bihua
+    - reverse_lookup_filter@lookup_pinyin
+    - reverse_lookup_filter@lookup_sanpin
+    - lua_filter@*snow.fix
+    - lua_filter@*snow.shape_filter
+    - lua_filter@*snow.postpone
+    - lua_filter@*snow.simplified
+    - simplifier
+    - uniquifier
+    - lua_filter@*snow.hint
+    - lua_filter@*snow.unicode*filter
+
+sanpin_algebra:
+  # 发布适配：修正词典中的儿化轻声与 lvan 异拼，并明确排除旧布局无法编码的扩展音节。
+  - erase/^(hng|m|n|ng|ê)\d$/
+  - xform/(^| )r5(?= |$)/$1er5/
+  - xform/([nl])van(?=\d)/$1uan/
+  # 全拼还原
+  - xform/(?<=[jqxy])u(e?\d)/v$1/
+  - xform/(^| )([aoe]|[mn]g?\d)/$1X$2/
+  # 声母飞键
+  - xform/zh(an|ang|ei|en|eng|u|un)(?=\d)/Q$1/
+  - derive/zh(ai|ao|e)(?=\d)/Q$1/
+  - xform/zh/F/
+  - xform/ch(ai|an|ang|ei|en|eng|u|un)(?=\d)/J$1/
+  - derive/ch(ao|e)(?=\d)/J$1/
+  - xform/ch/W/
+  - xform/sh/E/
+  # 韵母
+  - derive/uang(?=\d)/M/
+  - xform/[iu]ang(?=\d)/X/
+  - xform/i?ong(?=\d)/Y/
+  - xform/ang(?=\d)/P/
+  - xform/(ing|uai)(?=\d)/G/
+  - xform/e?ng(?=\d)/R/
+  - xform/(ei|un)(?=\d)/W/
+  - xform/en(?=\d)/N/
+  - xform/uan(?=\d)/T/
+  - xform/ian(?=\d)/M/
+  - xform/an(?=\d)/F/
+  - xform/(iu|ua)(?=\d)/Q/
+  - xform/(ie|ou)(?=\d)/D/
+  - xform/(ai|ve|ue)(?=\d)/H/
+  - xform/iao(?=\d)/C/
+  - xform/ao(?=\d)/Z/
+  - xform/(in|ui)(?=\d)/B/
+  - xform/(u?o|v)(?=\d)/L/
+  - xform/i(?=\d)/K/
+  - xform/i?a(?=\d)/S/
+  - xform/(er|u)(?=\d)/J/
+  - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
+  # 声调
+  - xlit/12345/viuoa/
+
+jianpin:
+  dictionary: snow_pinyin
+  prism: snow_jiandao_classic_jianpin
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+
+jianpin2:
+  dictionary: snow_pinyin
+  prism: snow_jiandao_classic_jianpin
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+
+# 空桶按经典双拼代数查询系统词典，不受个人调频影响。
+vacancy:
+  dictionary: snow_pinyin
+  prism: snow_sanpin_classic
+  canonical_format:
+    __include: /sanpin_algebra
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+  enable_sentence: false
+  enable_completion: false
+  enable_user_dict: false
+
+speller:
+  alphabet: bpmfdtnlgkhjqxzcsrwyeBPMFDTNLGKHJQXZCSRWYEviuoa
+  initials: bpmfdtnlgkhjqxzcsrwye
+  delimiter: " "
+  shape:
+    # 运行时空音码的 AA 是声声二字词；AAB 取第二字声调。
+    - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
+      match_shape: "^$"
+      reject_combined_config: "translator/reserved_letter_pattern"
+      accept: "[viuoa]"
+      status: initial_pair
+    - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
+      match_shape: ".+"
+      accept: "[viuoa]"
+      block: true
+    - match: "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]?"
+      accept: "1"
+    - match_shape: "1"
+      accept: "[a-z]"
+    - match: "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]"
+      accept: "[viuoa]"
+    - match_shape: ".+"
+      accept: "[viuoa]"
+  popping:
+    # 630、单字和三字词
+    - when: popping
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){1,3}[viuoa]+"
+      accept: "[bpmfdtnlgkhjqxzcsrywe]"
+    # 四字词和多字词
+    - when: popping
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){4,}[viuoa]*"
+      accept: "[bpmfdtnlgkhjqxzcsrywe]"
+    # 已有至少四个小写声母时，大写转成小写追加下一字声母。
+    - when: popping
+      match: "(?=(?:[A-Z]*[a-z]){4})[bpmfdtnlgkhjqxzcsrwye][a-zA-Z]*"
+      accept: "[BPMFDTNLGKHJQXZCSRYWE]"
+      strategy: append
+    # 不足四个小写声母时，大写原样追加为前一字韵母。
+    - when: popping
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){0,2}[bpmfdtnlgkhjqxzcsrywe]"
+      accept: "[BPMFDTNLGKHJQXZCSRYWE]"
+      strategy: append_raw
+    # 顶标点
+    - match: ".*[^a-z0-9]"
+      accept: "[bpmfdtnlgkhjqxzcsrywe]"
+    # 标点大写顶
+    - match: ".*[a-z0-9]"
+      accept: "[^a-z0-9 ]"
+  algebra:
+    __include: /sanpin_algebra
+    __append:
+      # 与经典键道共享二键基码，并追加经典轻声键 a。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1ca/
+      - xform/~{1,2}v/xga/
+      - xform/~{1,2}i/xla/
+      - xform/~{1,2}u/xha/
+      - xform/~{1,2}o/xda/
+      - xform/~{1,2}a/xwa/
+      - abbrev/^([a-z]).+$/$1/ # 简拼
+      - derive/[viuoa]$// # 无声调
+
+lookup_sanpin:
+  tags: [pinyin]
+  overwrite_comment: true
+  dictionary: snow_pinyin
+  comment_format:
+    __include: /sanpin_algebra
+
+__patch:
+  - patch
+  - snow_sanpin_classic.custom:/patch?
+
+patch:
+  switches/+:
+    - options: [fluid, popping]
+      states: [整句, 四顶]
+      reset: 1
+    - name: buffered
+      states: [结束, 缓冲]
+      reset: 0
+    - name: add
+      states: [结束, 加词中]
+      reset: 0
+  translator/prism: snow_sanpin_classic
+  translator/preedit_format: null
+  translator/enable_schema_user_dict: true
+  translator/user_dict_name: snow_sanpin
+  translator/shape_elements: snow_bushou
+  translator/shape_mapping: "radical_sanpin.txt"
+  translator/reserved_letter_pattern: "^(?:fca|gca|kca|hca|zca|cca|sca|rca|yca|wca|eca)$"
+  translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[viuoa]?"
+  translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[viuoa]{0,2}"
+  translator/jianpin_pattern: "^(?:(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3}[viuoa]{0,3}|(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){4,}[viuoa]{0,2})$"
+  translator/t12_preserve_proxy_quality: true
+  punctuator/half_shape/+:
+    ";": 的
+    "|": ；
+    "/": 了
+    "\\": 、
+  key_binder/bindings/+:
+    - { when: composing, accept: v, send: v }
+  menu/alternative_select_keys: "_23890"
+  stroke/prism: snow_sanpin_bihua
+  stroke/preedit_format: [xlit/ivuao/一丨丿丶乙/]

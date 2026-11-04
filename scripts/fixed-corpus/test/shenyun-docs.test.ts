@@ -212,7 +212,7 @@ test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健�
 		0,
 	);
 	assert.deepEqual(result.comparisonToCkt5Robust["21x26-keytao"], {
-		name: "冰雪神韵·形",
+		name: "冰雪简道",
 		ckt5RobustPolicy: "12/21/14",
 		ckt51RobustPolicy: "12/21/14",
 		change: "unchanged",
@@ -319,11 +319,11 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "research-notes/2026-11-02-ckt-v5.1-six-code.md");
 		includes(
 			readme,
-			"冰雪神韵·形二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`",
+			"冰雪简道二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`",
 		);
 		assert.match(
 			readme,
-			/### \[神韵\(Overall-17\) 21×26 双拼\]\([^)]+\)\r?\n\r?\n冰雪神韵·形二／三／四字词当前运行的前两辅字位顺序/u,
+			/### \[神韵\(Overall-17\) 21×26 双拼\]\([^)]+\)\r?\n\r?\n冰雪简道二／三／四字词当前运行的前两辅字位顺序/u,
 		);
 		includes(
 			readme,
@@ -338,7 +338,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "运行时三字词按剩余字位补第三辅，四字词最多两辅");
 		includes(
 			readme,
-			"CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪键道 `12/231/24`、冰雪三拼 `12/213/23`",
+			"CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪健道 `12/231/24`、冰雪弎拼 `12/213/23`",
 		);
 		includes(
 			readme,

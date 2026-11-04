@@ -10,7 +10,7 @@
 
 | 来源 | 家族 | 解析方式 | 文件 | 记录 |
 |---|---|---:|---:|---:|
-| 冰雪键道与三拼（当前仓库）（snow-current） | keytao | local | 5 | 14,955 |
+| 冰雪健道与三拼（当前仓库）（snow-current） | keytao | local | 5 | 14,955 |
 | 墨奇/万象方案集（moqi-wanxiang） | wanxiang | local | 9 | 320,800 |
 | 品度双拼（pindu-double-pinyin） | pindu | local | 1 | 429,912 |
 | 简道鹤（jdhe） | jdhe | local | 7 | 230,199 |

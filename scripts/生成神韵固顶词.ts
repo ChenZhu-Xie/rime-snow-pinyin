@@ -936,8 +936,8 @@ function assertNoReplaceableFixed(name: string, sections: FixedSections) {
 	}
 }
 
-assertNoReplaceableFixed("冰雪三拼", sanpin);
-assertNoReplaceableFixed("冰雪键道", jiandao);
+assertNoReplaceableFixed("冰雪弎拼", sanpin);
+assertNoReplaceableFixed("冰雪健道", jiandao);
 
 const outputs = new Map([
 	["snow_sanpin.fixed.txt", renderSanpinFixedTable(sanpin)],

@@ -1,4 +1,4 @@
-# 冰雪神韵·形 / 冰雪神韵·调共用配置
+# 冰雪简道 / 冰雪散拼共用配置
 # 21×26 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）。
 
 __include: snow_pinyin.schema.yaml:/
@@ -53,6 +53,8 @@ engine:
 shenyun_algebra:
   # Common399 不编码的扩展音节。
   - erase/^(hng|m|n|ng|ê)\d$/
+  # 儿化轻声并入 er5，避免占用单键 r。
+  - xform/(^| )r5(?= |$)/$1er5/
   # j/q/x 与零声母 yu 系列统一使用 v 韵尾语义。
   - xform/([jqx])uan(?=\d)/$1van/
   - xform/([jqx])ue(?=\d)/$1ve/

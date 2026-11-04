@@ -1,5 +1,5 @@
 -- 提示过滤器
--- 目前仅用于提示冰雪键道和冰雪四拼的 630 简词
+-- 目前仅用于提示冰雪健道和冰雪四拼的 630 简词
 
 local snow = require "snow.snow"
 
@@ -31,7 +31,8 @@ function filter.func(translation, env)
   if shape_input then
     full_input = full_input .. shape_input
   end
-  local affix = env.engine.schema.schema_id == "snow_sanpin"
+  local id = env.engine.schema.schema_id
+  local affix = (id == "snow_sanpin" or id == "snow_sanpin_classic")
       and { "i", "v", "u", "a", "o" }
       or { "v", "i", "u", "o", "a" }
   local first = true

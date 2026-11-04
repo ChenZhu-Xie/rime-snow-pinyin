@@ -5,7 +5,7 @@ import { loadAuxiliarySemantics } from "./lib/auxiliary-semantics";
 import { dataPath, rootPath } from "./lib/paths";
 
 function main() {
-	// 由部首读音生成冰雪四拼、冰雪三拼下的部首编码，输出到 lua/snow/radical_*.txt
+	// 由部首读音生成冰雪四拼、冰雪弎拼下的部首编码，输出到 lua/snow/radical_*.txt
 	const checkOnly = process.argv.includes("--check");
 	const outputArgument = process.argv
 		.slice(2)

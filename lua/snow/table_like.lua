@@ -1,5 +1,5 @@
 -- 模拟码表翻译器
--- 适用于：冰雪三拼、冰雪键道
+-- 适用于：冰雪弎拼、冰雪健道、冰雪三拼、冰雪键道
 
 local snow = require "snow.snow"
 local vacancy = require "snow.vacancy"
@@ -70,6 +70,11 @@ function t12.init(env)
   env.pattern2 = env.engine.schema.config:get_string("translator/t2_pattern") or "^.+$"
   env.preserve_t12_proxy_quality =
       env.engine.schema.config:get_bool("translator/t12_preserve_proxy_quality") or false
+  env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
+  env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
+  env.vacancy_projection = Projection(
+    env.engine.schema.config:get_list("vacancy/canonical_format") or {})
+  env.vacancy_cache = {}
 end
 
 ---@param input string
@@ -95,7 +100,9 @@ function t12.func(input, segment, env)
   -- 一字词与整句模式
   if rime_api.regex_match(input, env.pattern) or not env.engine.context:get_option("popping") then
     translate(input, segment, env, env.preserve_t12_proxy_quality)
-    if input:len() == 2 then
+    if input:len() == 2
+        and vacancy.is_empty(input, segment, env.vacancy_translator,
+          env.vacancy_memory, env.vacancy_projection, env.vacancy_cache) then
       local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2))
       translate(proxy, segment, env, env.preserve_t12_proxy_quality)
     end
@@ -124,6 +131,9 @@ end
 ---@param env TableLikeEnv
 function t12.fini(env)
   env.translator = nil
+  env.vacancy_translator = nil
+  env.vacancy_memory = nil
+  env.vacancy_projection = nil
   collectgarbage()
 end
 

@@ -63,7 +63,7 @@ function expectedCode(syllable: string): string {
 	return `${layout.initialMap[initial]}${layout.finalMap[final]}`.toLowerCase();
 }
 
-test("冰雪神韵·形/调共用 Overall-17 的 21×26 映射", () => {
+test("冰雪简道/调共用 Overall-17 的 21×26 映射", () => {
 	assert.equal(layout.id, "SNOW-SHENYUN-21X26-PRODUCTION");
 	assert.equal(layout.label, "Overall-17");
 	assert.deepEqual(layout.capacity, [21, 26]);
@@ -336,8 +336,8 @@ test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
 
 test("两个飞花原型都随部署带上共用配置", () => {
 	for (const [file, name] of [
-		["snow_shenyun_shape.schema.yaml", "冰雪神韵·形"],
-		["snow_shenyun_tone.schema.yaml", "冰雪神韵·调"],
+		["snow_shenyun_shape.schema.yaml", "冰雪简道"],
+		["snow_shenyun_tone.schema.yaml", "冰雪散拼"],
 	] as const) {
 		const schema = load(read(file)) as { schema: { name: string } };
 		assert.equal(schema.schema.name, name);
@@ -345,7 +345,7 @@ test("两个飞花原型都随部署带上共用配置", () => {
 	assert.match(read("scripts/link.ts"), /"snow_shenyun_common\.yaml"/u);
 });
 
-test("冰雪神韵·形/调接入输入统计组件", () => {
+test("冰雪简道/调接入输入统计组件", () => {
 	const common = read("snow_shenyun_common.yaml");
 	const processor = common.indexOf("lua_processor@*snow.statistics*processor");
 	const asciiComposer = common.indexOf("    - ascii_composer");
@@ -358,7 +358,7 @@ test("冰雪神韵·形/调接入输入统计组件", () => {
 	assert.ok(datetime >= 0 && datetime < translator && translator < number);
 });
 
-test("冰雪神韵·形/调用 ;/ 顶屏并追加的/了", () => {
+test("冰雪简道/调用 ;/ 顶屏并追加的/了", () => {
 	const common = load(commonSource) as {
 		punctuator: { half_shape: Record<string, string> };
 	};
@@ -366,7 +366,7 @@ test("冰雪神韵·形/调用 ;/ 顶屏并追加的/了", () => {
 	assert.equal(common.punctuator.half_shape["/"], "了");
 });
 
-test("冰雪神韵·形/调 21×26 一级简码与单字候选列表完备性", () => {
+test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () => {
 	const initialKeys = "bpmfdtnlgkhjqwvxrzcsy";
 	const auxiliaryKeys = "aeuio";
 	const expectedFirst = {

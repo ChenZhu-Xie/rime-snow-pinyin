@@ -31,6 +31,8 @@
 		"test-sanpin": "mira ../spec/snow_sanpin.test.yaml",
 		"test-yipin": "mira ../spec/snow_yipin.test.yaml",
 		"test-jiandao": "mira ../spec/snow_jiandao.test.yaml",
+		"test-jiandao-classic": "mira ../spec/snow_jiandao_classic.test.yaml",
+		"test-sanpin-classic": "mira ../spec/snow_sanpin_classic.test.yaml",
 		"test": "bun test.ts",
 		"version": "bun version.ts"
 	},

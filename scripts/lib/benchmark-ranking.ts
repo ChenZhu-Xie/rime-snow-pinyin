@@ -90,6 +90,7 @@ function wordCodes(
 	scheme: BenchmarkSchemeId,
 	entry: BenchmarkDictionaryEntry,
 	occupied: ReadonlySet<string>,
+	fixed?: ReadonlyMap<string, { word: string }>,
 ): BenchmarkCode[] {
 	const regular = pronunciationCodes(scheme, entry.word, entry.syllables);
 	const result = new Map(
@@ -106,8 +107,9 @@ function wordCodes(
 		if (!regularMain) return [...result.values()];
 		const shortMain = regularMain[0] + regularMain[2];
 		const vacant = !occupied.has(shortMain);
+		const fixedOwner = fixed?.get(shortMain)?.word === entry.word;
 		const reserved = scheme === "u357-shape" && /^(?:xh|xw)$/u.test(shortMain);
-		if ((scheme === "u357-tone" || vacant) && !reserved) {
+		if ((vacant || fixedOwner) && !reserved) {
 			result.set(shortMain, {
 				code: shortMain,
 				mainLength: shortMain.length,
@@ -132,7 +134,7 @@ function wordCodes(
 					}
 				}
 			} else {
-				const auxiliaryLength = scheme === "u357-tone" ? 2 : 1;
+				const auxiliaryLength = scheme.endsWith("-tone") ? 2 : 1;
 				const source = regular.find(
 					(generated) =>
 						generated.mainLength === regularMainLength &&
@@ -250,7 +252,7 @@ export function rankBenchmarkCodes(
 	const relevantCodes = new Set<string>();
 	const routes = new Map<string, TargetRoute[]>();
 	for (const entry of targets) {
-		const generatedCodes = wordCodes(scheme, entry, occupied);
+		const generatedCodes = wordCodes(scheme, entry, occupied, fixed);
 		for (const generated of generatedCodes) {
 			const path = generatedCodes
 				.filter(
@@ -283,7 +285,7 @@ export function rankBenchmarkCodes(
 
 	const top = new Map<string, Array<{ word: string; weight: number }>>();
 	for (const entry of entries) {
-		for (const generated of wordCodes(scheme, entry, occupied)) {
+		for (const generated of wordCodes(scheme, entry, occupied, fixed)) {
 			if (relevantCodes.has(generated.code)) {
 				addTopCandidate(top, generated.code, entry);
 			}

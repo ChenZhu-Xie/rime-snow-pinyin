@@ -5,13 +5,14 @@ __include: snow_pinyin.schema.yaml:/
 
 schema:
   schema_id: snow_sanpin
-  name: 冰雪三拼
+  name: 冰雪弎拼
   version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     带调拼音词顶功输入方案
     双拼编码：无飞键道·神韵（U357-21X21-M40-D0）
+    “弎”兼具三声与繁体形意，表示可简繁通打
   dependencies:
     - snow_pinyin
     - radical_pinyin

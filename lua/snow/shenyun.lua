@@ -1,4 +1,4 @@
--- 冰雪神韵·形 / 冰雪神韵·调的飞码式翻译器
+-- 冰雪简道 / 冰雪散拼的飞码式翻译器
 --
 -- 主码族：一简 A、单字 AU / AUBBBB、空桶二字 AA、二字 AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA。
 -- 两个方案共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵映射，只在 B 辅码语义上不同：

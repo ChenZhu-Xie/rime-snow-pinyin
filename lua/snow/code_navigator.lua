@@ -38,9 +38,10 @@ function navigator.logical_positions(input, word_length, schema_id)
       positions[1] = 2
       positions[2] = 4
       local first_then_second = schema_id == "snow_jiandao" or schema_id == "snow_sanpin"
+          or schema_id == "snow_jiandao_classic"
           or schema_id == "snow_shenyun_shape" or schema_id == "snow_shenyun_tone"
       if first_then_second then
-        -- 本轮四个方案的二字全码：A1A1 A2A2 [B1 [B2]]。
+        -- 当前六个双拼方案的二字全码：A1A1 A2A2 [B1 [B2]]。
         if input_length >= 5 then positions[1] = 5 end
         if input_length >= 6 then positions[2] = 6 end
       else
@@ -90,6 +91,14 @@ function navigator.logical_positions(input, word_length, schema_id)
     auxiliary_positions = { 2, 1, 3 }
   elseif schema_id == "snow_sanpin" and word_length == 4 then
     auxiliary_positions = { 2, 3, 1 }
+  elseif schema_id == "snow_jiandao_classic" and word_length == 3 then
+    auxiliary_positions = { 2, 3, 1 }
+  elseif schema_id == "snow_jiandao_classic" and word_length == 4 then
+    auxiliary_positions = { 2, 4 }
+  elseif schema_id == "snow_sanpin_classic" and word_length == 3 then
+    auxiliary_positions = { 2, 1, 3 }
+  elseif schema_id == "snow_sanpin_classic" and word_length == 4 then
+    auxiliary_positions = { 2, 3 }
   elseif schema_id == "snow_shenyun_shape" and word_length == 4 then
     auxiliary_positions = { 4, 2, 1 }
   elseif schema_id == "snow_shenyun_tone" and word_length == 4 then

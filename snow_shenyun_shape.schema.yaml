@@ -5,12 +5,13 @@ __include: snow_shenyun_common.yaml:/
 
 schema:
   schema_id: snow_shenyun_shape
-  name: 冰雪神韵·形
+  name: 冰雪简道
   version: "0.3.13"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     AUBBBB 飞花式 21×26 顶功方案
+    “简道”强调记忆更简单：M=36、无飞键、无音节重码、无 630
     共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
     单字 AU 后最多追加四个形辅；二／三／四字词形辅字位顺序：12/21/42
   dependencies:

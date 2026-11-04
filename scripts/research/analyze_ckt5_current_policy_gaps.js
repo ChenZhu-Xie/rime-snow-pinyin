@@ -22,28 +22,28 @@ const WEIGHTS = Object.freeze({ character: 1, word2: 3, word3: 1, word4: 1 });
 const CASES = Object.freeze([
 	{
 		id: "21x21-keytao",
-		name: "冰雪键道",
+		name: "冰雪健道",
 		selected: "12/23/24",
 		modeFile: "output/ckt5-nested-frontier/modes/21x21-r004-keytao.json",
 		reference: "s005-keytao",
 	},
 	{
 		id: "21x21-sanpin",
-		name: "冰雪三拼",
+		name: "冰雪弎拼",
 		selected: "12/21/23",
 		modeFile: "output/ckt5-nested-frontier/modes/21x21-r004-sanpin.json",
 		reference: "s005-sanpin",
 	},
 	{
 		id: "21x26-keytao",
-		name: "冰雪神韵·形",
+		name: "冰雪简道",
 		selected: "12/21/42",
 		modeFile: "output/ckt5-nested-frontier/modes/21x26-r017-keytao.json",
 		reference: "s005-keytao",
 	},
 	{
 		id: "21x26-sanpin",
-		name: "冰雪神韵·调",
+		name: "冰雪散拼",
 		selected: "12/21/13",
 		modeFile: "output/ckt5-nested-frontier/modes/21x26-r017-sanpin.json",
 		reference: "s005-sanpin",

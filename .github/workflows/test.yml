@@ -37,7 +37,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
       - name: 安装脚本依赖
         run: bun install --cwd scripts --frozen-lockfile
-      - name: 检查五个方案的全部拼音音节编码
+      - name: 检查九个方案的全部拼音音节编码
         run: bun scripts/check-pinyin-dict.ts
   validate-shenyun:
     name: 核验神韵双拼映射
@@ -68,18 +68,22 @@ jobs:
         include:
           - name: 冰雪四拼
             schema: snow_sipin
-          - name: 冰雪三拼
+          - name: 冰雪弎拼
             schema: snow_sanpin
           - name: 冰雪一拼
             schema: snow_yipin
-          - name: 冰雪键道
+          - name: 冰雪健道
             schema: snow_jiandao
           - name: 冰雪清韵
             schema: snow_qingyun
-          - name: 冰雪神韵·形
+          - name: 冰雪简道
             schema: snow_shenyun_shape
-          - name: 冰雪神韵·调
+          - name: 冰雪散拼
             schema: snow_shenyun_tone
+          - name: 冰雪键道
+            schema: snow_jiandao_classic
+          - name: 冰雪三拼
+            schema: snow_sanpin_classic
     steps:
       - name: 获取代码
         uses: actions/checkout@v4

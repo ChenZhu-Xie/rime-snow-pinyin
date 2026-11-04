@@ -18,9 +18,30 @@ function readRules(
 	const id = `${resolve(schema)}:${key}`;
 	if (seen.has(id)) throw new Error(`拼写规则循环引用：${id}`);
 	const chain = new Set(seen).add(id);
-	let node: unknown = load(readFileSync(schema, "utf8"));
+	const document: unknown = load(readFileSync(schema, "utf8"));
+	let node = document;
 	for (const part of key.split("/").filter(Boolean)) {
-		if (!node || typeof node !== "object") {
+		if (
+			!node ||
+			typeof node !== "object" ||
+			!(part in (node as Record<string, unknown>))
+		) {
+			if (
+				document &&
+				typeof document === "object" &&
+				typeof (document as Record<string, unknown>).__include === "string"
+			) {
+				const include = (document as Record<string, unknown>)
+					.__include as string;
+				const colon = include.indexOf(":");
+				const file =
+					colon < 0
+						? schema
+						: resolve(dirname(schema), include.slice(0, colon));
+				const path = colon < 0 ? include : include.slice(colon + 1);
+				const inheritedKey = path === "/" ? key : `${path}/${key}`;
+				return readRules(file, inheritedKey, chain);
+			}
 			throw new Error(`拼写规则节点不存在：${id}`);
 		}
 		node = (node as Record<string, unknown>)[part];
