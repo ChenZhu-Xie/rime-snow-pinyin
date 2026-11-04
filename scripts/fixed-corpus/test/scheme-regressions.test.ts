@@ -307,19 +307,12 @@ test("Three-Code supports the shared fixed-candidate controls", () => {
 	}
 });
 
-test("Clear Rhyme keeps history on the extensible reverse-lookup segment", () => {
+test("Clear Rhyme keeps history separate from the double-backtick Lua trigger", () => {
 	const schema = read("snow_qingyun.schema.yaml");
 	assert.match(schema, /history\/input: "`"/u);
 	assert.match(schema, /history\/initial_quality: 100/u);
 	assert.match(schema, /lua\/input: "``"/u);
-	assert.match(schema, /recognizer\/patterns\/pinyin: "\^`\[a-z\]\*'\?\$"/u);
-	assert.doesNotMatch(schema, /recognizer\/patterns\/history/u);
-	assert.doesNotMatch(schema, /recognizer\/patterns\/stroke/u);
-	assert.match(schema, /stroke\/tag: pinyin/u);
-	assert.match(
-		read("lua/snow/popping.lua"),
-		/segment:has_tag\("pinyin"\)[\s\S]+segment:has_tag\("stroke"\)/u,
-	);
+	assert.match(schema, /recognizer\/patterns\/history: "\^`\$"/u);
 	assert.match(schema, /menu\/alternative_select_keys: "_23890"/u);
 	assert.match(schema, /menu\/page_size: 6/u);
 	assert.match(schema, /lua_processor@\*snow\.history/u);
@@ -661,18 +654,9 @@ test("latency cases follow the active U357 layout and repository fixture", () =>
 	const cases = read("scripts/data/latency-cases.ts");
 	for (const code of ["btxkiu", "erfaiu", "wmxsui", "btov", "kxfkG", "khrmG"])
 		assert.ok(cases.includes(`keys: "${code}"`), `缺少当前 U357 用例 ${code}`);
-	assert.ok(
-		cases.includes('keys: "{grave}wangyan"'),
-		"清韵反查须使用控制台按键名",
-	);
 	const qingyun = read("snow_qingyun.schema.yaml");
 	assert.match(qingyun, /"punctuator\/full_shape\/`": null/u);
 	assert.match(qingyun, /"punctuator\/half_shape\/`": null/u);
-	assert.doesNotMatch(
-		qingyun,
-		/recognizer\/patterns\/history/u,
-		"单个反引号必须保留在可继续扩展的反查段中",
-	);
 	for (const obsolete of ["bgxhuv", "wmxwov", "bgov", "kxfquoaaa"])
 		assert.ok(!cases.includes(obsolete), `仍有旧布局用例 ${obsolete}`);
 	assert.match(

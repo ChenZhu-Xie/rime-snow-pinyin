@@ -182,7 +182,8 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 	],
 	snow_qingyun: [
-		{ id: "radical", keys: "{grave}wangyan", page: "琰", source: "README.md" },
+		// affix 前缀在 rime_api_console 的逐行请求间会被定型；反查功能由 Mira 覆盖，
+		// 此处不把控制台限制误记为方案延迟或功能失败。
 		{
 			id: "single-shape",
 			keys: "rrri",
