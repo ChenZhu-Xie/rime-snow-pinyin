@@ -248,7 +248,7 @@ deploy:
       pinyin/initial_quality: 1.5
     tests:
       - send: "`wangyan"
-        assert: cand[1].text == "琰" and has("网眼") and commit == nil
+        assert: error(cand[1].text .. "|" .. tostring(rank("网眼")))
   advanced:
     tests:
       # Unicode 注解：Control+q 显示汉字的 Unicode 编码和所属区块，
