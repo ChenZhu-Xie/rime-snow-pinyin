@@ -382,7 +382,7 @@ deploy:
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选；单独 v 已不再切换缓冲。
       - send: "hou{Control+period}ljhe {Control+period}hou"
-        assert: error(table.concat({ cand[1] and cand[1].text or "nil", cand[2] and cand[2].text or "nil", cand[3] and cand[3].text or "nil", cand[4] and cand[4].text or "nil", cand[5] and cand[5].text or "nil", cand[6] and cand[6].text or "nil" }, "|"))
+        assert: error(table.concat({ preedit or "nil", cand[1] and (cand[1].text .. ":" .. cand[1].comment) or "nil", cand[2] and (cand[2].text .. ":" .. cand[2].comment) or "nil", cand[3] and (cand[3].text .. ":" .. cand[3].comment) or "nil" }, "|"))
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jpdf{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
