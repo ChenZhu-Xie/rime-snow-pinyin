@@ -654,6 +654,10 @@ test("latency cases follow the active U357 layout and repository fixture", () =>
 	const cases = read("scripts/data/latency-cases.ts");
 	for (const code of ["btxkiu", "erfaiu", "wmxsui", "btov", "kxfkG", "khrmG"])
 		assert.ok(cases.includes(`keys: "${code}"`), `缺少当前 U357 用例 ${code}`);
+	assert.ok(
+		cases.includes('keys: "{grave}wangyan"'),
+		"清韵反查须使用控制台按键名",
+	);
 	for (const obsolete of ["bgxhuv", "wmxwov", "bgov", "kxfquoaaa"])
 		assert.ok(!cases.includes(obsolete), `仍有旧布局用例 ${obsolete}`);
 	assert.match(

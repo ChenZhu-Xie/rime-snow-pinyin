@@ -182,7 +182,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 	],
 	snow_qingyun: [
-		{ id: "radical", keys: "`wangyan", page: "琰", source: "README.md" },
+		{ id: "radical", keys: "{grave}wangyan", page: "琰", source: "README.md" },
 		{
 			id: "single-shape",
 			keys: "rrri",
