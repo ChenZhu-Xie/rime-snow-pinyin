@@ -124,6 +124,7 @@ class ConsoleDriver {
 	private errors = "";
 	private closed = false;
 	private transcript: string[] = [];
+	private flushed = 0;
 	private done: Promise<number | null>;
 	constructor(
 		binary: string,
@@ -147,12 +148,15 @@ class ConsoleDriver {
 					const ms = performance.now() - pending.start;
 					clearTimeout(pending.timer);
 					this.pending = undefined;
-					if (
-						/^(?:[EF]\d{8}|.*Error processing key sequence|.*Lua.*error)/m.test(
-							this.errors + pending.lines.join("\n"),
-						)
-					) {
-						pending.reject(new Error(`Rime 出错，见 ${log}`));
+					const diagnostic = this.errors + pending.lines.join("\n");
+					const error = diagnostic.match(
+						/^(?:[EF]\d{8}|.*Error processing key sequence|.*Lua.*error).*$/m,
+					)?.[0];
+					if (error) {
+						this.flushTranscript();
+						pending.reject(
+							new Error(`Rime 出错：${error.trim()}，完整日志见 ${log}`),
+						);
 					} else pending.resolve({ ms, output: pending.lines.join("\n") });
 				} else if (this.pending && !line.includes("\r"))
 					this.pending.lines.push(line);
@@ -169,11 +173,16 @@ class ConsoleDriver {
 		this.done = new Promise((done) => {
 			this.child.on("close", (code) => {
 				this.closed = true;
-				appendFileSync(this.log, this.transcript.join(""));
+				this.flushTranscript();
 				this.fail(new Error(`rime_api_console 退出（${code}），见 ${log}`));
 				done(code);
 			});
 		});
+	}
+	private flushTranscript() {
+		if (this.flushed === this.transcript.length) return;
+		appendFileSync(this.log, this.transcript.slice(this.flushed).join(""));
+		this.flushed = this.transcript.length;
 	}
 	private fail(error: Error) {
 		if (!this.pending) return;
@@ -212,6 +221,7 @@ class ConsoleDriver {
 			throw new Error(`Rime 出错，见 ${this.log}`);
 	}
 	kill() {
+		this.flushTranscript();
 		this.child.kill();
 	}
 }
