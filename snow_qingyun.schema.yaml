@@ -100,7 +100,6 @@ speller:
   editor:
     accept: "[aeiou;,./]"
     match: ".+[bpmfdtnlgkhjqxzcsrywv][aeiou;,./]"
-  popping_excluded_prefix: "`"
   popping:
     # 单字、二字词、三字词
     - when: popping
@@ -190,7 +189,6 @@ patch:
   history/input: "`"
   history/initial_quality: 100
   lua/input: "``"
-  recognizer/patterns/history: "^`$"
   # 单个 ` 引导反查和重复上屏，两个 ` 引导 lua（数字、计算、日期时间、输入统计）
   recognizer/patterns/lua: "^``.*$"
   translator/prism: snow_qingyun

@@ -23,7 +23,6 @@ local strategies = {
 ---@class PoppingEnv: Env
 ---@field popping PoppingConfig[]
 ---@field auto_select_pattern string
----@field excluded_prefix string
 ---@field period_is_code boolean
 ---@field option_connection Connection
 ---@field commit_connection Connection
@@ -70,7 +69,6 @@ function processor.init(env)
     ::continue::
   end
   env.auto_select_pattern = config:get_string("speller/auto_select_pattern") or ""
-  env.excluded_prefix = config:get_string("speller/popping_excluded_prefix") or ""
 end
 
 ---@param key_event KeyEvent
@@ -97,9 +95,6 @@ function processor.func(key_event, env)
   -- 取出输入中当前正在翻译的一部分
   local input = snow.current(context)
   if not input then
-    return snow.kNoop
-  end
-  if env.excluded_prefix ~= "" and input:sub(1, #env.excluded_prefix) == env.excluded_prefix then
     return snow.kNoop
   end
   local shape_input = context:get_property("shape_input")
