@@ -314,6 +314,8 @@ test("Clear Rhyme keeps history on the extensible reverse-lookup segment", () =>
 	assert.match(schema, /lua\/input: "``"/u);
 	assert.match(schema, /recognizer\/patterns\/pinyin: "\^`\[a-z\]\*'\?\$"/u);
 	assert.doesNotMatch(schema, /recognizer\/patterns\/history/u);
+	assert.doesNotMatch(schema, /recognizer\/patterns\/stroke/u);
+	assert.match(schema, /stroke\/tag: pinyin/u);
 	assert.match(schema, /menu\/alternative_select_keys: "_23890"/u);
 	assert.match(schema, /menu\/page_size: 6/u);
 	assert.match(schema, /lua_processor@\*snow\.history/u);

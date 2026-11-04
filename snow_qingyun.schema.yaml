@@ -185,7 +185,6 @@ patch:
   recognizer/patterns/pinyin: "^`[a-z]*'?$"
   stroke/prefix: "`"
   stroke/tag: pinyin
-  recognizer/patterns/stroke: "^`[a-z]*'?$"
   history/input: "`"
   history/initial_quality: 100
   lua/input: "``"
