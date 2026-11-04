@@ -382,7 +382,7 @@ deploy:
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选；v 是“垃圾回收”的选词辅码。
       - send: "hou{Control+period}ljhev {Control+period}hou"
-        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
+        assert: error(table.concat({ cand[1] and cand[1].text or "nil", cand[2] and cand[2].text or "nil", cand[3] and cand[3].text or "nil" }, "|"))
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jpdf{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
