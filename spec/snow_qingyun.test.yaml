@@ -266,7 +266,7 @@ deploy:
         assert: cand[1].text == "是"
       # 部件全拼反查：连续输入各部件读音，候选同时显示拼音。
       - send: "`wangyan"
-        assert: page("琰") and cand[rank("琰")].comment:find("yan3", 1, true) ~= nil and commit == nil
+        assert: cand[1].text == "琰" and cand[1].comment:find("yan3", 1, true) ~= nil and commit == nil
       - send: "`maowenniao"
         assert: page("鹜") and cand[rank("鹜")].comment:find("wu4", 1, true) ~= nil and commit == nil
       # 单引号结束反查后可正常上屏，退格重输仍留在反查段。
