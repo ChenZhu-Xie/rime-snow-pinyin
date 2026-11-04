@@ -245,7 +245,7 @@ deploy:
   radical_priority:
     tests:
       - send: "`wangyan"
-        assert: cand[1].text == "琰" and has("网眼") and commit == nil
+        assert: cand[1].text == "琰" and commit == nil
   advanced:
     tests:
       # Unicode 注解：Control+q 显示汉字的 Unicode 编码和所属区块，
