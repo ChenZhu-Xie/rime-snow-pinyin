@@ -661,6 +661,11 @@ test("latency cases follow the active U357 layout and repository fixture", () =>
 	const qingyun = read("snow_qingyun.schema.yaml");
 	assert.match(qingyun, /"punctuator\/full_shape\/`": null/u);
 	assert.match(qingyun, /"punctuator\/half_shape\/`": null/u);
+	assert.match(qingyun, /popping_excluded_prefix: "`"/u);
+	assert.match(
+		read("lua/snow/popping.lua"),
+		/input:sub\(1, #env\.excluded_prefix\) == env\.excluded_prefix/u,
+	);
 	for (const obsolete of ["bgxhuv", "wmxwov", "bgov", "kxfquoaaa"])
 		assert.ok(!cases.includes(obsolete), `仍有旧布局用例 ${obsolete}`);
 	assert.match(
