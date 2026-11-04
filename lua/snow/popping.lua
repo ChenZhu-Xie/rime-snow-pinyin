@@ -106,7 +106,12 @@ function processor.func(key_event, env)
   if not segment then
     return snow.kNoop
   end
-  if not segment:has_tag("abc") then
+  -- affix_segmentor 的反查段也可能同时带 abc；顶功重投会丢失其前缀。
+  if
+    not segment:has_tag("abc")
+    or segment:has_tag("pinyin")
+    or segment:has_tag("stroke")
+  then
     return snow.kNoop
   end
   -- Rime 有一个 bug，在按句号键之后的那个字词的编码的会有一个隐藏的 "."
