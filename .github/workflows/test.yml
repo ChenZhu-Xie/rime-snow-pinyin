@@ -23,6 +23,15 @@ on:
       - 'scripts/package.json'
       - 'scripts/bun.lock'
   workflow_dispatch:
+    inputs:
+      schema:
+        description: 只测试指定 schema_id；留空则测试全部方案
+        required: false
+        type: string
+      deploy:
+        description: 只运行指定 deploy；留空则运行全部场景
+        required: false
+        type: string
 
 name: 测试
 
@@ -86,10 +95,12 @@ jobs:
             schema: snow_sanpin_classic
     steps:
       - name: 获取代码
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
         uses: actions/checkout@v4
         with:
           submodules: true
       - name: 准备方案依赖
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
         run: |
           cp spec/fixtures/default.yaml default.yaml
           sudo apt-get update
@@ -97,11 +108,18 @@ jobs:
           mkdir -p opencc
           cp /usr/share/opencc/* opencc/
       - name: 安装 Mira
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
         run: |
-          wget -O mira https://github.com/rimeinn/mira/releases/download/v0.3.0/mira-linux-x86_64
+          wget -O mira https://github.com/rimeinn/mira/releases/download/latest/mira
           chmod +x mira
-          ./mira --version
       - name: ${{ matrix.name }}
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
+        env:
+          MIRA_DEPLOY: ${{ inputs.deploy }}
         run: |
           cp deps/rime-radical-pinyin/radical_pinyin.{schema,dict}.yaml .
-          ./mira -C build spec/${{ matrix.schema }}.test.yaml
+          if [[ -n "$MIRA_DEPLOY" ]]; then
+            ./mira -C build -R "^${MIRA_DEPLOY}$" spec/${{ matrix.schema }}.test.yaml
+          else
+            ./mira -C build spec/${{ matrix.schema }}.test.yaml
+          fi

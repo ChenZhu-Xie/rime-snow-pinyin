@@ -178,7 +178,7 @@ patch:
   radical/prefix: "`"
   radical/tag: pinyin
   # 完整部件码优先于同码的拼音词组，补全部件码仍接受补全降权。
-  radical/initial_quality: 1
+  radical/initial_quality: 2
   lookup_pinyin/tags: [pinyin]
   pinyin/tips: 〔拼音·笔画·部件〕
   pinyin/prefix: "`"
