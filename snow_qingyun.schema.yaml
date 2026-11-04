@@ -177,9 +177,8 @@ patch:
   "punctuator/half_shape/`": null
   radical/prefix: "`"
   radical/tag: pinyin
-  # 完整多部件码由清韵过滤器提到同码拼音词组之前；翻译器本身保持普通权重，
-  # 避免补全部件码压过拼音反查或抢先去重地区字形候选。
-  radical/initial_quality: 1
+  # 完整部件码优先于同码的拼音词组，补全部件码仍接受补全降权。
+  radical/initial_quality: 2
   lookup_pinyin/tags: [pinyin]
   pinyin/tips: 〔拼音·笔画·部件〕
   pinyin/prefix: "`"
