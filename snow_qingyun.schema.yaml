@@ -173,6 +173,8 @@ __patch:
   - snow_qingyun.custom:/patch?
 
 patch:
+  "punctuator/full_shape/`": null
+  "punctuator/half_shape/`": null
   radical/prefix: "`"
   radical/tag: pinyin
   # 完整部件码优先于同码的拼音词组，补全部件码仍接受补全降权。

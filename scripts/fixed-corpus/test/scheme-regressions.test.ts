@@ -658,6 +658,9 @@ test("latency cases follow the active U357 layout and repository fixture", () =>
 		cases.includes('keys: "{grave}wangyan"'),
 		"清韵反查须使用控制台按键名",
 	);
+	const qingyun = read("snow_qingyun.schema.yaml");
+	assert.match(qingyun, /"punctuator\/full_shape\/`": null/u);
+	assert.match(qingyun, /"punctuator\/half_shape\/`": null/u);
 	for (const obsolete of ["bgxhuv", "wmxwov", "bgov", "kxfquoaaa"])
 		assert.ok(!cases.includes(obsolete), `仍有旧布局用例 ${obsolete}`);
 	assert.match(
