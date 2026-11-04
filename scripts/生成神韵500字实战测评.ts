@@ -58,6 +58,12 @@ interface ReplayLine {
 	schemes: Map<string, ReplayToken[]>;
 }
 
+interface BenchmarkCorpus {
+	targetWords: Set<string>;
+	targetEntries: Map<string, BenchmarkDictionaryEntry>;
+	singleCharacterEntries: BenchmarkDictionaryEntry[];
+}
+
 function width(text: string) {
 	let result = 0;
 	for (const character of text) {
@@ -105,6 +111,50 @@ function parseDictionaryLine(line: string) {
 	};
 }
 
+function buildBenchmarkCorpus(replay: ReplayLine[]): BenchmarkCorpus {
+	const targetWords = new Set<string>();
+	for (const line of replay) {
+		const characters = [...line.text];
+		for (let start = 0; start < characters.length; start += 1) {
+			if (!/\p{Script=Han}/u.test(characters[start])) continue;
+			for (
+				let length = 1;
+				length <= 12 && start + length <= characters.length;
+				length += 1
+			) {
+				const word = characters.slice(start, start + length).join("");
+				if (!/^\p{Script=Han}+$/u.test(word)) break;
+				targetWords.add(word);
+			}
+		}
+	}
+
+	const dictionaries = [
+		"snow_pinyin.dict.yaml",
+		"snow_pinyin.base.dict.yaml",
+		"snow_pinyin.ext.dict.yaml",
+		"snow_pinyin.tencent.dict.yaml",
+		"snow_pinyin.user.dict.yaml",
+	];
+	const targetEntries = new Map<string, BenchmarkDictionaryEntry>();
+	const singleCharacterEntries: BenchmarkDictionaryEntry[] = [];
+	for (const dictionary of dictionaries) {
+		for (const line of readFileSync(join(root, dictionary), "utf8").split(
+			/\r?\n/u,
+		)) {
+			const entry = parseDictionaryLine(line);
+			if (!entry) continue;
+			if ([...entry.word].length === 1) singleCharacterEntries.push(entry);
+			if (!targetWords.has(entry.word)) continue;
+			const key = `${entry.word}\t${entry.syllables.join(" ")}`;
+			const previous = targetEntries.get(key);
+			if (!previous || entry.weight > previous.weight)
+				targetEntries.set(key, entry);
+		}
+	}
+	return { targetWords, targetEntries, singleCharacterEntries };
+}
+
 function compareAlternative(a: Alternative, b: Alternative) {
 	const priority: Readonly<Record<SourceKind, number>> = {
 		一简: 0,
@@ -125,52 +175,11 @@ function compareAlternative(a: Alternative, b: Alternative) {
 }
 
 function buildAlternatives(
-	replay: ReplayLine[],
+	corpus: BenchmarkCorpus,
 	scheme: SchemeId,
 	candidateOracle: (code: string) => readonly string[],
 ) {
-	const targetWords = new Set<string>();
-	for (const line of replay) {
-		const characters = [...line.text];
-		for (let start = 0; start < characters.length; start += 1) {
-			if (!/\p{Script=Han}/u.test(characters[start])) continue;
-			for (
-				let length = 1;
-				length <= 12 && start + length <= characters.length;
-				length += 1
-			) {
-				const word = characters.slice(start, start + length).join("");
-				if (!/^\p{Script=Han}+$/u.test(word)) break;
-				targetWords.add(word);
-			}
-		}
-	}
-	const dictionaries = [
-		"snow_pinyin.dict.yaml",
-		"snow_pinyin.base.dict.yaml",
-		"snow_pinyin.ext.dict.yaml",
-		"snow_pinyin.tencent.dict.yaml",
-		"snow_pinyin.user.dict.yaml",
-	];
-	const targetEntries = new Map<
-		string,
-		{ word: string; syllables: string[]; weight: number }
-	>();
-	const allEntries: BenchmarkDictionaryEntry[] = [];
-	for (const dictionary of dictionaries) {
-		for (const line of readFileSync(join(root, dictionary), "utf8").split(
-			/\r?\n/,
-		)) {
-			const entry = parseDictionaryLine(line);
-			if (!entry) continue;
-			if ([...entry.word].length === 1) allEntries.push(entry);
-			if (!targetWords.has(entry.word)) continue;
-			const key = `${entry.word}\t${entry.syllables.join(" ")}`;
-			const previous = targetEntries.get(key);
-			if (!previous || entry.weight > previous.weight)
-				targetEntries.set(key, entry);
-		}
-	}
+	const { targetWords, targetEntries, singleCharacterEntries } = corpus;
 
 	const schemeConfig = ALL_BENCHMARK_SCHEMES.find((item) => item.id === scheme);
 	if (!schemeConfig) throw new Error(`未知实测方案：${scheme}`);
@@ -206,7 +215,7 @@ function buildAlternatives(
 		rankBenchmarkCodes(
 			scheme,
 			targetEntries.values(),
-			allEntries,
+			singleCharacterEntries,
 			fixed,
 			candidateOracle,
 		),
@@ -366,6 +375,11 @@ if (hanCount !== 500 || punctuationCount !== 43)
 	);
 
 const generated = new Map<string, { paths: PathResult[]; total: PathResult }>();
+console.log("正在建立一次性赛文词典索引...");
+const benchmarkCorpus = buildBenchmarkCorpus(replay);
+console.log(
+	`词典索引完成：目标读音 ${benchmarkCorpus.targetEntries.size} 条，单字读音 ${benchmarkCorpus.singleCharacterEntries.length} 条。`,
+);
 
 const oracle = new RimeCandidateOracle(
 	ALL_BENCHMARK_SCHEMES.map(({ schemaId }) => schemaId),
@@ -374,8 +388,13 @@ try {
 	for (const scheme of ALL_BENCHMARK_SCHEMES) {
 		console.log(`正在重算 ${scheme.name}（空白 Rime 实际候选）...`);
 		oracle.selectSchema(scheme.schemaId);
-		const alternatives = buildAlternatives(replay, scheme.id, (code) =>
+		const before = oracle.cacheStats();
+		const alternatives = buildAlternatives(benchmarkCorpus, scheme.id, (code) =>
 			oracle.candidates(code),
+		);
+		const after = oracle.cacheStats();
+		console.log(
+			`${scheme.name} 候选查询：持久缓存命中 ${after.hits - before.hits}，实际查询 ${after.misses - before.misses}。`,
 		);
 		const paths = replay.map(({ text }) => optimizeLine(text, alternatives));
 		const total = paths.reduce<PathResult>(

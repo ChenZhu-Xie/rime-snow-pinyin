@@ -297,10 +297,13 @@ export function rankBenchmarkCodes(
 		const candidateCache = new Map<string, string[]>();
 		const result: RankedBenchmarkCode[] = [];
 		for (const [word, wordRoutes] of routesByWord) {
-			const byLength = Map.groupBy(
-				wordRoutes,
-				({ generated }) => generated.code.length,
-			);
+			const byLength = new Map<number, TargetRoute[]>();
+			for (const route of wordRoutes) {
+				const length = route.generated.code.length;
+				const routesAtLength = byLength.get(length) ?? [];
+				routesAtLength.push(route);
+				byLength.set(length, routesAtLength);
+			}
 			const fallback: RankedBenchmarkCode[] = [];
 			for (const length of [...byLength.keys()].sort(
 				(left, right) => left - right,

@@ -104,7 +104,6 @@ function compareAlternative(a: Alternative, b: Alternative) {
 	);
 }
 
-console.log("正在载入全量 Rime 词典文件...");
 const dictionaries = [
 	"snow_pinyin.dict.yaml",
 	"snow_pinyin.base.dict.yaml",
@@ -118,32 +117,15 @@ interface DictEntry {
 	syllables: string[];
 	weight: number;
 }
-const allDictEntries: DictEntry[] = [];
-const singleCharacterEntries: DictEntry[] = [];
-for (const dictionary of dictionaries) {
-	for (const line of readFileSync(join(root, dictionary), "utf8").split(
-		/\r?\n/,
-	)) {
-		const entry = parseDictionaryLine(line);
-		if (entry) {
-			allDictEntries.push(entry);
-			if ([...entry.word].length === 1) singleCharacterEntries.push(entry);
-		}
-	}
-}
-// 显式补充高频独立 3 字词“数字化”，编码为 ezh
-allDictEntries.push({
-	word: "数字化",
-	syllables: ["shu4", "zi4", "hua4"],
-	weight: 50000,
-});
-console.log(`载入完成，词典条目共 ${allDictEntries.length} 条。`);
 
-function buildAlternatives(
-	allLines: string[],
-	scheme: SchemeId,
-	candidateOracle: (code: string) => readonly string[],
-) {
+interface BenchmarkCorpus {
+	targetWords: Set<string>;
+	characterOccurrences: Map<string, number>;
+	targetEntries: Map<string, DictEntry>;
+	singleCharacterEntries: DictEntry[];
+}
+
+function buildBenchmarkCorpus(allLines: string[]): BenchmarkCorpus {
 	const targetWords = new Set<string>();
 	const characterOccurrences = new Map<string, number>();
 	for (const text of allLines) {
@@ -173,15 +155,59 @@ function buildAlternatives(
 		}
 	}
 
+	console.log("正在建立一次性赛文词典索引...");
 	const targetEntries = new Map<string, DictEntry>();
-	for (const entry of allDictEntries) {
-		if (!targetWords.has(entry.word)) continue;
-		const key = `${entry.word}\t${entry.syllables.join(" ")}`;
-		const previous = targetEntries.get(key);
-		if (!previous || entry.weight > previous.weight) {
-			targetEntries.set(key, entry);
+	const singleCharacterEntries: DictEntry[] = [];
+	for (const dictionary of dictionaries) {
+		for (const line of readFileSync(join(root, dictionary), "utf8").split(
+			/\r?\n/u,
+		)) {
+			const entry = parseDictionaryLine(line);
+			if (!entry) continue;
+			if ([...entry.word].length === 1) singleCharacterEntries.push(entry);
+			if (!targetWords.has(entry.word)) continue;
+			const key = `${entry.word}\t${entry.syllables.join(" ")}`;
+			const previous = targetEntries.get(key);
+			if (!previous || entry.weight > previous.weight)
+				targetEntries.set(key, entry);
 		}
 	}
+	// 显式补充高频独立 3 字词“数字化”，编码为 ezh。
+	const digitalization = {
+		word: "数字化",
+		syllables: ["shu4", "zi4", "hua4"],
+		weight: 50000,
+	};
+	const digitalizationKey = `${digitalization.word}\t${digitalization.syllables.join(" ")}`;
+	const previousDigitalization = targetEntries.get(digitalizationKey);
+	if (
+		targetWords.has(digitalization.word) &&
+		(!previousDigitalization ||
+			digitalization.weight > previousDigitalization.weight)
+	)
+		targetEntries.set(digitalizationKey, digitalization);
+	console.log(
+		`词典索引完成：目标读音 ${targetEntries.size} 条，单字读音 ${singleCharacterEntries.length} 条。`,
+	);
+	return {
+		targetWords,
+		characterOccurrences,
+		targetEntries,
+		singleCharacterEntries,
+	};
+}
+
+function buildAlternatives(
+	corpus: BenchmarkCorpus,
+	scheme: SchemeId,
+	candidateOracle: (code: string) => readonly string[],
+) {
+	const {
+		targetWords,
+		characterOccurrences,
+		targetEntries,
+		singleCharacterEntries,
+	} = corpus;
 
 	const schemeConfig = ALL_BENCHMARK_SCHEMES.find((item) => item.id === scheme);
 	if (!schemeConfig) throw new Error(`未知实测方案：${scheme}`);
@@ -722,6 +748,7 @@ async function run() {
 	const allLines = exact500Articles.flatMap((article) => article.lines);
 	const order = ALL_BENCHMARK_SCHEMES.map((scheme) => scheme.name);
 	console.log(`总行数: ${allLines.length}，文章数: ${exact500Articles.length}`);
+	const benchmarkCorpus = buildBenchmarkCorpus(allLines);
 
 	const alternatives = new Map<SchemeId, Map<string, Alternative[]>>();
 	const singleCharacterFirstChoiceAudits = new Map<
@@ -735,16 +762,18 @@ async function run() {
 		for (const scheme of ALL_BENCHMARK_SCHEMES) {
 			console.log(`构建【${scheme.name}】空白 Rime 实际候选集...`);
 			oracle.selectSchema(scheme.schemaId);
-			const result = buildAlternatives(allLines, scheme.id, (code) =>
+			const before = oracle.cacheStats();
+			const result = buildAlternatives(benchmarkCorpus, scheme.id, (code) =>
 				oracle.candidates(code),
 			);
+			const after = oracle.cacheStats();
 			alternatives.set(scheme.id, result.alternatives);
 			singleCharacterFirstChoiceAudits.set(
 				scheme.id,
 				result.singleCharacterFirstChoiceAudit,
 			);
 			console.log(
-				`【${scheme.name}】候选集完成，收录词条: ${result.alternatives.size}`,
+				`【${scheme.name}】候选集完成，收录词条: ${result.alternatives.size}；持久缓存命中 ${after.hits - before.hits}，实际查询 ${after.misses - before.misses}`,
 			);
 		}
 	} finally {
