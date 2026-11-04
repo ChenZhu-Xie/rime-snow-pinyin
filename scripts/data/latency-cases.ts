@@ -77,7 +77,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		{ id: "four", keys: "wmxsui", page: "充满希望", source: "snow3/basic.md" },
 		{
 			id: "long",
-			keys: "khrmGHG",
+			keys: "khrmG",
 			page: "中华人民共和国",
 			source: "snow3/basic.md",
 		},
@@ -146,7 +146,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 		{
 			id: "long",
-			keys: "khrmGHG",
+			keys: "khrmG",
 			page: "中华人民共和国",
 			source: "snow-jiandao/basic.md",
 		},
@@ -289,13 +289,13 @@ for (const [schema, keys, commit, source] of [
 	],
 	[
 		"snow_sanpin",
-		"btxkerf_wmxs_khrmGHG_.",
+		"btxkerf_wmxs_khrmG_.",
 		"冰雪输入法充满希望中华人民共和国。",
 		"spec/snow_sanpin.test.yaml",
 	],
 	[
 		"snow_jiandao",
-		"btxkerf_wmxs_khrmGHG_.",
+		"btxkerf_wmxs_khrmG_.",
 		"冰雪输入法充满希望中华人民共和国。",
 		"spec/snow_jiandao.test.yaml",
 	],
