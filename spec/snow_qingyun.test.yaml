@@ -235,6 +235,11 @@ deploy:
       - send: "{Control+j}fjggfnlkma2ppjg  dlmm"
         assert: cand[1].text == "哆啦A梦"
   # 高级功能
+  upstream_wangyan_order:
+    tests:
+      # 上游说明称完整部件码应优先于同码拼音词组；明确检查首选及竞争词。
+      - send: "`wangyan"
+        assert: cand[1].text == "琰" and has("网眼") and commit == nil
   advanced:
     tests:
       # Unicode 注解：Control+u 显示汉字的 Unicode 编码和所属区块，
