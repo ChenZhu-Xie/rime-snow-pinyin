@@ -126,6 +126,23 @@ function prepareData(
 }
 
 const CACHE_FORMAT = "rime-candidate-oracle-v1";
+const BENCHMARK_DATA_PREFIXES = [
+	"snow_bihua.",
+	"snow_bushou.",
+	"snow_jiandao",
+	"snow_pinyin.",
+	"snow_sanpin",
+	"snow_shenyun_",
+	"snow_xingpang.",
+] as const;
+
+function affectsBenchmarkCandidates(relativePath: string): boolean {
+	const name = relativePath.replaceAll("\\", "/");
+	return (
+		!name.startsWith("snow_") ||
+		BENCHMARK_DATA_PREFIXES.some((prefix) => name.startsWith(prefix))
+	);
+}
 
 function dataFingerprint(dataDirectory: string, dll: string): string {
 	const hash = new Bun.CryptoHasher("sha256");
@@ -143,7 +160,8 @@ function dataFingerprint(dataDirectory: string, dll: string): string {
 	hash.update(`${CACHE_FORMAT}\0`);
 	for (const name of readdirSync(dataDirectory).sort()) {
 		// 方案清单只控制部署入口，不改变被选方案的候选；忽略后可复用单方案预热结果。
-		if (name === "default.custom.yaml") continue;
+		if (name === "default.custom.yaml" || !affectsBenchmarkCandidates(name))
+			continue;
 		add(dataDirectory, name);
 	}
 	add(dirname(dll), basename(dll));
