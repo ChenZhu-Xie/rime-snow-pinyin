@@ -372,16 +372,37 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		);
 		includes(readme, "`production/ckt-v4-2126-strict-d0-20261030`");
 		includes(readme, "`production/ckt-v4-2121-strict-avuio-20261024`");
-		includes(readme, "### 双拼方案英数字入口");
+		assert.ok(!readme.includes("### 双拼方案英数字入口"));
+		assert.equal(readme.split("#### 英数入口").length - 1, 2);
+		assert.equal(readme.split("#### Letter and number entry").length - 1, 2);
+		assert.equal(readme.split("#### 英數入口").length - 1, 2);
 		includes(readme, "键道类保留原汉字首选，大写、小写固定为第 2、3 候选");
 		includes(readme, "| 零／0 | `ltv` | `ltv` | `lgv` | `lgi` |");
 		includes(
 			readme,
-			"[机器可读映射](config/shenyun-21x26-letter-buckets.json)",
+			"[机器可读字母映射](config/shenyun-21x26-letter-buckets.json)",
 		);
 		includes(readme, "| D | `dj` | 扽 | Q | `qq` | 穷 |");
 		includes(readme, "两个 21×26 方案已经启用同一套占用桶字母方案");
+		includes(readme, "[数字码映射](config/shenyun-21x26-number-codes.json)");
+		includes(readme, "| 四／4 | `sii` | `sia` |");
+		includes(readme, "| 十／10 | `wiu` | `wie` |");
+		includes(readme, "但尚未写入两份 fixed 表");
 		includes(readme, "`21×5×21=2205`");
+		includes(readme, "`AAB` 与 `AAAB` 的既定路由同样不改");
+		const overallPosition = readme.indexOf("### [神韵(Overall-17) 21×26 双拼]");
+		const u357Position = readme.indexOf("### [无飞键道(U357) 21×21 双拼]");
+		const comparisonPosition = readme.indexOf("### 两代神韵与");
+		const overallEntryPosition = readme.indexOf(
+			"两个 21×26 方案已经启用同一套占用桶字母方案",
+		);
+		const u357EntryPosition = readme.indexOf(
+			"本节同时列出采用 U357 的冰雪健道、冰雪弎拼",
+		);
+		assert.ok(overallPosition < overallEntryPosition);
+		assert.ok(overallEntryPosition < u357Position);
+		assert.ok(u357Position < u357EntryPosition);
+		assert.ok(u357EntryPosition < comparisonPosition);
 		includes(readme, "[`7a7e154`](https://");
 		includes(readme, "[`11713b6`](https://");
 		includes(readme, "2026-10-30-strict-d0-production-closure-report.md");

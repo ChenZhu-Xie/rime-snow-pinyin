@@ -17,6 +17,44 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 冰雪简道（\`snow_shenyun_shape\`）与冰雪散拼（\`snow_shenyun_tone\`）共用 **神韵(Overall-17) 21×26 双拼**。该方案出自双拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿于提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本节映射与键盘图均以该定稿方案为准。
 
+#### 英数入口
+
+两个 21×26 方案已经启用同一套占用桶字母方案。它按当前五部系统词典计算，不使用任何运行时空桶：每码保留现有汉字首选，大写固定为第 2、小写固定为第 3。21 个辅音字母优先共用尾键 \`y\`；为避免把高价值自然候选后移，\`D/Q/V\` 改用各自行最低影响的 \`dj/qq/vm\`，\`X\` 保留 \`xy\`，五个元音从 \`x\` 行其余占用桶中选出。完整审计见[机器可读字母映射](config/shenyun-21x26-letter-buckets.json)。
+
+| 字母 | 输入码 | 汉字首选 | 字母 | 输入码 | 汉字首选 |
+| --- | :---: | :---: | --- | :---: | :---: |
+| A | \`xw\` | 欸 | N | \`ny\` | 囊 |
+| B | \`by\` | 帮 | O | \`xf\` | 偶 |
+| C | \`cy\` | 藏 | P | \`py\` | 胖 |
+| D | \`dj\` | 扽 | Q | \`qq\` | 穷 |
+| E | \`xj\` | 恩 | R | \`ry\` | 让 |
+| F | \`fy\` | 张 | S | \`sy\` | 桑 |
+| G | \`gy\` | 刚 | T | \`ty\` | 躺 |
+| H | \`hy\` | 行 | U | \`xx\` | 秀 |
+| I | \`xb\` | 寻 | V | \`vm\` | 戳 |
+| J | \`jy\` | 放 | W | \`wy\` | 上 |
+| K | \`ky\` | 扛 | X | \`xy\` | 昂 |
+| L | \`ly\` | 狼 | Y | \`yy\` | 养 |
+| M | \`my\` | 忙 | Z | \`zy\` | 脏 |
+
+数字码已按四个 21×21 方案的现行合同计算，但尚未写入两份 fixed 表：阿拉伯数字跟随对应汉字数字当前最短的既有合法码；\`1/2/3\` 因而沿用 \`一/二/三\` 的 \`y/xu/s\`，其余数字使用该汉字的首个形辅／调辅消歧码，不占无关空桶。机器可读结果见[数字码映射](config/shenyun-21x26-number-codes.json)。
+
+| 数字 | 冰雪简道 | 冰雪散拼 |
+| --- | :---: | :---: |
+| 零／0 | \`lre\` | \`lre\` |
+| 一／1 | \`y\` | \`y\` |
+| 二／2 | \`xu\` | \`xu\` |
+| 三／3 | \`s\` | \`s\` |
+| 四／4 | \`sii\` | \`sia\` |
+| 五／5 | \`que\` | \`quu\` |
+| 六／6 | \`lxo\` | \`lxa\` |
+| 七／7 | \`qie\` | \`qii\` |
+| 八／8 | \`bau\` | \`bai\` |
+| 九／9 | \`jxu\` | \`jxu\` |
+| 十／10 | \`wiu\` | \`wie\` |
+
+恰好三码的 \`ABA\`（\`U=A⊔B\`、\`|A|=21\`、\`|B|=5\`）共 \`21×5×21=2205\` 个状态，暂时完整保留，等有足以利用其五类结构的功能再启用；\`AAB\` 与 \`AAAB\` 的既定路由同样不改。
+
 > [!NOTE]
 > 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪散拼](snow_shenyun_tone.schema.yaml)的五调辅键，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的顺序排列。
 
@@ -78,6 +116,44 @@ const enOverall = `### Shenyun(Overall-17) 21×26 double pinyin
 
 冰雪简道 (\`snow_shenyun_shape\`) and 冰雪散拼 (\`snow_shenyun_tone\`) share **Shenyun(Overall-17) 21×26 double pinyin**. The layout comes from the Shuangpin Layout Benchmark branch \`production/ckt-v4-2126-strict-d0-20261030\` and was finalized in commit \`7a7e154\`; \`2026-10-30-strict-d0-production-closure-report.md\` records the search constraints, derivation, and winning mapping. This repository freezes it as \`SNOW-SHENYUN-21X26-PRODUCTION\`, and this section's mapping and keyboard figures use that finalized layout.
 
+#### Letter and number entry
+
+Both 21×26 schemes have enabled the same occupied-bucket letter mapping. It is calculated against the current five system dictionaries and consumes no runtime-vacant bucket: each code preserves its existing Han first choice, with uppercase second and lowercase third. Twenty-one consonant letters preferentially share final key \`y\`; to avoid displacing high-value natural candidates, \`D/Q/V\` use their lowest-impact row codes \`dj/qq/vm\`, \`X\` keeps \`xy\`, and the five vowels use the least-impact remaining occupied buckets in the \`x\` row. See the [machine-readable letter mapping](config/shenyun-21x26-letter-buckets.json) for the full audit.
+
+| Letter | Input | Han first choice | Letter | Input | Han first choice |
+| --- | :---: | :---: | --- | :---: | :---: |
+| A | \`xw\` | 欸 | N | \`ny\` | 囊 |
+| B | \`by\` | 帮 | O | \`xf\` | 偶 |
+| C | \`cy\` | 藏 | P | \`py\` | 胖 |
+| D | \`dj\` | 扽 | Q | \`qq\` | 穷 |
+| E | \`xj\` | 恩 | R | \`ry\` | 让 |
+| F | \`fy\` | 张 | S | \`sy\` | 桑 |
+| G | \`gy\` | 刚 | T | \`ty\` | 躺 |
+| H | \`hy\` | 行 | U | \`xx\` | 秀 |
+| I | \`xb\` | 寻 | V | \`vm\` | 戳 |
+| J | \`jy\` | 放 | W | \`wy\` | 上 |
+| K | \`ky\` | 扛 | X | \`xy\` | 昂 |
+| L | \`ly\` | 狼 | Y | \`yy\` | 养 |
+| M | \`my\` | 忙 | Z | \`zy\` | 脏 |
+
+The number mapping has been calculated under the same contract as the four 21×21 schemes but has not yet been written to the two fixed tables. Each Arabic numeral follows the shortest current legal code of its corresponding Han numeral; \`1/2/3\` therefore keep \`y/xu/s\` from \`一/二/三\`, while every other numeral uses that Han character's first shape or tone auxiliary for disambiguation. No unrelated vacant bucket is consumed. See the [machine-readable number mapping](config/shenyun-21x26-number-codes.json).
+
+| Number | 冰雪简道 | 冰雪散拼 |
+| --- | :---: | :---: |
+| 零／0 | \`lre\` | \`lre\` |
+| 一／1 | \`y\` | \`y\` |
+| 二／2 | \`xu\` | \`xu\` |
+| 三／3 | \`s\` | \`s\` |
+| 四／4 | \`sii\` | \`sia\` |
+| 五／5 | \`que\` | \`quu\` |
+| 六／6 | \`lxo\` | \`lxa\` |
+| 七／7 | \`qie\` | \`qii\` |
+| 八／8 | \`bau\` | \`bai\` |
+| 九／9 | \`jxu\` | \`jxu\` |
+| 十／10 | \`wiu\` | \`wie\` |
+
+All \`21×5×21=2205\` exact three-key \`ABA\` states (\`U=A⊔B\`, \`|A|=21\`, \`|B|=5\`) remain reserved until a feature can make meaningful use of all five structural classes. Existing \`AAB\` and \`AAAB\` routes are unchanged as well.
+
 > [!NOTE]
 > Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪散拼](snow_shenyun_tone.schema.yaml)'s five tone auxiliary keys are arranged directly in the order of [Snow Four-Code](https://input.tansongchen.com/snow4/).
 
@@ -111,6 +187,44 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 冰雪簡道（\`snow_shenyun_shape\`）與冰雪散拼（\`snow_shenyun_tone\`）共用 **神韻(Overall-17) 21×26 雙拼**。該方案出自雙拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿於提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本節映射與鍵盤圖均以該定稿方案為準。
 
+#### 英數入口
+
+兩個 21×26 方案已啟用同一套占用桶字母方案。它按目前五部系統詞典計算，不使用任何運行時空桶：每碼保留既有漢字首選，大寫固定為第 2、小寫固定為第 3。21 個輔音字母優先共用尾鍵 \`y\`；為避免把高價值自然候選後移，\`D/Q/V\` 改用各自行最低影響的 \`dj/qq/vm\`，\`X\` 保留 \`xy\`，五個母音從 \`x\` 行其餘占用桶中選出。完整稽核見[機器可讀字母映射](config/shenyun-21x26-letter-buckets.json)。
+
+| 字母 | 輸入碼 | 漢字首選 | 字母 | 輸入碼 | 漢字首選 |
+| --- | :---: | :---: | --- | :---: | :---: |
+| A | \`xw\` | 欸 | N | \`ny\` | 囊 |
+| B | \`by\` | 幫 | O | \`xf\` | 偶 |
+| C | \`cy\` | 藏 | P | \`py\` | 胖 |
+| D | \`dj\` | 扽 | Q | \`qq\` | 窮 |
+| E | \`xj\` | 恩 | R | \`ry\` | 讓 |
+| F | \`fy\` | 張 | S | \`sy\` | 桑 |
+| G | \`gy\` | 剛 | T | \`ty\` | 躺 |
+| H | \`hy\` | 行 | U | \`xx\` | 秀 |
+| I | \`xb\` | 尋 | V | \`vm\` | 戳 |
+| J | \`jy\` | 放 | W | \`wy\` | 上 |
+| K | \`ky\` | 扛 | X | \`xy\` | 昂 |
+| L | \`ly\` | 狼 | Y | \`yy\` | 養 |
+| M | \`my\` | 忙 | Z | \`zy\` | 髒 |
+
+數字碼已按四個 21×21 方案的現行合同計算，但尚未寫入兩份 fixed 表：阿拉伯數字跟隨對應漢字數字目前最短的既有合法碼；\`1/2/3\` 因而沿用 \`一/二/三\` 的 \`y/xu/s\`，其餘數字使用該漢字的首個形輔／調輔消歧碼，不占無關空桶。機器可讀結果見[數字碼映射](config/shenyun-21x26-number-codes.json)。
+
+| 數字 | 冰雪簡道 | 冰雪散拼 |
+| --- | :---: | :---: |
+| 零／0 | \`lre\` | \`lre\` |
+| 一／1 | \`y\` | \`y\` |
+| 二／2 | \`xu\` | \`xu\` |
+| 三／3 | \`s\` | \`s\` |
+| 四／4 | \`sii\` | \`sia\` |
+| 五／5 | \`que\` | \`quu\` |
+| 六／6 | \`lxo\` | \`lxa\` |
+| 七／7 | \`qie\` | \`qii\` |
+| 八／8 | \`bau\` | \`bai\` |
+| 九／9 | \`jxu\` | \`jxu\` |
+| 十／10 | \`wiu\` | \`wie\` |
+
+恰好三碼的 \`ABA\`（\`U=A⊔B\`、\`|A|=21\`、\`|B|=5\`）共 \`21×5×21=2205\` 個狀態，暫時完整保留，等有足以利用其五類結構的功能再啟用；\`AAB\` 與 \`AAAB\` 的既定路由同樣不改。
+
 > [!NOTE]
 > 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪散拼](snow_shenyun_tone.schema.yaml)的五調輔鍵，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的順序排列。
 
@@ -137,6 +251,66 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式頂功：單字為 \`A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB\`，即雙拼主碼後最多追加四輔；二／三／四字詞的四鍵主碼分別為 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主碼後最多追加兩輔，具體輔碼字位順序見本節首段。完整碼之後輸入下一字聲碼才頂屏，未完成主碼直接續寫；若第三音節的 \`AU\` 為運行時空桶，三字詞還可在三個聲碼後直接追加輔碼。完成編碼後按 \`;\` 或 \`/\` 會先頂出當前候選，再分別追加「的」或「了」，與 21×21 方案的強制上屏尾字鍵一致。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。其餘候選先按詞典權重排序，編碼逐級延長時會將此前出現過的首選後置，因此字詞可停在目標首次升為首選的最短合法編碼，不必預設補滿最長碼。
 
 `;
+
+const zhU357EnglishNumbers = `#### 英数入口
+
+本节同时列出采用 U357 的冰雪健道、冰雪弎拼及其经典声韵对应方案冰雪键道、冰雪三拼。四个 21×21 方案已经启用同一套字母结构：冰雪健道与冰雪键道使用二键基码；冰雪弎拼在基码后追加轻声键 \`o\`，冰雪三拼追加经典轻声键 \`a\`。除 \`A/I/O/U/V\` 外的 21 个字母使用“字母小写＋\`c\`”，五个例外使用 \`A=xw、I=xl、O=xd、U=xh、V=xg\`。键道类保留原汉字首选，大写、小写固定为第 2、3 候选；三拼类的完整字母码固定大写第 1、小写第 2，即使与真实轻声音节重合也保持字母固顶。
+
+阿拉伯数字与对应汉字数字同码，不另占空桶；原码已有更重要首选时继续保留，例如冰雪健道 \`qlv → 妻、七、7\`、冰雪键道 \`qkv → 其、七、7\`。
+
+| 数字 | 冰雪健道 | 冰雪弎拼 | 冰雪键道 | 冰雪三拼 |
+| --- | :---: | :---: | :---: | :---: |
+| 零／0 | \`ltv\` | \`ltv\` | \`lgv\` | \`lgi\` |
+| 一／1 | \`y\` | \`y\` | \`y\` | \`y\` |
+| 二／2 | \`re\` | \`re\` | \`xj\` | \`xj\` |
+| 三／3 | \`sj\` | \`sj\` | \`s\` | \`s\` |
+| 四／4 | \`sli\` | \`sla\` | \`sk\` | \`sk\` |
+| 五／5 | \`shv\` | \`shu\` | \`wjv\` | \`wju\` |
+| 六／6 | \`ldo\` | \`lda\` | \`lqo\` | \`lqo\` |
+| 七／7 | \`qlv\` | \`qli\` | \`qkv\` | \`qkv\` |
+| 八／8 | \`bwu\` | \`bwi\` | \`bsu\` | \`bsv\` |
+| 九／9 | \`jdu\` | \`jdu\` | \`jqu\` | \`jqu\` |
+| 十／10 | \`elu\` | \`elv\` | \`eku\` | \`eki\` |`;
+
+const enU357EnglishNumbers = `#### Letter and number entry
+
+This subsection also lists the classic sound-layout counterparts of the U357 schemes: 冰雪键道 and 冰雪三拼. All four 21×21 schemes have enabled the same letter structure. 冰雪健道 and 冰雪键道 use the two-key base; 冰雪弎拼 appends neutral-tone key \`o\`, while 冰雪三拼 appends classic neutral-tone key \`a\`. The 21 consonant letters other than \`A/I/O/U/V\` use “lowercase letter + \`c\`”; the five exceptions are \`A=xw, I=xl, O=xd, U=xh, V=xg\`. KeyTao schemes preserve the existing Han first choice and pin uppercase/lowercase to positions 2/3. Three-Code schemes pin uppercase/lowercase to positions 1/2 at the full letter code, even where it overlaps a real neutral-tone syllable.
+
+Arabic numerals share the code of the corresponding Han numeral and consume no separate vacant bucket. An existing higher-priority first choice is preserved, for example \`qlv → 妻、七、7\` in 冰雪健道 and \`qkv → 其、七、7\` in 冰雪键道.
+
+| Number | 冰雪健道 | 冰雪弎拼 | 冰雪键道 | 冰雪三拼 |
+| --- | :---: | :---: | :---: | :---: |
+| 零／0 | \`ltv\` | \`ltv\` | \`lgv\` | \`lgi\` |
+| 一／1 | \`y\` | \`y\` | \`y\` | \`y\` |
+| 二／2 | \`re\` | \`re\` | \`xj\` | \`xj\` |
+| 三／3 | \`sj\` | \`sj\` | \`s\` | \`s\` |
+| 四／4 | \`sli\` | \`sla\` | \`sk\` | \`sk\` |
+| 五／5 | \`shv\` | \`shu\` | \`wjv\` | \`wju\` |
+| 六／6 | \`ldo\` | \`lda\` | \`lqo\` | \`lqo\` |
+| 七／7 | \`qlv\` | \`qli\` | \`qkv\` | \`qkv\` |
+| 八／8 | \`bwu\` | \`bwi\` | \`bsu\` | \`bsv\` |
+| 九／9 | \`jdu\` | \`jdu\` | \`jqu\` | \`jqu\` |
+| 十／10 | \`elu\` | \`elv\` | \`eku\` | \`eki\` |`;
+
+const zhtU357EnglishNumbers = `#### 英數入口
+
+本節同時列出採用 U357 的冰雪健道、冰雪弎拼及其經典聲韻對應方案冰雪鍵道、冰雪三拼。四個 21×21 方案已啟用同一套字母結構：冰雪健道與冰雪鍵道使用二鍵基碼；冰雪弎拼在基碼後追加輕聲鍵 \`o\`，冰雪三拼追加經典輕聲鍵 \`a\`。除 \`A/I/O/U/V\` 外的 21 個字母使用「字母小寫＋\`c\`」，五個例外使用 \`A=xw、I=xl、O=xd、U=xh、V=xg\`。鍵道類保留原漢字首選，大寫、小寫固定為第 2、3 候選；三拼類的完整字母碼固定大寫第 1、小寫第 2，即使與真實輕聲音節重合也保持字母固頂。
+
+阿拉伯數字與對應漢字數字同碼，不另占空桶；原碼已有更重要首選時繼續保留，例如冰雪健道 \`qlv → 妻、七、7\`、冰雪鍵道 \`qkv → 其、七、7\`。
+
+| 數字 | 冰雪健道 | 冰雪弎拼 | 冰雪鍵道 | 冰雪三拼 |
+| --- | :---: | :---: | :---: | :---: |
+| 零／0 | \`ltv\` | \`ltv\` | \`lgv\` | \`lgi\` |
+| 一／1 | \`y\` | \`y\` | \`y\` | \`y\` |
+| 二／2 | \`re\` | \`re\` | \`xj\` | \`xj\` |
+| 三／3 | \`sj\` | \`sj\` | \`s\` | \`s\` |
+| 四／4 | \`sli\` | \`sla\` | \`sk\` | \`sk\` |
+| 五／5 | \`shv\` | \`shu\` | \`wjv\` | \`wju\` |
+| 六／6 | \`ldo\` | \`lda\` | \`lqo\` | \`lqo\` |
+| 七／7 | \`qlv\` | \`qli\` | \`qkv\` | \`qkv\` |
+| 八／8 | \`bwu\` | \`bwi\` | \`bsu\` | \`bsv\` |
+| 九／9 | \`jdu\` | \`jdu\` | \`jqu\` | \`jqu\` |
+| 十／10 | \`elu\` | \`elv\` | \`eku\` | \`eki\` |`;
 
 const overallValues = [
 	"36",
@@ -285,6 +459,53 @@ function ensureAfter(
 	if (!markdown.includes(anchor))
 		throw new Error(`README 中找不到插入锚点：${anchor}`);
 	return markdown.replace(anchor, `${anchor}\n\n${addition}`);
+}
+
+function removeStandaloneEnglishNumbers(markdown: string) {
+	const lines = markdown.split("\n");
+	const start = lines.findIndex((line) => line === "### 双拼方案英数字入口");
+	if (start < 0) return markdown;
+	const end = lines.findIndex(
+		(line, index) => index > start && line.startsWith("### "),
+	);
+	if (end < 0) throw new Error("README 中找不到英数字入口后的下一个章节。");
+	lines.splice(start, end - start);
+	while (start < lines.length && lines[start] === "" && lines[start - 1] === "")
+		lines.splice(start, 1);
+	return lines.join("\n");
+}
+
+function ensureMobileSkinsParagraph(markdown: string) {
+	const paragraph =
+		"发布页面同时提供同文（Android）的 `.trime.yaml` 皮肤包和元书（iOS、Android）的 `.cskin` 皮肤包；皮肤需与输入方案分别安装，布局预览、选择与导入说明见[手机皮肤](https://input.tansongchen.com/#手机皮肤)。触屏布局暂不提供冰雪一拼专用的并击键盘。";
+	if (markdown.includes(paragraph) || !markdown.includes("### 反查入口"))
+		return markdown;
+	return markdown.replace("### 反查入口", `${paragraph}\n\n### 反查入口`);
+}
+
+function ensureSubsection(
+	markdown: string,
+	sectionNeedle: string,
+	block: string,
+) {
+	const lines = markdown.split("\n");
+	const start = lines.findIndex(
+		(line) => line.startsWith("### ") && line.includes(sectionNeedle),
+	);
+	if (start < 0) throw new Error(`README 中找不到章节：${sectionNeedle}`);
+	let end = lines.findIndex(
+		(line, index) => index > start && line.startsWith("### "),
+	);
+	if (end < 0) end = lines.length;
+	const heading = block.split("\n", 1)[0];
+	if (lines.slice(start, end).includes(heading)) return markdown;
+	const marker = lines.findIndex(
+		(line, index) => index > start && index < end && line === "> [!NOTE]",
+	);
+	if (marker < 0)
+		throw new Error(`${sectionNeedle} 中找不到英数入口的插入位置。`);
+	lines.splice(marker, 0, ...block.split("\n"), "");
+	return lines.join("\n");
 }
 
 function normalizeTerms(markdown: string) {
@@ -676,6 +897,9 @@ function update(markdown: string, host: "github" | "gitee") {
 		return finalizeReadme(normalizeTerms(addOverallColumn(markdown)), host);
 	if (process.argv.includes("--normalize-only"))
 		return finalizeReadme(normalizeTerms(markdown), host);
+	markdown = ensureMobileSkinsParagraph(
+		removeStandaloneEnglishNumbers(markdown),
+	);
 	markdown = markdown
 		.replace(
 			/### \[神韵\(Overall-17\)[^\n]*\n[\s\S]*?(?=### \[无飞键道\(U357\))/u,
@@ -756,6 +980,21 @@ function update(markdown: string, host: "github" | "gitee") {
 			/bun scripts\/生成神韵键盘图\.ts "([^"]+)"\nbun scripts\/导出神韵热力图\.ts "\1"/gu,
 			'bun scripts/生成神韵键盘图.ts "$1"\nbun scripts/生成神韵键盘图.ts "$1" --21x26\nbun scripts/导出神韵热力图.ts "$1"\nbun scripts/导出神韵热力图.ts "$1" --21x26',
 		);
+	markdown = ensureSubsection(
+		markdown,
+		"无飞键道(U357) 21×21 双拼",
+		zhU357EnglishNumbers,
+	);
+	markdown = ensureSubsection(
+		markdown,
+		"Wufei KeyTao(U357) 21×21 double pinyin",
+		enU357EnglishNumbers,
+	);
+	markdown = ensureSubsection(
+		markdown,
+		"無飛鍵道(U357) 21×21 雙拼",
+		zhtU357EnglishNumbers,
+	);
 	return finalizeReadme(
 		normalizeTerms(addOverallColumn(deduplicateOverallSections(markdown))),
 		host,

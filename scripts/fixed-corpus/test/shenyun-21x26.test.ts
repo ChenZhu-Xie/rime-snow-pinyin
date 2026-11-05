@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { load } from "js-yaml";
 import { applyAlgebra, parseAlgebraRules } from "../algebra";
+import { pronunciationCodes } from "../../lib/benchmark-schemes";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
@@ -36,6 +37,25 @@ const letterBuckets = JSON.parse(
 		code: string;
 		naturalTop3: Array<{ text: string; weight: number }>;
 		displacedAtLeast10000: number;
+	}>;
+};
+const numberCodes = JSON.parse(
+	read("config/shenyun-21x26-number-codes.json"),
+) as {
+	id: string;
+	status: string;
+	schemes: { shape: string; tone: string };
+	contract: {
+		source: string;
+		vacantBucketsUsed: number;
+		preservedNamespaces: { ABA: number; AAB: string; AAAB: string };
+	};
+	numbers: Array<{
+		digit: string;
+		han: string;
+		pinyin: string;
+		shapeCode: string;
+		toneCode: string;
 	}>;
 };
 
@@ -200,6 +220,68 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 			),
 			filename,
 		);
+	}
+});
+
+test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", () => {
+	assert.equal(numberCodes.id, "SNOW-SHENYUN-21X26-NUMBER-CODES-V1");
+	assert.equal(numberCodes.status, "calculated-not-enabled");
+	assert.deepEqual(numberCodes.schemes, {
+		shape: "snow_shenyun_shape",
+		tone: "snow_shenyun_tone",
+	});
+	assert.deepEqual(numberCodes.contract, {
+		source: "corresponding-han-shortest-current-code",
+		vacantBucketsUsed: 0,
+		preservedNamespaces: {
+			ABA: 2205,
+			AAB: "unchanged",
+			AAAB: "unchanged",
+		},
+	});
+	assert.deepEqual(
+		numberCodes.numbers.map(({ digit }) => digit),
+		["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+	);
+	assert.equal(
+		new Set(numberCodes.numbers.map(({ shapeCode }) => shapeCode)).size,
+		numberCodes.numbers.length,
+	);
+	assert.equal(
+		new Set(numberCodes.numbers.map(({ toneCode }) => toneCode)).size,
+		numberCodes.numbers.length,
+	);
+	const initialKeys = "bpmfdtnlgkhjqwvxrzcsy";
+	const auxiliaryKeys = "aeuio";
+	for (const entry of numberCodes.numbers) {
+		const shapeCodes = pronunciationCodes("overall17-shape", entry.han, [
+			entry.pinyin,
+		]).map(({ code }) => code);
+		const toneCodes = pronunciationCodes("overall17-tone", entry.han, [
+			entry.pinyin,
+		]).map(({ code }) => code);
+		assert.ok(
+			shapeCodes.includes(entry.shapeCode),
+			`${entry.han}: ${entry.shapeCode}`,
+		);
+		assert.ok(
+			toneCodes.includes(entry.toneCode),
+			`${entry.han}: ${entry.toneCode}`,
+		);
+		for (const code of [entry.shapeCode, entry.toneCode]) {
+			assert.ok(code.length <= 3, code);
+			if (code.length === 3) {
+				assert.ok(initialKeys.includes(code[0]), code);
+				assert.ok(auxiliaryKeys.includes(code[2]), code);
+				assert.ok(!initialKeys.includes(code[2]), code);
+			}
+		}
+	}
+	for (const file of [
+		"snow_shenyun_shape.fixed.txt",
+		"snow_shenyun_tone.fixed.txt",
+	]) {
+		assert.ok(!read(file).includes("# 数字"), file);
 	}
 });
 
