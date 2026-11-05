@@ -157,7 +157,7 @@ patch:
 
 `bun scripts/benchmark-latency.ts --ci` 执行五方案统一发布预算（`scripts/lib/latency-budget.ts` 中的 `LATENCY_BUDGET`）：P50 < 10 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；每场景及按键位置的 P99 也须 < 50 ms，首次反馈最大值 < 100 ms。不得按方案放宽标准或用低耗时的并击按下、松开事件稀释反馈分布。CI 和发布共用 `.github/workflows/latency.yml`，发布必须依赖门禁成功。
 
-测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。日常用 `scripts/test.ts`，九个发布方案并行；失败时只打印失败用例，完整输出留在它给出的临时目录里：
+测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。日常用 `scripts/test.ts`，九个发布方案并行；GitHub Actions 分别使用明确的 `mira-rime1.13.1` 与 `mira-rime1.17` 资产运行九方案，以同时覆盖当前稳定版小狼毫和新版 librime。失败时只打印失败用例，完整输出留在它给出的临时目录里：
 
 ```sh
 bun scripts/test.ts                  # 全部九个发布方案

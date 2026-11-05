@@ -22,6 +22,7 @@ on:
       - 'scripts/fixed-corpus/types.ts'
       - 'scripts/package.json'
       - 'scripts/bun.lock'
+      - '.github/workflows/test.yml'
   workflow_dispatch:
     inputs:
       schema:
@@ -68,13 +69,18 @@ jobs:
           bun scripts/验证神韵双拼.ts
 
   test:
-    name: 测试
+    name: ${{ matrix.scheme.name }} / librime ${{ matrix.runtime.version }}
     needs: [dictionary, validate-shenyun]
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        include:
+        runtime:
+          - version: 1.13.1
+            asset: mira-rime1.13.1
+          - version: '1.17'
+            asset: mira-rime1.17
+        scheme:
           - name: 冰雪四拼
             schema: snow_sipin
           - name: 冰雪弎拼
@@ -95,31 +101,32 @@ jobs:
             schema: snow_sanpin_classic
     steps:
       - name: 获取代码
-        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.scheme.schema
         uses: actions/checkout@v4
         with:
           submodules: true
       - name: 准备方案依赖
-        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.scheme.schema
         run: |
           cp spec/fixtures/default.yaml default.yaml
           sudo apt-get update
           sudo apt-get install --yes opencc
           mkdir -p opencc
           cp /usr/share/opencc/* opencc/
-      - name: 安装 Mira
-        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
+      - name: 安装 Mira（librime ${{ matrix.runtime.version }}）
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.scheme.schema
         run: |
-          wget -O mira https://github.com/rimeinn/mira/releases/download/latest/mira
+          wget -O mira https://github.com/rimeinn/mira/releases/download/latest/${{ matrix.runtime.asset }}
           chmod +x mira
-      - name: ${{ matrix.name }}
-        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.schema
+          sha256sum mira
+      - name: ${{ matrix.scheme.name }}
+        if: github.event_name != 'workflow_dispatch' || inputs.schema == '' || inputs.schema == matrix.scheme.schema
         env:
           MIRA_DEPLOY: ${{ inputs.deploy }}
         run: |
           cp deps/rime-radical-pinyin/radical_pinyin.{schema,dict}.yaml .
           if [[ -n "$MIRA_DEPLOY" ]]; then
-            ./mira -C build -R "^${MIRA_DEPLOY}$" spec/${{ matrix.schema }}.test.yaml
+            ./mira -C build -R "^${MIRA_DEPLOY}$" spec/${{ matrix.scheme.schema }}.test.yaml
           else
-            ./mira -C build spec/${{ matrix.schema }}.test.yaml
+            ./mira -C build spec/${{ matrix.scheme.schema }}.test.yaml
           fi
