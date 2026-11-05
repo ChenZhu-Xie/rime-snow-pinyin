@@ -31,7 +31,22 @@
 
 发布页面同时提供同文（Android）的 `.trime.yaml` 皮肤包和元书（iOS、Android）的 `.cskin` 皮肤包；皮肤需与输入方案分别安装，布局预览、选择与导入说明见[手机皮肤](https://input.tansongchen.com/#手机皮肤)。触屏布局暂不提供冰雪一拼专用的并击键盘。
 
-冰雪四拼、冰雪弎拼、冰雪健道、冰雪键道和冰雪三拼可用 `u` 引导部件全拼反查，例如输入 `uwangyan` 查“琰”（王＋炎），候选旁显示 `yan3`；冰雪清韵改用反引号引导，例如 `` `wangyan ``，并在同一入口查询拼音、笔画和部件。冰雪简道、冰雪散拼的 `u` 入口只查笔画（横、竖、撇、点、折为 `eiuoa`），不接受部件全拼；冰雪一拼不提供反查入口。部件词库来自 [rime-radical-pinyin](https://github.com/mirtlecn/rime-radical-pinyin)，发布包已包含所需文件；直接把源码仓库作为 Rime 用户目录时，先初始化子模块并运行 `bun scripts/link.ts link`，再重新部署以生成部件词典。
+### 反查入口
+
+以下引导键均为小写。拼音反查输入普通话全拼；笔画码按“横、竖、撇、点、折”的顺序列出；部件反查连续输入各部件的全拼，不加分隔符。反查码末尾可选加 `'` 结束当前反查段。
+
+| 方案 | 拼音反查 | 笔画反查 | 部件全拼反查 |
+| --- | --- | --- | --- |
+| 冰雪四拼 | `a`＋全拼 | `u`＋`eiuoa` | `u`＋连续部件全拼 |
+| 冰雪弎拼、冰雪三拼 | `a`＋全拼 | `u`＋`ivuao` | `u`＋连续部件全拼 |
+| 冰雪健道、冰雪键道 | `a`＋全拼 | `u`＋`viuoa` | `u`＋连续部件全拼 |
+| 冰雪简道、冰雪散拼 | `a`＋全拼 | `u`＋`eiuoa` | 不提供 |
+| 冰雪清韵 | 反引号＋全拼 | 反引号＋`eiuoa` | 反引号＋连续部件全拼 |
+| 冰雪一拼 | 不提供 | 不提供 | 不提供 |
+
+例如，部件“王＋炎”连续写成 `wangyan`，在冰雪四拼、冰雪弎拼、冰雪健道、冰雪键道和冰雪三拼中输入 `uwangyan` 可查“琰”；冰雪清韵输入 `` `wangyan``。候选注释显示目标字拼音，如 `yan3`。上述以 `a` 引导的七个方案可输入 `ashi` 按拼音反查“是”；`ueiuoa` 是使用 `eiuoa` 笔画序方案的“横竖撇点折”反查。冰雪清韵对应输入 `` `shi`` 与 `` `eiuoa``。
+
+部件词库来自 [rime-radical-pinyin](https://github.com/mirtlecn/rime-radical-pinyin)，发布包已包含所需文件。直接把源码仓库作为 Rime 用户目录时，先初始化子模块并运行 `bun scripts/link.ts link`，再重新部署以生成部件词典。
 
 ### [神韵(Overall-17) 21×26 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)
 
