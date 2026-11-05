@@ -20,6 +20,10 @@ schema:
     - snow_jiandao_classic_jianpin
     - snow_jiandao_chaifen
 
+keymap:
+  key: v
+  image: snow_jiandao_classic.png
+
 engine:
   processors:
     - lua_processor@*snow.statistics*processor
@@ -28,6 +32,7 @@ engine:
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - recognizer
+    - lua_processor@*snow.keymap
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.history

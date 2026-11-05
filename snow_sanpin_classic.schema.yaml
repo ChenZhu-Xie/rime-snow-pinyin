@@ -19,6 +19,10 @@ schema:
     - snow_sanpin_bihua
     - snow_jiandao_classic_jianpin
 
+keymap:
+  key: v
+  image: snow_sanpin_classic.png
+
 engine:
   processors:
     - lua_processor@*snow.statistics*processor
@@ -27,6 +31,7 @@ engine:
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - recognizer
+    - lua_processor@*snow.keymap
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.history

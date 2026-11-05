@@ -11,6 +11,7 @@ engine:
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - recognizer
+    - lua_processor@*snow.keymap
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.shape_processor

@@ -374,6 +374,12 @@ function processor.func(key_event, env)
   -- 与计入统计的逻辑键分开记录：松开、修饰键和并击键也能表明这次选词很可能由键盘触发
   env.last_key = now()
   local context = env.engine.context
+  -- 独立键位图键是界面操作，不属于下一次中文上屏的按键。
+  local keymap_key = snow.keymap_keys[env.schema_id]
+  if keymap_key and key_event.keycode == keymap_key and key_event.modifier == 0
+      and context.input == "" then
+    return snow.kNoop
+  end
   -- 本处理器排在第一位，事件开始时的状态就是上一个事件处理完的状态。上一个事件开始时有编码，现在没了，
   -- 中间又没有上屏，就是这段输入被放弃了：Escape、退格删光、临时西文下作为西文上屏（不经过 commit_notifier）
   -- 等等。之前累计的按键都不要了

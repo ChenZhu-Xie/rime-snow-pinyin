@@ -40,6 +40,10 @@ snow.debug = false
 -- popping 用 engine:process_key 重投按键期间为 true，排在它前面的处理器会再收到一次同一个键
 snow.redispatching = false
 
+-- 键位图处理器按方案登记实际可用的独立触发键，供输入统计跳过这类界面操作。
+---@type table<string, integer>
+snow.keymap_keys = {}
+
 -- 顶屏、略码上屏时为转给下一次上屏的有效按键数（触发顶屏的键加上推回输入框的编码，或略码键），供输入统计扣除
 ---@type integer|nil
 snow.handover = nil

@@ -17,6 +17,10 @@ schema:
     - snow_bihua
     - snow_bushou
 
+keymap:
+  key: e
+  image: snow_sipin.png
+
 engine:
   processors:
     - lua_processor@*snow.statistics*processor
@@ -28,6 +32,7 @@ engine:
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - recognizer
+    - lua_processor@*snow.keymap
     - lua_processor@*snow.user_dict
     - key_binder
     - lua_processor@*snow.editor

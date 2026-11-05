@@ -49,6 +49,8 @@ program/generate_dict_code/jdh.dict.yaml
 
 # 图片（SVG 为可审查的文本格式，继续纳入版本控制）
 *.[pP][nN][gG]
+!lua/snow/keymaps/*.png
+!scripts/assets/keymaps/*.png
 *.[aA][pP][nN][gG]
 *.[jJ][pP][gG]
 *.[jJ][pP][eE][gG]

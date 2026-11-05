@@ -22,5 +22,9 @@ schema:
 shenyun_options:
   auxiliary: shape
 
+keymap:
+  key: e
+  image: snow_shenyun_shape.png
+
 __patch:
   - snow_shenyun_shape.custom:/patch?

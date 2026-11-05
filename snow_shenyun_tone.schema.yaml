@@ -22,6 +22,10 @@ schema:
 shenyun_options:
   auxiliary: tone
 
+keymap:
+  key: e
+  image: snow_shenyun_tone.png
+
 __patch:
   - patch
   - snow_shenyun_tone.custom:/patch?
