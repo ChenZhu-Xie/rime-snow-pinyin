@@ -9,6 +9,10 @@ import {
 	preferredRankedCodes,
 } from "./lib/benchmark-paths";
 import type { RankedBenchmarkCode } from "./lib/benchmark-ranking";
+import {
+	benchmarkReplay,
+	writeBenchmarkReplayCache,
+} from "./lib/benchmark-replay";
 import { ROOT } from "./lib/paths";
 import { RimeCandidateOracle } from "./lib/rime-candidate-oracle";
 import { sbxhIsPoppable, sbxhSupplementalStrokes } from "./lib/sbxh-benchmark";
@@ -546,7 +550,11 @@ const eight = JSON.parse(readFileSync(eightPath, "utf8")) as {
 	contract: string;
 	schemes: Record<
 		string,
-		{ name: string; total: { keys: number }; articles: Array<{ keys: number }> }
+		{
+			name: string;
+			total: { keys: number };
+			articles: Array<{ keys: number }>;
+		}
 	>;
 };
 const sbxhResult = {
@@ -564,11 +572,22 @@ const sbxhResult = {
 	total: aggregate,
 	articles: articleResults.map((result) => result.stat),
 };
+const resultContract =
+	"current-nine-scheme-benchmark-v5-external-sbxh-rime-oracle";
+writeBenchmarkReplayCache(
+	join(ROOT, "output", "benchmark-replays", "sbxh.json"),
+	{
+		contract: resultContract,
+		schemes: {
+			sbxh: articleResults.map((result) => result.paths.map(benchmarkReplay)),
+		},
+	},
+);
 writeFileSync(
 	join(ROOT, "reports", "5000字_九方案最优切分实测结果.json"),
 	`${JSON.stringify(
 		{
-			contract: "current-nine-scheme-benchmark-v5-external-sbxh-rime-oracle",
+			contract: resultContract,
 			baseline: eight.contract,
 			schemes: { ...eight.schemes, sbxh: sbxhResult },
 		},

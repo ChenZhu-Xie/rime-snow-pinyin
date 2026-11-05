@@ -11,6 +11,10 @@ import {
 } from "./lib/benchmark-paths";
 import { rankBenchmarkCodes } from "./lib/benchmark-ranking";
 import {
+	benchmarkReplay,
+	writeBenchmarkReplayCache,
+} from "./lib/benchmark-replay";
+import {
 	ALL_BENCHMARK_SCHEMES,
 	type BenchmarkSchemeId,
 	directOutputCodes,
@@ -806,6 +810,21 @@ async function run() {
 			stats: schemeRecord((scheme) => analyzePaths(article, paths[scheme])),
 		};
 	});
+	const resultContract = "current-eight-scheme-benchmark-v4-rime-oracle";
+	writeBenchmarkReplayCache(
+		join(root, "output", "benchmark-replays", "eight.json"),
+		{
+			contract: resultContract,
+			schemes: Object.fromEntries(
+				ALL_BENCHMARK_SCHEMES.map((scheme) => [
+					scheme.id,
+					articleResults.map((result) =>
+						result.paths[scheme.id].map(benchmarkReplay),
+					),
+				]),
+			),
+		},
+	);
 
 	const replayDir = join(root, "reports", "十篇五百字_八方案逐键对齐回放");
 	mkdirSync(replayDir, { recursive: true });
@@ -892,7 +911,7 @@ async function run() {
 		join(root, "reports", "5000字_八方案最优切分实测结果.json"),
 		`${JSON.stringify(
 			{
-				contract: "current-eight-scheme-benchmark-v4-rime-oracle",
+				contract: resultContract,
 				schemes: Object.fromEntries(
 					ALL_BENCHMARK_SCHEMES.map((scheme) => [
 						scheme.id,
