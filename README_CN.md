@@ -311,8 +311,8 @@ bun scripts/验证神韵双拼.ts
 - [神韵 R9 公平对比原始 JSON](reports/shenyun-r9-comparison.json)：上述对比的机器可复核数据快照。
 - [当前方案快捷键审计与上游对照](reports/shortcut-audit.md)：四个方案的共享、专属及相对上游变化的快捷键。
 - [四拼二字词逐级排序对神韵固顶的参考调研](reports/sipin-bigram-ranking-research.md)：以四拼逐级候选名次为键道、三拼固顶提供有限旁证，不把四拼视为 R9 的组成部分。
-- [冰雪双拼六方案 500 字最短键码实战测评](reports/冰雪双拼六方案_500字_最短键码实战测评.txt)：同一篇 500 字赛文下六条仓库内可复算轨的实际按键比较；四条含已知错误的外部冻结轨不再导入或排名。
-- [冰雪双拼六方案 5000 字最优切分报告](reports/十篇五百字_六方案最优切分及字词比率报告.md)：十种文体共 5000 汉字的最短路径、选重、单字逐级升首选与词长分布审计。
+- [冰雪八方案 500 字最短键码实战测评](reports/冰雪八方案_500字_最短键码实战测评.txt)：同一篇 500 字赛文下八条仓库内可复算轨的实际按键比较，包含冰雪四拼与冰雪清韵；两条含已知错误的外部冻结轨不再导入或排名。
+- [冰雪八方案 5000 字最优切分报告](reports/十篇五百字_八方案最优切分及字词比率报告.md)：十种文体共 5000 汉字的八方案最优切分、选重审计、字词比率与逐键回放。
 
 ### 关于词库的说明
 
@@ -496,8 +496,8 @@ bun scripts/验证神韵双拼.ts
 - [Raw Shenyun R9 comparison JSON](reports/shenyun-r9-comparison.json): machine-reviewable snapshot underlying the comparison.
 - [Shortcut audit and upstream comparison](reports/shortcut-audit.md): shared and scheme-specific shortcuts plus local changes from upstream.
 - [Four-Code staged bigram ranking study](reports/sipin-bigram-ranking-research.md): limited ranking evidence for KeyTao and Three-Code fixed candidates; Four-Code itself is not part of R9.
-- [Six-scheme 500-character shortest-code replay](reports/冰雪双拼六方案_500字_最短键码实战测评.txt): actual keystroke comparison across six locally reproducible schemes; four external frozen tracks with known errors are no longer imported or ranked.
-- [Six-scheme 5,000-character optimal-segmentation report](reports/十篇五百字_六方案最优切分及字词比率报告.md): shortest paths, selections, progressive single-character promotion, and word-length distributions across ten genres.
+- [Eight-scheme 500-character shortest-code replay](reports/冰雪八方案_500字_最短键码实战测评.txt): actual keystroke comparison across eight locally reproducible schemes, including Four-Code and Clear Rhyme; two external frozen tracks with known errors are no longer imported or ranked.
+- [Six-scheme 5,000-character optimal-segmentation report](reports/十篇五百字_六方案最优切分及字词比率报告.md): the current completed 5,000-character result; the eight-scheme version will be generated after review of the 500-character result.
 
 ### Dictionaries
 
@@ -673,8 +673,8 @@ bun scripts/验证神韵双拼.ts
 - [神韻 R9 公平對比原始 JSON](reports/shenyun-r9-comparison.json)：上述對比的機器可複核資料快照。
 - [目前方案快捷鍵稽核與上游對照](reports/shortcut-audit.md)：四個方案的共用、專屬及相對上游變更的快捷鍵。
 - [四拼二字詞逐級排序對神韻固頂的參考調研](reports/sipin-bigram-ranking-research.md)：以四拼逐級候選名次為鍵道、三拼固頂提供有限旁證，不把四拼視為 R9 的組成部分。
-- [冰雪雙拼六方案 500 字最短鍵碼實戰測評](reports/冰雪双拼六方案_500字_最短键码实战测评.txt)：同一篇 500 字賽文下六條倉庫內可復算軌的實際按鍵比較；四條含已知錯誤的外部凍結軌不再匯入或排名。
-- [冰雪雙拼六方案 5000 字最優切分報告](reports/十篇五百字_六方案最优切分及字词比率报告.md)：十種文體共 5000 漢字的最短路徑、選重、單字逐級升首選與詞長分布審計。
+- [冰雪八方案 500 字最短鍵碼實戰測評](reports/冰雪八方案_500字_最短键码实战测评.txt)：同一篇 500 字賽文下八條倉庫內可復算軌的實際按鍵比較，包含冰雪四拼與冰雪清韻；兩條含已知錯誤的外部凍結軌不再匯入或排名。
+- [冰雪六方案 5000 字最優切分報告](reports/十篇五百字_六方案最优切分及字词比率报告.md)：目前已完成的十種文體共 5000 漢字結果；八方案版本待 500 字結果複核後再生成。
 
 ### 詞庫說明
 

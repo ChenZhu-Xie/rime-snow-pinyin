@@ -7,7 +7,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 // 从已有的神韵测评报告中提取第 10 篇（输入法赛文），严格 500 汉字，37 句
 function loadArticle10(): string[] {
 	const text = readFileSync(
-		join(root, "reports", "冰雪双拼六方案_500字_最短键码实战测评.txt"),
+		join(root, "reports", "冰雪八方案_500字_最短键码实战测评.txt"),
 		"utf8",
 	);
 	const lines = text.split(/\r?\n/);

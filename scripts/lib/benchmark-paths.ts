@@ -10,6 +10,7 @@ export interface BenchmarkAlternative<Source extends string = string> {
 	source: Source;
 	shift: number;
 	selectionCount: number;
+	punctuationNeedsSeparator?: boolean;
 }
 
 export interface BenchmarkToken<Source extends string = string>
@@ -123,8 +124,13 @@ export function optimizeBenchmarkLine<Source extends string>(
 			for (const alternative of values) {
 				const followedByHan =
 					end < characters.length && /\p{Script=Han}/u.test(characters[end]);
+				const followedByUnsafePunctuation =
+					alternative.punctuationNeedsSeparator === true &&
+					(characters[end] === "，" || characters[end] === "。");
 				const separator =
-					followedByHan && !alternative.instant && !alternative.popppable;
+					(followedByHan || followedByUnsafePunctuation) &&
+					!alternative.instant &&
+					!alternative.popppable;
 				const candidate: BenchmarkPathResult<Source> = {
 					tokens: [{ ...alternative, start, end, separator }, ...rest.tokens],
 					keys: alternative.keyCost + Number(separator) + rest.keys,

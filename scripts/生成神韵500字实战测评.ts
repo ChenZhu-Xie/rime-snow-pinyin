@@ -15,7 +15,9 @@ import {
 import {
 	ALL_BENCHMARK_SCHEMES,
 	type BenchmarkSchemeId,
+	directOutputCodes,
 	isPoppableFixedCode,
+	suffixOutputCodes,
 	supportsStructuralAbbreviations,
 } from "./lib/benchmark-schemes";
 import { RimeCandidateOracle } from "./lib/rime-candidate-oracle";
@@ -24,7 +26,7 @@ import { generateAbbreviations } from "./固顶替代";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outputPath = resolve(
 	process.argv[2] ??
-		join(root, "reports", "冰雪双拼六方案_500字_最短键码实战测评.txt"),
+		join(root, "reports", "冰雪八方案_500字_最短键码实战测评.txt"),
 );
 type SchemeId = BenchmarkSchemeId;
 type SourceKind =
@@ -181,15 +183,30 @@ function buildAlternatives(
 	const alternatives = new Map<string, Alternative[]>();
 	const add = (alternative: Alternative) => {
 		if (!targetWords.has(alternative.word)) return;
+		const normalized =
+			scheme === "qingyun"
+				? { ...alternative, punctuationNeedsSeparator: true }
+				: alternative;
 		const values = alternatives.get(alternative.word) ?? [];
-		if (
-			!values.some((value) => value.displayCode === alternative.displayCode)
-		) {
-			values.push(alternative);
+		if (!values.some((value) => value.displayCode === normalized.displayCode)) {
+			values.push(normalized);
 			values.sort(compareAlternative);
 			alternatives.set(alternative.word, values);
 		}
 	};
+	for (const [word, code] of directOutputCodes(scheme)) {
+		add({
+			word,
+			displayCode: code,
+			rawCode: code,
+			keyCost: 1,
+			instant: true,
+			popppable: false,
+			source: "尾字键",
+			shift: 0,
+			selectionCount: 0,
+		});
+	}
 	for (const [code, value] of fixed) {
 		const upper = countUpper(code);
 		add({
@@ -262,10 +279,7 @@ function buildAlternatives(
 		[...alternatives].map(([word, values]) => [word, [...values]]),
 	);
 	for (const [base, baseAlternatives] of tailSnapshot) {
-		for (const [tail, trigger] of [
-			["的", ";"],
-			["了", "/"],
-		] as const) {
+		for (const [tail, trigger] of suffixOutputCodes(scheme)) {
 			const word = base + tail;
 			if (!targetWords.has(word)) continue;
 			for (const alternative of baseAlternatives) {
@@ -445,13 +459,13 @@ const detail = generatedStats.map((stat) => {
 });
 
 const order = [...ALL_BENCHMARK_SCHEMES.map((scheme) => scheme.name)];
-const output = `冰雪双拼四套现行方案与两套经典方案：500 字赛文六方案最短键码实战测评
+const output = `冰雪八方案：500 字赛文最短键码实战测评
 ====================================================================================================
 口径：500 个汉字；中文逗号/句号 43 个；标点计键；均码 = 总实际按键 / 500。
-重算轨：冰雪健道、冰雪弎拼、冰雪简道、冰雪散拼，以及采用迁移前声韵布局的冰雪键道、冰雪三拼；六条轨均按现行功能与同一最短路径模型复算。
+重算轨：冰雪四拼、冰雪健道、冰雪弎拼、冰雪清韵、冰雪简道、冰雪散拼，以及采用迁移前声韵布局的冰雪键道、冰雪三拼；八条轨均按现行功能与同一最短路径模型复算。
 辅序：冰雪健道与经典冰雪键道共用 12/231/24，冰雪弎拼与经典冰雪三拼共用 12/213/23；冰雪简道为 12/21/42，冰雪散拼为 12/21/13。
 优化目标：先最少选重次数，再最少实际按键；同为首选时优先最短标准码，不为节省一个 Space 多补辅助码。某字词存在首选编码时不保留其二、三选短码，只有完全没有首选打法时才允许前三候选选重兜底。
-结构略码：仅冰雪简道与冰雪散拼使用；四条 21×21 轨只使用大写补韵机制。
+结构略码：仅冰雪四拼、冰雪简道与冰雪散拼使用；四条 21×21 轨只使用大写补韵机制。冰雪清韵的词语走九键韵音码，单字同时枚举形码。
 记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。
 
 Benchmark 排名表
@@ -464,7 +478,7 @@ ${stats
 	)
 	.join("\n")}
 
-六条仓库内可复算轨最短路径使用统计
+八条仓库内可复算轨最短路径使用统计
 ----------------------------------------------------------------------------------------------------
 ${detail.join("\n")}
 
@@ -474,11 +488,11 @@ ${replay.map((line, index) => `[${String(index + 1).padStart(2, "0")}]\n${render
 
 核验说明
 ====================================================================================================
-1. 六条本地轨均读取当前发布 fixed 表与运行时合同；冰雪键道、冰雪三拼只从 scripts/data/legacy-schemes/3658e22 还原迁移前声韵代数。六轨共用当前五部词典和受版本控制的字形／笔画源。
+1. 八条本地轨均读取当前发布 fixed 表与运行时合同；冰雪键道、冰雪三拼只从 scripts/data/legacy-schemes/3658e22 还原迁移前声韵代数。八轨共用当前五部拼音词典和受版本控制的字形／笔画源；冰雪清韵另读取当前形码词典。
 2. 单字与二／三／四字词均枚举合法标准码、空桶短码和逐级扩展码；每个编码都在独立空白 user dict、无提交、无调频的 librime 部署中查询实际候选，交由全文动态规划先最少化选重次数、再最少化总按键。
 3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
 4. 冰雪键道／冰雪三拼不再采用外部冻结统计；二者只保留迁移前声韵布局，AA/AAB、630、fixed、动态首选后置与辅序均按当前发布方案合同复算。
-5. 历史十方案报告中的冰雪四拼、冰雪清韵、声笔小鹤、小鹤音形来自两份外部冻结回放；回放仍含已知错误且未满足 snow-benchmark-frozen-v2 契约，因此本报告不导入、不排名。待四轨分别以空白用户词典、关闭调频和逐标准码首选截断重新生成后，另行恢复跨方案比较。
+5. 冰雪四拼与冰雪清韵现已由本仓库直接复算，不再采用历史外部冻结回放；声笔小鹤、小鹤音形的旧冻结回放仍含已知错误且未满足 snow-benchmark-frozen-v2 契约，因此不导入、不排名。
 `;
 
 writeFileSync(outputPath, output, "utf8");

@@ -5,6 +5,8 @@ import { loadAuxiliarySemantics } from "./auxiliary-semantics";
 import { rootPath } from "./paths";
 
 export type BenchmarkSchemeId =
+	| "sipin"
+	| "qingyun"
 	| "classic-tone"
 	| "classic-shape"
 	| "u357-tone"
@@ -12,7 +14,7 @@ export type BenchmarkSchemeId =
 	| "overall17-tone"
 	| "overall17-shape";
 
-export type BenchmarkCapacity = "21x21" | "21x26";
+export type BenchmarkCapacity = "四拼" | "21x9" | "21x21" | "21x26";
 export type BenchmarkAuxiliaryMode = "tone" | "shape";
 
 export interface BenchmarkScheme {
@@ -21,7 +23,7 @@ export interface BenchmarkScheme {
 	name: string;
 	shortName: string;
 	capacity: BenchmarkCapacity;
-	soundLayout: "classic" | "u357" | "overall17";
+	soundLayout: "sipin" | "qingyun" | "classic" | "u357" | "overall17";
 	auxiliaryMode: BenchmarkAuxiliaryMode;
 	fixedFile: string;
 	auxiliaryOrder: string;
@@ -34,6 +36,17 @@ export interface BenchmarkCode {
 }
 
 export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
+	{
+		id: "sipin",
+		schemaId: "snow_sipin",
+		name: "冰雪四拼",
+		shortName: "冰雪四拼",
+		capacity: "四拼",
+		soundLayout: "sipin",
+		auxiliaryMode: "shape",
+		fixedFile: "snow_sipin.fixed.txt",
+		auxiliaryOrder: "单字笔画／部件",
+	},
 	{
 		id: "u357-shape",
 		schemaId: "snow_jiandao",
@@ -55,6 +68,17 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 		auxiliaryMode: "tone",
 		fixedFile: "snow_sanpin.fixed.txt",
 		auxiliaryOrder: "12/213/23",
+	},
+	{
+		id: "qingyun",
+		schemaId: "snow_qingyun",
+		name: "冰雪清韵",
+		shortName: "冰雪清韵",
+		capacity: "21x9",
+		soundLayout: "qingyun",
+		auxiliaryMode: "shape",
+		fixedFile: "snow_qingyun.fixed.txt",
+		auxiliaryOrder: "词语音码／单字形码",
 	},
 	{
 		id: "overall17-shape",
@@ -125,6 +149,14 @@ const overall17Algebra = new SpellingAlgebra(
 	"shenyun_algebra",
 	{ derive: false },
 );
+const sipinAlgebra = new SpellingAlgebra(
+	rootPath("snow_sipin.schema.yaml"),
+	"sipin_algebra",
+);
+const qingyunAlgebra = new SpellingAlgebra(
+	rootPath("snow_qingyun.schema.yaml"),
+	"speller/algebra",
+);
 const classicAlgebra = new SpellingAlgebra(
 	rootPath(
 		"scripts",
@@ -150,6 +182,32 @@ const u357ShapeCodes = readShapeCodes(
 	Object.fromEntries(shapeElementKeys),
 );
 
+const sipinElementKeys = new Map<string, string>();
+for (const line of readFileSync(
+	rootPath("lua", "snow", "radical_sipin.txt"),
+	"utf8",
+).split(/\r?\n/u)) {
+	const [element, code] = line.split("\t");
+	if (element && code) sipinElementKeys.set(element, code);
+}
+const sipinShapeCodes = readShapeCodes(
+	rootPath("snow_bushou.dict.yaml"),
+	Object.fromEntries(sipinElementKeys),
+);
+
+const qingyunShapeReadings = new Map<string, string[][]>();
+for (const line of readFileSync(
+	rootPath("snow_qingyun.dict.yaml"),
+	"utf8",
+).split(/\r?\n/u)) {
+	if (!line.includes("\t") || line.startsWith("#")) continue;
+	const [character, reading] = line.split("\t");
+	if (!character || !reading || [...character].length !== 1) continue;
+	const values = qingyunShapeReadings.get(character) ?? [];
+	values.push(reading.split(" "));
+	qingyunShapeReadings.set(character, values);
+}
+
 const strokeDigits = new Map<string, string[]>();
 for (const line of readFileSync(rootPath("snow_bihua.dict.yaml"), "utf8").split(
 	/\r?\n/u,
@@ -174,10 +232,51 @@ function schemeById(id: BenchmarkSchemeId): BenchmarkScheme {
 export function supportsStructuralAbbreviations(
 	id: BenchmarkSchemeId,
 ): boolean {
-	return id === "overall17-shape" || id === "overall17-tone";
+	return id === "sipin" || id === "overall17-shape" || id === "overall17-tone";
+}
+
+export function directOutputCodes(
+	id: BenchmarkSchemeId,
+): ReadonlyArray<readonly [word: string, code: string]> {
+	if (id === "qingyun") {
+		return [
+			["了", "a"],
+			["我", "o"],
+			["的", "e"],
+			["是", "i"],
+			["不", "u"],
+			["在", ";"],
+			["和", "/"],
+		];
+	}
+	return [
+		["的", ";"],
+		["了", "/"],
+	];
+}
+
+export function suffixOutputCodes(
+	id: BenchmarkSchemeId,
+): ReadonlyArray<readonly [tail: string, code: string]> {
+	return id === "qingyun"
+		? []
+		: [
+				["的", ";"],
+				["了", "/"],
+			];
 }
 
 function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
+	if (scheme.soundLayout === "sipin") {
+		return sipinAlgebra
+			.applyAll(syllable)
+			.filter((code) => /^[bpmfdtnlgkhjqxzcsrwyv][aeiou]{1,4}$/u.test(code));
+	}
+	if (scheme.soundLayout === "qingyun") {
+		return qingyunAlgebra
+			.applyAll(syllable)
+			.filter((code) => /^[bpmfdtnlgkhjqxzcsrwyv][aoeiu;,./]$/u.test(code));
+	}
 	const plain = plainSyllable(syllable);
 	if (scheme.soundLayout === "u357") {
 		const code = u357Mapping.codes[plain];
@@ -198,7 +297,13 @@ function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
 	return /^[a-z]{2}$/u.test(code) ? [code] : [];
 }
 
-function remapShapeCode(code: string, capacity: BenchmarkCapacity): string {
+function isDoublePinyinCapacity(
+	capacity: BenchmarkCapacity,
+): capacity is "21x21" | "21x26" {
+	return capacity === "21x21" || capacity === "21x26";
+}
+
+function remapShapeCode(code: string, capacity: "21x21" | "21x26"): string {
 	const source = semantics["21x21"].shapeKeysByMeaning;
 	const target = semantics[capacity].shapeKeysByMeaning;
 	return [...code]
@@ -210,17 +315,27 @@ function remapShapeCode(code: string, capacity: BenchmarkCapacity): string {
 }
 
 function shapeCode(character: string, capacity: BenchmarkCapacity): string {
+	if (!isDoublePinyinCapacity(capacity)) return "";
 	return remapShapeCode(u357ShapeCodes.get(character) ?? "", capacity);
 }
 
 function strokeCodes(character: string, capacity: BenchmarkCapacity): string[] {
+	if (!isDoublePinyinCapacity(capacity)) return [];
 	const keys = semantics[capacity].strokeKeysByStroke;
 	return (strokeDigits.get(character) ?? []).map((digits) =>
 		[...digits].map((digit) => keys[Number(digit) - 1] ?? "").join(""),
 	);
 }
 
+function sipinStrokeCodes(character: string): string[] {
+	const keys = "eiuoa";
+	return (strokeDigits.get(character) ?? []).map((digits) =>
+		[...digits].map((digit) => keys[Number(digit) - 1] ?? "").join(""),
+	);
+}
+
 function auxiliaryPositions(scheme: BenchmarkScheme, length: number): number[] {
+	if (!isDoublePinyinCapacity(scheme.capacity)) return [];
 	if (scheme.capacity === "21x26") {
 		if (length === 2) return [1, 2];
 		if (length === 3) return [2, 1];
@@ -237,6 +352,73 @@ function auxiliaryPositions(scheme: BenchmarkScheme, length: number): number[] {
 	if (length === 3) return [2, 1, 3];
 	if (length === 4) return [2, 3];
 	return [];
+}
+
+function sipinCodes(word: string, sounds: string[]): BenchmarkCode[] {
+	const result = new Map<string, BenchmarkCode>();
+	if (sounds.length === 1) {
+		const main = sounds[0];
+		for (let length = 1; length <= main.length; length += 1) {
+			const code = main.slice(0, length);
+			result.set(code, { code, mainLength: length, auxiliaryLength: 0 });
+		}
+		for (const stroke of sipinStrokeCodes(word)) {
+			for (let length = 1; length <= Math.min(stroke.length, 4); length += 1) {
+				const code = main + stroke.slice(0, length);
+				result.set(code, {
+					code,
+					mainLength: main.length,
+					auxiliaryLength: length,
+				});
+			}
+		}
+		const shape = sipinShapeCodes.get(word) ?? "";
+		for (let length = 1; length <= shape.length; length += 1) {
+			const code = `${main}1${shape.slice(0, length)}`;
+			result.set(code, {
+				code,
+				mainLength: main.length,
+				auxiliaryLength: length + 1,
+			});
+		}
+		return [...result.values()];
+	}
+	let main = sounds
+		.map((code, index) =>
+			index < 4 ? code[0].toLowerCase() : code[0].toUpperCase(),
+		)
+		.join("");
+	main += sounds.at(-1)?.slice(1, 3) ?? "";
+	main += sounds[0]?.slice(1, 3) ?? "";
+	for (let length = sounds.length; length <= main.length; length += 1) {
+		const code = main.slice(0, length);
+		result.set(code, { code, mainLength: length, auxiliaryLength: 0 });
+	}
+	return [...result.values()];
+}
+
+function qingyunCodes(sounds: string[]): BenchmarkCode[] {
+	if (sounds.length === 0) return [];
+	const result = new Map<string, BenchmarkCode>();
+	let main = sounds
+		.map((code, index) =>
+			index < 4 ? code[0].toLowerCase() : code[0].toUpperCase(),
+		)
+		.join("");
+	result.set(main, {
+		code: main,
+		mainLength: main.length,
+		auxiliaryLength: 0,
+	});
+	if (sounds.length <= 3) {
+		main += sounds.at(-1)?.slice(1) ?? "";
+		result.set(main, {
+			code: main,
+			mainLength: main.length,
+			auxiliaryLength: 0,
+		});
+	}
+	return [...result.values()];
 }
 
 function mainCode(scheme: BenchmarkScheme, sounds: string[]): string | null {
@@ -282,18 +464,20 @@ function auxiliarySequences(
 	word: string,
 	syllables: string[],
 ): string[][] {
+	if (!isDoublePinyinCapacity(scheme.capacity)) return [[]];
+	const capacity = scheme.capacity;
 	if (syllables.length === 1) {
 		if (scheme.auxiliaryMode === "shape") {
-			return [[...shapeCode(word, scheme.capacity)].slice(0, 4)];
+			return [[...shapeCode(word, capacity)].slice(0, 4)];
 		}
 		const tone = toneOf(syllables[0]);
 		const toneKey = tone
 			? scheme.soundLayout === "classic"
 				? "viuoa"[Number(tone) - 1]
-				: semantics[scheme.capacity].toneKeysByTone[Number(tone) - 1]
+				: semantics[capacity].toneKeysByTone[Number(tone) - 1]
 			: undefined;
 		if (!toneKey) return [[]];
-		const strokes = strokeCodes(word, scheme.capacity);
+		const strokes = strokeCodes(word, capacity);
 		return strokes.length > 0
 			? strokes.map((stroke) => [toneKey, ...stroke].slice(0, 4))
 			: [[toneKey]];
@@ -303,7 +487,7 @@ function auxiliarySequences(
 		return [
 			positions.map(
 				(position) =>
-					shapeCode([...word][position - 1] ?? "", scheme.capacity)[0] ?? "",
+					shapeCode([...word][position - 1] ?? "", capacity)[0] ?? "",
 			),
 		];
 	}
@@ -313,7 +497,7 @@ function auxiliarySequences(
 			if (!tone) return "";
 			return scheme.soundLayout === "classic"
 				? ("viuoa"[Number(tone) - 1] ?? "")
-				: (semantics[scheme.capacity].toneKeysByTone[Number(tone) - 1] ?? "");
+				: (semantics[capacity].toneKeysByTone[Number(tone) - 1] ?? "");
 		}),
 	];
 }
@@ -336,6 +520,16 @@ export function pronunciationCodes(
 		);
 	}
 	for (const sounds of soundCombinations) {
+		if (scheme.soundLayout === "sipin") {
+			for (const generated of sipinCodes(word, sounds))
+				result.set(generated.code, generated);
+			continue;
+		}
+		if (scheme.soundLayout === "qingyun") {
+			for (const generated of qingyunCodes(sounds))
+				result.set(generated.code, generated);
+			continue;
+		}
 		for (const main of mainCodes(scheme, sounds)) {
 			if (syllables.length === 1) {
 				result.set(main.slice(0, 1), {
@@ -370,6 +564,21 @@ export function pronunciationCodes(
 			}
 		}
 	}
+	if (scheme.soundLayout === "qingyun" && syllables.length === 1) {
+		for (const readings of qingyunShapeReadings.get(word) ?? []) {
+			let combinations: string[][] = [[]];
+			for (const reading of readings) {
+				const alternatives = soundCodes(scheme, reading);
+				combinations = combinations.flatMap((prefix) =>
+					alternatives.map((code) => [...prefix, code]),
+				);
+			}
+			for (const combination of combinations) {
+				for (const generated of qingyunCodes(combination))
+					result.set(generated.code, generated);
+			}
+		}
+	}
 	return [...result.values()];
 }
 
@@ -379,6 +588,13 @@ export function isPoppableCode(
 ): boolean {
 	const scheme = schemeById(id);
 	if (code.auxiliaryLength > 0) return true;
+	if (scheme.soundLayout === "sipin")
+		return (
+			code.mainLength >= 4 ||
+			/^[bpmfdtnlgkhjqxzcsrwyv].*[aeiou]$/u.test(code.code)
+		);
+	if (scheme.soundLayout === "qingyun")
+		return code.mainLength >= 4 || /[aoeiu;,./]$/u.test(code.code);
 	if (scheme.capacity === "21x26") return code.mainLength >= 4;
 	return /^(?:[bpmfdtnlgkhjqxzcsrwye][A-Z]?){4}$/u.test(code.code);
 }
@@ -388,7 +604,12 @@ export function isPoppableFixedCode(
 	code: string,
 ): boolean {
 	const scheme = schemeById(id);
+	if (scheme.soundLayout === "sipin")
+		return code.length >= 4 || /^[bpmfdtnlgkhjqxzcsrwyv].*[aeiou]$/u.test(code);
+	if (scheme.soundLayout === "qingyun")
+		return code.length >= 4 || /[aoeiu;,./]$/u.test(code);
 	if (scheme.capacity === "21x26") return code.length >= 4;
+	if (scheme.capacity !== "21x21") return false;
 	const auxiliaryKeys = new Set([
 		...semantics[scheme.capacity].shapeKeysByMeaning,
 	]);

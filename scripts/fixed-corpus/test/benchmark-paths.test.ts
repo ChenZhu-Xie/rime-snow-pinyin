@@ -6,7 +6,11 @@ import {
 	preferredRankedCodes,
 } from "../../lib/benchmark-paths";
 import type { RankedBenchmarkCode } from "../../lib/benchmark-ranking";
-import { supportsStructuralAbbreviations } from "../../lib/benchmark-schemes";
+import {
+	directOutputCodes,
+	suffixOutputCodes,
+	supportsStructuralAbbreviations,
+} from "../../lib/benchmark-schemes";
 
 function ranked(word: string, code: string, rank: number): RankedBenchmarkCode {
 	return {
@@ -112,8 +116,45 @@ test("同为首选且总按键相同时选择短标准码加 Space", () => {
 	assert.equal(result.tokens[0].separator, true);
 });
 
-test("只有两个 21×26 benchmark 方案启用结构略码", () => {
+test("冰雪清韵的辅音短码在逗号和句号前补 Space", () => {
+	const result = optimizeBenchmarkLine(
+		"来，",
+		new Map([
+			[
+				"来",
+				[
+					alternative("来", "k", {
+						punctuationNeedsSeparator: true,
+					}),
+				],
+			],
+		]),
+	);
+	assert.equal(result.keys, 3);
+	assert.equal(result.spaces, 1);
+	assert.equal(result.tokens[0].separator, true);
+});
+
+test("冰雪清韵使用自己的单键直出且不继承的了尾字键", () => {
+	assert.deepEqual(directOutputCodes("qingyun"), [
+		["了", "a"],
+		["我", "o"],
+		["的", "e"],
+		["是", "i"],
+		["不", "u"],
+		["在", ";"],
+		["和", "/"],
+	]);
+	assert.deepEqual(suffixOutputCodes("qingyun"), []);
+	assert.deepEqual(suffixOutputCodes("sipin"), [
+		["的", ";"],
+		["了", "/"],
+	]);
+});
+
+test("只有冰雪四拼、冰雪简道和冰雪散拼启用结构略码", () => {
 	for (const scheme of [
+		"qingyun",
 		"u357-shape",
 		"u357-tone",
 		"classic-shape",
@@ -121,7 +162,11 @@ test("只有两个 21×26 benchmark 方案启用结构略码", () => {
 	] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), false, scheme);
 	}
-	for (const scheme of ["overall17-shape", "overall17-tone"] as const) {
+	for (const scheme of [
+		"sipin",
+		"overall17-shape",
+		"overall17-tone",
+	] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), true, scheme);
 	}
 });

@@ -176,11 +176,23 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 	assert.deepEqual(
 		BENCHMARK_SCHEMES.map(({ id, auxiliaryOrder }) => [id, auxiliaryOrder]),
 		[
+			["sipin", "单字笔画／部件"],
 			["u357-shape", "12/231/24"],
 			["u357-tone", "12/213/23"],
+			["qingyun", "词语音码／单字形码"],
 			["overall17-shape", "12/21/42"],
 			["overall17-tone", "12/21/13"],
 		],
+	);
+	assert.ok(
+		pronunciationCodes("sipin", "冰雪", ["bing1", "xue3"]).some(
+			({ code }) => code === "bxoui",
+		),
+	);
+	assert.ok(
+		pronunciationCodes("qingyun", "冰雪", ["bing1", "xue3"]).some(
+			({ code }) => code === "bxe",
+		),
 	);
 	const u357Three = pronunciationCodes("u357-tone", "天地人", [
 		"tian1",
