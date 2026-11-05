@@ -19,8 +19,30 @@ import { Glob } from "bun";
 import { ROOT } from "./lib/paths";
 import { RADICAL_SUBMODULE, RIME_DEPENDENCIES } from "./lib/rime-dependencies";
 
-// fcitx5 固定读取的 Rime 用户目录
-const USER_DIR = join(homedir(), ".local", "share", "fcitx5", "rime");
+function resolveUserDir(): string {
+	if (process.env.RIME_USER_DIR) return resolve(process.env.RIME_USER_DIR);
+	if (process.platform === "win32") {
+		try {
+			const output = execFileSync(
+				"reg.exe",
+				["query", "HKCU\\Software\\Rime\\Weasel", "/v", "RimeUserDir"],
+				{ encoding: "utf8", windowsHide: true },
+			);
+			const match = output.match(/^\s*RimeUserDir\s+REG_\w+\s+(.+?)\s*$/mu);
+			if (match?.[1]) return resolve(match[1]);
+		} catch {
+			// 未配置自定义目录时使用小狼毫默认目录。
+		}
+		return resolve(
+			process.env.APPDATA || join(homedir(), "AppData", "Roaming"),
+			"Rime",
+		);
+	}
+	// fcitx5 固定读取的 Rime 用户目录。
+	return join(homedir(), ".local", "share", "fcitx5", "rime");
+}
+
+const USER_DIR = resolveUserDir();
 
 // iOS 元书输入法的 iCloud 目录。iCloud 不跟随软链，只能复制
 const HAMSTER_DIR = join(
@@ -61,24 +83,22 @@ function pointsIntoRepo(path: string): boolean {
 // 软链的来源与目标：仓库里的一份文件 ↔ Rime 用户目录里的同名文件
 function pairs(): { src: string; dest: string }[] {
 	const glob = new Glob(`{${FILE_PATTERNS.join(",")}}`);
-	const list = [...glob.scanSync(ROOT)].sort().map((file) => ({
-		src: join(ROOT, file),
-		dest: join(USER_DIR, file),
-	}));
+	const list: { src: string; dest: string }[] = [];
+	const add = (src: string, dest: string) => {
+		// Windows 可把仓库本身设为小狼毫用户目录；此时不得把源文件链接给自己。
+		if (resolve(src) !== resolve(dest)) list.push({ src, dest });
+	};
+	for (const file of [...glob.scanSync(ROOT)].sort()) {
+		add(join(ROOT, file), join(USER_DIR, file));
+	}
 	for (const file of RIME_DEPENDENCIES) {
 		const src = join(ROOT, RADICAL_SUBMODULE, file);
 		if (!existsSync(src))
 			throw new Error(`找不到 ${src}，请先初始化 ${RADICAL_SUBMODULE} 子模块`);
-		list.push({
-			src,
-			dest: join(USER_DIR, file),
-		});
+		add(src, join(USER_DIR, file));
 	}
 	// lua/snow 整个目录软链，仓库里增删脚本时无需重新执行
-	list.push({
-		src: join(ROOT, "lua", "snow"),
-		dest: join(USER_DIR, "lua", "snow"),
-	});
+	add(join(ROOT, "lua", "snow"), join(USER_DIR, "lua", "snow"));
 	return list;
 }
 
