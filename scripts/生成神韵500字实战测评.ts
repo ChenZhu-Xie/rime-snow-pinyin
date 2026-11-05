@@ -26,12 +26,6 @@ const outputPath = resolve(
 	process.argv[2] ??
 		join(root, "reports", "冰雪双拼六方案_500字_最短键码实战测评.txt"),
 );
-const legacyOutputPath = join(
-	root,
-	"reports",
-	"冰雪双拼十方案_500字_最短键码实战测评.txt",
-);
-
 type SchemeId = BenchmarkSchemeId;
 type SourceKind =
 	| "一简"
@@ -489,12 +483,5 @@ ${replay.map((line, index) => `[${String(index + 1).padStart(2, "0")}]\n${render
 
 writeFileSync(outputPath, output, "utf8");
 console.log(`已生成 ${outputPath}`);
-if (outputPath !== legacyOutputPath) {
-	writeFileSync(
-		legacyOutputPath,
-		`此历史十方案报告已失效，不再用于排名。\n\n其中四条外部冻结轨尚未按 snow-benchmark-frozen-v2 契约重新生成，旧回放含已知错误。当前仓库可完整复算的六方案 500 字结果见：冰雪双拼六方案_500字_最短键码实战测评.txt\n`,
-		"utf8",
-	);
-}
 for (const stat of stats)
 	console.log(`${stat.scheme}\t${stat.keys}\t${(stat.keys / 500).toFixed(4)}`);
