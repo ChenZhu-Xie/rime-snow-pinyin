@@ -30,6 +30,12 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 两图由 benchmark 页面中的定稿方案导出：声韵图调用页面内置 \`keyboardSVG\` 后裁出 26 个字母键；键频图调用页面内置 \`r9MacroHeat\`，使用同一篇 2149 击键日常八场景文稿。键频图不含五辅键、空格和选重。
 
+**十一场景 5500 字实战赛文纯双拼键频图（含标点）**
+
+![神韵(Overall-17) 21×26 双拼 5500 字实战赛文键频图](docs/shenyun-overall17-5500-keyboard-heat.svg)
+
+新图合并仓库的十篇 500 字 benchmark 与独立 500 字赛文，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与十篇语料的第 10 篇相同，按两个场景计两遍。每张图共 11392 次纯双拼及标点击键，顿号按反斜杠键统计；仍不含五辅键、空格和选重。[原始键频数据](reports/神韵十一场景_5500字_纯双拼键频.json)可供复核。
+
 #### 声韵编码规则
 
 普通声母首键为：
@@ -85,6 +91,12 @@ const enOverall = `### Shenyun(Overall-17) 21×26 double pinyin
 
 Both SVGs are exported from the finalized entry in the benchmark page: the first uses its built-in \`keyboardSVG\`, while the second uses \`r9MacroHeat\` over the same 2,149-keystroke daily corpus. The heat map excludes auxiliaries, spaces, and candidate selection.
 
+**Pure-double-pinyin key-frequency map over eleven benchmark scenarios and 5,500 Chinese characters (punctuation included)**
+
+![Shenyun(Overall-17) 21×26 5,500-character benchmark key-frequency map](docs/shenyun-overall17-5500-keyboard-heat.svg)
+
+The new map combines the repository's ten 500-character benchmark articles with its standalone 500-character test article, totaling eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks. The standalone article is identical to article 10 of the ten-article corpus and is counted twice as two benchmark scenarios. Each map contains 11,392 pure-double-pinyin and punctuation keystrokes; the enumeration comma uses the backslash key. Auxiliaries, spaces, and candidate selection remain excluded. The [raw frequency data](reports/神韵十一场景_5500字_纯双拼键频.json) is available for verification.
+
 #### Coding rules
 
 Ordinary initials use their own letter except \`f→J\` and \`zh/ch/sh→F/V/W\`; zero-onset carriers are \`AOE→X\`, \`W→Q\`, and \`Y/YU→Y\`. The final keys are \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`.
@@ -111,6 +123,12 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 ![神韻(Overall-17) 21×26 雙拼鍵頻圖](docs/shenyun-overall17-keyboard-heat.svg)
 
 兩圖由 benchmark 頁面中的定稿方案匯出：聲韻圖使用頁面內建 \`keyboardSVG\`，鍵頻圖使用 \`r9MacroHeat\` 與同一篇 2149 擊鍵日常文稿；鍵頻圖不含五輔鍵、空格及選重。
+
+**十一場景 5500 字實戰賽文純雙拼鍵頻圖（含標點）**
+
+![神韻(Overall-17) 21×26 雙拼 5500 字實戰賽文鍵頻圖](docs/shenyun-overall17-5500-keyboard-heat.svg)
+
+新圖合併倉庫的十篇 500 字 benchmark 與獨立 500 字賽文，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與十篇語料的第 10 篇相同，按兩個場景計兩遍。每張圖共 11392 次純雙拼及標點擊鍵，頓號按反斜線鍵統計；仍不含五輔鍵、空格和選重。[原始鍵頻資料](reports/神韵十一场景_5500字_纯双拼键频.json)可供複核。
 
 #### 聲韻規則
 
@@ -155,20 +173,24 @@ const overallValues = [
 ];
 
 function normalizeSourceProvenance(markdown: string) {
+	let language: "zh" | "en" | "zht" = "zh";
 	return markdown
 		.split("\n")
 		.map((line) => {
+			if (line === "## 简体中文") language = "zh";
+			else if (line === "## English") language = "en";
+			else if (line === "## 繁體中文") language = "zht";
 			if (line.startsWith("冰雪简道（"))
 				return "冰雪简道（`snow_shenyun_shape`）与冰雪散拼（`snow_shenyun_tone`）共用 **神韵(Overall-17) 21×26 双拼**。该方案出自双拼布局 Benchmark 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿于提交 `7a7e154`；`2026-10-30-strict-d0-production-closure-report.md` 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 `SNOW-SHENYUN-21X26-PRODUCTION`，本节映射与键盘图均以该定稿方案为准。";
 			if (line.startsWith("冰雪简道 ("))
 				return "冰雪简道 (`snow_shenyun_shape`) and 冰雪散拼 (`snow_shenyun_tone`) share **Shenyun(Overall-17) 21×26 double pinyin**. The layout comes from the Shuangpin Layout Benchmark branch `production/ckt-v4-2126-strict-d0-20261030` and was finalized in commit `7a7e154`; `2026-10-30-strict-d0-production-closure-report.md` records the search constraints, derivation, and winning mapping. This repository freezes it as `SNOW-SHENYUN-21X26-PRODUCTION`, and this section's mapping and keyboard figures use that finalized layout.";
 			if (line.startsWith("冰雪簡道（"))
 				return "冰雪簡道（`snow_shenyun_shape`）與冰雪散拼（`snow_shenyun_tone`）共用 **神韻(Overall-17) 21×26 雙拼**。該方案出自雙拼布局 Benchmark 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿於提交 `7a7e154`；`2026-10-30-strict-d0-production-closure-report.md` 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 `SNOW-SHENYUN-21X26-PRODUCTION`，本節映射與鍵盤圖均以該定稿方案為準。";
-			if (line.startsWith("[冰雪健道]"))
+			if (line.startsWith("[冰雪健道]") && language === "zh")
 				return "[冰雪健道](https://input.tansongchen.com/snow-jiandao/)和[冰雪弎拼](https://input.tansongchen.com/snow3/)现共用 **无飞键道(U357) 21×21 双拼**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。该方案出自双拼布局 Benchmark 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿于提交 `11713b6`；`2026-10-29-prodgate-directed-repair-final-report.md` 给出了 U=357 候选的搜索过程、完整映射、指标和投产推荐。本仓库采用并实现该候选，本节映射与键盘图均以报告中的 U=357 方案为准。";
-			if (line.startsWith("[冰雪健道]"))
+			if (line.startsWith("[冰雪健道]") && language === "en")
 				return "[冰雪健道](https://input.tansongchen.com/snow-jiandao/) and [冰雪弎拼](https://input.tansongchen.com/snow3/) now share **Wufei KeyTao(U357) 21×21 double pinyin**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`. The layout comes from the Shuangpin Layout Benchmark branch `production/ckt-v4-2121-strict-avuio-20261024` and was finalized in commit `11713b6`; `2026-10-29-prodgate-directed-repair-final-report.md` records the U=357 candidate's search, full mapping, metrics, and production recommendation. This repository implements that candidate, and this section's mapping and keyboard figures use the reported U=357 layout.";
-			if (line.startsWith("[冰雪健道]"))
+			if (line.startsWith("[冰雪健道]") && language === "zht")
 				return "[冰雪健道](https://input.tansongchen.com/snow-jiandao/)與[冰雪弎拼](https://input.tansongchen.com/snow3/)現共用 **無飛鍵道(U357) 21×21 雙拼**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。該方案出自雙拼布局 Benchmark 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿於提交 `11713b6`；`2026-10-29-prodgate-directed-repair-final-report.md` 給出了 U=357 候選的搜尋過程、完整映射、指標及投產建議。本倉庫採用並實作該候選，本節映射與鍵盤圖均以報告中的 U=357 方案為準。";
 			return line
 				.replace(
@@ -251,6 +273,18 @@ function addOverallColumn(markdown: string) {
 			throw new Error(`Benchmark 表格只有 ${row} 行。`);
 	}
 	return lines.join("\n");
+}
+
+function ensureAfter(
+	markdown: string,
+	anchor: string,
+	addition: string,
+	marker: string,
+) {
+	if (markdown.includes(marker)) return markdown;
+	if (!markdown.includes(anchor))
+		throw new Error(`README 中找不到插入锚点：${anchor}`);
+	return markdown.replace(anchor, `${anchor}\n\n${addition}`);
 }
 
 function normalizeTerms(markdown: string) {
@@ -430,6 +464,36 @@ function normalizeTerms(markdown: string) {
 			/(### 兩代神韻與 S005、B04 的四方案公平比較\r?\n\r?\n)四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道\(U357\)与 S005 采用传统 21×21 合同，神韵\(Overall-17\)与 B04 采用四码顶合同。/gu,
 			"$1四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
 		);
+	markdown = ensureAfter(
+		markdown,
+		"> [!NOTE]\n> 注意：只包含双拼部分，5 辅键未参与评估。",
+		`**十一场景 5500 字实战赛文纯双拼键频图（含标点）**
+
+![无飞键道(U357) 21×21 双拼 5500 字实战赛文键频图](docs/shenyun-u357-5500-keyboard-heat.svg)
+
+新图合并仓库的十篇 500 字 benchmark 与独立 500 字赛文，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与十篇语料的第 10 篇相同，按两个场景计两遍。每张图共 11392 次纯双拼及标点击键，顿号按反斜杠键统计；仍不含五辅键、空格和选重。[原始键频数据](reports/神韵十一场景_5500字_纯双拼键频.json)可供复核。`,
+		"![无飞键道(U357) 21×21 双拼 5500 字实战赛文键频图](docs/shenyun-u357-5500-keyboard-heat.svg)",
+	);
+	markdown = ensureAfter(
+		markdown,
+		"> [!NOTE]\n> Only the double-pinyin layer is included; the five auxiliary keys are excluded.",
+		`**Pure-double-pinyin key-frequency map over eleven benchmark scenarios and 5,500 Chinese characters (punctuation included)**
+
+![Wufei KeyTao(U357) 21×21 5,500-character benchmark key-frequency map](docs/shenyun-u357-5500-keyboard-heat.svg)
+
+The new map combines the repository's ten 500-character benchmark articles with its standalone 500-character test article, totaling eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks. The standalone article is identical to article 10 of the ten-article corpus and is counted twice as two benchmark scenarios. Each map contains 11,392 pure-double-pinyin and punctuation keystrokes; the enumeration comma uses the backslash key. Auxiliaries, spaces, and candidate selection remain excluded. The [raw frequency data](reports/神韵十一场景_5500字_纯双拼键频.json) is available for verification.`,
+		"![Wufei KeyTao(U357) 21×21 5,500-character benchmark key-frequency map](docs/shenyun-u357-5500-keyboard-heat.svg)",
+	);
+	markdown = ensureAfter(
+		markdown,
+		"> [!NOTE]\n> 注意：只包含雙拼部分，5 輔鍵未參與評估。",
+		`**十一場景 5500 字實戰賽文純雙拼鍵頻圖（含標點）**
+
+![無飛鍵道(U357) 21×21 雙拼 5500 字實戰賽文鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)
+
+新圖合併倉庫的十篇 500 字 benchmark 與獨立 500 字賽文，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與十篇語料的第 10 篇相同，按兩個場景計兩遍。每張圖共 11392 次純雙拼及標點擊鍵，頓號按反斜線鍵統計；仍不含五輔鍵、空格和選重。[原始鍵頻資料](reports/神韵十一场景_5500字_纯双拼键频.json)可供複核。`,
+		"![無飛鍵道(U357) 21×21 雙拼 5500 字實戰賽文鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)",
+	);
 	return normalizeContractClaims(markdown);
 }
 

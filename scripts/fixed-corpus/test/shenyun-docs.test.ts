@@ -244,6 +244,42 @@ test("两张纯双拼热力图使用相同裁剪、背景和短标题", () => {
 	}
 });
 
+test("十一场景 5500 字热力图与可复核键频数据一致", () => {
+	const report = JSON.parse(
+		read("reports/神韵十一场景_5500字_纯双拼键频.json"),
+	) as {
+		corpus: { scenes: number; hanCharacters: number };
+		layouts: Record<
+			string,
+			{ totalKeystrokes: number; counts: Record<string, number> }
+		>;
+	};
+	assert.equal(report.corpus.scenes, 11);
+	assert.equal(report.corpus.hanCharacters, 5500);
+	for (const [id, path] of [
+		["overall17-shape", "docs/shenyun-overall17-5500-keyboard-heat.svg"],
+		["u357-shape", "docs/shenyun-u357-5500-keyboard-heat.svg"],
+	] as const) {
+		const svg = read(path);
+		const data = report.layouts[id];
+		includes(svg, 'viewBox="0 0 885 304"');
+		includes(svg, '<rect width="885" height="304" fill="#f8f7ff"/>');
+		includes(
+			svg,
+			'<title id="title">十一场景 5500 字实战赛文纯双拼键频图（含标点）</title>',
+		);
+		assert.equal(svg.match(/data-mxkey=/gu)?.length, 30);
+		assert.equal(data.totalKeystrokes, 11392);
+		assert.equal(
+			Object.values(data.counts).reduce((sum, count) => sum + count, 0),
+			11392,
+		);
+		assert.equal(data.counts[","], 213);
+		assert.equal(data.counts["."], 154);
+		assert.equal(data.counts["\\"], 25);
+	}
+});
+
 test("两份 README 的六张比较表、标题和方案链接完整", () => {
 	for (const filename of ["README.md", "README_CN.md"]) {
 		const readme = read(filename);
@@ -283,6 +319,17 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 			"**日常八場景文稿純雙拼鍵頻圖（含標點）**",
 		])
 			assert.equal(readme.split(heading).length - 1, 2, heading);
+		for (const heading of [
+			"**十一场景 5500 字实战赛文纯双拼键频图（含标点）**",
+			"**Pure-double-pinyin key-frequency map over eleven benchmark scenarios and 5,500 Chinese characters (punctuation included)**",
+			"**十一場景 5500 字實戰賽文純雙拼鍵頻圖（含標點）**",
+		])
+			assert.equal(readme.split(heading).length - 1, 2, heading);
+		for (const image of [
+			"docs/shenyun-overall17-5500-keyboard-heat.svg",
+			"docs/shenyun-u357-5500-keyboard-heat.svg",
+		])
+			assert.equal(readme.split(image).length - 1, 3, image);
 		includes(
 			readme,
 			`[神韵(Overall-17) 21×26 双拼](https://${benchmarkHost}/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)`,
