@@ -41,9 +41,15 @@ git@git-swap-gitee-more-14-different:xie-chenzhu/rime-snow-pinyin.git
 4. 在 Gitee 使用下述 API 流程创建同标签 Release，并上传同一批附件。
 5. 执行“发布后核验”。
 
+## 同标签由 CI 重建并覆盖资产
+
+当上游最新标签已用于本 fork、但需要用当前分支的新提交更新同标签附件时，不移动或重建标签。在 GitHub Actions 手动运行“发布”工作流，选择待构建分支并将 `release_tag` 设为既有标签；工作流仍先执行性能门禁，再从所选分支的提交构建四个压缩包，仅覆盖指定 GitHub Release 的同名附件。
+
+GitHub 构建成功后，从该 Release 下载四个附件，将完全相同的文件通过 Gitee API 覆盖到同标签 Release。同步两端正文，在发布说明中记录附件构建 commit，并明确自动生成的源码归档仍对应未移动的标签 commit，最后执行“发布后核验”。
+
 ## 同标签只覆盖资产且不触发 CI
 
-仅当用户明确要求“tag 不变、覆盖资产、不触发 CI”时使用本流程。不得 push、删除、重建或移动标签，也不得手动 dispatch 工作流；从用户指定的 commit 干净重建四个发布物。
+仅当用户明确要求“tag 不变、覆盖资产、不触发 CI”时使用本地重建流程。不得 push、删除、重建或移动标签，也不得手动 dispatch 工作流；从用户指定的 commit 干净重建四个发布物。
 
 GitHub 必须显式指定 fork，避免 `gh` 根据上游关系解析到错误仓库：
 
@@ -70,7 +76,7 @@ API 基址为 `https://gitee.com/api/v5/repos/xie-chenzhu/rime-snow-pinyin`：
 1. 检查 GitHub 与 Gitee 的 peeled tag commit 完全一致，且等于预期 commit。
 2. 检查两端 Release 的标签、标题、正文和四个附件名。
 3. 从两个公开 Release 分别下载四个附件，与本地构建逐一比较 SHA-256；只看上传成功响应不算完成。
-4. 检查 GitHub Actions 是否符合本次模式：正常新标签应有发布工作流，同标签只覆盖资产不应产生新运行。
+4. 检查 GitHub Actions 是否符合本次模式：正常新标签和 CI 重建同标签资产应有对应的发布工作流；明确要求不触发 CI 的本地重建不应产生新运行。
 5. 报告发布链接、标签 commit、资产构建 commit、八次下载校验结果，以及任何“标签源码归档与新资产来自不同 commit”的例外。
 
 ## 文档边界

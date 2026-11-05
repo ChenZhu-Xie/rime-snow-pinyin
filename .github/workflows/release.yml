@@ -3,8 +3,16 @@ on:
     tags:
       - "*"
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 覆盖附件的既有 Release 标签（标签本身不会移动）
+        required: true
+        type: string
 
 name: 发布
+
+permissions:
+  contents: write
 
 jobs:
   latency:
@@ -49,8 +57,10 @@ jobs:
         run: |
           zip -r snow-pinyin-build.zip build lua *.txt
       - name: 读取标签中的发布说明
+        if: github.event_name == 'push'
         run: git tag -l --format='%(contents)' "$GITHUB_REF_NAME" > release-notes.md
       - name: 发布
+        if: github.event_name == 'push'
         uses: comnoco/create-release-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,6 +69,7 @@ jobs:
           release_name: 冰雪拼音 ${{ github.ref_name }}
           body_path: release-notes.md
       - name: 上传
+        if: github.event_name == 'push'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,3 +77,11 @@ jobs:
           file_glob: true
           tag: ${{ github.ref }}
           overwrite: true
+      - name: 覆盖指定 Release 的附件
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY"
+          gh release upload "$RELEASE_TAG" ./*.zip --repo "$GITHUB_REPOSITORY" --clobber
