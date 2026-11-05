@@ -19,8 +19,11 @@
 
 ## Releases
 
+- Release work targets only this fork: GitHub `ChenZhu-Xie/rime-snow-pinyin` and Gitee `xie-chenzhu/rime-snow-pinyin`. Never push to `rimeinn/rime-snow-pinyin` or modify the upstream author's website repository unless the user explicitly puts it in scope.
 - Before every release, fetch and inspect the upstream repository's tags.
 - Always use the upstream repository's latest tag as this repository's release tag, keeping the latest tag number exactly aligned with upstream; never invent or independently increment a version number for local changes.
+- Before Git operations run `git swap auto`; use the two explicit SSH remotes and verify both after pushing. Never rely on an inferred GitHub repository.
+- Follow [`docs/release.md`](docs/release.md) for packaging, normal tagged releases, same-tag asset replacement without CI, Gitee API upload, and post-release verification.
 
 ## Rime integration tests
 
@@ -125,14 +128,6 @@ bun scripts/version.ts          # 查看当前版本
 ```
 
 词典生成脚本（`generate-pinyin-dict.ts`、`generate-word-dicts.ts`、`generate-english-dict.ts`、`generate-stroke-dict.ts`）也从 `scripts/version.ts` 读取同一个版本号。Rime 的 `__include` 只在方案里生效，词典头不支持，所以没法靠 yaml 本身共用一份。
-
-### 发布时自动更新文档
-
-每次发布新版本，都必须自动检查并更新文档网站 `/Users/tansongchen/Public/input`，作为发布工作的必要步骤，不等待用户另行提醒。根据本次版本的功能、默认配置、快捷键、词库和皮肤变更，更新受影响的教程、公共片段、导航与示例；输入统计放在各方案的 `advanced.md` 中。实验性的冰雪英拼和冰雪注音暂不扩写；面向用户只介绍 `snow-pinyin.zip` 和皮肤包，预览包仅用于网站演示。
-
-网站的安装、皮肤、补丁文件入口和数据备份等通用说明合并到起始页 `index.md`，避免新增过多顶层页面。涉及方案逻辑的配置（如首选后置、调频、固定候选、词库、辅助码和笔画来源）及各方案专用文件说明，放在对应方案的教程中；共用内容通过 `components/` 下的公共片段引用复用，不堆在首页。各方案的按键逻辑分别在本方案的教程中说明，不维护统一的 `shortcuts.md`。
-
-方案行为或示例发生变化时，使用当前版本的独立部署环境重新生成候选框模拟缓存，并检查网页演示所用预览包的版本。文档仓库须运行格式检查和网站构建，并检查改动页面的链接、公共引用片段、候选显示与交互输入；全部验证完成后，才算完成本次版本的文档更新。开发脚本、统计设计和维护约定继续保留在本仓库，网站按需链接，不必复制实现细节。
 
 ## 笔画与地区字形
 
