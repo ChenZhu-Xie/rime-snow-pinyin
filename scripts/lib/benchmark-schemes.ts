@@ -441,16 +441,16 @@ function mainCode(scheme: BenchmarkScheme, sounds: string[]): string | null {
 function mainCodes(scheme: BenchmarkScheme, sounds: string[]): string[] {
 	const base = mainCode(scheme, sounds);
 	if (!base) return [];
-	if (scheme.capacity !== "21x21" || sounds.length < 3 || sounds.length > 4)
-		return [base];
+	if (scheme.capacity !== "21x21" || sounds.length < 3) return [base];
 	const result = new Set<string>();
 	for (let mask = 0; mask < 1 << 3; mask += 1) {
 		result.add(
 			sounds
 				.map((sound, index) => {
-					const initial = sound[0].toLowerCase();
+					const initial =
+						index < 4 ? sound[0].toLowerCase() : sound[0].toUpperCase();
 					return index < 3 && (mask & (1 << index)) !== 0
-						? initial + sound[1].toUpperCase()
+						? sound[0].toLowerCase() + sound[1].toUpperCase()
 						: initial;
 				})
 				.join(""),

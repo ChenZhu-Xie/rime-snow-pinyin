@@ -71,6 +71,19 @@ test("完全没有首选编码时才保留二三选兜底", () => {
 	);
 });
 
+test("外部方案可按自己的首页单键范围扩大选重兜底", () => {
+	assert.deepEqual(
+		preferredRankedCodes(
+			[ranked("苜", "mueiii", 5), ranked("苜", "mueii", 6)],
+			6,
+		).map(({ word, code, rank }) => ({ word, code, rank })),
+		[
+			{ word: "苜", code: "mueiii", rank: 5 },
+			{ word: "苜", code: "mueii", rank: 6 },
+		],
+	);
+});
+
 test("路径先避免选重再比较总按键", () => {
 	const result = optimizeBenchmarkLine(
 		"甲乙",

@@ -254,6 +254,28 @@ test("21×26 单字明确支持 AU 后连续追加四辅", () => {
 	);
 });
 
+test("四个 21×21 benchmark 方案的多字词大写补韵不受六码限制", () => {
+	const word = "中华人民共和国";
+	const syllables = ["zhong1", "hua2", "ren2", "min2", "gong4", "he2", "guo2"];
+	for (const scheme of [
+		"u357-shape",
+		"u357-tone",
+		"classic-shape",
+		"classic-tone",
+	] as const) {
+		const codes = pronunciationCodes(scheme, word, syllables);
+		assert.equal(Math.max(...codes.map(({ code }) => code.length)), 10, scheme);
+		assert.ok(
+			codes.some(({ code }) => code.length > 6),
+			scheme,
+		);
+		assert.ok(
+			codes.every(({ code }) => /[A-Z]{3}$/u.test(code)),
+			`${scheme} 第五字起必须保留物理大写声母`,
+		);
+	}
+});
+
 test("benchmark 逐级模拟首选后置并保留最短合法单字码", () => {
 	const entries = [
 		{ word: "是", syllables: ["shi4"], weight: 100 },

@@ -125,6 +125,75 @@ function prepareData(
 	);
 }
 
+const SBXH_SOURCE_FILES = [
+	"default.yaml",
+	"sbfh.yaml",
+	"sbpy.dict.yaml",
+	"sbpy.schema.yaml",
+	"sbpy.unihan.dict.yaml",
+	"sbxh.dict.yaml",
+	"sbxh.schema.yaml",
+	"sbxlm.ico",
+	"sbxlm.yaml",
+	"sbyp.schema.yaml",
+] as const;
+
+const SBXH_BUILD_PATTERN =
+	/^(?:bihua|sbpy(?:\.(?:base|ext|tencent))?|sbxh(?:\.extended)?|sbxh2|sbyp|zhlf)\.(?:prism\.bin|reverse\.bin|schema\.yaml|table\.bin)$/u;
+
+function prepareSbxhData(
+	destination: string,
+	shared: string,
+	schemas: string[],
+	source: string,
+	reverseWords: readonly string[] = [],
+): void {
+	for (const name of SBXH_SOURCE_FILES) {
+		const path = join(source, name);
+		if (existsSync(path)) cpSync(path, join(destination, name));
+	}
+	if (!existsSync(join(destination, "default.yaml")))
+		cpSync(
+			join(ROOT, "spec", "fixtures", "default.yaml"),
+			join(destination, "default.yaml"),
+		);
+	for (const directory of ["lua", "opencc"]) {
+		const path = join(source, directory);
+		if (existsSync(path))
+			cpSync(path, join(destination, directory), { recursive: true });
+	}
+	const destinationBuild = join(destination, "build");
+	mkdirSync(destinationBuild, { recursive: true });
+	for (const name of readdirSync(join(source, "build"))) {
+		if (SBXH_BUILD_PATTERN.test(name))
+			cpSync(join(source, "build", name), join(destinationBuild, name));
+	}
+	cpSync(join(shared, "essay.txt"), join(destination, "essay.txt"));
+	const sharedOpencc = join(shared, "opencc");
+	if (existsSync(sharedOpencc))
+		cpSync(sharedOpencc, join(destination, "opencc"), { recursive: true });
+	if (reverseWords.length > 0) {
+		writeFileSync(
+			join(destination, "benchmark_reverse_words.tsv"),
+			reverseWords
+				.map((word, index) => `w${index.toString(36)}\t${word}`)
+				.join("\n") + "\n",
+		);
+		writeFileSync(
+			join(destination, "lua", "benchmark_reverse.lua"),
+			`local translator = {}\n\nfunction translator.init(env)\n  env.reverse = ReverseLookup("sbxh.extended")\n  env.words = {}\n  local path = rime_api.get_user_data_dir() .. "/benchmark_reverse_words.tsv"\n  local file = io.open(path, "r")\n  if not file then return end\n  for line in file:lines() do\n    local input, word = line:match("([^\\t]+)\\t([^\\t]+)")\n    if input and word then env.words[input] = word end\n  end\n  file:close()\nend\n\nfunction translator.func(input, segment, env)\n  local word = env.words[input]\n  if not word then return end\n  for code in env.reverse:lookup(word):gmatch("[^ ]+") do\n    yield(Candidate("reverse", segment.start, segment._end, code, ""))\n  end\nend\n\nreturn translator\n`,
+		);
+		writeFileSync(
+			join(destination, "sbxh_reverse_benchmark.schema.yaml"),
+			`schema:\n  schema_id: sbxh_reverse_benchmark\n  name: 声笔小鹤反查测评\n  version: "1"\n  dependencies: [sbxh]\n\nengine:\n  processors:\n    - speller\n    - selector\n    - navigator\n    - express_editor\n  segmentors:\n    - abc_segmentor\n    - fallback_segmentor\n  translators:\n    - lua_translator@*benchmark_reverse\n\nspeller:\n  alphabet: "abcdefghijklmnopqrstuvwxyz0123456789"\n  initials: "w"\n  auto_clear: none\n\nmenu:\n  page_size: 100\n`,
+		);
+	}
+	writeFileSync(
+		join(destination, "default.custom.yaml"),
+		`patch:\n  schema_list:\n${schemas.map((schema) => `    - schema: ${schema}`).join("\n")}\n`,
+	);
+}
+
 const CACHE_FORMAT = "rime-candidate-oracle-v1";
 const BENCHMARK_DATA_PREFIXES = [
 	"snow_bihua.",
@@ -186,11 +255,25 @@ export class RimeCandidateOracle {
 	private cacheMisses = 0;
 	private schema = "";
 
-	constructor(schemas: string[]) {
+	constructor(
+		schemas: string[],
+		options: {
+			externalSbxhDirectory?: string;
+			externalSbxhReverseWords?: readonly string[];
+		} = {},
+	) {
 		const dll = findRimeDll();
 		const shared = findSharedData(dll);
 		this.dataDirectory = mkdtempSync(join(tmpdir(), "snow-benchmark-rime-"));
-		prepareData(this.dataDirectory, shared, schemas);
+		if (options.externalSbxhDirectory)
+			prepareSbxhData(
+				this.dataDirectory,
+				shared,
+				schemas,
+				resolve(options.externalSbxhDirectory),
+				options.externalSbxhReverseWords,
+			);
+		else prepareData(this.dataDirectory, shared, schemas);
 		const fingerprint = dataFingerprint(this.dataDirectory, dll);
 		this.persistentCacheDirectory = join(
 			ROOT,

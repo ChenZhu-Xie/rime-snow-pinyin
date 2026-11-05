@@ -34,6 +34,7 @@ const fixedSources = new Set(["一简", "二简单字", "二简词", "630"]);
 
 export function preferredRankedCodes(
 	codes: RankedBenchmarkCode[],
+	maximumFallbackRank = 3,
 ): RankedBenchmarkCode[] {
 	const byWord = new Map<string, RankedBenchmarkCode[]>();
 	for (const code of codes) {
@@ -52,7 +53,11 @@ export function preferredRankedCodes(
 				...firstChoices.filter(({ code }) => code.length === minimumLength),
 			);
 		} else {
-			result.push(...values.filter(({ rank }) => rank === 2 || rank === 3));
+			result.push(
+				...values.filter(
+					({ rank }) => rank >= 2 && rank <= maximumFallbackRank,
+				),
+			);
 		}
 	}
 	return result;
