@@ -372,6 +372,15 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		);
 		includes(readme, "`production/ckt-v4-2126-strict-d0-20261030`");
 		includes(readme, "`production/ckt-v4-2121-strict-avuio-20261024`");
+		includes(readme, "### 双拼方案英数字入口");
+		includes(readme, "键道类保留原汉字首选，大写、小写固定为第 2、3 候选");
+		includes(readme, "| 零／0 | `ltv` | `ltv` | `lgv` | `lgi` |");
+		includes(
+			readme,
+			"[机器可读映射](config/shenyun-21x26-letter-buckets.json)",
+		);
+		includes(readme, "| D | `dj` | 扽 | Q | `qq` | 穷 |");
+		includes(readme, "`21×5×21=2205`");
 		includes(readme, "[`7a7e154`](https://");
 		includes(readme, "[`11713b6`](https://");
 		includes(readme, "2026-10-30-strict-d0-production-closure-report.md");

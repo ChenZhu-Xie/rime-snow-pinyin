@@ -18,6 +18,26 @@ const layout = JSON.parse(read("config/shenyun-21x26-mapping.json")) as {
 	initialMap: Record<string, string>;
 	finalMap: Record<string, string>;
 };
+const letterBuckets = JSON.parse(
+	read("config/shenyun-21x26-letter-buckets.json"),
+) as {
+	id: string;
+	status: string;
+	schemes: string[];
+	contract: {
+		candidateOrder: string[];
+		vacantBucketsUsed: number;
+		commonConsonantSuffix: string;
+		consonantExceptions: Record<string, string>;
+		preservedNamespaces: { ABA: number; AAB: string; AAAB: string };
+	};
+	letters: Array<{
+		letter: string;
+		code: string;
+		naturalTop3: Array<{ text: string; weight: number }>;
+		displacedAtLeast10000: number;
+	}>;
+};
 
 function encode(syllable: string): string | null {
 	return applyAlgebra(`${syllable}1`, rules).canonical;
@@ -86,6 +106,74 @@ test("冰雪简道/调共用 Overall-17 的 21×26 映射", () => {
 		"wo",
 	]) {
 		assert.equal(encode(syllable), expectedCode(syllable), syllable);
+	}
+});
+
+test("21×26 字母预留映射只使用有汉字首选的占用桶", () => {
+	assert.equal(
+		letterBuckets.id,
+		"SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
+	);
+	assert.equal(letterBuckets.status, "reserved-not-enabled");
+	assert.deepEqual(letterBuckets.schemes, [
+		"snow_shenyun_shape",
+		"snow_shenyun_tone",
+	]);
+	assert.deepEqual(letterBuckets.contract.candidateOrder, [
+		"existing-han",
+		"uppercase-letter",
+		"lowercase-letter",
+	]);
+	assert.equal(letterBuckets.contract.vacantBucketsUsed, 0);
+	assert.equal(letterBuckets.contract.commonConsonantSuffix, "y");
+	assert.deepEqual(letterBuckets.contract.consonantExceptions, {
+		d: "dj",
+		q: "qq",
+		v: "vm",
+	});
+	assert.deepEqual(letterBuckets.contract.preservedNamespaces, {
+		ABA: 2205,
+		AAB: "unchanged",
+		AAAB: "unchanged",
+	});
+	assert.equal(letterBuckets.letters.length, 26);
+	assert.equal(new Set(letterBuckets.letters.map(({ code }) => code)).size, 26);
+	assert.deepEqual(
+		Object.fromEntries(
+			letterBuckets.letters.map(({ letter, code }) => [letter, code]),
+		),
+		{
+			a: "xw",
+			b: "by",
+			c: "cy",
+			d: "dj",
+			e: "xj",
+			f: "fy",
+			g: "gy",
+			h: "hy",
+			i: "xb",
+			j: "jy",
+			k: "ky",
+			l: "ly",
+			m: "my",
+			n: "ny",
+			o: "xf",
+			p: "py",
+			q: "qq",
+			r: "ry",
+			s: "sy",
+			t: "ty",
+			u: "xx",
+			v: "vm",
+			w: "wy",
+			x: "xy",
+			y: "yy",
+			z: "zy",
+		},
+	);
+	for (const entry of letterBuckets.letters) {
+		assert.match(entry.naturalTop3[0]?.text ?? "", /^\p{Script=Han}$/u);
+		assert.equal(entry.displacedAtLeast10000, 0, entry.code);
 	}
 });
 
