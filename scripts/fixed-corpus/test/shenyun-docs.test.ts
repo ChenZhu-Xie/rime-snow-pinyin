@@ -244,40 +244,72 @@ test("两张纯双拼热力图使用相同裁剪、背景和短标题", () => {
 	}
 });
 
-test("十一场景 5500 字热力图与可复核键频数据一致", () => {
+test("十一场景 5500 字全按键热力图与最优路径回放一致", () => {
 	const report = JSON.parse(
-		read("reports/神韵十一场景_5500字_纯双拼键频.json"),
+		read("reports/神韵十一场景_5500字_最优路径全按键键频.json"),
 	) as {
 		corpus: { scenes: number; hanCharacters: number };
 		layouts: Record<
 			string,
-			{ totalKeystrokes: number; counts: Record<string, number> }
+			{
+				totalKeystrokes: number;
+				spaces: number;
+				shifts: number;
+				selections: number;
+				nonZeroKeys: number;
+				auxiliaryKeys: string[];
+				counts: Record<string, number>;
+			}
 		>;
 	};
 	assert.equal(report.corpus.scenes, 11);
 	assert.equal(report.corpus.hanCharacters, 5500);
-	for (const [id, path] of [
-		["overall17-shape", "docs/shenyun-overall17-5500-keyboard-heat.svg"],
-		["u357-shape", "docs/shenyun-u357-5500-keyboard-heat.svg"],
+	for (const [id, path, expected] of [
+		[
+			"overall17-shape",
+			"docs/shenyun-overall17-5500-keyboard-heat.svg",
+			{ keys: 9964, spaces: 401, shifts: 3, nonZeroKeys: 34 },
+		],
+		[
+			"u357-shape",
+			"docs/shenyun-u357-5500-keyboard-heat.svg",
+			{ keys: 9492, spaces: 359, shifts: 289, nonZeroKeys: 33 },
+		],
 	] as const) {
 		const svg = read(path);
 		const data = report.layouts[id];
-		includes(svg, 'viewBox="0 0 885 304"');
-		includes(svg, '<rect width="885" height="304" fill="#f8f7ff"/>');
+		includes(svg, 'viewBox="0 0 940 376"');
+		includes(svg, '<rect width="940" height="376" fill="#f8f7ff"/>');
 		includes(
 			svg,
-			'<title id="title">十一场景 5500 字实战赛文纯双拼键频图（含标点）</title>',
+			'<title id="title">十一场景 5500 字最优路径全按键键频图</title>',
 		);
-		assert.equal(svg.match(/data-mxkey=/gu)?.length, 30);
-		assert.equal(data.totalKeystrokes, 11392);
+		assert.equal(svg.match(/data-mxkey=/gu)?.length, expected.nonZeroKeys);
+		assert.equal(data.totalKeystrokes, expected.keys);
+		assert.equal(data.spaces, expected.spaces);
+		assert.equal(data.shifts, expected.shifts);
+		assert.equal(data.selections, 0);
+		assert.equal(data.nonZeroKeys, expected.nonZeroKeys);
+		assert.equal(Object.keys(data.counts).length, expected.nonZeroKeys);
+		assert.ok(Object.values(data.counts).every((count) => count > 0));
 		assert.equal(
 			Object.values(data.counts).reduce((sum, count) => sum + count, 0),
-			11392,
+			expected.keys,
 		);
+		for (const key of data.auxiliaryKeys)
+			assert.ok(data.counts[key] > 0, `${id} 辅键 ${key} 应有实际击键`);
+		assert.equal(data.counts.Space, expected.spaces);
+		assert.equal(data.counts.Shift, expected.shifts);
 		assert.equal(data.counts[","], 213);
 		assert.equal(data.counts["."], 154);
 		assert.equal(data.counts["\\"], 25);
+		for (const key of [..."1234567890"]) {
+			assert.equal(data.counts[key], undefined);
+			assert.ok(!svg.includes(`data-mxkey="${key}"`));
+		}
 	}
+	assert.equal(report.layouts["overall17-shape"].counts["["], 16);
+	assert.equal(report.layouts["u357-shape"].counts["["], undefined);
 });
 
 test("两份 README 的六张比较表、标题和方案链接完整", () => {
@@ -320,9 +352,9 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		])
 			assert.equal(readme.split(heading).length - 1, 2, heading);
 		for (const heading of [
-			"**十一场景 5500 字实战赛文纯双拼键频图（含标点）**",
-			"**Pure-double-pinyin key-frequency map over eleven benchmark scenarios and 5,500 Chinese characters (punctuation included)**",
-			"**十一場景 5500 字實戰賽文純雙拼鍵頻圖（含標點）**",
+			"**十一场景 5500 字最优路径全按键键频图**",
+			"**All-key frequency map for optimal paths over eleven benchmark scenarios and 5,500 Chinese characters**",
+			"**十一場景 5500 字最優路徑全按鍵鍵頻圖**",
 		])
 			assert.equal(readme.split(heading).length - 1, 2, heading);
 		for (const image of [

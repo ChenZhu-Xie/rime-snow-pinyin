@@ -1,59 +1,105 @@
-// 从仓库的 5000 字与 500 字 benchmark 语料生成神韵纯双拼键频图。
+// 从十方案最优切分逐键回放生成神韵 5500 字全按键键频图。
 
-import { writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { exact500Articles } from "./exact_500_articles";
 import {
-	pronunciationCodes,
+	ALL_BENCHMARK_SCHEMES,
 	type BenchmarkSchemeId,
 } from "./lib/benchmark-schemes";
-import { getPinyin } from "./lib/word-pinyin";
 import { rootPath } from "./lib/paths";
 
-const visibleKeys = [..."QWERTYUIOPASDFGHJKL;\\ZXCVBNM,."];
-const rows = [
-	{ keys: [..."QWERTYUIOP"], offset: 18 },
-	{ keys: [..."ASDFGHJKL;\\"], offset: 37 },
-	{ keys: [..."ZXCVBNM,."], offset: 75 },
-] as const;
-const punctuationKeys: Readonly<Record<string, string>> = {
-	"，": ",",
-	"。": ".",
-	"、": "\\",
-};
-const title = "十一场景 5500 字实战赛文纯双拼键频图（含标点）";
+const title = "十一场景 5500 字最优路径全按键键频图";
+const replayDirectory = rootPath("reports", "十篇五百字_十方案逐键对齐回放");
+const benchmarkReportPath = rootPath(
+	"reports",
+	"5000字_十方案最优切分实测结果.json",
+);
+const outputReportPath = rootPath(
+	"reports",
+	"神韵十一场景_5500字_最优路径全按键键频.json",
+);
 
 interface Layout {
 	id: BenchmarkSchemeId;
 	displayName: string;
+	benchmarkName: string;
 	filename: string;
+	auxiliaryKeys: readonly string[];
 }
 
+interface ArticleStat {
+	id: number;
+	keys: number;
+	spaces: number;
+	shifts: number;
+}
+
+interface SchemeStat {
+	total: {
+		keys: number;
+		spaces: number;
+		shifts: number;
+		selections: { total: number };
+	};
+	articles: ArticleStat[];
+}
+
+interface BenchmarkReport {
+	schemes: Record<string, SchemeStat>;
+}
+
+interface KeyCounts {
+	counts: Map<string, number>;
+	totalKeystrokes: number;
+	spaces: number;
+	shifts: number;
+	selections: number;
+}
+
+interface KeySpec {
+	key: string;
+	label: string;
+	x: number;
+	y: number;
+	width: number;
+}
+
+const benchmarkSchemes = new Map(
+	ALL_BENCHMARK_SCHEMES.map((scheme) => [scheme.id, scheme]),
+);
 const layouts: readonly Layout[] = [
 	{
 		id: "overall17-shape",
-		displayName: "神韵(Overall-17) 21×26 双拼",
+		displayName: "神韵(Overall-17) 21×26",
+		benchmarkName: benchmarkSchemes.get("overall17-shape")?.name ?? "",
 		filename: "shenyun-overall17-5500-keyboard-heat.svg",
+		auxiliaryKeys: [..."AEUIO"],
 	},
 	{
 		id: "u357-shape",
-		displayName: "无飞键道(U357) 21×21 双拼",
+		displayName: "无飞键道(U357) 21×21",
+		benchmarkName: benchmarkSchemes.get("u357-shape")?.name ?? "",
 		filename: "shenyun-u357-5500-keyboard-heat.svg",
+		auxiliaryKeys: [..."AVUIO"],
 	},
 ] as const;
 
-const standaloneArticle = exact500Articles.find(({ id }) => id === 10);
-if (!standaloneArticle) throw new Error("找不到单篇 500 字输入法赛文。 ");
+if (layouts.some(({ benchmarkName }) => benchmarkName === ""))
+	throw new Error("找不到热力图对应的 benchmark 方案。");
 
-// 仓库有一组十篇 500 字 benchmark，以及同一篇输入法赛文的独立 500 字 benchmark。
-// 按任务指定的十一场景／5500 字口径，两组都计入；因此第 10 篇输入法赛文计两遍。
-const scenes = [
-	...exact500Articles.map((article) => ({
-		name: `十篇语料·篇${article.id}`,
-		lines: article.lines,
-	})),
-	{ name: "独立 500 字赛文", lines: standaloneArticle.lines },
-];
+const replayFiles = readdirSync(replayDirectory)
+	.filter((filename) => filename.endsWith(".md"))
+	.sort((left, right) => left.localeCompare(right, "zh-CN"));
+if (replayFiles.length !== 10)
+	throw new Error(`逐键回放应有 10 篇，实际 ${replayFiles.length} 篇。`);
+const duplicateReplay = replayFiles.find((filename) =>
+	/^篇10_/u.test(filename),
+);
+if (!duplicateReplay) throw new Error("找不到作为独立场景重复计算的第 10 篇。");
+
+const benchmarkReport = JSON.parse(
+	readFileSync(benchmarkReportPath, "utf8"),
+) as BenchmarkReport;
 
 function escapeXml(value: string): string {
 	return value
@@ -63,68 +109,144 @@ function escapeXml(value: string): string {
 		.replaceAll('"', "&quot;");
 }
 
-function normalizeSyllable(syllable: string): string {
-	return syllable.replaceAll("\r", "").replaceAll("\n", "");
-}
-
 function increment(counts: Map<string, number>, key: string): void {
 	counts.set(key, (counts.get(key) ?? 0) + 1);
 }
 
-function collectCounts(layout: Layout) {
-	const counts = new Map(visibleKeys.map((key) => [key, 0]));
-	let hanCount = 0;
-	let punctuationCount = 0;
-	for (const scene of scenes) {
-		for (const line of scene.lines) {
-			const characters = [...line].filter((character) =>
-				/\p{Script=Han}/u.test(character),
-			);
-			const syllables = getPinyin(line).map(normalizeSyllable);
-			if (characters.length !== syllables.length) {
-				throw new Error(
-					`${scene.name} 注音数量不符：${characters.length} 字／${syllables.length} 音节。`,
-				);
+function emptyCounts(): KeyCounts {
+	return {
+		counts: new Map(),
+		totalKeystrokes: 0,
+		spaces: 0,
+		shifts: 0,
+		selections: 0,
+	};
+}
+
+function press(result: KeyCounts, key: string): void {
+	increment(result.counts, key);
+	result.totalKeystrokes += 1;
+	if (key === "Space") result.spaces += 1;
+	if (key === "Shift") result.shifts += 1;
+}
+
+function countDisplayCode(displayCode: string, result: KeyCounts): void {
+	const code = displayCode.replaceAll(/\s/gu, "");
+	for (let index = 0; index < code.length; index += 1) {
+		const character = code[index];
+		if (character === "[") {
+			const selection = code.slice(index).match(/^\[([0-9])\]/u);
+			if (selection) {
+				press(result, selection[1]);
+				result.selections += 1;
+				index += selection[0].length - 1;
+			} else {
+				press(result, character);
 			}
-			hanCount += characters.length;
-			for (const [index, character] of characters.entries()) {
-				const code = pronunciationCodes(layout.id, character, [
-					syllables[index],
-				])
-					.find(
-						(candidate) =>
-							candidate.mainLength === 2 && candidate.auxiliaryLength === 0,
-					)
-					?.code.toUpperCase();
-				if (!code || code.length !== 2) {
-					throw new Error(
-						`${layout.displayName} 缺少 ${character}（${syllables[index]}）的双拼全码。`,
-					);
-				}
-				for (const key of code) increment(counts, key);
-			}
-			for (const character of line) {
-				const key = punctuationKeys[character];
-				if (!key) continue;
-				increment(counts, key);
-				punctuationCount += 1;
-			}
+			continue;
 		}
+		if (character === "?" || character === "⇧") {
+			if (!/[A-Z]/u.test(code[index + 1] ?? ""))
+				throw new Error(`无法识别逐键回放中的 Shift 标记：${displayCode}`);
+			continue;
+		}
+		if (character === "_") {
+			press(result, "Space");
+			continue;
+		}
+		if (/[A-Z]/u.test(character)) {
+			press(result, "Shift");
+			press(result, character);
+			continue;
+		}
+		if (/[a-z]/u.test(character)) {
+			press(result, character.toUpperCase());
+			continue;
+		}
+		if (/[0-9]/u.test(character)) {
+			press(result, character);
+			continue;
+		}
+		if (/^[\],.;\\/]$/u.test(character)) {
+			press(result, character);
+			continue;
+		}
+		throw new Error(`逐键回放含未建模按键 ${character}：${displayCode}`);
 	}
-	const totalKeystrokes = [...counts.values()].reduce(
-		(sum, count) => sum + count,
-		0,
+}
+
+function collectFiles(layout: Layout, filenames: readonly string[]): KeyCounts {
+	const result = emptyCounts();
+	const prefix = `${layout.benchmarkName} `;
+	for (const filename of filenames) {
+		const lines = readFileSync(join(replayDirectory, filename), "utf8")
+			.split(/\r?\n/u)
+			.filter((line) => line.startsWith(prefix));
+		if (lines.length === 0)
+			throw new Error(
+				`${filename} 中找不到 ${layout.benchmarkName} 的逐键回放。`,
+			);
+		for (const line of lines)
+			countDisplayCode(line.slice(prefix.length), result);
+	}
+	return result;
+}
+
+function mergeCounts(left: KeyCounts, right: KeyCounts): KeyCounts {
+	const result = emptyCounts();
+	for (const [key, count] of left.counts)
+		result.counts.set(key, count + (right.counts.get(key) ?? 0));
+	for (const [key, count] of right.counts)
+		if (!result.counts.has(key)) result.counts.set(key, count);
+	result.totalKeystrokes = left.totalKeystrokes + right.totalKeystrokes;
+	result.spaces = left.spaces + right.spaces;
+	result.shifts = left.shifts + right.shifts;
+	result.selections = left.selections + right.selections;
+	return result;
+}
+
+function assertCounts(
+	label: string,
+	actual: KeyCounts,
+	expected: {
+		keys: number;
+		spaces: number;
+		shifts: number;
+		selections?: number;
+	},
+): void {
+	for (const [field, actualValue, expectedValue] of [
+		["总按键", actual.totalKeystrokes, expected.keys],
+		["Space", actual.spaces, expected.spaces],
+		["Shift", actual.shifts, expected.shifts],
+		["选重", actual.selections, expected.selections],
+	] as const) {
+		if (expectedValue !== undefined && actualValue !== expectedValue)
+			throw new Error(
+				`${label} ${field}与 benchmark 不符：${actualValue} / ${expectedValue}。`,
+			);
+	}
+}
+
+function collectCounts(layout: Layout): KeyCounts {
+	const stat = benchmarkReport.schemes[layout.id];
+	if (!stat) throw new Error(`总报告缺少 ${layout.id}。`);
+	const tenScenes = collectFiles(layout, replayFiles);
+	assertCounts(`${layout.displayName} 十篇`, tenScenes, {
+		keys: stat.total.keys,
+		spaces: stat.total.spaces,
+		shifts: stat.total.shifts,
+		selections: stat.total.selections.total,
+	});
+	const article10 = stat.articles.find(({ id }) => id === 10);
+	if (!article10) throw new Error(`${layout.displayName} 总报告缺少第 10 篇。`);
+	const standaloneScene = collectFiles(layout, [duplicateReplay]);
+	assertCounts(
+		`${layout.displayName} 独立 500 字场景`,
+		standaloneScene,
+		article10,
 	);
-	if (hanCount !== 5500)
-		throw new Error(`十一场景应有 5500 汉字，实际 ${hanCount}。`);
-	if (punctuationCount !== 392)
-		throw new Error(`十一场景应有 392 个标点，实际 ${punctuationCount}。`);
-	if (totalKeystrokes !== hanCount * 2 + punctuationCount) {
-		throw new Error(
-			`总键数应为 ${hanCount * 2 + punctuationCount}，实际 ${totalKeystrokes}。`,
-		);
-	}
-	return { counts, hanCount, punctuationCount, totalKeystrokes };
+	return mergeCounts(tenScenes, standaloneScene);
 }
 
 function heatColor(count: number, maximum: number): string {
@@ -137,37 +259,68 @@ function heatColor(count: number, maximum: number): string {
 	return `rgb(${red}, ${green}, ${blue})`;
 }
 
-function renderSvg(
-	layout: Layout,
-	result: ReturnType<typeof collectCounts>,
-): string {
-	const { counts, hanCount, punctuationCount, totalKeystrokes } = result;
+function keyboardSpecs(counts: ReadonlyMap<string, number>): {
+	specs: KeySpec[];
+	height: number;
+} {
+	const hasDigits = [..."1234567890"].some((key) => (counts.get(key) ?? 0) > 0);
+	const top = hasDigits ? 110 : 22;
+	const specs: KeySpec[] = [];
+	const addRow = (keys: string, x: number, y: number) => {
+		for (const [index, key] of [...keys].entries())
+			specs.push({ key, label: key, x: x + index * 76, y, width: 68 });
+	};
+	if (hasDigits) addRow("1234567890", 94, 22);
+	addRow("QWERTYUIOP[]", 18, top);
+	addRow("ASDFGHJKL;\\", 56, top + 88);
+	specs.push({ key: "Shift", label: "Shift", x: 18, y: top + 176, width: 106 });
+	addRow("ZXCVBNM,./", 132, top + 176);
+	specs.push({
+		key: "Space",
+		label: "Space",
+		x: 285,
+		y: top + 264,
+		width: 370,
+	});
+	return { specs, height: top + 354 };
+}
+
+function renderSvg(layout: Layout, result: KeyCounts): string {
+	const { counts, totalKeystrokes, spaces, shifts, selections } = result;
 	const maximum = Math.max(...counts.values());
+	const { specs, height } = keyboardSpecs(counts);
+	const known = new Set(specs.map(({ key }) => key));
+	const unknown = [...counts].filter(
+		([key, count]) => count > 0 && !known.has(key),
+	);
+	if (unknown.length > 0)
+		throw new Error(
+			`键盘图缺少非 0 按键：${unknown.map(([key]) => key).join("、")}`,
+		);
 	const groups: string[] = [];
-	for (const [rowIndex, row] of rows.entries()) {
-		for (const [columnIndex, key] of row.keys.entries()) {
-			const count = counts.get(key) ?? 0;
-			const percentage = (count / totalKeystrokes) * 100;
-			const x = row.offset + columnIndex * 76;
-			const y = 22 + rowIndex * 88;
-			const foreground = count / maximum >= 0.62 ? "#ffffff" : "#30275a";
-			const secondary = count / maximum >= 0.62 ? "#eeeaff" : "#655b82";
-			groups.push(
-				`<g data-mxkey="${escapeXml(key)}"><title>${escapeXml(key)}：${count} 次，${percentage.toFixed(3)}%</title><rect x="${x}" y="${y}" width="68" height="76" rx="7" fill="${heatColor(count, maximum)}" stroke="#a89dc9"/><text x="${x + 10}" y="${y + 23}" font-size="18" fill="${foreground}">${escapeXml(key)}</text><text x="${x + 34}" y="${y + 49}" text-anchor="middle" font-size="14" fill="${foreground}">${percentage.toFixed(3)}%</text><text x="${x + 34}" y="${y + 65}" text-anchor="middle" font-size="10" fill="${secondary}">${count} 次</text></g>`,
-			);
-		}
+	for (const { key, label, x, y, width } of specs) {
+		const count = counts.get(key) ?? 0;
+		if (count === 0) continue;
+		const percentage = (count / totalKeystrokes) * 100;
+		const foreground = count / maximum >= 0.62 ? "#ffffff" : "#30275a";
+		const secondary = count / maximum >= 0.62 ? "#eeeaff" : "#655b82";
+		const center = x + width / 2;
+		groups.push(
+			`<g data-mxkey="${escapeXml(key)}"><title>${escapeXml(label)}：${count} 次，${percentage.toFixed(3)}%</title><rect x="${x}" y="${y}" width="${width}" height="76" rx="7" fill="${heatColor(count, maximum)}" stroke="#a89dc9"/><text x="${x + 10}" y="${y + 23}" font-size="${label.length > 2 ? 14 : 18}" fill="${foreground}">${escapeXml(label)}</text><text x="${center}" y="${y + 49}" text-anchor="middle" font-size="14" fill="${foreground}">${percentage.toFixed(3)}%</text><text x="${center}" y="${y + 65}" text-anchor="middle" font-size="10" fill="${secondary}">${count} 次</text></g>`,
+		);
 	}
-	const description = `${layout.displayName}；来自本仓库十篇 500 字 benchmark 与独立 500 字赛文，共十一场景、${hanCount} 汉字、${punctuationCount} 标点、${totalKeystrokes} 次纯双拼及标点击键；独立赛文与十篇语料的第 10 篇相同，按两个 benchmark 场景计两遍；不含五辅键、空格和选重。顿号按反斜杠键计。`;
-	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 885 304" role="img" aria-labelledby="title desc"><title id="title">${title}</title><desc id="desc">${description}</desc><rect width="885" height="304" fill="#f8f7ff"/>${groups.join("")}</svg>\n`;
+	const description = `${layout.displayName}；来自十方案最优切分逐键回放，共十一场景、5500 汉字、392 标点、${totalKeystrokes} 次实际按键；包含短码、五辅键、Space、Shift、标点与选重，选重为 ${selections} 次；只绘制计数非 0 的按键。第 10 篇按十篇语料和独立赛文两个场景计两遍。`;
+	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 ${height}" role="img" aria-labelledby="title desc"><title id="title">${title}</title><desc id="desc">${description}</desc><rect width="940" height="${height}" fill="#f8f7ff"/>${groups.join("")}</svg>\n`;
 }
 
 const summary: Record<string, unknown> = {
-	contract: "snow-shenyun-5500-double-pinyin-heatmap-v1",
+	contract: "snow-shenyun-5500-optimal-path-all-keys-v2",
 	corpus: {
-		scenes: scenes.length,
+		scenes: 11,
 		hanCharacters: 5500,
-		note: "十篇 500 字语料加独立 500 字赛文；独立赛文与十篇语料第 10 篇相同，按两个 benchmark 场景计两遍。",
-		punctuationKeyMapping: punctuationKeys,
+		punctuationCharacters: 392,
+		source: "reports/十篇五百字_十方案逐键对齐回放",
+		note: "十篇 500 字最优切分逐键回放加独立 500 字赛文；独立赛文与第 10 篇相同，按两个场景计两遍。所有实际非 0 按键均计入。",
 	},
 	layouts: {},
 };
@@ -181,16 +334,21 @@ for (const layout of layouts) {
 	);
 	(summary.layouts as Record<string, unknown>)[layout.id] = {
 		displayName: layout.displayName,
+		auxiliaryKeys: layout.auxiliaryKeys,
 		totalKeystrokes: result.totalKeystrokes,
+		spaces: result.spaces,
+		shifts: result.shifts,
+		selections: result.selections,
+		nonZeroKeys: result.counts.size,
 		counts: Object.fromEntries(result.counts),
 	};
 	console.log(
-		`${layout.displayName}：${result.hanCount} 字，${result.punctuationCount} 标点，${result.totalKeystrokes} 键。`,
+		`${layout.displayName}：${result.totalKeystrokes} 键，Space ${result.spaces}，Shift ${result.shifts}，选重 ${result.selections}。`,
 	);
 }
 
 writeFileSync(
-	join(rootPath("reports"), "神韵十一场景_5500字_纯双拼键频.json"),
+	outputReportPath,
 	`${JSON.stringify(summary, null, 2)}\n`,
 	"utf8",
 );

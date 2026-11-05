@@ -67,11 +67,11 @@
 
 两图由 benchmark 页面中的定稿方案导出：声韵图调用页面内置 `keyboardSVG` 后裁出 26 个字母键；键频图调用页面内置 `r9MacroHeat`，使用同一篇 2149 击键日常八场景文稿。键频图不含五辅键、空格和选重。
 
-**十一场景 5500 字实战赛文纯双拼键频图（含标点）**
+**十一场景 5500 字最优路径全按键键频图**
 
-![神韵(Overall-17) 21×26 双拼 5500 字实战赛文键频图](docs/shenyun-overall17-5500-keyboard-heat.svg)
+![神韵(Overall-17) 21×26 5500 字最优路径全按键键频图](docs/shenyun-overall17-5500-keyboard-heat.svg)
 
-新图合并仓库的十篇 500 字 benchmark 与独立 500 字赛文，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与十篇语料的第 10 篇相同，按两个场景计两遍。每张图共 11392 次纯双拼及标点击键，顿号按反斜杠键统计；仍不含五辅键、空格和选重。[原始键频数据](reports/神韵十一场景_5500字_纯双拼键频.json)可供复核。
+新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪简道共 9964 次实际按键，其中 Space 401、Shift 3、选重 0；短码、五辅键、空格、定字键、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。
 
 #### 声韵编码规则
 
@@ -129,11 +129,11 @@
 > [!NOTE]
 > 注意：只包含双拼部分，5 辅键未参与评估。
 
-**十一场景 5500 字实战赛文纯双拼键频图（含标点）**
+**十一场景 5500 字最优路径全按键键频图**
 
-![无飞键道(U357) 21×21 双拼 5500 字实战赛文键频图](docs/shenyun-u357-5500-keyboard-heat.svg)
+![无飞键道(U357) 21×21 5500 字最优路径全按键键频图](docs/shenyun-u357-5500-keyboard-heat.svg)
 
-新图合并仓库的十篇 500 字 benchmark 与独立 500 字赛文，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与十篇语料的第 10 篇相同，按两个场景计两遍。每张图共 11392 次纯双拼及标点击键，顿号按反斜杠键统计；仍不含五辅键、空格和选重。[原始键频数据](reports/神韵十一场景_5500字_纯双拼键频.json)可供复核。
+新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪健道共 9492 次实际按键，其中 Space 359、Shift 289、选重 0；短码、五辅键、空格、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。
 
 #### 声韵编码规则
 
@@ -405,11 +405,11 @@ Recipe: ℞ **snow-pinyin**
 
 Both SVGs are exported from the finalized entry in the benchmark page: the first uses its built-in `keyboardSVG`, while the second uses `r9MacroHeat` over the same 2,149-keystroke daily corpus. The heat map excludes auxiliaries, spaces, and candidate selection.
 
-**Pure-double-pinyin key-frequency map over eleven benchmark scenarios and 5,500 Chinese characters (punctuation included)**
+**All-key frequency map for optimal paths over eleven benchmark scenarios and 5,500 Chinese characters**
 
-![Shenyun(Overall-17) 21×26 5,500-character benchmark key-frequency map](docs/shenyun-overall17-5500-keyboard-heat.svg)
+![Shenyun(Overall-17) 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-overall17-5500-keyboard-heat.svg)
 
-The new map combines the repository's ten 500-character benchmark articles with its standalone 500-character test article, totaling eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks. The standalone article is identical to article 10 of the ten-article corpus and is counted twice as two benchmark scenarios. Each map contains 11,392 pure-double-pinyin and punctuation keystrokes; the enumeration comma uses the backslash key. Auxiliaries, spaces, and candidate selection remain excluded. The [raw frequency data](reports/神韵十一场景_5500字_纯双拼键频.json) is available for verification.
+The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow Simple-Tao uses 9,964 actual keystrokes, including 401 Spaces, 3 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, character-selection keys, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.
 
 #### Coding rules
 
@@ -439,11 +439,11 @@ The heat map contains 2,149 double-pinyin keystrokes from the daily eight-scenar
 > [!NOTE]
 > Only the double-pinyin layer is included; the five auxiliary keys are excluded.
 
-**Pure-double-pinyin key-frequency map over eleven benchmark scenarios and 5,500 Chinese characters (punctuation included)**
+**All-key frequency map for optimal paths over eleven benchmark scenarios and 5,500 Chinese characters**
 
-![Wufei KeyTao(U357) 21×21 5,500-character benchmark key-frequency map](docs/shenyun-u357-5500-keyboard-heat.svg)
+![Wufei KeyTao(U357) 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-u357-5500-keyboard-heat.svg)
 
-The new map combines the repository's ten 500-character benchmark articles with its standalone 500-character test article, totaling eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks. The standalone article is identical to article 10 of the ten-article corpus and is counted twice as two benchmark scenarios. Each map contains 11,392 pure-double-pinyin and punctuation keystrokes; the enumeration comma uses the backslash key. Auxiliaries, spaces, and candidate selection remain excluded. The [raw frequency data](reports/神韵十一场景_5500字_纯双拼键频.json) is available for verification.
+The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow KeyTao uses 9,492 actual keystrokes, including 359 Spaces, 289 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.
 
 #### Coding rules
 
@@ -594,11 +594,11 @@ bun scripts/验证神韵双拼.ts
 
 兩圖由 benchmark 頁面中的定稿方案匯出：聲韻圖使用頁面內建 `keyboardSVG`，鍵頻圖使用 `r9MacroHeat` 與同一篇 2149 擊鍵日常文稿；鍵頻圖不含五輔鍵、空格及選重。
 
-**十一場景 5500 字實戰賽文純雙拼鍵頻圖（含標點）**
+**十一場景 5500 字最優路徑全按鍵鍵頻圖**
 
-![神韻(Overall-17) 21×26 雙拼 5500 字實戰賽文鍵頻圖](docs/shenyun-overall17-5500-keyboard-heat.svg)
+![神韻(Overall-17) 21×26 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-overall17-5500-keyboard-heat.svg)
 
-新圖合併倉庫的十篇 500 字 benchmark 與獨立 500 字賽文，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與十篇語料的第 10 篇相同，按兩個場景計兩遍。每張圖共 11392 次純雙拼及標點擊鍵，頓號按反斜線鍵統計；仍不含五輔鍵、空格和選重。[原始鍵頻資料](reports/神韵十一场景_5500字_纯双拼键频.json)可供複核。
+新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪簡道共 9964 次實際按鍵，其中 Space 401、Shift 3、選重 0；短碼、五輔鍵、空格、定字鍵、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。
 
 #### 聲韻規則
 
@@ -628,11 +628,11 @@ Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-
 > [!NOTE]
 > 注意：只包含雙拼部分，5 輔鍵未參與評估。
 
-**十一場景 5500 字實戰賽文純雙拼鍵頻圖（含標點）**
+**十一場景 5500 字最優路徑全按鍵鍵頻圖**
 
-![無飛鍵道(U357) 21×21 雙拼 5500 字實戰賽文鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)
+![無飛鍵道(U357) 21×21 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)
 
-新圖合併倉庫的十篇 500 字 benchmark 與獨立 500 字賽文，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與十篇語料的第 10 篇相同，按兩個場景計兩遍。每張圖共 11392 次純雙拼及標點擊鍵，頓號按反斜線鍵統計；仍不含五輔鍵、空格和選重。[原始鍵頻資料](reports/神韵十一场景_5500字_纯双拼键频.json)可供複核。
+新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪健道共 9492 次實際按鍵，其中 Space 359、Shift 289、選重 0；短碼、五輔鍵、空格、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。
 
 #### 聲韻規則
 
