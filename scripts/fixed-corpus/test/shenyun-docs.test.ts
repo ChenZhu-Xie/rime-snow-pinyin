@@ -380,6 +380,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 			"[机器可读映射](config/shenyun-21x26-letter-buckets.json)",
 		);
 		includes(readme, "| D | `dj` | 扽 | Q | `qq` | 穷 |");
+		includes(readme, "两个 21×26 方案已经启用同一套占用桶字母方案");
 		includes(readme, "`21×5×21=2205`");
 		includes(readme, "[`7a7e154`](https://");
 		includes(readme, "[`11713b6`](https://");

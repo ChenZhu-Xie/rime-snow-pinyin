@@ -1,6 +1,6 @@
 {
   "id": "SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
-  "status": "reserved-not-enabled",
+  "status": "enabled",
   "schemes": [
     "snow_shenyun_shape",
     "snow_shenyun_tone"

@@ -33,6 +33,9 @@ deploy:
         assert: cand[1].text == "的" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: q
         assert: cand[1].text == "我"
+      # 占用桶保留汉字首选，字母固定为大写第 2、小写第 3。
+      - send: by
+        assert: cand[1].text == "帮" and cand[2].text == "B" and cand[3].text == "b"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "q["
         assert: commit == "我我"

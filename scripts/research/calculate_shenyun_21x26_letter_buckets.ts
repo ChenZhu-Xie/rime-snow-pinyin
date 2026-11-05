@@ -226,7 +226,7 @@ if (entries.some(({ displacedAtLeast10000 }) => displacedAtLeast10000 > 0)) {
 
 const output = {
 	id: "SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
-	status: "reserved-not-enabled",
+	status: "enabled",
 	schemes: ["snow_shenyun_shape", "snow_shenyun_tone"],
 	contract: {
 		candidateOrder: ["existing-han", "uppercase-letter", "lowercase-letter"],

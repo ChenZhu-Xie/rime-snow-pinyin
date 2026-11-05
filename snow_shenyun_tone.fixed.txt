@@ -1,6 +1,6 @@
-# 冰雪散拼 21×26 一级简码与单字候选列表
+# 冰雪散拼 21×26 一级简码、单字与字母候选列表
 # 对应 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局；辅码集合 aeuio 为调笔键，不作一简声键。
-# 每行格式：物理声键<TAB>首选一简；其余单字按词频自然排序，不固顶。
+# 一码只固定首选一简；字母码固定现有汉字首选、大写第 2、小写第 3。
 b	不
 p	平
 m	没
@@ -22,3 +22,30 @@ s	三
 y	一
 w	是
 v	出
+# 字母
+xw	欸 A a
+by	帮 B b
+cy	藏 C c
+dj	扽 D d
+xj	恩 E e
+fy	张 F f
+gy	刚 G g
+hy	行 H h
+xb	寻 I i
+jy	放 J j
+ky	扛 K k
+ly	狼 L l
+my	忙 M m
+ny	囊 N n
+xf	偶 O o
+py	胖 P p
+qq	穷 Q q
+ry	让 R r
+sy	桑 S s
+ty	躺 T t
+xx	秀 U u
+vm	戳 V v
+wy	上 W w
+xy	昂 X x
+yy	养 Y y
+zy	脏 Z z

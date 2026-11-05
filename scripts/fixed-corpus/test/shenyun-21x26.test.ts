@@ -109,12 +109,12 @@ test("冰雪简道/调共用 Overall-17 的 21×26 映射", () => {
 	}
 });
 
-test("21×26 字母预留映射只使用有汉字首选的占用桶", () => {
+test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 	assert.equal(
 		letterBuckets.id,
 		"SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
 	);
-	assert.equal(letterBuckets.status, "reserved-not-enabled");
+	assert.equal(letterBuckets.status, "enabled");
 	assert.deepEqual(letterBuckets.schemes, [
 		"snow_shenyun_shape",
 		"snow_shenyun_tone",
@@ -174,6 +174,32 @@ test("21×26 字母预留映射只使用有汉字首选的占用桶", () => {
 	for (const entry of letterBuckets.letters) {
 		assert.match(entry.naturalTop3[0]?.text ?? "", /^\p{Script=Han}$/u);
 		assert.equal(entry.displacedAtLeast10000, 0, entry.code);
+	}
+	for (const filename of [
+		"snow_shenyun_shape.fixed.txt",
+		"snow_shenyun_tone.fixed.txt",
+	]) {
+		const section = read(filename).split(/^# 字母\r?$/mu)[1];
+		assert.ok(section, `${filename} 缺少字母段`);
+		const actual = Object.fromEntries(
+			section
+				.trim()
+				.split(/\r?\n/u)
+				.map((line) => {
+					const [code, candidates] = line.split("\t");
+					return [code, candidates.split(" ")];
+				}),
+		);
+		assert.deepEqual(
+			actual,
+			Object.fromEntries(
+				letterBuckets.letters.map(({ letter, code, naturalTop3 }) => [
+					code,
+					[naturalTop3[0].text, letter.toUpperCase(), letter],
+				]),
+			),
+			filename,
+		);
 	}
 });
 
@@ -494,7 +520,7 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 		"snow_shenyun_shape.fixed.txt",
 		"snow_shenyun_tone.fixed.txt",
 	]) {
-		const content = read(filename);
+		const content = read(filename).split(/^# 字母\r?$/mu)[0];
 		const lines = content
 			.split(/\r?\n/)
 			.filter((line) => line && !line.startsWith("#"));
