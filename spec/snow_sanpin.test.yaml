@@ -166,6 +166,15 @@ deploy:
         assert: cand[1].text == "G" and cand[2].text == "g"
       - send: gca
         assert: not has("G") and not has("g")
+      # 数字按当前 U357 声韵调语义重编码，不沿用上游的物理键位。
+      - send: re
+        assert: cand[1].text == "二" and cand[2].text == "2"
+      - send: sj
+        assert: cand[1].text == "三" and cand[2].text == "3"
+      - send: sla
+        assert: cand[1].text == "四" and cand[2].text == "4"
+      - send: qj
+        assert: cand[1].text == "强" and not has("2")
       - send: we
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd

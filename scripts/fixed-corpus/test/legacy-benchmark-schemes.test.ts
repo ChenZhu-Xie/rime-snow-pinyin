@@ -322,6 +322,15 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 	assert.doesNotMatch(classicJiandao, /jianpin:\r?\n\s+tag:/u);
 	const jiandao = fixedSections("snow_jiandao_classic.fixed.txt");
 	const sanpin = fixedSections("snow_sanpin_classic.fixed.txt");
+	const classicJiandaoAlgebra = new SpellingAlgebra(
+		rootPath("snow_jiandao_classic.schema.yaml"),
+		"speller/algebra",
+		{ derive: false },
+	);
+	assert.equal(classicJiandaoAlgebra.apply("~b"), "bc");
+	assert.equal(classicJiandaoAlgebra.apply("~~b"), "bc");
+	assert.equal(classicJiandaoAlgebra.apply("~v"), "xg");
+	assert.equal(classicJiandaoAlgebra.apply("~~a"), "xw");
 	const currentJiandao = fixedSections("snow_jiandao.fixed.txt");
 	const currentSanpin = fixedSections("snow_sanpin.fixed.txt");
 	const words = (rows: Array<[string, string[]]>) =>
@@ -343,6 +352,77 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 	);
 	assert.equal(sanpin.get("# 字母")?.length, 26);
 	assert.equal(sanpin.get("# 临时数字")?.length, 7);
+	const candidatesAt = (
+		sections: Map<string, Array<[string, string[]]>>,
+		code: string,
+	) =>
+		[...sections.values()]
+			.flat()
+			.find(([candidateCode]) => candidateCode === code)?.[1];
+	const initials = [..."bpmfdtnlgkhjqxzcsrwye"];
+	const letterCodes = [
+		...initials.map((initial) => `${initial}c`),
+		"xg",
+		"xl",
+		"xh",
+		"xd",
+		"xw",
+	];
+	const letters = [...initials, "v", "i", "u", "o", "a"];
+	for (const [index, code] of letterCodes.entries()) {
+		assert.deepEqual(
+			candidatesAt(jiandao, code)?.slice(-2),
+			[letters[index].toUpperCase(), letters[index]],
+			code,
+		);
+		assert.deepEqual(
+			candidatesAt(sanpin, `${code}a`),
+			[letters[index].toUpperCase(), letters[index]],
+			`${code}a`,
+		);
+	}
+	for (const [code, expected, word, pinyin] of [
+		["y", ["一", "1"], "一", "yi1"],
+		["xj", ["二", "2"], "二", "er4"],
+		["s", ["三", "3"], "三", "san1"],
+		["sk", ["四", "4"], "四", "si4"],
+		["wjv", ["五", "5"], "五", "wu3"],
+		["lqo", ["六", "6"], "六", "liu4"],
+		["qkv", ["其", "七", "7"], "七", "qi1"],
+		["bsu", ["八", "8"], "八", "ba1"],
+		["jqu", ["九", "9"], "九", "jiu3"],
+		["eku", ["十", "10"], "十", "shi2"],
+		["lgv", ["零", "0"], "零", "ling2"],
+	] as const) {
+		assert.deepEqual(candidatesAt(jiandao, code), expected, code);
+		assert.ok(
+			pronunciationCodes("classic-shape", word, [pinyin]).some(
+				(candidate) => candidate.code === code,
+			),
+			`${word}: ${code}`,
+		);
+	}
+	for (const [code, expected, word, pinyin] of [
+		["y", ["一", "1"], "一", "yi1"],
+		["xj", ["二", "2"], "二", "er4"],
+		["s", ["三", "3"], "三", "san1"],
+		["sk", ["四", "4"], "四", "si4"],
+		["wju", ["五", "5"], "五", "wu3"],
+		["lqo", ["六", "6"], "六", "liu4"],
+		["qkv", ["七", "7"], "七", "qi1"],
+		["bsv", ["八", "8"], "八", "ba1"],
+		["jqu", ["九", "9"], "九", "jiu3"],
+		["eki", ["十", "10"], "十", "shi2"],
+		["lgi", ["零", "0"], "零", "ling2"],
+	] as const) {
+		assert.deepEqual(candidatesAt(sanpin, code), expected, code);
+		assert.ok(
+			pronunciationCodes("classic-tone", word, [pinyin]).some(
+				(candidate) => candidate.code === code,
+			),
+			`${word}: ${code}`,
+		);
+	}
 	for (const [code, digit] of [
 		["xj", "2"],
 		["s", "3"],

@@ -56,6 +56,18 @@ deploy:
         assert: cand[1].text == "表示"
       - send: yi
         assert: cand[1].text == "一个"
+      # 字母与冰雪三拼共享二键基码；保留原汉字首选，大写、小写随后。
+      - send: bc
+        assert: cand[1].text == "表" and cand[2].text == "B" and cand[3].text == "b"
+      - send: xg
+        assert: cand[1].text == "型" and cand[2].text == "V" and cand[3].text == "v"
+      # 阿拉伯数字紧跟对应汉字数字，不覆盖原有首选。
+      - send: xj
+        assert: cand[1].text == "二" and cand[2].text == "2"
+      - send: qkv
+        assert: cand[1].text == "其" and cand[2].text == "七" and cand[3].text == "7"
+      - send: lgv
+        assert: cand[1].text == "零" and cand[2].text == "0"
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"

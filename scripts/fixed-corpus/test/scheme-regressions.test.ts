@@ -380,7 +380,7 @@ test("U357 KeyTao letter and number candidates follow the active schema", () => 
 		0: "ltv",
 		1: "y",
 		2: "re",
-		3: "s",
+		3: "sj",
 		4: "sli",
 		5: "shv",
 		6: "ldo",
@@ -398,7 +398,7 @@ test("U357 KeyTao letter and number candidates follow the active schema", () => 
 	assert.ok(lines.get("xh")?.split(" ").includes("U"));
 });
 
-test("U357 KeyTao and Three-Code share letter bases with measured full-code collisions", () => {
+test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", () => {
 	const jiandao = read("snow_jiandao.schema.yaml");
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(jiandao, /prism: snow_jiandao_jianpin/u);
@@ -469,12 +469,47 @@ test("U357 KeyTao and Three-Code share letter bases with measured full-code coll
 		assert.doesNotMatch(sanpinCore, new RegExp(`^${code}\\t`, "mu"));
 	}
 	const jiandaoCore = read("snow_jiandao.fixed.txt");
-	for (const code of letterBaseCodes) {
-		assert.match(jiandaoCore, new RegExp(`^${code}\\t`, "mu"));
+	const letters = [...initials, "v", "i", "u", "o", "a"];
+	for (const [index, code] of letterBaseCodes.entries()) {
+		const match = jiandaoCore.match(new RegExp(`^${code}\\t(.+)$`, "mu"));
+		assert.ok(match, code);
+		assert.deepEqual(
+			match[1].split(" ").slice(-2),
+			[letters[index].toUpperCase(), letters[index]],
+			code,
+		);
 	}
 
-	const fixed = read("snow_sanpin.fixed.txt");
+	const sanpinFixed = read("snow_sanpin.fixed.txt");
+	for (const [index, code] of letterFullCodes.entries()) {
+		assert.match(
+			sanpinFixed,
+			new RegExp(
+				`^${code}\\t${letters[index].toUpperCase()} ${letters[index]}$`,
+				"mu",
+			),
+		);
+	}
 	for (const [code, candidates] of [
+		["y", "一 1"],
+		["re", "二 2"],
+		["sj", "三 3"],
+		["sli", "四 4"],
+		["shv", "五 5"],
+		["ldo", "六 6"],
+		["qlv", "妻 七 7"],
+		["bwu", "八 8"],
+		["jdu", "九 9"],
+		["elu", "十 10"],
+		["ltv", "零 0"],
+	]) {
+		assert.match(jiandaoCore, new RegExp(`^${code}\\t${candidates}$`, "mu"));
+	}
+	for (const [code, candidates] of [
+		["y", "一 1"],
+		["re", "二 2"],
+		["sj", "三 3"],
+		["sla", "四 4"],
 		["shu", "五 5"],
 		["lda", "六 6"],
 		["qli", "七 7"],
@@ -483,8 +518,10 @@ test("U357 KeyTao and Three-Code share letter bases with measured full-code coll
 		["elv", "十 10"],
 		["ltv", "零 0"],
 	]) {
-		assert.match(fixed, new RegExp(`^${code}\\t${candidates}$`, "mu"));
+		assert.match(sanpinFixed, new RegExp(`^${code}\\t${candidates}$`, "mu"));
 	}
+	for (const stale of ["qj\\t强 2", "s\\t我 3", "sk\\t外 4"])
+		assert.doesNotMatch(sanpinFixed, new RegExp(`^${stale}$`, "mu"));
 });
 
 test("U357 KeyTao and Three-Code keep their processors in a compatible order", () => {

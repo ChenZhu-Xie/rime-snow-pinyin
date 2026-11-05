@@ -62,6 +62,18 @@ deploy:
         assert: cand[1].text == "表示"
       - send: yo
         assert: cand[1].text == "一个"
+      # 字母全码沿用冰雪键道二键基码，并追加经典轻声键 a。
+      - send: bca
+        assert: cand[1].text == "B" and cand[2].text == "b"
+      - send: xga
+        assert: cand[1].text == "V" and cand[2].text == "v"
+      # 一至四沿用已有数字汉字短码，其余数字使用完整声韵调码。
+      - send: xj
+        assert: cand[1].text == "二" and cand[2].text == "2"
+      - send: wju
+        assert: cand[1].text == "五" and cand[2].text == "5"
+      - send: lgi
+        assert: cand[1].text == "零" and cand[2].text == "0"
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"

@@ -705,7 +705,7 @@ bbi	摈
 bbo	斌
 bbu	膑
 bbv	彬
-bc	表
+bc	表 B b
 bca	婊
 bci	彪
 bco	裱
@@ -775,7 +775,7 @@ bs	把
 bsa	巴
 bsi	拔
 bso	吧
-bsu	八
+bsu	八 8
 bsv	霸
 bw	被
 bwa	贝
@@ -873,7 +873,7 @@ dbi	镦
 dbo	兑
 dbu	追
 dbv	堆
-dc	掉
+dc	掉 D d
 dca	刁
 dci	钓
 dco	调
@@ -1015,7 +1015,7 @@ ek	时
 eka	始
 eki	使
 eko	试
-eku	十
+eku	十 10
 ekv	事
 el	说
 ela	妁
@@ -1396,7 +1396,7 @@ jbi	金
 jbo	谨
 jbu	近
 jbv	禁
-jc	叫
+jc	叫 J j
 jca	缴
 jci	焦
 jco	交
@@ -1472,7 +1472,7 @@ jq	久
 jqa	酒
 jqi	旧
 jqo	究
-jqu	九
+jqu	九 9
 jqv	救
 jr	成
 jra	承
@@ -1620,7 +1620,7 @@ lbi	临
 lbo	麟
 lbu	鳞
 lbv	琳
-lc	聊
+lc	聊 L l
 lca	辽
 lci	僚
 lco	料
@@ -1649,7 +1649,7 @@ lga	灵
 lgi	令
 lgo	另
 lgu	鲮
-lgv	零
+lgv	零 0
 lh	来
 lha	濑
 lhi	略
@@ -1688,7 +1688,7 @@ lpv	琅
 lq	刘
 lqa	流
 lqi	镏
-lqo	六
+lqo	六 6
 lqu	留
 lqv	柳
 lr	冷
@@ -1736,7 +1736,7 @@ mbi	皿
 mbo	闽
 mbu	敏
 mbv	玟
-mc	秒
+mc	秒 M m
 mca	妙
 mci	苗
 mco	庙
@@ -1831,7 +1831,7 @@ mzv	髦
 n	你
 nb	您
 nbi	恁
-nc	鸟
+nc	鸟 N n
 nca	尿
 nci	茑
 ncu	袅
@@ -1928,7 +1928,7 @@ pba	姘
 pbi	拼
 pbu	贫
 pbv	聘
-pc	票
+pc	票 P p
 pca	漂
 pci	瞟
 pco	嘌
@@ -2019,7 +2019,7 @@ qba	沁
 qbi	侵
 qbo	寝
 qbv	秦
-qc	桥
+qc	桥 Q q
 qca	缲
 qci	瞧
 qco	悄
@@ -2065,7 +2065,7 @@ qka	汽
 qki	企
 qko	齐
 qku	气
-qkv	其
+qkv	其 七 7
 ql	区
 qla	驱
 qli	曲
@@ -2194,7 +2194,7 @@ rza	娆
 rzi	扰
 rzu	饶
 rzv	桡
-s	三
+s	三 3
 sb	随
 sba	隋
 sbi	岁
@@ -2227,7 +2227,7 @@ sji	俗
 sjo	诉
 sju	稣
 sjv	速
-sk	四
+sk	四 4
 ska	司
 ski	似
 sko	嗣
@@ -2280,7 +2280,7 @@ tbi	蜕
 tbo	褪
 tbu	腿
 tbv	忒
-tc	条
+tc	条 T t
 tca	迢
 tci	挑
 tco	跳
@@ -2411,7 +2411,7 @@ wja	屋
 wji	伍
 wjo	误
 wju	物
-wjv	五
+wjv	五 5
 wk	吃
 wka	迟
 wki	持
@@ -2483,13 +2483,13 @@ xbi	信
 xbo	心
 xbu	欣
 xbv	馨
-xc	小
+xc	小 X x
 xca	消
 xci	销
 xco	效
 xcu	笑
 xcv	校
-xd	些
+xd	些 O o
 xda	泄
 xdi	斜
 xdo	写
@@ -2506,19 +2506,19 @@ xfi	按
 xfo	案
 xfu	氨
 xfv	鞍
-xg	型
+xg	型 V v
 xga	姓
 xgi	擤
 xgo	性
 xgu	腥
 xgv	形
-xh	学
+xh	学 U u
 xha	隘
 xhi	艾
 xho	哀
 xhu	爱
 xhv	雪
-xj	二
+xj	二 2
 xja	洱
 xji	铒
 xjo	咡
@@ -2530,7 +2530,7 @@ xki	锡
 xko	席
 xku	系
 xkv	喜
-xl	哦
+xl	哦 I i
 xla	续
 xli	虚
 xlo	许
@@ -2568,7 +2568,7 @@ xti	悬
 xto	宣
 xtu	衒
 xtv	璇
-xw	寻
+xw	寻 A a
 xwa	巡
 xwi	薰
 xwo	训
@@ -2592,7 +2592,7 @@ xzi	傲
 xzo	噢
 xzu	翱
 xzv	熬
-y	一
+y	一 1
 yb	因
 yba	引
 ybi	银

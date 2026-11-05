@@ -105,6 +105,10 @@ deploy:
         assert: cand[1].text == "于" and cand[2].text == "V" and cand[3].text == "v"
       - send: re
         assert: cand[1].text == "二" and cand[2].text == "2"
+      - send: sj
+        assert: cand[1].text == "三" and cand[2].text == "3"
+      - send: s
+        assert: cand[1].text == "我" and not has("3")
       - send: xh
         assert: cand[1].text == "喜欢" and cand[2].text == "U" and cand[3].text == "u"
       - send: sli

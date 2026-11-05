@@ -938,7 +938,7 @@ qd	求
 qe	群
 qf	恰
 qg	取
-qj	强 2
+qj	强
 qk	却
 ql	起
 qn	穷
@@ -950,7 +950,7 @@ r	人
 rb	润
 rc	挼
 rd	哦
-re	二
+re	二 2
 rf	奥
 rg	瑞
 rh	如
@@ -966,15 +966,15 @@ rs	热
 rw	啊
 rx	软
 ry	若
-s	我 3
+s	我
 sb	孙
 sd	握
 se	为
 sf	扫
 sg	碎
 sh	误
-sj	三
-sk	外 4
+sj	三 3
+sk	外
 sl	已
 sm	眼
 sn	丧
@@ -1102,6 +1102,7 @@ xho	U u
 xdo	O o
 xwo	A a
 # 临时数字
+sla	四 4
 shu	五 5
 lda	六 6
 qli	七 7

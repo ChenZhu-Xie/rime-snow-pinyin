@@ -2142,7 +2142,7 @@ ry	若
 rya	弱
 ryi	偌
 ryu	箬
-s	我 3
+s	我
 sb	孙
 sba	巽
 sbi	损
@@ -2179,7 +2179,7 @@ shi	苏
 sho	诉
 shu	务
 shv	五 5
-sj	三
+sj	三 3
 sja	湾
 sji	伞
 sjo	完

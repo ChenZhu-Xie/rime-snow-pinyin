@@ -244,8 +244,7 @@ for (const [code, letter] of [
 for (const [code, words] of [
 	["y", "1"],
 	["re", "二 2"],
-	// “三”的 U357 完整音码 sj 已占用 AA 单字位；这里只追加数字，避免 s/sj 父子码重复。
-	["s", "3"],
+	["sj", "3"],
 	["sli", "四 4"],
 	["shv", "五 5"],
 	["ldo", "六 6"],
@@ -284,9 +283,8 @@ export function renderJiandaoFixedTable(sections: FixedSections) {
 // 三拼上游表中还保留了数字备选和拉丁字母入口。它们不参与
 // 神韵固顶选优，但必须由同一生成器输出，避免下次生成时被覆盖。
 export const sanpinSingleAliases = new Map([
-	["qj", "2"],
-	["s", "3"],
-	["sk", "4"],
+	["re", "2"],
+	["sj", "3"],
 	["y", "1"],
 ]);
 
@@ -322,6 +320,7 @@ export const sanpinLetterEntries = [
 // 上游统计功能用这些三音节全码同时提供中文数字与阿拉伯数字候选。
 // 码位按当前 U357 神韵的声、韵、调键重新编码，均不占用固顶区已有条目。
 export const sanpinTemporaryNumberEntries = [
+	["sla", "四 4"],
 	["shu", "五 5"],
 	["lda", "六 6"],
 	["qli", "七 7"],
