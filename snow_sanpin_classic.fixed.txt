@@ -97,6 +97,7 @@ bia	必须
 biu	本身
 bii	悲伤
 co	催着
+coo	存着呢
 cov	存着
 coa	猜得到
 cou	采了

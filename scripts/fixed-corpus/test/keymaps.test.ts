@@ -173,8 +173,8 @@ test("tone and shape diagrams keep their auxiliary semantics separate", () => {
 test("shape diagrams distinguish stroke and single-key and two-key roots", () => {
 	const expectedMinimumSize = {
 		stroke: 14,
-		"single-root": 15,
-		"double-root": 13,
+		"single-root": 17,
+		"double-root": 15,
 	} as const;
 	for (const image of [
 		"snow_jiandao.svg",
@@ -196,10 +196,15 @@ test("shape diagrams distinguish stroke and single-key and two-key roots", () =>
 				const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
 				const fill = tag.match(/fill="([^"]+)"/u)?.[1];
 				assert.ok(size >= minimumSize, `${image} ${kind} font is too small`);
-				if (kind === "double-root") {
+				if (kind !== "stroke") {
 					assert.ok(
-						weight >= 750,
-						`${image} crowded double roots should not become thinner`,
+						weight >= 800,
+						`${image} shape roots should stay visibly bold`,
+					);
+					assert.match(
+						tag,
+						/paint-order="stroke"[^>]*stroke-width="0\.4"/u,
+						`${image} shape roots should compensate for weak font fallback`,
 					);
 				}
 				assert.ok(fill, `${image} ${kind} should define a foreground color`);
@@ -372,20 +377,27 @@ test("KeyTao final e does not inherit keycap emphasis", () => {
 	assert.ok(weight <= 650, "KeyTao final e should use the normal final weight");
 });
 
-test("crowded finals keep a compensating bold weight when they shrink", () => {
+test("only finals that actually shrink receive a compensating bold weight", () => {
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
-		for (const key of "QWERTYUIOPASDFGHJKLZXCVBNM") {
-			const group = keyGroup(svg, key);
-			if (!group.includes('data-multi="true"')) continue;
-			for (const [tag] of group.matchAll(
-				/<text\b[^>]*data-final="[^"]+"[^>]*>/gu,
-			)) {
-				const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
-				assert.ok(
-					weight >= 700,
-					`${image} ${key} crowded final should stay bold`,
+		for (const [tag] of svg.matchAll(
+			/<text\b[^>]*data-final="[^"]+"[^>]*>/gu,
+		)) {
+			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+			const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
+			if (size < 24) {
+				assert.ok(weight >= 800, `${image} reduced final should stay bold`);
+				assert.match(
+					tag,
+					/paint-order="stroke"[^>]*stroke-width="0\.35"/u,
+					`${image} reduced final should compensate for weak font fallback`,
 				);
+			} else {
+				assert.ok(
+					weight <= 650,
+					`${image} full-size final should keep its normal weight`,
+				);
+				assert.doesNotMatch(tag, /paint-order="stroke"/u);
 			}
 		}
 	}

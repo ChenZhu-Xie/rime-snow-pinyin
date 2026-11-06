@@ -372,6 +372,7 @@ function text(
 		fontFamily?: string;
 		keyLabel?: boolean;
 		textLength?: number;
+		embolden?: number;
 	},
 ) {
 	const auxiliaryKind = options.auxKind
@@ -387,9 +388,12 @@ function text(
 		? ` data-final="${escapeXml(options.final)}"`
 		: "";
 	const keyLabel = options.keyLabel ? ' data-key-label="true"' : "";
+	const embolden = options.embolden
+		? ` paint-order="stroke" stroke="${options.fill}" stroke-width="${options.embolden}" stroke-linejoin="round"`
+		: "";
 	const fontFamily =
 		options.fontFamily ?? "Microsoft YaHei UI, Noto Sans CJK SC, sans-serif";
-	return `<text x="${x}" y="${y}" font-family="${fontFamily}" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${auxiliaryMark}${final}${keyLabel}${fittedLength}>${escapeXml(value)}</text>`;
+	return `<text x="${x}" y="${y}" font-family="${fontFamily}" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${auxiliaryMark}${final}${keyLabel}${fittedLength}${embolden}>${escapeXml(value)}</text>`;
 }
 
 function isShapeKeyNote(note: KeyNote): note is ShapeKeyNote {
@@ -492,16 +496,16 @@ function renderShapeAuxiliary(
 		{
 			kind: "single-root",
 			value: note.singleRoot,
-			size: 15,
+			size: 17,
 			fill: "#a05b37",
-			weight: 750,
+			weight: 800,
 		},
 		{
 			kind: "double-root",
 			value: note.doubleRoot,
-			size: 13,
+			size: 15,
 			fill: "#66506a",
-			weight: 750,
+			weight: 800,
 		},
 	];
 	const rootRows = auxiliaryOnly ? [69, 99] : [46, 68];
@@ -513,6 +517,7 @@ function renderShapeAuxiliary(
 			anchor: "middle",
 			weight: rows[1].weight,
 			auxKind: rows[1].kind,
+			embolden: 0.4,
 		}),
 		text(center, y + rootRows[1], note.doubleRoot, {
 			size: rows[2].size,
@@ -521,6 +526,7 @@ function renderShapeAuxiliary(
 			weight: rows[2].weight,
 			auxKind: rows[2].kind,
 			textLength: note.doubleRoot.length > 14 ? 76 : undefined,
+			embolden: 0.4,
 		}),
 	];
 }
@@ -806,7 +812,7 @@ function render(diagram: Diagram) {
 					const size = readableShenyunFinal
 						? Math.max(20, calculatedSize)
 						: calculatedSize;
-					const weight = size < 18 ? 750 : multi ? 700 : 600;
+					const weight = size < 24 ? 800 : 600;
 					items.push(
 						text(x + keyWidth / 2, y + first + index * step, label, {
 							size,
@@ -814,6 +820,7 @@ function render(diagram: Diagram) {
 							anchor: "middle",
 							weight,
 							final: value,
+							embolden: size < 24 ? 0.35 : undefined,
 						}),
 					);
 				});

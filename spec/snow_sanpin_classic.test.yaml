@@ -62,6 +62,8 @@ deploy:
         assert: cand[1].text == "表示"
       - send: ya
         assert: cand[1].text == "一个"
+      - send: coo
+        assert: cand[1].text == "存着呢"
       # 字母全码沿用冰雪键道二键基码，并追加现行 21×21 轻声键 o。
       - send: bco
         assert: cand[1].text == "B" and cand[2].text == "b"

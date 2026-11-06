@@ -295,6 +295,20 @@ test("经典 630 首选均符合经典声码与 CKT v5.1 辅码语义", () => {
 			`${code}\t${word}`,
 		);
 	}
+	for (const [code, [word]] of fixedSections(
+		"snow_sanpin_classic.fixed.txt",
+	).get("# 单字") ?? []) {
+		assert.ok(
+			(readings.get(word) ?? []).some(
+				(syllables) =>
+					syllables.length === 1 &&
+					pronunciationCodes("classic-tone", word, syllables).some(
+						(candidate) => candidate.code === code,
+					),
+			),
+			`${code}\t${word}`,
+		);
+	}
 });
 
 test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => {
@@ -335,13 +349,32 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 	const currentSanpin = fixedSections("snow_sanpin.fixed.txt");
 	const words = (rows: Array<[string, string[]]>) =>
 		new Set(rows.map(([, candidates]) => candidates[0]));
+	assert.deepEqual(
+		(sanpin.get("# 二简词") ?? []).map(([code, [word]]) => [code, word]),
+		(jiandao.get("# 二简词") ?? []).map(([code, [word]]) => [code, word]),
+		"经典冰雪三拼与冰雪键道应共享同一套空 AA 二简词",
+	);
 	assert.equal(jiandao.get("# 630")?.length, 630);
 	assert.equal(words(jiandao.get("# 630") ?? []).size, 630);
 	assert.ok(
 		words(jiandao.get("# 单字") ?? []).size >=
 			words(currentJiandao.get("# 单字") ?? []).size,
 	);
-	assert.ok((sanpin.get("# 630")?.length ?? 0) >= 611);
+	assert.equal(sanpin.get("# 630")?.length, 630);
+	const sanpin630Codes = (sanpin.get("# 630") ?? []).map(([code]) => code);
+	const expectedSanpin630Codes = [..."bpmfdtnlgkhjqxzcsrwye"].flatMap(
+		(initial) => [
+			...[..."ivuao"].map((tone) => initial + tone),
+			...[..."ivuao"].flatMap((secondTone) =>
+				[..."ivuao"].map((targetTone) => initial + secondTone + targetTone),
+			),
+		],
+	);
+	assert.deepEqual(
+		new Set(sanpin630Codes),
+		new Set(expectedSanpin630Codes),
+		"经典冰雪三拼应覆盖全部 21×5 个二码位与 21×5×5 个三码位",
+	);
 	assert.equal(
 		words(sanpin.get("# 630") ?? []).size,
 		sanpin.get("# 630")?.length,
