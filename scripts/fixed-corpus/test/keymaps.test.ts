@@ -141,6 +141,65 @@ test("tone and shape diagrams keep their auxiliary semantics separate", () => {
 	assert.match(read("lua/snow/keymaps/snow_sipin.svg"), /腹 o\/üa\/üe/u);
 });
 
+test("seven diagrams share the benchmark Morandi semantic vocabulary", () => {
+	for (const [, , image] of schemes) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		assert.match(svg, /class="keysvg nf4-keysvg"/u, image);
+		assert.match(svg, /aria-labelledby="title desc"/u, image);
+		assert.match(svg, /<title id="title">/u, image);
+		assert.match(svg, /<desc id="desc">/u, image);
+		assert.match(
+			svg,
+			/<pattern id="nf4-ionly"[^<]*<rect[^<]*<path[^>]*stroke-opacity="\.18"/u,
+			image,
+		);
+		assert.match(
+			svg,
+			/<pattern id="nf4-ronly"[^<]*<rect[^<]*<circle[^>]*fill-opacity="\.3"/u,
+			image,
+		);
+		assert.match(
+			svg,
+			/<pattern id="nf4-none"[^<]*<rect[^<]*<path[^>]*stroke-opacity="\.14"/u,
+			image,
+		);
+		assert.match(
+			svg,
+			/<pattern id="nf4-multi"[^<]*<rect[^<]*<path[^>]*stroke-opacity="\.27"/u,
+			image,
+		);
+		assert.doesNotMatch(svg, /data:image\/png;base64/u, image);
+	}
+});
+
+test("semantic key roles drive fills, borders, and auxiliary treatment", () => {
+	const sipin = read("lua/snow/keymaps/snow_sipin.svg");
+	assert.match(sipin, /<g data-key="W" data-role="initial-only">/u);
+	assert.match(sipin, /<g data-key="A" data-role="rhyme-auxiliary">/u);
+	assert.match(sipin, /<g data-key="Q" data-role="initial-only">/u);
+
+	const sanpin = read("lua/snow/keymaps/snow_sanpin.svg");
+	assert.match(sanpin, /<g data-key="A" data-role="auxiliary-only">/u);
+	assert.match(sanpin, /<g data-key="E" data-role="sound" data-multi="true">/u);
+
+	const shenyun = read("lua/snow/keymaps/snow_shenyun_shape.svg");
+	assert.match(shenyun, /<g data-key="A" data-role="rhyme-auxiliary">/u);
+	assert.match(shenyun, /fill="#748f9e"[^>]*>i<\/text>/u);
+	assert.match(shenyun, /fill="#929967"[^>]*>u<\/text>/u);
+	assert.match(shenyun, /fill="#a17f91"[^>]*>ü<\/text>/u);
+	assert.match(shenyun, /fill="#9f8f76"[^>]*>ün<\/text>/u);
+	assert.match(shenyun, /fill="#8f879f"[^>]*>ang<\/text>/u);
+	assert.match(shenyun, />Ø Y\/YU<\/text>/u);
+});
+
+test("ice KeyTao is generated as searchable native SVG", () => {
+	const jiandao = read("lua/snow/keymaps/snow_jiandao_classic.svg");
+	assert.match(jiandao, /<title id="title">冰雪键道键位映射图<\/title>/u);
+	assert.match(jiandao, />zh<\/text>/u);
+	assert.match(jiandao, />土\/士 vo<\/text>/u);
+	assert.doesNotMatch(jiandao, /<image\b/u);
+});
+
 test("the desktop helper stays dormant outside an idle Chinese composition", () => {
 	const processor = read("lua/snow/keymap.lua");
 	assert.match(processor, /context:get_option\("ascii_mode"\)/u);

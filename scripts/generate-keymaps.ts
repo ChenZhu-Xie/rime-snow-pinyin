@@ -22,7 +22,6 @@ type Diagram = {
 	subtitle: string;
 	mapping?: Mapping;
 	auxiliary?: Record<string, KeyNote>;
-	trigger: "E" | "V";
 };
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
@@ -30,13 +29,15 @@ const root = join(scriptDirectory, "..");
 const outputDirectory = join(root, "lua", "snow", "keymaps");
 const check = process.argv.includes("--check");
 const rows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
-const rowOffsets = [20, 70, 120];
-const width = 1100;
-const height = 470;
-const keyWidth = 98;
-const keyHeight = 118;
-const gap = 8;
-const rowY = [82, 208, 334];
+const rowOffsets = [20, 45, 95];
+const width = 1040;
+const height = 590;
+const keyWidth = 92;
+const keyHeight = 130;
+const keyStep = 100;
+const rowY = [78, 218, 358];
+
+const semanticPatterns = `<defs><pattern id="nf4-both" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#fbfaf7"/></pattern><pattern id="nf4-ionly" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#e3eef4"/><path d="M2 0V9M7 0V9" stroke="#7399ad" stroke-opacity=".18"/></pattern><pattern id="nf4-ronly" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#f6ebd6"/><circle cx="3" cy="3" r="1.15" fill="#b39253" fill-opacity=".3"/></pattern><pattern id="nf4-none" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#eeece8"/><path d="M0 10L10 0" stroke="#aaa6a4" stroke-opacity=".14"/></pattern><pattern id="nf4-multi" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#f8efe2"/><path d="M-2 2L2-2M0 9L9 0M7 11L11 7" stroke="#9a784e" stroke-width="1.6" stroke-opacity=".27"/></pattern><pattern id="nf4-anchor" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M-3 3L3-3M0 12L12 0M9 15L15 9" stroke="#a05b37" stroke-width="2.5" stroke-opacity=".48"/></pattern></defs>`;
 
 const u357 = JSON.parse(
 	readFileSync(join(root, "config", "shenyun-21x21-mapping.json"), "utf8"),
@@ -138,7 +139,7 @@ function initialLabels(mapping: Mapping) {
 	const result = invert(mapping.initialMap);
 	for (const [key, values] of result) {
 		const labels = values
-			.filter((value) => value.toLowerCase() !== key.toLowerCase())
+			.filter((value) => value !== key.toLowerCase())
 			.map((value) => {
 				if (["A", "E", "O", "W", "Y", "YU"].includes(value)) {
 					return `Ø${value}`;
@@ -209,13 +210,27 @@ const sipinAuxiliary: Record<string, KeyNote> = {
 };
 
 const sipinInitials: Record<string, string[]> = {
+	B: ["b"],
+	P: ["p"],
+	M: ["m"],
+	F: ["f", "ØI"],
+	D: ["d"],
+	T: ["t"],
+	N: ["n"],
+	L: ["l"],
+	G: ["g"],
+	K: ["k", "ØÜ"],
+	H: ["h"],
+	J: ["j"],
+	Q: ["q"],
+	X: ["x"],
+	Z: ["z"],
+	C: ["c"],
+	S: ["s", "ØU"],
+	R: ["r", "ØA/E/O"],
 	W: ["zh"],
 	Y: ["ch"],
 	V: ["sh"],
-	R: ["ØA/E/O"],
-	F: ["ØI"],
-	S: ["ØU"],
-	K: ["ØÜ"],
 };
 
 const diagrams: Diagram[] = [
@@ -224,7 +239,6 @@ const diagrams: Diagram[] = [
 		title: "冰雪四拼",
 		subtitle: "声码 · 韵腹 / 韵尾 / 声调 · 五笔画（独立按 E 显隐）",
 		auxiliary: sipinAuxiliary,
-		trigger: "E",
 	},
 	{
 		filename: "snow_sanpin",
@@ -232,7 +246,6 @@ const diagrams: Diagram[] = [
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: toneNotes(u357.toneKeysByTone),
-		trigger: "V",
 	},
 	{
 		filename: "snow_jiandao",
@@ -240,7 +253,13 @@ const diagrams: Diagram[] = [
 		subtitle: "21×21 声韵与形笔字根映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: shapeNotes(u357.shapeKeysByMeaning),
-		trigger: "V",
+	},
+	{
+		filename: "snow_jiandao_classic",
+		title: "冰雪键道",
+		subtitle: "经典 21×21 声韵与形笔字根映射（独立按 V 显隐）",
+		mapping: classic,
+		auxiliary: shapeNotes(classic.shapeKeysByMeaning),
 	},
 	{
 		filename: "snow_sanpin_classic",
@@ -248,7 +267,6 @@ const diagrams: Diagram[] = [
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: classic,
 		auxiliary: toneNotes(classic.toneKeysByTone),
-		trigger: "V",
 	},
 	{
 		filename: "snow_shenyun_tone",
@@ -256,7 +274,6 @@ const diagrams: Diagram[] = [
 		subtitle: "21×26 声韵与声调映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: toneNotes(overall17.toneKeysByTone),
-		trigger: "E",
 	},
 	{
 		filename: "snow_shenyun_shape",
@@ -264,7 +281,6 @@ const diagrams: Diagram[] = [
 		subtitle: "21×26 声韵与形笔字根映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: shapeNotes(overall17.shapeKeysByMeaning),
-		trigger: "E",
 	},
 ];
 
@@ -277,100 +293,264 @@ function text(
 	return `<text x="${x}" y="${y}" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}">${escapeXml(value)}</text>`;
 }
 
+function semanticColor(final: string) {
+	if (/ng$/u.test(final)) return "#8f879f";
+	if (/n$/u.test(final)) return "#9f8f76";
+	if (/^[vü]/u.test(final)) return "#a17f91";
+	if (/^i/u.test(final)) return "#748f9e";
+	if (/^u/u.test(final)) return "#929967";
+	if (/^a/u.test(final)) return "#ad8178";
+	if (/^e/u.test(final)) return "#899985";
+	if (/^o/u.test(final)) return "#a7966c";
+	return "#748d82";
+}
+
+function displayInitialLabels(key: string, roles: string[]) {
+	return roles
+		.filter((role) => role !== key.toLowerCase())
+		.map((role) => {
+			if (["A", "E", "O", "W", "Y", "YU"].includes(role)) {
+				return `Ø${role}`;
+			}
+			return role;
+		});
+}
+
 function render(diagram: Diagram) {
-	const initials = diagram.mapping ? initialLabels(diagram.mapping) : new Map();
+	const rawInitials = diagram.mapping
+		? invert(diagram.mapping.initialMap)
+		: new Map(Object.entries(sipinInitials));
+	const initials = diagram.mapping
+		? initialLabels(diagram.mapping)
+		: new Map(
+				[...rawInitials].map(([key, roles]) => [
+					key,
+					displayInitialLabels(key, roles),
+				]),
+			);
 	const finals = diagram.mapping ? invert(diagram.mapping.finalMap) : new Map();
 	const groups: string[] = [];
 	for (let row = 0; row < rows.length; row++) {
 		for (let column = 0; column < rows[row].length; column++) {
 			const key = rows[row][column];
-			const x = rowOffsets[row] + column * (keyWidth + gap);
+			const x = rowOffsets[row] + column * keyStep;
 			const y = rowY[row];
-			const initial =
-				diagram.filename === "snow_sipin"
-					? (sipinInitials[key] ?? [])
-					: (initials.get(key) ?? []);
+			const initialRoles = rawInitials.get(key) ?? [];
+			const initial = initials.get(key) ?? [];
 			const final = finals.get(key) ?? [];
 			const auxiliary = diagram.auxiliary?.[key];
-			const isTrigger = key === diagram.trigger;
-			const fill = auxiliary ? "#edf5ef" : "#fffdf9";
-			const stroke = isTrigger ? "#c55c4f" : auxiliary ? "#719484" : "#aaa9a3";
-			const strokeWidth = isTrigger ? 4 : auxiliary ? 2.6 : 1.8;
+			const hasInitial = initialRoles.length > 0;
+			const hasRhyme =
+				final.length > 0 ||
+				(diagram.filename === "snow_sipin" && auxiliary !== undefined);
+			const occupancy = hasInitial
+				? hasRhyme
+					? "both"
+					: "ionly"
+				: hasRhyme
+					? "ronly"
+					: "none";
+			const role = hasInitial
+				? hasRhyme
+					? auxiliary
+						? "sound-auxiliary"
+						: "sound"
+					: auxiliary
+						? "initial-auxiliary"
+						: "initial-only"
+				: hasRhyme
+					? auxiliary
+						? "rhyme-auxiliary"
+						: "rhyme-only"
+					: auxiliary
+						? "auxiliary-only"
+						: "unused";
+			const multi = final.length > 1;
+			const stroke = multi
+				? "#9a784e"
+				: {
+						both: "#b8b7af",
+						ionly: "#7399ad",
+						ronly: "#b39253",
+						none: auxiliary ? "#77a08c" : "#aaa6a4",
+					}[occupancy];
+			const dash = {
+				both: "",
+				ionly: "8 4",
+				ronly: "2 4",
+				none: "7 5",
+			}[occupancy];
+			const strokeWidth = multi ? 3.2 : occupancy === "both" ? 2.2 : 1.8;
+			const fill =
+				occupancy === "both"
+					? "#fbfaf7"
+					: occupancy === "none" && auxiliary
+						? "#e4f1e9"
+						: `url(#nf4-${occupancy})`;
+			const clip = `${diagram.filename}-clip-${row}-${column}`;
+			const directInitial = initialRoles.some(
+				(value) => value === key.toLowerCase(),
+			);
+			const titleInitials = initialRoles.join(" / ") || "—";
+			const titleFinals = final.join(" / ") || "—";
 			const items = [
-				`<g data-key="${key}">`,
-				`<rect x="${x}" y="${y}" width="${keyWidth}" height="${keyHeight}" rx="10" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"/>`,
-				text(x + 10, y + 28, key, { size: 24, fill: "#4d4b52", weight: 760 }),
+				`<g data-key="${key}" data-role="${role}"${multi ? ' data-multi="true"' : ""}>`,
+				`<title>${key}｜声码 ${escapeXml(titleInitials)}｜韵码 ${escapeXml(titleFinals)}${auxiliary ? `｜辅键 ${escapeXml([auxiliary.primary, auxiliary.secondary, auxiliary.tertiary].filter(Boolean).join(" / "))}` : ""}</title>`,
+				`<clipPath id="${clip}"><rect x="${x + 3}" y="${y + 3}" width="${keyWidth - 6}" height="${keyHeight - 6}" rx="7"/></clipPath>`,
+				`<rect x="${x}" y="${y}" width="${keyWidth}" height="${keyHeight}" rx="9" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"${dash ? ` stroke-dasharray="${dash}"` : ""}/>`,
+				...(multi
+					? [
+							`<rect x="${x + 4}" y="${y + 4}" width="${keyWidth - 8}" height="${keyHeight - 8}" rx="6" fill="none" stroke="${stroke}" stroke-opacity=".38"/>`,
+						]
+					: []),
+				...(["F", "J"].includes(key)
+					? [
+							`<rect x="${x + 2}" y="${y + 2}" width="${keyWidth - 4}" height="${keyHeight - 4}" rx="8" fill="url(#nf4-anchor)" pointer-events="none"/>`,
+						]
+					: []),
+				`<g clip-path="url(#${clip})">`,
+				text(x + 10, y + 23, key, {
+					size: 21,
+					fill: directInitial ? "#4d4050" : "#4f5962",
+					weight: directInitial ? 800 : 680,
+				}),
 			];
-			if (initial.length > 0) {
+
+			const ordinary = initial.filter((value) => !value.startsWith("Ø"));
+			const zero = initial.filter((value) => value.startsWith("Ø"));
+			const ordinaryText = ordinary.join("/");
+			const zeroText =
+				zero.length > 0
+					? `Ø ${zero.map((value) => value.slice(1)).join("/")}`
+					: "";
+			if (ordinaryText) {
+				const ordinaryY = zeroText ? y + 45 : y + 52;
+				const size = Math.min(20, 76 / Math.max(1, ordinaryText.length * 0.58));
 				items.push(
-					text(x + keyWidth - 9, y + 27, initial.join("/"), {
-						size: initial.join("/").length > 9 ? 11 : 14,
-						fill: "#9b5365",
-						anchor: "end",
-						weight: 700,
-					}),
+					`<text x="${x + keyWidth / 2}" y="${ordinaryY}" text-anchor="middle" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${size}" font-weight="700" text-decoration="underline" fill="#66506a">${escapeXml(ordinaryText)}</text>`,
 				);
 			}
+			if (zeroText) {
+				const zeroY = ordinaryText ? y + 73 : y + 52;
+				const size = Math.min(20, 70 / Math.max(1, zeroText.length * 0.58));
+				const zeroWidth = Math.min(
+					80,
+					Math.max(35, zeroText.length * size * 0.52 + 10),
+				);
+				items.push(
+					`<rect x="${x + keyWidth / 2 - zeroWidth / 2}" y="${zeroY - size - 1}" width="${zeroWidth}" height="${size + 6}" rx="7" fill="#f1e4e1" stroke="#ad8178" stroke-dasharray="4 2"/>`,
+					`<text x="${x + keyWidth / 2}" y="${zeroY}" text-anchor="middle" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${size}" font-weight="700" font-style="italic" fill="#765b5c">${escapeXml(zeroText)}</text>`,
+				);
+			}
+
 			if (auxiliary) {
-				items.push(
-					text(x + keyWidth / 2, y + 55, auxiliary.primary, {
-						size: auxiliary.primary.length > 15 ? 10 : 12,
-						fill: "#426b59",
-						anchor: "middle",
-						weight: 680,
-					}),
-				);
-				if (auxiliary.secondary) {
+				const auxiliaryOnly = !hasInitial && !hasRhyme;
+				const sipinDetail = diagram.filename === "snow_sipin";
+				if (auxiliaryOnly || sipinDetail) {
+					const lines = [
+						auxiliary.primary,
+						auxiliary.secondary,
+						auxiliary.tertiary,
+					].filter((value): value is string => value !== undefined);
+					const cardY = y + (lines.length === 1 ? 46 : 34);
+					const cardHeight = lines.length === 1 ? 52 : 86;
 					items.push(
-						text(x + keyWidth / 2, y + 75, auxiliary.secondary, {
-							size: auxiliary.secondary.length > 18 ? 8.5 : 11,
-							fill: "#526c78",
+						`<rect x="${x + 6}" y="${cardY}" width="${keyWidth - 12}" height="${cardHeight}" rx="10" fill="#e4f1e9" stroke="#77a08c" stroke-width="1.2"/>`,
+					);
+					lines.forEach((line, index) => {
+						items.push(
+							text(
+								x + keyWidth / 2,
+								cardY + (lines.length === 1 ? 31 : 24 + index * 23),
+								line,
+								{
+									size: line.length > 14 ? 8.5 : index === 0 ? 11 : 9.5,
+									fill: "#426b59",
+									anchor: "middle",
+									weight: index === 0 ? 750 : 650,
+								},
+							),
+						);
+					});
+				} else {
+					items.push(
+						`<rect x="${x + 40}" y="${y + 5}" width="47" height="21" rx="6" fill="#e4f1e9" stroke="#77a08c"/>`,
+						text(x + 63.5, y + 19, auxiliary.primary, {
+							size: auxiliary.primary.length > 8 ? 7.5 : 8.5,
+							fill: "#426b59",
 							anchor: "middle",
-							weight: 620,
+							weight: 750,
 						}),
 					);
-				}
-				if (auxiliary.tertiary) {
-					items.push(
-						text(x + keyWidth / 2, y + 94, auxiliary.tertiary, {
-							size: 10.5,
-							fill: "#526c78",
-							anchor: "middle",
-							weight: 620,
-						}),
-					);
-				}
-			}
-			if (final.length > 0) {
-				const label = final.join(" · ").replaceAll("v", "ü");
-				const parts =
-					label.length > 15
-						? [
-								final.slice(0, Math.ceil(final.length / 2)),
-								final.slice(Math.ceil(final.length / 2)),
-							]
-						: [final];
-				parts.forEach((part, index) => {
-					items.push(
-						text(
-							x + keyWidth / 2,
-							y + 99 + index * 15,
-							part.join(" · ").replaceAll("v", "ü"),
-							{
-								size: part.join(" · ").length > 14 ? 10 : 13,
-								fill: "#536f9a",
+					if (auxiliary.secondary) {
+						items.push(
+							text(x + keyWidth / 2, y + 50, auxiliary.secondary, {
+								size: auxiliary.secondary.length > 14 ? 7.5 : 9,
+								fill: "#426b59",
 								anchor: "middle",
 								weight: 650,
-							},
-						),
+							}),
+						);
+					}
+				}
+			}
+
+			if (final.length > 0) {
+				const layers =
+					(ordinaryText ? 1 : 0) +
+					(zeroText ? 1 : 0) +
+					(auxiliary?.secondary ? 1 : 0);
+				const count = Math.min(final.length, 3);
+				const first =
+					count <= 1
+						? layers >= 2
+							? 113
+							: layers === 1
+								? 105
+								: 94
+						: layers >= 2
+							? 100
+							: layers === 1
+								? count === 2
+									? 88
+									: 78
+								: count === 2
+									? 82
+									: 70;
+				const step = count > 1 ? (119 - first) / (count - 1) : 0;
+				const rowCap = count > 1 ? Math.max(13, step * 0.69) : 28;
+				final.slice(0, 3).forEach((value, index) => {
+					const label = value.replaceAll("v", "ü");
+					const direct = value.toUpperCase() === key;
+					const size = Math.min(
+						28,
+						rowCap,
+						78 / Math.max(1, label.length * 0.54),
+					);
+					items.push(
+						text(x + keyWidth / 2, y + first + index * step, label, {
+							size,
+							fill: semanticColor(value),
+							anchor: "middle",
+							weight: direct ? 800 : multi ? 650 : 540,
+						}),
 					);
 				});
+				if (final.length > 3) {
+					items.push(
+						text(x + 84, y + 124, `+${final.length - 3}`, {
+							size: 9,
+							fill: "#675f57",
+							anchor: "end",
+						}),
+					);
+				}
 			}
-			items.push("</g>");
+			items.push("</g></g>");
 			groups.push(items.join(""));
 		}
 	}
-	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img"><title>${escapeXml(diagram.title)}键位映射图</title><desc>${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="18" fill="#f4f1eb"/>${text(24, 35, diagram.title, { size: 24, fill: "#3f514b", weight: 760 })}${text(24, 62, diagram.subtitle, { size: 14, fill: "#6d746e" })}${groups.join("")}</svg>\n`;
+	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, "声韵占用、五辅键与多韵键使用独立的莫兰迪背景、纹理和边框。", { size: 14, fill: "#5f5862" })}${text(24, 559, "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组", { size: 12, fill: "#74717a" })}</svg>\n`;
 }
 
 function update(path: string, content: Uint8Array | string) {
@@ -394,23 +574,6 @@ for (const diagram of diagrams) {
 		.asPng();
 	update(join(outputDirectory, `${diagram.filename}.png`), png);
 }
-
-const classicSource = join(
-	scriptDirectory,
-	"assets",
-	"keymaps",
-	"xkjd-qwerty.png",
-);
-if (!existsSync(classicSource))
-	throw new Error(`缺少经典键道原图：${classicSource}`);
-const classicPng = readFileSync(classicSource);
-const classicWidth = classicPng.readUInt32BE(16);
-const classicHeight = classicPng.readUInt32BE(20);
-update(join(outputDirectory, "snow_jiandao_classic.png"), classicPng);
-update(
-	join(outputDirectory, "snow_jiandao_classic.svg"),
-	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${classicWidth} ${classicHeight}" role="img"><title>冰雪键道键位图</title><image width="${classicWidth}" height="${classicHeight}" href="data:image/png;base64,${classicPng.toString("base64")}"/></svg>\n`,
-);
 
 console.log(
 	check ? "七份键位图均为最新。" : `已生成七份键位图：${outputDirectory}`,
