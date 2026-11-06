@@ -379,7 +379,7 @@ function renderStrokeBadge(stroke: string, x: number, y: number) {
 		y + 19,
 		stroke,
 		{
-			size: 14,
+			size: 15,
 			fill: "#426b59",
 			anchor: "middle",
 			weight: 750,
@@ -481,7 +481,7 @@ function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
 		renderStrokeBadge(note.stroke, x, y),
 		...rows.map((row, index) =>
 			text(x + keyWidth / 2, y + first + index * step, row.value, {
-				size: 13,
+				size: 14,
 				fill: row.fill,
 				anchor: "middle",
 				weight: 700,

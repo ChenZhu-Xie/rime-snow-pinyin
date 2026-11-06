@@ -236,6 +236,12 @@ test("all diagrams reserve upper-right framed badges for the five stroke auxilia
 			5,
 			`${image} should label five stroke auxiliaries`,
 		);
+		for (const [tag] of svg.matchAll(
+			/<text\b[^>]*data-aux-kind="stroke"[^>]*>/gu,
+		)) {
+			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+			assert.ok(size >= 15, `${image} stroke auxiliary font is too small`);
+		}
 		assert.doesNotMatch(
 			svg,
 			/<rect\b[^>]*height="86"[^>]*fill="#e4f1e9"/u,
