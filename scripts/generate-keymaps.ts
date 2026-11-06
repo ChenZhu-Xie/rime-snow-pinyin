@@ -456,7 +456,7 @@ function renderToneLine(
 			auxKind: "tone",
 			fontFamily: toneNameFontFamily,
 		}),
-		text(markX, y + (toneMark === "·" ? 0 : 48), toneMark, {
+		text(markX, y + 14, toneMark, {
 			size: 42,
 			fill: "#a05b37",
 			anchor: "middle",
@@ -710,7 +710,7 @@ function render(diagram: Diagram) {
 				text(x + 10, y + 23, key, {
 					size: 21,
 					fill: "#4f5962",
-					weight: 680,
+					weight: 800,
 					keyLabel: true,
 				}),
 			];

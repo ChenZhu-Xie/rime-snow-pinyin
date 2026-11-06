@@ -268,7 +268,7 @@ test("tone auxiliaries are centered and no smaller than shape roots", () => {
 	}
 });
 
-test("tone names reserve a character column for their marks", () => {
+test("tone marks stay inline with an independently lowered baseline", () => {
 	for (const image of [
 		"snow_sipin.svg",
 		"snow_sanpin.svg",
@@ -290,7 +290,7 @@ test("tone names reserve a character column for their marks", () => {
 		assert.equal(markTags.length, 5, `${image} should render five tone marks`);
 		for (let index = 0; index < markTags.length; index++) {
 			const [nameTag] = nameTags[index];
-			const [tag, mark] = markTags[index];
+			const [tag] = markTags[index];
 			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
 			const family = tag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
 			const nameFamily = nameTag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
@@ -313,15 +313,13 @@ test("tone names reserve a character column for their marks", () => {
 				`${image} Chinese tone name should use a distinct Chinese font`,
 			);
 			assert.match(nameFamily, /LXGW WenKai/u);
+			assert.equal(nameSize, 18, `${image} Chinese tone name height changed`);
 			assert.ok(
 				Math.abs(markX - nameX - nameSize * 1.5) < 0.1,
 				`${image} should reserve one ideographic-space column`,
 			);
-			if (mark === "·") {
-				assert.equal(markY, nameY, `${image} neutral tone dot stays inline`);
-			} else {
-				assert.ok(markY - nameY >= 44, `${image} tone mark needs its own row`);
-			}
+			assert.ok(markY > nameY, `${image} tone mark baseline should be lower`);
+			assert.ok(markY - nameY <= 18, `${image} tone mark should stay inline`);
 		}
 	}
 });
@@ -352,7 +350,7 @@ test("all diagrams use one weight for uppercase keycap labels", () => {
 			weights.add(Number(tag.match(/font-weight="([^"]+)"/u)?.[1]));
 		}
 	}
-	assert.deepEqual([...weights], [680]);
+	assert.deepEqual([...weights], [800]);
 });
 
 test("KeyTao final e does not inherit keycap emphasis", () => {
