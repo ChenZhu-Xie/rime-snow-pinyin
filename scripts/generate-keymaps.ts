@@ -369,6 +369,7 @@ function text(
 		auxMark?: "tone";
 		final?: string;
 		fontFamily?: string;
+		keyLabel?: boolean;
 		textLength?: number;
 	},
 ) {
@@ -384,9 +385,10 @@ function text(
 	const final = options.final
 		? ` data-final="${escapeXml(options.final)}"`
 		: "";
+	const keyLabel = options.keyLabel ? ' data-key-label="true"' : "";
 	const fontFamily =
 		options.fontFamily ?? "Microsoft YaHei UI, Noto Sans CJK SC, sans-serif";
-	return `<text x="${x}" y="${y}" font-family="${fontFamily}" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${auxiliaryMark}${final}${fittedLength}>${escapeXml(value)}</text>`;
+	return `<text x="${x}" y="${y}" font-family="${fontFamily}" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${auxiliaryMark}${final}${keyLabel}${fittedLength}>${escapeXml(value)}</text>`;
 }
 
 function isShapeKeyNote(note: KeyNote): note is ShapeKeyNote {
@@ -440,11 +442,13 @@ function renderToneLine(
 ) {
 	const center = x + keyWidth / 2;
 	const toneNameFontFamily =
-		"Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei UI, sans-serif";
+		"LXGW WenKai GB, LXGW WenKai, Kaiti SC, STKaiti, KaiTi, AR PL KaitiM GB, serif";
 	const toneMarkFontFamily =
 		"Noto Sans Mono CJK SC, Noto Sans Mono, Noto Sans CJK SC, Noto Sans SC, sans-serif";
+	const nameX = center - nameSize / 2;
+	const markX = center + nameSize;
 	return [
-		text(center, y, tone, {
+		text(nameX, y, tone, {
 			size: nameSize,
 			fill: "#a05b37",
 			anchor: "middle",
@@ -452,7 +456,7 @@ function renderToneLine(
 			auxKind: "tone",
 			fontFamily: toneNameFontFamily,
 		}),
-		text(center, y + 28, toneMark, {
+		text(markX, y + (toneMark === "·" ? 0 : 48), toneMark, {
 			size: 42,
 			fill: "#a05b37",
 			anchor: "middle",
@@ -685,9 +689,6 @@ function render(diagram: Diagram) {
 						? "#e4f1e9"
 						: `url(#nf4-${occupancy})`;
 			const clip = `${diagram.filename}-clip-${row}-${column}`;
-			const directInitial = initialRoles.some(
-				(value) => value === key.toLowerCase(),
-			);
 			const titleInitials = initialRoles.join(" / ") || "—";
 			const titleFinals = final.join(" / ") || "—";
 			const items = [
@@ -708,8 +709,9 @@ function render(diagram: Diagram) {
 				`<g clip-path="url(#${clip})">`,
 				text(x + 10, y + 23, key, {
 					size: 21,
-					fill: directInitial ? "#4d4050" : "#4f5962",
-					weight: directInitial ? 800 : 680,
+					fill: "#4f5962",
+					weight: 680,
+					keyLabel: true,
 				}),
 			];
 
@@ -790,18 +792,24 @@ function render(diagram: Diagram) {
 				const rowCap = count > 1 ? Math.max(13, step * 0.69) : 28;
 				final.slice(0, 3).forEach((value, index) => {
 					const label = value.replaceAll("v", "ü");
-					const direct = value.toUpperCase() === key;
-					const size = Math.min(
+					const calculatedSize = Math.min(
 						28,
 						rowCap,
 						78 / Math.max(1, label.length * 0.54),
 					);
+					const readableShenyunFinal =
+						["snow_shenyun_shape", "snow_shenyun_tone"].includes(
+							diagram.filename,
+						) && ["er", "u"].includes(value);
+					const size = readableShenyunFinal
+						? Math.max(20, calculatedSize)
+						: calculatedSize;
 					items.push(
 						text(x + keyWidth / 2, y + first + index * step, label, {
 							size,
 							fill: semanticColor(value),
 							anchor: "middle",
-							weight: direct ? 800 : multi ? 650 : 540,
+							weight: multi ? 650 : 540,
 							final: value,
 						}),
 					);

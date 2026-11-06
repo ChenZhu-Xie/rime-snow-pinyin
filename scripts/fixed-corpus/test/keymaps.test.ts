@@ -268,7 +268,7 @@ test("tone auxiliaries are centered and no smaller than shape roots", () => {
 	}
 });
 
-test("tone names and marks use separate fonts and stacked rows", () => {
+test("tone names reserve a character column for their marks", () => {
 	for (const image of [
 		"snow_sipin.svg",
 		"snow_sanpin.svg",
@@ -277,19 +277,24 @@ test("tone names and marks use separate fonts and stacked rows", () => {
 	]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		const nameTags = [
-			...svg.matchAll(/<text\b[^>]*data-aux-kind="tone"[^>]*>/gu),
-		].map(([tag]) => tag);
+			...svg.matchAll(
+				/<text\b[^>]*data-aux-kind="tone"[^>]*>([^<]+)<\/text>/gu,
+			),
+		];
 		const markTags = [
-			...svg.matchAll(/<text\b[^>]*data-aux-mark="tone"[^>]*>/gu),
-		].map(([tag]) => tag);
+			...svg.matchAll(
+				/<text\b[^>]*data-aux-mark="tone"[^>]*>([^<]+)<\/text>/gu,
+			),
+		];
 		assert.equal(nameTags.length, 5, `${image} should render five tone names`);
 		assert.equal(markTags.length, 5, `${image} should render five tone marks`);
 		for (let index = 0; index < markTags.length; index++) {
-			const nameTag = nameTags[index];
-			const tag = markTags[index];
+			const [nameTag] = nameTags[index];
+			const [tag, mark] = markTags[index];
 			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
 			const family = tag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
 			const nameFamily = nameTag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
+			const nameSize = Number(nameTag.match(/font-size="([^"]+)"/u)?.[1]);
 			const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
 			const nameX = Number(nameTag.match(/\bx="([^"]+)"/u)?.[1]);
 			const nameY = Number(nameTag.match(/\by="([^"]+)"/u)?.[1]);
@@ -304,25 +309,58 @@ test("tone names and marks use separate fonts and stacked rows", () => {
 			assert.ok(weight >= 700, `${image} tone mark should use a bold face`);
 			assert.doesNotMatch(
 				nameFamily,
-				/Mono/u,
-				`${image} Chinese tone name should not use a mono font`,
+				/Sans|Mono/u,
+				`${image} Chinese tone name should use a distinct Chinese font`,
 			);
-			assert.equal(markX, nameX, `${image} tone mark should stay centered`);
-			assert.ok(markY - nameY >= 24, `${image} tone mark needs its own row`);
+			assert.match(nameFamily, /LXGW WenKai/u);
+			assert.ok(
+				Math.abs(markX - nameX - nameSize * 1.5) < 0.1,
+				`${image} should reserve one ideographic-space column`,
+			);
+			if (mark === "·") {
+				assert.equal(markY, nameY, `${image} neutral tone dot stays inline`);
+			} else {
+				assert.ok(markY - nameY >= 44, `${image} tone mark needs its own row`);
+			}
 		}
 	}
 });
 
-test("Shenyun Shape keeps the crowded er and u finals readable", () => {
-	const svg = read("lua/snow/keymaps/snow_shenyun_shape.svg");
-	for (const final of ["er", "u"]) {
-		const tag = svg.match(
-			new RegExp(`<text\\b[^>]*data-final="${final}"[^>]*>`, "u"),
-		)?.[0];
-		assert.ok(tag, `missing ${final} final`);
-		const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
-		assert.ok(size >= 18, `${final} final is too small`);
+test("both Shenyun diagrams keep the crowded er and u finals readable", () => {
+	for (const image of ["snow_shenyun_shape.svg", "snow_shenyun_tone.svg"]) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		for (const final of ["er", "u"]) {
+			const tag = svg.match(
+				new RegExp(`<text\\b[^>]*data-final="${final}"[^>]*>`, "u"),
+			)?.[0];
+			assert.ok(tag, `${image} is missing ${final} final`);
+			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+			assert.ok(size >= 20, `${image} ${final} final is too small`);
+		}
 	}
+});
+
+test("all diagrams use one weight for uppercase keycap labels", () => {
+	const weights = new Set<number>();
+	for (const [, , image] of schemes) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		const tags = [
+			...svg.matchAll(/<text\b[^>]*data-key-label="true"[^>]*>/gu),
+		].map(([tag]) => tag);
+		assert.equal(tags.length, 26, `${image} should label all keycaps`);
+		for (const tag of tags) {
+			weights.add(Number(tag.match(/font-weight="([^"]+)"/u)?.[1]));
+		}
+	}
+	assert.deepEqual([...weights], [680]);
+});
+
+test("KeyTao final e does not inherit keycap emphasis", () => {
+	const svg = read("lua/snow/keymaps/snow_jiandao_classic.svg");
+	const tag = svg.match(/<text\b[^>]*data-final="e"[^>]*>/u)?.[0];
+	assert.ok(tag, "KeyTao should show final e");
+	const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
+	assert.ok(weight <= 650, "KeyTao final e should use the normal final weight");
 });
 
 test("Four-Code separates abdomen tail tone and stroke foreground semantics", () => {
