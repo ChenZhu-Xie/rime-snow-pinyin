@@ -93,4 +93,3 @@ Expected: Hamster 与 Trime 皮肤均成功生成，键位图资源完整。
 
 Run: `bun run --cwd scripts test:corpus`
 Expected: PASS。
-
