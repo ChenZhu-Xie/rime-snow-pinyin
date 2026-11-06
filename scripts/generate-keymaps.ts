@@ -443,10 +443,17 @@ function renderToneLine(
 	const center = x + keyWidth / 2;
 	const toneNameFontFamily =
 		"LXGW WenKai GB, LXGW WenKai, Kaiti SC, STKaiti, KaiTi, AR PL KaitiM GB, serif";
-	const toneMarkFontFamily =
-		"Noto Sans Mono CJK SC, Noto Sans Mono, Noto Sans CJK SC, Noto Sans SC, sans-serif";
 	const nameX = center - nameSize / 2;
 	const markX = center + nameSize;
+	const markY = y - 7;
+	const markPaths: Record<string, string> = {
+		ˉ: '<path d="M-8 0H8"/>',
+		ˊ: '<path d="M-7 5L7-5"/>',
+		ˇ: '<path d="M-7-4L0 5L7-4"/>',
+		ˋ: '<path d="M-7-5L7 5"/>',
+		"·": '<circle cx="0" cy="0" r="3.4" fill="#a05b37" stroke="none"/>',
+	};
+	const mark = markPaths[toneMark];
 	return [
 		text(nameX, y, tone, {
 			size: nameSize,
@@ -456,14 +463,7 @@ function renderToneLine(
 			auxKind: "tone",
 			fontFamily: toneNameFontFamily,
 		}),
-		text(markX, y + 14, toneMark, {
-			size: 42,
-			fill: "#a05b37",
-			anchor: "middle",
-			weight: 700,
-			auxMark: "tone",
-			fontFamily: toneMarkFontFamily,
-		}),
+		`<g transform="translate(${markX} ${markY})" data-aux-mark="tone" data-tone-mark="${toneMark}" data-mark-x="${markX}" data-mark-y="${markY}" data-mark-size="18" fill="none" stroke="#a05b37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${mark}</g>`,
 	];
 }
 
@@ -536,7 +536,7 @@ function renderToneAuxiliary(
 			note.tone,
 			note.toneMark,
 			x,
-			y + (auxiliaryOnly ? 70 : 44),
+			y + (auxiliaryOnly ? 82 : 50),
 			18,
 		),
 	];
@@ -555,10 +555,10 @@ function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
 	];
 	const layout =
 		rows.length === 3
-			? { first: 38, step: 20, tone: 98 }
+			? { first: 43, step: 24, tone: 115 }
 			: rows.length === 2
-				? { first: 44, step: 24, tone: 94 }
-				: { first: 50, step: 0, tone: 82 };
+				? { first: 51, step: 29, tone: 109 }
+				: { first: 65, step: 0, tone: 102 };
 	return [
 		renderStrokeBadge(note.stroke, x, y),
 		...rows.map((row, index) =>
@@ -761,7 +761,7 @@ function render(diagram: Diagram) {
 						? isShapeKeyNote(auxiliary)
 							? 2
 							: isToneKeyNote(auxiliary)
-								? 2
+								? 1
 								: 0
 						: 0);
 				const count = Math.min(final.length, 3);
@@ -785,7 +785,7 @@ function render(diagram: Diagram) {
 					if (isShapeKeyNote(auxiliary)) {
 						first = count === 2 ? 91 : 80;
 					} else if (isToneKeyNote(auxiliary)) {
-						first = count === 2 ? 99 : 91;
+						first = count === 2 ? 88 : 78;
 					}
 				}
 				const step = count > 1 ? (119 - first) / (count - 1) : 0;

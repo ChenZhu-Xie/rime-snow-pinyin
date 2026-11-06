@@ -268,7 +268,7 @@ test("tone auxiliaries are centered and no smaller than shape roots", () => {
 	}
 });
 
-test("tone marks stay inline with an independently lowered baseline", () => {
+test("tone marks use one optical center independent of font metrics", () => {
 	for (const image of [
 		"snow_sipin.svg",
 		"snow_sanpin.svg",
@@ -282,31 +282,20 @@ test("tone marks stay inline with an independently lowered baseline", () => {
 			),
 		];
 		const markTags = [
-			...svg.matchAll(
-				/<text\b[^>]*data-aux-mark="tone"[^>]*>([^<]+)<\/text>/gu,
-			),
-		];
+			...svg.matchAll(/<g\b[^>]*data-aux-mark="tone"[^>]*>/gu),
+		].map(([tag]) => tag);
 		assert.equal(nameTags.length, 5, `${image} should render five tone names`);
 		assert.equal(markTags.length, 5, `${image} should render five tone marks`);
 		for (let index = 0; index < markTags.length; index++) {
 			const [nameTag] = nameTags[index];
-			const [tag] = markTags[index];
-			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
-			const family = tag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
+			const tag = markTags[index];
 			const nameFamily = nameTag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
 			const nameSize = Number(nameTag.match(/font-size="([^"]+)"/u)?.[1]);
-			const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
 			const nameX = Number(nameTag.match(/\bx="([^"]+)"/u)?.[1]);
 			const nameY = Number(nameTag.match(/\by="([^"]+)"/u)?.[1]);
-			const markX = Number(tag.match(/\bx="([^"]+)"/u)?.[1]);
-			const markY = Number(tag.match(/\by="([^"]+)"/u)?.[1]);
-			assert.ok(size >= 42, `${image} tone mark is too small`);
-			assert.match(
-				family,
-				/Noto Sans Mono CJK SC/u,
-				`${image} tone mark needs the requested Noto CJK font`,
-			);
-			assert.ok(weight >= 700, `${image} tone mark should use a bold face`);
+			const markX = Number(tag.match(/data-mark-x="([^"]+)"/u)?.[1]);
+			const markY = Number(tag.match(/data-mark-y="([^"]+)"/u)?.[1]);
+			const markSize = Number(tag.match(/data-mark-size="([^"]+)"/u)?.[1]);
 			assert.doesNotMatch(
 				nameFamily,
 				/Sans|Mono/u,
@@ -314,13 +303,21 @@ test("tone marks stay inline with an independently lowered baseline", () => {
 			);
 			assert.match(nameFamily, /LXGW WenKai/u);
 			assert.equal(nameSize, 18, `${image} Chinese tone name height changed`);
+			assert.ok(markSize >= 18, `${image} tone mark is too small`);
 			assert.ok(
 				Math.abs(markX - nameX - nameSize * 1.5) < 0.1,
 				`${image} should reserve one ideographic-space column`,
 			);
-			assert.ok(markY > nameY, `${image} tone mark baseline should be lower`);
-			assert.ok(markY - nameY <= 18, `${image} tone mark should stay inline`);
+			assert.equal(
+				markY,
+				nameY - 7,
+				`${image} tone marks should align optically`,
+			);
 		}
+		assert.deepEqual(
+			markTags.map((tag) => tag.match(/data-tone-mark="([^"]+)"/u)?.[1]).sort(),
+			["·", "ˉ", "ˊ", "ˇ", "ˋ"].sort(),
+		);
 	}
 });
 
