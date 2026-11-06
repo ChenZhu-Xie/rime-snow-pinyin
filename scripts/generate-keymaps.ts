@@ -438,24 +438,27 @@ function renderToneLine(
 	y: number,
 	nameSize: number,
 ) {
-	const toneFontFamily =
-		"Noto Sans Mono CJK SC, Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei UI, sans-serif";
+	const center = x + keyWidth / 2;
+	const toneNameFontFamily =
+		"Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei UI, sans-serif";
+	const toneMarkFontFamily =
+		"Noto Sans Mono CJK SC, Noto Sans Mono, Noto Sans CJK SC, Noto Sans SC, sans-serif";
 	return [
-		text(x + 34, y, tone, {
+		text(center, y, tone, {
 			size: nameSize,
 			fill: "#a05b37",
 			anchor: "middle",
-			weight: 700,
+			weight: 800,
 			auxKind: "tone",
-			fontFamily: toneFontFamily,
+			fontFamily: toneNameFontFamily,
 		}),
-		text(x + 70, y + 4, toneMark, {
+		text(center, y + 28, toneMark, {
 			size: 42,
 			fill: "#a05b37",
 			anchor: "middle",
 			weight: 700,
 			auxMark: "tone",
-			fontFamily: toneFontFamily,
+			fontFamily: toneMarkFontFamily,
 		}),
 	];
 }
@@ -529,7 +532,7 @@ function renderToneAuxiliary(
 			note.tone,
 			note.toneMark,
 			x,
-			y + (auxiliaryOnly ? 82 : 50),
+			y + (auxiliaryOnly ? 70 : 44),
 			18,
 		),
 	];
@@ -545,31 +548,31 @@ function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
 		...(note.tail
 			? [{ kind: "tail" as const, value: note.tail, fill: "#76506a" }]
 			: []),
-		{
-			kind: "tone" as const,
-			value: note.tone,
-			mark: note.toneMark,
-			fill: "#a05b37",
-		},
 	];
-	const first = rows.length === 4 ? 43 : rows.length === 3 ? 51 : 65;
-	const step = rows.length === 4 ? 24 : rows.length === 3 ? 29 : 37;
+	const layout =
+		rows.length === 3
+			? { first: 38, step: 20, tone: 98 }
+			: rows.length === 2
+				? { first: 44, step: 24, tone: 94 }
+				: { first: 50, step: 0, tone: 82 };
 	return [
 		renderStrokeBadge(note.stroke, x, y),
-		...rows.flatMap((row, index) =>
-			"mark" in row
-				? renderToneLine(row.value, row.mark, x, y + first + index * step, 18)
-				: [
-						text(x + keyWidth / 2, y + first + index * step, row.value, {
-							size: 14,
-							fill: row.fill,
-							anchor: "middle",
-							weight: 700,
-							auxKind: row.kind,
-							textLength: row.value.length > 12 ? 76 : undefined,
-						}),
-					],
+		...rows.map((row, index) =>
+			text(
+				x + keyWidth / 2,
+				y + layout.first + index * layout.step,
+				row.value,
+				{
+					size: 14,
+					fill: row.fill,
+					anchor: "middle",
+					weight: 700,
+					auxKind: row.kind,
+					textLength: row.value.length > 12 ? 76 : undefined,
+				},
+			),
 		),
+		...renderToneLine(note.tone, note.toneMark, x, y + layout.tone, 18),
 	];
 }
 
@@ -756,7 +759,7 @@ function render(diagram: Diagram) {
 						? isShapeKeyNote(auxiliary)
 							? 2
 							: isToneKeyNote(auxiliary)
-								? 1
+								? 2
 								: 0
 						: 0);
 				const count = Math.min(final.length, 3);
@@ -780,7 +783,7 @@ function render(diagram: Diagram) {
 					if (isShapeKeyNote(auxiliary)) {
 						first = count === 2 ? 91 : 80;
 					} else if (isToneKeyNote(auxiliary)) {
-						first = count === 2 ? 88 : 78;
+						first = count === 2 ? 99 : 91;
 					}
 				}
 				const step = count > 1 ? (119 - first) / (count - 1) : 0;

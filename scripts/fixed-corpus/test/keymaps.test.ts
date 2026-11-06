@@ -268,7 +268,7 @@ test("tone auxiliaries are centered and no smaller than shape roots", () => {
 	}
 });
 
-test("tone marks use bold Noto CJK glyphs at a visibly larger size", () => {
+test("tone names and marks use separate fonts and stacked rows", () => {
 	for (const image of [
 		"snow_sipin.svg",
 		"snow_sanpin.svg",
@@ -276,14 +276,25 @@ test("tone marks use bold Noto CJK glyphs at a visibly larger size", () => {
 		"snow_shenyun_tone.svg",
 	]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
-		const tags = [
+		const nameTags = [
+			...svg.matchAll(/<text\b[^>]*data-aux-kind="tone"[^>]*>/gu),
+		].map(([tag]) => tag);
+		const markTags = [
 			...svg.matchAll(/<text\b[^>]*data-aux-mark="tone"[^>]*>/gu),
 		].map(([tag]) => tag);
-		assert.equal(tags.length, 5, `${image} should render five tone marks`);
-		for (const tag of tags) {
+		assert.equal(nameTags.length, 5, `${image} should render five tone names`);
+		assert.equal(markTags.length, 5, `${image} should render five tone marks`);
+		for (let index = 0; index < markTags.length; index++) {
+			const nameTag = nameTags[index];
+			const tag = markTags[index];
 			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
 			const family = tag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
+			const nameFamily = nameTag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
 			const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
+			const nameX = Number(nameTag.match(/\bx="([^"]+)"/u)?.[1]);
+			const nameY = Number(nameTag.match(/\by="([^"]+)"/u)?.[1]);
+			const markX = Number(tag.match(/\bx="([^"]+)"/u)?.[1]);
+			const markY = Number(tag.match(/\by="([^"]+)"/u)?.[1]);
 			assert.ok(size >= 42, `${image} tone mark is too small`);
 			assert.match(
 				family,
@@ -291,6 +302,13 @@ test("tone marks use bold Noto CJK glyphs at a visibly larger size", () => {
 				`${image} tone mark needs the requested Noto CJK font`,
 			);
 			assert.ok(weight >= 700, `${image} tone mark should use a bold face`);
+			assert.doesNotMatch(
+				nameFamily,
+				/Mono/u,
+				`${image} Chinese tone name should not use a mono font`,
+			);
+			assert.equal(markX, nameX, `${image} tone mark should stay centered`);
+			assert.ok(markY - nameY >= 24, `${image} tone mark needs its own row`);
 		}
 	}
 });

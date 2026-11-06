@@ -12,7 +12,9 @@
 
 ## 安装
 
-桌面用户原则上不需要单独安装 helper。由当前发布工作流生成的 `snow-pinyin.zip` 会在 `lua/snow/bin/` 中包含 Windows x64、macOS x64 和 Linux x64 三个构建产物；把安装包合并覆盖到现有 Rime 用户目录后重新部署，Lua 会按当前前端选择并启动对应文件。不要删除整个用户目录，以免丢失私有配置和用户词典。旧版发布物可能尚未包含该目录；GitHub 的“Code → Download ZIP”源码包与普通 Git 克隆也不含这些发布时注入的二进制文件。遇到这三种情况时，需要改用按当前工作流重建的新发布包，或者由开发者自行构建。
+桌面用户原则上不需要单独安装 helper。由当前发布工作流生成的 `snow-pinyin.zip` 会把 Windows x64、macOS x64 和 Linux x64 三个便携构建产物放在压缩包根目录下的 `lua/snow/bin/`；把压缩包内容合并覆盖到现有 Rime 用户目录后重新部署即可，不要额外套一层 `rime-snow-pinyin/` 目录，也不要删除整个用户目录，以免丢失私有配置和用户词典。Lua 读取 `rime_api.get_user_data_dir()` 后拼出 `<Rime 用户目录>/lua/snow/bin/snow-keymap-平台文件名` 的绝对路径，再按当前前端选择并启动对应文件；用户不需要安装 Rust 或配置 `PATH`。
+
+截至 `v0.3.13`，已经公开的 `snow-pinyin.zip` 仍早于 helper 注入流程，尚不含 `lua/snow/bin/`；上述免安装方式从按当前工作流重新构建或替换该附件后才成立。GitHub 的“Code → Download ZIP”源码包与普通 Git 克隆同样不含发布时注入的二进制文件，开发者使用源码时需要自行构建。
 
 手机端不会调用 Rust helper。通过链接导入本仓库只安装 Rime 方案文件；键位图页来自独立的移动皮肤资源。元书需要另外安装 Release 中 `snow-pinyin-skins-hamster.zip` 内的 `.cskin`，同文需要安装 `snow-pinyin-skins-trime.zip` 中的主题。移动端皮肤直接使用随包 PNG，不执行 `lua/snow/bin/` 下的任何桌面程序。
 

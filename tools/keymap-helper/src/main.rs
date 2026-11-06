@@ -374,7 +374,10 @@ impl App {
         }
 
         let first_show = !self.visible;
-        if self.current_path.as_deref() != Some(command.image_path.as_path()) {
+        let should_reload = first_show
+            || command.action == CommandAction::Follow
+            || self.current_path.as_deref() != Some(command.image_path.as_path());
+        if should_reload {
             let Ok(svg) = load_svg(&command.image_path) else {
                 return;
             };
