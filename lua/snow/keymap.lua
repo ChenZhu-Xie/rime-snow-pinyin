@@ -1,5 +1,5 @@
 -- 键位图显隐处理器
--- 桌面端以空闲的单字母键切换常驻键位图窗口，移动端由输入法皮肤提供键位图页。
+-- 桌面端以空闲的单字母键切换常驻键位图窗口，切换方案时让已显示的窗口跟随更新；移动端由输入法皮肤提供键位图页。
 
 local snow = require "snow.snow"
 
@@ -69,6 +69,19 @@ local function launch(env)
 end
 
 ---@param env KeymapEnv
+---@param action "follow"|"toggle"
+---@return boolean
+local function write_command(env, action)
+  env.serial = env.serial + 1
+  local command = io.open(env.command_path, "wb")
+  if not command then return false end
+  command:write(("%s\t%s:%.6f:%d\t%s"):format(
+    action, env.engine.schema.schema_id, os.clock(), env.serial, env.image_path))
+  command:close()
+  return true
+end
+
+---@param env KeymapEnv
 function processor.init(env)
   local key = env.engine.schema.config:get_string("keymap/key") or ""
   local image = env.engine.schema.config:get_string("keymap/image") or ""
@@ -97,6 +110,8 @@ function processor.init(env)
     local command = io.open(env.command_path, "wb")
     if command then command:close() end
     launch(env)
+  elseif env.available then
+    write_command(env, "follow")
   end
 end
 
@@ -109,12 +124,7 @@ function processor.func(key_event, env)
   end
   local context = env.engine.context
   if context:get_option("ascii_mode") or context.input ~= "" then return snow.kNoop end
-  env.serial = env.serial + 1
-  local command = io.open(env.command_path, "wb")
-  if not command then return snow.kNoop end
-  command:write(("%s:%.6f:%d\t%s"):format(
-    env.engine.schema.schema_id, os.clock(), env.serial, env.image_path))
-  command:close()
+  if not write_command(env, "toggle") then return snow.kNoop end
   return snow.kAccepted
 end
 

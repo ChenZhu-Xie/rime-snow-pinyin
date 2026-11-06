@@ -152,6 +152,7 @@ const symbolKeys: Record<string, string> = {
 };
 
 const actions: Record<string, TrimePresetKey> = {
+	"#空操作": { label: "" },
 	space: { label: " ", send: "space" },
 	backspace: { label: "⌫", send: "BackSpace", repeatable: true },
 	enter: { label: "↵", send: "Return" },
@@ -303,8 +304,8 @@ function makeKeyboard(
 				rendered.swipe_down = addAction(key.down, key.downLabel);
 				rendered.hint = key.downLabel ?? presetKeys[rendered.swipe_down].label;
 			}
-			// 长按补充上滑功能，也让 Shift 的长按行为有实际绑定。
-			rendered.long_click = rendered.swipe_up;
+			// 长按默认补充上滑功能；需要独立长按动作时显式覆盖。
+			rendered.long_click = key.hold ? addAction(key.hold) : rendered.swipe_up;
 			if (!config.label) {
 				// 保留动作标签：同文在中文 Shift 状态下还用它生成大写文本。
 				rendered.key_text_color = "#00000000";

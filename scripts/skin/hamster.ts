@@ -498,8 +498,10 @@ function systemImageName(ios: string): SystemImageName {
 	return { ios, android };
 }
 
-function parseAction(raw: string, symbol?: boolean): Action {
-	if (raw.length === 1) {
+function parseAction(raw: string, symbol?: boolean): Action | undefined {
+	if (raw === "#空操作") {
+		return undefined;
+	} else if (raw.length === 1) {
 		return symbol ? { symbol: raw } : { character: raw };
 	} else if (raw.startsWith("#")) {
 		return { shortcut: raw };
@@ -619,6 +621,9 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 			}
 			let swipeUpAction: Action | undefined;
 			let swipeDownAction: Action | undefined;
+			const repeatAction = key.hold
+				? parseAction(key.hold, config.symbol)
+				: undefined;
 			if (key.up || isAlphabet) {
 				const up = key.up ?? key.action.toUpperCase();
 				const swipeUpName = `${name}SwipeUp`;
@@ -656,6 +661,7 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 				backgroundStyle,
 				foregroundStyle,
 				action,
+				repeatAction,
 				swipeUpAction,
 				swipeDownAction,
 			};

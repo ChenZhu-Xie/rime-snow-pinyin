@@ -33,7 +33,17 @@ export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 				{
 					colorful: false,
 					label: false,
-					keyInfos: [[{ action: "!pinyin", name: `${id}_image`, image: id }]],
+					keyInfos: [
+						[
+							{
+								action: "#空操作",
+								name: `${id}_image`,
+								image: id,
+								up: "!pinyin",
+								hold: "!pinyin",
+							},
+						],
+					],
 				},
 			]),
 		),

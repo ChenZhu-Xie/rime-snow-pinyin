@@ -16,6 +16,7 @@ export interface KeyInfo {
 	upLabel?: string;
 	down?: string;
 	downLabel?: string;
+	hold?: string;
 	image?: string;
 	width?: string;
 }

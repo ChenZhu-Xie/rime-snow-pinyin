@@ -93,7 +93,16 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	});
 	assert.equal(Object.keys(keyboards).length, 9);
 	assert.equal(keyboards.keymaps.keyInfos.flat().length, 7);
-	assert.equal(keyboards.keymap_snow_sipin.keyInfos[0][0].image, "snow_sipin");
+	const mobileImageKey = keyboards.keymap_snow_sipin.keyInfos[0][0] as {
+		action: string;
+		up?: string;
+		hold?: string;
+		image?: string;
+	};
+	assert.equal(mobileImageKey.image, "snow_sipin");
+	assert.equal(mobileImageKey.action, "#空操作");
+	assert.equal(mobileImageKey.up, "!pinyin");
+	assert.equal(mobileImageKey.hold, "!pinyin");
 
 	const hamster = makeHamsterSkin({
 		...keyboards.keymap_snow_sipin,
@@ -105,6 +114,14 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 		contentMode: "scaleAspectFit",
 		normalImage: { file: "snow_sipin", image: "snow_sipin" },
 	});
+	assert.equal(
+		(hamster.snow_sipin_image as { action?: unknown }).action,
+		undefined,
+	);
+	assert.deepEqual(
+		(hamster.snow_sipin_image as { repeatAction?: unknown }).repeatAction,
+		{ keyboardType: "pinyin" },
+	);
 	assert.deepEqual(
 		(hamster.pinyin as { swipeUpAction: unknown }).swipeUpAction,
 		{ keyboardType: "keymaps" },
@@ -121,6 +138,11 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 		trime.preset_keyboards.keymap_snow_sipin.keys[0].key_back_color,
 		"snow_sipin.png",
 	);
+	const trimeImageKey = trime.preset_keyboards.keymap_snow_sipin.keys[0];
+	assert.equal(trime.preset_keys[trimeImageKey.click].send, undefined);
+	assert.equal(trime.preset_keys[trimeImageKey.click].select, undefined);
+	assert.ok(trimeImageKey.long_click);
+	assert.equal(trime.preset_keys[trimeImageKey.long_click].select, "pinyin");
 	const sipinSelector = trime.preset_keyboards.keymaps.keys[0].click;
 	assert.equal(trime.preset_keys[sipinSelector].label, "冰雪四拼");
 });
@@ -268,6 +290,8 @@ test("the desktop helper stays dormant outside an idle Chinese composition", () 
 	assert.match(processor, /key_event\.modifier ~= 0/u);
 	assert.doesNotMatch(processor, /powershell/iu);
 	assert.match(processor, /snow-keymap-windows\.exe/u);
+	assert.match(processor, /write_command\(env, "follow"\)/u);
+	assert.match(processor, /write_command\(env, "toggle"\)/u);
 	assert.match(
 		read("lua/snow/statistics.lua"),
 		/snow\.keymap_keys\[env\.schema_id\]/u,
