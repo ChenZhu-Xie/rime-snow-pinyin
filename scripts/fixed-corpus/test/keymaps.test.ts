@@ -268,6 +268,27 @@ test("tone auxiliaries are centered and no smaller than shape roots", () => {
 	}
 });
 
+test("tone marks use a symbol font and a visibly larger size", () => {
+	for (const image of [
+		"snow_sipin.svg",
+		"snow_sanpin.svg",
+		"snow_sanpin_classic.svg",
+		"snow_shenyun_tone.svg",
+	]) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		const tags = [
+			...svg.matchAll(/<text\b[^>]*data-aux-mark="tone"[^>]*>/gu),
+		].map(([tag]) => tag);
+		assert.equal(tags.length, 5, `${image} should render five tone marks`);
+		for (const tag of tags) {
+			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+			const family = tag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
+			assert.ok(size >= 20, `${image} tone mark is too small`);
+			assert.match(family, /Symbol/u, `${image} tone mark needs a symbol font`);
+		}
+	}
+});
+
 test("Shenyun Shape keeps the crowded er and u finals readable", () => {
 	const svg = read("lua/snow/keymaps/snow_shenyun_shape.svg");
 	for (const final of ["er", "u"]) {
@@ -306,6 +327,8 @@ test("Four-Code separates abdomen tail tone and stroke foreground semantics", ()
 		colors.set(kind, [...kindColors][0]);
 	}
 	assert.equal(new Set(colors.values()).size, 4);
+	assert.equal(colors.get("abdomen"), "#6f8198");
+	assert.equal(colors.get("tail"), "#76506a");
 });
 
 test("seven diagrams share the benchmark Morandi semantic vocabulary", () => {

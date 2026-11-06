@@ -19,12 +19,14 @@ type ShapeKeyNote = {
 type ToneKeyNote = {
 	stroke: string;
 	tone: string;
+	toneMark: string;
 };
 
 type SipinKeyNote = {
 	abdomen: string[];
 	tail?: string;
 	tone: string;
+	toneMark: string;
 	stroke: string;
 };
 
@@ -181,14 +183,20 @@ function initialLabels(mapping: Mapping) {
 }
 
 function toneNotes(mapping: Mapping): Record<string, ToneKeyNote> {
-	const tones = ["一声 ˉ", "二声 ˊ", "三声 ˇ", "四声 ˋ", "轻声 ·"];
+	const tones = [
+		{ tone: "一声", toneMark: "ˉ" },
+		{ tone: "二声", toneMark: "ˊ" },
+		{ tone: "三声", toneMark: "ˇ" },
+		{ tone: "四声", toneMark: "ˋ" },
+		{ tone: "轻声", toneMark: "·" },
+	];
 	const shapes = shapeNotes(mapping.shapeKeysByMeaning);
 	return Object.fromEntries(
 		[...mapping.toneKeysByTone].map((key, index) => [
 			key.toUpperCase(),
 			{
 				stroke: shapes[key.toUpperCase()].stroke,
-				tone: tones[index],
+				...tones[index],
 			},
 		]),
 	);
@@ -238,14 +246,37 @@ function shapeNotes(keys: string): Record<string, ShapeKeyNote> {
 }
 
 const sipinAuxiliary: Record<string, SipinKeyNote> = {
-	A: { abdomen: ["腹 a/ü"], tail: "尾 m", tone: "四声 ˋ", stroke: "折 ㇕" },
-	E: { abdomen: ["腹 e/ie"], tail: "尾 ng", tone: "二声 ˊ", stroke: "横 一" },
-	U: { abdomen: ["腹 u/ia/ue"], tone: "三声 ˇ", stroke: "撇 丿" },
-	I: { abdomen: ["腹 i/ua/er"], tone: "一声 ˉ", stroke: "竖 丨" },
+	A: {
+		abdomen: ["腹 a/ü"],
+		tail: "尾 m",
+		tone: "四声",
+		toneMark: "ˋ",
+		stroke: "折 ㇕",
+	},
+	E: {
+		abdomen: ["腹 e/ie"],
+		tail: "尾 ng",
+		tone: "二声",
+		toneMark: "ˊ",
+		stroke: "横 一",
+	},
+	U: {
+		abdomen: ["腹 u/ia/ue"],
+		tone: "三声",
+		toneMark: "ˇ",
+		stroke: "撇 丿",
+	},
+	I: {
+		abdomen: ["腹 i/ua/er"],
+		tone: "一声",
+		toneMark: "ˉ",
+		stroke: "竖 丨",
+	},
 	O: {
 		abdomen: ["腹 o/üa/üe", "腹 io/uo"],
 		tail: "尾 n",
-		tone: "轻声 ·",
+		tone: "轻声",
+		toneMark: "·",
 		stroke: "点 丶",
 	},
 };
@@ -335,12 +366,17 @@ function text(
 		anchor?: string;
 		weight?: number;
 		auxKind?: AuxiliaryKind;
+		auxMark?: "tone";
 		final?: string;
+		fontFamily?: string;
 		textLength?: number;
 	},
 ) {
 	const auxiliaryKind = options.auxKind
 		? ` data-aux-kind="${options.auxKind}"`
+		: "";
+	const auxiliaryMark = options.auxMark
+		? ` data-aux-mark="${options.auxMark}"`
 		: "";
 	const fittedLength = options.textLength
 		? ` textLength="${options.textLength}" lengthAdjust="spacingAndGlyphs"`
@@ -348,7 +384,9 @@ function text(
 	const final = options.final
 		? ` data-final="${escapeXml(options.final)}"`
 		: "";
-	return `<text x="${x}" y="${y}" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${final}${fittedLength}>${escapeXml(value)}</text>`;
+	const fontFamily =
+		options.fontFamily ?? "Microsoft YaHei UI, Noto Sans CJK SC, sans-serif";
+	return `<text x="${x}" y="${y}" font-family="${fontFamily}" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${auxiliaryMark}${final}${fittedLength}>${escapeXml(value)}</text>`;
 }
 
 function isShapeKeyNote(note: KeyNote): note is ShapeKeyNote {
@@ -367,10 +405,15 @@ function auxiliaryLabels(note: KeyNote) {
 	if (isShapeKeyNote(note)) {
 		return [note.stroke, note.singleRoot, note.doubleRoot];
 	}
-	if (isToneKeyNote(note)) return [note.tone, note.stroke];
-	return [...note.abdomen, note.tail, note.tone, note.stroke].filter(
-		(value): value is string => value !== undefined,
-	);
+	if (isToneKeyNote(note)) {
+		return [`${note.tone} ${note.toneMark}`, note.stroke];
+	}
+	return [
+		...note.abdomen,
+		note.tail,
+		`${note.tone} ${note.toneMark}`,
+		note.stroke,
+	].filter((value): value is string => value !== undefined);
 }
 
 function renderStrokeBadge(stroke: string, x: number, y: number) {
@@ -386,6 +429,33 @@ function renderStrokeBadge(stroke: string, x: number, y: number) {
 			auxKind: "stroke",
 		},
 	)}</g>`;
+}
+
+function renderToneLine(
+	tone: string,
+	toneMark: string,
+	x: number,
+	y: number,
+	nameSize: number,
+) {
+	return [
+		text(x + 38, y, tone, {
+			size: nameSize,
+			fill: "#a05b37",
+			anchor: "middle",
+			weight: 750,
+			auxKind: "tone",
+		}),
+		text(x + 68, y + 1, toneMark, {
+			size: 22,
+			fill: "#a05b37",
+			anchor: "middle",
+			weight: 750,
+			auxMark: "tone",
+			fontFamily:
+				"Noto Sans Symbols 2, Segoe UI Symbol, Arial Unicode MS, sans-serif",
+		}),
+	];
 }
 
 function renderShapeAuxiliary(
@@ -453,13 +523,13 @@ function renderToneAuxiliary(
 ) {
 	return [
 		renderStrokeBadge(note.stroke, x, y),
-		text(x + keyWidth / 2, y + (auxiliaryOnly ? 82 : 50), note.tone, {
-			size: 15,
-			fill: "#a05b37",
-			anchor: "middle",
-			weight: 750,
-			auxKind: "tone",
-		}),
+		...renderToneLine(
+			note.tone,
+			note.toneMark,
+			x,
+			y + (auxiliaryOnly ? 82 : 50),
+			15,
+		),
 	];
 }
 
@@ -471,23 +541,32 @@ function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
 			fill: "#6f8198",
 		})),
 		...(note.tail
-			? [{ kind: "tail" as const, value: note.tail, fill: "#8f879f" }]
+			? [{ kind: "tail" as const, value: note.tail, fill: "#76506a" }]
 			: []),
-		{ kind: "tone" as const, value: note.tone, fill: "#a05b37" },
+		{
+			kind: "tone" as const,
+			value: note.tone,
+			mark: note.toneMark,
+			fill: "#a05b37",
+		},
 	];
 	const first = rows.length === 4 ? 43 : rows.length === 3 ? 51 : 65;
 	const step = rows.length === 4 ? 24 : rows.length === 3 ? 29 : 37;
 	return [
 		renderStrokeBadge(note.stroke, x, y),
-		...rows.map((row, index) =>
-			text(x + keyWidth / 2, y + first + index * step, row.value, {
-				size: 14,
-				fill: row.fill,
-				anchor: "middle",
-				weight: 700,
-				auxKind: row.kind,
-				textLength: row.value.length > 12 ? 76 : undefined,
-			}),
+		...rows.flatMap((row, index) =>
+			"mark" in row
+				? renderToneLine(row.value, row.mark, x, y + first + index * step, 14)
+				: [
+						text(x + keyWidth / 2, y + first + index * step, row.value, {
+							size: 14,
+							fill: row.fill,
+							anchor: "middle",
+							weight: 700,
+							auxKind: row.kind,
+							textLength: row.value.length > 12 ? 76 : undefined,
+						}),
+					],
 		),
 	];
 }
