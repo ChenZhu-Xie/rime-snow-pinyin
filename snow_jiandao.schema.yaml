@@ -34,6 +34,7 @@ engine:
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - recognizer
+    - lua_processor@*snow.schema_menu*processor
     - lua_processor@*snow.keymap
     - lua_processor@*snow.code_navigator
     - lua_processor@*snow.user_dict
@@ -48,12 +49,14 @@ engine:
     - ascii_segmentor
     - matcher
     - abc_segmentor
+    - affix_segmentor@schema_menu
     - affix_segmentor@stroke
     - affix_segmentor@pinyin
     - punct_segmentor
     - fallback_segmentor
   translators:
     - punct_translator
+    - lua_translator@*snow.schema_menu*translator
     - script_translator
     # 简拼留在 abc 段内查询，避免第三个声母触发 recognizer/affix 重分段。
     - lua_translator@*snow.table_like*jianpin

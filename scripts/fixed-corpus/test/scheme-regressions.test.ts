@@ -5,9 +5,87 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { load } from "js-yaml";
 import { applyAlgebra, parseAlgebraRules } from "../algebra";
+import { makeMiraDefaultCustomization } from "../../lib/mira-default-custom";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
+
+test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme", () => {
+	for (const source of [
+		read("snow_schema_menu_default_patch.yaml"),
+		makeMiraDefaultCustomization("snow_yipin"),
+	]) {
+		const customization = load(source) as {
+			patch: Record<string, unknown>;
+		};
+		assert.deepEqual(customization.patch["switcher/hotkeys"], [
+			"Control+Shift+grave",
+		]);
+	}
+
+	const shared = load(read("snow_pinyin.schema.yaml")) as {
+		recognizer: { patterns: Record<string, string> };
+		schema_menu: { tag: string; prefix: string; tips: string };
+	};
+	assert.equal(shared.recognizer.patterns.schema_menu, "^~[a-z]*$");
+	assert.deepEqual(shared.schema_menu, {
+		tag: "schema_menu",
+		prefix: "~",
+		tips: "〔方案〕",
+	});
+
+	for (const schema of [
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_qingyun.schema.yaml",
+		"snow_shenyun_common.yaml",
+		"snow_jiandao_classic.schema.yaml",
+		"snow_sanpin_classic.schema.yaml",
+	]) {
+		const content = load(read(schema)) as {
+			engine: {
+				processors: string[];
+				segmentors: string[];
+				translators: string[];
+			};
+		};
+		const processors = content.engine.processors;
+		const menuProcessor = "lua_processor@*snow.schema_menu*processor";
+		if (schema === "snow_yipin.schema.yaml") {
+			assert.ok(
+				processors.indexOf("ascii_composer") <
+					processors.indexOf(menuProcessor),
+				schema,
+			);
+			assert.ok(
+				processors.indexOf(menuProcessor) <
+					processors.indexOf("chord_composer"),
+				schema,
+			);
+		} else {
+			assert.ok(
+				processors.indexOf("recognizer") < processors.indexOf(menuProcessor),
+				schema,
+			);
+		}
+		assert.ok(
+			processors.indexOf(menuProcessor) < processors.indexOf("key_binder"),
+			schema,
+		);
+		assert.ok(
+			content.engine.segmentors.includes("affix_segmentor@schema_menu"),
+			schema,
+		);
+		assert.ok(
+			content.engine.translators.includes(
+				"lua_translator@*snow.schema_menu*translator",
+			),
+			schema,
+		);
+	}
+});
 
 test("the shared key binder does not alias Ctrl+F to an arrow key", () => {
 	const schema = load(read("snow_pinyin.schema.yaml")) as {
@@ -417,6 +495,27 @@ test("U357 Three-Code fills every 630 slot with a unique fixed candidate", () =>
 	assert.equal(rows.length, 630);
 	assert.deepEqual(new Set(codes), new Set(expectedCodes));
 	assert.equal(new Set(words).size, 630);
+});
+
+test("U357 KeyTao fills every 630 auxiliary slot exactly once", () => {
+	const section = read("snow_jiandao.fixed.txt")
+		.split(/^# 630\r?$/mu)[1]
+		?.split(/^#/mu)[0];
+	assert.ok(section);
+	const codes = section
+		.split(/\r?\n/u)
+		.filter((line) => line.includes("\t"))
+		.map((line) => line.split("\t", 1)[0]);
+	const expected = [..."bpmfdtnlgkhjqxzcsrwye"].flatMap((initial) => [
+		...[..."ivuao"].map((auxiliary) => initial + auxiliary),
+		...[..."ivuao"].flatMap((secondAuxiliary) =>
+			[..."ivuao"].map(
+				(targetAuxiliary) => initial + secondAuxiliary + targetAuxiliary,
+			),
+		),
+	]);
+	assert.equal(codes.length, 630);
+	assert.deepEqual(new Set(codes), new Set(expected));
 });
 
 test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", () => {

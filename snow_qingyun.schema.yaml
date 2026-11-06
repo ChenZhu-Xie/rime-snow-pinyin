@@ -52,6 +52,7 @@ engine:
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping
     - recognizer
+    - lua_processor@*snow.schema_menu*processor
     - lua_processor@*snow.user_dict
     - lua_processor@*snow.history
     - lua_processor@*snow.code_navigator
@@ -66,11 +67,13 @@ engine:
     - ascii_segmentor
     - matcher
     - abc_segmentor
+    - affix_segmentor@schema_menu
     - affix_segmentor@pinyin
     - punct_segmentor
     - fallback_segmentor
   translators:
     - punct_translator
+    - lua_translator@*snow.schema_menu*translator
     - script_translator
     - script_translator@qingyun
     - table_translator@stroke

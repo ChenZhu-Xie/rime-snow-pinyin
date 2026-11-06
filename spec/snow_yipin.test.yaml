@@ -18,6 +18,15 @@ script: |
     return rank(something) <= 6
   end
 deploy:
+  schema_menu:
+    tests:
+      - send: "{F4}j{Release+j}d{Release+d}"
+        assert: cand[1].text == "冰雪键道" and cand[2].text == "冰雪健道" and cand[3].text == "冰雪简道" and cand[4] == nil
+      - send: "{Control+grave}l{Release+l}f{Release+f}j{Release+j}d{Release+d}{Escape}"
+        assert: preedit == nil
+      - send: "{Control+grave}l{Release+l}f{Release+f}j{Release+j}d{Release+d}{space}{Release+space}"
+        assert: commit == nil and preedit == nil
+      # 原生 switcher 在 engine 级处理，Mira 场景不暴露其状态；Ctrl+Shift+grave 由固定语料测试核对。
   select_character:
     tests:
       # 单字定字：[ 重复该字，] 在该字后追加“得”

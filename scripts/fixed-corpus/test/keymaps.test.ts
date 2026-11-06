@@ -47,9 +47,14 @@ test("seven released schemes bind only their vacant standalone key to a keymap",
 		"snow_jiandao_classic.schema.yaml",
 		"snow_shenyun_common.yaml",
 	]) {
-		assert.match(
-			read(schema),
-			/- recognizer\s+- lua_processor@\*snow\.keymap/u,
+		const document = load(read(schema)) as {
+			engine: { processors: string[] };
+		};
+		const processors = document.engine.processors;
+		assert.ok(
+			processors.indexOf("recognizer") <
+				processors.indexOf("lua_processor@*snow.keymap"),
+			schema,
 		);
 	}
 });

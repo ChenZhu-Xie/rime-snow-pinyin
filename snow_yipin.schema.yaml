@@ -21,6 +21,7 @@ engine:
   processors:
     - lua_processor@*snow.statistics*processor
     - ascii_composer
+    - lua_processor@*snow.schema_menu*processor
     - chord_composer
     - lua_processor@*snow.shape_processor
     - lua_processor@*snow.select_character
@@ -37,10 +38,12 @@ engine:
     - ascii_segmentor
     - matcher
     - abc_segmentor
+    - affix_segmentor@schema_menu
     - punct_segmentor
     - fallback_segmentor
   translators:
     - punct_translator
+    - lua_translator@*snow.schema_menu*translator
     - script_translator
     - lua_translator@*snow.statistics*translator
   filters:

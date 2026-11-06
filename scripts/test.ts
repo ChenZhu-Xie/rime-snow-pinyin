@@ -21,6 +21,7 @@ import {
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { checkPinyinDictionary } from "./check-pinyin-dict";
+import { makeMiraDefaultCustomization } from "./lib/mira-default-custom";
 import { ROOT } from "./lib/paths";
 import { copyRimeDependencies } from "./lib/rime-dependencies";
 
@@ -61,7 +62,7 @@ function prepareSource(dest: string, schema: string) {
 	// 每个部署默认会检查 schema_list 里的全部方案，只留被测方案能把部署从约 4 秒降到约 1.4 秒
 	writeFileSync(
 		join(dest, "default.custom.yaml"),
-		`patch:\n  schema_list:\n    - schema: ${schema}\n`,
+		makeMiraDefaultCustomization(schema),
 	);
 }
 

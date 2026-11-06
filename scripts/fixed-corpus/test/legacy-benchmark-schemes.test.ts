@@ -354,7 +354,20 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 		(jiandao.get("# 二简词") ?? []).map(([code, [word]]) => [code, word]),
 		"经典冰雪三拼与冰雪键道应共享同一套空 AA 二简词",
 	);
+	const expected630Codes = [..."bpmfdtnlgkhjqxzcsrwye"].flatMap((initial) => [
+		...[..."ivuao"].map((auxiliary) => initial + auxiliary),
+		...[..."ivuao"].flatMap((secondAuxiliary) =>
+			[..."ivuao"].map(
+				(targetAuxiliary) => initial + secondAuxiliary + targetAuxiliary,
+			),
+		),
+	]);
 	assert.equal(jiandao.get("# 630")?.length, 630);
+	assert.deepEqual(
+		new Set((jiandao.get("# 630") ?? []).map(([code]) => code)),
+		new Set(expected630Codes),
+		"经典冰雪键道应覆盖全部 21×5 个二码位与 21×5×5 个三码位",
+	);
 	assert.equal(words(jiandao.get("# 630") ?? []).size, 630);
 	assert.ok(
 		words(jiandao.get("# 单字") ?? []).size >=
@@ -362,17 +375,9 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 	);
 	assert.equal(sanpin.get("# 630")?.length, 630);
 	const sanpin630Codes = (sanpin.get("# 630") ?? []).map(([code]) => code);
-	const expectedSanpin630Codes = [..."bpmfdtnlgkhjqxzcsrwye"].flatMap(
-		(initial) => [
-			...[..."ivuao"].map((tone) => initial + tone),
-			...[..."ivuao"].flatMap((secondTone) =>
-				[..."ivuao"].map((targetTone) => initial + secondTone + targetTone),
-			),
-		],
-	);
 	assert.deepEqual(
 		new Set(sanpin630Codes),
-		new Set(expectedSanpin630Codes),
+		new Set(expected630Codes),
 		"经典冰雪三拼应覆盖全部 21×5 个二码位与 21×5×5 个三码位",
 	);
 	assert.equal(

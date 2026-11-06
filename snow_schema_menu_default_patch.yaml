@@ -1,0 +1,4 @@
+# 将以下 patch 合并到用户已有的 default.custom.yaml；不要直接覆盖其中的其他全局配置。
+# F4 与 Control+grave 随后由冰雪拼音的 Lua 可筛选选单处理，Control+Shift+grave 保留原生选单。
+patch:
+  "switcher/hotkeys": [Control+Shift+grave]

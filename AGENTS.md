@@ -27,8 +27,8 @@
 
 ## Rime integration tests
 
-- Do not attempt to run Mira through this machine's WSL or Docker environments; they are not suitable for the repository's real Rime candidate tests.
-- Run local static, generation, and corpus checks first, then push the branch and use GitHub Actions for Mira-based schema and candidate verification.
+- Do not run Mira locally on this machine, including native Windows, WSL, or Docker environments; they are not the verification environment for this repository's real Rime candidate tests.
+- Run local static, generation, and corpus checks first, then push the branch. Run all Mira-based schema and candidate verification only through GitHub Actions after the push.
 
 # 冰雪拼音开发约定
 
@@ -156,28 +156,16 @@ patch:
 
 `bun scripts/benchmark-latency.ts --ci` 执行五方案统一发布预算（`scripts/lib/latency-budget.ts` 中的 `LATENCY_BUDGET`）：P50 < 15 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；每场景及按键位置的 P99 也须 < 50 ms，首次反馈最大值 < 100 ms。不得按方案放宽标准或用低耗时的并击按下、松开事件稀释反馈分布。CI 和发布共用 `.github/workflows/latency.yml`，发布必须依赖门禁成功。
 
-测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。日常用 `scripts/test.ts`，九个发布方案并行；GitHub Actions 分别使用明确的 `mira-rime1.13.1` 与 `mira-rime1.17` 资产运行九方案，以同时覆盖当前稳定版小狼毫和新版 librime。失败时只打印失败用例，完整输出留在它给出的临时目录里：
-
-```sh
-bun scripts/test.ts                  # 全部九个发布方案
-bun scripts/test.ts yipin qingyun    # 只跑指定方案，snow_ 前缀可省
-```
+测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。不要在本机调用 `mira` 或 `bun scripts/test.ts`；先完成本地静态、生成和语料检查并推送分支，再仅由 GitHub Actions 调用 `scripts/test.ts` 并行验证九个发布方案。GitHub Actions 分别使用明确的 `mira-rime1.13.1` 与 `mira-rime1.17` 资产，以同时覆盖当前稳定版小狼毫和新版 librime；失败时只打印失败用例，完整输出留在它给出的临时目录里。
 
 `generate-pinyin-dict.ts` 在写文件前校验全部输入读音；`scripts/test.ts`、CI 和发布流程也会离线检查现有词典在全部九个发布方案中的完整音节编码。各方案的正则定义在 `scripts/lib/pinyin-validation.ts`，依据 `../input` 中对应的拼写教程及经典快照：冰雪四拼为声码加一至二码韵母加调码，冰雪弎拼与冰雪三拼为声韵调三码，冰雪健道与冰雪键道为声韵两码，冰雪简道与冰雪散拼为 21×26 声韵两码，冰雪清韵为声码加九键韵码，冰雪一拼为声介加可省略的韵基加四声标记。检查展开实际方案的拼写规则及引用，保留完整音节的 `derive` 分支，不检查 `abbrev`、简码、顶功或其他输入规则；字母伪音节不属于汉字音节，予以跳过。更新词典或拼写运算后运行 `bun scripts/check-pinyin-dict.ts`；结构异常应修正来源或运算，不应为已有异常放宽正则。
 
 `scripts/test.ts` 为每个方案准备一份独立环境，这几步都是为了提速或者能并行，不要省掉：
 
 - **精简的源目录**：mira 的每个 deploy 都会把整个 `source_dir`（spec 里写的是 `..`，也就是整个仓库，带 `.git`、`node_modules`、`cache`，约 1 GB）复制一遍。脚本只复制 `git ls-files -co --exclude-standard` 列出的文件，相当于 CI 的全新 checkout。本机的 `*.userdb`、`user.yaml` 自然被排除在外，不用再 `rm -rf *.userdb`。
-- **`default.custom.yaml` 只留被测方案**：否则每个 deploy 都要检查 `schema_list` 里的全部九个发布方案。这两项加起来可显著缩短部署时间。
+- **`default.custom.yaml` 只留被测方案并保留测试所需的全局热键 patch**：否则每个 deploy 都要检查 `schema_list` 里的全部九个发布方案，或因覆盖配置而让热键场景退回原生行为。这两项加起来可显著缩短部署时间且保证测试与发布配置一致。
 - **独立的 `TMPDIR`**：mira 的工作目录写死为 `$TMPDIR/mira`，启动时整个删掉，两个 mira 同时跑会互相删目录然后崩溃。
 - **独立的缓存副本**：`-C` 指向的 staging 目录不能共用。带 `patch` 的 deploy（冰雪弎拼、冰雪健道的 `sentence`，冰雪四拼的 `special`）会把改过的方案编译进缓存，改了词典后几个进程还会同时重建同一份 `.bin`。脚本先把仓库的 `cache/` 复制给每个方案，跑完再把更新过的文件写回去。
-
-只调一个 deploy 时直接用 mira 的 `-R` 更快，但这会用仓库本身作 `source_dir`，所以要自己清词频，同时也不能有别的 mira 在跑：
-
-```sh
-rm -rf *.userdb                   # 清掉上次运行累积的词频，与 CI 的全新 checkout 对齐
-mira -C cache -R '^popping$' spec/snow_sipin.test.yaml
-```
 
 - 断言里只有 `cand`（元素含 `.text`、`.comment`）、`preedit`、`commit`；`assert` 会被包进 `return (...)`，只能写表达式。
 - `has()` 扫描全部候选（可达上百个），文档说「出现在首页」时用 `page()`（`page_size` 为 6）。
@@ -280,12 +268,14 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
   processors:
     - lua_processor@*snow.statistics*processor
     - ascii_composer
+    - lua_processor@*snow.schema_menu*processor # 仅冰雪一拼；须先于 chord_composer 接收筛选字母
     - chord_composer                        # 仅冰雪一拼
     - lua_processor@*snow.shape_processor    # 冰雪清韵无
     - lua_processor@*snow.abbreviation      # 仅冰雪四拼
     - lua_processor@*snow.select_character  # 冰雪一拼无
     - lua_processor@*snow.popping           # 冰雪一拼用 combo_popping
     - recognizer
+    - lua_processor@*snow.schema_menu*processor # 除冰雪一拼外的发布方案
     - lua_processor@*snow.user_dict         # 冰雪一拼无
     - key_binder
     - lua_processor@*snow.editor            # 仅冰雪四拼、冰雪清韵
@@ -313,17 +303,14 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 - `user_dict` < `key_binder`：固定候选的上移/下移键由 `user_dict` 优先处理，分支落空时也要返回 `kAccepted`，避免按键继续穿透到后续处理器。
 - `shape_processor` < `key_binder`：冰雪四拼的 `1` 既是辅助码触发键又被绑成「定位」。
 - `statistics` 排第一：它只计数，除并击的最后一次松开外都返回 `kNoop`，要在其他处理器吃掉按键之前看到每个键，包括被 `ascii_composer` 吃掉的临时西文按键（靠它们判断临时西文是否上屏，以便丢掉之前累计的按键）。全局英文和临时西文由它自己按 `ascii_mode` 跳过；popping 重投的那一次靠 `snow.redispatching` 去重。
+- 冰雪一拼的 `schema_menu` < `chord_composer`：并击器会吞掉其字母表内的筛选字母和空格，选单处理器必须先接收菜单输入；其他方案仍把 `schema_menu` 放在 `recognizer` 后。
 - 其余沿用 Rime 原生顺序。
 
-拿不准的那一对不要按多数方案的现状定，跑 mira。另外，某个功能用小写键测像是完全失效时，可能是靠大写回投在工作（如冰雪清韵的 editor），要连大写一起测。
+拿不准的那一对不要按多数方案的现状定，补好 Mira 场景并在推送后由 GitHub Actions 验证。另外，某个功能用小写键测像是完全失效时，可能是靠大写回投在工作（如冰雪清韵的 editor），要连大写一起测。
 
 ### 验证
 
-改动 processors 后跑全部九份发布方案 spec：
-
-```sh
-bun scripts/test.ts
-```
+改动 processors 后先完成本地静态、生成和语料检查，推送分支，再确认 GitHub Actions 中两个 Mira 版本的全部九份发布方案 spec 均通过；本机不运行 Mira。
 
 手工逐键探查用 `~/Public/librime` build 里的 `rime_console -i`（带 librime-lua）：把仓库 rsync 到临时目录，补上 `default.yaml`／`essay.txt` 和只含待测方案的 `default.custom.yaml`。每行一个按键，非字母键写成 `{bracketleft}`、`{Control+bracketleft}`；输出的 `comp. : [{abc,jianpin}dejx=>得奖]` 会显示当前段的 tag。
 

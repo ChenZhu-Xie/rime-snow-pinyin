@@ -1,0 +1,47 @@
+# 可筛选方案选单设计
+
+## 意图
+
+以仓库内置的 Lua 选单替换原生 `F4` 与 `Ctrl+grave` 行为，在八个主要方案旁显示结构与定位说明，并允许用户输入中文声母串快速缩小候选范围。`Control+Shift+grave` 继续使用 librime 原生方案选单；直接调用 Rime API 切换方案的桌面和移动端前端不受影响。
+
+## 显示内容
+
+候选正文使用短方案名，注释使用括号内描述：
+
+- 冰雪键道（21²5⁴；经典键道；二字词低重）
+- 冰雪三拼（21²5ⁿ；经典三拼；单字简繁通打）
+- 冰雪健道（21²5⁴；零飞键道；三四字词低重）
+- 冰雪弎拼（21²5ⁿ；零飞三拼；人体工学）
+- 冰雪简道（21¹26¹5⁴；无重键道；没有 630）
+- 冰雪散拼（21¹26¹5ⁿ；无重三拼；顶功版廿六）
+- 冰雪四拼（21¹5ⁿ；动态调频；多音节词王）
+- 冰雪清韵（21ᵐ9¹；四码前缀；多字根字王）
+
+## 交互
+
+- `F4` 或 `Control+grave` 在九个发布方案中清空当前未上屏输入并打开八方案列表；再次按下任一入口或按 `Escape` 关闭。
+- 打开后输入小写字母形成声母查询串，`BackSpace` 逐字删除；无输入时按上述固定顺序显示全部八项。
+- 每项预先声明方案名与描述词的拼音声母别名。查询优先返回精确别名；没有精确别名时采用不区分分隔符的有序子序列匹配，例如 `jd` 可保留键道、健道、简道，`jdjd`、`lfjd`、`wzjd` 可分别定位经典键道、零飞键道、无重键道。
+- `Space`、`Return`、数字选项键和现有候选导航键沿用 Rime selector；选中后通过 `engine:apply_schema(Schema(schema_id))` 切换。选中当前方案只关闭选单。
+- 查询无匹配时保持选单输入，不回落到普通词典候选，方便继续退格修正。
+
+## 实现边界
+
+- 新增一个 `lua/snow/schema_menu.lua`，同时导出 processor、translator，并以静态表集中维护八项文字、schema_id 与声母别名。
+- 用一个不会由用户直接输入的内部前缀建立独立 `schema_menu` 分段；九份发布 schema 只增加共用 processor、affix segmentor、translator 和 recognizer 配置，不复制候选数据。
+- processor 通常排在 `recognizer` 之后、`key_binder` 之前；冰雪一拼例外地排在 `ascii_composer` 与 `chord_composer` 之间，并在菜单激活时直接接收字母、退格和确认键，避免并击器吞键。select notifier 连接保存到 env，并在 `fini` 中断开。
+- 原生 switcher 的全局热键只保留 `Control+Shift+grave`，移除 `F4` 与 `Control+grave`，避免原生 switcher 在 Lua processor 之前吞键。本机现有 `default.custom.yaml` 直接应用该 patch；发布包提供 `snow_schema_menu_default_patch.yaml` 供用户合并，不覆盖用户其他全局配置。
+- 不改变八份 schema 的 `schema/name`，避免长描述污染状态通知、统计输出和前端直接方案列表。
+
+## 方案取舍
+
+- 采用：Lua 自定义选单。它能在现有便携包内跨平台实现描述和筛选，无需定制 librime。
+- 放弃：直接扩大 `schema/name`。实现简单但不能筛选，并会改变所有展示方案名的场合。
+- 放弃：修改 librime 原生 switcher。能保留原生界面，但要求各平台分发定制算法库，与当前安装模型冲突。
+
+## 验证
+
+- Lua 单元测试覆盖声母子序列匹配、空查询、无匹配、当前方案与目标方案选择。
+- 固定语料测试核对九份发布 schema 的组件顺序、原生热键拆分及八项精确文案。
+- 推送后由 GitHub Actions 的 Mira 至少验证冰雪键道与冰雪一拼均能用两个 Lua 入口呼出、筛选、取消和切换；`Control+Shift+grave` 的原生热键由静态契约核对。全套本地静态测试确保新增独立分段不影响普通编码，本机不运行 Mira。
+
