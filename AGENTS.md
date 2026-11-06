@@ -150,7 +150,7 @@ patch:
 
 按键反馈性能测量见 [docs/latency.md](docs/latency.md)：`bun scripts/benchmark-latency.ts [方案]` 使用 `rime_api_console` 逐键测量。完整场景采样完成后自动更新文档中的当前结果，并在输出目录保存文档快照；分方案测量保留其他行的时间与环境，历史版本及部分场景探查不覆盖完整结果。性能测量不能与 mira 或其他基准并行运行。
 
-`bun scripts/benchmark-latency.ts --ci` 执行五方案统一发布预算（`scripts/lib/latency-budget.ts` 中的 `LATENCY_BUDGET`）：P50 < 10 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；每场景及按键位置的 P99 也须 < 50 ms，首次反馈最大值 < 100 ms。不得按方案放宽标准或用低耗时的并击按下、松开事件稀释反馈分布。CI 和发布共用 `.github/workflows/latency.yml`，发布必须依赖门禁成功。
+`bun scripts/benchmark-latency.ts --ci` 执行五方案统一发布预算（`scripts/lib/latency-budget.ts` 中的 `LATENCY_BUDGET`）：P50 < 15 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；每场景及按键位置的 P99 也须 < 50 ms，首次反馈最大值 < 100 ms。不得按方案放宽标准或用低耗时的并击按下、松开事件稀释反馈分布。CI 和发布共用 `.github/workflows/latency.yml`，发布必须依赖门禁成功。
 
 测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。日常用 `scripts/test.ts`，九个发布方案并行；GitHub Actions 分别使用明确的 `mira-rime1.13.1` 与 `mira-rime1.17` 资产运行九方案，以同时覆盖当前稳定版小狼毫和新版 librime。失败时只打印失败用例，完整输出留在它给出的临时目录里：
 

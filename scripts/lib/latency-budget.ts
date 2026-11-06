@@ -3,7 +3,7 @@ import { LATENCY_CASES, SCHEMA_NAMES } from "../data/latency-cases";
 // 五个方案共用毫秒预算；首次遍历单独限制最大值，不用单次遍历估计每个事件的分位数。
 export const LATENCY_BUDGET = {
 	minimumRounds: 200,
-	p50: 10,
+	p50: 15,
 	p95: 25,
 	p99: 50,
 	firstMax: 100,

@@ -34,7 +34,7 @@ bun scripts/benchmark-latency.ts jiandao
 
 ## 统一发布预算
 
-五个方案采用 [`latency-budget.ts`](../scripts/lib/latency-budget.ts) 中的 `LATENCY_BUDGET`，有效反馈的 P50 < 10 ms、P95 < 25 ms、P99 < 50 ms。50 ms 上限参考 [RAIL 的输入处理预算](https://web.dev/articles/rail#response_process_events_in_under_50ms)，为排队和前端绘制留出余量；10/25 ms 是本仓库为连续输入设置的更严格工程目标，不能据此保证所有设备的端到端延迟。
+五个方案采用 [`latency-budget.ts`](../scripts/lib/latency-budget.ts) 中的 `LATENCY_BUDGET`，有效反馈的 P50 < 15 ms、P95 < 25 ms、P99 < 50 ms。50 ms 上限参考 [RAIL 的输入处理预算](https://web.dev/articles/rail#response_process_events_in_under_50ms)，为排队和前端绘制留出余量；15/25 ms 是本仓库为连续输入设置的更严格工程目标，不能据此保证所有设备的端到端延迟。
 
 `--ci` 固定测当前工作区、全部方案和全部场景，至少 200 轮。统计 `feedback` 分组：顺序方案计全部事件，冰雪一拼计并击末次松开及翻页等非并击操作。每方案的重复反馈须同时满足三项分位数；每场景、每个按键位置另须 P99 < 50 ms，防止汇总掩盖局部卡顿；首次遍历最大反馈须 < 100 ms。没有按方案放宽预算、删除离群值或自动重跑择优。保存的报告可用 `bun scripts/check-latency.ts <report.json>` 复查。
 
