@@ -141,6 +141,66 @@ test("tone and shape diagrams keep their auxiliary semantics separate", () => {
 	assert.match(read("lua/snow/keymaps/snow_sipin.svg"), /腹 o\/üa\/üe/u);
 });
 
+test("shape diagrams distinguish stroke and single-key and two-key roots", () => {
+	const expectedMinimumSize = {
+		stroke: 14,
+		"single-root": 15,
+		"double-root": 13,
+	} as const;
+	for (const image of [
+		"snow_jiandao.svg",
+		"snow_jiandao_classic.svg",
+		"snow_shenyun_shape.svg",
+	]) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		const colors = new Map<string, string>();
+		for (const [kind, minimumSize] of Object.entries(expectedMinimumSize)) {
+			const tags = [
+				...svg.matchAll(
+					new RegExp(`<text\\b[^>]*data-aux-kind="${kind}"[^>]*>`, "gu"),
+				),
+			].map(([tag]) => tag);
+			assert.equal(tags.length, 5, `${image} should label five ${kind} rows`);
+			const kindColors = new Set<string>();
+			for (const tag of tags) {
+				const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+				const fill = tag.match(/fill="([^"]+)"/u)?.[1];
+				assert.ok(size >= minimumSize, `${image} ${kind} font is too small`);
+				assert.ok(fill, `${image} ${kind} should define a foreground color`);
+				kindColors.add(fill);
+			}
+			assert.equal(
+				kindColors.size,
+				1,
+				`${image} ${kind} color should be stable`,
+			);
+			colors.set(kind, [...kindColors][0]);
+		}
+		assert.equal(
+			new Set(colors.values()).size,
+			3,
+			`${image} auxiliary colors must be pairwise distinct`,
+		);
+		assert.match(svg, /形辅前景：笔画绿 · 单辅键码根棕 · 双辅键码根紫/u);
+		assert.match(
+			svg,
+			/<text\b(?=[^>]*data-aux-kind="stroke")[^>]*>横 一<\/text>/u,
+		);
+		assert.match(
+			svg,
+			/<text\b(?=[^>]*data-aux-kind="single-root")[^>]*>木<\/text>/u,
+		);
+	}
+	assert.match(
+		read("lua/snow/keymaps/snow_jiandao_classic.svg"),
+		/<text\b(?=[^>]*data-aux-kind="double-root")[^>]*>土\/士 vo<\/text>/u,
+	);
+	assert.match(
+		read("lua/snow/keymaps/snow_shenyun_shape.svg"),
+		/<text\b(?=[^>]*data-aux-kind="double-root")[^>]*>土\/士 eo<\/text>/u,
+	);
+});
+
 test("seven diagrams share the benchmark Morandi semantic vocabulary", () => {
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);

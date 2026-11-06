@@ -10,11 +10,21 @@ type Mapping = {
 	toneKeysByTone: string;
 };
 
-type KeyNote = {
+type GenericKeyNote = {
 	primary: string;
 	secondary?: string;
 	tertiary?: string;
 };
+
+type ShapeKeyNote = {
+	stroke: string;
+	singleRoot: string;
+	doubleRoot: string;
+};
+
+type KeyNote = GenericKeyNote | ShapeKeyNote;
+
+type ShapeAuxiliaryKind = "stroke" | "single-root" | "double-root";
 
 type Diagram = {
 	filename: string;
@@ -158,7 +168,7 @@ function initialLabels(mapping: Mapping) {
 	return result;
 }
 
-function toneNotes(keys: string) {
+function toneNotes(keys: string): Record<string, GenericKeyNote> {
 	const tones = ["一声 ˉ", "二声 ˊ", "三声 ˇ", "四声 ˋ", "轻声 ·"];
 	return Object.fromEntries(
 		[...keys].map((key, index) => [
@@ -168,7 +178,7 @@ function toneNotes(keys: string) {
 	);
 }
 
-function shapeNotes(keys: string) {
+function shapeNotes(keys: string): Record<string, ShapeKeyNote> {
 	const meaningKeys = [...keys.toUpperCase()];
 	const physical = {
 		a: meaningKeys[0],
@@ -183,21 +193,35 @@ function shapeNotes(keys: string) {
 			.join("")
 			.toLowerCase();
 	return {
-		[physical.a]: { primary: "折 ㇕ · 水", secondary: `贝 ${code("ao")}` },
+		[physical.a]: {
+			stroke: "折 ㇕",
+			singleRoot: "水",
+			doubleRoot: `贝 ${code("ao")}`,
+		},
 		[physical.v]: {
-			primary: "横 一 · 木",
-			secondary: `土/士 ${code("vo")}`,
+			stroke: "横 一",
+			singleRoot: "木",
+			doubleRoot: `土/士 ${code("vo")}`,
 		},
-		[physical.u]: { primary: "撇 丿 · 月", secondary: `十 ${code("uo")}` },
+		[physical.u]: {
+			stroke: "撇 丿",
+			singleRoot: "月",
+			doubleRoot: `十 ${code("uo")}`,
+		},
 		[physical.i]: {
-			primary: "竖 丨 · 人",
-			secondary: `艹 ${code("ii")} · 手 ${code("iu")} · 金 ${code("io")}`,
+			stroke: "竖 丨",
+			singleRoot: "人",
+			doubleRoot: `艹 ${code("ii")} · 手 ${code("iu")} · 金 ${code("io")}`,
 		},
-		[physical.o]: { primary: "点 丶 · 口", secondary: `日 ${code("oi")}` },
+		[physical.o]: {
+			stroke: "点 丶",
+			singleRoot: "口",
+			doubleRoot: `日 ${code("oi")}`,
+		},
 	};
 }
 
-const sipinAuxiliary: Record<string, KeyNote> = {
+const sipinAuxiliary: Record<string, GenericKeyNote> = {
 	A: { primary: "腹 a/ü", secondary: "尾 m · 四声 ˋ", tertiary: "折 ㇕" },
 	E: { primary: "腹 e/ie", secondary: "尾 ng · 二声 ˊ", tertiary: "横 一" },
 	U: { primary: "腹 u/ia/ue", secondary: "三声 ˇ", tertiary: "撇 丿" },
@@ -288,9 +312,113 @@ function text(
 	x: number,
 	y: number,
 	value: string,
-	options: { size: number; fill: string; anchor?: string; weight?: number },
+	options: {
+		size: number;
+		fill: string;
+		anchor?: string;
+		weight?: number;
+		auxKind?: ShapeAuxiliaryKind;
+		textLength?: number;
+	},
 ) {
-	return `<text x="${x}" y="${y}" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}">${escapeXml(value)}</text>`;
+	const auxiliaryKind = options.auxKind
+		? ` data-aux-kind="${options.auxKind}"`
+		: "";
+	const fittedLength = options.textLength
+		? ` textLength="${options.textLength}" lengthAdjust="spacingAndGlyphs"`
+		: "";
+	return `<text x="${x}" y="${y}" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${fittedLength}>${escapeXml(value)}</text>`;
+}
+
+function isShapeKeyNote(note: KeyNote): note is ShapeKeyNote {
+	return "stroke" in note;
+}
+
+function auxiliaryLabels(note: KeyNote) {
+	return isShapeKeyNote(note)
+		? [note.stroke, note.singleRoot, note.doubleRoot]
+		: [note.primary, note.secondary, note.tertiary].filter(
+				(value): value is string => value !== undefined,
+			);
+}
+
+function renderShapeAuxiliary(
+	note: ShapeKeyNote,
+	x: number,
+	y: number,
+	auxiliaryOnly: boolean,
+) {
+	const center = x + keyWidth / 2;
+	const rows: Array<{
+		kind: ShapeAuxiliaryKind;
+		value: string;
+		size: number;
+		fill: string;
+		weight: number;
+	}> = [
+		{
+			kind: "stroke",
+			value: note.stroke,
+			size: 14,
+			fill: "#426b59",
+			weight: 750,
+		},
+		{
+			kind: "single-root",
+			value: note.singleRoot,
+			size: 15,
+			fill: "#a05b37",
+			weight: 750,
+		},
+		{
+			kind: "double-root",
+			value: note.doubleRoot,
+			size: 13,
+			fill: "#66506a",
+			weight: 650,
+		},
+	];
+	if (auxiliaryOnly) {
+		const cardY = y + 34;
+		return [
+			`<rect x="${x + 6}" y="${cardY}" width="${keyWidth - 12}" height="86" rx="10" fill="#e4f1e9" stroke="#77a08c" stroke-width="1.2"/>`,
+			...rows.map((row, index) =>
+				text(center, cardY + [21, 44, 68][index], row.value, {
+					size: row.size,
+					fill: row.fill,
+					anchor: "middle",
+					weight: row.weight,
+					auxKind: row.kind,
+					textLength: row.value.length > 14 ? 76 : undefined,
+				}),
+			),
+		];
+	}
+	return [
+		`<rect x="${x + 40}" y="${y + 4}" width="47" height="22" rx="6" fill="#e4f1e9" stroke="#77a08c"/>`,
+		text(x + 63.5, y + 19, note.stroke, {
+			size: rows[0].size,
+			fill: rows[0].fill,
+			anchor: "middle",
+			weight: rows[0].weight,
+			auxKind: rows[0].kind,
+		}),
+		text(center, y + 45, note.singleRoot, {
+			size: rows[1].size,
+			fill: rows[1].fill,
+			anchor: "middle",
+			weight: rows[1].weight,
+			auxKind: rows[1].kind,
+		}),
+		text(center, y + 66, note.doubleRoot, {
+			size: rows[2].size,
+			fill: rows[2].fill,
+			anchor: "middle",
+			weight: rows[2].weight,
+			auxKind: rows[2].kind,
+			textLength: note.doubleRoot.length > 14 ? 76 : undefined,
+		}),
+	];
 }
 
 function semanticColor(final: string) {
@@ -317,6 +445,12 @@ function displayInitialLabels(key: string, roles: string[]) {
 }
 
 function render(diagram: Diagram) {
+	const hasShapeAuxiliary = Object.values(diagram.auxiliary ?? {}).some(
+		isShapeKeyNote,
+	);
+	const semanticLegend = hasShapeAuxiliary
+		? "形辅前景：笔画绿 · 单辅键码根棕 · 双辅键码根紫；背景、纹理和边框表示声韵占用。"
+		: "声韵占用、五辅键与多韵键使用独立的莫兰迪背景、纹理和边框。";
 	const rawInitials = diagram.mapping
 		? invert(diagram.mapping.initialMap)
 		: new Map(Object.entries(sipinInitials));
@@ -395,7 +529,7 @@ function render(diagram: Diagram) {
 			const titleFinals = final.join(" / ") || "—";
 			const items = [
 				`<g data-key="${key}" data-role="${role}"${multi ? ' data-multi="true"' : ""}>`,
-				`<title>${key}｜声码 ${escapeXml(titleInitials)}｜韵码 ${escapeXml(titleFinals)}${auxiliary ? `｜辅键 ${escapeXml([auxiliary.primary, auxiliary.secondary, auxiliary.tertiary].filter(Boolean).join(" / "))}` : ""}</title>`,
+				`<title>${key}｜声码 ${escapeXml(titleInitials)}｜韵码 ${escapeXml(titleFinals)}${auxiliary ? `｜辅键 ${escapeXml(auxiliaryLabels(auxiliary).join(" / "))}` : ""}</title>`,
 				`<clipPath id="${clip}"><rect x="${x + 3}" y="${y + 3}" width="${keyWidth - 6}" height="${keyHeight - 6}" rx="7"/></clipPath>`,
 				`<rect x="${x}" y="${y}" width="${keyWidth}" height="${keyHeight}" rx="9" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"${dash ? ` stroke-dasharray="${dash}"` : ""}/>`,
 				...(multi
@@ -446,7 +580,9 @@ function render(diagram: Diagram) {
 			if (auxiliary) {
 				const auxiliaryOnly = !hasInitial && !hasRhyme;
 				const sipinDetail = diagram.filename === "snow_sipin";
-				if (auxiliaryOnly || sipinDetail) {
+				if (isShapeKeyNote(auxiliary)) {
+					items.push(...renderShapeAuxiliary(auxiliary, x, y, auxiliaryOnly));
+				} else if (auxiliaryOnly || sipinDetail) {
 					const lines = [
 						auxiliary.primary,
 						auxiliary.secondary,
@@ -499,7 +635,13 @@ function render(diagram: Diagram) {
 				const layers =
 					(ordinaryText ? 1 : 0) +
 					(zeroText ? 1 : 0) +
-					(auxiliary?.secondary ? 1 : 0);
+					(auxiliary
+						? isShapeKeyNote(auxiliary)
+							? 2
+							: auxiliary.secondary
+								? 1
+								: 0
+						: 0);
 				const count = Math.min(final.length, 3);
 				const first =
 					count <= 1
@@ -550,7 +692,7 @@ function render(diagram: Diagram) {
 			groups.push(items.join(""));
 		}
 	}
-	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, "声韵占用、五辅键与多韵键使用独立的莫兰迪背景、纹理和边框。", { size: 14, fill: "#5f5862" })}${text(24, 559, "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组", { size: 12, fill: "#74717a" })}</svg>\n`;
+	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, semanticLegend, { size: 14, fill: "#5f5862" })}${text(24, 559, "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组", { size: 12, fill: "#74717a" })}</svg>\n`;
 }
 
 function update(path: string, content: Uint8Array | string) {
