@@ -60,7 +60,7 @@ deploy:
         assert: cand[1].text == "学"
       - send: be
         assert: cand[1].text == "表示"
-      - send: yo
+      - send: ya
         assert: cand[1].text == "一个"
       # 字母全码沿用冰雪键道二键基码，并追加现行 21×21 轻声键 o。
       - send: bco
@@ -80,14 +80,14 @@ deploy:
       - send: ekeka
         assert: cand[2].text == "事实"
       # 顶功
-      - send: yoyo
+      - send: yaya
         assert: commit == "一个" and cand[1].text == "一个"
       - send: bgixhu
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pbyberf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 动态码长
-      - send: "ekekavekek"
+      - send: "ekekaiekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
       - send: "{Control+b}jp mzi  jpmz"
