@@ -7,7 +7,7 @@ use std::num::NonZeroU32;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use fs2::FileExt;
 use resvg::{tiny_skia, usvg};
@@ -15,13 +15,11 @@ use softbuffer::{Context, Surface};
 use winit::application::ApplicationHandler;
 use winit::dpi::{PhysicalPosition, PhysicalSize};
 use winit::event::{ElementState, MouseButton, MouseScrollDelta, Touch, TouchPhase, WindowEvent};
-use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop, EventLoopProxy};
+use winit::event_loop::{ActiveEventLoop, EventLoop, EventLoopProxy};
 use winit::keyboard::{Key, NamedKey};
 use winit::window::{Window, WindowAttributes, WindowId, WindowLevel};
 
 const POLL_INTERVAL: Duration = Duration::from_millis(30);
-const LONG_PRESS_DELAY: Duration = Duration::from_millis(500);
-const DRAG_THRESHOLD: f64 = 6.0;
 const MIN_ZOOM: f64 = 0.55;
 const MAX_ZOOM: f64 = 2.5;
 
@@ -89,28 +87,8 @@ fn parse_command(value: &str) -> Option<Command> {
     })
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum PressOutcome {
-    KeepOpen,
-    Close,
-}
-
-fn finish_press(elapsed: Duration, moved: bool) -> PressOutcome {
-    if elapsed >= LONG_PRESS_DELAY && !moved {
-        PressOutcome::Close
-    } else {
-        PressOutcome::KeepOpen
-    }
-}
-
 fn adjust_zoom(current: f64, delta: f64) -> f64 {
     (current + delta).clamp(MIN_ZOOM, MAX_ZOOM)
-}
-
-fn positions_differ(before: PhysicalPosition<i32>, after: PhysicalPosition<i32>) -> bool {
-    let dx = f64::from(after.x - before.x);
-    let dy = f64::from(after.y - before.y);
-    dx.hypot(dy) >= DRAG_THRESHOLD
 }
 
 fn centered_position(
@@ -210,32 +188,26 @@ struct RenderedImage {
     pixels: Vec<u32>,
 }
 
-struct MousePress {
-    started: Instant,
-    window_position: PhysicalPosition<i32>,
-    drag_started: bool,
-    moved: bool,
-}
-
 struct TouchPress {
     id: u64,
-    started: Instant,
     origin: PhysicalPosition<f64>,
     window_position: PhysicalPosition<i32>,
-    moved: bool,
 }
 
-fn render_svg(
-    path: &Path,
-    maximum_size: PhysicalSize<u32>,
-    scale_factor: f64,
-) -> Result<RenderedImage, String> {
+fn load_svg(path: &Path) -> Result<usvg::Tree, String> {
     let data = std::fs::read(path)
         .map_err(|error| format!("无法读取键位图 {}：{error}", path.display()))?;
     let mut options = usvg::Options::default();
     options.fontdb_mut().load_system_fonts();
-    let tree = usvg::Tree::from_data(&data, &options)
-        .map_err(|error| format!("无法解析键位图 {}：{error}", path.display()))?;
+    usvg::Tree::from_data(&data, &options)
+        .map_err(|error| format!("无法解析键位图 {}：{error}", path.display()))
+}
+
+fn render_svg(
+    tree: &usvg::Tree,
+    maximum_size: PhysicalSize<u32>,
+    scale_factor: f64,
+) -> Result<RenderedImage, String> {
     let source = tree.size();
     let desired_scale = scale_factor.max(0.1);
     let scale = desired_scale
@@ -247,7 +219,7 @@ fn render_svg(
         .ok_or_else(|| format!("无法为键位图分配 {width}×{height} 画布"))?;
     pixmap.fill(tiny_skia::Color::from_rgba8(0xff, 0xfd, 0xf9, 0xff));
     let transform = tiny_skia::Transform::from_scale(scale as f32, scale as f32);
-    resvg::render(&tree, transform, &mut pixmap.as_mut());
+    resvg::render(tree, transform, &mut pixmap.as_mut());
     let (rgba_pixels, remainder) = pixmap.data().as_chunks::<4>();
     debug_assert!(remainder.is_empty());
     let pixels = rgba_pixels
@@ -265,11 +237,11 @@ struct App {
     window: Option<Arc<Window>>,
     surface: Option<Surface<Arc<Window>, Arc<Window>>>,
     image: Option<RenderedImage>,
+    svg: Option<usvg::Tree>,
     current_path: Option<PathBuf>,
     pending_command: Option<Command>,
     visible: bool,
     zoom: f64,
-    mouse_press: Option<MousePress>,
     touches: HashMap<u64, PhysicalPosition<f64>>,
     touch_press: Option<TouchPress>,
     touch_span: Option<f64>,
@@ -281,11 +253,11 @@ impl App {
             window: None,
             surface: None,
             image: None,
+            svg: None,
             current_path: None,
             pending_command: None,
             visible: false,
             zoom: 1.0,
-            mouse_press: None,
             touches: HashMap::new(),
             touch_press: None,
             touch_span: None,
@@ -297,7 +269,6 @@ impl App {
             window.set_visible(false);
         }
         self.visible = false;
-        self.mouse_press = None;
         self.touches.clear();
         self.touch_press = None;
         self.touch_span = None;
@@ -323,16 +294,15 @@ impl App {
     }
 
     fn render_current(&mut self, event_loop: &ActiveEventLoop, keep_bottom_right: bool) -> bool {
-        let (Some(window), Some(path)) = (self.window.as_ref(), self.current_path.as_ref()) else {
+        let (Some(window), Some(svg)) = (self.window.as_ref(), self.svg.as_ref()) else {
             return false;
         };
         let window = window.clone();
-        let path = path.clone();
         let previous_size = self.image.as_ref().map_or(window.inner_size(), |image| {
             PhysicalSize::new(image.width, image.height)
         });
         let (_, maximum_size) = self.monitor_and_maximum(event_loop);
-        let Ok(image) = render_svg(&path, maximum_size, window.scale_factor() * self.zoom) else {
+        let Ok(image) = render_svg(svg, maximum_size, window.scale_factor() * self.zoom) else {
             return false;
         };
         let previous_position = window.outer_position().ok();
@@ -405,7 +375,11 @@ impl App {
 
         let first_show = !self.visible;
         if self.current_path.as_deref() != Some(command.image_path.as_path()) {
+            let Ok(svg) = load_svg(&command.image_path) else {
+                return;
+            };
             self.current_path = Some(command.image_path);
+            self.svg = Some(svg);
             if !self.render_current(event_loop, false) {
                 return;
             }
@@ -449,12 +423,10 @@ impl App {
                 if self.touches.len() == 1 {
                     self.touch_press = Some(TouchPress {
                         id: touch.id,
-                        started: Instant::now(),
                         origin: touch.location,
                         window_position: window
                             .outer_position()
                             .unwrap_or(PhysicalPosition::new(0, 0)),
-                        moved: false,
                     });
                 } else {
                     self.touch_press = None;
@@ -466,27 +438,24 @@ impl App {
                 if self.touches.len() == 1
                     && let Some(press) = self.touch_press.as_mut()
                     && press.id == touch.id
-                    && press.started.elapsed() >= LONG_PRESS_DELAY
                 {
                     let dx = touch.location.x - press.origin.x;
                     let dy = touch.location.y - press.origin.y;
-                    if dx.hypot(dy) >= DRAG_THRESHOLD {
-                        press.moved = true;
-                        window.set_outer_position(PhysicalPosition::new(
-                            press.window_position.x + dx.round() as i32,
-                            press.window_position.y + dy.round() as i32,
-                        ));
-                    }
+                    window.set_outer_position(PhysicalPosition::new(
+                        press.window_position.x + dx.round() as i32,
+                        press.window_position.y + dy.round() as i32,
+                    ));
                 }
                 self.update_touch_zoom(event_loop);
             }
             TouchPhase::Ended | TouchPhase::Cancelled => {
                 self.touches.remove(&touch.id);
-                if let Some(press) = self.touch_press.take()
-                    && press.id == touch.id
-                    && finish_press(press.started.elapsed(), press.moved) == PressOutcome::Close
+                if self
+                    .touch_press
+                    .as_ref()
+                    .is_some_and(|press| press.id == touch.id)
                 {
-                    self.hide();
+                    self.touch_press = None;
                 }
                 self.update_touch_zoom(event_loop);
             }
@@ -516,39 +485,6 @@ impl App {
 }
 
 impl ApplicationHandler<UserEvent> for App {
-    fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
-        let Some(press) = self.mouse_press.as_mut() else {
-            return;
-        };
-        if press.drag_started {
-            return;
-        }
-        let deadline = press.started + LONG_PRESS_DELAY;
-        if Instant::now() < deadline {
-            event_loop.set_control_flow(ControlFlow::WaitUntil(deadline));
-            return;
-        }
-        let Some(window) = self.window.as_ref() else {
-            return;
-        };
-        press.drag_started = true;
-        let _ = window.drag_window();
-
-        // macOS 的原生拖动可能吞掉鼠标释放事件，并在松开后才返回。
-        #[cfg(target_os = "macos")]
-        {
-            let Some(press) = self.mouse_press.take() else {
-                return;
-            };
-            let after = window.outer_position().unwrap_or(press.window_position);
-            let moved = press.moved || positions_differ(press.window_position, after);
-            if finish_press(press.started.elapsed(), moved) == PressOutcome::Close {
-                self.hide();
-            }
-        }
-        event_loop.set_control_flow(ControlFlow::Wait);
-    }
-
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         if self.window.is_some() {
             return;
@@ -630,38 +566,7 @@ impl ApplicationHandler<UserEvent> for App {
                 button: MouseButton::Left,
                 ..
             } => {
-                self.mouse_press = Some(MousePress {
-                    started: Instant::now(),
-                    window_position: window
-                        .outer_position()
-                        .unwrap_or(PhysicalPosition::new(0, 0)),
-                    drag_started: false,
-                    moved: false,
-                });
-                event_loop
-                    .set_control_flow(ControlFlow::WaitUntil(Instant::now() + LONG_PRESS_DELAY));
-            }
-            WindowEvent::MouseInput {
-                state: ElementState::Released,
-                button: MouseButton::Left,
-                ..
-            } => {
-                if let Some(press) = self.mouse_press.take() {
-                    let after = window.outer_position().unwrap_or(press.window_position);
-                    let moved = press.moved || positions_differ(press.window_position, after);
-                    if finish_press(press.started.elapsed(), moved) == PressOutcome::Close {
-                        self.hide();
-                    }
-                }
-                event_loop.set_control_flow(ControlFlow::Wait);
-            }
-            WindowEvent::Moved(position) => {
-                if let Some(press) = self.mouse_press.as_mut()
-                    && press.drag_started
-                    && positions_differ(press.window_position, position)
-                {
-                    press.moved = true;
-                }
+                let _ = window.drag_window();
             }
             WindowEvent::MouseInput {
                 state: ElementState::Released,
@@ -743,20 +648,22 @@ mod tests {
     }
 
     #[test]
-    fn short_click_stays_open_and_stationary_long_press_closes() {
-        assert_eq!(
-            finish_press(Duration::from_millis(120), false),
-            PressOutcome::KeepOpen
-        );
-        assert_eq!(finish_press(LONG_PRESS_DELAY, false), PressOutcome::Close);
-        assert_eq!(finish_press(LONG_PRESS_DELAY, true), PressOutcome::KeepOpen);
-    }
-
-    #[test]
     fn zoom_is_bounded_for_wheel_and_pinch_input() {
         assert_eq!(adjust_zoom(1.0, 0.2), 1.2);
         assert_eq!(adjust_zoom(MAX_ZOOM, 1.0), MAX_ZOOM);
         assert_eq!(adjust_zoom(MIN_ZOOM, -1.0), MIN_ZOOM);
+    }
+
+    #[test]
+    fn cached_svg_tree_renders_at_multiple_zoom_levels() {
+        let path =
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../lua/snow/keymaps/snow_sipin.svg");
+        let svg = load_svg(&path).unwrap();
+        let maximum = PhysicalSize::new(2400, 1400);
+        let normal = render_svg(&svg, maximum, 0.5).unwrap();
+        let zoomed = render_svg(&svg, maximum, 0.75).unwrap();
+        assert!(zoomed.width > normal.width);
+        assert!(zoomed.height > normal.height);
     }
 
     #[test]

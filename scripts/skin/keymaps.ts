@@ -40,7 +40,7 @@ export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 								name: `${id}_image`,
 								image: id,
 								up: "!pinyin",
-								hold: "!pinyin",
+								hold: "#空操作",
 							},
 						],
 					],

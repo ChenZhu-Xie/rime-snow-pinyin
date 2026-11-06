@@ -438,22 +438,24 @@ function renderToneLine(
 	y: number,
 	nameSize: number,
 ) {
+	const toneFontFamily =
+		"Noto Sans Mono CJK SC, Noto Sans CJK SC, Noto Sans SC, Microsoft YaHei UI, sans-serif";
 	return [
-		text(x + 38, y, tone, {
+		text(x + 34, y, tone, {
 			size: nameSize,
 			fill: "#a05b37",
 			anchor: "middle",
-			weight: 750,
+			weight: 700,
 			auxKind: "tone",
+			fontFamily: toneFontFamily,
 		}),
-		text(x + 68, y + 1, toneMark, {
-			size: 22,
+		text(x + 70, y + 4, toneMark, {
+			size: 42,
 			fill: "#a05b37",
 			anchor: "middle",
-			weight: 750,
+			weight: 700,
 			auxMark: "tone",
-			fontFamily:
-				"Noto Sans Symbols 2, Segoe UI Symbol, Arial Unicode MS, sans-serif",
+			fontFamily: toneFontFamily,
 		}),
 	];
 }
@@ -528,7 +530,7 @@ function renderToneAuxiliary(
 			note.toneMark,
 			x,
 			y + (auxiliaryOnly ? 82 : 50),
-			15,
+			18,
 		),
 	];
 }
@@ -556,7 +558,7 @@ function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
 		renderStrokeBadge(note.stroke, x, y),
 		...rows.flatMap((row, index) =>
 			"mark" in row
-				? renderToneLine(row.value, row.mark, x, y + first + index * step, 14)
+				? renderToneLine(row.value, row.mark, x, y + first + index * step, 18)
 				: [
 						text(x + keyWidth / 2, y + first + index * step, row.value, {
 							size: 14,

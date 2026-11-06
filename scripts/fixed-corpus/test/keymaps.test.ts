@@ -102,7 +102,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.equal(mobileImageKey.image, "snow_sipin");
 	assert.equal(mobileImageKey.action, "#空操作");
 	assert.equal(mobileImageKey.up, "!pinyin");
-	assert.equal(mobileImageKey.hold, "!pinyin");
+	assert.equal(mobileImageKey.hold, "#空操作");
 
 	const hamster = makeHamsterSkin({
 		...keyboards.keymap_snow_sipin,
@@ -120,7 +120,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	);
 	assert.deepEqual(
 		(hamster.snow_sipin_image as { repeatAction?: unknown }).repeatAction,
-		{ keyboardType: "pinyin" },
+		undefined,
 	);
 	assert.deepEqual(
 		(hamster.pinyin as { swipeUpAction: unknown }).swipeUpAction,
@@ -142,7 +142,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.equal(trime.preset_keys[trimeImageKey.click].send, undefined);
 	assert.equal(trime.preset_keys[trimeImageKey.click].select, undefined);
 	assert.ok(trimeImageKey.long_click);
-	assert.equal(trime.preset_keys[trimeImageKey.long_click].select, "pinyin");
+	assert.equal(trime.preset_keys[trimeImageKey.long_click].select, undefined);
 	const sipinSelector = trime.preset_keyboards.keymaps.keys[0].click;
 	assert.equal(trime.preset_keys[sipinSelector].label, "冰雪四拼");
 });
@@ -268,7 +268,7 @@ test("tone auxiliaries are centered and no smaller than shape roots", () => {
 	}
 });
 
-test("tone marks use a symbol font and a visibly larger size", () => {
+test("tone marks use bold Noto CJK glyphs at a visibly larger size", () => {
 	for (const image of [
 		"snow_sipin.svg",
 		"snow_sanpin.svg",
@@ -283,8 +283,14 @@ test("tone marks use a symbol font and a visibly larger size", () => {
 		for (const tag of tags) {
 			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
 			const family = tag.match(/font-family="([^"]+)"/u)?.[1] ?? "";
-			assert.ok(size >= 20, `${image} tone mark is too small`);
-			assert.match(family, /Symbol/u, `${image} tone mark needs a symbol font`);
+			const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
+			assert.ok(size >= 42, `${image} tone mark is too small`);
+			assert.match(
+				family,
+				/Noto Sans Mono CJK SC/u,
+				`${image} tone mark needs the requested Noto CJK font`,
+			);
+			assert.ok(weight >= 700, `${image} tone mark should use a bold face`);
 		}
 	}
 });
