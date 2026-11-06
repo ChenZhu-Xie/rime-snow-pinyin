@@ -64,8 +64,10 @@ test("keymap configuration does not swallow engine pipeline sections", () => {
 	}
 });
 
-test("runtime keymaps are real PNG files", () => {
+test("runtime keymaps include every configured SVG and PNG resource", () => {
 	for (const [, , image] of schemes) {
+		const svg = readFileSync(join(root, "lua", "snow", "keymaps", image));
+		assert.match(svg.toString("utf8"), /^<svg[\s>]/u);
 		const png = readFileSync(
 			join(root, "lua", "snow", "keymaps", image.replace(".svg", ".png")),
 		);

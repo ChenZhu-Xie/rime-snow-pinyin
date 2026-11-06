@@ -403,9 +403,13 @@ const classicSource = join(
 );
 if (!existsSync(classicSource))
 	throw new Error(`缺少经典键道原图：${classicSource}`);
+const classicPng = readFileSync(classicSource);
+const classicWidth = classicPng.readUInt32BE(16);
+const classicHeight = classicPng.readUInt32BE(20);
+update(join(outputDirectory, "snow_jiandao_classic.png"), classicPng);
 update(
-	join(outputDirectory, "snow_jiandao_classic.png"),
-	readFileSync(classicSource),
+	join(outputDirectory, "snow_jiandao_classic.svg"),
+	`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${classicWidth} ${classicHeight}" role="img"><title>冰雪键道键位图</title><image width="${classicWidth}" height="${classicHeight}" href="data:image/png;base64,${classicPng.toString("base64")}"/></svg>\n`,
 );
 
 console.log(
