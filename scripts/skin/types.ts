@@ -2,6 +2,7 @@ export interface Config {
 	colorful: boolean;
 	dark: boolean;
 	label: boolean;
+	keymapMenu?: string;
 	symbol?: boolean;
 	keyInfos: KeyInfo[][];
 	specialCharacters?: string;
@@ -15,6 +16,7 @@ export interface KeyInfo {
 	upLabel?: string;
 	down?: string;
 	downLabel?: string;
+	image?: string;
 	width?: string;
 }
 

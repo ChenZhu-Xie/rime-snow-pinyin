@@ -21,10 +21,15 @@ on:
       - 'scripts/lib/**'
       - 'scripts/research/calculate_shenyun_21x26_letter_buckets.ts'
       - 'scripts/generate-shenyun-letters.ts'
+      - 'scripts/generate-keymaps.ts'
+      - 'scripts/generate-skins.ts'
+      - 'scripts/skin/**'
+      - 'scripts/fixed-corpus/test/keymaps.test.ts'
       - 'scripts/fixed-corpus/evidence.ts'
       - 'scripts/fixed-corpus/types.ts'
       - 'scripts/package.json'
       - 'scripts/bun.lock'
+      - 'tools/keymap-helper/**'
       - '.github/workflows/test.yml'
   workflow_dispatch:
     inputs:
@@ -71,9 +76,28 @@ jobs:
           bun scripts/生成三拼简词.ts --check
           bun scripts/验证神韵双拼.ts
 
+  keymaps:
+    name: 键位图桌面 helper 与移动皮肤
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 获取代码
+        uses: actions/checkout@v4
+      - name: 安装 Bun
+        uses: oven-sh/setup-bun@v2
+      - name: 安装脚本依赖
+        run: bun install --cwd scripts --frozen-lockfile
+      - name: 检查移动皮肤
+        run: |
+          bun run --cwd scripts typecheck
+          bun test --cwd scripts fixed-corpus/test/keymaps.test.ts
+      - name: 安装 Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: 检查桌面 helper
+        run: cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml
+
   test:
     name: ${{ matrix.scheme.name }} / librime ${{ matrix.runtime.version }}
-    needs: [dictionary, validate-shenyun]
+    needs: [dictionary, validate-shenyun, keymaps]
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false

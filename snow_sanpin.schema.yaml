@@ -21,7 +21,7 @@ schema:
 
 keymap:
   key: v
-  image: snow_sanpin.png
+  image: snow_sanpin.svg
 
 engine:
   processors:

@@ -22,7 +22,7 @@ schema:
 
 keymap:
   key: v
-  image: snow_jiandao_classic.png
+  image: snow_jiandao_classic.svg
 
 engine:
   processors:

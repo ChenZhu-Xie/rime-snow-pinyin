@@ -1,5 +1,5 @@
 -- 键位图显隐处理器
--- Windows 下以空闲的单字母键切换常驻键位图窗口，其他平台保持原按键行为。
+-- 桌面端以空闲的单字母键切换常驻键位图窗口，移动端由输入法皮肤提供键位图页。
 
 local snow = require "snow.snow"
 
@@ -8,8 +8,8 @@ local snow = require "snow.snow"
 ---@field image_path string
 ---@field command_path string
 ---@field helper_path string
+---@field platform string
 ---@field available boolean
----@field launched boolean
 ---@field serial integer
 
 local processor = {}
@@ -29,15 +29,43 @@ local function command_quote(value)
   return '"' .. value:gsub('"', '""') .. '"'
 end
 
+---@param value string
+---@return string
+local function shell_quote(value)
+  return "'" .. value:gsub("'", "'\\''") .. "'"
+end
+
+---@param user_dir string
+---@return string, string
+local function desktop_helper(user_dir)
+  local code_name = rime_api.get_distribution_code_name():lower()
+  local windows_path = user_dir:match("^%a:[/\\]") or user_dir:sub(1, 2) == "\\\\"
+  if windows_path or code_name:find("weasel", 1, true) then
+    return "windows", "snow-keymap-windows.exe"
+  elseif code_name:find("squirrel", 1, true) then
+    return "macos", "snow-keymap-macos"
+  elseif code_name:find("fcitx", 1, true) or code_name:find("ibus", 1, true) then
+    return "linux", "snow-keymap-linux"
+  end
+  return "", ""
+end
+
 ---@param env KeymapEnv
 local function launch(env)
-  local command = table.concat({
-    "start", '""', "/b", "powershell.exe", "-NoLogo", "-NoProfile", "-NonInteractive",
-    "-ExecutionPolicy", "Bypass", "-WindowStyle", "Hidden", "-File",
-    command_quote(env.helper_path), "-CommandFile", command_quote(env.command_path),
-  }, " ")
+  local command
+  if env.platform == "windows" then
+    command = table.concat({
+      "start", '""', "/b", command_quote(env.helper_path),
+      "--command-file", command_quote(env.command_path),
+    }, " ")
+  else
+    command = table.concat({
+      shell_quote(env.helper_path), "--command-file", shell_quote(env.command_path),
+      ">/dev/null", "2>&1", "&",
+    }, " ")
+  end
   os.execute(command)
-  env.launched = true
+  snow.keymap_helper_launched = true
 end
 
 ---@param env KeymapEnv
@@ -46,20 +74,30 @@ function processor.init(env)
   local image = env.engine.schema.config:get_string("keymap/image") or ""
   env.keycode = key:len() == 1 and key:byte() or 0
   env.serial = 0
-  env.launched = false
   env.available = false
   env.helper_path = ""
   env.image_path = ""
   env.command_path = ""
+  env.platform = ""
   local user_dir = rime_api.get_user_data_dir()
-  local windows_path = user_dir:match("^%a:[/\\]") or user_dir:sub(1, 2) == "\\\\"
-  if not windows_path or env.keycode == 0 or image == "" then return end
-  env.helper_path = user_dir .. "/lua/snow/keymap-window.ps1"
+  local helper_name
+  env.platform, helper_name = desktop_helper(user_dir)
+  if env.platform == "" or env.keycode == 0 or image == "" then return end
+  env.helper_path = user_dir .. "/lua/snow/bin/" .. helper_name
   env.image_path = user_dir .. "/lua/snow/keymaps/" .. image
-  local temporary = os.getenv("TEMP") or os.getenv("TMP") or user_dir
-  env.command_path = temporary .. "/snow-pinyin-keymap.command"
+  local temporary = os.getenv("TEMP") or os.getenv("TMPDIR") or os.getenv("TMP") or user_dir
+  local user_suffix = ""
+  if env.platform ~= "windows" then
+    user_suffix = "-" .. (os.getenv("USER") or "user"):gsub("[^%w_.-]", "_")
+  end
+  env.command_path = temporary .. "/snow-pinyin-keymap-v2" .. user_suffix .. ".command"
   env.available = exists(env.helper_path) and exists(env.image_path)
   snow.keymap_keys[env.engine.schema.schema_id] = env.available and env.keycode or nil
+  if env.available and not snow.keymap_helper_launched then
+    local command = io.open(env.command_path, "wb")
+    if command then command:close() end
+    launch(env)
+  end
 end
 
 ---@param key_event KeyEvent
@@ -77,7 +115,6 @@ function processor.func(key_event, env)
   command:write(("%s:%.6f:%d\t%s"):format(
     env.engine.schema.schema_id, os.clock(), env.serial, env.image_path))
   command:close()
-  if not env.launched then launch(env) end
   return snow.kAccepted
 end
 

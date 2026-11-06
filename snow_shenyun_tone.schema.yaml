@@ -24,7 +24,7 @@ shenyun_options:
 
 keymap:
   key: e
-  image: snow_shenyun_tone.png
+  image: snow_shenyun_tone.svg
 
 __patch:
   - patch

@@ -13,6 +13,8 @@
 - `snow-pinyin-skins-hamster.zip`：元书皮肤包。
 - `snow-pinyin-skins-trime.zip`：同文皮肤包。
 
+主安装包的 `lua/snow/bin/` 必须包含发布工作流为 Windows x64、macOS x64 与 Linux x64 编译的三个键位图 helper；不要用本机构建产物替代矩阵产物。移动皮肤包必须同时带七份键位图资源：元书位于每套皮肤的明暗 `resources/`，同文位于包根的 `backgrounds/`。
+
 正常发布以 [`.github/workflows/release.yml`](../.github/workflows/release.yml) 为打包合同；手工重建时必须从目标 commit 的干净导出开始，并复现工作流中的依赖复制、皮肤生成、预览裁剪和编译步骤。
 
 ## Git 与远端边界

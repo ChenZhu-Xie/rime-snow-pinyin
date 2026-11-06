@@ -1,0 +1,17 @@
+[package]
+name = "snow-keymap"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+fs2 = "0.4.3"
+resvg = "0.45.1"
+softbuffer = "0.4.6"
+winit = "0.30.13"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

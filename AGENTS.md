@@ -87,7 +87,11 @@ bun run --cwd scripts check:format    # 检查格式
 
 布局、配色和共用类型分别在 `skin/layouts.ts`、`skin/palette.ts`、`skin/types.ts`；元书输入法（iOS、Android）与同文（Android）后端分别在 `skin/hamster.ts`、`skin/trime.ts`。元书输入法输出两平台共用的皮肤目录、亮暗预览 `demo.png` 和 `.cskin`，系统图标通过 `{ ios, android }` 映射，打包依赖系统 `zip`；`.cskin` 内必须只有一个与皮肤同名的根目录。同文每组输出一份 `.trime.yaml`，复用内置 `trime.yaml` 样式和安卓键表，工具栏采用新版配置。
 
+七份键位图由 `skin/keymaps.ts` 注入每套移动皮肤：元书上滑工具栏“中文”、同文长按“中文”进入统一选择页，点击图片返回主键盘。元书将 PNG 和同名图片描述文件复制到明暗 `resources/`，同文将 PNG 复制到发布包的 `backgrounds/`；不要把移动端 `e`／`v` 单击改成切页动作。
+
 同文工具栏依次为菜单、常用语、剪贴板、编辑、中文、ABC、收起，默认七键各 50 dp、总宽 350 dp；菜单靠左，其余键靠右。窄屏或悬浮键盘用 `--trime-toolbar-width` 调整按键总宽度，例如 `315` 对应七键各 45 dp。CI 按输入法发布 `snow-pinyin-skins-hamster.zip`（皮肤目录及 `.cskin`）和 `snow-pinyin-skins-trime.zip`（主题文件），由 `.github/workflows/release.yml` 打包。
+
+桌面键位图 helper 位于 `tools/keymap-helper/`，直接渲染 `lua/snow/keymaps/*.svg`，禁止恢复 PowerShell/WPF 脚本。发布工作流分别编译 Windows、macOS、Linux GUI 二进制并注入 `lua/snow/bin/`；Lua 仅在空输入、中文模式下写命令文件。修改后至少运行 helper 的 `cargo test`、键位图固定语料测试和皮肤实际生成。
 
 ### 实验工具
 

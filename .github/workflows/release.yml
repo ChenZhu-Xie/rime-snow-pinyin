@@ -18,15 +18,63 @@ jobs:
   latency:
     name: 发布前性能门禁
     uses: ./.github/workflows/latency.yml
+  keymap-helper:
+    name: 键位图 helper（${{ matrix.platform }}）
+    strategy:
+      matrix:
+        include:
+          - platform: Windows x64
+            os: windows-2025
+            output: snow-keymap-windows.exe
+          - platform: macOS x64
+            os: macos-15-intel
+            output: snow-keymap-macos
+          - platform: Linux x64
+            os: ubuntu-22.04
+            output: snow-keymap-linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: 获取代码
+        uses: actions/checkout@v7
+      - name: 安装 Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: 编译
+        run: cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
+      - name: 整理 Windows 产物
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path helper-dist | Out-Null
+          Copy-Item tools/keymap-helper/target/release/snow-keymap.exe "helper-dist/${{ matrix.output }}"
+      - name: 整理 Unix 产物
+        if: runner.os != 'Windows'
+        run: |
+          mkdir -p helper-dist
+          cp tools/keymap-helper/target/release/snow-keymap "helper-dist/${{ matrix.output }}"
+          chmod +x "helper-dist/${{ matrix.output }}"
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: keymap-helper-${{ runner.os }}
+          path: helper-dist/*
+          if-no-files-found: error
   build:
     name: 发布
-    needs: [latency]
+    needs: [latency, keymap-helper]
     runs-on: ubuntu-26.04
     steps:
       - name: 获取代码
         uses: actions/checkout@v7
         with:
           submodules: true
+      - name: 下载键位图 helper
+        uses: actions/download-artifact@v5
+        with:
+          pattern: keymap-helper-*
+          path: lua/snow/bin
+          merge-multiple: true
+      - name: 恢复 Unix helper 执行权限
+        run: chmod +x lua/snow/bin/snow-keymap-macos lua/snow/bin/snow-keymap-linux
       - name: 安装 Rime 输入法用于编译
         run: sudo apt install -y --no-install-recommends librime-bin rime-prelude
       - name: 打包用户安装包

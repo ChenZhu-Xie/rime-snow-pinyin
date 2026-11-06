@@ -1,16 +1,24 @@
 import { execFileSync } from "node:child_process";
 import {
+	copyFileSync,
 	mkdirSync,
 	mkdtempSync,
+	readFileSync,
 	renameSync,
 	rmSync,
 	writeFileSync,
 } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
 import { dump } from "js-yaml";
 import { rainbow } from "./palette";
 import type { Config, KeyboardCollection } from "./types";
+
+const keymapDirectory = join(
+	dirname(fileURLToPath(import.meta.url)),
+	"../../lua/snow/keymaps",
+);
 
 export type HamsterSkinConfig = {
 	name: string; // 皮肤名称
@@ -580,7 +588,15 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 			const name = key.name ?? key.action;
 			const action = parseAction(key.action, config.symbol);
 			const foregroundStyle: string[] = [];
-			if (action !== "space") {
+			if (key.image) {
+				const imageName = `${name}Image`;
+				foregroundStyle.push(imageName);
+				styles[imageName] = {
+					buttonStyleType: "fileImage",
+					contentMode: "scaleAspectFit",
+					normalImage: { file: key.image, image: key.image },
+				};
+			} else if (action !== "space") {
 				// label
 				const labelName = `${name}Label`;
 				foregroundStyle.push(labelName);
@@ -588,6 +604,11 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 					styles[labelName] = {
 						...structuredClone(mainLabel),
 						text: key.label ?? key.action,
+					};
+				} else if (key.label && !materialIcons[key.label]) {
+					styles[labelName] = {
+						...structuredClone(mainLabel),
+						text: key.label,
 					};
 				} else {
 					styles[labelName] = {
@@ -730,6 +751,9 @@ function makeToolbar(
 	const pinyin: Cell = {
 		foregroundStyle: "pinyinImage",
 		action: { keyboardType: "pinyin" },
+		...(config.keymapMenu
+			? { swipeUpAction: { keyboardType: config.keymapMenu } }
+			: {}),
 		...cellBase,
 	};
 	const pinyinImage: SystemImageStyle = {
@@ -1123,11 +1147,44 @@ export function generateHamsterSkin(
 		const modeFolder = join(folder, dark ? "dark" : "light");
 		mkdirSync(modeFolder, { recursive: true });
 		for (const [key, config] of Object.entries(keyboards)) {
-			const content = dump(makeHamsterSkin({ ...config, dark }), {
-				flowLevel: 2,
-			});
+			const content = dump(
+				makeHamsterSkin({
+					...config,
+					dark,
+					...(keyboards.keymaps ? { keymapMenu: "keymaps" } : {}),
+				}),
+				{ flowLevel: 2 },
+			);
 			const fileName = join(modeFolder, `${key}.yaml`);
 			writeFileSync(fileName, content, "utf8");
+		}
+		const images = new Set(
+			Object.values(keyboards).flatMap((config) =>
+				config.keyInfos.flatMap((row) =>
+					row.flatMap((key) => (key.image ? [key.image] : [])),
+				),
+			),
+		);
+		if (images.size > 0) {
+			const resources = join(modeFolder, "resources");
+			mkdirSync(resources, { recursive: true });
+			for (const image of images) {
+				const source = join(keymapDirectory, `${image}.png`);
+				const png = readFileSync(source);
+				const width = png.readUInt32BE(16);
+				const height = png.readUInt32BE(20);
+				copyFileSync(source, join(resources, `${image}.png`));
+				writeFileSync(
+					join(resources, `${image}.yaml`),
+					dump({
+						[image]: {
+							rect: { x: 0, y: 0, width, height },
+							insets: { top: 0, bottom: 0, left: 0, right: 0 },
+						},
+					}),
+					"utf8",
+				);
+			}
 		}
 	}
 	writeFileSync(

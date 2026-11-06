@@ -19,7 +19,7 @@ schema:
 
 keymap:
   key: e
-  image: snow_sipin.png
+  image: snow_sipin.svg
 
 engine:
   processors:

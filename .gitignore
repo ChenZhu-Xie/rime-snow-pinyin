@@ -17,6 +17,8 @@ sancang.dict.yaml
 .DS_Store
 .antigravitycli/
 /build/
+/tools/keymap-helper/target/
+/lua/snow/bin/
 
 # IDEA
 .idea/

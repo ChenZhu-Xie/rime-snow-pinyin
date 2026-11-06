@@ -2,6 +2,7 @@ import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { generateHamsterSkin } from "./skin/hamster";
+import { withKeymaps } from "./skin/keymaps";
 import { jiandao, qpkr, qwerty, qwrt, shufu } from "./skin/layouts";
 import { generateTrimeSkin } from "./skin/trime";
 import type { KeyboardCollection } from "./skin/types";
@@ -47,18 +48,19 @@ function main() {
 				: "output/skins"),
 	);
 	const generateSkinFolder = (name: string, keyboards: KeyboardCollection) => {
+		const keyboardsWithKeymaps = withKeymaps(keyboards);
 		if (backend === "hamster" || backend === "all") {
 			generateHamsterSkin(
 				backend === "all" ? join(prefix, "hamster") : prefix,
 				name,
-				keyboards,
+				keyboardsWithKeymaps,
 			);
 		}
 		if (backend === "trime" || backend === "all") {
 			generateTrimeSkin(
 				backend === "all" ? join(prefix, "trime") : prefix,
 				name,
-				keyboards,
+				keyboardsWithKeymaps,
 				toolbarWidth,
 			);
 		}

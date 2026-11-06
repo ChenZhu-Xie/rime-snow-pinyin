@@ -4,18 +4,21 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { load } from "js-yaml";
+import { makeHamsterSkin } from "../../skin/hamster";
+import { withKeymaps } from "../../skin/keymaps";
+import { makeTrimeSkin } from "../../skin/trime";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 
 const schemes = [
-	["snow_sipin.schema.yaml", "e", "snow_sipin.png"],
-	["snow_sanpin.schema.yaml", "v", "snow_sanpin.png"],
-	["snow_jiandao.schema.yaml", "v", "snow_jiandao.png"],
-	["snow_sanpin_classic.schema.yaml", "v", "snow_sanpin_classic.png"],
-	["snow_jiandao_classic.schema.yaml", "v", "snow_jiandao_classic.png"],
-	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.png"],
-	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.png"],
+	["snow_sipin.schema.yaml", "e", "snow_sipin.svg"],
+	["snow_sanpin.schema.yaml", "v", "snow_sanpin.svg"],
+	["snow_jiandao.schema.yaml", "v", "snow_jiandao.svg"],
+	["snow_sanpin_classic.schema.yaml", "v", "snow_sanpin_classic.svg"],
+	["snow_jiandao_classic.schema.yaml", "v", "snow_jiandao_classic.svg"],
+	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.svg"],
+	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.svg"],
 ] as const;
 
 test("seven released schemes bind only their vacant standalone key to a keymap", () => {
@@ -63,7 +66,9 @@ test("keymap configuration does not swallow engine pipeline sections", () => {
 
 test("runtime keymaps are real PNG files", () => {
 	for (const [, , image] of schemes) {
-		const png = readFileSync(join(root, "lua", "snow", "keymaps", image));
+		const png = readFileSync(
+			join(root, "lua", "snow", "keymaps", image.replace(".svg", ".png")),
+		);
 		assert.deepEqual(
 			[...png.subarray(0, 8)],
 			[137, 80, 78, 71, 13, 10, 26, 10],
@@ -74,6 +79,48 @@ test("runtime keymaps are real PNG files", () => {
 			`${image} should contain the keyboard`,
 		);
 	}
+});
+
+test("mobile skins expose all keymaps without stealing normal letter taps", () => {
+	const keyboards = withKeymaps({
+		pinyin: {
+			colorful: false,
+			label: true,
+			keyInfos: [[{ action: "e" }, { action: "v" }]],
+		},
+	});
+	assert.equal(Object.keys(keyboards).length, 9);
+	assert.equal(keyboards.keymaps.keyInfos.flat().length, 7);
+	assert.equal(keyboards.keymap_snow_sipin.keyInfos[0][0].image, "snow_sipin");
+
+	const hamster = makeHamsterSkin({
+		...keyboards.keymap_snow_sipin,
+		dark: false,
+		keymapMenu: "keymaps",
+	});
+	assert.deepEqual(hamster.snow_sipin_imageImage, {
+		buttonStyleType: "fileImage",
+		contentMode: "scaleAspectFit",
+		normalImage: { file: "snow_sipin", image: "snow_sipin" },
+	});
+	assert.deepEqual(
+		(hamster.pinyin as { swipeUpAction: unknown }).swipeUpAction,
+		{ keyboardType: "keymaps" },
+	);
+
+	const trime = makeTrimeSkin("test", keyboards);
+	assert.equal(
+		trime.tool_bar.buttons.find(
+			(button) => button.action === "Snow_keyboard_pinyin",
+		)?.long_press_action,
+		"Snow_keyboard_keymaps",
+	);
+	assert.equal(
+		trime.preset_keyboards.keymap_snow_sipin.keys[0].key_back_color,
+		"snow_sipin.png",
+	);
+	const sipinSelector = trime.preset_keyboards.keymaps.keys[0].click;
+	assert.equal(trime.preset_keys[sipinSelector].label, "冰雪四拼");
 });
 
 test("tone and shape diagrams keep their auxiliary semantics separate", () => {
@@ -92,12 +139,14 @@ test("tone and shape diagrams keep their auxiliary semantics separate", () => {
 	assert.match(read("lua/snow/keymaps/snow_sipin.svg"), /腹 o\/üa\/üe/u);
 });
 
-test("the Windows helper stays dormant outside an idle Chinese composition", () => {
+test("the desktop helper stays dormant outside an idle Chinese composition", () => {
 	const processor = read("lua/snow/keymap.lua");
 	assert.match(processor, /context:get_option\("ascii_mode"\)/u);
 	assert.match(processor, /context\.input ~= ""/u);
 	assert.match(processor, /key_event:release\(\)/u);
 	assert.match(processor, /key_event\.modifier ~= 0/u);
+	assert.doesNotMatch(processor, /powershell/iu);
+	assert.match(processor, /snow-keymap-windows\.exe/u);
 	assert.match(
 		read("lua/snow/statistics.lua"),
 		/snow\.keymap_keys\[env\.schema_id\]/u,

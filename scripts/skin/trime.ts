@@ -1,5 +1,6 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { dump } from "js-yaml";
 import { qwerty } from "./layouts";
 import { rainbow } from "./palette";
@@ -108,6 +109,10 @@ export interface TrimeSkin {
 }
 
 const author = "谭淞宸 <i@tansongchen.com>";
+const keymapDirectory = join(
+	dirname(fileURLToPath(import.meta.url)),
+	"../../lua/snow/keymaps",
+);
 
 // 用 send 发送符号键，让 Rime 处理中文标点和顶功；symbol 键盘才直接上屏。
 const symbolKeys: Record<string, string> = {
@@ -261,6 +266,10 @@ function makeKeyboard(
 			}
 			let background = isCharacter ? "key_back_color" : "fn_back";
 			let highlight = isCharacter ? "hilited_key_back_color" : "fn_hilited";
+			if (key.image) {
+				background = `${key.image}.png`;
+				highlight = background;
+			}
 			if (isAlphabet && config.colorful) {
 				if (index >= rainbow.length) throw new Error("七色键盘不能超过七列");
 				const special = (config.specialCharacters ?? "aeiou").includes(
@@ -271,7 +280,9 @@ function makeKeyboard(
 			}
 			// 图标名称仅供元书输入法使用，同文采用动作自带的文字或通用符号。
 			const label =
-				isCharacter || key.action.startsWith("*") ? key.label : undefined;
+				isCharacter || key.action.startsWith("*") || key.action.startsWith("!")
+					? key.label
+					: undefined;
 			const click = addAction(key.action, label);
 			const rendered: TrimeKey = {
 				click,
@@ -279,6 +290,10 @@ function makeKeyboard(
 				key_back_color: background,
 				hilited_key_back_color: highlight,
 			};
+			if (key.image) {
+				rendered.key_text_color = "#00000000";
+				rendered.hilited_key_text_color = "#00000000";
+			}
 			if (up) {
 				rendered.swipe_up = addAction(up, key.upLabel);
 				rendered.label_symbol =
@@ -422,7 +437,12 @@ export function makeTrimeSkin(
 	const buttons = [
 		makeButton("Snow_hide", "ic@keyboard_close", 6),
 		makeButton("Snow_keyboard_alphabetic", "ABC", 5),
-		makeButton("Snow_keyboard_pinyin", "中", 4),
+		{
+			...makeButton("Snow_keyboard_pinyin", "中", 4),
+			...(allKeyboards.keymaps
+				? { long_press_action: "Snow_keyboard_keymaps" }
+				: {}),
+		},
 		makeButton("Snow_keyboard_editor", "ic@cursor_text", 3),
 		makeButton("Snow_clipboard", "ic@clipboard", 2),
 		makeButton("Snow_phrase", "ic@format_quote_close", 1),
@@ -480,6 +500,23 @@ export function generateTrimeSkin(
 	toolbarWidth?: number,
 ) {
 	mkdirSync(prefix, { recursive: true });
+	const images = new Set(
+		Object.values(keyboards).flatMap((config) =>
+			config.keyInfos.flatMap((row) =>
+				row.flatMap((key) => (key.image ? [key.image] : [])),
+			),
+		),
+	);
+	if (images.size > 0) {
+		const backgrounds = join(prefix, "backgrounds");
+		mkdirSync(backgrounds, { recursive: true });
+		for (const image of images) {
+			copyFileSync(
+				join(keymapDirectory, `${image}.png`),
+				join(backgrounds, `${image}.png`),
+			);
+		}
+	}
 	writeFileSync(
 		join(prefix, `${name}.trime.yaml`),
 		dump(makeTrimeSkin(name, keyboards, toolbarWidth), { noRefs: true }),

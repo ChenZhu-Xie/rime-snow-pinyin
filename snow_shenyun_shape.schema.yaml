@@ -24,7 +24,7 @@ shenyun_options:
 
 keymap:
   key: e
-  image: snow_shenyun_shape.png
+  image: snow_shenyun_shape.svg
 
 __patch:
   - snow_shenyun_shape.custom:/patch?
