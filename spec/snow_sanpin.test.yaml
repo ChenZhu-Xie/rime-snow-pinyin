@@ -144,6 +144,8 @@ deploy:
         assert: cand[1].text == "本身"
       - send: bui
         assert: cand[1].text == "保险公司"
+      - send: coo
+        assert: cand[1].text == "藏着呢"
       # 固顶词
       - send: p
         assert: cand[1].text == "平"

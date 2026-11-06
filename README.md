@@ -311,7 +311,7 @@ bun scripts/导出神韵热力图.ts "路径/a7_CKT_R11.html" --21x26
 固顶表与简码概况：
 
 - `AA` 的 441 个位置由 366 个二码单字和 75 个二简完整覆盖；75 个二简全部使用 U357 扩展域的天然空码，不再让音码下沉。
-- 三拼 630 当前为 105 个二码位＋506 个三码位；键道 630 为 105＋525。低质量槽位允许留空，每码只固定一个候选，父子码不重复固定同一词。
+- 三拼与键道的 630 均完整覆盖 105 个二码位＋525 个三码位。生成器优先使用词频不低于 1000 的候选，再以低频候选补齐仅余空槽；每码只固定一个候选，父子码不重复固定同一词。
 - 三拼二字词二、三码候选清单见 [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)：630 个理论码位中 550 个有合法候选，每码最多列 10 项，供逐级选词复核，不直接替代一码一候选的固顶表。
 - 声声二字词入口不再读取固定空码正则，而是在运行时查询不含用户词典的系统词典；完整单字词频大于 1 才占桶，当前词典得到 80 个空 `AA`。冰雪弎拼按词条实际读音的第二字声调用 `I/V/U/A/O` 筛选，冰雪健道按首字首形码筛选；辅码不进入上屏文本。
 - 冰雪弎拼、冰雪健道以及采用经典声韵布局的冰雪三拼、冰雪键道，大写字母均用于三字及以上简拼的韵母补全：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
@@ -651,7 +651,7 @@ bun scripts/导出神韵热力图.ts "path/to/a7_CKT_R11.html" --21x26
 
 #### Fixed candidates and staged two-character abbreviations
 
-The current layout fills all 441 AA positions with 366 two-key characters and 75 two-key abbreviations; all abbreviations use naturally vacant U357 extension-domain codes. Three-Code has 105+506 candidates in its 630 space, while KeyTao has 105+525. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
+The current layout fills all 441 AA positions with 366 two-key characters and 75 two-key abbreviations; all abbreviations use naturally vacant U357 extension-domain codes. Three-Code and KeyTao both fill all 105 two-key and 525 three-key positions in their 630 spaces. The generator prefers candidates with a frequency of at least 1,000, then uses lower-frequency candidates only to fill the remaining empty slots. [`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt) separately records up to ten two-character candidates for each populated two- and three-key Three-Code slot: 550 of 630 theoretical slots are populated. This audit list does not replace the one-candidate-per-code fixed tables.
 
 Vacant two-initial pairs are now detected at runtime from a system-dictionary-only translator; a complete single-character entry occupies the bucket only when its frequency is above 1. The current dictionary yields 80 vacant `AA` pairs. Three-Code filters them by the second character's actual dictionary-reading tone through `I/V/U/A/O`, while KeyTao filters by the first character's first shape code. The auxiliary remains outside committed text. In both schemes, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials are already present.
 
@@ -898,7 +898,7 @@ bun scripts/导出神韵热力图.ts "路徑/a7_CKT_R11.html" --21x26
 
 #### 固頂與二字詞逐級簡碼
 
-目前方案以 366 個二碼單字與 75 個二簡完整覆蓋 441 個 AA 位置，二簡全部使用 U357 擴充域的自然空碼；三拼 630 為 105＋506，鍵道 630 為 105＋525。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
+目前方案以 366 個二碼單字與 75 個二簡完整覆蓋 441 個 AA 位置，二簡全部使用 U357 擴充域的自然空碼；三拼與鍵道的 630 均完整覆蓋 105 個二碼位＋525 個三碼位。生成器優先採用詞頻不低於 1000 的候選，再以低頻候選補齊僅餘空槽。[`snow_sanpin.fixed.630.txt`](snow_sanpin.fixed.630.txt)另列三拼二字詞二、三碼候選：630 個理論碼位中 550 個有候選，每碼最多 10 項，供逐級複核，不取代「一碼一候選」固頂表。
 
 聲聲二字詞空碼改為運行時查詢不含用戶詞典的系統詞典，完整單字詞頻大於 1 才占桶，當前詞典得到 80 個空 `AA`。冰雪弎拼按詞條實際讀音的第二字聲調以 `I/V/U/A/O` 篩選，冰雪健道按首字首形碼篩選；輔碼不進入上屏文字。冰雪弎拼、冰雪健道及採用經典聲韻布局的冰雪三拼、冰雪鍵道，大寫字母均用於三字及以上簡拼的韻母補全：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
 

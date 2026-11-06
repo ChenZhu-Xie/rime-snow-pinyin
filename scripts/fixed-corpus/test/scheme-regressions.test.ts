@@ -398,6 +398,27 @@ test("U357 KeyTao letter and number candidates follow the active schema", () => 
 	assert.ok(lines.get("xh")?.split(" ").includes("U"));
 });
 
+test("U357 Three-Code fills every 630 slot with a unique fixed candidate", () => {
+	const fixed = read("snow_sanpin.fixed.txt");
+	const section = fixed.match(/# 630\r?\n([\s\S]*?)\r?\n# 单字/u)?.[1];
+	assert.ok(section);
+	const rows = section
+		.split(/\r?\n/u)
+		.filter(Boolean)
+		.map((line) => line.split("\t"));
+	const codes = rows.map(([code]) => code);
+	const words = rows.map(([, word]) => word);
+	const expectedCodes = [..."bpmfdtnlgkhjqxzcsrwye"].flatMap((initial) => [
+		...[..."ivuao"].map((tone) => initial + tone),
+		...[..."ivuao"].flatMap((secondTone) =>
+			[..."ivuao"].map((targetTone) => initial + secondTone + targetTone),
+		),
+	]);
+	assert.equal(rows.length, 630);
+	assert.deepEqual(new Set(codes), new Set(expectedCodes));
+	assert.equal(new Set(words).size, 630);
+});
+
 test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", () => {
 	const jiandao = read("snow_jiandao.schema.yaml");
 	const sanpin = read("snow_sanpin.schema.yaml");

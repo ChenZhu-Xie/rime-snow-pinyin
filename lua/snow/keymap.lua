@@ -110,6 +110,7 @@ function processor.init(env)
     local command = io.open(env.command_path, "wb")
     if command then command:close() end
     launch(env)
+    write_command(env, "follow")
   elseif env.available then
     write_command(env, "follow")
   end

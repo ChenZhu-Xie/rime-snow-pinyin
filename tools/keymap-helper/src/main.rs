@@ -7,7 +7,7 @@ use std::num::NonZeroU32;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, SystemTime};
 
 use fs2::FileExt;
 use resvg::{tiny_skia, usvg};
@@ -194,12 +194,16 @@ struct TouchPress {
     window_position: PhysicalPosition<i32>,
 }
 
-fn load_svg(path: &Path) -> Result<usvg::Tree, String> {
-    let data = std::fs::read(path)
-        .map_err(|error| format!("无法读取键位图 {}：{error}", path.display()))?;
+fn svg_options() -> usvg::Options<'static> {
     let mut options = usvg::Options::default();
     options.fontdb_mut().load_system_fonts();
-    usvg::Tree::from_data(&data, &options)
+    options
+}
+
+fn load_svg(path: &Path, options: &usvg::Options<'_>) -> Result<usvg::Tree, String> {
+    let data = std::fs::read(path)
+        .map_err(|error| format!("无法读取键位图 {}：{error}", path.display()))?;
+    usvg::Tree::from_data(&data, options)
         .map_err(|error| format!("无法解析键位图 {}：{error}", path.display()))
 }
 
@@ -233,11 +237,22 @@ fn render_svg(
     })
 }
 
+fn should_check_svg(
+    path_changed: bool,
+    svg_missing: bool,
+    follow_command: bool,
+    first_show: bool,
+) -> bool {
+    path_changed || svg_missing || follow_command || first_show
+}
+
 struct App {
     window: Option<Arc<Window>>,
     surface: Option<Surface<Arc<Window>, Arc<Window>>>,
     image: Option<RenderedImage>,
-    svg: Option<usvg::Tree>,
+    svg_options: usvg::Options<'static>,
+    svg_cache: HashMap<PathBuf, CachedSvg>,
+    svg: Option<Arc<usvg::Tree>>,
     current_path: Option<PathBuf>,
     pending_command: Option<Command>,
     visible: bool,
@@ -247,12 +262,20 @@ struct App {
     touch_span: Option<f64>,
 }
 
+struct CachedSvg {
+    modified: Option<SystemTime>,
+    length: u64,
+    tree: Arc<usvg::Tree>,
+}
+
 impl App {
     fn new() -> Self {
         Self {
             window: None,
             surface: None,
             image: None,
+            svg_options: svg_options(),
+            svg_cache: HashMap::new(),
             svg: None,
             current_path: None,
             pending_command: None,
@@ -262,6 +285,28 @@ impl App {
             touch_press: None,
             touch_span: None,
         }
+    }
+
+    fn svg_for_path(&mut self, path: &Path) -> Result<Arc<usvg::Tree>, String> {
+        let metadata = std::fs::metadata(path)
+            .map_err(|error| format!("无法读取键位图属性 {}：{error}", path.display()))?;
+        let modified = metadata.modified().ok();
+        if let Some(cached) = self.svg_cache.get(path)
+            && cached.modified == modified
+            && cached.length == metadata.len()
+        {
+            return Ok(cached.tree.clone());
+        }
+        let tree = Arc::new(load_svg(path, &self.svg_options)?);
+        self.svg_cache.insert(
+            path.to_path_buf(),
+            CachedSvg {
+                modified,
+                length: metadata.len(),
+                tree: tree.clone(),
+            },
+        );
+        Ok(tree)
     }
 
     fn hide(&mut self) {
@@ -362,9 +407,6 @@ impl App {
         let Some(window) = self.window.clone() else {
             return;
         };
-        if command.action == CommandAction::Follow && !self.visible {
-            return;
-        }
         if command.action == CommandAction::Toggle
             && self.current_path.as_deref() == Some(command.image_path.as_path())
             && self.visible
@@ -374,18 +416,28 @@ impl App {
         }
 
         let first_show = !self.visible;
-        let should_reload = first_show
-            || command.action == CommandAction::Follow
-            || self.current_path.as_deref() != Some(command.image_path.as_path());
-        if should_reload {
-            let Ok(svg) = load_svg(&command.image_path) else {
+        let path_changed = self.current_path.as_deref() != Some(command.image_path.as_path());
+        if should_check_svg(
+            path_changed,
+            self.svg.is_none(),
+            command.action == CommandAction::Follow,
+            first_show,
+        ) {
+            let Ok(svg) = self.svg_for_path(&command.image_path) else {
                 return;
             };
+            let tree_changed = self
+                .svg
+                .as_ref()
+                .is_none_or(|current| !Arc::ptr_eq(current, &svg));
             self.current_path = Some(command.image_path);
             self.svg = Some(svg);
-            if !self.render_current(event_loop, false) {
+            if (tree_changed || self.image.is_none()) && !self.render_current(event_loop, false) {
                 return;
             }
+        }
+        if command.action == CommandAction::Follow && first_show {
+            return;
         }
 
         let focused_area = first_show.then(focused_window_area).flatten();
@@ -661,7 +713,10 @@ mod tests {
     fn cached_svg_tree_renders_at_multiple_zoom_levels() {
         let path =
             Path::new(env!("CARGO_MANIFEST_DIR")).join("../../lua/snow/keymaps/snow_sipin.svg");
-        let svg = load_svg(&path).unwrap();
+        let mut app = App::new();
+        let svg = app.svg_for_path(&path).unwrap();
+        let cached = app.svg_for_path(&path).unwrap();
+        assert!(Arc::ptr_eq(&svg, &cached));
         let maximum = PhysicalSize::new(2400, 1400);
         let normal = render_svg(&svg, maximum, 0.5).unwrap();
         let zoomed = render_svg(&svg, maximum, 0.75).unwrap();
@@ -677,5 +732,14 @@ mod tests {
             PhysicalSize::new(1000, 600),
         );
         assert_eq!(position, PhysicalPosition::new(300, 350));
+    }
+
+    #[test]
+    fn hidden_keymap_rechecks_the_cached_svg_before_showing() {
+        assert!(should_check_svg(false, false, false, true));
+        assert!(should_check_svg(true, false, false, false));
+        assert!(should_check_svg(false, true, false, false));
+        assert!(should_check_svg(false, false, true, false));
+        assert!(!should_check_svg(false, false, false, false));
     }
 }

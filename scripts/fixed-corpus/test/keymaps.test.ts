@@ -547,6 +547,7 @@ test("the desktop helper stays dormant outside an idle Chinese composition", () 
 	assert.match(processor, /key_event\.modifier ~= 0/u);
 	assert.doesNotMatch(processor, /powershell/iu);
 	assert.match(processor, /snow-keymap-windows\.exe/u);
+	assert.match(processor, /launch\(env\)\s+write_command\(env, "follow"\)/u);
 	assert.match(processor, /write_command\(env, "follow"\)/u);
 	assert.match(processor, /write_command\(env, "toggle"\)/u);
 	assert.match(

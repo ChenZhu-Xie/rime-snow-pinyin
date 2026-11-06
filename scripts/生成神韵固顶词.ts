@@ -128,15 +128,6 @@ function chooseWithoutRedundancy(
 		) {
 			continue;
 		}
-		if (
-			scope === "三拼 630" &&
-			code.length === 3 &&
-			!candidate.legacy &&
-			!preferredEverydayWords.has(candidate.word) &&
-			wordLength(candidate.word) > 2
-		) {
-			continue;
-		}
 		if (rejectEfficientFullCode && isEfficientAtFullCode(candidate)) {
 			efficientFullCodeRejectionCount += 1;
 			continue;
@@ -693,6 +684,8 @@ function selectSixThirty(
 			(pools.get(a)?.length ?? 0) - (pools.get(b)?.length ?? 0) ||
 			a.localeCompare(b),
 	);
+	// 先分配达到常用词频门槛的候选，避免低频词抢占其他槽位可用的高质量词；
+	// 再仅为余下空槽放宽门槛，使“630”保持名实相符的完整覆盖。
 	for (const code of threeKeyCodes) {
 		const candidate = chooseWithoutRedundancy(
 			pools.get(code) ?? [],
@@ -701,6 +694,22 @@ function selectSixThirty(
 			replacements,
 			scope,
 			minimumThreeKeyWeight,
+			true,
+		);
+		if (!candidate) continue;
+		selected.set(code, candidate.word);
+		usedWords.add(candidate.word);
+		replacements.addFixed(code, candidate.word);
+	}
+	for (const code of threeKeyCodes) {
+		if (selected.has(code)) continue;
+		const candidate = chooseWithoutRedundancy(
+			pools.get(code) ?? [],
+			usedWords,
+			code,
+			replacements,
+			scope,
+			0,
 			true,
 		);
 		if (!candidate) continue;
@@ -776,6 +785,8 @@ const sanpin630 = selectSixThirty(
 	createCommonReplacementIndex(),
 	"三拼 630",
 );
+if (sanpin630.size !== 630)
+	throw new Error(`三拼 630 必须完整覆盖 630 槽，实际为 ${sanpin630.size}。`);
 for (const code of reportSanpinCodes) {
 	console.log(`三拼 630 候选 ${code}:`);
 	for (const candidate of sortCandidates(sanpinPools.get(code) ?? []).slice(
