@@ -203,7 +203,7 @@ test("shape diagrams distinguish stroke and single-key and two-key roots", () =>
 			3,
 			`${image} auxiliary colors must be pairwise distinct`,
 		);
-		assert.match(svg, /形辅前景：笔画绿 · 单辅键码根棕 · 双辅键码根紫/u);
+		assert.match(svg, /形辅前景：笔画绿框 · 单辅键码根棕 · 双辅键码根紫/u);
 		assert.match(
 			svg,
 			/<text\b(?=[^>]*data-aux-kind="stroke")[^>]*>横 一<\/text>/u,
@@ -221,6 +221,85 @@ test("shape diagrams distinguish stroke and single-key and two-key roots", () =>
 		read("lua/snow/keymaps/snow_shenyun_shape.svg"),
 		/<text\b(?=[^>]*data-aux-kind="double-root")[^>]*>土\/士 eo<\/text>/u,
 	);
+});
+
+test("all diagrams reserve upper-right framed badges for the five stroke auxiliaries", () => {
+	for (const [, , image] of schemes) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		assert.equal(
+			[...svg.matchAll(/<g data-aux-badge="stroke">/gu)].length,
+			5,
+			`${image} should contain five framed stroke badges`,
+		);
+		assert.equal(
+			[...svg.matchAll(/data-aux-kind="stroke"/gu)].length,
+			5,
+			`${image} should label five stroke auxiliaries`,
+		);
+		assert.doesNotMatch(
+			svg,
+			/<rect\b[^>]*height="86"[^>]*fill="#e4f1e9"/u,
+			`${image} should not put center auxiliaries inside a large card`,
+		);
+	}
+});
+
+test("tone auxiliaries are centered and no smaller than shape roots", () => {
+	for (const image of [
+		"snow_sanpin.svg",
+		"snow_sanpin_classic.svg",
+		"snow_shenyun_tone.svg",
+	]) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		const tags = [
+			...svg.matchAll(/<text\b[^>]*data-aux-kind="tone"[^>]*>/gu),
+		].map(([tag]) => tag);
+		assert.equal(tags.length, 5, `${image} should label five tone auxiliaries`);
+		for (const tag of tags) {
+			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+			assert.ok(size >= 15, `${image} tone auxiliary font is too small`);
+		}
+	}
+});
+
+test("Shenyun Shape keeps the crowded er and u finals readable", () => {
+	const svg = read("lua/snow/keymaps/snow_shenyun_shape.svg");
+	for (const final of ["er", "u"]) {
+		const tag = svg.match(
+			new RegExp(`<text\\b[^>]*data-final="${final}"[^>]*>`, "u"),
+		)?.[0];
+		assert.ok(tag, `missing ${final} final`);
+		const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+		assert.ok(size >= 18, `${final} final is too small`);
+	}
+});
+
+test("Four-Code separates abdomen tail tone and stroke foreground semantics", () => {
+	const svg = read("lua/snow/keymaps/snow_sipin.svg");
+	const colors = new Map<string, string>();
+	for (const kind of ["abdomen", "tail", "tone", "stroke"]) {
+		const tags = [
+			...svg.matchAll(
+				new RegExp(`<text\\b[^>]*data-aux-kind="${kind}"[^>]*>`, "gu"),
+			),
+		].map(([tag]) => tag);
+		assert.ok(tags.length > 0, `missing Four-Code ${kind} labels`);
+		const kindColors = new Set<string>();
+		for (const tag of tags) {
+			const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+			const fill = tag.match(/fill="([^"]+)"/u)?.[1];
+			assert.ok(size >= 13, `Four-Code ${kind} font is too small`);
+			assert.ok(fill, `Four-Code ${kind} should define a foreground color`);
+			kindColors.add(fill);
+		}
+		assert.equal(
+			kindColors.size,
+			1,
+			`Four-Code ${kind} color should be stable`,
+		);
+		colors.set(kind, [...kindColors][0]);
+	}
+	assert.equal(new Set(colors.values()).size, 4);
 });
 
 test("seven diagrams share the benchmark Morandi semantic vocabulary", () => {

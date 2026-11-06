@@ -21,7 +21,6 @@ use winit::window::{Window, WindowAttributes, WindowId, WindowLevel};
 
 const POLL_INTERVAL: Duration = Duration::from_millis(30);
 const LONG_PRESS_DELAY: Duration = Duration::from_millis(500);
-const SCREEN_MARGIN: i32 = 24;
 const DRAG_THRESHOLD: f64 = 6.0;
 const MIN_ZOOM: f64 = 0.55;
 const MAX_ZOOM: f64 = 2.5;
@@ -112,6 +111,74 @@ fn positions_differ(before: PhysicalPosition<i32>, after: PhysicalPosition<i32>)
     let dx = f64::from(after.x - before.x);
     let dy = f64::from(after.y - before.y);
     dx.hypot(dy) >= DRAG_THRESHOLD
+}
+
+fn centered_position(
+    target_position: PhysicalPosition<i32>,
+    target_size: PhysicalSize<u32>,
+    window_size: PhysicalSize<u32>,
+) -> PhysicalPosition<i32> {
+    PhysicalPosition::new(
+        target_position.x + (target_size.width as i32 - window_size.width as i32) / 2,
+        target_position.y + (target_size.height as i32 - window_size.height as i32) / 2,
+    )
+}
+
+#[derive(Clone, Copy)]
+struct WindowArea {
+    position: PhysicalPosition<i32>,
+    size: PhysicalSize<u32>,
+}
+
+#[cfg(target_os = "windows")]
+fn focused_window_area() -> Option<WindowArea> {
+    use std::ffi::c_void;
+
+    #[repr(C)]
+    struct Rect {
+        left: i32,
+        top: i32,
+        right: i32,
+        bottom: i32,
+    }
+
+    #[link(name = "user32")]
+    unsafe extern "system" {
+        fn GetForegroundWindow() -> *mut c_void;
+        fn GetWindowRect(window: *mut c_void, rect: *mut Rect) -> i32;
+        fn IsIconic(window: *mut c_void) -> i32;
+    }
+
+    // SAFETY: the handles and output rectangle are used only for these read-only Win32 calls.
+    unsafe {
+        let window = GetForegroundWindow();
+        if window.is_null() || IsIconic(window) != 0 {
+            return None;
+        }
+        let mut rect = Rect {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+        };
+        if GetWindowRect(window, &mut rect) == 0 {
+            return None;
+        }
+        let width = rect.right - rect.left;
+        let height = rect.bottom - rect.top;
+        if width <= 0 || height <= 0 {
+            return None;
+        }
+        Some(WindowArea {
+            position: PhysicalPosition::new(rect.left, rect.top),
+            size: PhysicalSize::new(width as u32, height as u32),
+        })
+    }
+}
+
+#[cfg(not(target_os = "windows"))]
+fn focused_window_area() -> Option<WindowArea> {
+    None
 }
 
 fn start_command_watcher(command_file: PathBuf, proxy: EventLoopProxy<UserEvent>) {
@@ -281,19 +348,26 @@ impl App {
         true
     }
 
-    fn place_bottom_right(&self, event_loop: &ActiveEventLoop) {
+    fn place_centered(&self, event_loop: &ActiveEventLoop, focused_area: Option<WindowArea>) {
         let (Some(window), Some(image)) = (self.window.as_ref(), self.image.as_ref()) else {
             return;
         };
-        let (monitor, _) = self.monitor_and_maximum(event_loop);
-        let Some(monitor) = monitor else {
-            return;
+        let area = if let Some(area) = focused_area {
+            area
+        } else {
+            let (monitor, _) = self.monitor_and_maximum(event_loop);
+            let Some(monitor) = monitor else {
+                return;
+            };
+            WindowArea {
+                position: monitor.position(),
+                size: monitor.size(),
+            }
         };
-        let monitor_size = monitor.size();
-        let position = monitor.position();
-        window.set_outer_position(PhysicalPosition::new(
-            position.x + monitor_size.width as i32 - image.width as i32 - SCREEN_MARGIN,
-            position.y + monitor_size.height as i32 - image.height as i32 - SCREEN_MARGIN,
+        window.set_outer_position(centered_position(
+            area.position,
+            area.size,
+            PhysicalSize::new(image.width, image.height),
         ));
     }
 
@@ -337,11 +411,12 @@ impl App {
             }
         }
 
+        let focused_area = first_show.then(focused_window_area).flatten();
         window.set_visible(true);
         window.request_redraw();
         self.visible = true;
         if first_show {
-            self.place_bottom_right(event_loop);
+            self.place_centered(event_loop, focused_area);
         }
         let _ = command.token;
     }
@@ -682,5 +757,15 @@ mod tests {
         assert_eq!(adjust_zoom(1.0, 0.2), 1.2);
         assert_eq!(adjust_zoom(MAX_ZOOM, 1.0), MAX_ZOOM);
         assert_eq!(adjust_zoom(MIN_ZOOM, -1.0), MIN_ZOOM);
+    }
+
+    #[test]
+    fn centers_the_keymap_inside_the_focused_window() {
+        let position = centered_position(
+            PhysicalPosition::new(100, 200),
+            PhysicalSize::new(1400, 900),
+            PhysicalSize::new(1000, 600),
+        );
+        assert_eq!(position, PhysicalPosition::new(300, 350));
     }
 }

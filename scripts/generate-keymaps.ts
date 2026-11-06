@@ -10,21 +10,33 @@ type Mapping = {
 	toneKeysByTone: string;
 };
 
-type GenericKeyNote = {
-	primary: string;
-	secondary?: string;
-	tertiary?: string;
-};
-
 type ShapeKeyNote = {
 	stroke: string;
 	singleRoot: string;
 	doubleRoot: string;
 };
 
-type KeyNote = GenericKeyNote | ShapeKeyNote;
+type ToneKeyNote = {
+	stroke: string;
+	tone: string;
+};
 
-type ShapeAuxiliaryKind = "stroke" | "single-root" | "double-root";
+type SipinKeyNote = {
+	abdomen: string[];
+	tail?: string;
+	tone: string;
+	stroke: string;
+};
+
+type KeyNote = ShapeKeyNote | ToneKeyNote | SipinKeyNote;
+
+type AuxiliaryKind =
+	| "stroke"
+	| "single-root"
+	| "double-root"
+	| "tone"
+	| "abdomen"
+	| "tail";
 
 type Diagram = {
 	filename: string;
@@ -168,12 +180,16 @@ function initialLabels(mapping: Mapping) {
 	return result;
 }
 
-function toneNotes(keys: string): Record<string, GenericKeyNote> {
+function toneNotes(mapping: Mapping): Record<string, ToneKeyNote> {
 	const tones = ["一声 ˉ", "二声 ˊ", "三声 ˇ", "四声 ˋ", "轻声 ·"];
+	const shapes = shapeNotes(mapping.shapeKeysByMeaning);
 	return Object.fromEntries(
-		[...keys].map((key, index) => [
+		[...mapping.toneKeysByTone].map((key, index) => [
 			key.toUpperCase(),
-			{ primary: tones[index] },
+			{
+				stroke: shapes[key.toUpperCase()].stroke,
+				tone: tones[index],
+			},
 		]),
 	);
 }
@@ -221,15 +237,16 @@ function shapeNotes(keys: string): Record<string, ShapeKeyNote> {
 	};
 }
 
-const sipinAuxiliary: Record<string, GenericKeyNote> = {
-	A: { primary: "腹 a/ü", secondary: "尾 m · 四声 ˋ", tertiary: "折 ㇕" },
-	E: { primary: "腹 e/ie", secondary: "尾 ng · 二声 ˊ", tertiary: "横 一" },
-	U: { primary: "腹 u/ia/ue", secondary: "三声 ˇ", tertiary: "撇 丿" },
-	I: { primary: "腹 i/ua/er", secondary: "一声 ˉ", tertiary: "竖 丨" },
+const sipinAuxiliary: Record<string, SipinKeyNote> = {
+	A: { abdomen: ["腹 a/ü"], tail: "尾 m", tone: "四声 ˋ", stroke: "折 ㇕" },
+	E: { abdomen: ["腹 e/ie"], tail: "尾 ng", tone: "二声 ˊ", stroke: "横 一" },
+	U: { abdomen: ["腹 u/ia/ue"], tone: "三声 ˇ", stroke: "撇 丿" },
+	I: { abdomen: ["腹 i/ua/er"], tone: "一声 ˉ", stroke: "竖 丨" },
 	O: {
-		primary: "腹 o/üa/üe",
-		secondary: "腹 io/uo · 尾 n",
-		tertiary: "轻声 · · 点 丶",
+		abdomen: ["腹 o/üa/üe", "腹 io/uo"],
+		tail: "尾 n",
+		tone: "轻声 ·",
+		stroke: "点 丶",
 	},
 };
 
@@ -269,7 +286,7 @@ const diagrams: Diagram[] = [
 		title: "冰雪弎拼 · 无飞键道(U357)",
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: u357,
-		auxiliary: toneNotes(u357.toneKeysByTone),
+		auxiliary: toneNotes(u357),
 	},
 	{
 		filename: "snow_jiandao",
@@ -290,14 +307,14 @@ const diagrams: Diagram[] = [
 		title: "冰雪三拼 · 经典键道",
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: classic,
-		auxiliary: toneNotes(classic.toneKeysByTone),
+		auxiliary: toneNotes(classic),
 	},
 	{
 		filename: "snow_shenyun_tone",
 		title: "冰雪散拼 · 神韵(Overall-17)",
 		subtitle: "21×26 声韵与声调映射（独立按 E 显隐）",
 		mapping: overall17,
-		auxiliary: toneNotes(overall17.toneKeysByTone),
+		auxiliary: toneNotes(overall17),
 	},
 	{
 		filename: "snow_shenyun_shape",
@@ -317,7 +334,8 @@ function text(
 		fill: string;
 		anchor?: string;
 		weight?: number;
-		auxKind?: ShapeAuxiliaryKind;
+		auxKind?: AuxiliaryKind;
+		final?: string;
 		textLength?: number;
 	},
 ) {
@@ -327,19 +345,47 @@ function text(
 	const fittedLength = options.textLength
 		? ` textLength="${options.textLength}" lengthAdjust="spacingAndGlyphs"`
 		: "";
-	return `<text x="${x}" y="${y}" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${fittedLength}>${escapeXml(value)}</text>`;
+	const final = options.final
+		? ` data-final="${escapeXml(options.final)}"`
+		: "";
+	return `<text x="${x}" y="${y}" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="${options.size}" fill="${options.fill}" text-anchor="${options.anchor ?? "start"}" font-weight="${options.weight ?? 500}"${auxiliaryKind}${final}${fittedLength}>${escapeXml(value)}</text>`;
 }
 
 function isShapeKeyNote(note: KeyNote): note is ShapeKeyNote {
-	return "stroke" in note;
+	return "singleRoot" in note;
+}
+
+function isToneKeyNote(note: KeyNote): note is ToneKeyNote {
+	return "tone" in note && !("abdomen" in note);
+}
+
+function isSipinKeyNote(note: KeyNote): note is SipinKeyNote {
+	return "abdomen" in note;
 }
 
 function auxiliaryLabels(note: KeyNote) {
-	return isShapeKeyNote(note)
-		? [note.stroke, note.singleRoot, note.doubleRoot]
-		: [note.primary, note.secondary, note.tertiary].filter(
-				(value): value is string => value !== undefined,
-			);
+	if (isShapeKeyNote(note)) {
+		return [note.stroke, note.singleRoot, note.doubleRoot];
+	}
+	if (isToneKeyNote(note)) return [note.tone, note.stroke];
+	return [...note.abdomen, note.tail, note.tone, note.stroke].filter(
+		(value): value is string => value !== undefined,
+	);
+}
+
+function renderStrokeBadge(stroke: string, x: number, y: number) {
+	return `<g data-aux-badge="stroke"><rect x="${x + 40}" y="${y + 4}" width="47" height="22" rx="6" fill="#e4f1e9" stroke="#77a08c"/>${text(
+		x + 63.5,
+		y + 19,
+		stroke,
+		{
+			size: 14,
+			fill: "#426b59",
+			anchor: "middle",
+			weight: 750,
+			auxKind: "stroke",
+		},
+	)}</g>`;
 }
 
 function renderShapeAuxiliary(
@@ -350,7 +396,7 @@ function renderShapeAuxiliary(
 ) {
 	const center = x + keyWidth / 2;
 	const rows: Array<{
-		kind: ShapeAuxiliaryKind;
+		kind: AuxiliaryKind;
 		value: string;
 		size: number;
 		fill: string;
@@ -378,39 +424,17 @@ function renderShapeAuxiliary(
 			weight: 650,
 		},
 	];
-	if (auxiliaryOnly) {
-		const cardY = y + 34;
-		return [
-			`<rect x="${x + 6}" y="${cardY}" width="${keyWidth - 12}" height="86" rx="10" fill="#e4f1e9" stroke="#77a08c" stroke-width="1.2"/>`,
-			...rows.map((row, index) =>
-				text(center, cardY + [21, 44, 68][index], row.value, {
-					size: row.size,
-					fill: row.fill,
-					anchor: "middle",
-					weight: row.weight,
-					auxKind: row.kind,
-					textLength: row.value.length > 14 ? 76 : undefined,
-				}),
-			),
-		];
-	}
+	const rootRows = auxiliaryOnly ? [69, 99] : [46, 68];
 	return [
-		`<rect x="${x + 40}" y="${y + 4}" width="47" height="22" rx="6" fill="#e4f1e9" stroke="#77a08c"/>`,
-		text(x + 63.5, y + 19, note.stroke, {
-			size: rows[0].size,
-			fill: rows[0].fill,
-			anchor: "middle",
-			weight: rows[0].weight,
-			auxKind: rows[0].kind,
-		}),
-		text(center, y + 45, note.singleRoot, {
+		renderStrokeBadge(note.stroke, x, y),
+		text(center, y + rootRows[0], note.singleRoot, {
 			size: rows[1].size,
 			fill: rows[1].fill,
 			anchor: "middle",
 			weight: rows[1].weight,
 			auxKind: rows[1].kind,
 		}),
-		text(center, y + 66, note.doubleRoot, {
+		text(center, y + rootRows[1], note.doubleRoot, {
 			size: rows[2].size,
 			fill: rows[2].fill,
 			anchor: "middle",
@@ -418,6 +442,53 @@ function renderShapeAuxiliary(
 			auxKind: rows[2].kind,
 			textLength: note.doubleRoot.length > 14 ? 76 : undefined,
 		}),
+	];
+}
+
+function renderToneAuxiliary(
+	note: ToneKeyNote,
+	x: number,
+	y: number,
+	auxiliaryOnly: boolean,
+) {
+	return [
+		renderStrokeBadge(note.stroke, x, y),
+		text(x + keyWidth / 2, y + (auxiliaryOnly ? 82 : 50), note.tone, {
+			size: 15,
+			fill: "#a05b37",
+			anchor: "middle",
+			weight: 750,
+			auxKind: "tone",
+		}),
+	];
+}
+
+function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
+	const rows = [
+		...note.abdomen.map((value) => ({
+			kind: "abdomen" as const,
+			value,
+			fill: "#6f8198",
+		})),
+		...(note.tail
+			? [{ kind: "tail" as const, value: note.tail, fill: "#8f879f" }]
+			: []),
+		{ kind: "tone" as const, value: note.tone, fill: "#a05b37" },
+	];
+	const first = rows.length === 4 ? 43 : rows.length === 3 ? 51 : 65;
+	const step = rows.length === 4 ? 24 : rows.length === 3 ? 29 : 37;
+	return [
+		renderStrokeBadge(note.stroke, x, y),
+		...rows.map((row, index) =>
+			text(x + keyWidth / 2, y + first + index * step, row.value, {
+				size: 13,
+				fill: row.fill,
+				anchor: "middle",
+				weight: 700,
+				auxKind: row.kind,
+				textLength: row.value.length > 12 ? 76 : undefined,
+			}),
+		),
 	];
 }
 
@@ -448,9 +519,17 @@ function render(diagram: Diagram) {
 	const hasShapeAuxiliary = Object.values(diagram.auxiliary ?? {}).some(
 		isShapeKeyNote,
 	);
-	const semanticLegend = hasShapeAuxiliary
-		? "形辅前景：笔画绿 · 单辅键码根棕 · 双辅键码根紫；背景、纹理和边框表示声韵占用。"
-		: "声韵占用、五辅键与多韵键使用独立的莫兰迪背景、纹理和边框。";
+	const hasToneAuxiliary = Object.values(diagram.auxiliary ?? {}).some(
+		isToneKeyNote,
+	);
+	const semanticLegend =
+		diagram.filename === "snow_sipin"
+			? "四拼前景：韵腹蓝 · 韵尾紫 · 声调棕 · 笔画绿框；背景、纹理和边框表示声韵占用。"
+			: hasShapeAuxiliary
+				? "形辅前景：笔画绿框 · 单辅键码根棕 · 双辅键码根紫；背景、纹理和边框表示声韵占用。"
+				: hasToneAuxiliary
+					? "调辅前景：笔画绿框 · 声调棕；背景、纹理和边框表示声韵占用。"
+					: "声韵占用与多韵键使用独立的莫兰迪背景、纹理和边框。";
 	const rawInitials = diagram.mapping
 		? invert(diagram.mapping.initialMap)
 		: new Map(Object.entries(sipinInitials));
@@ -579,55 +658,12 @@ function render(diagram: Diagram) {
 
 			if (auxiliary) {
 				const auxiliaryOnly = !hasInitial && !hasRhyme;
-				const sipinDetail = diagram.filename === "snow_sipin";
 				if (isShapeKeyNote(auxiliary)) {
 					items.push(...renderShapeAuxiliary(auxiliary, x, y, auxiliaryOnly));
-				} else if (auxiliaryOnly || sipinDetail) {
-					const lines = [
-						auxiliary.primary,
-						auxiliary.secondary,
-						auxiliary.tertiary,
-					].filter((value): value is string => value !== undefined);
-					const cardY = y + (lines.length === 1 ? 46 : 34);
-					const cardHeight = lines.length === 1 ? 52 : 86;
-					items.push(
-						`<rect x="${x + 6}" y="${cardY}" width="${keyWidth - 12}" height="${cardHeight}" rx="10" fill="#e4f1e9" stroke="#77a08c" stroke-width="1.2"/>`,
-					);
-					lines.forEach((line, index) => {
-						items.push(
-							text(
-								x + keyWidth / 2,
-								cardY + (lines.length === 1 ? 31 : 24 + index * 23),
-								line,
-								{
-									size: line.length > 14 ? 8.5 : index === 0 ? 11 : 9.5,
-									fill: "#426b59",
-									anchor: "middle",
-									weight: index === 0 ? 750 : 650,
-								},
-							),
-						);
-					});
-				} else {
-					items.push(
-						`<rect x="${x + 40}" y="${y + 5}" width="47" height="21" rx="6" fill="#e4f1e9" stroke="#77a08c"/>`,
-						text(x + 63.5, y + 19, auxiliary.primary, {
-							size: auxiliary.primary.length > 8 ? 7.5 : 8.5,
-							fill: "#426b59",
-							anchor: "middle",
-							weight: 750,
-						}),
-					);
-					if (auxiliary.secondary) {
-						items.push(
-							text(x + keyWidth / 2, y + 50, auxiliary.secondary, {
-								size: auxiliary.secondary.length > 14 ? 7.5 : 9,
-								fill: "#426b59",
-								anchor: "middle",
-								weight: 650,
-							}),
-						);
-					}
+				} else if (isToneKeyNote(auxiliary)) {
+					items.push(...renderToneAuxiliary(auxiliary, x, y, auxiliaryOnly));
+				} else if (isSipinKeyNote(auxiliary)) {
+					items.push(...renderSipinAuxiliary(auxiliary, x, y));
 				}
 			}
 
@@ -638,12 +674,12 @@ function render(diagram: Diagram) {
 					(auxiliary
 						? isShapeKeyNote(auxiliary)
 							? 2
-							: auxiliary.secondary
+							: isToneKeyNote(auxiliary)
 								? 1
 								: 0
 						: 0);
 				const count = Math.min(final.length, 3);
-				const first =
+				let first =
 					count <= 1
 						? layers >= 2
 							? 113
@@ -659,6 +695,13 @@ function render(diagram: Diagram) {
 								: count === 2
 									? 82
 									: 70;
+				if (!ordinaryText && !zeroText && auxiliary && count > 1) {
+					if (isShapeKeyNote(auxiliary)) {
+						first = count === 2 ? 91 : 80;
+					} else if (isToneKeyNote(auxiliary)) {
+						first = count === 2 ? 88 : 78;
+					}
+				}
 				const step = count > 1 ? (119 - first) / (count - 1) : 0;
 				const rowCap = count > 1 ? Math.max(13, step * 0.69) : 28;
 				final.slice(0, 3).forEach((value, index) => {
@@ -675,6 +718,7 @@ function render(diagram: Diagram) {
 							fill: semanticColor(value),
 							anchor: "middle",
 							weight: direct ? 800 : multi ? 650 : 540,
+							final: value,
 						}),
 					);
 				});
