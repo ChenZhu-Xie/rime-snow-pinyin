@@ -141,7 +141,7 @@ test("经典方案保留迁移前飞键主码并采用 CKT v5.1 辅序扩展", (
 		pronunciationCodes("classic-tone", "冰雪", ["bing1", "xue3"]).map(
 			({ code }) => code,
 		),
-		["bgxh", "bgxhv", "bgxhvu"],
+		["bgxh", "bgxhi", "bgxhiu"],
 	);
 	const inputMethodCodes = pronunciationCodes("classic-tone", "输入法", [
 		"shu1",
@@ -150,7 +150,7 @@ test("经典方案保留迁移前飞键主码并采用 CKT v5.1 辅序扩展", (
 	]).map(({ code }) => code);
 	assert.deepEqual(
 		inputMethodCodes.filter((code) => !/[A-Z]/u.test(code)),
-		["erf", "erfo", "erfov", "erfovu"],
+		["erf", "erfa", "erfai", "erfaiu"],
 	);
 	for (const code of ["eJrf", "erJf", "erfS", "eJrJfS"]) {
 		assert.ok(inputMethodCodes.includes(code), code);
@@ -163,7 +163,7 @@ test("经典方案保留迁移前飞键主码并采用 CKT v5.1 辅序扩展", (
 	]).map(({ code }) => code);
 	assert.deepEqual(
 		fourCharacterCodes.filter((code) => !/[A-Z]/u.test(code)),
-		["bxpy", "bxpyu", "bxpyuv"],
+		["bxpy", "bxpyu", "bxpyui"],
 	);
 });
 
@@ -192,7 +192,7 @@ test("经典发布方案接入 AA 空桶与 AAB 二字辅码", () => {
 	const entries = [{ word: "表示", syllables: ["biao3", "shi4"], weight: 100 }];
 	for (const [scheme, aab] of [
 		["classic-shape", "bev"],
-		["classic-tone", "beo"],
+		["classic-tone", "bea"],
 	] as const) {
 		const codes = rankBenchmarkCodes(scheme, entries, entries, new Map()).map(
 			({ code }) => code,
@@ -253,11 +253,11 @@ test("经典 630 首选均符合经典声码与 CKT v5.1 辅码语义", () => {
 				.map((code) => code[0]),
 		);
 	const toneKeys: Record<string, string> = {
-		"1": "v",
-		"2": "i",
+		"1": "i",
+		"2": "v",
 		"3": "u",
-		"4": "o",
-		"5": "a",
+		"4": "a",
+		"5": "o",
 	};
 	const toneKey = (syllable: string) => toneKeys[syllable.at(-1) ?? ""] ?? "";
 	for (const [code, [word]] of fixedSections(
@@ -376,9 +376,9 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 			code,
 		);
 		assert.deepEqual(
-			candidatesAt(sanpin, `${code}a`),
+			candidatesAt(sanpin, `${code}o`),
 			[letters[index].toUpperCase(), letters[index]],
-			`${code}a`,
+			`${code}o`,
 		);
 	}
 	for (const [code, expected, word, pinyin] of [
@@ -408,12 +408,12 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 		["s", ["三", "3"], "三", "san1"],
 		["sk", ["四", "4"], "四", "si4"],
 		["wju", ["五", "5"], "五", "wu3"],
-		["lqo", ["六", "6"], "六", "liu4"],
-		["qkv", ["七", "7"], "七", "qi1"],
-		["bsv", ["八", "8"], "八", "ba1"],
+		["lqa", ["六", "6"], "六", "liu4"],
+		["qki", ["七", "7"], "七", "qi1"],
+		["bsi", ["八", "8"], "八", "ba1"],
 		["jqu", ["九", "9"], "九", "jiu3"],
-		["eki", ["十", "10"], "十", "shi2"],
-		["lgi", ["零", "0"], "零", "ling2"],
+		["ekv", ["十", "10"], "十", "shi2"],
+		["lgv", ["零", "0"], "零", "ling2"],
 	] as const) {
 		assert.deepEqual(candidatesAt(sanpin, code), expected, code);
 		assert.ok(

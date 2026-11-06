@@ -117,7 +117,7 @@ sanpin_algebra:
   - xform/(er|u)(?=\d)/J/
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
   # 声调
-  - xlit/12345/viuoa/
+  - xlit/12345/ivuao/
 
 jianpin:
   dictionary: snow_pinyin
@@ -205,13 +205,13 @@ speller:
   algebra:
     __include: /sanpin_algebra
     __append:
-      # 与经典键道共享二键基码，并追加经典轻声键 a。
-      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1ca/
-      - xform/~{1,2}v/xga/
-      - xform/~{1,2}i/xla/
-      - xform/~{1,2}u/xha/
-      - xform/~{1,2}o/xda/
-      - xform/~{1,2}a/xwa/
+      # 与经典键道共享二键基码，并追加现行 21×21 轻声键 o。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1co/
+      - xform/~{1,2}v/xgo/
+      - xform/~{1,2}i/xlo/
+      - xform/~{1,2}u/xho/
+      - xform/~{1,2}o/xdo/
+      - xform/~{1,2}a/xwo/
       - abbrev/^([a-z]).+$/$1/ # 简拼
       - derive/[viuoa]$// # 无声调
 

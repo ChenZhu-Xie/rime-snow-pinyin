@@ -72,7 +72,7 @@ const overall17 = JSON.parse(
 
 const classic: Mapping = {
 	shapeKeysByMeaning: "AVUIO",
-	toneKeysByTone: "VIUOA",
+	toneKeysByTone: "IVUAO",
 	initialMap: {
 		A: "X",
 		E: "X",
@@ -118,6 +118,7 @@ const classic: Mapping = {
 		i: "K",
 		ian: "M",
 		iang: "X",
+		"uang*": "X",
 		iao: "C",
 		ie: "D",
 		in: "B",
@@ -500,7 +501,7 @@ function renderShapeAuxiliary(
 			value: note.doubleRoot,
 			size: 13,
 			fill: "#66506a",
-			weight: 650,
+			weight: 750,
 		},
 	];
 	const rootRows = auxiliaryOnly ? [69, 99] : [46, 68];
@@ -555,10 +556,10 @@ function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
 	];
 	const layout =
 		rows.length === 3
-			? { first: 43, step: 24, tone: 115 }
+			? { first: 75, step: 22, tone: 52 }
 			: rows.length === 2
-				? { first: 51, step: 29, tone: 109 }
-				: { first: 65, step: 0, tone: 102 };
+				? { first: 82, step: 27, tone: 56 }
+				: { first: 104, step: 0, tone: 62 };
 	return [
 		renderStrokeBadge(note.stroke, x, y),
 		...rows.map((row, index) =>
@@ -581,14 +582,15 @@ function renderSipinAuxiliary(note: SipinKeyNote, x: number, y: number) {
 }
 
 function semanticColor(final: string) {
-	if (/ng$/u.test(final)) return "#8f879f";
-	if (/n$/u.test(final)) return "#9f8f76";
-	if (/^[vü]/u.test(final)) return "#a17f91";
-	if (/^i/u.test(final)) return "#748f9e";
-	if (/^u/u.test(final)) return "#929967";
-	if (/^a/u.test(final)) return "#ad8178";
-	if (/^e/u.test(final)) return "#899985";
-	if (/^o/u.test(final)) return "#a7966c";
+	const normalized = final.replace(/\*$/u, "");
+	if (/ng$/u.test(normalized)) return "#8f879f";
+	if (/n$/u.test(normalized)) return "#9f8f76";
+	if (/^[vü]/u.test(normalized)) return "#a17f91";
+	if (/^i/u.test(normalized)) return "#748f9e";
+	if (/^u/u.test(normalized)) return "#929967";
+	if (/^a/u.test(normalized)) return "#ad8178";
+	if (/^e/u.test(normalized)) return "#899985";
+	if (/^o/u.test(normalized)) return "#a7966c";
 	return "#748d82";
 }
 
@@ -804,12 +806,13 @@ function render(diagram: Diagram) {
 					const size = readableShenyunFinal
 						? Math.max(20, calculatedSize)
 						: calculatedSize;
+					const weight = size < 18 ? 750 : multi ? 700 : 600;
 					items.push(
 						text(x + keyWidth / 2, y + first + index * step, label, {
 							size,
 							fill: semanticColor(value),
 							anchor: "middle",
-							weight: multi ? 650 : 540,
+							weight,
 							final: value,
 						}),
 					);

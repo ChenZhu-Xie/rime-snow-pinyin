@@ -377,7 +377,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		assert.equal(readme.split("#### Letter and number entry").length - 1, 2);
 		assert.equal(readme.split("#### 英數入口").length - 1, 2);
 		includes(readme, "键道类保留原汉字首选，大写、小写固定为第 2、3 候选");
-		includes(readme, "| 零／0 | `ltv` | `ltv` | `lgv` | `lgi` |");
+		includes(readme, "| 零／0 | `ltv` | `ltv` | `lgv` | `lgv` |");
 		includes(
 			readme,
 			"[机器可读字母映射](config/shenyun-21x26-letter-buckets.json)",

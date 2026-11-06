@@ -155,23 +155,23 @@
 
 #### 英数入口
 
-本节同时列出采用 U357 的冰雪健道、冰雪弎拼及其经典声韵对应方案冰雪键道、冰雪三拼。四个 21×21 方案已经启用同一套字母结构：冰雪健道与冰雪键道使用二键基码；冰雪弎拼在基码后追加轻声键 `o`，冰雪三拼追加经典轻声键 `a`。除 `A/I/O/U/V` 外的 21 个字母使用“字母小写＋`c`”，五个例外使用 `A=xw、I=xl、O=xd、U=xh、V=xg`。键道类保留原汉字首选，大写、小写固定为第 2、3 候选；三拼类的完整字母码固定大写第 1、小写第 2，即使与真实轻声音节重合也保持字母固顶。
+本节同时列出采用 U357 的冰雪健道、冰雪弎拼及其经典声韵对应方案冰雪键道、冰雪三拼。四个 21×21 方案已经启用同一套字母结构：冰雪健道与冰雪键道使用二键基码；冰雪弎拼与冰雪三拼都在基码后追加轻声键 `o`。除 `A/I/O/U/V` 外的 21 个字母使用“字母小写＋`c`”，五个例外使用 `A=xw、I=xl、O=xd、U=xh、V=xg`。键道类保留原汉字首选，大写、小写固定为第 2、3 候选；三拼类的完整字母码固定大写第 1、小写第 2，即使与真实轻声音节重合也保持字母固顶。
 
 阿拉伯数字与对应汉字数字同码，不另占空桶；原码已有更重要首选时继续保留，例如冰雪健道 `qlv → 妻、七、7`、冰雪键道 `qkv → 其、七、7`。
 
 | 数字 | 冰雪健道 | 冰雪弎拼 | 冰雪键道 | 冰雪三拼 |
 | --- | :---: | :---: | :---: | :---: |
-| 零／0 | `ltv` | `ltv` | `lgv` | `lgi` |
+| 零／0 | `ltv` | `ltv` | `lgv` | `lgv` |
 | 一／1 | `y` | `y` | `y` | `y` |
 | 二／2 | `re` | `re` | `xj` | `xj` |
 | 三／3 | `sj` | `sj` | `s` | `s` |
 | 四／4 | `sli` | `sla` | `sk` | `sk` |
 | 五／5 | `shv` | `shu` | `wjv` | `wju` |
-| 六／6 | `ldo` | `lda` | `lqo` | `lqo` |
-| 七／7 | `qlv` | `qli` | `qkv` | `qkv` |
-| 八／8 | `bwu` | `bwi` | `bsu` | `bsv` |
+| 六／6 | `ldo` | `lda` | `lqo` | `lqa` |
+| 七／7 | `qlv` | `qli` | `qkv` | `qki` |
+| 八／8 | `bwu` | `bwi` | `bsu` | `bsi` |
 | 九／9 | `jdu` | `jdu` | `jqu` | `jqu` |
-| 十／10 | `elu` | `elv` | `eku` | `eki` |
+| 十／10 | `elu` | `elv` | `eku` | `ekv` |
 
 > [!NOTE]
 > 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪弎拼](https://input.tansongchen.com/snow3/)的五调辅键按照与[冰雪四拼](https://input.tansongchen.com/snow4/)相近的顺序排列。
@@ -523,23 +523,23 @@ Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 do
 
 #### Letter and number entry
 
-This subsection also lists the classic sound-layout counterparts of the U357 schemes: 冰雪键道 and 冰雪三拼. All four 21×21 schemes have enabled the same letter structure. 冰雪健道 and 冰雪键道 use the two-key base; 冰雪弎拼 appends neutral-tone key `o`, while 冰雪三拼 appends classic neutral-tone key `a`. The 21 consonant letters other than `A/I/O/U/V` use “lowercase letter + `c`”; the five exceptions are `A=xw, I=xl, O=xd, U=xh, V=xg`. KeyTao schemes preserve the existing Han first choice and pin uppercase/lowercase to positions 2/3. Three-Code schemes pin uppercase/lowercase to positions 1/2 at the full letter code, even where it overlaps a real neutral-tone syllable.
+This subsection also lists the classic sound-layout counterparts of the U357 schemes: 冰雪键道 and 冰雪三拼. All four 21×21 schemes have enabled the same letter structure. 冰雪健道 and 冰雪键道 use the two-key base; both 冰雪弎拼 and 冰雪三拼 append neutral-tone key `o`. The 21 consonant letters other than `A/I/O/U/V` use “lowercase letter + `c`”; the five exceptions are `A=xw, I=xl, O=xd, U=xh, V=xg`. KeyTao schemes preserve the existing Han first choice and pin uppercase/lowercase to positions 2/3. Three-Code schemes pin uppercase/lowercase to positions 1/2 at the full letter code, even where it overlaps a real neutral-tone syllable.
 
 Arabic numerals share the code of the corresponding Han numeral and consume no separate vacant bucket. An existing higher-priority first choice is preserved, for example `qlv → 妻、七、7` in 冰雪健道 and `qkv → 其、七、7` in 冰雪键道.
 
 | Number | 冰雪健道 | 冰雪弎拼 | 冰雪键道 | 冰雪三拼 |
 | --- | :---: | :---: | :---: | :---: |
-| 零／0 | `ltv` | `ltv` | `lgv` | `lgi` |
+| 零／0 | `ltv` | `ltv` | `lgv` | `lgv` |
 | 一／1 | `y` | `y` | `y` | `y` |
 | 二／2 | `re` | `re` | `xj` | `xj` |
 | 三／3 | `sj` | `sj` | `s` | `s` |
 | 四／4 | `sli` | `sla` | `sk` | `sk` |
 | 五／5 | `shv` | `shu` | `wjv` | `wju` |
-| 六／6 | `ldo` | `lda` | `lqo` | `lqo` |
-| 七／7 | `qlv` | `qli` | `qkv` | `qkv` |
-| 八／8 | `bwu` | `bwi` | `bsu` | `bsv` |
+| 六／6 | `ldo` | `lda` | `lqo` | `lqa` |
+| 七／7 | `qlv` | `qli` | `qkv` | `qki` |
+| 八／8 | `bwu` | `bwi` | `bsu` | `bsi` |
 | 九／9 | `jdu` | `jdu` | `jqu` | `jqu` |
-| 十／10 | `elu` | `elv` | `eku` | `eki` |
+| 十／10 | `elu` | `elv` | `eku` | `ekv` |
 
 > [!NOTE]
 > Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪弎拼](https://input.tansongchen.com/snow3/)'s five tone auxiliary keys are arranged in an order similar to [Snow Four-Code](https://input.tansongchen.com/snow4/)'s.
@@ -770,23 +770,23 @@ Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-
 
 #### 英數入口
 
-本節同時列出採用 U357 的冰雪健道、冰雪弎拼及其經典聲韻對應方案冰雪鍵道、冰雪三拼。四個 21×21 方案已啟用同一套字母結構：冰雪健道與冰雪鍵道使用二鍵基碼；冰雪弎拼在基碼後追加輕聲鍵 `o`，冰雪三拼追加經典輕聲鍵 `a`。除 `A/I/O/U/V` 外的 21 個字母使用「字母小寫＋`c`」，五個例外使用 `A=xw、I=xl、O=xd、U=xh、V=xg`。鍵道類保留原漢字首選，大寫、小寫固定為第 2、3 候選；三拼類的完整字母碼固定大寫第 1、小寫第 2，即使與真實輕聲音節重合也保持字母固頂。
+本節同時列出採用 U357 的冰雪健道、冰雪弎拼及其經典聲韻對應方案冰雪鍵道、冰雪三拼。四個 21×21 方案已啟用同一套字母結構：冰雪健道與冰雪鍵道使用二鍵基碼；冰雪弎拼與冰雪三拼都在基碼後追加輕聲鍵 `o`。除 `A/I/O/U/V` 外的 21 個字母使用「字母小寫＋`c`」，五個例外使用 `A=xw、I=xl、O=xd、U=xh、V=xg`。鍵道類保留原漢字首選，大寫、小寫固定為第 2、3 候選；三拼類的完整字母碼固定大寫第 1、小寫第 2，即使與真實輕聲音節重合也保持字母固頂。
 
 阿拉伯數字與對應漢字數字同碼，不另占空桶；原碼已有更重要首選時繼續保留，例如冰雪健道 `qlv → 妻、七、7`、冰雪鍵道 `qkv → 其、七、7`。
 
 | 數字 | 冰雪健道 | 冰雪弎拼 | 冰雪鍵道 | 冰雪三拼 |
 | --- | :---: | :---: | :---: | :---: |
-| 零／0 | `ltv` | `ltv` | `lgv` | `lgi` |
+| 零／0 | `ltv` | `ltv` | `lgv` | `lgv` |
 | 一／1 | `y` | `y` | `y` | `y` |
 | 二／2 | `re` | `re` | `xj` | `xj` |
 | 三／3 | `sj` | `sj` | `s` | `s` |
 | 四／4 | `sli` | `sla` | `sk` | `sk` |
 | 五／5 | `shv` | `shu` | `wjv` | `wju` |
-| 六／6 | `ldo` | `lda` | `lqo` | `lqo` |
-| 七／7 | `qlv` | `qli` | `qkv` | `qkv` |
-| 八／8 | `bwu` | `bwi` | `bsu` | `bsv` |
+| 六／6 | `ldo` | `lda` | `lqo` | `lqa` |
+| 七／7 | `qlv` | `qli` | `qkv` | `qki` |
+| 八／8 | `bwu` | `bwi` | `bsu` | `bsi` |
 | 九／9 | `jdu` | `jdu` | `jqu` | `jqu` |
-| 十／10 | `elu` | `elv` | `eku` | `eki` |
+| 十／10 | `elu` | `elv` | `eku` | `ekv` |
 
 > [!NOTE]
 > 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪弎拼](https://input.tansongchen.com/snow3/)的五調輔鍵按照與[冰雪四拼](https://input.tansongchen.com/snow4/)相近的順序排列。

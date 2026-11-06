@@ -10,6 +10,13 @@ import { makeTrimeSkin } from "../../skin/trime";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
+const keyGroup = (svg: string, key: string) =>
+	svg.match(
+		new RegExp(
+			`<g data-key="${key}"[\\s\\S]*?(?=<g data-key=|<text x="24" y="535")`,
+			"u",
+		),
+	)?.[0] ?? "";
 
 const schemes = [
 	["snow_sipin.schema.yaml", "e", "snow_sipin.svg"],
@@ -186,8 +193,15 @@ test("shape diagrams distinguish stroke and single-key and two-key roots", () =>
 			const kindColors = new Set<string>();
 			for (const tag of tags) {
 				const size = Number(tag.match(/font-size="([^"]+)"/u)?.[1]);
+				const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
 				const fill = tag.match(/fill="([^"]+)"/u)?.[1];
 				assert.ok(size >= minimumSize, `${image} ${kind} font is too small`);
+				if (kind === "double-root") {
+					assert.ok(
+						weight >= 750,
+						`${image} crowded double roots should not become thinner`,
+					);
+				}
 				assert.ok(fill, `${image} ${kind} should define a foreground color`);
 				kindColors.add(fill);
 			}
@@ -358,6 +372,52 @@ test("KeyTao final e does not inherit keycap emphasis", () => {
 	assert.ok(weight <= 650, "KeyTao final e should use the normal final weight");
 });
 
+test("crowded finals keep a compensating bold weight when they shrink", () => {
+	for (const [, , image] of schemes) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		for (const key of "QWERTYUIOPASDFGHJKLZXCVBNM") {
+			const group = keyGroup(svg, key);
+			if (!group.includes('data-multi="true"')) continue;
+			for (const [tag] of group.matchAll(
+				/<text\b[^>]*data-final="[^"]+"[^>]*>/gu,
+			)) {
+				const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
+				assert.ok(
+					weight >= 700,
+					`${image} ${key} crowded final should stay bold`,
+				);
+			}
+		}
+	}
+});
+
+test("classic KeyTao and Three-Code show the X-key uang fly route", () => {
+	for (const image of ["snow_jiandao_classic.svg", "snow_sanpin_classic.svg"]) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		assert.match(keyGroup(svg, "M"), /韵码 ian \/ uang/u, image);
+		assert.match(keyGroup(svg, "X"), /韵码 iang \/ uang\*/u, image);
+	}
+});
+
+test("classic Three-Code uses the same IVUAO tone order as current Three-Code", () => {
+	for (const image of ["snow_sanpin.svg", "snow_sanpin_classic.svg"]) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		for (const [key, tone] of [
+			["I", "一声"],
+			["V", "二声"],
+			["U", "三声"],
+			["A", "四声"],
+			["O", "轻声"],
+		] as const) {
+			assert.match(keyGroup(svg, key), new RegExp(`辅键 ${tone}`, "u"), image);
+		}
+	}
+	assert.match(
+		read("snow_sanpin_classic.schema.yaml"),
+		/xlit\/12345\/ivuao\//u,
+	);
+});
+
 test("Four-Code separates abdomen tail tone and stroke foreground semantics", () => {
 	const svg = read("lua/snow/keymaps/snow_sipin.svg");
 	const colors = new Map<string, string>();
@@ -386,6 +446,26 @@ test("Four-Code separates abdomen tail tone and stroke foreground semantics", ()
 	assert.equal(new Set(colors.values()).size, 4);
 	assert.equal(colors.get("abdomen"), "#6f8198");
 	assert.equal(colors.get("tail"), "#76506a");
+});
+
+test("Four-Code puts tone rows below the key label and above every rhyme row", () => {
+	const svg = read("lua/snow/keymaps/snow_sipin.svg");
+	for (const key of ["A", "E", "U", "I", "O"]) {
+		const group = keyGroup(svg, key);
+		const toneY = Number(
+			group.match(/<text\b[^>]*\by="([^"]+)"[^>]*data-aux-kind="tone"/u)?.[1],
+		);
+		const rhymeYs = [
+			...group.matchAll(
+				/<text\b[^>]*\by="([^"]+)"[^>]*data-aux-kind="(?:abdomen|tail)"/gu,
+			),
+		].map((match) => Number(match[1]));
+		assert.ok(toneY > 0 && rhymeYs.length > 0, `Four-Code ${key} rows missing`);
+		assert.ok(
+			toneY < Math.min(...rhymeYs),
+			`Four-Code ${key} tone should sit above its rhyme rows`,
+		);
+	}
 });
 
 test("seven diagrams share the benchmark Morandi semantic vocabulary", () => {

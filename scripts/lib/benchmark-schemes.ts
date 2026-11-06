@@ -472,9 +472,7 @@ function auxiliarySequences(
 		}
 		const tone = toneOf(syllables[0]);
 		const toneKey = tone
-			? scheme.soundLayout === "classic"
-				? "viuoa"[Number(tone) - 1]
-				: semantics[capacity].toneKeysByTone[Number(tone) - 1]
+			? semantics[capacity].toneKeysByTone[Number(tone) - 1]
 			: undefined;
 		if (!toneKey) return [[]];
 		const strokes = strokeCodes(word, capacity);
@@ -495,9 +493,7 @@ function auxiliarySequences(
 		positions.map((position) => {
 			const tone = toneOf(syllables[position - 1] ?? "");
 			if (!tone) return "";
-			return scheme.soundLayout === "classic"
-				? ("viuoa"[Number(tone) - 1] ?? "")
-				: (semantics[capacity].toneKeysByTone[Number(tone) - 1] ?? "");
+			return semantics[capacity].toneKeysByTone[Number(tone) - 1] ?? "";
 		}),
 	];
 }

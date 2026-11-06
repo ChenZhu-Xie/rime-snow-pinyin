@@ -19,19 +19,19 @@ deploy:
   popping:
     tests:
       # 组词规则
-      - send: bgv
+      - send: bgi
         assert: cand[1].text == "冰"
       - send: bgxh
         assert: has("冰雪")
-      - send: jbekoo
+      - send: jbekaa
         assert: has("近世")
       - send: erf
         assert: has("输入法")
-      - send: bhhviv
+      - send: bhhivi
         assert: has("白花花")
       - send: wmxw
         assert: has("充满希望")
-      - send: jjjjov
+      - send: jjjjai
         assert: has("经济基础")
       - send: fwerF
         assert: has("中文输入法")
@@ -62,33 +62,33 @@ deploy:
         assert: cand[1].text == "表示"
       - send: yo
         assert: cand[1].text == "一个"
-      # 字母全码沿用冰雪键道二键基码，并追加经典轻声键 a。
-      - send: bca
+      # 字母全码沿用冰雪键道二键基码，并追加现行 21×21 轻声键 o。
+      - send: bco
         assert: cand[1].text == "B" and cand[2].text == "b"
-      - send: xga
+      - send: xgo
         assert: cand[1].text == "V" and cand[2].text == "v"
       # 一至四沿用已有数字汉字短码，其余数字使用完整声韵调码。
       - send: xj
         assert: cand[1].text == "二" and cand[2].text == "2"
       - send: wju
         assert: cand[1].text == "五" and cand[2].text == "5"
-      - send: lgi
+      - send: lgv
         assert: cand[1].text == "零" and cand[2].text == "0"
       # 首选后置
       - send: ekek
         assert: cand[1].text == "事实"
-      - send: ekeko
+      - send: ekeka
         assert: cand[2].text == "事实"
       # 顶功
       - send: yoyo
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bgvxhu
+      - send: bgixhu
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pbyberf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 动态码长
-      - send: "ekekovekek"
+      - send: "ekekavekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "{Control+b}jp mzv  jpmz"
+      - send: "{Control+b}jp mzi  jpmz"
         assert: cand[1].text == "长猫"

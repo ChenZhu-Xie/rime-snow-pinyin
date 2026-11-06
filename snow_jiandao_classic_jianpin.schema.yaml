@@ -45,7 +45,7 @@ speller:
   algebra:
     __include: snow_sanpin_classic.schema.yaml:/sanpin_algebra
     __append:
-      # 与三拼共享字母二键基码；三拼在全码末尾追加经典轻声键 a。
+      # 与三拼共享字母二键基码；三拼在全码末尾追加现行 21×21 轻声键 o。
       - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1c/
       - xform/~{1,2}v/xg/
       - xform/~{1,2}i/xl/
