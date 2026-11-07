@@ -13,7 +13,7 @@ k	看
 l	来
 m	没
 n	你
-p	跑
+p	平
 q	我
 r	人
 s	三
@@ -488,13 +488,13 @@ vb	差别
 vc	纯粹
 vd	程度
 vg	成功
-vv	常常
+vv	查处
 vw	产生
 vx	出现
 vz	创作
 wb	失败
 wc	上次
-wd	使得
+wd	时代
 wg	说过
 wv	输出
 wz	实在

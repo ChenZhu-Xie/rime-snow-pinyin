@@ -283,6 +283,25 @@ test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", 
 	}
 });
 
+test("两个 21×26 方案没有 630、空固顶行或重复固顶码", () => {
+	for (const file of [
+		"snow_shenyun_shape.fixed.txt",
+		"snow_shenyun_tone.fixed.txt",
+	]) {
+		const source = read(file);
+		assert.doesNotMatch(source, /^# 630$/mu, file);
+		const rows = source
+			.split(/\r?\n/u)
+			.filter((line) => line && !line.startsWith("#"));
+		const codes = rows.map((line) => line.split("\t")[0]);
+		assert.equal(new Set(codes).size, codes.length, `${file} 固顶码不得重复`);
+		for (const line of rows) {
+			const [code, candidates] = line.split("\t");
+			assert.ok(code && candidates?.trim(), `${file} 不得保留空固顶行：${line}`);
+		}
+	}
+});
+
 test("ue 来源拼写统一并入 ve 规范韵母", () => {
 	assert.equal(encode("gue"), "gg");
 	const sanpinRules = parseAlgebraRules(
@@ -526,6 +545,20 @@ test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
 	assert.match(lua, /ipairs\(bihua\.codes\(character, env\)\)/u);
 	assert.match(lua, /bihua\.load_strokes\(env\)/u);
 	assert.match(lua, /radical_input:sub\(1, 1\) ~= "1"/u);
+	assert.match(lua, /next_auxiliary_hint\(codes, suffix\)/u);
+});
+
+test("21×26 四码桶按候选词长分层，且在固顶与后置之前运行", () => {
+	const common = read("snow_shenyun_common.yaml");
+	const balance = common.indexOf("lua_filter@*snow.length_balance");
+	const fixed = common.indexOf("lua_filter@*snow.fix");
+	const postpone = common.indexOf("lua_filter@*snow.postpone");
+	assert.ok(balance >= 0 && balance < fixed && fixed < postpone);
+	const lua = read("lua/snow/length_balance.lua");
+	assert.match(lua, /if length == 2 then return 1 end/u);
+	assert.match(lua, /if length == 3 then return 2 end/u);
+	assert.match(lua, /length and length >= 4/u);
+	assert.match(lua, /maximum_candidates.*or 120/u);
 });
 
 test("两个飞花原型都随部署带上共用配置", () => {
@@ -565,7 +598,6 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 	const auxiliaryKeys = "aeuio";
 	const expectedFirst = {
 		b: "不",
-		p: "跑",
 		m: "没",
 		f: "这",
 		d: "都",
@@ -600,6 +632,10 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 		"snow_shenyun_shape.fixed.txt",
 		"snow_shenyun_tone.fixed.txt",
 	]) {
+		const expected: Record<string, string> = {
+			...expectedFirst,
+			p: filename.includes("shape") ? "配" : "平",
+		};
 		const content = read(filename);
 		const oneKeySection = content
 			.split(/^# 一级简码\r?$/mu)[1]
@@ -629,8 +665,8 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 			assert.equal(candidates.length, 1, `键 ${key} 只应固顶 1 个首选一简`);
 			assert.equal(
 				candidates[0],
-				expectedFirst[key],
-				`键 ${key} 的首选字必须为 ${expectedFirst[key]}`,
+				expected[key],
+				`键 ${key} 的首选字必须为 ${expected[key]}`,
 			);
 			for (const candidate of candidates) {
 				assert.ok(
@@ -649,7 +685,7 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 			.filter((line) => line.includes("\t"))
 			.map((line) => line.split("\t")[1].split(" ")[0]);
 		assert.ok(singleWords, `${filename} 缺少单字段`);
-		const fixedWords = [...Object.values(expectedFirst), ...singleWords];
+		const fixedWords = [...Object.values(expected), ...singleWords];
 		assert.equal(
 			new Set(fixedWords).size,
 			fixedWords.length,

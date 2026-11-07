@@ -209,6 +209,25 @@ local function auxiliary_codes(candidate, env)
   return codes
 end
 
+---@param codes string[]
+---@param suffix string
+---@return string
+local function next_auxiliary_hint(codes, suffix)
+  local next_keys = {}
+  local seen = {}
+  local next_index = suffix:len() + 1
+  for _, code in ipairs(codes) do
+    if code:sub(1, suffix:len()) == suffix then
+      local key = code:sub(next_index, next_index)
+      if key ~= "" and not seen[key] then
+        seen[key] = true
+        table.insert(next_keys, key)
+      end
+    end
+  end
+  return table.concat(next_keys, "/")
+end
+
 ---@param candidate Candidate
 local function auxiliary_match(candidate, suffix, env)
   local text = candidate.text
@@ -225,13 +244,13 @@ local function auxiliary_match(candidate, suffix, env)
     end
   end
   local codes = auxiliary_codes(candidate, env)
-  if suffix == "" then return true, table.concat(codes, "/") end
+  if suffix == "" then return true, next_auxiliary_hint(codes, suffix) end
   for _, code in ipairs(codes) do
     if code:sub(1, suffix:len()) == suffix then
-      return true, table.concat(codes, "/")
+      return true, next_auxiliary_hint(codes, suffix)
     end
   end
-  return false, table.concat(codes, "/")
+  return false, ""
 end
 
 local function add_route(routes, family, proxy, suffix, length)

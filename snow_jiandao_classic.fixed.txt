@@ -21,7 +21,7 @@ gk	赶快
 hc	花草 H h
 hk	很快
 kc	快餐 K k
-kk	看看
+kk	可靠
 ln	理念
 mt	明天
 mx	明显
@@ -78,7 +78,7 @@ wm	我们
 # 630
 ba	不能
 baa	步骤
-bai	不了
+bai	保障
 bao	宝贝
 bau	不好
 bav	办法
@@ -96,7 +96,7 @@ bou	不断
 bov	毕竟
 bu	不用
 bua	不然
-bui	别的
+bui	本身
 buo	部分
 buu	必须
 buv	不管
@@ -108,7 +108,7 @@ bvu	变成
 bvv	白天
 ca	参加
 caa	曾经
-cai	错了
+cai	村子
 cao	才能
 cau	刺激
 cav	脆弱
@@ -136,7 +136,7 @@ cvi	从事
 cvo	从来
 cvu	才有
 cvv	从未
-da	到了
+da	等级
 daa	大约
 dai	肚子
 dao	都能
@@ -152,7 +152,7 @@ do	但是
 doa	的话
 doi	都是
 doo	大家
-dou	弟弟
+dou	蛋糕
 dov	地方
 du	当然
 dua	多么
@@ -186,7 +186,7 @@ eou	说着
 eov	声音
 eu	什么
 eua	舒服
-eui	是的
+eui	手段
 euo	十分
 euu	稍微
 euv	上午
@@ -197,7 +197,7 @@ evo	上来
 evu	上面
 evv	属于
 fa	只能
-faa	纷纷
+faa	父母
 fai	房子
 fao	否则
 fau	只好
@@ -228,12 +228,12 @@ fvu	只有
 fvv	发现
 ga	更加
 gaa	高级
-gai	过了
+gai	国际
 gao	关注
 gau	更好
 gav	公司
 gi	工作
-gia	刚刚
+gia	国内
 gii	赶紧
 gio	关键
 giu	根据
@@ -257,8 +257,8 @@ gvo	过来
 gvu	尴尬
 gvv	关于
 ha	还没
-haa	缓缓
-hai	好了
+haa	合约
+hai	孩子
 hao	还能
 hau	还好
 hav	喝酒
@@ -274,7 +274,7 @@ hoi	会是
 hoo	回家
 hou	呼吸
 hov	何况
-hu	好的
+hu	回复
 hua	很多
 hui	浑身
 huo	或者
@@ -288,7 +288,7 @@ hvu	后面
 hvv	后天
 ja	继续
 jaa	成绩
-jai	除了
+jai	军队
 jao	绝对
 jau	就好
 jav	记录
@@ -304,7 +304,7 @@ joi	及时
 joo	决定
 jou	成为
 jov	解决
-ju	觉得
+ju	承包
 jua	竟然
 jui	阶段
 juo	进入
@@ -348,7 +348,7 @@ kvu	看成
 kvv	款式
 la	例如
 laa	连续
-lai	来了
+lai	例子
 lao	练习
 lau	良好
 lav	立即
@@ -368,7 +368,7 @@ lu	了解
 lua	联系
 lui	来自
 luo	老爸
-luu	懒得
+luu	流行
 luv	力气
 lv	里面
 lva	来到
@@ -376,27 +376,27 @@ lvi	留下
 lvo	领域
 lvu	老板
 lvv	离开
-ma	妈妈
+ma	门派
 maa	梦乡
 mai	妹子
 mao	面对
 mau	美女
 mav	勉强
 mi	每个
-mia	默默
+mia	美国
 mii	某个
 mio	没错
-miu	摸摸
+miu	模拟
 miv	马上
 mo	目前
 moa	名叫
 moi	明显
-moo	慢慢
+moo	名字
 mou	面前
 mov	每次
 mu	明白
 mua	没用
-mui	目的
+mui	面向
 muo	摸索
 muu	矛盾
 muv	每种
@@ -426,9 +426,9 @@ nou	年前
 nov	内部
 nu	那么
 nua	能够
-nui	你的
+nui	年版
 nuo	难受
-nuu	难得
+nuu	您所
 nuv	那种
 nv	那样
 nva	拿到
@@ -437,7 +437,7 @@ nvo	拿来
 nvu	能有
 nvv	那天
 pa	普通
-paa	婆婆
+paa	评级
 pai	牌子
 pao	平淡
 pau	旁边
@@ -486,12 +486,12 @@ qou	正义
 qov	情况
 qu	准备
 qua	着急
-qui	真的
+qui	全身
 quo	全都
 quu	期待
 quv	青年
 qv	正在
-qva	轻轻
+qva	汽车
 qvi	主要
 qvo	起来
 qvu	前面
@@ -528,7 +528,7 @@ rvu	热烈
 rvv	让开
 sa	所以
 saa	送给
-sai	算了
+sai	孙子
 sao	所能
 sau	散发
 sav	随即
@@ -574,9 +574,9 @@ toi	同时
 too	天空
 tou	提前
 tov	同意
-tu	他的
+tu	提升
 tua	突然
-tui	她的
+tui	图片
 tuo	头脑
 tuu	特征
 tuv	通知
@@ -585,8 +585,8 @@ tva	听到
 tvi	通过
 tvo	同样
 tvu	特殊
-tvv	天天
-wa	为了
+tvv	推进
+wa	违法
 waa	网络
 wai	充满
 wao	温柔
@@ -604,11 +604,11 @@ woi	温暖
 woo	晚安
 wou	完美
 wov	重新
-wu	我的
+wu	查处
 wua	吃饭
 wui	冲向
 wuo	充分
-wuu	往往
+wuu	违反
 wuv	微笑
 wv	完成
 wva	无比
@@ -618,7 +618,7 @@ wvu	外面
 wvv	万元
 xa	喜欢
 xaa	系统
-xai	行了
+xai	学院
 xao	学习
 xau	幸好
 xav	而已
@@ -629,7 +629,7 @@ xio	相信
 xiu	选择
 xiv	安全
 xo	而是
-xoa	谢谢
+xoa	协议
 xoi	像是
 xoo	心情
 xou	想着
@@ -638,7 +638,7 @@ xu	许多
 xua	想象
 xui	休息
 xuo	享受
-xuu	显得
+xuu	新股
 xuv	下午
 xv	现在
 xva	想到
@@ -666,7 +666,7 @@ you	以为
 yov	一次
 yu	以后
 yua	以外
-yui	有的
+yui	一片
 yuo	一直
 yuu	一般
 yuv	一种
@@ -678,7 +678,7 @@ yvu	拥有
 yvv	一天
 za	自己
 zaa	最终
-zai	做了
+zai	做出
 zao	足以
 zau	最好
 zav	增强
@@ -1863,7 +1863,7 @@ nzi	挠
 nzo	恼
 nzu	脑
 nzv	孬
-p	跑
+p	配
 pb	拼
 pba	姘
 pbu	贫

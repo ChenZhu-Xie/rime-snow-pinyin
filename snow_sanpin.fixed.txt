@@ -43,7 +43,7 @@ px	排序
 py	朋友
 qh	切换
 qm	前面
-qq	轻轻
+qq	全球
 qs	请问
 qw	清楚
 qx	取消
@@ -87,10 +87,10 @@ bii	悲伤
 bio	悲伤地
 biu	本身
 biv	白天
-bo	变得
+bo	抱着
 boa	比得上
 boi	背着
-boo	啵啵
+boo	摆着呢
 bou	本着
 bov	别的人
 bu	不可以
@@ -100,7 +100,7 @@ buo	不怎么
 buu	比起
 buv	博主
 bv	不同
-bva	不得
+bva	不能
 bvi	帮忙
 bvo	不然的话
 bvu	本来
@@ -151,7 +151,7 @@ do	多么
 doa	戴着
 doi	盯着
 doo	得了吧
-dou	懂得
+dou	对得起
 dov	等着瞧
 du	代表
 dua	到底
@@ -165,7 +165,7 @@ dvi	当年
 dvo	躲藏着
 dvu	等于
 dvv	多长时间
-ea	试试
+ea	时候
 eaa	上面
 eai	失败
 eao	是这么
@@ -181,7 +181,7 @@ eo	什么
 eoa	是吧
 eoi	说着
 eoo	什么呢
-eou	使得
+eou	说得好
 eov	谁呢
 eu	身体
 eua	上午
@@ -209,7 +209,7 @@ fiu	法师
 fiv	房间
 fo	放着
 foa	泛着
-foi	分得
+foi	翻了翻
 foo	烦着呢
 fou	抚着
 fov	扶着
@@ -298,11 +298,11 @@ jio	紧接着
 jiu	简单
 jiv	集中
 jo	接着
-joa	记得
+joa	见了面
 joi	揪着
 joo	记得啊
 jou	经得起
-jov	觉得
+jov	姐们儿
 ju	尽管
 jua	具体
 jui	基本
@@ -316,7 +316,7 @@ jvo	家人们
 jvu	简直
 jvv	极为
 ka	只是
-kaa	看看
+kaa	这个
 kai	空气
 kao	知道吗
 kau	只要
@@ -361,7 +361,7 @@ lo	拉着
 loa	来得快
 loi	萝卜丝
 loo	来了吗
-lou	懒得
+lou	来得早
 lov	留着
 lu	了解
 lua	历史
@@ -376,7 +376,7 @@ lvo	老人家
 lvu	理由
 lvv	灵魂
 ma	没事
-maa	目的
+maa	面对
 mai	没意思
 mao	默默地
 mau	每次
@@ -387,7 +387,7 @@ mii	猫咪
 mio	明星们
 miu	某些
 miv	明星
-mo	免得
+mo	忙着
 moa	慢着
 moi	么么哒
 moo	忙着呢
@@ -434,7 +434,7 @@ nva	那儿
 nvi	难得一见
 nvo	娘儿们
 nvu	哪儿
-nvv	难得
+nvv	女同学
 pa	评论
 paa	漂亮
 pai	拍摄
@@ -508,7 +508,7 @@ rio	让他们
 riu	忍心
 riv	人生
 ro	人们
-roa	认得
+roa	热得快
 roi	认得出
 roo	认了吧
 rou	忍着
@@ -932,7 +932,7 @@ nw	那
 nx	暖
 ny	诺
 nz	孽
-p	跑
+p	平
 pb	拼
 pc	票
 pd	破

@@ -30,7 +30,11 @@ import {
 	toneOf,
 	wordLength,
 } from "./固顶编译器";
-import { FixedReplacementIndex, type FixedReplacement } from "./固顶替代";
+import {
+	FixedReplacementIndex,
+	type FixedReplacement,
+	isDirectlyComposableFixedWord,
+} from "./固顶替代";
 import {
 	explicitlyRequestedWords,
 	fullCodeAlreadyEasyWords,
@@ -123,6 +127,7 @@ function chooseWithoutRedundancy(
 		if (
 			usedWords.has(candidate.word) ||
 			rejectedFixedWords.has(candidate.word) ||
+			isDirectlyComposableFixedWord(candidate.word) ||
 			(!candidate.legacy &&
 				!preferredEverydayWords.has(candidate.word) &&
 				candidate.weight < minimumWeight)

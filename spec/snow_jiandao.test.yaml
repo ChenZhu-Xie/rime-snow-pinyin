@@ -86,7 +86,7 @@ deploy:
         assert: cand[1].text == "科学发展观"
       # 固顶词
       - send: p
-        assert: cand[1].text == "跑"
+        assert: cand[1].text == "配"
       - send: xk
         assert: cand[1].text == "学"
       - send: btov

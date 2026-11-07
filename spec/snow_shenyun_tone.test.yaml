@@ -13,12 +13,25 @@ script: |
   function page(text)
     return rank(text) <= 6
   end
+  function comment(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return candidate.comment end
+    end
+    return ""
+  end
   function all_have_length(length)
     if #cand == 0 then return false end
     for _, candidate in ipairs(cand) do
       if utf8.len(candidate.text) ~= length then return false end
     end
     return true
+  end
+  function page_length_count(length)
+    local count = 0
+    for index = 1, math.min(6, #cand) do
+      if utf8.len(cand[index].text) == length then count = count + 1 end
+    end
+    return count
   end
 deploy:
   buffered_command:
@@ -37,6 +50,8 @@ deploy:
       # Overall-17 换位后的一级固顶字。
       - send: d
         assert: cand[1].text == "都" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
+      - send: p
+        assert: cand[1].text == "平"
       - send: q
         assert: cand[1].text == "我"
       # 占用桶保留汉字首选，字母固定为大写第 2、小写第 3。
@@ -55,10 +70,10 @@ deploy:
         assert: cand[1].text == "在"
       # 合法 AU 不得混入同键位的声声二字词。
       - send: br
-        assert: all_have_length(1) and has("冰")
+        assert: all_have_length(1) and has("冰") and comment("冰"):find("〔调 i〕", 1, true)
       # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）。
       - send: bri
-        assert: has("冰")
+        assert: has("冰") and comment("冰"):find("〔调 o〕", 1, true)
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
         assert: commit == nil and has("测试")
@@ -87,6 +102,11 @@ deploy:
         assert: has("输入法")
       - send: rgfn
         assert: has("人工智能")
+      # 同一四码桶跨词长分层排序，第一页在候选充足时各取两个二、三、四字词。
+      - send: jxxd
+        assert: page_length_count(2) == 2 and page_length_count(3) == 2 and page_length_count(4) == 2
+      - send: jxxdiu
+        assert: cand[1].text == "方案选单"
       # cw、yx 都不是合法音节；cwyx 只能走 AAAA，不能混入二、三字前缀候选。
       - send: cwyx
         assert: all_have_length(4) and has("测试一下") and not has("测试仪")
@@ -105,7 +125,7 @@ deploy:
       - send: ykyu
         assert: has("也可以")
       - send: brio
-        assert: has("冰")
+        assert: has("冰") and comment("冰"):find("〔调 e〕", 1, true)
       - send: brioe
         assert: has("冰")
       # 部首冫的三拼部首码以 b 开头；数字 1 与声调、笔画互不混淆。

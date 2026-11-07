@@ -43,7 +43,7 @@ px	排序
 py	朋友
 qh	前后
 qm	前面
-qq	轻轻
+qq	全球
 qs	请问
 qw	清楚
 qx	取消
@@ -97,7 +97,7 @@ bu	必须
 bua	不用
 bui	被迫
 buo	部分
-buu	不得
+buu	背后
 buv	不管
 bv	本来
 bva	不到
@@ -177,7 +177,7 @@ eii	收藏
 eio	适当
 eiu	数据
 eiv	身体
-eo	试试
+eo	时间
 eoa	是吧
 eoi	数量
 eoo	事情
@@ -307,7 +307,7 @@ ju	尽管
 jua	既然
 jui	阶段
 juo	进入
-juu	觉得
+juu	进行
 juv	就算
 jv	计划
 jva	见到
@@ -321,7 +321,7 @@ kai	看出
 kao	可能
 kau	开始
 kav	夸张
-ki	看看
+ki	这个
 kia	科目
 kii	刻苦
 kio	块钱
@@ -367,7 +367,7 @@ lu	另外
 lua	了解
 lui	利息
 luo	老爸
-luu	懒得
+luu	流行
 luv	力气
 lv	论坛
 lva	来到
@@ -393,9 +393,9 @@ moi	满足
 moo	名字
 mou	面前
 mov	每次
-mu	目的
+mu	明白
 mua	没用
-mui	明白
+mui	面向
 muo	摸索
 muu	矛盾
 muv	每种
@@ -427,7 +427,7 @@ nu	那么
 nua	女儿
 nui	内向
 nuo	难受
-nuu	难得
+nuu	你所
 nuv	那种
 nv	那样
 nva	拿到
@@ -637,7 +637,7 @@ xu	许多
 xua	想象
 xui	休息
 xuo	享受
-xuu	显得
+xuu	相反
 xuv	下午
 xv	现在
 xva	想到
@@ -1809,7 +1809,7 @@ nza	涅
 nzo	蹑
 nzu	臬
 nzv	聂
-p	跑
+p	配
 pb	拼
 pba	嫔
 pbi	频
@@ -1833,7 +1833,6 @@ pea	沛
 pei	佩
 peo	呸
 peu	胚
-pev	配
 pf	泡
 pfi	抛
 pfo	炮

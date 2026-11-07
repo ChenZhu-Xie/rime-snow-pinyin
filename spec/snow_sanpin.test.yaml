@@ -148,7 +148,7 @@ deploy:
         assert: cand[1].text == "藏着呢"
       # 固顶词
       - send: p
-        assert: cand[1].text == "跑"
+        assert: cand[1].text == "平"
       - send: xk
         assert: cand[1].text == "学"
       - send: by

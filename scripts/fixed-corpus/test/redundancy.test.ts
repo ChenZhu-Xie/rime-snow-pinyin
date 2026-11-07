@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
 	findStructuralAbbreviation,
 	FixedReplacementIndex,
 	generateAbbreviations,
+	isDirectlyComposableFixedWord,
 } from "../../固顶替代";
+import { rootPath } from "../../lib/paths";
 
 test("structure abbreviations mirror the Lua processor", () => {
 	const twoCharacters = new Map(
@@ -93,4 +96,42 @@ test("detects structural abbreviations without requiring a fixed base", () => {
 		trigger: "L",
 	});
 	assert.equal(detect("悄悄地"), undefined);
+});
+
+test("direct composition frees repeated and suffix fixed slots", () => {
+	for (const word of ["看看", "看得", "看的", "看了", "好看的", "看完了"]) {
+		assert.equal(isDirectlyComposableFixedWord(word), true, word);
+	}
+	for (const word of ["看", "好看", "看得到", "看完了吗"]) {
+		assert.equal(isDirectlyComposableFixedWord(word), false, word);
+	}
+});
+
+test("six double-pinyin fixed tables do not spend slots on direct composition", () => {
+	for (const file of [
+		"snow_jiandao.fixed.txt",
+		"snow_sanpin.fixed.txt",
+		"snow_jiandao_classic.fixed.txt",
+		"snow_sanpin_classic.fixed.txt",
+		"snow_shenyun_shape.fixed.txt",
+		"snow_shenyun_tone.fixed.txt",
+	]) {
+		let section = "";
+		for (const line of readFileSync(rootPath(file), "utf8").split(/\r?\n/u)) {
+			if (line.startsWith("#")) {
+				section = line.slice(1).trim();
+				continue;
+			}
+			if ((section !== "二简词" && section !== "630") || !line.includes("\t")) {
+				continue;
+			}
+			const [code, candidates] = line.split("\t");
+			const word = candidates.split(" ")[0];
+			assert.equal(
+				isDirectlyComposableFixedWord(word),
+				false,
+				`${file} ${section} ${code} ${word}`,
+			);
+		}
+	}
 });

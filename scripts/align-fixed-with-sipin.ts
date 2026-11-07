@@ -2,6 +2,15 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SpellingAlgebra } from "./lib/algebra";
+import { loadAuxiliarySemantics } from "./lib/auxiliary-semantics";
+import {
+	mergeDictionaries,
+	readDictionary,
+	readShapeCodes,
+	toneOf,
+	wordLength,
+} from "./固顶编译器";
+import { isDirectlyComposableFixedWord } from "./固顶替代";
 
 interface Priority {
 	word: string;
@@ -14,6 +23,7 @@ interface Target {
 	schema: string;
 	fixed: string;
 	kind: "21x21" | "21x26";
+	auxiliary: "shape" | "tone";
 }
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -22,31 +32,37 @@ const targets: Target[] = [
 		schema: "snow_jiandao.schema.yaml",
 		fixed: "snow_jiandao.fixed.txt",
 		kind: "21x21",
+		auxiliary: "shape",
 	},
 	{
 		schema: "snow_sanpin.schema.yaml",
 		fixed: "snow_sanpin.fixed.txt",
 		kind: "21x21",
+		auxiliary: "tone",
 	},
 	{
 		schema: "snow_jiandao_classic.schema.yaml",
 		fixed: "snow_jiandao_classic.fixed.txt",
 		kind: "21x21",
+		auxiliary: "shape",
 	},
 	{
 		schema: "snow_sanpin_classic.schema.yaml",
 		fixed: "snow_sanpin_classic.fixed.txt",
 		kind: "21x21",
+		auxiliary: "tone",
 	},
 	{
 		schema: "snow_shenyun_shape.schema.yaml",
 		fixed: "snow_shenyun_shape.fixed.txt",
 		kind: "21x26",
+		auxiliary: "shape",
 	},
 	{
 		schema: "snow_shenyun_tone.schema.yaml",
 		fixed: "snow_shenyun_tone.fixed.txt",
 		kind: "21x26",
+		auxiliary: "tone",
 	},
 ];
 
@@ -60,6 +76,39 @@ for (const line of read("scripts/data/tygf-pinyin.tsv").trim().split("\n")) {
 	const values = readings.get(word) ?? [];
 	values.push(reading);
 	readings.set(word, values);
+}
+
+const dictionaryFiles = [
+	"snow_pinyin.dict.yaml",
+	"snow_pinyin.base.dict.yaml",
+	"snow_pinyin.ext.dict.yaml",
+	"snow_pinyin.tencent.dict.yaml",
+	"snow_pinyin.user.dict.yaml",
+];
+let dictionary_entries_cache: ReturnType<typeof mergeDictionaries> | undefined;
+function replacementDictionaryEntries() {
+	if (!dictionary_entries_cache) {
+		dictionary_entries_cache = mergeDictionaries(
+			dictionaryFiles.flatMap((file) => readDictionary(resolve(root, file))),
+		);
+	}
+	return dictionary_entries_cache;
+}
+
+let shape_codes_cache: ReturnType<typeof readShapeCodes> | undefined;
+function replacementShapeCodes() {
+	if (!shape_codes_cache) {
+		const shape_element_keys: Record<string, string> = {};
+		for (const line of read("lua/snow/radical_jiandao.txt").split("\n")) {
+			const [element, code] = line.split("\t");
+			if (element && code) shape_element_keys[element] = code;
+		}
+		shape_codes_cache = readShapeCodes(
+			resolve(root, "snow_jiandao_chaifen.dict.yaml"),
+			shape_element_keys,
+		);
+	}
+	return shape_codes_cache;
 }
 
 const sipinAlgebra = new SpellingAlgebra(
@@ -133,7 +182,10 @@ function singlePriorities(): Priority[] {
 	return result;
 }
 
-function oneKeyReferences(targetAlgebra: SpellingAlgebra): Map<string, string> {
+function oneKeyReferences(
+	target: Target,
+	targetAlgebra: SpellingAlgebra,
+): Map<string, string> {
 	const result = new Map<string, string>();
 	for (const line of sipinLines) {
 		if (line.startsWith("#") || !line.includes("\t")) continue;
@@ -147,7 +199,175 @@ function oneKeyReferences(targetAlgebra: SpellingAlgebra): Map<string, string> {
 		const targetCode = targetAlgebra.apply(reading).slice(0, 1);
 		if (targetCode) result.set(targetCode, word);
 	}
+	// p 槽不机械照搬四拼的“跑”：形辅方案取较高频且完整码仍需选重的“配”，
+	// 调辅方案保留历史上更熟悉、完整码候选更深的“平”。
+	result.set("p", target.auxiliary === "shape" ? "配" : "平");
 	return result;
+}
+
+interface ReplacementCandidate {
+	word: string;
+	weight: number;
+}
+
+function addReplacementCandidate(
+	pools: Map<string, ReplacementCandidate[]>,
+	wanted: ReadonlySet<string>,
+	section: "二简词" | "630",
+	code: string,
+	candidate: ReplacementCandidate,
+) {
+	if (!code || isDirectlyComposableFixedWord(candidate.word)) return;
+	const key = `${section}\t${code}`;
+	if (!wanted.has(key)) return;
+	const values = pools.get(key) ?? [];
+	const previous = values.find((value) => value.word === candidate.word);
+	if (previous) {
+		previous.weight = Math.max(previous.weight, candidate.weight);
+	} else {
+		values.push(candidate);
+	}
+	pools.set(key, values);
+}
+
+function replacementPools(
+	target: Target,
+	algebra: SpellingAlgebra,
+	wanted: ReadonlySet<string>,
+) {
+	const pools = new Map<string, ReplacementCandidate[]>();
+	const tone_keys = loadAuxiliarySemantics(target.kind).toneKeysByTone;
+	const sound_key_cache = new Map<string, string>();
+	const sound_key = (syllable: string) => {
+		const cached = sound_key_cache.get(syllable);
+		if (cached !== undefined) return cached;
+		const value = algebra.apply(syllable).slice(0, 1);
+		sound_key_cache.set(syllable, value);
+		return value;
+	};
+	const shape_codes =
+		target.auxiliary === "shape" ? replacementShapeCodes() : undefined;
+	for (const entry of replacementDictionaryEntries()) {
+		const length = wordLength(entry.word);
+		if (
+			entry.weight <= 1 ||
+			length < 2 ||
+			length > 4 ||
+			entry.syllables.length !== length ||
+			!/^\p{Script=Han}+$/u.test(entry.word)
+		) {
+			continue;
+		}
+		const first = sound_key(entry.syllables[0]);
+		if (!first) continue;
+		if (length === 2) {
+			const second = sound_key(entry.syllables[1]);
+			if (second) {
+				addReplacementCandidate(pools, wanted, "二简词", first + second, entry);
+			}
+		}
+		if (target.kind !== "21x21") continue;
+		if (target.auxiliary === "shape") {
+			if (length !== 2) continue;
+			const shape = shape_codes?.get([...entry.word][1] ?? "") ?? "";
+			if (shape.length >= 1) {
+				addReplacementCandidate(pools, wanted, "630", first + shape[0], entry);
+			}
+			if (shape.length >= 2) {
+				addReplacementCandidate(
+					pools,
+					wanted,
+					"630",
+					first + shape.slice(0, 2),
+					entry,
+				);
+			}
+		} else {
+			const second_tone = toneOf(entry.syllables[1]);
+			if (!second_tone) continue;
+			const second_key = tone_keys[Number(second_tone) - 1];
+			if (!second_key) continue;
+			const two_key_code = first + second_key;
+			addReplacementCandidate(pools, wanted, "630", two_key_code, entry);
+			const target_syllable =
+				length === 2 ? entry.syllables[0] : entry.syllables[2];
+			const target_tone = target_syllable && toneOf(target_syllable);
+			const third_key = target_tone
+				? tone_keys[Number(target_tone) - 1]
+				: undefined;
+			if (third_key) {
+				addReplacementCandidate(
+					pools,
+					wanted,
+					"630",
+					two_key_code + third_key,
+					entry,
+				);
+			}
+		}
+	}
+	for (const values of pools.values()) {
+		values.sort(
+			(left, right) =>
+				right.weight - left.weight ||
+				left.word.localeCompare(right.word, "zh-CN"),
+		);
+	}
+	return pools;
+}
+
+function replaceDirectlyComposableRows(
+	source: string,
+	target: Target,
+	algebra: SpellingAlgebra,
+) {
+	const lines = source.trimEnd().split("\n");
+	const used = new Set<string>();
+	const wanted = new Set<string>();
+	let replacement_count = 0;
+	let section = "";
+	for (const line of lines) {
+		if (line.startsWith("#")) {
+			section = line.slice(1).trim();
+			continue;
+		}
+		if ((section === "二简词" || section === "630") && line.includes("\t")) {
+			const word = firstWord(line.split("\t")[1]);
+			if (isDirectlyComposableFixedWord(word)) {
+				replacement_count += 1;
+				const [code] = line.split("\t");
+				wanted.add(`${section}\t${code}`);
+			} else {
+				used.add(word);
+			}
+		}
+	}
+	if (replacement_count === 0) return source;
+	const pools = replacementPools(target, algebra, wanted);
+	section = "";
+	for (const [index, line] of lines.entries()) {
+		if (line.startsWith("#")) {
+			section = line.slice(1).trim();
+			continue;
+		}
+		if ((section !== "二简词" && section !== "630") || !line.includes("\t")) {
+			continue;
+		}
+		const [code, candidates] = line.split("\t");
+		const word = firstWord(candidates);
+		if (!isDirectlyComposableFixedWord(word)) continue;
+		const replacement = pools
+			.get(`${section}\t${code}`)
+			?.find((candidate) => !used.has(candidate.word));
+		if (!replacement) {
+			throw new Error(
+				`${target.fixed} ${section} ${code} 无可用的结构替代候选`,
+			);
+		}
+		used.add(replacement.word);
+		lines[index] = `${code}\t${mergeFirst(candidates, replacement.word)}`;
+	}
+	return `${lines.join("\n")}\n`;
 }
 
 function baseReferences(
@@ -432,7 +652,7 @@ export function alignFixedContent(fixed: string, source: string): string {
 			derive: false,
 		},
 	);
-	const ones = oneKeyReferences(algebra);
+	const ones = oneKeyReferences(target, algebra);
 	const reservedOneKeyWords = new Set(ones.values());
 	for (const line of source.split("\n")) {
 		if (line.startsWith("#") || !line.includes("\t")) continue;
@@ -447,15 +667,17 @@ export function alignFixedContent(fixed: string, source: string): string {
 	}
 	const bases = baseReferences(algebra, reservedOneKeyWords);
 	const phrases = phraseReferences(algebra);
-	return target.kind === "21x21"
-		? render21x21(
-				source,
-				ones,
-				bases,
-				phrases,
-				target.fixed.includes("jiandao"),
-			)
-		: render21x26(source, ones, bases, phrases);
+	const rendered =
+		target.kind === "21x21"
+			? render21x21(
+					source,
+					ones,
+					bases,
+					phrases,
+					target.fixed.includes("jiandao"),
+				)
+			: render21x26(source, ones, bases, phrases);
+	return replaceDirectlyComposableRows(rendered, target, algebra);
 }
 
 function main() {

@@ -49,14 +49,14 @@ local function names(entries)
 end
 
 local expected = {
-  { "snow_jiandao_classic", "冰雪键道", "（21²5⁴；经典键道；二字词低重）" },
-  { "snow_sanpin_classic", "冰雪三拼", "（21²5ⁿ；经典三拼；单字简繁通打）" },
-  { "snow_jiandao", "冰雪健道", "（21²5⁴；零飞键道；三四字词低重）" },
-  { "snow_sanpin", "冰雪弎拼", "（21²5ⁿ；零飞三拼；人体工学）" },
-  { "snow_shenyun_shape", "冰雪简道", "（21¹26¹5⁴；无重键道；没有 630）" },
-  { "snow_shenyun_tone", "冰雪散拼", "（21¹26¹5ⁿ；无重三拼；顶功版廿六）" },
-  { "snow_sipin", "冰雪四拼", "（21¹5ⁿ；动态调频；多音节词王）" },
-  { "snow_qingyun", "冰雪清韵", "（21ᵐ9¹；四码前缀；多字根字王）" },
+  { "snow_jiandao_classic", "冰雪键道", "21²5⁴ 经典键道 二字词低重" },
+  { "snow_sanpin_classic", "冰雪三拼", "21²5ⁿ 经典三拼 单字简繁通打" },
+  { "snow_jiandao", "冰雪健道", "21²5⁴ 零飞键道 三四字词低重" },
+  { "snow_sanpin", "冰雪弎拼", "21²5ⁿ 零飞三拼 人体工学" },
+  { "snow_shenyun_shape", "冰雪简道", "21¹26¹5⁴ 无重键道 没有 630" },
+  { "snow_shenyun_tone", "冰雪散拼", "21¹26¹5ⁿ 无重三拼 顶功版廿六" },
+  { "snow_sipin", "冰雪四拼", "21¹5ⁿ 动态调频 多音节词王" },
+  { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
 }
 
 assert(#menu.entries == #expected, "方案数必须为 8")

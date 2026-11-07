@@ -47,6 +47,7 @@ engine:
   filters:
     - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
+    - lua_filter@*snow.length_balance
     - lua_filter@*snow.fix
     - lua_filter@*snow.postpone
     - lua_filter@*snow.simplified
