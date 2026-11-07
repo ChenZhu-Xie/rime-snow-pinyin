@@ -11,6 +11,8 @@ local snow = require "snow.snow"
 
 ---@class SchemaMenuProcessorEnv: Env
 ---@field prefix string
+---@field sentinel string
+---@field open_input string
 ---@field toggle_keys KeyEvent[]
 ---@field escape_key KeyEvent
 ---@field backspace_key KeyEvent
@@ -19,6 +21,7 @@ local snow = require "snow.snow"
 
 ---@class SchemaMenuTranslatorEnv: Env
 ---@field prefix string
+---@field sentinel string
 ---@field tag string
 ---@field selected_schema_id string|nil
 ---@field prepare_connection Connection
@@ -140,6 +143,8 @@ end
 function processor.init(env)
   local config = env.engine.schema.config
   env.prefix = config:get_string("schema_menu/prefix") or "~~"
+  env.sentinel = config:get_string("schema_menu/sentinel") or "'"
+  env.open_input = env.prefix .. env.sentinel
   env.toggle_keys = { KeyEvent("F4"), KeyEvent("Control+grave") }
   env.escape_key = KeyEvent("Escape")
   env.backspace_key = KeyEvent("BackSpace")
@@ -162,7 +167,7 @@ function processor.func(key_event, env)
   for _, toggle_key in ipairs(env.toggle_keys) do
     if key_event:eq(toggle_key) then
       context:clear()
-      if not active then context:push_input(env.prefix) end
+      if not active then context:push_input(env.open_input) end
       return snow.kAccepted
     end
   end
@@ -177,7 +182,7 @@ function processor.func(key_event, env)
     return snow.kAccepted
   end
   if key_event:eq(env.backspace_key) then
-    if #context.input > #env.prefix then
+    if #context.input > #env.open_input then
       context:pop_input(1)
     else
       context:clear()
@@ -198,6 +203,7 @@ end
 function translator.init(env)
   local config = env.engine.schema.config
   env.prefix = config:get_string("schema_menu/prefix") or "~~"
+  env.sentinel = config:get_string("schema_menu/sentinel") or "'"
   env.tag = config:get_string("schema_menu/tag") or "schema_menu"
   env.selected_schema_id = nil
   local context = env.engine.context
@@ -228,6 +234,7 @@ function translator.func(input, segment, env)
   if not segment:has_tag(env.tag) then return end
   local query = input
   if is_active(query, env.prefix) then query = query:sub(#env.prefix + 1) end
+  if query:sub(1, #env.sentinel) == env.sentinel then query = query:sub(#env.sentinel + 1) end
   for _, entry in ipairs(menu.filter_entries(query)) do
     local candidate = Candidate(env.tag, segment.start, segment._end, entry.name, entry.comment)
     candidate.preedit = query

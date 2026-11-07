@@ -303,7 +303,7 @@ deploy:
         assert: cand[1].text == "I" and cand[2].text == "i"
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
       - send: "o shu gco tpi xba  jgtx"
-        assert: commit == "五G通信"
+        assert: commit == "五G通信" or error("mixed commit=" .. tostring(commit) .. "; cand1=" .. tostring(cand[1] and cand[1].text))
       # 啦读轻声 la5（lwo），梦的二码固顶为 mn；la1/meng4 的首选会组成「垃/孟」。
       - send: "o dyi lw xwo mr  dlxm"
         assert: commit == "哆啦A梦"

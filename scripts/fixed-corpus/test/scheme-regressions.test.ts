@@ -27,10 +27,11 @@ test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme
 		recognizer: { patterns: Record<string, string> };
 		schema_menu: { tag: string; prefix: string; tips: string };
 	};
-	assert.equal(shared.recognizer.patterns.schema_menu, "^~~[a-z]*$");
+	assert.equal(shared.recognizer.patterns.schema_menu, "^~~'[a-z]*$");
 	assert.deepEqual(shared.schema_menu, {
 		tag: "schema_menu",
 		prefix: "~~",
+		sentinel: "'",
 		tips: "〔方案〕",
 	});
 
