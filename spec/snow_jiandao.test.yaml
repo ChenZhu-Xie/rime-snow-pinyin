@@ -149,9 +149,9 @@ deploy:
         assert: commit == "个"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
-        assert: commit == "跑跑"
+        assert: commit == "配配"
       - send: "p]"
-        assert: commit == "跑得"
+        assert: commit == "配得"
       - send: nwyn
         assert: cand[1].text == "那样"
       # 首选后置

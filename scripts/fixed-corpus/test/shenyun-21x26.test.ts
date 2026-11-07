@@ -297,7 +297,10 @@ test("两个 21×26 方案没有 630、空固顶行或重复固顶码", () => {
 		assert.equal(new Set(codes).size, codes.length, `${file} 固顶码不得重复`);
 		for (const line of rows) {
 			const [code, candidates] = line.split("\t");
-			assert.ok(code && candidates?.trim(), `${file} 不得保留空固顶行：${line}`);
+			assert.ok(
+				code && candidates?.trim(),
+				`${file} 不得保留空固顶行：${line}`,
+			);
 		}
 	}
 });
