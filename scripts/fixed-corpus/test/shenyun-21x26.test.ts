@@ -642,10 +642,18 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 			}
 		}
 		assert.equal(keys.size, 21);
-		assert.match(
-			content,
-			/^df\t都$/mu,
-			`${filename} 的 dou 单字位应参考冰雪四拼`,
+		const singleWords = content
+			.split(/^# 单字\r?$/mu)[1]
+			?.split(/^# 二简词\r?$/mu)[0]
+			?.split(/\r?\n/u)
+			.filter((line) => line.includes("\t"))
+			.map((line) => line.split("\t")[1].split(" ")[0]);
+		assert.ok(singleWords, `${filename} 缺少单字段`);
+		const fixedWords = [...Object.values(expectedFirst), ...singleWords];
+		assert.equal(
+			new Set(fixedWords).size,
+			fixedWords.length,
+			`${filename} 的一级简码与二码单字不得重复固顶`,
 		);
 		assert.match(
 			content,

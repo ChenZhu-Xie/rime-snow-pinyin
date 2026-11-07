@@ -41,6 +41,7 @@ import {
 	keysByDigits,
 	loadAuxiliarySemantics,
 } from "./lib/auxiliary-semantics";
+import { alignFixedContent } from "./align-fixed-with-sipin";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const root = join(scriptDirectory, "..");
@@ -405,6 +406,10 @@ function readLegacy(file: string) {
 
 const legacySanpin = readLegacy("snow_sanpin.fixed.txt");
 const legacyJiandao = readLegacy("snow_jiandao.fixed.txt");
+// 单字首选由冰雪四拼语义重映射统一决定，不能再反向作为通用编译器的历史偏好，
+// 否则“先编译、再对齐”的最终产物会在下一次生成时改变编译结果。
+legacySanpin.delete("# 单字");
+legacyJiandao.delete("# 单字");
 
 function isLegacyAtCode(
 	sections: ReturnType<typeof readLegacyFixed>,
@@ -951,8 +956,17 @@ assertNoReplaceableFixed("冰雪弎拼", sanpin);
 assertNoReplaceableFixed("冰雪健道", jiandao);
 
 const outputs = new Map([
-	["snow_sanpin.fixed.txt", renderSanpinFixedTable(sanpin)],
-	["snow_jiandao.fixed.txt", renderJiandaoFixedTable(jiandao)],
+	[
+		"snow_sanpin.fixed.txt",
+		alignFixedContent("snow_sanpin.fixed.txt", renderSanpinFixedTable(sanpin)),
+	],
+	[
+		"snow_jiandao.fixed.txt",
+		alignFixedContent(
+			"snow_jiandao.fixed.txt",
+			renderJiandaoFixedTable(jiandao),
+		),
+	],
 ]);
 for (const [file, output] of outputs) {
 	const path = join(root, file);

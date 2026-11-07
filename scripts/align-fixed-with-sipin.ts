@@ -94,6 +94,19 @@ const keytaoLetterByCode = new Map(
 		],
 	].map((entry) => [entry.code, entry.letter]),
 );
+const numberWordByDigits = new Map([
+	["0", "零"],
+	["1", "一"],
+	["2", "二"],
+	["3", "三"],
+	["4", "四"],
+	["5", "五"],
+	["6", "六"],
+	["7", "七"],
+	["8", "八"],
+	["9", "九"],
+	["10", "十"],
+]);
 
 function firstWord(value: string): string {
 	return value.split(" ")[0] ?? "";
@@ -103,7 +116,8 @@ function singlePriorities(): Priority[] {
 	const result: Priority[] = [];
 	let order = 0;
 	for (const line of sipinLines) {
-		if (line.startsWith("#") || !line.includes("\t")) continue;
+		if (line.startsWith("#")) break;
+		if (!line.includes("\t")) continue;
 		const [code, candidates] = line.split("\t");
 		const word = firstWord(candidates);
 		if ([...word].length !== 1) continue;
@@ -136,23 +150,62 @@ function oneKeyReferences(targetAlgebra: SpellingAlgebra): Map<string, string> {
 	return result;
 }
 
-function baseReferences(targetAlgebra: SpellingAlgebra): Map<string, string> {
-	const preferred = new Map<string, Priority>();
-	for (const priority of singlePriorities()) {
-		const code = targetAlgebra.apply(priority.reading).slice(0, 2);
-		if (code.length !== 2) continue;
-		const previous = preferred.get(code);
-		if (
-			!previous ||
-			priority.level < previous.level ||
-			(priority.level === previous.level && priority.order < previous.order)
-		) {
-			preferred.set(code, priority);
+function baseReferences(
+	targetAlgebra: SpellingAlgebra,
+	reservedWords: Iterable<string>,
+): Map<string, string> {
+	const candidatesByCode = new Map<string, Priority[]>();
+	let fallbackOrder = 1_000_000;
+	function add(code: string, priority: Priority) {
+		if (code.length !== 2) return;
+		const candidates = candidatesByCode.get(code) ?? [];
+		if (!candidates.some((entry) => entry.word === priority.word)) {
+			candidates.push(priority);
+			candidatesByCode.set(code, candidates);
 		}
 	}
-	return new Map(
-		[...preferred].map(([code, priority]) => [code, priority.word]),
-	);
+	for (const priority of singlePriorities()
+		.filter((entry) => entry.level > 1)
+		.sort((a, b) => a.level - b.level || a.order - b.order)) {
+		const code = targetAlgebra.apply(priority.reading).slice(0, 2);
+		add(code, priority);
+	}
+	for (const [word, wordReadings] of readings) {
+		if (!/^\p{Script=Han}$/u.test(word)) continue;
+		for (const reading of wordReadings) {
+			add(targetAlgebra.apply(reading).slice(0, 2), {
+				word,
+				reading,
+				level: 100,
+				order: fallbackOrder++,
+			});
+		}
+	}
+	const codeByWord = new Map<string, string>();
+	for (const word of reservedWords) codeByWord.set(word, "");
+	const preferred = new Map<string, string>();
+	function assign(code: string, visitedCodes: Set<string>): boolean {
+		if (visitedCodes.has(code)) return false;
+		visitedCodes.add(code);
+		for (const candidate of candidatesByCode.get(code) ?? []) {
+			const previousCode = codeByWord.get(candidate.word);
+			if (previousCode === "") continue;
+			if (previousCode === undefined || assign(previousCode, visitedCodes)) {
+				preferred.set(code, candidate.word);
+				codeByWord.set(candidate.word, code);
+				return true;
+			}
+		}
+		return false;
+	}
+	for (const code of [...candidatesByCode.keys()].sort(
+		(a, b) =>
+			(candidatesByCode.get(a)?.length ?? 0) -
+				(candidatesByCode.get(b)?.length ?? 0) || a.localeCompare(b),
+	)) {
+		assign(code, new Set());
+	}
+	return preferred;
 }
 
 function occupiedBases(targetAlgebra: SpellingAlgebra): Set<string> {
@@ -213,9 +266,10 @@ function phraseReferences(targetAlgebra: SpellingAlgebra): Map<string, string> {
 }
 
 function mergeFirst(candidates: string, word: string): string {
-	const values = candidates.split(" ").filter(Boolean);
-	values[0] = word;
-	return values.join(" ");
+	const suffixes = candidates
+		.split(" ")
+		.filter((value) => value && !/^\p{Script=Han}+$/u.test(value));
+	return [word, ...suffixes].join(" ");
 }
 
 function render21x21(
@@ -226,6 +280,17 @@ function render21x21(
 	keytao: boolean,
 ): string {
 	const lines = source.trimEnd().split("\n");
+	const reservedPhraseWords = new Set<string>();
+	let sourceSection = "";
+	for (const line of lines) {
+		if (line.startsWith("#")) {
+			sourceSection = line.slice(1).trim();
+			continue;
+		}
+		if (sourceSection !== "二简词" && line.includes("\t")) {
+			reservedPhraseWords.add(firstWord(line.split("\t")[1]));
+		}
+	}
 	const output: string[] = [];
 	let section = "";
 	for (const line of lines) {
@@ -242,8 +307,18 @@ function render21x21(
 		let replacement: string | undefined;
 		if (section === "二简词") {
 			replacement = phrases.get(code);
+			if (replacement && reservedPhraseWords.has(replacement)) {
+				replacement = undefined;
+			} else if (replacement) {
+				reservedPhraseWords.add(replacement);
+			}
 		} else if (section === "单字") {
-			replacement = code.length === 1 ? ones.get(code) : bases.get(code);
+			replacement =
+				code.length === 1
+					? ones.get(code)
+					: candidates.split(" ").some((value) => /^\d+$/u.test(value))
+						? undefined
+						: bases.get(code);
 		}
 		let renderedCandidates = replacement
 			? mergeFirst(candidates, replacement)
@@ -257,7 +332,49 @@ function render21x21(
 		}
 		output.push(`${code}\t${renderedCandidates}`);
 	}
-	return `${output.join("\n")}\n`;
+	let singleSection = false;
+	const singleLines: Array<{
+		index: number;
+		code: string;
+		candidates: string[];
+	}> = [];
+	for (const [index, line] of output.entries()) {
+		if (line.startsWith("#")) {
+			singleSection = line.slice(1).trim() === "单字";
+			continue;
+		}
+		if (!singleSection || !line.includes("\t")) continue;
+		const [code, candidates] = line.split("\t");
+		singleLines.push({ index, code, candidates: candidates.split(" ") });
+	}
+	const usedWords = new Set<string>();
+	const removed = new Set<number>();
+	for (const entry of singleLines.sort(
+		(a, b) => a.code.length - b.code.length || a.index - b.index,
+	)) {
+		if (entry.code.length <= 2) {
+			for (const word of entry.candidates) {
+				if (/^\p{Script=Han}+$/u.test(word)) usedWords.add(word);
+			}
+			continue;
+		}
+		const candidates = entry.candidates.filter(
+			(value) => !/^\p{Script=Han}+$/u.test(value) || !usedWords.has(value),
+		);
+		const words = candidates.filter((value) =>
+			/^\p{Script=Han}+$/u.test(value),
+		);
+		if (
+			words.length === 0 &&
+			candidates.every((value) => /^\p{Script=Han}+$/u.test(value))
+		) {
+			removed.add(entry.index);
+			continue;
+		}
+		for (const word of words) usedWords.add(word);
+		output[entry.index] = `${entry.code}\t${candidates.join(" ")}`;
+	}
+	return `${output.filter((_, index) => !removed.has(index)).join("\n")}\n`;
 }
 
 function render21x26(
@@ -302,8 +419,9 @@ function render21x26(
 	return `${output.join("\n")}\n`;
 }
 
-let stale = false;
-for (const target of targets) {
+export function alignFixedContent(fixed: string, source: string): string {
+	const target = targets.find((entry) => entry.fixed === fixed);
+	if (!target) throw new Error(`不支持对齐固顶文件：${fixed}`);
 	const algebra = new SpellingAlgebra(
 		resolve(root, target.schema),
 		"speller/algebra",
@@ -311,29 +429,49 @@ for (const target of targets) {
 			derive: false,
 		},
 	);
-	const source = read(target.fixed);
 	const ones = oneKeyReferences(algebra);
-	const bases = baseReferences(algebra);
-	const phrases = phraseReferences(algebra);
-	const rendered =
-		target.kind === "21x21"
-			? render21x21(
-					source,
-					ones,
-					bases,
-					phrases,
-					target.fixed.includes("jiandao"),
-				)
-			: render21x26(source, ones, bases, phrases);
-	if (process.argv.includes("--check")) {
-		if (source !== rendered) {
-			console.error(`${target.fixed} 未与冰雪四拼固顶优先级同步`);
-			stale = true;
+	const reservedOneKeyWords = new Set(ones.values());
+	for (const line of source.split("\n")) {
+		if (line.startsWith("#") || !line.includes("\t")) continue;
+		const [code, candidates] = line.split("\t");
+		if (code.length === 1 && !ones.has(code)) {
+			reservedOneKeyWords.add(firstWord(candidates));
 		}
-	} else {
-		writeFileSync(resolve(root, target.fixed), rendered, "utf8");
-		console.log(`已更新 ${target.fixed}`);
+		for (const value of candidates.split(" ")) {
+			const numberWord = numberWordByDigits.get(value);
+			if (numberWord) reservedOneKeyWords.add(numberWord);
+		}
 	}
+	const bases = baseReferences(algebra, reservedOneKeyWords);
+	const phrases = phraseReferences(algebra);
+	return target.kind === "21x21"
+		? render21x21(
+				source,
+				ones,
+				bases,
+				phrases,
+				target.fixed.includes("jiandao"),
+			)
+		: render21x26(source, ones, bases, phrases);
 }
 
-if (stale) process.exitCode = 1;
+function main() {
+	let stale = false;
+	for (const target of targets) {
+		const source = read(target.fixed);
+		const rendered = alignFixedContent(target.fixed, source);
+		if (process.argv.includes("--check")) {
+			if (source !== rendered) {
+				console.error(`${target.fixed} 未与冰雪四拼固顶优先级同步`);
+				stale = true;
+			}
+		} else {
+			writeFileSync(resolve(root, target.fixed), rendered, "utf8");
+			console.log(`已更新 ${target.fixed}`);
+		}
+	}
+
+	if (stale) process.exitCode = 1;
+}
+
+if (import.meta.main) main();
