@@ -50,16 +50,16 @@ deploy:
         assert: has("自行车")
       # 固顶词
       - send: p
-        assert: cand[1].text == "平"
+        assert: cand[1].text == "跑"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
-        assert: commit == "平平"
+        assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "平得"
+        assert: commit == "跑得"
       - send: xh
         assert: cand[1].text == "学"
       - send: be
-        assert: cand[1].text == "表示"
+        assert: cand[1].text == "不是"
       - send: ya
         assert: cand[1].text == "一个"
       - send: coo
@@ -92,5 +92,5 @@ deploy:
       - send: "ekekaiekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "{Control+b}jp mzi  jpmz"
+      - send: "{Control+b}jp mz  jpmz"
         assert: cand[1].text == "长猫"

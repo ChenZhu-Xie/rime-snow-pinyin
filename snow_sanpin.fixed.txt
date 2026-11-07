@@ -992,7 +992,7 @@ se	为
 sf	扫
 sg	岁
 sh	勿
-sj	完 3
+sj	三 3
 sk	塞
 sl	死
 sm	问

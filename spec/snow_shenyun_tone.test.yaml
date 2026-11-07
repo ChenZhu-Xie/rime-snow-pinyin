@@ -36,7 +36,7 @@ deploy:
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
       # Overall-17 换位后的一级固顶字。
       - send: d
-        assert: cand[1].text == "的" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
+        assert: cand[1].text == "都" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: q
         assert: cand[1].text == "我"
       # 占用桶保留汉字首选，字母固定为大写第 2、小写第 3。

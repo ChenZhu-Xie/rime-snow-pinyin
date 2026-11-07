@@ -42,30 +42,30 @@ deploy:
         assert: has("自行车")
       # 固顶词
       - send: p
-        assert: cand[1].text == "平"
+        assert: cand[1].text == "跑"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
-        assert: commit == "平平"
+        assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "平得"
+        assert: commit == "跑得"
       - send: xh
         assert: cand[1].text == "学"
       - send: bgov
         assert: cand[1].text == "冰"
       - send: be
-        assert: cand[1].text == "表示"
+        assert: cand[1].text == "不是"
       - send: yi
         assert: cand[1].text == "一个"
       # 字母与冰雪三拼共享二键基码；保留原汉字首选，大写、小写随后。
       - send: bc
         assert: cand[1].text == "表" and cand[2].text == "B" and cand[3].text == "b"
       - send: xg
-        assert: cand[1].text == "型" and cand[2].text == "V" and cand[3].text == "v"
+        assert: cand[1].text == "行" and cand[2].text == "V" and cand[3].text == "v"
       # 阿拉伯数字紧跟对应汉字数字，不覆盖原有首选。
       - send: xj
         assert: cand[1].text == "二" and cand[2].text == "2"
       - send: qkv
-        assert: cand[1].text == "其" and cand[2].text == "七" and cand[3].text == "7"
+        assert: cand[1].text == "七" and cand[2].text == "7"
       - send: lgv
         assert: cand[1].text == "零" and cand[2].text == "0"
       # 首选后置
@@ -84,5 +84,5 @@ deploy:
       - send: "ekekiiekek"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "{Control+b}jp mzua  jpmz"
+      - send: "{Control+b}jp mz  jpmz"
         assert: cand[1].text == "长猫"

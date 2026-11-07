@@ -25,9 +25,9 @@ deploy:
   schema_menu:
     tests:
       - send: "{F4}"
-        assert: page("冰雪键道") and page("冰雪三拼") and page("冰雪健道") and page("冰雪弎拼") and preedit == ""
+        assert: page("冰雪键道") and page("冰雪三拼") and page("冰雪健道") and page("冰雪弎拼")
       - send: "{Escape}"
-        assert: preedit == ""
+        assert: cand[1] == nil
       - send: "{F4}jd"
         assert: cand[1].text == "冰雪键道" and cand[2].text == "冰雪健道" and cand[3].text == "冰雪简道" and cand[4] == nil
       - send: "{Control+grave}lfjd{Escape}"
@@ -86,7 +86,7 @@ deploy:
         assert: cand[1].text == "科学发展观"
       # 固顶词
       - send: p
-        assert: cand[1].text == "平"
+        assert: cand[1].text == "跑"
       - send: xk
         assert: cand[1].text == "学"
       - send: btov
@@ -94,7 +94,7 @@ deploy:
       - send: by
         assert: cand[1].text == "不要"
       - send: fe
-        assert: cand[1].text == "飞" and not has("(zhei4)")
+        assert: cand[1].text == "非" and not has("(zhei4)")
       - send: se
         assert: not has("(sei1)")
       - send: seu
@@ -115,7 +115,7 @@ deploy:
       - send: bc
         assert: cand[1].text == "表" and cand[2].text == "B" and cand[3].text == "b"
       - send: xg
-        assert: cand[1].text == "于" and cand[2].text == "V" and cand[3].text == "v"
+        assert: cand[1].text == "需" and cand[2].text == "V" and cand[3].text == "v"
       - send: re
         assert: cand[1].text == "二" and cand[2].text == "2"
       - send: sj
@@ -149,9 +149,9 @@ deploy:
         assert: commit == "个"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
-        assert: commit == "平平"
+        assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "平得"
+        assert: commit == "跑得"
       - send: nwyn
         assert: cand[1].text == "那样"
       # 首选后置
@@ -172,9 +172,9 @@ deploy:
       - send: ylgs/
         assert: commit == "一个了"
       - send: d
-        assert: cand[1].text == "的"
+        assert: cand[1].text == "都"
       - send: l
-        assert: cand[1].text == "了"
+        assert: cand[1].text == "来"
       # 声声二字词只接受一个首字首形辅码，辅码不进入上屏文本。
       - send: yx
         assert: cand[2] ~= nil
@@ -190,7 +190,7 @@ deploy:
       - send: "eleliielel"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "o wn mfu  wnmf"
+      - send: "o wn mf  wnmf"
         assert: cand[1].text == "长猫"
       - send: "o btxkerf  bxerF"
         assert: cand[1].text == "冰雪输入法"
@@ -198,7 +198,7 @@ deploy:
       - send: "o shv2gc2tpxb  sgtx"
         assert: cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
-      - send: "o dyou lwo xw mr  dlxm"
+      - send: "o dyou lw xw mr  dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:

@@ -1529,7 +1529,7 @@ lcv	橑
 ld	留
 lda	绺
 ldi	镏
-ldo	刘 六 6
+ldo	六 6
 ldv	柳
 le	类
 lea	泪
@@ -1956,7 +1956,7 @@ qla	己
 qli	企
 qlo	弃
 qlu	气
-qlv	妻 七 7
+qlv	七 7
 qn	穷
 qni	茕
 qno	穹
@@ -2108,7 +2108,7 @@ shi	苏
 sho	诉
 shu	务
 shv	五 5
-sj	完 3
+sj	三 3
 sja	湾
 sji	伞
 sjo	晚

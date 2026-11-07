@@ -1004,7 +1004,7 @@ se	色
 sf	散
 sh	塞
 sj	素
-sk	死 4
+sk	四 4
 sl	所
 sn	森
 sp	丧

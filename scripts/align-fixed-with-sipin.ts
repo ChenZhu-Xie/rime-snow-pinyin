@@ -313,11 +313,14 @@ function render21x21(
 				reservedPhraseWords.add(replacement);
 			}
 		} else if (section === "单字") {
+			const digits = candidates
+				.split(" ")
+				.find((value) => numberWordByDigits.has(value));
 			replacement =
 				code.length === 1
 					? ones.get(code)
-					: candidates.split(" ").some((value) => /^\d+$/u.test(value))
-						? undefined
+					: digits
+						? numberWordByDigits.get(digits)
 						: bases.get(code);
 		}
 		let renderedCandidates = replacement
