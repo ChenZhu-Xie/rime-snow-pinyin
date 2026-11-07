@@ -6,7 +6,7 @@ __include: snow_pinyin.schema.yaml:/
 schema:
   schema_id: snow_sanpin_classic
   name: 冰雪三拼
-  version: "0.3.13"
+  version: "0.3.14"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
