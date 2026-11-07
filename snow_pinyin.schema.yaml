@@ -92,11 +92,11 @@ recognizer:
     stroke: "^u[a-z]*'?$"
     lua: "^o.*$"
     history: "^i$"
-    schema_menu: "^~[a-z]*$"
+    schema_menu: "^~~[a-z]*$"
 
 schema_menu:
   tag: schema_menu
-  prefix: "~"
+  prefix: "~~"
   tips: 〔方案〕
 
 stroke:

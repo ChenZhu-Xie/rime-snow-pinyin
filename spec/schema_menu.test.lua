@@ -103,7 +103,7 @@ local context = {
 }
 local config = {
   get_string = function(_, path)
-    if path == "schema_menu/prefix" then return "~" end
+    if path == "schema_menu/prefix" then return "~~" end
     if path == "schema_menu/tag" then return "schema_menu" end
     return nil
   end,
@@ -118,22 +118,22 @@ menu.processor.init(processor_env)
 
 assert(menu.processor.func(KeyEvent("Control+Shift+grave"), processor_env) == 2,
   "Ctrl+Shift+grave 必须交给原生选单")
-assert(menu.processor.func(KeyEvent("F4"), processor_env) == 1 and context.input == "~",
+assert(menu.processor.func(KeyEvent("F4"), processor_env) == 1 and context.input == "~~",
   "F4 必须打开 Lua 选单")
 assert(menu.processor.func(KeyEvent("Control+grave"), processor_env) == 1 and context.input == "",
   "选单内再次按入口必须关闭")
 context.input = "ordinary"
-assert(menu.processor.func(KeyEvent("Control+grave"), processor_env) == 1 and context.input == "~",
+assert(menu.processor.func(KeyEvent("Control+grave"), processor_env) == 1 and context.input == "~~",
   "Ctrl+grave 必须清空未上屏输入并打开选单")
-assert(menu.processor.func(KeyEvent("j"), processor_env) == 1 and context.input == "~j",
+assert(menu.processor.func(KeyEvent("j"), processor_env) == 1 and context.input == "~~j",
   "菜单激活时必须在 chord_composer 之前直接接收字母")
 assert(menu.processor.func(KeyEvent("Release+j"), processor_env) == 1,
   "菜单接收的字母释放事件不得落入 chord_composer")
-assert(menu.processor.func(KeyEvent("BackSpace"), processor_env) == 1 and context.input == "~",
+assert(menu.processor.func(KeyEvent("BackSpace"), processor_env) == 1 and context.input == "~~",
   "菜单退格必须删除一个查询字母")
 assert(menu.processor.func(KeyEvent("space"), processor_env) == 1 and confirmed == 1,
   "菜单空格必须确认当前方案候选")
-context.input = "~"
+context.input = "~~"
 assert(menu.processor.func(KeyEvent("Escape"), processor_env) == 1 and context.input == "",
   "Escape 必须关闭 Lua 选单")
 
@@ -145,15 +145,21 @@ local segment = {
   has_tag = function(_, tag) return tag == "schema_menu" end,
 }
 yielded = {}
-menu.translator.func("~jd", segment, translator_env)
+menu.translator.func("jd", segment, translator_env)
 assert(#yielded == 3 and yielded[1].text == "冰雪键道" and yielded[3].text == "冰雪简道",
   "翻译器必须按固定顺序筛选三个道方案")
+assert(yielded[1].preedit == "jd", "候选预编辑只能显示筛选字母")
 yielded = {}
-menu.translator.func("~qqqq", segment, translator_env)
+menu.translator.func("qqqq", segment, translator_env)
 assert(#yielded == 0, "无匹配时不得回落普通候选")
 
+yielded = {}
+menu.translator.func("", segment, translator_env)
+assert(#yielded == #menu.entries, "空查询必须立即显示全部方案")
+assert(yielded[1].preedit == "", "空查询不得显示内部菜单前缀")
+
 selected_candidate = Candidate("schema_menu", 0, 3, "冰雪清韵", "")
-context.input = "~bxqy"
+context.input = "~~bxqy"
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == "snow_qingyun" and context.input == "",
@@ -161,7 +167,7 @@ assert(selected_schema == "snow_qingyun" and context.input == "",
 
 selected_schema = nil
 selected_candidate = Candidate("schema_menu", 0, 3, "冰雪健道", "")
-context.input = "~lfjd"
+context.input = "~~lfjd"
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == nil and context.input == "", "选择当前方案只能关闭选单")

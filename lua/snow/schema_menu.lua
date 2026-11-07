@@ -139,7 +139,7 @@ end
 ---@param env SchemaMenuProcessorEnv
 function processor.init(env)
   local config = env.engine.schema.config
-  env.prefix = config:get_string("schema_menu/prefix") or "~"
+  env.prefix = config:get_string("schema_menu/prefix") or "~~"
   env.toggle_keys = { KeyEvent("F4"), KeyEvent("Control+grave") }
   env.escape_key = KeyEvent("Escape")
   env.backspace_key = KeyEvent("BackSpace")
@@ -197,7 +197,7 @@ end
 ---@param env SchemaMenuTranslatorEnv
 function translator.init(env)
   local config = env.engine.schema.config
-  env.prefix = config:get_string("schema_menu/prefix") or "~"
+  env.prefix = config:get_string("schema_menu/prefix") or "~~"
   env.tag = config:get_string("schema_menu/tag") or "schema_menu"
   env.selected_schema_id = nil
   local context = env.engine.context
@@ -229,7 +229,9 @@ function translator.func(input, segment, env)
   local query = input
   if is_active(query, env.prefix) then query = query:sub(#env.prefix + 1) end
   for _, entry in ipairs(menu.filter_entries(query)) do
-    yield(Candidate(env.tag, segment.start, segment._end, entry.name, entry.comment))
+    local candidate = Candidate(env.tag, segment.start, segment._end, entry.name, entry.comment)
+    candidate.preedit = query
+    yield(candidate)
   end
 end
 

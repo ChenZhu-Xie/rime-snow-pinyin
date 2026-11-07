@@ -48,17 +48,22 @@ if (
 	throw new Error("21×26 字母映射必须包含 26 个唯一字母与占用码。");
 }
 
-const letterLines = mapping.letters.map(({ letter, code, naturalTop3 }) => {
-	const first = naturalTop3[0]?.text;
-	if (!first || !/^\p{Script=Han}$/u.test(first)) {
-		throw new Error(`${letter.toUpperCase()} 的 ${code} 没有汉字首选。`);
-	}
-	return `${code}\t${first} ${letter.toUpperCase()} ${letter}`;
-});
-
 function renderFixedFile(filename: string) {
 	const path = rootPath(filename);
 	const current = readFileSync(path, "utf8").replace(/\r\n/gu, "\n");
+	const currentCandidates = new Map(
+		current
+			.split("\n")
+			.filter((line) => !line.startsWith("#") && line.includes("\t"))
+			.map((line) => line.split("\t", 2) as [string, string]),
+	);
+	const letterLines = mapping.letters.map(({ letter, code }) => {
+		const first = currentCandidates.get(code)?.split(" ")[0];
+		if (!first || !/^\p{Script=Han}$/u.test(first)) {
+			throw new Error(`${letter.toUpperCase()} 的 ${code} 没有汉字首选。`);
+		}
+		return `${code}\t${first} ${letter.toUpperCase()} ${letter}`;
+	});
 	const marker = "\n# 字母\n";
 	const markerIndex = current.indexOf(marker);
 	const base = (
@@ -81,4 +86,6 @@ for (const filename of [
 	renderFixedFile(filename);
 }
 
-console.log("21×26 字母候选：26 个占用桶均为汉字首选、大写第 2、小写第 3。");
+console.log(
+	"21×26 字母候选：26 个占用桶均保持当前汉字首选、大写第 2、小写第 3。",
+);

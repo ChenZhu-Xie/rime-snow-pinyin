@@ -210,16 +210,14 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 					return [code, candidates.split(" ")];
 				}),
 		);
-		assert.deepEqual(
-			actual,
-			Object.fromEntries(
-				letterBuckets.letters.map(({ letter, code, naturalTop3 }) => [
-					code,
-					[naturalTop3[0].text, letter.toUpperCase(), letter],
-				]),
-			),
-			filename,
-		);
+		for (const { letter, code } of letterBuckets.letters) {
+			assert.match(actual[code]?.[0] ?? "", /^\p{Script=Han}$/u, code);
+			assert.deepEqual(
+				actual[code]?.slice(1),
+				[letter.toUpperCase(), letter],
+				code,
+			);
+		}
 	}
 });
 
@@ -567,24 +565,24 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 	const auxiliaryKeys = "aeuio";
 	const expectedFirst = {
 		b: "不",
-		p: "平",
+		p: "跑",
 		m: "没",
 		f: "这",
-		d: "的",
+		d: "都",
 		t: "他",
 		n: "你",
-		l: "了",
+		l: "来",
 		g: "个",
-		k: "可",
+		k: "看",
 		h: "和",
 		j: "就",
 		q: "我",
-		x: "下",
+		x: "想",
 		r: "人",
 		z: "在",
-		c: "才",
+		c: "从",
 		s: "三",
-		y: "一",
+		y: "有",
 		w: "是",
 		v: "出",
 	} as Record<string, string>;
@@ -602,8 +600,12 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 		"snow_shenyun_shape.fixed.txt",
 		"snow_shenyun_tone.fixed.txt",
 	]) {
-		const content = read(filename).split(/^# 字母\r?$/mu)[0];
-		const lines = content
+		const content = read(filename);
+		const oneKeySection = content
+			.split(/^# 一级简码\r?$/mu)[1]
+			?.split(/^# 单字\r?$/mu)[0];
+		assert.ok(oneKeySection, `${filename} 缺少一级简码段`);
+		const lines = oneKeySection
 			.split(/\r?\n/)
 			.filter((line) => line && !line.startsWith("#"));
 		assert.equal(lines.length, 21, `文件 ${filename} 应恰好包含 21 个声键条目`);
@@ -640,6 +642,16 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 			}
 		}
 		assert.equal(keys.size, 21);
+		assert.match(
+			content,
+			/^df\t都$/mu,
+			`${filename} 的 dou 单字位应参考冰雪四拼`,
+		);
+		assert.match(
+			content,
+			/^qi\t其$/mu,
+			`${filename} 的 qi 单字位应参考冰雪四拼`,
+		);
 	}
 
 	const lua = read("lua/snow/shenyun.lua");

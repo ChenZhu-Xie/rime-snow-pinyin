@@ -27,10 +27,10 @@ test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme
 		recognizer: { patterns: Record<string, string> };
 		schema_menu: { tag: string; prefix: string; tips: string };
 	};
-	assert.equal(shared.recognizer.patterns.schema_menu, "^~[a-z]*$");
+	assert.equal(shared.recognizer.patterns.schema_menu, "^~~[a-z]*$");
 	assert.deepEqual(shared.schema_menu, {
 		tag: "schema_menu",
-		prefix: "~",
+		prefix: "~~",
 		tips: "〔方案〕",
 	});
 
@@ -623,7 +623,8 @@ test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		["elu", "十 10"],
 		["ltv", "零 0"],
 	]) {
-		assert.match(jiandaoCore, new RegExp(`^${code}\\t${candidates}$`, "mu"));
+		const number = candidates.split(" ").at(-1);
+		assert.match(jiandaoCore, new RegExp(`^${code}\\t.* ${number}$`, "mu"));
 	}
 	for (const [code, candidates] of [
 		["y", "一 1"],
@@ -638,7 +639,8 @@ test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		["elv", "十 10"],
 		["ltv", "零 0"],
 	]) {
-		assert.match(sanpinFixed, new RegExp(`^${code}\\t${candidates}$`, "mu"));
+		const number = candidates.split(" ").at(-1);
+		assert.match(sanpinFixed, new RegExp(`^${code}\\t.* ${number}$`, "mu"));
 	}
 	for (const stale of ["qj\\t强 2", "s\\t我 3", "sk\\t外 4"])
 		assert.doesNotMatch(sanpinFixed, new RegExp(`^${stale}$`, "mu"));

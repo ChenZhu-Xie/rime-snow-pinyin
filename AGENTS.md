@@ -78,6 +78,7 @@ bun run --cwd scripts check:format    # 检查格式
 | `export-character-codes.ts [输出文件]` | 冰雪四拼单字评测码表，需联网下载大字集拼音 | `output/character-codes.tsv` |
 | `export-word-codes.ts [输出目录]` | 离线模拟冰雪四拼动态码长，导出评测与大竹查询码表 | `output/word-codes/` 下的 `simulated.txt`、`dazhu.txt` |
 | `generate-yipin-tests.ts [输出文件]` | 从 `data/yipin-syllables.tsv` 每组固定取首条生成音节测试 | `output/yipin-tests.yaml.snippet`；审阅后合入 spec，不覆盖功能测试 |
+| `align-fixed-with-sipin.ts [--check]` | 按冰雪四拼的单字与二字词优先级，将语义读音重映射到四个 21×21 和两个 21×26 方案，并保留各方案的五辅语义 | 更新六份 `snow_*.fixed.txt`；`--check` 只校验，不写文件 |
 
 词典和辅助码生成默认更新仓库产物，审阅时可指定临时输出路径，如 `bun scripts/generate-word-dicts.ts base --output-dir /tmp/snow-word-dicts`；指定 `--output-dir` 后诊断文件也放在该目录的 `diff/`。注音逻辑集中在 `lib/word-pinyin.ts`，按需初始化且不写文件；`data/word-pinyin-overrides.tsv` 配置词语读音修正，`data/complete-pinyin-overrides.tsv` 修正 pinyin-pro 的完整词库。
 

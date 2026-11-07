@@ -102,6 +102,17 @@ fn centered_position(
     )
 }
 
+fn recentered_position(
+    previous_position: PhysicalPosition<i32>,
+    previous_size: PhysicalSize<u32>,
+    next_size: PhysicalSize<u32>,
+) -> PhysicalPosition<i32> {
+    PhysicalPosition::new(
+        previous_position.x + (previous_size.width as i32 - next_size.width as i32) / 2,
+        previous_position.y + (previous_size.height as i32 - next_size.height as i32) / 2,
+    )
+}
+
 #[derive(Clone, Copy)]
 struct WindowArea {
     position: PhysicalPosition<i32>,
@@ -338,7 +349,7 @@ impl App {
         (monitor, maximum_size)
     }
 
-    fn render_current(&mut self, event_loop: &ActiveEventLoop, keep_bottom_right: bool) -> bool {
+    fn render_current(&mut self, event_loop: &ActiveEventLoop, keep_center: bool) -> bool {
         let (Some(window), Some(svg)) = (self.window.as_ref(), self.svg.as_ref()) else {
             return false;
         };
@@ -352,10 +363,11 @@ impl App {
         };
         let previous_position = window.outer_position().ok();
         let _ = window.request_inner_size(PhysicalSize::new(image.width, image.height));
-        if keep_bottom_right && let Some(position) = previous_position {
-            window.set_outer_position(PhysicalPosition::new(
-                position.x + previous_size.width as i32 - image.width as i32,
-                position.y + previous_size.height as i32 - image.height as i32,
+        if keep_center && let Some(position) = previous_position {
+            window.set_outer_position(recentered_position(
+                position,
+                previous_size,
+                PhysicalSize::new(image.width, image.height),
             ));
         }
         self.image = Some(image);
@@ -732,6 +744,16 @@ mod tests {
             PhysicalSize::new(1000, 600),
         );
         assert_eq!(position, PhysicalPosition::new(300, 350));
+    }
+
+    #[test]
+    fn zoom_keeps_the_keymap_center_fixed() {
+        let position = recentered_position(
+            PhysicalPosition::new(300, 350),
+            PhysicalSize::new(1000, 600),
+            PhysicalSize::new(1200, 720),
+        );
+        assert_eq!(position, PhysicalPosition::new(200, 290));
     }
 
     #[test]
