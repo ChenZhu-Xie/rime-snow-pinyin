@@ -42,8 +42,11 @@ function filter.init(env)
   env.cache = {}
   env.maximum_candidates = config:get_int("learned_priority/maximum_candidates") or 120
   env.minimum_input_length = config:get_int("learned_priority/minimum_input_length") or 4
-  env.connection = env.engine.context.commit_notifier:connect(function()
+  env.connection = env.engine.context.commit_notifier:connect(function(ctx)
     -- 本次提交可能刚写入一个新用户词；下一次查询必须重新判断。
+    if log then
+      log.error("learned-priority commit text=" .. (ctx:get_commit_text() or ""))
+    end
     env.cache = {}
   end)
 end
