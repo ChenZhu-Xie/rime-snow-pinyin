@@ -1,5 +1,5 @@
 -- 候选词长平衡过滤器
--- 四码及以后将二字、三字、四字及以上候选分层交错，保留各层内部原有顺序。
+-- 四码及以后以原始质量顺序为主；仅在一页缺少某类词长时，从后续候选柔性补位。
 
 local snow = require "snow.snow"
 
@@ -20,63 +20,104 @@ local function group_of(candidate)
   return nil
 end
 
----@param queues Candidate[][]
----@return integer
-local function active_queue_count(queues)
-  local count = 0
-  for _, queue in ipairs(queues) do
-    if #queue > 0 then count = count + 1 end
+---@param candidates Candidate[]
+---@return integer[]
+local function group_counts(candidates)
+  local counts = { 0, 0, 0 }
+  for _, candidate in ipairs(candidates) do
+    local group = group_of(candidate)
+    if group then counts[group] = counts[group] + 1 end
   end
-  return count
+  return counts
 end
 
----@param queues Candidate[][]
----@param page_size integer
----@return Candidate[]
-local function take_page(queues, page_size)
-  local page = {}
-  local cursor = 1
-  while #page < page_size and active_queue_count(queues) > 0 do
-    local active = active_queue_count(queues)
-    local remaining = page_size - #page
-    local quota = math.max(1, math.floor(remaining / active))
-    local visited = 0
-    while visited < #queues and #page < page_size do
-      local queue = queues[cursor]
-      cursor = cursor % #queues + 1
-      visited = visited + 1
-      for _ = 1, math.min(quota, #queue) do
-        table.insert(page, table.remove(queue, 1))
-        if #page == page_size then break end
+---@param available integer[]
+---@param slots integer
+---@return integer[]
+local function balanced_targets(available, slots)
+  local targets = { 0, 0, 0 }
+  while slots > 0 do
+    local selected = nil
+    for group = 1, 3 do
+      if targets[group] < available[group]
+          and (not selected or targets[group] < targets[selected]) then
+        selected = group
       end
     end
+    if not selected then break end
+    targets[selected] = targets[selected] + 1
+    slots = slots - 1
   end
-  return page
+  return targets
+end
+
+---@param candidates Candidate[]
+---@param page_size integer
+---@return Candidate[], Candidate[]
+local function take_page(candidates, page_size)
+  local page_length = math.min(page_size, #candidates)
+  local available = group_counts(candidates)
+  local grouped_slots = math.min(page_length, available[1] + available[2] + available[3])
+  local targets = balanced_targets(available, grouped_slots)
+  local selected = {}
+  for index = 1, page_length do selected[index] = true end
+  local page = {}
+  for index = 1, page_length do table.insert(page, candidates[index]) end
+  local counts = group_counts(page)
+
+  for needed_group = 1, 3 do
+    while counts[needed_group] < targets[needed_group] do
+      local replacement = nil
+      for index = page_length + 1, #candidates do
+        if not selected[index] and group_of(candidates[index]) == needed_group then
+          replacement = index
+          break
+        end
+      end
+      if not replacement then break end
+      local displaced = nil
+      for index = page_length, 1, -1 do
+        local group = group_of(candidates[index])
+        if selected[index] and group and counts[group] > targets[group] then
+          displaced = index
+          break
+        end
+      end
+      if not displaced then break end
+      local displaced_group = group_of(candidates[displaced])
+      if not displaced_group then break end
+      selected[displaced] = false
+      selected[replacement] = true
+      counts[displaced_group] = counts[displaced_group] - 1
+      counts[needed_group] = counts[needed_group] + 1
+    end
+  end
+
+  page = {}
+  local remaining = {}
+  for index, candidate in ipairs(candidates) do
+    if selected[index] then
+      table.insert(page, candidate)
+    else
+      table.insert(remaining, candidate)
+    end
+  end
+  return page, remaining
 end
 
 ---@param candidates Candidate[]
 ---@param page_size integer
 ---@return Candidate[]
 function filter.rebalance(candidates, page_size)
-  ---@type Candidate[][]
-  local queues = { {}, {}, {} }
-  local passthrough = {}
-  for _, candidate in ipairs(candidates) do
-    local group = group_of(candidate)
-    if group then
-      table.insert(queues[group], candidate)
-    else
-      table.insert(passthrough, candidate)
-    end
-  end
+  ---@type Candidate[]
+  local remaining = candidates
   local result = {}
-  while active_queue_count(queues) > 0 do
-    for _, candidate in ipairs(take_page(queues, page_size)) do
+  while #remaining > 0 do
+    local page
+    page, remaining = take_page(remaining, page_size)
+    for _, candidate in ipairs(page) do
       table.insert(result, candidate)
     end
-  end
-  for _, candidate in ipairs(passthrough) do
-    table.insert(result, candidate)
   end
   return result
 end

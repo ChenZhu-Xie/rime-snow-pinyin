@@ -15,6 +15,7 @@ utf8 = {
 
 package.loaded["snow.snow"] = {
   current = function(context) return context.current end,
+  sub = function(value, first, last) return value:sub(first, last) end,
 }
 package.loaded["snow.bihua"] = {
   codes = function() return { "12G" }, true end,
@@ -66,6 +67,7 @@ assert(match and comment == "", "630 shorthand must keep its separate second-cha
 
 local sanpin_state = {
   id = "snow_sanpin",
+  current = "bkxh",
   sanpin_initial_pair = false,
   sanpin_passthrough = false,
 }
@@ -73,5 +75,39 @@ match, _, comment = filter.handle_candidate("X", "vi", {}, sanpin_state)
 assert(match and comment == "vi", "Three-Code B2 must map horizontal-vertical strokes to VI")
 assert(not filter.handle_candidate("X", "iv", {}, sanpin_state),
   "Three-Code B2 must not reuse the IV tone-key order for horizontal-vertical strokes")
+
+local tone_env = {
+  pinyin = { lookup = function(_, char)
+    return ({ X = "x1", Y = "y2", Z = "z3", W = "w4" })[char] or ""
+  end },
+}
+sanpin_state.current = "bx"
+match, _, comment = filter.handle_candidate("X", "", tone_env, sanpin_state)
+assert(match and comment == "〔调 i〕", "two-code character must hint its next tone key")
+
+tone_env.memory = { decode = function() return { "x4" } end }
+local exact_candidate = {
+  get_genuine = function()
+    return { to_phrase = function() return { entry = { code = "ignored" } } end }
+  end,
+}
+match, _, comment = filter.handle_candidate("X", "", tone_env, sanpin_state, exact_candidate)
+assert(match and comment == "〔调 a〕", "candidate spelling must override polyphonic fallback tones")
+tone_env.memory = nil
+
+sanpin_state.current = "xyz"
+match, _, comment = filter.handle_candidate("XYZ", "", tone_env, sanpin_state)
+assert(match and comment == "〔调₂₁₃ vi〕",
+  "three-initial word must hint the next two tones in 2-1-3 order")
+
+local classic_state = {
+  id = "snow_sanpin_classic",
+  current = "xyzw",
+  sanpin_initial_pair = false,
+  sanpin_passthrough = true,
+}
+match, _, comment = filter.handle_candidate("XYZW", "", tone_env, classic_state)
+assert(match and comment == "〔调₂₃ vu〕",
+  "classic four-initial word must use the schema's IVUAO tone keys in 2-3 order")
 
 print("shape_filter Keytao word-order tests passed")

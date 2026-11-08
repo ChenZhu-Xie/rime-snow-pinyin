@@ -548,10 +548,11 @@ test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
 	assert.match(lua, /ipairs\(bihua\.codes\(character, env\)\)/u);
 	assert.match(lua, /bihua\.load_strokes\(env\)/u);
 	assert.match(lua, /radical_input:sub\(1, 1\) ~= "1"/u);
-	assert.match(lua, /next_auxiliary_hint\(codes, suffix\)/u);
+	assert.match(lua, /auxiliary_hint\.next_codes\(codes, suffix\)/u);
+	assert.match(lua, /route\.length == 1 and \{ 1 \} or auxiliary_positions/u);
 });
 
-test("21×26 四码桶按候选词长分层，且在固顶与后置之前运行", () => {
+test("21×26 四码桶按原始质量柔性补齐词长，且在固顶与后置之前运行", () => {
 	const common = read("snow_shenyun_common.yaml");
 	const balance = common.indexOf("lua_filter@*snow.length_balance");
 	const fixed = common.indexOf("lua_filter@*snow.fix");
@@ -562,6 +563,8 @@ test("21×26 四码桶按候选词长分层，且在固顶与后置之前运行"
 	assert.match(lua, /if length == 3 then return 2 end/u);
 	assert.match(lua, /length and length >= 4/u);
 	assert.match(lua, /maximum_candidates.*or 120/u);
+	assert.doesNotMatch(lua, /local queues/u);
+	assert.match(lua, /if selected\[index\] then/u);
 });
 
 test("两个飞花原型都随部署带上共用配置", () => {

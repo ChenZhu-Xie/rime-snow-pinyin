@@ -9,6 +9,12 @@ script: |
     end
     return false
   end
+  function comment(something)
+    for _, v in ipairs(cand) do
+      if v.text == something then return v.comment end
+    end
+    return ""
+  end
 deploy:
   sentence:
     patch:
@@ -21,6 +27,13 @@ deploy:
       # 组词规则
       - send: bgi
         assert: cand[1].text == "冰"
+      # 未键入调辅时，单字、三字词、四字词分别提示下一至两个调辅键。
+      - send: bg
+        assert: has("冰") and comment("冰"):find("〔调 i〕", 1, true)
+      - send: erf
+        assert: has("输入法") and comment("输入法"):find("〔调₂₁₃ ai〕", 1, true)
+      - send: jjjj
+        assert: has("经济基础") and comment("经济基础"):find("〔调₂₃ ai〕", 1, true)
       - send: bgxh
         assert: has("冰雪")
       - send: jbekaa

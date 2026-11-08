@@ -70,13 +70,19 @@ deploy:
         assert: cand[1].text == "在"
       # 合法 AU 不得混入同键位的声声二字词。
       - send: br
-        assert: all_have_length(1) and has("冰") and comment("冰"):find("〔调 i〕", 1, true)
-      # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）。
+        assert: all_have_length(1) and has("冰") and comment("冰"):find("〔调 io〕", 1, true) and preedit == "br"
+      # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）；调码归音节，笔画另入括号。
       - send: bri
-        assert: has("冰") and comment("冰"):find("〔调 o〕", 1, true)
+        assert: has("冰") and comment("冰"):find("〔调 oe〕", 1, true) and preedit == "bri"
+      - send: brio
+        assert: has("冰") and comment("冰"):find("〔调 e〕", 1, true) and preedit == "bri 笔[o]"
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
-        assert: commit == nil and has("测试")
+        assert: commit == nil and has("测试") and preedit == "ce wi"
+      - send: cewia
+        assert: has("测试") and preedit == "cea wi"
+      - send: cewiaa
+        assert: has("测试") and preedit == "cea wia"
       # AU 空桶回退为声声二字词；第三码按第一字声调筛选。
       - send: cw
         assert: all_have_length(2) and has("测试")
@@ -124,8 +130,6 @@ deploy:
       # 第三音节的 yu 空桶可把第二字三声辅键 u 前移，ykyu 是 AAA+B 的可选短码。
       - send: ykyu
         assert: has("也可以")
-      - send: brio
-        assert: has("冰") and comment("冰"):find("〔调 e〕", 1, true)
       - send: brioe
         assert: has("冰")
       # 部首冫的三拼部首码以 b 开头；数字 1 与声调、笔画互不混淆。

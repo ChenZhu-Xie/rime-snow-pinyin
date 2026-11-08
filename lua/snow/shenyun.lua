@@ -10,6 +10,7 @@ local snow = require "snow.snow"
 local bihua = require "snow.bihua"
 local vacancy = require "snow.vacancy"
 local auxiliary_semantics = require "snow.auxiliary_semantics"
+local auxiliary_hint = require "snow.auxiliary_hint"
 
 local jiandao_semantics = auxiliary_semantics["21x21"]
 local shenyun_semantics = auxiliary_semantics["21x26"]
@@ -209,23 +210,12 @@ local function auxiliary_codes(candidate, env)
   return codes
 end
 
----@param codes string[]
----@param suffix string
+---@param route ShenyunRoute
+---@param mode string
 ---@return string
-local function next_auxiliary_hint(codes, suffix)
-  local next_keys = {}
-  local seen = {}
-  local next_index = suffix:len() + 1
-  for _, code in ipairs(codes) do
-    if code:sub(1, suffix:len()) == suffix then
-      local key = code:sub(next_index, next_index)
-      if key ~= "" and not seen[key] then
-        seen[key] = true
-        table.insert(next_keys, key)
-      end
-    end
-  end
-  return table.concat(next_keys, "/")
+local function format_preedit(route, mode)
+  local positions = route.length == 1 and { 1 } or auxiliary_positions(route.length, "tone")
+  return auxiliary_hint.format_preedit(route.proxy, route.suffix, mode, positions)
 end
 
 ---@param candidate Candidate
@@ -244,10 +234,10 @@ local function auxiliary_match(candidate, suffix, env)
     end
   end
   local codes = auxiliary_codes(candidate, env)
-  if suffix == "" then return true, next_auxiliary_hint(codes, suffix) end
+  if suffix == "" then return true, auxiliary_hint.next_codes(codes, suffix) end
   for _, code in ipairs(codes) do
     if code:sub(1, suffix:len()) == suffix then
-      return true, next_auxiliary_hint(codes, suffix)
+      return true, auxiliary_hint.next_codes(codes, suffix)
     end
   end
   return false, ""
@@ -424,7 +414,7 @@ function this.func(input, segment, env)
     if not seen[candidate.text] then
       seen[candidate.text] = true
       candidate._end = segment._end
-      candidate.preedit = input
+      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode)
       local length = utf8.len(candidate.text)
       local order = ""
       if length and length >= 2 then

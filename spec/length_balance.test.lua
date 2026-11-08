@@ -36,9 +36,21 @@ for index = 1, 6 do
   counts[length - 1] = counts[length - 1] + 1
 end
 assert(counts[1] == 2 and counts[2] == 2 and counts[3] == 2)
-assert(result[1].text == "九霄" and result[2].text == "就小")
-assert(result[3].text == "风萧萧" and result[4].text == "非学校")
+assert(result[1].text == "九霄" and result[2].text == "风萧萧")
+assert(result[3].text == "非学校" and result[4].text == "就小")
 assert(result[5].text == "方案选单" and result[6].text == "分享心得")
+
+local learned = balance.rebalance({
+  candidate("打开方式"),
+  candidate("打开"),
+  candidate("大可不必"),
+  candidate("打卡方式"),
+  candidate("大开眼界"),
+  candidate("打开发"),
+  candidate("大客户"),
+  candidate("打开文件"),
+}, 6)
+assert(learned[1].text == "打开方式", "learned first candidate must remain first")
 
 local shortage = balance.rebalance({
   candidate("九霄"),

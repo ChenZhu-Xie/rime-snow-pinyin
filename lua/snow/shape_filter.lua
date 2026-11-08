@@ -4,6 +4,7 @@
 local snow = require "snow.snow"
 local bihua = require "snow.bihua"
 local auxiliary_semantics = require "snow.auxiliary_semantics"
+local auxiliary_hint = require "snow.auxiliary_hint"
 
 ---@class ShapeFilterEnv: BihuaEnv
 ---@field shape_elements ReverseLookup|nil
@@ -43,7 +44,8 @@ local sanpin_semantics = auxiliary_semantics["21x21"]
 local sanpin_stroke_map = {}
 ---@type table<string, string>
 local sanpin_tones = {}
-local classic_sanpin_tones = { v = "1", i = "2", u = "3", o = "4", a = "5" }
+---@type table<string, string>
+local sanpin_tone_keys = sanpin_semantics.tone_keys_by_digit
 for digit, key in pairs(sanpin_semantics.stroke_keys_by_digit) do
   sanpin_stroke_map[stroke_names[digit]] = key
 end
@@ -73,8 +75,8 @@ local sanpin_reverse_stroke_map, sanpin_direct_stroke_map = stroke_maps(sanpin_s
 ---@param shape_input string
 ---@param env ShapeFilterEnv
 ---@param candidate Candidate?
-local function sanpin_initial_pair_match(text, shape_input, env, candidate, classic)
-  local tone = (classic and classic_sanpin_tones or sanpin_tones)[shape_input]
+local function sanpin_initial_pair_match(text, shape_input, env, candidate)
+  local tone = sanpin_tones[shape_input]
   local prompt = tone and " 调[" .. shape_input .. "]" or nil
   if not tone or utf8.len(text) ~= 2 then
     return false, prompt, nil
@@ -194,6 +196,105 @@ local function jiandao_encode(text, current, radicals_map, map, cache)
   return result
 end
 
+---@param length integer
+---@return integer[]
+local function sanpin_auxiliary_positions(length)
+  if length == 1 then return { 1 } end
+  if length == 2 then return { 1, 2 } end
+  if length == 3 then return { 2, 1, 3 } end
+  if length == 4 then return { 2, 3 } end
+  local positions = { length, 1, 2 }
+  for index = 3, length - 1 do table.insert(positions, index) end
+  return positions
+end
+
+---@param candidate Candidate?
+---@param env ShapeFilterEnv
+---@return string[]?
+local function sanpin_spellings(candidate, env)
+  if not candidate or not env.memory then return nil end
+  local phrase = candidate:get_genuine():to_phrase()
+  return phrase and env.memory:decode(phrase.entry.code) or nil
+end
+
+---@param text string
+---@param position integer
+---@param spellings string[]?
+---@param tone_keys table<string, string>
+---@param env ShapeFilterEnv
+---@return string[]
+local function sanpin_tone_options(text, position, spellings, tone_keys, env)
+  local result = {}
+  local seen = {}
+  local function add(spelling)
+    local tone = spelling:match("([1-5])$")
+    local key = tone and tone_keys[tone] or nil
+    if key and not seen[key] then
+      seen[key] = true
+      table.insert(result, key)
+    end
+  end
+  if spellings and spellings[position] then
+    add(spellings[position])
+    return result
+  end
+  local character = snow.sub(text, position, position)
+  for spelling in lookup(env.pinyin, character):gmatch("%S+") do add(spelling) end
+  return result
+end
+
+---@param current string
+---@param word_length integer
+---@return integer[]?, string?
+local function sanpin_route(current, word_length)
+  local initial = "[bpmfdtnlgkhjqxzcsrywe]"
+  local suffix
+  if word_length == 1 then
+    suffix = current:match("^" .. initial .. "[a-z]([ivuao]*)$")
+    return suffix and { 1 } or nil, suffix
+  elseif word_length == 2 then
+    suffix = current:match("^" .. initial .. "[a-z]" .. initial .. "[a-z]([ivuao]*)$")
+    return suffix and { 1, 2 } or nil, suffix
+  end
+  suffix = current:match("([ivuao]*)$") or ""
+  local sound = suffix == "" and current or current:sub(1, -suffix:len() - 1)
+  local groups = {}
+  for group in sound:gmatch(initial .. "[A-Z]?") do table.insert(groups, group) end
+  if #groups < 3 or table.concat(groups) ~= sound or word_length < #groups then return nil, nil end
+  return sanpin_auxiliary_positions(#groups), suffix
+end
+
+---@param text string
+---@param current string
+---@param env ShapeFilterEnv
+---@param candidate Candidate?
+---@return string?
+local function sanpin_auxiliary_hint(text, current, env, candidate)
+  local word_length = utf8.len(text)
+  if not word_length then return nil end
+  local positions, suffix = sanpin_route(current, word_length)
+  if not positions or suffix == nil then return nil end
+  local spellings = sanpin_spellings(candidate, env)
+  local codes = { "" }
+  for _, position in ipairs(positions) do
+    local options = sanpin_tone_options(text, position, spellings, sanpin_tone_keys, env)
+    if #options == 0 then return nil end
+    local expanded = {}
+    for _, code in ipairs(codes) do
+      for _, key in ipairs(options) do table.insert(expanded, code .. key) end
+    end
+    codes = expanded
+  end
+  local next_tones = auxiliary_hint.next_codes(codes, suffix)
+  if next_tones == "" then return nil end
+  local order = ""
+  if #positions > 1 then
+    for _, position in ipairs(positions) do order = order .. tostring(position) end
+    order = order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
+  end
+  return ("〔调%s %s〕"):format(order, next_tones)
+end
+
 local filter = {}
 
 ---@class ShapeFilterState
@@ -287,8 +388,11 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
     end
   elseif state.id == "snow_sanpin" or state.id == "snow_sanpin_classic" then -- 冰雪弎拼／冰雪三拼
     if state.sanpin_initial_pair then
-      return sanpin_initial_pair_match(
-        text, shape_input, env, candidate, state.id == "snow_sanpin_classic")
+      return sanpin_initial_pair_match(text, shape_input, env, candidate)
+    end
+    if shape_input == "" then
+      local comment = sanpin_auxiliary_hint(text, state.current, env, candidate)
+      if comment then return true, nil, comment end
     end
     if state.sanpin_passthrough then
       return true, nil, nil
@@ -339,7 +443,7 @@ end
 ---@param env ShapeFilterEnv
 function filter.func(translation, env)
   local context = env.engine.context
-  local shape_input = context:get_property("shape_input")
+  local shape_input = context:get_property("shape_input") or ""
   local state = current_state(env)
   local has_candidate = false
   local has_match = false

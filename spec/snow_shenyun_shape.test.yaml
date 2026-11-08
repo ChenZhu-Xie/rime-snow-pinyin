@@ -51,12 +51,12 @@ deploy:
         assert: cand[1].text == "在"
       # bing 的 Overall-17 声韵码为 br，键道式首形码为 o（丶）。
       - send: br
-        assert: all_have_length(1) and has("冰")
+        assert: all_have_length(1) and has("冰") and preedit == "br"
       - send: bro
-        assert: has("冰")
+        assert: has("冰") and preedit == "br 形[o]"
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
-        assert: commit == nil and has("测试")
+        assert: commit == nil and has("测试") and preedit == "ce wi"
       # AU 空桶回退为声声二字词；第三码按第一字首形辅筛选。
       - send: cw
         assert: all_have_length(2) and has("测试")
