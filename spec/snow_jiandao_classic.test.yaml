@@ -9,6 +9,12 @@ script: |
     end
     return false
   end
+  function no_single()
+    for _, v in ipairs(cand) do
+      if utf8.len(v.text) == 1 then return false end
+    end
+    return true
+  end
 deploy:
   sentence:
     patch:
@@ -20,7 +26,10 @@ deploy:
     tests:
       # 组词规则
       - send: bgxh
-        assert: has("冰雪")
+        assert: has("冰雪") and no_single()
+      # 用户复现：jdhz 不得把只消耗 jd 的单字带进四码桶。
+      - send: jdhz
+        assert: cand[1] ~= nil and no_single()
       - send: erf
         assert: has("输入法")
       - send: wmxw

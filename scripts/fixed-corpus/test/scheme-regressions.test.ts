@@ -828,7 +828,11 @@ test("split translators preserve native user phrase priority across routes", () 
 	assert.match(priority, /genuine\.type == "user_phrase"/u);
 	assert.match(priority, /memory\.user_dict:lookup_words\(code, false, 0\)/u);
 	assert.match(priority, /entry\.text == candidate\.text/u);
-	assert.match(priority, /consumed_length == expected_length/u);
+	assert.match(priority, /function priority\.consumes_input/u);
+	assert.match(
+		priority,
+		/candidate\._end - candidate\._start == expected_length/u,
+	);
 	assert.match(priority, /user_phrase_bonus/u);
 	assert.match(priority, /candidate_weight > current_weight/u);
 

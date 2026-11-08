@@ -15,6 +15,12 @@ script: |
     end
     return ""
   end
+  function no_single()
+    for _, v in ipairs(cand) do
+      if utf8.len(v.text) == 1 then return false end
+    end
+    return true
+  end
 deploy:
   cross_route_user_phrase:
     tests:
@@ -40,7 +46,7 @@ deploy:
       - send: jjjj
         assert: has("经济基础") and comment("经济基础"):find("〔调₂₃ ai〕", 1, true)
       - send: bgxh
-        assert: has("冰雪")
+        assert: has("冰雪") and no_single()
       - send: jbekaa
         assert: has("近世")
       - send: erf

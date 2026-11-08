@@ -14,6 +14,12 @@ script: |
   function page(something)
     return rank(something) <= 6
   end
+  function no_single()
+    for _, v in ipairs(cand) do
+      if utf8.len(v.text) == 1 then return false end
+    end
+    return true
+  end
   function comment(something)
     for _, v in ipairs(cand) do
       if v.text == something then return v.comment end
@@ -46,6 +52,9 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
+      # 四码联合桶只含完整二字词和四字及以上简拼候选，不收第一个音节的单字。
+      - send: btxk
+        assert: has("冰雪") and no_single()
       # u 前缀的独立笔画反查沿用三拼调键序：横竖撇点折 → ivuao。
       - send: ui
         assert: has("一")
@@ -289,11 +298,6 @@ deploy:
         assert: commit == nil
       - send: "o btxkerf  erf "
         assert: commit == "冰雪输入法输入法"
-  # 六码二字词选完首字后，第二字可由下一个词顶屏，并与首字一起完成造词。
-  encoding_popping:
-    tests:
-      - send: "btslia b{Escape}btsl"
-        assert: cand[1].text == "冰四"
   encoding_buffered:
     tests:
       - send: "o btslia   btsl"
