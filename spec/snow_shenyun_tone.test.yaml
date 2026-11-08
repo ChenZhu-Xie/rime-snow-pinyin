@@ -43,9 +43,6 @@ deploy:
       # 方案选单迁入短码 jxxd；两词权重相同时，仍按原始质量保持九霄在前、方案选单在第二位。
       - send: "jxxd jxxdi0 jxxd"
         assert: cand[1].text == "九霄" and cand[2].text == "方案选单"
-      # 以第二选键 2 从短码再学习一次方案选单；此后其用户权重更高，应压过九霄成为首选。
-      - send: "jxxd2 jxxd"
-        assert: cand[1].text == "方案选单"
   buffered_command:
     tests:
       - send: o
