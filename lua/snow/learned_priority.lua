@@ -46,12 +46,10 @@ function filter.init(env)
     local input = snow.current(ctx)
     local segment = ctx.composition:toSegmentation():back()
     local candidate = ctx:get_selected_candidate()
-    if ctx:get_commit_text() == "方案选单" then
-      log.error(("learned-priority commit input=%s segment=%s tag=%s candidate=%s type=%s genuine=%s"):format(
-        tostring(input), tostring(segment ~= nil), tostring(segment and segment:has_tag("abc")),
-        tostring(candidate and candidate.text), tostring(candidate and candidate.type),
-        tostring(candidate and candidate:get_genuine().type)))
-    end
+    log.error(("learned-priority commit input=%s segment=%s tag=%s candidate=%s type=%s genuine=%s"):format(
+      tostring(input), tostring(segment ~= nil), tostring(segment and segment:has_tag("abc")),
+      tostring(candidate ~= nil), tostring(candidate and candidate.type),
+      tostring(candidate and candidate:get_genuine().type)))
     if input and input:len() >= env.minimum_input_length
         and rime_api.regex_match(input, "^[a-z]+$")
         and segment and segment:has_tag("abc") and candidate
@@ -61,10 +59,8 @@ function filter.init(env)
       local started = env.memory:start_session()
       local updated = env.memory:update_candidate(candidate, 1)
       local finished = env.memory:finish_session()
-      if candidate.text == "方案选单" then
-        log.error(("learned-priority update started=%s updated=%s finished=%s"):format(
-          tostring(started), tostring(updated), tostring(finished)))
-      end
+      log.error(("learned-priority update started=%s updated=%s finished=%s"):format(
+        tostring(started), tostring(updated), tostring(finished)))
     end
     -- 本次提交可能刚写入一个新用户词；下一次查询必须重新判断。
     env.cache = {}
