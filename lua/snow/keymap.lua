@@ -7,12 +7,15 @@ local snow = require "snow.snow"
 ---@field keycode integer
 ---@field image_path string
 ---@field command_path string
+---@field alive_path string
 ---@field helper_path string
 ---@field platform string
 ---@field available boolean
 ---@field serial integer
 
 local processor = {}
+local HELPER_ALIVE_SECONDS = 15
+local HELPER_RETRY_SECONDS = 5
 
 ---@param path string
 ---@return boolean
@@ -33,6 +36,18 @@ end
 ---@return string
 local function shell_quote(value)
   return "'" .. value:gsub("'", "'\\''") .. "'"
+end
+
+---@param env KeymapEnv
+---@return boolean
+local function helper_alive(env)
+  local alive = io.open(env.alive_path, "rb")
+  if not alive then return false end
+  local timestamp = tonumber(alive:read("*a"))
+  alive:close()
+  if not timestamp then return false end
+  local now = os.time()
+  return timestamp >= now - HELPER_ALIVE_SECONDS and timestamp <= now + HELPER_ALIVE_SECONDS
 end
 
 ---@param user_dir string
@@ -65,7 +80,7 @@ local function launch(env)
     }, " ")
   end
   os.execute(command)
-  snow.keymap_helper_launched = true
+  snow.keymap_helper_launch_time = os.time()
 end
 
 ---@param env KeymapEnv
@@ -91,6 +106,7 @@ function processor.init(env)
   env.helper_path = ""
   env.image_path = ""
   env.command_path = ""
+  env.alive_path = ""
   env.platform = ""
   local user_dir = rime_api.get_user_data_dir()
   local helper_name
@@ -104,14 +120,10 @@ function processor.init(env)
     user_suffix = "-" .. (os.getenv("USER") or "user"):gsub("[^%w_.-]", "_")
   end
   env.command_path = temporary .. "/snow-pinyin-keymap-v2" .. user_suffix .. ".command"
+  env.alive_path = env.command_path .. ".alive"
   env.available = exists(env.helper_path) and exists(env.image_path)
   snow.keymap_keys[env.engine.schema.schema_id] = env.available and env.keycode or nil
-  if env.available and not snow.keymap_helper_launched then
-    local command = io.open(env.command_path, "wb")
-    if command then command:close() end
-    launch(env)
-    write_command(env, "follow")
-  elseif env.available then
+  if env.available then
     write_command(env, "follow")
   end
 end
@@ -126,6 +138,10 @@ function processor.func(key_event, env)
   local context = env.engine.context
   if context:get_option("ascii_mode") or context.input ~= "" then return snow.kNoop end
   if not write_command(env, "toggle") then return snow.kNoop end
+  if not helper_alive(env)
+      and os.time() - snow.keymap_helper_launch_time >= HELPER_RETRY_SECONDS then
+    launch(env)
+  end
   return snow.kAccepted
 end
 

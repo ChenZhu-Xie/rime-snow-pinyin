@@ -2,12 +2,13 @@
 
 use std::collections::HashMap;
 use std::fs::{File, OpenOptions};
-use std::io::{ErrorKind, Read};
+use std::io::{ErrorKind, Read, Seek, SeekFrom, Write};
 use std::num::NonZeroU32;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
-use std::thread;
-use std::time::{Duration, SystemTime};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::thread::{self, JoinHandle};
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use fs2::FileExt;
 use resvg::{tiny_skia, usvg};
@@ -20,6 +21,7 @@ use winit::keyboard::{Key, NamedKey};
 use winit::window::{Window, WindowAttributes, WindowId, WindowLevel};
 
 const POLL_INTERVAL: Duration = Duration::from_millis(30);
+const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 const MIN_ZOOM: f64 = 0.55;
 const MAX_ZOOM: f64 = 2.5;
 
@@ -85,6 +87,27 @@ fn parse_command(value: &str) -> Option<Command> {
         token: token.to_owned(),
         image_path: PathBuf::from(image_path),
     })
+}
+
+fn heartbeat_path(command_file: &Path) -> PathBuf {
+    let mut value = command_file.as_os_str().to_os_string();
+    value.push(".alive");
+    PathBuf::from(value)
+}
+
+fn write_heartbeat(path: &Path) -> std::io::Result<()> {
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_secs();
+    let mut file = OpenOptions::new()
+        .create(true)
+        .truncate(false)
+        .write(true)
+        .open(path)?;
+    file.seek(SeekFrom::Start(0))?;
+    write!(file, "{timestamp:020}")?;
+    file.set_len(20)
 }
 
 fn adjust_zoom(current: f64, delta: f64) -> f64 {
@@ -170,10 +193,39 @@ fn focused_window_area() -> Option<WindowArea> {
     None
 }
 
-fn start_command_watcher(command_file: PathBuf, proxy: EventLoopProxy<UserEvent>) {
-    thread::spawn(move || {
+struct CommandWatcher {
+    stop: Arc<AtomicBool>,
+    handle: Option<JoinHandle<()>>,
+    heartbeat_file: PathBuf,
+}
+
+impl Drop for CommandWatcher {
+    fn drop(&mut self) {
+        self.stop.store(true, Ordering::Relaxed);
+        if let Some(handle) = self.handle.take() {
+            let _ = handle.join();
+        }
+        let _ = std::fs::remove_file(&self.heartbeat_file);
+    }
+}
+
+fn start_command_watcher(
+    command_file: PathBuf,
+    proxy: EventLoopProxy<UserEvent>,
+) -> CommandWatcher {
+    let heartbeat_file = heartbeat_path(&command_file);
+    let _ = write_heartbeat(&heartbeat_file);
+    let stop = Arc::new(AtomicBool::new(false));
+    let thread_stop = stop.clone();
+    let thread_heartbeat_file = heartbeat_file.clone();
+    let handle = thread::spawn(move || {
         let mut last_value = String::new();
-        loop {
+        let mut last_heartbeat = Instant::now();
+        while !thread_stop.load(Ordering::Relaxed) {
+            if last_heartbeat.elapsed() >= HEARTBEAT_INTERVAL {
+                let _ = write_heartbeat(&thread_heartbeat_file);
+                last_heartbeat = Instant::now();
+            }
             let mut value = String::new();
             if File::open(&command_file)
                 .and_then(|mut file| file.read_to_string(&mut value))
@@ -184,12 +236,17 @@ fn start_command_watcher(command_file: PathBuf, proxy: EventLoopProxy<UserEvent>
                 if let Some(command) = parse_command(&value)
                     && proxy.send_event(UserEvent::Command(command)).is_err()
                 {
-                    return;
+                    break;
                 }
             }
             thread::sleep(POLL_INTERVAL);
         }
     });
+    CommandWatcher {
+        stop,
+        handle: Some(handle),
+        heartbeat_file,
+    }
 }
 
 #[derive(Debug)]
@@ -255,6 +312,10 @@ fn should_check_svg(
     first_show: bool,
 ) -> bool {
     path_changed || svg_missing || follow_command || first_show
+}
+
+fn should_defer_hidden_follow(action: CommandAction, visible: bool) -> bool {
+    action == CommandAction::Follow && !visible
 }
 
 struct App {
@@ -419,6 +480,10 @@ impl App {
         let Some(window) = self.window.clone() else {
             return;
         };
+        if should_defer_hidden_follow(command.action, self.visible) {
+            self.current_path = Some(command.image_path);
+            return;
+        }
         if command.action == CommandAction::Toggle
             && self.current_path.as_deref() == Some(command.image_path.as_path())
             && self.visible
@@ -671,7 +736,7 @@ fn run() -> Result<(), String> {
     let event_loop = EventLoop::<UserEvent>::with_user_event()
         .build()
         .map_err(|error| format!("无法创建窗口事件循环：{error}"))?;
-    start_command_watcher(command_file, event_loop.create_proxy());
+    let _command_watcher = start_command_watcher(command_file, event_loop.create_proxy());
     event_loop
         .run_app(&mut App::new())
         .map_err(|error| format!("键位图窗口异常退出：{error}"))
@@ -763,5 +828,20 @@ mod tests {
         assert!(should_check_svg(false, true, false, false));
         assert!(should_check_svg(false, false, true, false));
         assert!(!should_check_svg(false, false, false, false));
+    }
+
+    #[test]
+    fn hidden_follow_is_deferred_until_the_keymap_is_opened() {
+        assert!(should_defer_hidden_follow(CommandAction::Follow, false));
+        assert!(!should_defer_hidden_follow(CommandAction::Follow, true));
+        assert!(!should_defer_hidden_follow(CommandAction::Toggle, false));
+    }
+
+    #[test]
+    fn heartbeat_file_sits_beside_the_command_file() {
+        assert_eq!(
+            heartbeat_path(Path::new("C:/Temp/snow-keymap.command")),
+            PathBuf::from("C:/Temp/snow-keymap.command.alive")
+        );
     }
 }

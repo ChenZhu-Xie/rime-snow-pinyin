@@ -552,11 +552,22 @@ test("the desktop helper stays dormant outside an idle Chinese composition", () 
 	assert.match(processor, /key_event\.modifier ~= 0/u);
 	assert.doesNotMatch(processor, /powershell/iu);
 	assert.match(processor, /snow-keymap-windows\.exe/u);
-	assert.match(processor, /launch\(env\)\s+write_command\(env, "follow"\)/u);
 	assert.match(processor, /write_command\(env, "follow"\)/u);
 	assert.match(processor, /write_command\(env, "toggle"\)/u);
 	assert.match(
 		read("lua/snow/statistics.lua"),
 		/snow\.keymap_keys\[env\.schema_id\]/u,
 	);
+});
+
+test("scheme initialization reuses the desktop helper without launching a process", () => {
+	const processor = read("lua/snow/keymap.lua");
+	const init = processor.slice(
+		processor.indexOf("function processor.init"),
+		processor.indexOf("function processor.func"),
+	);
+	assert.match(init, /write_command\(env, "follow"\)/u);
+	assert.doesNotMatch(init, /launch\(env\)/u);
+	assert.match(processor, /env\.command_path \.\. "\.alive"/u);
+	assert.match(processor, /not helper_alive\(env\)/u);
 });

@@ -44,8 +44,8 @@ snow.redispatching = false
 ---@type table<string, integer>
 snow.keymap_keys = {}
 
--- 桌面键位图 helper 在同一个 Rime Lua 状态中只启动一次；切换方案复用同一常驻进程。
-snow.keymap_helper_launched = false
+-- 桌面键位图 helper 的最近启动时刻；心跳尚未建立时用于限制重复启动。
+snow.keymap_helper_launch_time = 0
 
 -- 顶屏、略码上屏时为转给下一次上屏的有效按键数（触发顶屏的键加上推回输入框的编码，或略码键），供输入统计扣除
 ---@type integer|nil
