@@ -75,7 +75,7 @@ deploy:
       - send: bri
         assert: has("冰") and comment("冰"):find("〔调 oe〕", 1, true) and preedit == "bri"
       - send: brio
-        assert: has("冰") and comment("冰"):find("〔调 e〕", 1, true) and preedit == "bri 笔[o]"
+        assert: has("冰") and comment("冰"):find("〔调 ei〕", 1, true) and preedit == "bri 笔[o]"
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
       - send: cewi
         assert: commit == nil and has("测试") and preedit == "ce wi"
