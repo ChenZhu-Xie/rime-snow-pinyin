@@ -46,7 +46,8 @@ function filter.init(env)
     local input = snow.current(ctx)
     local segment = ctx.composition:toSegmentation():back()
     local candidate = ctx:get_selected_candidate()
-    if input and input:len() >= env.minimum_input_length
+    if not ctx:get_option("buffered")
+        and input and input:len() >= env.minimum_input_length
         and rime_api.regex_match(input, "^[a-z]+$")
         and segment and segment:has_tag("abc") and candidate
         and not candidate_priority.is_user_phrase(candidate) then
