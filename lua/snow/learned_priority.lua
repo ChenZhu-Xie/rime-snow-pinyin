@@ -43,10 +43,20 @@ function filter.init(env)
   env.maximum_candidates = config:get_int("learned_priority/maximum_candidates") or 120
   env.minimum_input_length = config:get_int("learned_priority/minimum_input_length") or 4
   env.connection = env.engine.context.commit_notifier:connect(function(ctx)
-    -- 本次提交可能刚写入一个新用户词；下一次查询必须重新判断。
-    if log then
-      log.error("learned-priority commit text=" .. (ctx:get_commit_text() or ""))
+    local input = snow.current(ctx)
+    local segment = ctx.composition:toSegmentation():back()
+    local candidate = ctx:get_selected_candidate()
+    if input and input:len() >= env.minimum_input_length
+        and rime_api.regex_match(input, "^[a-z]+$")
+        and segment and segment:has_tag("abc") and candidate
+        and not candidate_priority.is_user_phrase(candidate) then
+      -- Component.Translator 被 Lua 包装后，普通 phrase 不一定能触发子翻译器的
+      -- Memory::OnCommit；显式补写 genuine Phrase，语义与原生 script_translator 一致。
+      env.memory:start_session()
+      env.memory:update_candidate(candidate, 1)
+      env.memory:finish_session()
     end
+    -- 本次提交可能刚写入一个新用户词；下一次查询必须重新判断。
     env.cache = {}
   end)
 end
@@ -56,6 +66,7 @@ end
 function filter.tags_match(segment, env)
   local input = snow.current(env.engine.context)
   return segment:has_tag("abc") and input ~= nil and input:len() >= env.minimum_input_length
+      and rime_api.regex_match(input, "^[a-z]+$")
 end
 
 ---@param translation Translation

@@ -32,27 +32,16 @@ function priority.is_learned_phrase(candidate, memory, cache)
   local cache_key = code .. "\t" .. candidate.text
   local cached = cache[cache_key]
   if cached ~= nil then
-    if candidate.text == "方案选单" and log then
-      log.error(("learned-priority cached text=%s code=%s learned=%s"):format(
-        candidate.text, code, tostring(cached)))
-    end
     return cached
   end
   local learned = false
-  local found = memory:user_lookup(code, false)
-  local entries = {}
-  if found then
+  if memory:user_lookup(code, false) then
     for entry in memory:iter_user() do
-      table.insert(entries, entry.text)
       if entry.text == candidate.text then
         learned = true
         break
       end
     end
-  end
-  if candidate.text == "方案选单" and log then
-    log.error(("learned-priority lookup text=%s code=%s found=%s entries=%s learned=%s"):format(
-      candidate.text, code, tostring(found), table.concat(entries, "|"), tostring(learned)))
   end
   cache[cache_key] = learned
   return learned
