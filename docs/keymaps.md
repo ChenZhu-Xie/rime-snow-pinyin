@@ -14,6 +14,8 @@
 
 桌面用户原则上不需要单独安装 helper。由当前发布工作流生成的 `snow-pinyin.zip` 会把 Windows x64、macOS x64 和 Linux x64 三个便携构建产物放在压缩包根目录下的 `lua/snow/bin/`；把压缩包内容合并覆盖到现有 Rime 用户目录后重新部署即可，不要额外套一层 `rime-snow-pinyin/` 目录，也不要删除整个用户目录，以免丢失私有配置和用户词典。Lua 读取 `rime_api.get_user_data_dir()` 后拼出 `<Rime 用户目录>/lua/snow/bin/snow-keymap-平台文件名` 的绝对路径，再按当前前端选择并启动对应文件；用户不需要安装 Rust 或配置 `PATH`。
 
+Windows 更新已有安装时，先在任务管理器结束 `snow-keymap-windows.exe`，再合并覆盖新版压缩包并重新部署。键位图隐藏后 helper 仍会常驻，重新部署只重载 Rime 方案与 Lua，不会替换或重启正在运行的 EXE；若跳过停进程这一步，Windows 可能保留旧 helper，表现为新版交互没有生效。覆盖完成后首次打开键位图会自动启动新版 helper。
+
 截至 `v0.3.13`，已经公开的 `snow-pinyin.zip` 仍早于 helper 注入流程，尚不含 `lua/snow/bin/`；上述免安装方式从按当前工作流重新构建或替换该附件后才成立。GitHub 的“Code → Download ZIP”源码包与普通 Git 克隆同样不含发布时注入的二进制文件，开发者使用源码时需要自行构建。
 
 手机端不会调用 Rust helper。通过链接导入本仓库只安装 Rime 方案文件；键位图页来自独立的移动皮肤资源。元书需要另外安装 Release 中 `snow-pinyin-skins-hamster.zip` 内的 `.cskin`，同文需要安装 `snow-pinyin-skins-trime.zip` 中的主题。移动端皮肤直接使用随包 PNG，不执行 `lua/snow/bin/` 下的任何桌面程序。
@@ -33,5 +35,7 @@ cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
 New-Item -ItemType Directory -Path lua/snow/bin -Force | Out-Null
 Copy-Item tools/keymap-helper/target/release/snow-keymap.exe lua/snow/bin/snow-keymap-windows.exe
 ```
+
+若 `snow-keymap-windows.exe` 已在运行，先结束该进程再执行 `Copy-Item`。重新部署不会替开发者执行构建、复制或进程重启。
 
 macOS 和 Linux 构建产物分别命名为 `snow-keymap-macos` 与 `snow-keymap-linux`。修改 helper 后运行 `cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml`；修改皮肤入口或资源后运行 `bun test --cwd scripts fixed-corpus/test/keymaps.test.ts` 并实际生成两种皮肤。
