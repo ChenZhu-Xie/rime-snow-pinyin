@@ -15,12 +15,18 @@ script: |
     end
     return ""
   end
+  function dump_candidates()
+    local result = { "preedit=" .. tostring(preedit) }
+    for index = 1, math.min(12, #cand) do
+      table.insert(result, index .. ":" .. cand[index].text .. " " .. cand[index].comment)
+    end
+    return table.concat(result, " | ")
+  end
 deploy:
   cross_route_user_phrase:
     tests:
-      # 四字词“方案选单”的经典声声声声码为 fxxd；前三字补全韵位并加 au 调辅，确保学习目标唯一。
-      - send: "fPxFxTdau fxxd"
-        assert: cand[1].text == "方案选单"
+      - send: fPxFxTdau
+        assert: error(dump_candidates())
   sentence:
     patch:
       'switches/@4/reset': 0
