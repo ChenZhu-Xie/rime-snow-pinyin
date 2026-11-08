@@ -26,15 +26,18 @@ end
 ---@param candidates Candidate[]
 ---@param memory Memory
 ---@param cache table<string, UserPhraseWeight>
+---@param expected_length integer
 ---@return Candidate[]
-function filter.prioritize(candidates, memory, cache)
+function filter.prioritize(candidates, memory, cache, expected_length)
   ---@type { candidate: Candidate, weight: number|nil }[]
   local learned = {}
   local ordinary = {}
   for _, candidate in ipairs(candidates) do
     if not is_fixed(candidate) then
       local weight = candidate_priority.user_phrase_weight(candidate, memory, cache)
-      if candidate_priority.is_user_phrase(candidate) or weight ~= nil then
+      local is_learned = candidate_priority.consumes_input(candidate, expected_length)
+          and (candidate_priority.is_user_phrase(candidate) or weight ~= nil)
+      if is_learned then
         local position = #learned + 1
         if weight then
           for index, existing in ipairs(learned) do
@@ -88,6 +91,7 @@ function filter.init(env)
         and input and input:len() >= env.minimum_input_length
         and rime_api.regex_match(input, "^[a-z]+$")
         and segment and segment:has_tag("abc") and candidate
+        and candidate_priority.consumes_input(candidate, input:len())
         and not candidate_priority.is_user_phrase(candidate) then
       -- Component.Translator 被 Lua 包装后，普通 phrase 不一定能触发子翻译器的
       -- Memory::OnCommit；显式补写 genuine Phrase，语义与原生 script_translator 一致。
@@ -113,6 +117,7 @@ end
 ---@param translation Translation
 ---@param env LearnedPriorityEnv
 function filter.func(translation, env)
+  local input = snow.current(env.engine.context) or ""
   local iterator = translation:iter()
   while true do
     local buffered = {}
@@ -122,7 +127,7 @@ function filter.func(translation, env)
       table.insert(buffered, candidate)
     end
     if #buffered == 0 then break end
-    for _, candidate in ipairs(filter.prioritize(buffered, env.memory, env.cache)) do
+    for _, candidate in ipairs(filter.prioritize(buffered, env.memory, env.cache, input:len())) do
       yield(candidate)
     end
     if #buffered < env.maximum_candidates then break end

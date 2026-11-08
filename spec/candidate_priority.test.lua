@@ -27,6 +27,11 @@ local partial_user = candidate("user_phrase", 1, 3)
 priority.promote_exact_user_phrase(partial_user, 4)
 assert(partial_user.quality == 1, "a partial user phrase must not receive the exact-code bonus")
 
+assert(priority.consumes_input(candidate("phrase", 1, 4), 4),
+  "a candidate consuming all four input positions must be exact")
+assert(not priority.consumes_input(candidate("phrase", 1, 2), 4),
+  "a candidate consuming only the first syllable must be partial")
+
 local function phrase_candidate(text, spellings)
   local phrase = {
     type = "phrase",

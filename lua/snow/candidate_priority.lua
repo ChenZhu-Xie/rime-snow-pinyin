@@ -58,10 +58,16 @@ end
 
 ---@param candidate Candidate
 ---@param expected_length integer
+---@return boolean
+function priority.consumes_input(candidate, expected_length)
+  return candidate._end - candidate._start == expected_length
+end
+
+---@param candidate Candidate
+---@param expected_length integer
 ---@return Candidate
 function priority.promote_exact_user_phrase(candidate, expected_length)
-  local consumed_length = candidate._end - candidate._start
-  if consumed_length == expected_length and priority.is_user_phrase(candidate) then
+  if priority.consumes_input(candidate, expected_length) and priority.is_user_phrase(candidate) then
     candidate.quality = (candidate.quality or 0) + user_phrase_bonus
   end
   return candidate
