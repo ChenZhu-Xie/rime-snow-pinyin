@@ -843,6 +843,7 @@ test("split translators preserve native user phrase priority across routes", () 
 	assert.match(learnedPriority, /candidate_priority\.is_learned_phrase/u);
 	assert.match(learnedPriority, /commit_notifier:connect/u);
 	assert.match(learnedPriority, /not ctx:get_option\("buffered"\)/u);
+	assert.match(learnedPriority, /not context:get_option\("buffered"\)/u);
 	assert.match(learnedPriority, /memory:update_candidate\(candidate, 1\)/u);
 	assert.match(learnedPriority, /regex_match\(input, "\^\[a-z\]\+\$"\)/u);
 	assert.match(learnedPriority, /env\.cache = \{\}/u);

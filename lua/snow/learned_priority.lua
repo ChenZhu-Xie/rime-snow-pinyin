@@ -65,8 +65,10 @@ end
 ---@param segment Segment
 ---@param env LearnedPriorityEnv
 function filter.tags_match(segment, env)
-  local input = snow.current(env.engine.context)
-  return segment:has_tag("abc") and input ~= nil and input:len() >= env.minimum_input_length
+  local context = env.engine.context
+  local input = snow.current(context)
+  return not context:get_option("buffered")
+      and segment:has_tag("abc") and input ~= nil and input:len() >= env.minimum_input_length
       and rime_api.regex_match(input, "^[a-z]+$")
 end
 
