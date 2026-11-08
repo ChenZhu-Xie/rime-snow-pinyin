@@ -31,6 +31,12 @@ function filter.prioritize(candidates, memory, cache)
   for _, candidate in ipairs(ordinary) do
     table.insert(learned, candidate)
   end
+  for index, candidate in ipairs(learned) do
+    if candidate.text == "方案选单" then
+      log.error(("learned-priority output index=%d type=%s"):format(index, candidate.type))
+      break
+    end
+  end
   return learned
 end
 
@@ -57,10 +63,12 @@ function filter.init(env)
       -- Component.Translator 被 Lua 包装后，普通 phrase 不一定能触发子翻译器的
       -- Memory::OnCommit；显式补写 genuine Phrase，语义与原生 script_translator 一致。
       local started = env.memory:start_session()
+      local phrase = candidate:get_genuine():to_phrase()
+      local spellings = phrase and env.memory:decode(phrase.entry.code) or {}
       local updated = env.memory:update_candidate(candidate, 1)
       local finished = env.memory:finish_session()
-      log.error(("learned-priority update started=%s updated=%s finished=%s"):format(
-        tostring(started), tostring(updated), tostring(finished)))
+      log.error(("learned-priority update code=%s started=%s updated=%s finished=%s"):format(
+        table.concat(spellings, " "), tostring(started), tostring(updated), tostring(finished)))
     end
     -- 本次提交可能刚写入一个新用户词；下一次查询必须重新判断。
     env.cache = {}
