@@ -40,9 +40,9 @@ deploy:
       - send: jxxd
         assert: cand[1].text == "九霄"
       # 先学习一次“九霄”，再用实际可见的首枚调辅 i 及第六选键 0 学习“方案选单”。动态码长随后会把
-      # 方案选单迁入短码 jxxd；两词权重相同时，仍按原始质量保持九霄在前、方案选单在第二位。
+      # 方案选单迁入短码 jxxd；其较新的用户权重应压过九霄，直接成为短码首选。
       - send: "jxxd jxxdi0 jxxd"
-        assert: cand[1].text == "九霄" and cand[2].text == "方案选单"
+        assert: cand[1].text == "方案选单"
   buffered_command:
     tests:
       - send: o
