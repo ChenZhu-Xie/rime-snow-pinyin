@@ -9,29 +9,45 @@ local filter = {}
 
 ---@class LearnedPriorityEnv: Env
 ---@field memory Memory
----@field cache table<string, boolean>
+---@field cache table<string, UserPhraseWeight>
 ---@field connection Connection
 ---@field maximum_candidates integer
 ---@field minimum_input_length integer
 
 ---@param candidates Candidate[]
 ---@param memory Memory
----@param cache table<string, boolean>
+---@param cache table<string, UserPhraseWeight>
 ---@return Candidate[]
 function filter.prioritize(candidates, memory, cache)
+  ---@type { candidate: Candidate, weight: number|nil }[]
   local learned = {}
   local ordinary = {}
   for _, candidate in ipairs(candidates) do
-    if candidate_priority.is_learned_phrase(candidate, memory, cache) then
-      table.insert(learned, candidate)
+    local weight = candidate_priority.user_phrase_weight(candidate, memory, cache)
+    if candidate_priority.is_user_phrase(candidate) or weight ~= nil then
+      local position = #learned + 1
+      if weight then
+        for index, existing in ipairs(learned) do
+          if existing.weight and weight > existing.weight then
+            position = index
+            break
+          end
+        end
+      end
+      table.insert(learned, position, { candidate = candidate, weight = weight })
     else
       table.insert(ordinary, candidate)
     end
   end
-  for _, candidate in ipairs(ordinary) do
-    table.insert(learned, candidate)
+  ---@type Candidate[]
+  local result = {}
+  for _, entry in ipairs(learned) do
+    table.insert(result, entry.candidate)
   end
-  return learned
+  for _, candidate in ipairs(ordinary) do
+    table.insert(result, candidate)
+  end
+  return result
 end
 
 ---@param env LearnedPriorityEnv

@@ -18,17 +18,22 @@ local function candidate(text, spellings)
   }
 end
 
+local current_code = ""
 local memory = {
   decode = function(_, code) return code end,
   user_lookup = function(_, code)
-    return code == "fang1 an4 xuan3 dan1"
+    current_code = code
+    return code == "fang1 an4 xuan3 dan1" or code == "jiu3 xiao1"
   end,
   iter_user = function()
     local yielded = false
     return function()
       if yielded then return nil end
       yielded = true
-      return { text = "方案选单" }
+      if current_code == "fang1 an4 xuan3 dan1" then
+        return { text = "方案选单", weight = 30.3558 }
+      end
+      return { text = "九霄", weight = 3.86859 }
     end
   end,
 }
@@ -39,7 +44,8 @@ local source = {
   candidate("方案选单", { "fang1", "an4", "xuan3", "dan1" }),
 }
 local result = learned_priority.prioritize(source, memory, {})
-assert(result[1].text == "方案选单")
+assert(result[1].text == "方案选单",
+  "the higher native user-dictionary weight must win when both phrases are learned")
 assert(result[2].text == "九霄" and result[3].text == "风萧萧",
   "ordinary candidates must retain their original relative order")
 

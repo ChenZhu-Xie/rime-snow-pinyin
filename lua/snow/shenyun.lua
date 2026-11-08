@@ -381,7 +381,7 @@ end
 function this.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
-  ---@type table<string, boolean>
+  ---@type table<string, UserPhraseWeight>
   local learned_cache = {}
   for _, route in ipairs(routes_for(input, segment, env)) do
     local translation = env.translator:query(route.proxy, segment)
