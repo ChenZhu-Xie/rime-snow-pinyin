@@ -28,18 +28,12 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump_candidates()
-    local result = { "preedit=" .. tostring(preedit) }
-    for index = 1, math.min(12, #cand) do
-      table.insert(result, index .. ":" .. cand[index].text .. " " .. cand[index].comment)
-    end
-    return table.concat(result, " | ")
-  end
 deploy:
   cross_route_user_phrase:
     tests:
-      - send: fNrJxRdau
-        assert: error(dump_candidates())
+      # 用前三字完整声韵、第四字声母唯一上屏“方案选单”，再退回 frxd 验证跨路径用户词优先。
+      - send: "fNrJxRd frxd"
+        assert: cand[1].text == "方案选单"
   sentence:
     patch:
       'switches/@4/reset': 0
