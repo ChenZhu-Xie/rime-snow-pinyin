@@ -18,8 +18,8 @@ script: |
 deploy:
   cross_route_user_phrase:
     tests:
-      # 四字词“方案选单”的经典声声声声码为 fxxd；au 是第二、三字调辅。
-      - send: "fxxdau fxxd"
+      # 四字词“方案选单”的经典声声声声码为 fxxd；前三字补全韵位并加 au 调辅，确保学习目标唯一。
+      - send: "fPxFxTdau fxxd"
         assert: cand[1].text == "方案选单"
   sentence:
     patch:
