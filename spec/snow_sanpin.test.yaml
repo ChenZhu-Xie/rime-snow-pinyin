@@ -29,6 +29,11 @@ script: |
     return left == right
   end
 deploy:
+  cross_route_user_phrase:
+    tests:
+      # 四字词“方案选单”的 U357 声声声声码为 frxd；au 是第二、三字调辅。
+      - send: "frxdau frxd"
+        assert: cand[1].text == "方案选单"
   sentence:
     patch:
       'switches/@4/reset': 0

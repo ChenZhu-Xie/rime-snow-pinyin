@@ -3,6 +3,7 @@
 
 local snow = require "snow.snow"
 local vacancy = require "snow.vacancy"
+local candidate_priority = require "snow.candidate_priority"
 
 ---@class TableLikeEnv: Env
 ---@field translator Translator
@@ -32,6 +33,8 @@ local function prepare(candidate, proxy, preserve_proxy_quality)
   end
   candidate = snow.prepare(candidate, proxy)
   candidate.quality = candidate.quality + proxy_bonus
+  local real_input_length = proxy:gsub("[ ?~]", ""):len()
+  candidate_priority.promote_exact_user_phrase(candidate, real_input_length)
   return candidate
 end
 
@@ -61,6 +64,26 @@ local function translate(proxy, segment, env, preserve_proxy_quality, accept, co
 end
 
 local t12 = {}
+
+local main = {}
+
+---@param env TableLikeEnv
+function main.init(env)
+  env.translator = Component.Translator(env.engine, "translator", "script_translator")
+end
+
+---@param input string
+---@param segment Segment
+---@param env TableLikeEnv
+function main.func(input, segment, env)
+  translate(input, segment, env, false)
+end
+
+---@param env TableLikeEnv
+function main.fini(env)
+  env.translator = nil
+  collectgarbage()
+end
 
 ---@param env TableLikeEnv
 function t12.init(env)
@@ -234,6 +257,7 @@ function initial_pair.fini(env)
 end
 
 return {
+  main = main,
   t12 = t12,
   jianpin = jianpin,
   initial_pair = initial_pair,

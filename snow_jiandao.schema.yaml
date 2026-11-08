@@ -57,7 +57,7 @@ engine:
   translators:
     - punct_translator
     - lua_translator@*snow.schema_menu*translator
-    - script_translator
+    - lua_translator@*snow.table_like*main
     # 简拼留在 abc 段内查询，避免第三个声母触发 recognizer/affix 重分段。
     - lua_translator@*snow.table_like*jianpin
     # 空置 AA 码仍在 abc 段上，由此补入真正的声声二字词候选；xh/xw 保留给 U/A 字母入口。

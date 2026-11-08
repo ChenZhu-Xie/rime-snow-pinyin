@@ -55,7 +55,7 @@ engine:
   translators:
     - punct_translator
     - lua_translator@*snow.schema_menu*translator
-    - script_translator
+    - lua_translator@*snow.table_like*main
     - lua_translator@*snow.table_like*jianpin
     - lua_translator@*snow.table_like*initial_pair
     - table_translator@stroke

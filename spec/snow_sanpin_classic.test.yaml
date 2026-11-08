@@ -16,6 +16,11 @@ script: |
     return ""
   end
 deploy:
+  cross_route_user_phrase:
+    tests:
+      # 四字词“方案选单”的经典声声声声码为 fxxd；au 是第二、三字调辅。
+      - send: "fxxdau fxxd"
+        assert: cand[1].text == "方案选单"
   sentence:
     patch:
       'switches/@4/reset': 0

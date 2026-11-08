@@ -11,6 +11,7 @@ local bihua = require "snow.bihua"
 local vacancy = require "snow.vacancy"
 local auxiliary_semantics = require "snow.auxiliary_semantics"
 local auxiliary_hint = require "snow.auxiliary_hint"
+local candidate_priority = require "snow.candidate_priority"
 
 local jiandao_semantics = auxiliary_semantics["21x21"]
 local shenyun_semantics = auxiliary_semantics["21x26"]
@@ -401,7 +402,7 @@ function this.func(input, segment, env)
     for index = 2, #streams do
       local candidate = streams[index].candidate
       local best = streams[best_index].candidate
-      if candidate and best and (candidate.quality or 0) > (best.quality or 0) then
+      if candidate and best and candidate_priority.better_across_routes(candidate, best) then
         best_index = index
       end
     end

@@ -34,6 +34,11 @@ script: |
     return count
   end
 deploy:
+  cross_route_user_phrase:
+    tests:
+      # “方案选单”与高频二字词共用 jxxd；完整调辅上屏后，用户词应跨词长路由升至首选。
+      - send: "jxxdiu jxxd"
+        assert: cand[1].text == "方案选单"
   buffered_command:
     tests:
       - send: o
