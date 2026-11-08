@@ -49,4 +49,16 @@ assert(result[1].text == "方案选单",
 assert(result[2].text == "九霄" and result[3].text == "风萧萧",
   "ordinary candidates must retain their original relative order")
 
+local fixed = candidate("固定候选", { "gu4", "ding4", "hou4", "xuan3" })
+fixed.comment = "📌"
+result = learned_priority.prioritize({
+  fixed,
+  candidate("九霄", { "jiu3", "xiao1" }),
+  candidate("方案选单", { "fang1", "an4", "xuan3", "dan1" }),
+}, memory, {})
+assert(result[1].text == "固定候选",
+  "learned ranking must not displace a fixed candidate")
+assert(result[2].text == "方案选单" and result[3].text == "九霄",
+  "learned weights must still rank the unfixed slots")
+
 print("learned_priority.test.lua: ok")

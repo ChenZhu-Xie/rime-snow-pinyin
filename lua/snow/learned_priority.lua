@@ -7,6 +7,15 @@ local candidate_priority = require "snow.candidate_priority"
 
 local filter = {}
 
+---@param candidate Candidate
+---@return boolean
+local function is_fixed(candidate)
+  local comment = candidate.comment or ""
+  return candidate.type == "fixed"
+      or comment:match("📌") ~= nil
+      or comment:match("📍") ~= nil
+end
+
 ---@class LearnedPriorityEnv: Env
 ---@field memory Memory
 ---@field cache table<string, UserPhraseWeight>
@@ -23,29 +32,42 @@ function filter.prioritize(candidates, memory, cache)
   local learned = {}
   local ordinary = {}
   for _, candidate in ipairs(candidates) do
-    local weight = candidate_priority.user_phrase_weight(candidate, memory, cache)
-    if candidate_priority.is_user_phrase(candidate) or weight ~= nil then
-      local position = #learned + 1
-      if weight then
-        for index, existing in ipairs(learned) do
-          if existing.weight and weight > existing.weight then
-            position = index
-            break
+    if not is_fixed(candidate) then
+      local weight = candidate_priority.user_phrase_weight(candidate, memory, cache)
+      if candidate_priority.is_user_phrase(candidate) or weight ~= nil then
+        local position = #learned + 1
+        if weight then
+          for index, existing in ipairs(learned) do
+            if existing.weight and weight > existing.weight then
+              position = index
+              break
+            end
           end
         end
+        table.insert(learned, position, { candidate = candidate, weight = weight })
+      else
+        table.insert(ordinary, candidate)
       end
-      table.insert(learned, position, { candidate = candidate, weight = weight })
-    else
-      table.insert(ordinary, candidate)
     end
   end
   ---@type Candidate[]
-  local result = {}
+  local ranked = {}
   for _, entry in ipairs(learned) do
-    table.insert(result, entry.candidate)
+    table.insert(ranked, entry.candidate)
   end
   for _, candidate in ipairs(ordinary) do
-    table.insert(result, candidate)
+    table.insert(ranked, candidate)
+  end
+  ---@type Candidate[]
+  local result = {}
+  local ranked_index = 1
+  for index, candidate in ipairs(candidates) do
+    if is_fixed(candidate) then
+      result[index] = candidate
+    else
+      result[index] = ranked[ranked_index]
+      ranked_index = ranked_index + 1
+    end
   end
   return result
 end

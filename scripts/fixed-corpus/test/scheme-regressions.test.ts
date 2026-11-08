@@ -841,6 +841,8 @@ test("split translators preserve native user phrase priority across routes", () 
 	assert.match(tableLike, /main = main/u);
 	const learnedPriority = read("lua/snow/learned_priority.lua");
 	assert.match(learnedPriority, /candidate_priority\.user_phrase_weight/u);
+	assert.match(learnedPriority, /candidate\.type == "fixed"/u);
+	assert.match(learnedPriority, /comment:match\("📌"\)/u);
 	assert.match(learnedPriority, /commit_notifier:connect/u);
 	assert.match(learnedPriority, /not ctx:get_option\("buffered"\)/u);
 	assert.match(learnedPriority, /not context:get_option\("buffered"\)/u);
@@ -858,6 +860,11 @@ test("split translators preserve native user phrase priority across routes", () 
 			`${schema} 的主翻译路径也必须在引擎合流前恢复用户词优先级`,
 		);
 		assert.match(source, /lua_filter@\*snow\.learned_priority/u);
+		assert.ok(
+			source.indexOf("lua_filter@*snow.postpone") <
+				source.indexOf("lua_filter@*snow.learned_priority"),
+			`${schema} 必须让用户学习权重覆盖软性后置规则`,
+		);
 	}
 	for (const schema of [
 		"snow_sanpin.schema.yaml",
@@ -865,6 +872,11 @@ test("split translators preserve native user phrase priority across routes", () 
 	]) {
 		const source = read(schema);
 		assert.match(source, /lua_filter@\*snow\.learned_priority/u);
+		assert.ok(
+			source.indexOf("lua_filter@*snow.postpone") <
+				source.indexOf("lua_filter@*snow.learned_priority"),
+			`${schema} 必须让用户学习权重覆盖软性后置规则`,
+		);
 		assert.match(source, /lua_translator@\*snow\.table_like\*t12/u);
 		assert.match(source, /lua_translator@\*snow\.table_like\*jianpin/u);
 	}

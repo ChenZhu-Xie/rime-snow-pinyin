@@ -552,12 +552,15 @@ test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
 	assert.match(lua, /route\.length == 1 and \{ 1 \} or auxiliary_positions/u);
 });
 
-test("21×26 四码桶按原始质量柔性补齐词长，且在固顶与后置之前运行", () => {
+test("21×26 四码桶先柔性补齐词长，学习权重在后置之后最终生效", () => {
 	const common = read("snow_shenyun_common.yaml");
 	const balance = common.indexOf("lua_filter@*snow.length_balance");
 	const fixed = common.indexOf("lua_filter@*snow.fix");
 	const postpone = common.indexOf("lua_filter@*snow.postpone");
-	assert.ok(balance >= 0 && balance < fixed && fixed < postpone);
+	const learned = common.indexOf("lua_filter@*snow.learned_priority");
+	assert.ok(
+		balance >= 0 && balance < fixed && fixed < postpone && postpone < learned,
+	);
 	const lua = read("lua/snow/length_balance.lua");
 	assert.match(lua, /if length == 2 then return 1 end/u);
 	assert.match(lua, /if length == 3 then return 2 end/u);
