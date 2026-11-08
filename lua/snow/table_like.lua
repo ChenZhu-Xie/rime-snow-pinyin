@@ -53,7 +53,7 @@ local function translate(proxy, segment, env, preserve_proxy_quality, accept, co
   for candidate in translation:iter() do
     -- 原生 script_translator 按消耗长度降序输出；简拼只查完整编码，
     -- 遇到短片段即可结束，避免把大量前缀候选取到 Lua 再逐个丢弃。
-    if complete_only and not candidate_priority.consumes_input(candidate, proxy:len()) then
+    if complete_only and candidate._end - candidate._start < proxy:len() then
       return
     end
     candidate = prepare(candidate, proxy, preserve_proxy_quality)
@@ -76,9 +76,7 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function main.func(input, segment, env)
-  local context = env.engine.context
-  local complete_only = context:get_option("popping") and not context:get_option("buffered")
-  translate(input, segment, env, false, nil, complete_only)
+  translate(input, segment, env, false)
 end
 
 ---@param env TableLikeEnv
@@ -106,7 +104,6 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function t12.func(input, segment, env)
-  local buffered = env.engine.context:get_option("buffered")
   -- 六码二字词选完首字后，原始输入剩下「声₂韵₂调₁调₂」。调₁已记在首字读音里，
   -- 查第二字时跳过它并使用「声₂韵₂调₂」；原始输入不变，退格仍可撤销首字选择。
   local previous = env.engine.context.composition:toSegmentation():get_at(-2)
@@ -143,15 +140,13 @@ function t12.func(input, segment, env)
     end
     translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
       local length = utf8.len(candidate.text)
-      if length == 1 and buffered
-          and input:len() == 6 and candidate._end == segment.start + 3 then
+      if length == 1 and input:len() == 6 and candidate._end == segment.start + 3 then
         -- 首字只消耗连续的声韵两码，其声调仍留在原始输入的末尾。
         candidate._end = segment.start + 2
         candidate.type = "sanpin_partial"
         candidate.preedit = input:sub(1, 2) .. " "
       end
-      return buffered and length <= 2
-          or length == 2 and candidate_priority.consumes_input(candidate, input:len())
+      return length <= 2
     end)
   end
 end

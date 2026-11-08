@@ -13,12 +13,6 @@ script: |
   function page(something)
     return rank(something) <= 6
   end
-  function no_single()
-    for _, v in ipairs(cand) do
-      if utf8.len(v.text) == 1 then return false end
-    end
-    return true
-  end
   function pinned(index)
     return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
@@ -49,9 +43,6 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
-      # 四码联合桶只含完整二字词和四字及以上简拼候选，不收第一个音节的单字。
-      - send: btxk
-        assert: has("冰雪") and no_single()
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
       - send: r
         assert: page("人") and has("日")
