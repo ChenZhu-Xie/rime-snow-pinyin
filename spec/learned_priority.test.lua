@@ -21,21 +21,26 @@ end
 local current_code = ""
 local memory = {
   decode = function(_, code) return code end,
-  user_lookup = function(_, code)
-    current_code = code
-    return code == "fang1 an4 xuan3 dan1" or code == "jiu3 xiao1"
-  end,
-  iter_user = function()
-    local yielded = false
-    return function()
-      if yielded then return nil end
-      yielded = true
+  user_dict = {
+    lookup_words = function(_, code)
+      current_code = code
+      local entries = {}
       if current_code == "fang1 an4 xuan3 dan1" then
-        return { text = "方案选单", weight = 30.3558 }
+        entries = { { text = "方案选单", weight = -1 } }
+      elseif current_code == "jiu3 xiao1" then
+        entries = { { text = "九霄", weight = -5 } }
       end
-      return { text = "九霄", weight = 3.86859 }
-    end
-  end,
+      return {
+        iter = function()
+          local index = 0
+          return function()
+            index = index + 1
+            return entries[index]
+          end
+        end,
+      }
+    end,
+  },
 }
 
 local source = {

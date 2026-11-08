@@ -45,18 +45,22 @@ end
 local lookup_count = 0
 local learned_memory = {
   decode = function(_, code) return code end,
-  user_lookup = function(_, code, predictive)
-    lookup_count = lookup_count + 1
-    return code == "fang1 an4 xuan3 dan1" and not predictive
-  end,
-  iter_user = function()
-    local entries = { { text = "方案选单" } }
-    local index = 0
-    return function()
-      index = index + 1
-      return entries[index]
-    end
-  end,
+  user_dict = {
+    lookup_words = function(_, code, predictive, limit)
+      lookup_count = lookup_count + 1
+      local entries = code == "fang1 an4 xuan3 dan1" and not predictive and limit == 0
+          and { { text = "方案选单", weight = -1 } } or {}
+      return {
+        iter = function()
+          local index = 0
+          return function()
+            index = index + 1
+            return entries[index]
+          end
+        end,
+      }
+    end,
+  },
 }
 local learned_cache = {}
 local hidden_user = phrase_candidate("方案选单", { "fang1", "an4", "xuan3", "dan1" })
@@ -77,20 +81,23 @@ assert(not priority.better_across_routes(ordinary, hidden_user, learned_memory, 
 local current_code = ""
 local weighted_memory = {
   decode = function(_, code) return code end,
-  user_lookup = function(_, code)
-    current_code = code
-    return true
-  end,
-  iter_user = function()
-    local entries = current_code == "fang1 an4 xuan3 dan1"
-        and { { text = "方案选单", weight = 30.3558 } }
-        or { { text = "九霄", weight = 3.86859 } }
-    local index = 0
-    return function()
-      index = index + 1
-      return entries[index]
-    end
-  end,
+  user_dict = {
+    lookup_words = function(_, code)
+      current_code = code
+      local entries = current_code == "fang1 an4 xuan3 dan1"
+          and { { text = "方案选单", weight = -1 } }
+          or { { text = "九霄", weight = -5 } }
+      return {
+        iter = function()
+          local index = 0
+          return function()
+            index = index + 1
+            return entries[index]
+          end
+        end,
+      }
+    end,
+  },
 }
 assert(priority.better_across_routes(hidden_user, ordinary, weighted_memory, {}),
   "the more strongly learned phrase must win when both routes contain user phrases")

@@ -35,11 +35,12 @@ function priority.user_phrase_weight(candidate, memory, cache)
   end
   ---@type number|nil
   local weight
-  if memory:user_lookup(code, false) then
-    for entry in memory:iter_user() do
-      if entry.text == candidate.text then
-        weight = math.max(weight or 0, entry.weight or 0)
-      end
+  -- Memory:user_lookup 接收方案棱镜输入；这里的 code 已由 DictEntry 解码为用户库的规范音节键，
+  -- 必须绕过棱镜直接查 UserDictionary，否则 jxxd 一类缩写候选永远读不到真实用户权重。
+  local entries = memory.user_dict:lookup_words(code, false, 0)
+  for entry in entries:iter() do
+    if entry.text == candidate.text then
+      weight = math.max(weight or entry.weight, entry.weight)
     end
   end
   cache[cache_key] = weight or false

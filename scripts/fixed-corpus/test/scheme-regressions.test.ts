@@ -826,7 +826,7 @@ test("U357 three-character words allow a third auxiliary but four-character word
 test("split translators preserve native user phrase priority across routes", () => {
 	const priority = read("lua/snow/candidate_priority.lua");
 	assert.match(priority, /genuine\.type == "user_phrase"/u);
-	assert.match(priority, /memory:user_lookup\(code, false\)/u);
+	assert.match(priority, /memory\.user_dict:lookup_words\(code, false, 0\)/u);
 	assert.match(priority, /entry\.text == candidate\.text/u);
 	assert.match(priority, /consumed_length == expected_length/u);
 	assert.match(priority, /user_phrase_bonus/u);
