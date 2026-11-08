@@ -830,7 +830,7 @@ test("split translators preserve native user phrase priority across routes", () 
 	assert.match(priority, /entry\.text == candidate\.text/u);
 	assert.match(priority, /consumed_length == expected_length/u);
 	assert.match(priority, /user_phrase_bonus/u);
-	assert.match(priority, /candidate_is_user_phrase ~= current_is_user_phrase/u);
+	assert.match(priority, /candidate_is_learned ~= current_is_learned/u);
 
 	const tableLike = read("lua/snow/table_like.lua");
 	assert.match(tableLike, /require "snow\.candidate_priority"/u);
@@ -873,7 +873,7 @@ test("split translators preserve native user phrase priority across routes", () 
 	assert.match(shenyun, /require "snow\.candidate_priority"/u);
 	assert.match(
 		shenyun,
-		/candidate_priority\.better_across_routes\(candidate, best\)/u,
+		/candidate_priority\.better_across_routes\([\s\S]*candidate, best, env\.memory, learned_cache\)/u,
 	);
 });
 

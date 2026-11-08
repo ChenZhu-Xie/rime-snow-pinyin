@@ -381,6 +381,8 @@ end
 function this.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
+  ---@type table<string, boolean>
+  local learned_cache = {}
   for _, route in ipairs(routes_for(input, segment, env)) do
     local translation = env.translator:query(route.proxy, segment)
     if translation then
@@ -402,7 +404,9 @@ function this.func(input, segment, env)
     for index = 2, #streams do
       local candidate = streams[index].candidate
       local best = streams[best_index].candidate
-      if candidate and best and candidate_priority.better_across_routes(candidate, best) then
+      if candidate and best
+          and candidate_priority.better_across_routes(
+            candidate, best, env.memory, learned_cache) then
         best_index = index
       end
     end

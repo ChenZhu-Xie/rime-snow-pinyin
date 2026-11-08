@@ -9,8 +9,8 @@
 | 指标 | 神韵 R9（21×21） | [原键道 S005（21×21）](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04（26×26）](https://sspai.com/post/108949) | 何为好 |
 | --- | --- | --- | --- | --- |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark) 记忆项 | 40 | 44 | 51 | 越低越好 |
-| 普通声母偏移 D | 0 | 0 | 0 | 越低规则越接近原键 |
-| a/e/i/o/u 韵键偏移 V | 5 | 4 | 0 | 越低越接近字母原键 |
+| 声母乱序度 D | 0 | 0 | 0 | 越低规则越接近原键 |
+| 韵母乱序度 V | 5 | 4 | 0 | 越低越接近字母原键 |
 | [共同 399](https://wwwhomes.uni-bielefeld.de/gibbon/Syllables/Mandarin) 覆盖 | 399/399 | 399/399 | 399/399 | 必须完整覆盖 |
 | 不同二键码 | 373 | 372 | 399 | 越高重码越少 |
 | 裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)（ms/项） | 70.1891 | 82.0288 | 79.8901 | 越低越好 |
@@ -20,12 +20,16 @@
 | [系综当量 v4-C](https://github.com/more-14-different/shuangpin-layout-benchmark) | 10.7422 | 10.8058 | 10.5833 | 越低越好；公开例外键表敏感性 |
 | [系综当量 v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark) | 9.4958 | 10 | 9.5896 | 越低越好；排除 S2 |
 | [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark) | 75.0177 | 78.8976 | 83.1074 | 越高规则一致性越强 |
-| S2 同指连击率 | 3.35% | 11.64% | 11.34% | 越低越好 |
+| S2 异键同指率 | 3.35% | 11.64% | 11.34% | 越低越好 |
 | S2 同键率 | 2.87% | 5.06% | 4.56% | 越低越好 |
 | S2 左右手交替率 | 56.22% | 53.84% | 56.33% | 越高通常越利于交替；非独立速度结论 |
 | S2 主键区占比 | 51.93% | 49.00% | 36.60% | 越高越集中于主键区 |
 | 日常纯汉字 [MX34](https://macroxue.github.io/shuangpin/eval.html) 得分 | 140.6807 | 134.609 | 138.6378 | 同文稿越高越好；不含消歧 |
 | 默认说明兼容标点 [MX34](https://macroxue.github.io/shuangpin/eval.html) 得分 | 145.918 | 153.6883 | 156.1501 | 同文稿越高越好；敏感性对照 |
+
+“声母／韵母乱序度 D/V”沿用 benchmark 的移位口径：D 统计普通声母未落在同名字母键上的数量；V 统计基础韵母 `a/e/i/o/u` 未落在 `A/E/I/O/U` 原键上的数量。两项均越低越接近字母原键，与按实际二键码统计的飞键不同。
+
+“S2 异键同指率”统计 S2 相邻键对中“两键不同、但由同一物理手指负责”的码内与边界频率权重，再除以全部键对权重；同键重复另计，不包含在此项中。
 
 ## 补充负载与键区指标
 
@@ -85,7 +89,7 @@
 
 ## 结论
 
-- 对同键域 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，神韵 R9 的核心优势集中在裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、同指连击、主键区覆盖和 [MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对同键域 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)，神韵 R9 的核心优势集中在裸 S2 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、异键同指率、主键区覆盖和 [MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
 - 对 26×26 的 [B04 首道](https://sspai.com/post/108949)，神韵 R9 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 [B04](https://sspai.com/post/108949) 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
 - 补充指标把“快”拆成了不同边界：冻结合同 [CKT](https://github.com/zhanghaozhecn/conditional-keystroke-timing)、v4/v5/v6、20 合同峰值、[MX34](https://macroxue.github.io/shuangpin/eval.html) 文稿移动手回放与选重敏感性必须分开读。神韵 R9 是综合折中前沿，不是每一列都最优。
 - 日常八场景 [MX34](https://macroxue.github.io/shuangpin/eval.html) 曾参与来源报告的搜索目标；原站默认说明轨道是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。

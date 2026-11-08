@@ -55,10 +55,37 @@ const benchmark = JSON.parse(
 
 const overallId = "SNOW-SHENYUN-21X26-PRODUCTION";
 const overallKey = "Overall17";
+const benchmarkIds = {
+	Overall17: overallId,
+	U357: "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13",
+	S005: "S005",
+	B04: "B04",
+} as const;
 const entry = benchmark.entries.find(
 	({ id }: { id: string }) => id === overallId,
 );
 if (!entry) throw new Error(`Benchmark HTML 中缺少 ${overallId}。`);
+const displacement = (id: string) => {
+	const scheme = benchmark.entries.find(
+		({ id: entryId }: { id: string }) => entryId === id,
+	);
+	if (!scheme) throw new Error(`Benchmark HTML 中缺少 ${id}。`);
+	const initials =
+		scheme.mappingAudit?.ordinaryInitialDisplacements ??
+		scheme.memoryAuditR2?.ordinaryDisplacedCount;
+	const explicitFinals = scheme.mappingAudit?.baseFinalDisplacements;
+	const finalLinks = scheme.memoryAuditR2?.finalLinkKeys ?? {};
+	const finals =
+		explicitFinals ??
+		[..."aeiou"].filter(
+			(final) =>
+				finalLinks[final]?.length !== 1 ||
+				finalLinks[final][0] !== final.toUpperCase(),
+		).length;
+	if (!Number.isInteger(initials) || !Number.isInteger(finals))
+		throw new Error(`Benchmark HTML 中 ${id} 的 D/V 不完整。`);
+	return [initials, finals] as [number, number];
+};
 const completion = benchmark.completionBV4.schemes[overallId];
 const s005 = benchmark.completionBV4.schemes.S005;
 if (!completion || !s005)
@@ -183,6 +210,21 @@ setMetric("homeShareS2", load.homeS2);
 setMetric("indexFingerTYBPeak20Contracts", indexFingerPeak.value);
 setMetric("homeFloor20Contracts", load.homeFloor);
 setMetric("dailyEightScenarioMovingHand", macro.score);
+data.metrics.soundRhymeDisorder = {
+	better: "lower",
+	...Object.fromEntries(
+		Object.entries(benchmarkIds).map(([key, id]) => [key, displacement(id)]),
+	),
+};
+data.metrics.s2DifferentKeySameFingerRate = {
+	better: "lower",
+	...Object.fromEntries(
+		Object.entries(benchmarkIds).map(([key, id]) => [
+			key,
+			benchmark.ckt.tracks[id].S2.sfb,
+		]),
+	),
+};
 
 data.version = "shenyun-four-scheme-comparison-v2";
 data.metrics.cktV5 = {
@@ -365,6 +407,13 @@ const metricTable = table(
 	["指标", ...schemes.map((scheme) => labels[scheme]), "何为好"],
 	[
 		["M-R2 记忆项", "M-R2", "number", "越低越好", "min"],
+		[
+			"声母／韵母乱序度 D/V",
+			"soundRhymeDisorder",
+			"pair",
+			"越低越接近字母原键",
+			"sum",
+		],
 		["FA-1 逻辑审计", "logicAuditFA1", "number", "越高越一致", "max"],
 		[
 			"LU-v1r 逻辑均匀度",
@@ -392,6 +441,13 @@ const metricTable = table(
 			"S2 补全中心时间（ms）",
 			"s2CompletionCenterMs",
 			"three",
+			"越低越好",
+			"min",
+		],
+		[
+			"S2 异键同指率",
+			"s2DifferentKeySameFingerRate",
+			"percent",
 			"越低越好",
 			"min",
 		],
@@ -472,6 +528,7 @@ const metricTable = table(
 	].map(([title, name, format, good, direction]) => {
 		const rawValues = schemes.map((scheme) => metricValue(name, scheme));
 		const displays = rawValues.map((value) => {
+			if (format === "pair") return value.join(" / ");
 			if (format === "percent") return percent(value);
 			if (format === "integer") return String(value);
 			if (format === "three") return number(value, 3);
@@ -625,6 +682,10 @@ const report = `# 神韵两代布局与 S005、B04 四方案比较
 ## 总览
 
 ${metricTable}
+
+“声母／韵母乱序度 D/V”沿用 benchmark 的移位口径：D 统计普通声母未落在同名字母键上的数量；V 统计基础韵母 \`a/e/i/o/u\` 未落在 \`A/E/I/O/U\` 原键上的数量。两项分别列出，均越低越接近字母原键，表中按 D+V 合计排名；它与按实际二键码统计的飞键不是同一指标。
+
+“S2 异键同指率”统计 S2 相邻键对中“两键不同、但由同一物理手指负责”的码内与边界频率权重，再除以全部键对权重；同键重复另计，不包含在此项中。
 
 CKT v5 使用 6 项候选页；神韵(Overall-17)的冰雪简道／冰雪散拼辅序为 \`12/21/42\`、\`12/21/13\`，无飞键道(U357)的冰雪健道／冰雪弎拼辅序为 \`12/23/24\`、\`12/21/23\`，S005 固定为 \`12/21/24\`、\`12/21/23\`。首道 B04 按原生 \`AEUIO\` 形辅、\`IEUAO\` 调辅与五项认知系数 0%～500% 独立扰动网格，对 144 套完整规则按平均名次取稳健综合第一，形辅／调辅分别为 \`12/12/23\`、\`21/12/23\`。每段两位数字表示 CKT v5 优化并计分的前两辅；运行时冰雪健道、冰雪弎拼的三字词会按剩余字位补第三辅，四字词最多两辅。CKT v5 在第二辅后直接按选重计费，因此不含三字词第三辅的成本与消歧收益。
 

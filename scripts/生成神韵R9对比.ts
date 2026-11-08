@@ -125,12 +125,12 @@ const overview = metricTable([
 		"越低越好",
 	],
 	[
-		"普通声母偏移 D",
+		"声母乱序度 D",
 		(id) => r2(id)?.ordinaryDisplacedCount,
 		"number",
 		"越低规则越接近原键",
 	],
-	["a/e/i/o/u 韵键偏移 V", vowelDisplacement, "number", "越低越接近字母原键"],
+	["韵母乱序度 V", vowelDisplacement, "number", "越低越接近字母原键"],
 	[
 		`${markdownLink("共同 399", common399Url)} 覆盖`,
 		(id) => `${eligibility(id).commonCovered}/399`,
@@ -180,7 +180,7 @@ const overview = metricTable([
 		"number",
 		"越高规则一致性越强",
 	],
-	["S2 同指连击率", (id) => s2(id).sfb, "percent", "越低越好"],
+	["S2 异键同指率", (id) => s2(id).sfb, "percent", "越低越好"],
 	["S2 同键率", (id) => s2(id).repeat, "percent", "越低越好"],
 	[
 		"S2 左右手交替率",
@@ -596,6 +596,10 @@ const report = `# 神韵 R9：公平对比
 
 ${overview}
 
+“声母／韵母乱序度 D/V”沿用 benchmark 的移位口径：D 统计普通声母未落在同名字母键上的数量；V 统计基础韵母 \`a/e/i/o/u\` 未落在 \`A/E/I/O/U\` 原键上的数量。两项均越低越接近字母原键，与按实际二键码统计的飞键不同。
+
+“S2 异键同指率”统计 S2 相邻键对中“两键不同、但由同一物理手指负责”的码内与边界频率权重，再除以全部键对权重；同键重复另计，不包含在此项中。
+
 ## 补充负载与键区指标
 
 ${loadTable}
@@ -610,7 +614,7 @@ ${v6Table}
 
 ## 结论
 
-- 对同键域 ${markdownLink("S005", s005Url)}，神韵 R9 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、同指连击、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
+- 对同键域 ${markdownLink("S005", s005Url)}，神韵 R9 的核心优势集中在裸 S2 ${markdownLink("CKT", cktUrl)}、异键同指率、主键区覆盖和 ${markdownLink("MX34", mx34Url)} 文稿路径；代价是 26 个加权非首选音节、规则补全额外键、部分含形辅合同的峰值负载，以及规则一致性并非每项占优。
 - 对 26×26 的 ${markdownLink("B04 首道", shoudaoUrl)}，神韵 R9 不能宣称全指标支配。它用更小的 21×21 键域换取较好的若干裸码路径指标，但 ${markdownLink("B04", shoudaoUrl)} 在 399 唯一码、零 S2 消歧、部分小指/行区负载及若干综合分上有明确优势。
 - 补充指标把“快”拆成了不同边界：冻结合同 ${markdownLink("CKT", cktUrl)}、v4/v5/v6、20 合同峰值、${markdownLink("MX34", mx34Url)} 文稿移动手回放与选重敏感性必须分开读。神韵 R9 是综合折中前沿，不是每一列都最优。
 - 日常八场景 ${markdownLink("MX34", mx34Url)} 曾参与来源报告的搜索目标；原站默认说明轨道是未用于该轮目标的敏感性对照。两者都仍是模型值而非真人测速。

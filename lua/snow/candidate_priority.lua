@@ -60,12 +60,21 @@ end
 
 ---@param candidate Candidate
 ---@param current Candidate
+---@param memory Memory|nil
+---@param cache table<string, boolean>|nil
 ---@return boolean
-function priority.better_across_routes(candidate, current)
-  local candidate_is_user_phrase = priority.is_user_phrase(candidate)
-  local current_is_user_phrase = priority.is_user_phrase(current)
-  if candidate_is_user_phrase ~= current_is_user_phrase then
-    return candidate_is_user_phrase
+function priority.better_across_routes(candidate, current, memory, cache)
+  local candidate_is_learned
+  local current_is_learned
+  if memory and cache then
+    candidate_is_learned = priority.is_learned_phrase(candidate, memory, cache)
+    current_is_learned = priority.is_learned_phrase(current, memory, cache)
+  else
+    candidate_is_learned = priority.is_user_phrase(candidate)
+    current_is_learned = priority.is_user_phrase(current)
+  end
+  if candidate_is_learned ~= current_is_learned then
+    return candidate_is_learned
   end
   return (candidate.quality or 0) > (current.quality or 0)
 end

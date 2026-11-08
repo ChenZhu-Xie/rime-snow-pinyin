@@ -2,6 +2,7 @@ export type ComparisonDirection =
 	| "min"
 	| "max"
 	| "closest-to-half"
+	| "sum"
 	| "triple-sum";
 
 export interface ComparisonValue {
@@ -78,6 +79,7 @@ const parseTableValue = (display: string, direction: ComparisonDirection) => {
 		Number(match[0]),
 	);
 	if (numbers.length === 0) throw new Error(`表格单元格没有数字：${display}`);
+	if (direction === "sum") return numbers;
 	if (direction === "triple-sum") return numbers.slice(0, 3);
 	if (direction === "closest-to-half") {
 		const value = numbers.at(-1) ?? Number.NaN;

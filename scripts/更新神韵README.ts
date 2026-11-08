@@ -314,6 +314,7 @@ const zhtU357EnglishNumbers = `#### 英數入口
 
 const overallValues = [
 	"36",
+	"1 / 1",
 	"0 / 0 / 0",
 	"98.298315",
 	"81.043390",
@@ -323,6 +324,7 @@ const overallValues = [
 	"0%",
 	"2.0000",
 	"75.672",
+	"9.252%",
 	"9.630039",
 	"9.185254",
 	"9.195026",
@@ -720,6 +722,7 @@ The map is recomputed directly from the ten-scheme optimal-path replays over ele
 
 const readmeDirections = [
 	"min", // M-R2
+	"sum", // 声母／韵母乱序度 D/V
 	"triple-sum", // 飞键成分
 	"max", // FA-1
 	"max", // LU-v1r
@@ -729,6 +732,7 @@ const readmeDirections = [
 	"min", // S2 miss
 	"min", // S2 平均码长
 	"min", // S2 中心时间
+	"min", // S2 异键同指率
 	"min", // CKT v3
 	"min", // CKT v4
 	"min", // CKT v5
@@ -848,8 +852,76 @@ function ensureCktV51Documentation(markdown: string) {
 	return markdown;
 }
 
+function ensureSfbDocumentation(markdown: string) {
+	const definitionRows = [
+		"[^zh-dv]: 声母／韵母乱序度 D/V 沿用 benchmark 的移位口径：D 是未落在同名字母键上的普通声母数；V 是未落在 `A/E/I/O/U` 原键上的基础韵母 `a/e/i/o/u` 数。两项均越低越接近字母原键，表中按 D+V 合计排名；它与按实际二键码统计的飞键不同。",
+		"[^en-dv]: The initial/final disorder D/V follows the benchmark's displacement definition: D counts ordinary initials not placed on their same-letter keys; V counts base finals `a/e/i/o/u` not placed on `A/E/I/O/U`. Lower values stay closer to the alphabetic home keys, and the table ranks by D+V; this differs from fly-key branching over actual two-key codes.",
+		"[^zht-dv]: 聲母／韻母亂序度 D/V 沿用 benchmark 的移位口徑：D 是未落在同名字母鍵上的普通聲母數；V 是未落在 `A/E/I/O/U` 原鍵上的基礎韻母 `a/e/i/o/u` 數。兩項均越低越接近字母原鍵，表中按 D+V 合計排名；它與按實際二鍵碼統計的飛鍵不同。",
+		"[^zh-sfb]: S2 异键同指率按相邻键对的频率权重统计：两键不同、但由同一物理手指负责的码内与边界键对权重，除以全部键对权重；同键重复不计入此项。",
+		"[^en-sfb]: The S2 different-key same-finger rate is the frequency-weighted share of within-code and boundary key pairs that use different keys assigned to the same physical finger, divided by all key-pair mass; exact-key repeats are excluded.",
+		"[^zht-sfb]: S2 異鍵同指率按相鄰鍵對的頻率權重統計：兩鍵不同、但由同一物理手指負責的碼內與邊界鍵對權重，除以全部鍵對權重；同鍵重複不計入此項。",
+	];
+	for (const definition of definitionRows) {
+		const marker = definition.slice(0, definition.indexOf(":") + 1);
+		if (!markdown.includes(marker)) {
+			const language = marker.slice(2, marker.indexOf("-"));
+			const anchor = new RegExp(`^(\\[\\^${language}-s2\\]:.*)$`, "mu");
+			markdown = markdown.replace(anchor, `$1\n${definition}`);
+		} else {
+			markdown = markdown
+				.split("\n")
+				.map((line) => (line.startsWith(marker) ? definition : line))
+				.join("\n");
+		}
+	}
+	for (const [marker, prior, row] of [
+		[
+			"| 声母／韵母乱序度 D/V",
+			/^(\| \[M-R2\].*\[\^zh-mr2\].*)$/mu,
+			"| 声母／韵母乱序度 D/V[^zh-dv] | 1 / 1 | 0 / 5 | 0 / 4 | 0 / 0 | 越低越接近字母原键 |",
+		],
+		[
+			"| Initial/final disorder D/V",
+			/^(\| \[M-R2\].*\[\^en-mr2\].*)$/mu,
+			"| Initial/final disorder D/V[^en-dv] | 1 / 1 | 0 / 5 | 0 / 4 | 0 / 0 | Lower; closer to alphabetic home keys |",
+		],
+		[
+			"| 聲母／韻母亂序度 D/V",
+			/^(\| \[M-R2\].*\[\^zht-mr2\].*)$/mu,
+			"| 聲母／韻母亂序度 D/V[^zht-dv] | 1 / 1 | 0 / 5 | 0 / 4 | 0 / 0 | 越低越接近字母原鍵 |",
+		],
+		[
+			"| S2 异键同指率",
+			/^(\| S2 补全中心时间.*)$/mu,
+			"| S2 异键同指率[^zh-sfb] | 9.252% | 4.255% | 11.638% | 11.343% | 越低越好 |",
+		],
+		[
+			"| S2 different-key same-finger rate",
+			/^(\| S2-completion center time.*)$/mu,
+			"| S2 different-key same-finger rate[^en-sfb] | 9.252% | 4.255% | 11.638% | 11.343% | Lower |",
+		],
+		[
+			"| S2 異鍵同指率",
+			/^(\| S2 補全中心時間.*)$/mu,
+			"| S2 異鍵同指率[^zht-sfb] | 9.252% | 4.255% | 11.638% | 11.343% | 越低越好 |",
+		],
+	] as const) {
+		if (!markdown.includes(marker)) {
+			markdown = markdown.replace(prior, `$1\n${row}`);
+		} else {
+			markdown = markdown
+				.split("\n")
+				.map((line) => (line.startsWith(marker) ? row : line))
+				.join("\n");
+		}
+	}
+	return markdown;
+}
+
 function finalizeReadme(markdown: string, host: "github" | "gitee") {
-	let output = decorateReadmeTables(ensureCktV51Documentation(markdown));
+	let output = decorateReadmeTables(
+		ensureSfbDocumentation(ensureCktV51Documentation(markdown)),
+	);
 	output = addComparisonLegends(output);
 	const overallSource =
 		host === "gitee"

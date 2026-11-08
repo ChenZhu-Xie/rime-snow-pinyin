@@ -37,10 +37,22 @@ describe("神韵文档比较装饰", () => {
 		);
 	});
 
-	test("支持高优、接近 50% 与飞键三元组总数", () => {
+	test("支持高优、接近 50%、多元组总数与飞键三元组总数", () => {
 		assert.deepEqual(
 			decorateComparison(values(["8", 8], ["7", 7], ["6", 6], ["9", 9]), "max"),
 			["**8** ★★", "**7** ★", "6", "9 🥇"],
+		);
+		assert.deepEqual(
+			decorateComparison(
+				values(
+					["1 / 1", [1, 1]],
+					["0 / 5", [0, 5]],
+					["0 / 4", [0, 4]],
+					["0 / 0", [0, 0]],
+				),
+				"sum",
+			),
+			["**1 / 1** ★★", "0 / 5", "**0 / 4** ★", "0 / 0 🥇"],
 		);
 		assert.deepEqual(
 			decorateComparison(
@@ -139,6 +151,16 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 		report,
 		"| 频率加权 S2 miss | **0.000%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |",
 	);
+	includes(
+		report,
+		"| 声母／韵母乱序度 D/V | **1 / 1** ★★ | 0 / 5 | **0 / 4** ★ | 0 / 0 🥇 | 越低越接近字母原键 |",
+	);
+	includes(
+		report,
+		"| S2 异键同指率 | **9.252%** ★ | **4.255%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |",
+	);
+	includes(report, "D 统计普通声母未落在同名字母键上的数量");
+	includes(report, "同键重复另计，不包含在此项中");
 	includes(
 		report,
 		"[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)",
@@ -242,6 +264,36 @@ test("两张纯双拼热力图使用相同裁剪、背景和短标题", () => {
 		);
 		assert.equal(svg.match(/data-mxkey=/gu)?.length, 29);
 	}
+});
+
+test("D/V 与 S2 异键同指率使用 benchmark 的原始口径", () => {
+	const comparison = JSON.parse(read("reports/shenyun-comparison.json")) as {
+		metrics: {
+			soundRhymeDisorder: Record<string, number[] | string>;
+			s2DifferentKeySameFingerRate: Record<string, number | string>;
+		};
+	};
+	assert.deepEqual(comparison.metrics.soundRhymeDisorder, {
+		better: "lower",
+		Overall17: [1, 1],
+		U357: [0, 5],
+		S005: [0, 4],
+		B04: [0, 0],
+	});
+	assert.deepEqual(comparison.metrics.s2DifferentKeySameFingerRate, {
+		better: "lower",
+		Overall17: 0.09251887998300894,
+		U357: 0.04255326008481471,
+		S005: 0.11638456570295873,
+		B04: 0.11343047534562911,
+	});
+	const r9Report = read("reports/shenyun-r9-comparison.md");
+	includes(r9Report, "| 声母乱序度 D | 0 | 0 | 0 |");
+	includes(r9Report, "| 韵母乱序度 V | 5 | 4 | 0 |");
+	includes(r9Report, "| S2 异键同指率 | 3.35% | 11.64% | 11.34% |");
+	includes(r9Report, "D 统计普通声母未落在同名字母键上的数量");
+	includes(r9Report, "同键重复另计，不包含在此项中");
+	assert.ok(!r9Report.includes("S2 同指连击率"));
 });
 
 test("十一场景 5500 字全按键热力图与最优路径回放一致", () => {
@@ -468,6 +520,20 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 			readme,
 			"| 频率加权 S2 miss[^zh-s2] | **0%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0% 🥇 | 越低越好 |",
 		);
+		includes(
+			readme,
+			"| 声母／韵母乱序度 D/V[^zh-dv] | **1 / 1** ★★ | 0 / 5 | **0 / 4** ★ | 0 / 0 🥇 | 越低越接近字母原键 |",
+		);
+		includes(
+			readme,
+			"| S2 异键同指率[^zh-sfb] | **9.252%** ★ | **4.255%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |",
+		);
+		includes(readme, "| Initial/final disorder D/V[^en-dv] |");
+		includes(readme, "| 聲母／韻母亂序度 D/V[^zht-dv] |");
+		includes(readme, "| S2 different-key same-finger rate[^en-sfb] |");
+		includes(readme, "| S2 異鍵同指率[^zht-sfb] |");
+		includes(readme, "[^zh-dv]: 声母／韵母乱序度 D/V");
+		includes(readme, "[^zh-sfb]: S2 异键同指率");
 		assert.ok(!readme.includes("★ ★★"));
 	}
 });

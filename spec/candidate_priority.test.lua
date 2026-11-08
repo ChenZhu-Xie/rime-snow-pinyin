@@ -67,5 +67,11 @@ assert(lookup_count == 1, "learned phrase lookups must be cached")
 
 local ordinary = phrase_candidate("九霄", { "jiu3", "xiao1" })
 assert(not priority.is_learned_phrase(ordinary, learned_memory, learned_cache))
+ordinary.quality = 100
+hidden_user.quality = 1
+assert(priority.better_across_routes(hidden_user, ordinary, learned_memory, {}),
+  "a learned phrase hidden by deduplication must win during route merging")
+assert(not priority.better_across_routes(ordinary, hidden_user, learned_memory, {}),
+  "static route quality must not beat a phrase found in the native user dictionary")
 
 print("candidate_priority.test.lua: ok")

@@ -13,12 +13,14 @@
 | 指标 | [神韵(Overall-17) 21×26 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) | [无飞键道(U357) 21×21 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) | [星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | 何为好 |
 | --- | --- | --- | --- | --- | --- |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 记忆项 | **36.000000** ★★ 🥇 | **40.000000** ★ | 44.000000 | 51.000000 | 越低越好 |
+| 声母／韵母乱序度 D/V | **1 / 1** ★★ | 0 / 5 | **0 / 4** ★ | 0 / 0 🥇 | 越低越接近字母原键 |
 | [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑审计 | **98.298315** ★★ | **98.298315** ★★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑均匀度 | **81.043390** ★★ | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
 | [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一码 | **399** ★★ 🥇 | 357 | **372** ★ | 399 🥇 | 越高越少重码 |
 | 频率加权 S2 miss | **0.000%** ★★ 🥇 | 3.270% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
 | S2 补全平均码长 | **2.0000** ★★ 🥇 | 2.1474 | **2.0725** ★ | 2.0000 🥇 | 越低越好 |
 | S2 补全中心时间（ms） | **75.672** ★★ 🥇 | **89.917** ★ | 90.257 | 79.890 | 越低越好 |
+| S2 异键同指率 | **9.252%** ★ | **4.255%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
 | 综合补全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | **9.630039** ★★ | **9.782135** ★ | 10.000000 | 9.461105 🥇 | 越低越好；历史情景 |
 | 综合补全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | **9.185254** ★★ | **9.716421** ★ | 10.000000 | 9.184607 🥇 | 越低越好；现行主指标 |
 | 综合补全 CKT v5 | **9.195026** ★★ 🥇 | **9.715587** ★ | 10.000000 | 9.195422 | 越低越好；六候选页与方案专属辅序 |
@@ -39,6 +41,10 @@
 | 20 合同 TYB 双食指组峰值 | **12.422%** ★★ | **14.092%** ★ | 14.733% | 12.358% 🥇 | 越低越好 |
 | 20 合同主键区下限 | 24.733% | **37.620%** ★★ 🥇 | **30.815%** ★ | 24.243% | 越高越好 |
 | 日常纯双拼移动手分数（含标点） | 132.219 | **143.380** ★★ 🥇 | **138.672** ★ | 135.310 | 越高越好 |
+
+“声母／韵母乱序度 D/V”沿用 benchmark 的移位口径：D 统计普通声母未落在同名字母键上的数量；V 统计基础韵母 `a/e/i/o/u` 未落在 `A/E/I/O/U` 原键上的数量。两项分别列出，均越低越接近字母原键，表中按 D+V 合计排名；它与按实际二键码统计的飞键不是同一指标。
+
+“S2 异键同指率”统计 S2 相邻键对中“两键不同、但由同一物理手指负责”的码内与边界频率权重，再除以全部键对权重；同键重复另计，不包含在此项中。
 
 CKT v5 使用 6 项候选页；[神韵(Overall-17)](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)的冰雪简道／冰雪散拼辅序为 `12/21/42`、`12/21/13`，[无飞键道(U357)](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md)的冰雪健道／冰雪弎拼辅序为 `12/23/24`、`12/21/23`，[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 固定为 `12/21/24`、`12/21/23`。[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 按原生 `AEUIO` 形辅、`IEUAO` 调辅与五项认知系数 0%～500% 独立扰动网格，对 144 套完整规则按平均名次取稳健综合第一，形辅／调辅分别为 `12/12/23`、`21/12/23`。每段两位数字表示 CKT v5 优化并计分的前两辅；运行时冰雪健道、冰雪弎拼的三字词会按剩余字位补第三辅，四字词最多两辅。CKT v5 在第二辅后直接按选重计费，因此不含三字词第三辅的成本与消歧收益。
 
