@@ -46,15 +46,25 @@ function filter.init(env)
     local input = snow.current(ctx)
     local segment = ctx.composition:toSegmentation():back()
     local candidate = ctx:get_selected_candidate()
+    if ctx:get_commit_text() == "方案选单" then
+      log.error(("learned-priority commit input=%s segment=%s tag=%s candidate=%s type=%s genuine=%s"):format(
+        tostring(input), tostring(segment ~= nil), tostring(segment and segment:has_tag("abc")),
+        tostring(candidate and candidate.text), tostring(candidate and candidate.type),
+        tostring(candidate and candidate:get_genuine().type)))
+    end
     if input and input:len() >= env.minimum_input_length
         and rime_api.regex_match(input, "^[a-z]+$")
         and segment and segment:has_tag("abc") and candidate
         and not candidate_priority.is_user_phrase(candidate) then
       -- Component.Translator 被 Lua 包装后，普通 phrase 不一定能触发子翻译器的
       -- Memory::OnCommit；显式补写 genuine Phrase，语义与原生 script_translator 一致。
-      env.memory:start_session()
-      env.memory:update_candidate(candidate, 1)
-      env.memory:finish_session()
+      local started = env.memory:start_session()
+      local updated = env.memory:update_candidate(candidate, 1)
+      local finished = env.memory:finish_session()
+      if candidate.text == "方案选单" then
+        log.error(("learned-priority update started=%s updated=%s finished=%s"):format(
+          tostring(started), tostring(updated), tostring(finished)))
+      end
     end
     -- 本次提交可能刚写入一个新用户词；下一次查询必须重新判断。
     env.cache = {}
