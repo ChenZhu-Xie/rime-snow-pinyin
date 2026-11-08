@@ -47,6 +47,7 @@ engine:
   filters:
     - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
+    - lua_filter@*snow.learned_priority
     - lua_filter@*snow.length_balance
     - lua_filter@*snow.fix
     - lua_filter@*snow.postpone
@@ -131,6 +132,11 @@ shenyun:
   enable_completion: false
   enable_user_dict: true
   preedit_format: null
+
+learned_priority:
+  memory_namespace: shenyun
+  minimum_input_length: 4
+  maximum_candidates: 120
 
 # 空桶只看系统词典，不受个人调频影响；词频 0/1 的大字集兜底读音由 Lua 忽略。
 vacancy:

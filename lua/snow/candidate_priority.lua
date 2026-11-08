@@ -13,6 +13,41 @@ function priority.is_user_phrase(candidate)
 end
 
 ---@param candidate Candidate
+---@param memory Memory
+---@param cache table<string, boolean>
+---@return boolean
+function priority.is_learned_phrase(candidate, memory, cache)
+  if priority.is_user_phrase(candidate) then
+    return true
+  end
+  local phrase = candidate:get_genuine():to_phrase()
+  if not phrase then
+    return false
+  end
+  local spellings = memory:decode(phrase.entry.code)
+  if #spellings == 0 then
+    return false
+  end
+  local code = table.concat(spellings, " ")
+  local cache_key = code .. "\t" .. candidate.text
+  local cached = cache[cache_key]
+  if cached ~= nil then
+    return cached
+  end
+  local learned = false
+  if memory:user_lookup(code, false) then
+    for entry in memory:iter_user() do
+      if entry.text == candidate.text then
+        learned = true
+        break
+      end
+    end
+  end
+  cache[cache_key] = learned
+  return learned
+end
+
+---@param candidate Candidate
 ---@param expected_length integer
 ---@return Candidate
 function priority.promote_exact_user_phrase(candidate, expected_length)

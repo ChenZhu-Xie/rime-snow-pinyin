@@ -36,8 +36,12 @@ script: |
 deploy:
   cross_route_user_phrase:
     tests:
-      # “方案选单”与高频二字词共用 jxxd；完整调辅上屏后，用户词应跨词长路由升至首选。
-      - send: "jxxdiu jxxd"
+      # 先证明空用户库中的首选仍是“九霄”，避免测试在未发生学习时假阳性。
+      - send: jxxd
+        assert: cand[1].text == "九霄"
+      # 用实际可见的首枚调辅 i 上屏“方案选单”；其原生用户词身份即使被底层去重掩盖，
+      # 回到混合词长桶 jxxd 后也应越过高静态词频的二字词。
+      - send: "jxxdi jxxd"
         assert: cand[1].text == "方案选单"
   buffered_command:
     tests:

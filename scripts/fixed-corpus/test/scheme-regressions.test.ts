@@ -826,6 +826,8 @@ test("U357 three-character words allow a third auxiliary but four-character word
 test("split translators preserve native user phrase priority across routes", () => {
 	const priority = read("lua/snow/candidate_priority.lua");
 	assert.match(priority, /genuine\.type == "user_phrase"/u);
+	assert.match(priority, /memory:user_lookup\(code, false\)/u);
+	assert.match(priority, /entry\.text == candidate\.text/u);
 	assert.match(priority, /consumed_length == expected_length/u);
 	assert.match(priority, /user_phrase_bonus/u);
 	assert.match(priority, /candidate_is_user_phrase ~= current_is_user_phrase/u);
@@ -837,21 +839,28 @@ test("split translators preserve native user phrase priority across routes", () 
 		/promote_exact_user_phrase\(candidate, real_input_length\)/u,
 	);
 	assert.match(tableLike, /main = main/u);
+	const learnedPriority = read("lua/snow/learned_priority.lua");
+	assert.match(learnedPriority, /candidate_priority\.is_learned_phrase/u);
+	assert.match(learnedPriority, /commit_notifier:connect/u);
+	assert.match(learnedPriority, /env\.cache = \{\}/u);
 	for (const schema of [
 		"snow_jiandao.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
 	]) {
+		const source = read(schema);
 		assert.match(
-			read(schema),
+			source,
 			/lua_translator@\*snow\.table_like\*main/u,
 			`${schema} 的主翻译路径也必须在引擎合流前恢复用户词优先级`,
 		);
+		assert.match(source, /lua_filter@\*snow\.learned_priority/u);
 	}
 	for (const schema of [
 		"snow_sanpin.schema.yaml",
 		"snow_sanpin_classic.schema.yaml",
 	]) {
 		const source = read(schema);
+		assert.match(source, /lua_filter@\*snow\.learned_priority/u);
 		assert.match(source, /lua_translator@\*snow\.table_like\*t12/u);
 		assert.match(source, /lua_translator@\*snow\.table_like\*jianpin/u);
 	}
