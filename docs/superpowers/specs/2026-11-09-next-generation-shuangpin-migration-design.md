@@ -51,7 +51,7 @@
 
 - 声母：`b=B, p=P, m=M, f=F, d=D, t=T, n=N, l=E, g=G, k=P, h=H, j=J, q=Q, x=X, zh=K, ch=S, sh=L, r=R, z=Z, c=C, s=S, A/O=R, E=C, W=W, Y/YU=Y`。
 - 韵母：`a=P, ai=N, an=M, ang=Y, ao=Z, e=S, ei=L, en=D, eng=T, er=J, i=F, ia=L, ian=J, iang=P, iao=Q, ie=C, in=R, ing=K, iong=H, iu=B, o=G, ong=L, ou=W, u=H, ua=Q, uai=X, uan=E, uang=C, ui=R, un=G, uo=K, v=D, van=T, ve=E, vn=G`。
-- 审计指标：21×21，M=42、D=2、V=5，QZ 与 ZQ 为空桶，Common399 为 399/399 唯一。
+- 审计指标：21×21，M=42、D=2、V=5，QZ 与 ZQ 为空桶；Common399 为 399 个音节、345 个唯一编码、54 个冲突桶、108 个受影响音节、96 个空码。M=42 是 memory 指标，不是空码数或唯一编码数。
 - 冰雪健道稳健辅序：`12/213/24`。
 - 冰雪弎拼稳健辅序：`12/213/23`。
 - 保持传统 21×21 原生路由；CKT v5.1 双成员归一分为 `9.56789806405906`。

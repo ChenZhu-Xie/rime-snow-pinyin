@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -89,6 +89,161 @@ test("first-generation U357 and Overall-17 schemes are complete frozen copies", 
 		read("snow_shenyun_first_common.yaml"),
 		/learned_priority:\s+memory_namespace: shenyun\s/mu,
 	);
+});
+
+test("next-generation mappings preserve complete first-generation snapshots", () => {
+	const firstSnapshots = [
+		[
+			"config/shenyun-21x21-first-mapping.json",
+			"c09f4bf08573c5e1261c75839f6a53fd09a132b8ba9ae99e1f6da5e881fc83b1",
+		],
+		[
+			"config/shenyun-21x26-first-mapping.json",
+			"53209e90c08d67e145b998e59cfbf93227d0a34cb76641c5ec487577629d1429",
+		],
+		[
+			"lua/snow/radical_jiandao_first.txt",
+			"86434ea69c623aa24d6c67f83a6c8139037eb8f3b6757744133d74e62994041d",
+		],
+		[
+			"lua/snow/radical_sanpin_first.txt",
+			"26fce5fa28f7a67863c3f56f7d3b3c514bef063c97485d7ec3bc1fc5c6086535",
+		],
+		[
+			"snow_shenyun_first_common.yaml",
+			"5f0e17c0ff6a5862ee0b35c372f62797d5e46e3434da8a35d2a62b7da010c965",
+		],
+	] as const;
+	for (const [file, expected] of firstSnapshots) {
+		assert.equal(existsSync(join(root, file)), true, `${file} must exist`);
+		assert.equal(
+			createHash("sha256")
+				.update(readFileSync(join(root, file)))
+				.digest("hex"),
+			expected,
+			file,
+		);
+	}
+});
+
+test("active 21x21 mapping is QZ-e8f37a with QZ and ZQ vacant", () => {
+	const mapping = JSON.parse(read("config/shenyun-21x21-mapping.json")) as {
+		id: string;
+		stateKey: string;
+		sourceBranch: string;
+		sourceCommit: string;
+		capacity: [number, number];
+		commonSyllables: number;
+		uniqueCommonCodes: number;
+		collisionBuckets: number;
+		affectedSyllables: number;
+		vacantCodes: number;
+		memory: number;
+		ordinaryInitialDisplacements: number;
+		vowelDisplacements: number;
+		shapeKeysByMeaning: string;
+		toneKeysByTone: string;
+		shapeAuxiliaryOrder: string;
+		toneAuxiliaryOrder: string;
+		requiredVacantCodes: string[];
+		cktV51: number;
+		initialMap: Record<string, string>;
+		finalMap: Record<string, string>;
+	};
+	assert.equal(mapping.id, "QZ-e8f37a0998f9");
+	assert.equal(
+		mapping.stateKey,
+		"1515010f0c0503130d04060f070910170a120b111902121102111618180f0d0c1819120b031309050b090f1002110a0701060b16071017040211060a03130406081514000e",
+	);
+	assert.equal(
+		mapping.sourceBranch,
+		"production/ckt-v4-2121-strict-avuio-20261024",
+	);
+	assert.equal(
+		mapping.sourceCommit,
+		"f2473559b275bca59ad134c0fbdb42fa4c562aa8",
+	);
+	assert.deepEqual(mapping.capacity, [21, 21]);
+	assert.equal(mapping.commonSyllables, 399);
+	assert.equal(mapping.uniqueCommonCodes, 345);
+	assert.equal(mapping.collisionBuckets, 54);
+	assert.equal(mapping.affectedSyllables, 108);
+	assert.equal(mapping.vacantCodes, 96);
+	assert.equal(mapping.memory, 42);
+	assert.equal(mapping.ordinaryInitialDisplacements, 2);
+	assert.equal(mapping.vowelDisplacements, 5);
+	assert.equal(mapping.shapeKeysByMeaning, "AVUIO");
+	assert.equal(mapping.toneKeysByTone, "IVUAO");
+	assert.equal(mapping.shapeAuxiliaryOrder, "12/213/24");
+	assert.equal(mapping.toneAuxiliaryOrder, "12/213/23");
+	assert.deepEqual(mapping.requiredVacantCodes, ["qz", "zq"]);
+	assert.equal(mapping.cktV51, 9.56789806405906);
+	assert.deepEqual(mapping.initialMap, {
+		b: "B",
+		p: "P",
+		m: "M",
+		f: "F",
+		d: "D",
+		t: "T",
+		n: "N",
+		l: "E",
+		g: "G",
+		k: "P",
+		h: "H",
+		j: "J",
+		q: "Q",
+		x: "X",
+		zh: "K",
+		ch: "S",
+		sh: "L",
+		r: "R",
+		z: "Z",
+		c: "C",
+		s: "S",
+		A: "R",
+		E: "C",
+		O: "R",
+		W: "W",
+		Y: "Y",
+		YU: "Y",
+	});
+	assert.deepEqual(mapping.finalMap, {
+		a: "P",
+		ai: "N",
+		an: "M",
+		ang: "Y",
+		ao: "Z",
+		e: "S",
+		ei: "L",
+		en: "D",
+		eng: "T",
+		er: "J",
+		i: "F",
+		ia: "L",
+		ian: "J",
+		iang: "P",
+		iao: "Q",
+		ie: "C",
+		in: "R",
+		ing: "K",
+		iong: "H",
+		iu: "B",
+		o: "G",
+		ong: "L",
+		ou: "W",
+		u: "H",
+		ua: "Q",
+		uai: "X",
+		uan: "E",
+		uang: "C",
+		ui: "R",
+		un: "G",
+		uo: "K",
+		v: "D",
+		van: "T",
+		ve: "E",
+		vn: "G",
+	});
 });
 
 test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme", () => {

@@ -142,8 +142,11 @@ test("键道二分形辅保留折横撇竖点含义", () => {
 test("神韵机器可读配置显式区分形义序与声调序", () => {
 	for (const path of [
 		"config/shenyun-21x21-mapping.json",
+		"config/shenyun-21x21-first-mapping.json",
 		"config/shenyun-21x26-mapping.json",
+		"config/shenyun-21x26-first-mapping.json",
 		"config/shenyun-21x28-mapping.json",
+		"docs/shenyun-qz-e8f37a-mapping.json",
 		"docs/shenyun-u357-mapping.json",
 	]) {
 		const mapping = readMapping(path);

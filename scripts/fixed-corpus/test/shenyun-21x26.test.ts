@@ -9,16 +9,35 @@ const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
 const commonSource = read("snow_shenyun_common.yaml");
 const rules = parseAlgebraRules(commonSource, "shenyun_algebra");
-const layout = JSON.parse(read("config/shenyun-21x26-mapping.json")) as {
+type Layout = {
 	id: string;
 	label: string;
+	sourceBranch: string;
+	sourceCommit: string;
+	sourceReport: string;
 	capacity: [number, number];
+	commonSyllables: number;
+	uniqueCommonCodes: number;
+	collisions: number;
+	vacantCodes: number;
 	memory: number;
 	ordinaryInitialDisplacements: number;
 	vowelDisplacements: number;
+	shapeKeysByMeaning: string;
+	toneKeysByTone: string;
+	shapeAuxiliaryOrder: string;
+	toneAuxiliaryOrder: string;
+	balanceContract: string;
+	cktV51: number;
 	initialMap: Record<string, string>;
 	finalMap: Record<string, string>;
 };
+const activeLayout = JSON.parse(
+	read("config/shenyun-21x26-mapping.json"),
+) as Layout;
+const layout = JSON.parse(
+	read("config/shenyun-21x26-first-mapping.json"),
+) as Layout;
 const letterBuckets = JSON.parse(
 	read("config/shenyun-21x26-letter-buckets.json"),
 ) as {
@@ -103,30 +122,101 @@ function expectedCode(syllable: string): string {
 	return `${layout.initialMap[initial]}${layout.finalMap[final]}`.toLowerCase();
 }
 
-test("冰雪简道/调共用 Overall-17 的 21×26 映射", () => {
-	assert.equal(layout.id, "SNOW-SHENYUN-21X26-PRODUCTION");
-	assert.equal(layout.label, "Overall-17");
-	assert.deepEqual(layout.capacity, [21, 26]);
-	assert.equal(layout.memory, 36);
-	assert.equal(layout.ordinaryInitialDisplacements, 1);
-	assert.equal(layout.vowelDisplacements, 1);
-	for (const syllable of [
-		"bin",
-		"gui",
-		"gue",
-		"ban",
-		"zhang",
-		"chang",
-		"shang",
-		"xia",
-		"an",
-		"yu",
-		"yuan",
-		"wu",
-		"wo",
-	]) {
-		assert.equal(encode(syllable), expectedCode(syllable), syllable);
-	}
+test("冰雪简道/调共用 D3/V1 的 21×26 映射", () => {
+	assert.equal(activeLayout.id, "SNOW-SHENYUN-21X26-D3V1-BALANCED");
+	assert.equal(activeLayout.label, "D3/V1");
+	assert.equal(
+		activeLayout.sourceBranch,
+		"production/ckt-v4-2126-m40-d3-20261031",
+	);
+	assert.equal(
+		activeLayout.sourceCommit,
+		"70545d9f182a97700f7b404e18487fb12738ce01",
+	);
+	assert.equal(
+		activeLayout.sourceReport,
+		"research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md",
+	);
+	assert.deepEqual(activeLayout.capacity, [21, 26]);
+	assert.equal(activeLayout.commonSyllables, 399);
+	assert.equal(activeLayout.uniqueCommonCodes, 399);
+	assert.equal(activeLayout.collisions, 0);
+	assert.equal(activeLayout.vacantCodes, 147);
+	assert.equal(activeLayout.memory, 40);
+	assert.equal(activeLayout.ordinaryInitialDisplacements, 3);
+	assert.equal(activeLayout.vowelDisplacements, 1);
+	assert.equal(activeLayout.shapeKeysByMeaning, "AEUIO");
+	assert.equal(activeLayout.toneKeysByTone, "IEUAO");
+	assert.equal(activeLayout.shapeAuxiliaryOrder, "12/12/24");
+	assert.equal(activeLayout.toneAuxiliaryOrder, "12/21/13");
+	assert.equal(activeLayout.balanceContract, "soft-page-fill-v2");
+	assert.equal(activeLayout.cktV51, 9.10299979136027);
+	assert.deepEqual(activeLayout.initialMap, {
+		b: "B",
+		p: "P",
+		m: "M",
+		f: "F",
+		d: "D",
+		t: "T",
+		n: "N",
+		l: "L",
+		g: "G",
+		k: "K",
+		h: "H",
+		j: "J",
+		q: "F",
+		x: "Y",
+		zh: "S",
+		ch: "X",
+		sh: "V",
+		r: "R",
+		z: "Z",
+		c: "C",
+		s: "Q",
+		A: "Y",
+		E: "Y",
+		O: "Y",
+		W: "J",
+		Y: "W",
+		YU: "W",
+	});
+	assert.deepEqual(activeLayout.finalMap, {
+		a: "A",
+		ai: "F",
+		an: "L",
+		ang: "N",
+		ao: "K",
+		e: "H",
+		ei: "E",
+		en: "D",
+		eng: "J",
+		er: "E",
+		i: "I",
+		ia: "R",
+		ian: "S",
+		iang: "X",
+		iao: "Z",
+		ie: "C",
+		in: "B",
+		ing: "Q",
+		iong: "G",
+		iu: "V",
+		o: "O",
+		ong: "R",
+		ou: "Y",
+		u: "U",
+		ua: "S",
+		uai: "W",
+		uan: "M",
+		uang: "C",
+		ui: "P",
+		un: "G",
+		uo: "O",
+		v: "P",
+		van: "M",
+		ve: "T",
+		vn: "W",
+	});
 });
 
 test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {

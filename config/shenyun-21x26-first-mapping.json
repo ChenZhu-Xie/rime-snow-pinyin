@@ -1,0 +1,35 @@
+{
+  "id": "SNOW-SHENYUN-21X26-PRODUCTION",
+  "label": "Overall-17",
+  "name": "冰雪简道/调共用声韵布局",
+  "source": "shuangpin-layout-benchmark/a7_CKT_R11.html#SNOW-SHENYUN-21X26-PRODUCTION",
+  "sourceBranch": "production/ckt-v4-2126-strict-d0-20261030",
+  "sourceCommit": "7a7e154f3f7d0c86653ee15e755ccd72e866e5e2",
+  "sourceReport": "research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md",
+  "archiveCommit": "70545d9f182a97700f7b404e18487fb12738ce01",
+  "capacity": [21, 26],
+  "commonSyllables": 399,
+  "collisions": 0,
+  "vacantCodes": 147,
+  "memory": 36,
+  "ordinaryInitialDisplacements": 1,
+  "vowelDisplacements": 1,
+  "shapeKeysByMeaning": "AEUIO",
+  "toneKeysByTone": "IEUAO",
+  "initialMap": {
+    "b": "B", "p": "P", "m": "M", "f": "J", "d": "D", "t": "T",
+    "n": "N", "l": "L", "g": "G", "k": "K", "h": "H", "j": "J",
+    "q": "Q", "x": "X", "zh": "F", "ch": "V", "sh": "W", "r": "R",
+    "z": "Z", "c": "C", "s": "S", "A": "X", "E": "X", "O": "X",
+    "W": "Q", "Y": "Y", "YU": "Y"
+  },
+  "finalMap": {
+    "a": "A", "ai": "H", "an": "O", "ang": "Y", "ao": "S",
+    "e": "E", "ei": "W", "en": "J", "eng": "N", "er": "U",
+    "i": "I", "ia": "K", "ian": "P", "iang": "L", "iao": "D",
+    "ie": "Z", "in": "C", "ing": "R", "iong": "Q", "iu": "X",
+    "o": "M", "ong": "K", "ou": "F", "u": "U", "ua": "X",
+    "uai": "R", "uan": "Q", "uang": "P", "ui": "L", "un": "T",
+    "uo": "M", "v": "V", "van": "T", "ve": "G", "vn": "B"
+  }
+}

@@ -9,7 +9,6 @@ const source = JSON.parse(
 ) as {
 	id: string;
 	name: string;
-	candidateId: string;
 	stateKey: string;
 	sourceBranch: string;
 	sourceReport: string;
@@ -24,7 +23,7 @@ const source = JSON.parse(
 	shapeKeysByMeaning: string;
 	toneKeysByTone: string;
 	cktV4: number;
-	movingHandScore: number;
+	cktV51: number;
 	initialMap: Record<string, string>;
 	finalMap: Record<string, string>;
 };
@@ -146,11 +145,11 @@ const output = {
 	payloadCodes,
 	codes,
 };
-const outputPath = join(root, "docs", "shenyun-u357-mapping.json");
+const outputPath = join(root, "docs", "shenyun-qz-e8f37a-mapping.json");
 const rendered = `${JSON.stringify(output, null, 2)}\n`;
 if (process.argv.includes("--check")) {
 	if (readFileSync(outputPath, "utf8").replace(/\r\n/gu, "\n") !== rendered) {
-		throw new Error("神韵 U357 映射快照不是当前源配置的生成结果。");
+		throw new Error("神韵 QZ-e8f37a 映射快照不是当前源配置的生成结果。");
 	}
 } else {
 	writeFileSync(outputPath, rendered, "utf8");

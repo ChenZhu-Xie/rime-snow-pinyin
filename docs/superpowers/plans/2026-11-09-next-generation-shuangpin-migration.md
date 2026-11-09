@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - 21×26 必须是 SNOW-SHENYUN-21X26-D3V1-BALANCED：M=40、D=3、V=1、Common399 399/399 唯一、CKT v5.1 9.10299979136027；简道 12/12/24，散拼 12/21/13。
-- 21×21 必须是 QZ-e8f37a0998f9：M=42、D=2、V=5、QZ/ZQ 空桶、Common399 399/399 唯一、CKT v5.1 9.56789806405906；健道 12/213/24，弎拼 12/213/23。
+- 21×21 必须是 QZ-e8f37a0998f9：M=42、D=2、V=5、QZ/ZQ 空桶、Common399 为 399 个音节／345 个唯一编码／54 个冲突桶／108 个受影响音节／96 个空码、CKT v5.1 9.56789806405906；健道 12/213/24，弎拼 12/213/23。M=42 是 memory 指标，不是空码数。
 - 五辅语义保持 21×26 AEUIO ↔ IEUAO、21×21 AVUIO ↔ IVUAO，并通过 42310 往返测试。
 - 四个初代方案的布局、fixed、子方案、形辅映射、键位图和既有哈希不得改变；初代主 schema 只允许增加旧固顶库名。
 - snow_pinyin 上屏学习频次与用户造词全冰雪系共享；十三个发布方案的 Lua 固顶库名必须全部唯一。
@@ -48,7 +48,7 @@
 - Consumes: 两份 2026-11-09 benchmark note、集成脚本中的完整映射/stateKey/来源提交。
 - Produces: 两份活动映射、两份只读初代快照、QZ 完整音节码快照。
 
-- [ ] **Step 1: 写失败测试。** 断言 D3/V1 与 QZ-e8f37a 的完整 initialMap/finalMap、M/D/V、来源、399 唯一、QZ/ZQ；断言两份 first 快照等于迁移前配置，四个初代 fixed/radical/keymap 哈希不变。
+- [ ] **Step 1: 写失败测试。** 断言 D3/V1 与 QZ-e8f37a 的完整 initialMap/finalMap、M/D/V、来源；D3/V1 断言 Common399 399/399 唯一，QZ-e8f37a 断言 399/345、54 个冲突桶、108 个受影响音节、96 个空码及 QZ/ZQ 空桶；断言两份 first 快照等于迁移前配置，四个初代 fixed/radical/keymap 哈希不变。
 - [ ] **Step 2: 确认 RED。** Run: bunx --cwd scripts tsx --test fixed-corpus/test/shenyun-21x26.test.ts fixed-corpus/test/scheme-regressions.test.ts fixed-corpus/test/auxiliary-semantics.test.ts。Expected: 旧 ID 或缺少 first/QZ 文件。
 - [ ] **Step 3: 实现映射边界。** 先复制当前配置为 first 快照，再替换活动配置；生成器改写 docs/shenyun-qz-e8f37a-mapping.json，验证器校验该文件。旧 docs/shenyun-u357-mapping.json 只读保留。
 - [ ] **Step 4: 确认 GREEN。** Run: bun run --cwd scripts mapping:generate; bun run --cwd scripts mapping:check; bunx --cwd scripts tsx --test fixed-corpus/test/shenyun-21x26.test.ts fixed-corpus/test/scheme-regressions.test.ts fixed-corpus/test/auxiliary-semantics.test.ts。Expected: 全部 PASS，42310 往返与初代哈希不变。

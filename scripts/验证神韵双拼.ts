@@ -22,12 +22,11 @@ if (!schemaSource.includes("erase/^(hng|m|n|ng|ê)\\d$/")) {
 const algebra = new SpellingAlgebra(schemaPath, "sanpin_algebra");
 const fixture = JSON.parse(
 	readFileSync(
-		join(scriptDirectory, "..", "docs", "shenyun-u357-mapping.json"),
+		join(scriptDirectory, "..", "docs", "shenyun-qz-e8f37a-mapping.json"),
 		"utf8",
 	),
 ) as {
 	scheme: string;
-	candidateId: string;
 	mappingSha256: string;
 	codes: Record<string, string | null>;
 	extendedSummary: { unique: number; vacantCodes: number };
@@ -36,7 +35,7 @@ const fixtureHash = createHash("sha256")
 	.update(JSON.stringify(fixture.codes))
 	.digest("hex");
 if (
-	fixture.scheme !== "U357-21X21-M40-D0" ||
+	fixture.scheme !== "QZ-e8f37a0998f9" ||
 	fixtureHash !== fixture.mappingSha256
 ) {
 	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
@@ -51,10 +50,12 @@ for (const [syllable, code] of Object.entries(fixture.codes)) {
 		fixtureFailures.push(`${syllable}: ${actual ?? "∅"} != ${code ?? "∅"}`);
 }
 if (fixtureFailures.length > 0) {
-	throw new Error(`神韵 U357 映射核验失败：\n${fixtureFailures.join("\n")}`);
+	throw new Error(
+		`神韵 QZ-e8f37a 映射核验失败：\n${fixtureFailures.join("\n")}`,
+	);
 }
 console.log(
-	`神韵 U357 映射核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
+	`神韵 QZ-e8f37a 映射核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
 );
 
 const pronunciationMap = new Map<string, string[][]>();
@@ -350,11 +351,9 @@ if (benchmarkPath) {
 		pinyin: string[];
 		entries: Array<{ id: string; codeList: Array<string | null> }>;
 	};
-	const target = payload.entries.find(
-		(entry) => entry.id === fixture.candidateId,
-	);
+	const target = payload.entries.find((entry) => entry.id === fixture.scheme);
 	if (!target)
-		throw new Error(`Benchmark payload 中未找到 ${fixture.candidateId}。`);
+		throw new Error(`Benchmark payload 中未找到 ${fixture.scheme}。`);
 
 	const sourceFailures: string[] = [];
 	const unencoded = new Set(["hng", "m", "n", "ng", "ê"]);
