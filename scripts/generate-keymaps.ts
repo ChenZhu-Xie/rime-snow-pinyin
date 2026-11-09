@@ -883,7 +883,9 @@ for (const filename of [
 	"snow_shenyun_tone_first",
 ]) {
 	const svgPath = join(outputDirectory, `${filename}.svg`);
-	const svg = softenDisplacedInitialKeycaps(readFileSync(svgPath, "utf8"));
+	const svg = softenDisplacedInitialKeycaps(
+		readFileSync(svgPath, "utf8").replace(/\r\n?/gu, "\n"),
+	);
 	update(svgPath, svg);
 	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })
 		.render()
@@ -893,6 +895,6 @@ for (const filename of [
 
 console.log(
 	check
-		? "七份活动／经典键位图与四份初代 PNG 均为最新。"
-		: `已生成七份活动／经典键位图与四份初代 PNG：${outputDirectory}`,
+		? "七份活动／经典键位图与四份初代键位图均为最新。"
+		: `已生成七份活动／经典键位图与四份初代键位图：${outputDirectory}`,
 );

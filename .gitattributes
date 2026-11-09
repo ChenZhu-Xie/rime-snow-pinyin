@@ -4,3 +4,4 @@
 *.js text eol=lf
 *.json text eol=lf
 *.jsonc text eol=lf
+lua/snow/keymaps/*.svg text eol=lf
