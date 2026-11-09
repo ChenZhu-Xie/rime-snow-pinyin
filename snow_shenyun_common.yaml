@@ -37,6 +37,7 @@ engine:
     - lua_translator@*snow.schema_menu*translator
     - lua_translator@*snow.shenyun
     - table_translator@stroke
+    - table_translator@radical
     - script_translator@pinyin
     - lua_translator@*snow.buffered
     - lua_translator@*snow.datetime

@@ -669,6 +669,24 @@ test("两个飞花原型都随部署带上共用配置", () => {
 	assert.match(read("scripts/link.ts"), /"snow_shenyun_common\.yaml"/u);
 });
 
+test("冰雪简道/散拼接入共用 u 入口的部件全拼反查", () => {
+	const common = load(commonSource) as {
+		engine: { translators: string[] };
+	};
+	const stroke = common.engine.translators.indexOf("table_translator@stroke");
+	const radical = common.engine.translators.indexOf("table_translator@radical");
+	assert.ok(stroke >= 0 && radical === stroke + 1);
+	for (const file of [
+		"snow_shenyun_shape.schema.yaml",
+		"snow_shenyun_tone.schema.yaml",
+	]) {
+		const schema = load(read(file)) as {
+			schema: { dependencies: string[] };
+		};
+		assert.ok(schema.schema.dependencies.includes("radical_pinyin"), file);
+	}
+});
+
 test("冰雪简道/调接入输入统计组件", () => {
 	const common = read("snow_shenyun_common.yaml");
 	const processor = common.indexOf("lua_processor@*snow.statistics*processor");
