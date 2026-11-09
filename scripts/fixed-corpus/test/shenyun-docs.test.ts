@@ -410,8 +410,10 @@ test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健�
 	);
 });
 
-test("两张纯双拼热力图使用相同裁剪、背景和短标题", () => {
+test("现行与初代纯双拼热力图使用相同裁剪、背景和短标题", () => {
 	for (const path of [
+		"docs/shenyun-d3v1-keyboard-heat.svg",
+		"docs/shenyun-qz-e8f37a-keyboard-heat.svg",
 		"docs/shenyun-overall17-keyboard-heat.svg",
 		"docs/shenyun-u357-keyboard-heat.svg",
 	]) {
@@ -748,6 +750,8 @@ test("两份 README 只以 D3/V1 与 QZ-e8f37a 为现行双拼并链接全量报
 		includes(readme, "`12/213/23`");
 		includes(readme, "docs/shenyun-d3v1-keyboard.svg");
 		includes(readme, "docs/shenyun-qz-e8f37a-keyboard.svg");
+		includes(readme, "docs/shenyun-d3v1-keyboard-heat.svg");
+		includes(readme, "docs/shenyun-qz-e8f37a-keyboard-heat.svg");
 		includes(readme, "docs/shenyun-d3v1-5500-keyboard-heat.svg");
 		includes(readme, "docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg");
 		includes(readme, "Overall-17·初代");
@@ -809,11 +813,21 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 			2,
 		);
 		assert.equal(readme.split("#### 聲韻編碼規則").length - 1, 2);
-		for (const [layout, next, mapping, rules, letters] of [
+		for (const [
+			layout,
+			next,
+			mapping,
+			pureHeat,
+			allKeyHeat,
+			rules,
+			letters,
+		] of [
 			[
 				"### D3/V1 21×26 双拼",
 				"### QZ-e8f37a 21×21 双拼",
 				"**声母—韵母映射**",
+				"**日常八场景文稿纯双拼键频图（含标点）**",
+				"**十一场景 5500 字最优路径全按键键频**",
 				"#### 声韵编码规则",
 				"#### 英数入口",
 			],
@@ -821,6 +835,8 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				"### QZ-e8f37a 21×21 双拼",
 				"### 固顶、空桶与逐级简码",
 				"**声母—韵母映射**",
+				"**日常八场景文稿纯双拼键频图（含标点）**",
+				"**十一场景 5500 字最优路径全按键键频**",
 				"#### 声韵编码规则",
 				"#### 英数入口",
 			],
@@ -828,6 +844,8 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				"### D3/V1 21×26 double pinyin",
 				"### QZ-e8f37a 21×21 double pinyin",
 				"**Initial–final mapping**",
+				"**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**",
+				"**Eleven-scenario optimal-path all-key frequency over 5,500 characters**",
 				"#### Initial and final coding rules",
 				"#### Letter and number entry",
 			],
@@ -835,6 +853,8 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				"### QZ-e8f37a 21×21 double pinyin",
 				"### Fixed candidates, vacant buckets, and staged abbreviations",
 				"**Initial–final mapping**",
+				"**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**",
+				"**Eleven-scenario optimal-path all-key frequency over 5,500 characters**",
 				"#### Initial and final coding rules",
 				"#### Letter and number entry",
 			],
@@ -842,6 +862,8 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				"### D3/V1 21×26 雙拼",
 				"### QZ-e8f37a 21×21 雙拼",
 				"**聲母—韻母映射**",
+				"**日常八場景文稿純雙拼鍵頻圖（含標點）**",
+				"**十一場景 5500 字最佳路徑全按鍵鍵頻**",
 				"#### 聲韻編碼規則",
 				"#### 英數入口",
 			],
@@ -849,6 +871,8 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				"### QZ-e8f37a 21×21 雙拼",
 				"### 固頂、空桶與逐級簡碼",
 				"**聲母—韻母映射**",
+				"**日常八場景文稿純雙拼鍵頻圖（含標點）**",
+				"**十一場景 5500 字最佳路徑全按鍵鍵頻**",
 				"#### 聲韻編碼規則",
 				"#### 英數入口",
 			],
@@ -858,7 +882,9 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				readme.indexOf(next),
 			);
 			assert.ok(
-				section.indexOf(mapping) < section.indexOf(rules) &&
+				section.indexOf(mapping) < section.indexOf(pureHeat) &&
+					section.indexOf(pureHeat) < section.indexOf(allKeyHeat) &&
+					section.indexOf(allKeyHeat) < section.indexOf(rules) &&
 					section.indexOf(rules) < section.indexOf(letters),
 				`${filename} 的 ${layout} 子节顺序错误`,
 			);

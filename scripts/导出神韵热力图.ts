@@ -33,15 +33,13 @@ const scheme = JSON.parse(
 	),
 ) as { id: string; candidateId?: string };
 const targetSchemeId = is21x26 ? scheme.id : (scheme.candidateId ?? scheme.id);
-const displayName = is21x26
-	? "神韵(Overall-17) 21×26 双拼"
-	: "无飞键道(U357) 21×21 双拼";
+const displayName = is21x26 ? "D3/V1 21×26 双拼" : "QZ-e8f37a 21×21 双拼";
 const output = join(
 	root,
 	"docs",
 	is21x26
-		? "shenyun-overall17-keyboard-heat.svg"
-		: "shenyun-u357-keyboard-heat.svg",
+		? "shenyun-d3v1-keyboard-heat.svg"
+		: "shenyun-qz-e8f37a-keyboard-heat.svg",
 );
 const visibleKeys = [..."QWERTYUIOPASDFGHJKL;ZXCVBNM,."];
 const heatmapTitle = "日常八场景文稿纯双拼键频图（含标点）";

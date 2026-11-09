@@ -62,6 +62,18 @@
 
 ![D3/V1 21×26 双拼声韵键盘图](docs/shenyun-d3v1-keyboard.svg)
 
+**日常八场景文稿纯双拼键频图（含标点）**
+
+![D3/V1 21×26 双拼纯双拼键频图](docs/shenyun-d3v1-keyboard-heat.svg)
+
+键频图由 benchmark 页面内置的 `r9MacroHeat` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
+
+**十一场景 5500 字最优路径全按键键频**
+
+![D3/V1 21×26 双拼 5500 字最优路径全按键键频图](docs/shenyun-d3v1-5500-keyboard-heat.svg)
+
+5500 字十一场景的实际最优路径共 9,895 键，其中空格 382、Shift 3；原始统计见 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
+
 #### 声韵编码规则
 
 声母及零声母载体使用下列首键：
@@ -137,12 +149,6 @@
 
 字母和待启用数字均不侵占 `ABA` 的 `21×5×21=2205` 个状态，既有 `AAB`、`AAAB` 路由也保持不变。
 
-**十一场景 5500 字最优路径全按键键频**
-
-![D3/V1 21×26 双拼 5500 字最优路径全按键键频图](docs/shenyun-d3v1-5500-keyboard-heat.svg)
-
-5500 字十一场景的实际最优路径共 9,895 键，其中空格 382、Shift 3；原始统计见 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
-
 ### QZ-e8f37a 21×21 双拼
 
 冰雪健道（`snow_jiandao`）与冰雪弎拼（`snow_sanpin`）现共用 [QZ-e8f37a 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)，仓库标识为 `QZ-e8f37a0998f9`。布局指标为 M-R2 `42`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `5/2/2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.56789806405906`。
@@ -152,6 +158,18 @@
 **声母—韵母映射**
 
 ![QZ-e8f37a 21×21 双拼声韵键盘图](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**日常八场景文稿纯双拼键频图（含标点）**
+
+![QZ-e8f37a 21×21 双拼纯双拼键频图](docs/shenyun-qz-e8f37a-keyboard-heat.svg)
+
+键频图由 benchmark 页面内置的 `r9MacroHeat` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
+
+**十一场景 5500 字最优路径全按键键频**
+
+![QZ-e8f37a 21×21 双拼 5500 字最优路径全按键键频图](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
+
+5500 字十一场景的实际最优路径共 9,444 键，其中空格 376、Shift 307；原始统计见 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
 
 #### 声韵编码规则
 
@@ -209,12 +227,6 @@
 | 八／8 | `bpu` | `bpi` |
 | 九／9 | `jbu` | `jbu` |
 | 十／10 | `lfu` | `lfv` |
-
-**十一场景 5500 字最优路径全按键键频**
-
-![QZ-e8f37a 21×21 双拼 5500 字最优路径全按键键频图](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
-
-5500 字十一场景的实际最优路径共 9,444 键，其中空格 376、Shift 307；原始统计见 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
 
 ### 固顶、空桶与逐级简码
 
@@ -401,6 +413,18 @@ The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→
 
 ![D3/V1 21×26 initial/final keyboard map](docs/shenyun-d3v1-keyboard.svg)
 
+**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
+
+![D3/V1 21×26 pure-double-pinyin key-frequency map](docs/shenyun-d3v1-keyboard-heat.svg)
+
+The map is exported directly from the current layout through the benchmark page's built-in `r9MacroHeat`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
+
+**Eleven-scenario optimal-path all-key frequency over 5,500 characters**
+
+![D3/V1 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-d3v1-5500-keyboard-heat.svg)
+
+The eleven-scenario 5,500-character replay uses 9,895 keys, including 382 spaces and 3 Shift presses; see the [raw JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json).
+
 #### Initial and final coding rules
 
 Initials and zero-initial carriers use these first keys:
@@ -476,12 +500,6 @@ Number codes have been calculated from each corresponding Han numeral's current 
 
 Neither the letters nor the pending numbers consume the `21×5×21=2205` `ABA` states; the existing `AAB` and `AAAB` routes are also preserved.
 
-**Eleven-scenario optimal-path all-key frequency over 5,500 characters**
-
-![D3/V1 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-d3v1-5500-keyboard-heat.svg)
-
-The eleven-scenario 5,500-character replay uses 9,895 keys, including 382 spaces and 3 Shift presses; see the [raw JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json).
-
 ### QZ-e8f37a 21×21 double pinyin
 
 冰雪健道 (`snow_jiandao`) and 冰雪弎拼 (`snow_sanpin`) now share the [QZ-e8f37a 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md), identified as `QZ-e8f37a0998f9`. Its layout metrics are M-R2 `42` and all/written/traditional-initial/final disorder A/I/D/V `5/2/2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.56789806405906`.
@@ -491,6 +509,18 @@ The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→
 **Initial–final mapping**
 
 ![QZ-e8f37a 21×21 initial/final keyboard map](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
+
+![QZ-e8f37a 21×21 pure-double-pinyin key-frequency map](docs/shenyun-qz-e8f37a-keyboard-heat.svg)
+
+The map is exported directly from the current layout through the benchmark page's built-in `r9MacroHeat`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
+
+**Eleven-scenario optimal-path all-key frequency over 5,500 characters**
+
+![QZ-e8f37a 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
+
+The eleven-scenario 5,500-character replay uses 9,444 keys, including 376 spaces and 307 Shift presses; see the [raw JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json).
 
 #### Initial and final coding rules
 
@@ -548,12 +578,6 @@ Numbers share the codes of their corresponding Han numerals. When Han candidates
 | 八／8 | `bpu` | `bpi` |
 | 九／9 | `jbu` | `jbu` |
 | 十／10 | `lfu` | `lfv` |
-
-**Eleven-scenario optimal-path all-key frequency over 5,500 characters**
-
-![QZ-e8f37a 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
-
-The eleven-scenario 5,500-character replay uses 9,444 keys, including 376 spaces and 307 Shift presses; see the [raw JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json).
 
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
@@ -653,6 +677,18 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 
 ![D3/V1 21×26 雙拼聲韻鍵盤圖](docs/shenyun-d3v1-keyboard.svg)
 
+**日常八場景文稿純雙拼鍵頻圖（含標點）**
+
+![D3/V1 21×26 雙拼純雙拼鍵頻圖](docs/shenyun-d3v1-keyboard-heat.svg)
+
+鍵頻圖由 benchmark 頁面內建的 `r9MacroHeat` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
+
+**十一場景 5500 字最佳路徑全按鍵鍵頻**
+
+![D3/V1 21×26 雙拼 5500 字最佳路徑全按鍵鍵頻圖](docs/shenyun-d3v1-5500-keyboard-heat.svg)
+
+5500 字十一場景的實際最佳路徑共 9,895 鍵，其中空格 382、Shift 3；原始統計見 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
+
 #### 聲韻編碼規則
 
 聲母及零聲母載體使用下列首鍵：
@@ -728,12 +764,6 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 
 字母和待啟用數字均不侵占 `ABA` 的 `21×5×21=2205` 個狀態，既有 `AAB`、`AAAB` 路由也保持不變。
 
-**十一場景 5500 字最佳路徑全按鍵鍵頻**
-
-![D3/V1 21×26 雙拼 5500 字最佳路徑全按鍵鍵頻圖](docs/shenyun-d3v1-5500-keyboard-heat.svg)
-
-5500 字十一場景的實際最佳路徑共 9,895 鍵，其中空格 382、Shift 3；原始統計見 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
-
 ### QZ-e8f37a 21×21 雙拼
 
 冰雪健道（`snow_jiandao`）與冰雪弎拼（`snow_sanpin`）現共用 [QZ-e8f37a 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)，倉庫標識為 `QZ-e8f37a0998f9`。布局指標為 M-R2 `42`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `5/2/2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.56789806405906`。
@@ -743,6 +773,18 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 **聲母—韻母映射**
 
 ![QZ-e8f37a 21×21 雙拼聲韻鍵盤圖](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**日常八場景文稿純雙拼鍵頻圖（含標點）**
+
+![QZ-e8f37a 21×21 雙拼純雙拼鍵頻圖](docs/shenyun-qz-e8f37a-keyboard-heat.svg)
+
+鍵頻圖由 benchmark 頁面內建的 `r9MacroHeat` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
+
+**十一場景 5500 字最佳路徑全按鍵鍵頻**
+
+![QZ-e8f37a 21×21 雙拼 5500 字最佳路徑全按鍵鍵頻圖](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
+
+5500 字十一場景的實際最佳路徑共 9,444 鍵，其中空格 376、Shift 307；原始統計見 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
 
 #### 聲韻編碼規則
 
@@ -800,12 +842,6 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 | 八／8 | `bpu` | `bpi` |
 | 九／9 | `jbu` | `jbu` |
 | 十／10 | `lfu` | `lfv` |
-
-**十一場景 5500 字最佳路徑全按鍵鍵頻**
-
-![QZ-e8f37a 21×21 雙拼 5500 字最佳路徑全按鍵鍵頻圖](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
-
-5500 字十一場景的實際最佳路徑共 9,444 鍵，其中空格 376、Shift 307；原始統計見 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
 
 ### 固頂、空桶與逐級簡碼
 

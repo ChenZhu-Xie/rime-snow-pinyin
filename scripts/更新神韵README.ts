@@ -1566,6 +1566,7 @@ type LayoutDocumentationOrder = {
 	letterHeading: string;
 	rulesHeading: string;
 	mappingHeading: string;
+	pureHeatHeading: string;
 	heatHeading: string;
 };
 
@@ -1586,25 +1587,29 @@ function reorderLayoutDocumentation(
 	const letterStart = section.indexOf(order.letterHeading);
 	const rulesStart = section.indexOf(order.rulesHeading);
 	const mappingStart = section.indexOf(order.mappingHeading);
+	const pureHeatStart = section.indexOf(order.pureHeatHeading);
 	const heatStart = section.indexOf(order.heatHeading);
 	if (
 		letterStart < 0 ||
 		rulesStart < 0 ||
 		mappingStart < 0 ||
+		pureHeatStart < 0 ||
 		heatStart < 0 ||
 		!(
 			letterStart < rulesStart &&
 			rulesStart < mappingStart &&
-			mappingStart < heatStart
+			mappingStart < pureHeatStart &&
+			pureHeatStart < heatStart
 		)
 	)
 		throw new Error(`README 布局子节结构异常：${layoutHeading}`);
 	const prefix = section.slice(0, letterStart);
 	const letter = section.slice(letterStart, rulesStart).trimEnd();
 	const rules = section.slice(rulesStart, mappingStart).trimEnd();
-	const mapping = section.slice(mappingStart, heatStart).trimEnd();
+	const mapping = section.slice(mappingStart, pureHeatStart).trimEnd();
+	const pureHeat = section.slice(pureHeatStart, heatStart).trimEnd();
 	const suffix = section.slice(heatStart);
-	return `${markdown.slice(0, start)}${prefix}${mapping}\n\n${rules}\n\n${letter}\n\n${suffix}${markdown.slice(end)}`;
+	return `${markdown.slice(0, start)}${prefix}${mapping}\n\n${pureHeat}\n\n${suffix.trimEnd()}\n\n${rules}\n\n${letter}\n\n${markdown.slice(end)}`;
 }
 
 function replaceCurrentLayoutDocumentation(
@@ -1659,6 +1664,12 @@ ${mappingTable(activeD3Layout.finalMap, ["韵母", "次键"])}
 
 ![D3/V1 21×26 双拼声韵键盘图](docs/shenyun-d3v1-keyboard.svg)
 
+**日常八场景文稿纯双拼键频图（含标点）**
+
+![D3/V1 21×26 双拼纯双拼键频图](docs/shenyun-d3v1-keyboard-heat.svg)
+
+键频图由 benchmark 页面内置的 \`r9MacroHeat\` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
+
 **十一场景 5500 字最优路径全按键键频**
 
 ![D3/V1 21×26 双拼 5500 字最优路径全按键键频图](docs/shenyun-d3v1-5500-keyboard-heat.svg)
@@ -1696,6 +1707,12 @@ ${mappingTable(activeQzLayout.finalMap, ["韵母", "次键"])}
 **声母—韵母映射**
 
 ![QZ-e8f37a 21×21 双拼声韵键盘图](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**日常八场景文稿纯双拼键频图（含标点）**
+
+![QZ-e8f37a 21×21 双拼纯双拼键频图](docs/shenyun-qz-e8f37a-keyboard-heat.svg)
+
+键频图由 benchmark 页面内置的 \`r9MacroHeat\` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
 
 **十一场景 5500 字最优路径全按键键频**
 
@@ -1764,6 +1781,12 @@ ${mappingTable(activeD3Layout.finalMap, ["Final", "Second key"])}
 
 ![D3/V1 21×26 initial/final keyboard map](docs/shenyun-d3v1-keyboard.svg)
 
+**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
+
+![D3/V1 21×26 pure-double-pinyin key-frequency map](docs/shenyun-d3v1-keyboard-heat.svg)
+
+The map is exported directly from the current layout through the benchmark page's built-in \`r9MacroHeat\`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
+
 **Eleven-scenario optimal-path all-key frequency over 5,500 characters**
 
 ![D3/V1 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-d3v1-5500-keyboard-heat.svg)
@@ -1801,6 +1824,12 @@ ${mappingTable(activeQzLayout.finalMap, ["Final", "Second key"])}
 **Initial–final mapping**
 
 ![QZ-e8f37a 21×21 initial/final keyboard map](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
+
+![QZ-e8f37a 21×21 pure-double-pinyin key-frequency map](docs/shenyun-qz-e8f37a-keyboard-heat.svg)
+
+The map is exported directly from the current layout through the benchmark page's built-in \`r9MacroHeat\`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
 
 **Eleven-scenario optimal-path all-key frequency over 5,500 characters**
 
@@ -1869,6 +1898,12 @@ ${mappingTable(activeD3Layout.finalMap, ["韻母", "次鍵"])}
 
 ![D3/V1 21×26 雙拼聲韻鍵盤圖](docs/shenyun-d3v1-keyboard.svg)
 
+**日常八場景文稿純雙拼鍵頻圖（含標點）**
+
+![D3/V1 21×26 雙拼純雙拼鍵頻圖](docs/shenyun-d3v1-keyboard-heat.svg)
+
+鍵頻圖由 benchmark 頁面內建的 \`r9MacroHeat\` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
+
 **十一場景 5500 字最佳路徑全按鍵鍵頻**
 
 ![D3/V1 21×26 雙拼 5500 字最佳路徑全按鍵鍵頻圖](docs/shenyun-d3v1-5500-keyboard-heat.svg)
@@ -1906,6 +1941,12 @@ ${mappingTable(activeQzLayout.finalMap, ["韻母", "次鍵"])}
 **聲母—韻母映射**
 
 ![QZ-e8f37a 21×21 雙拼聲韻鍵盤圖](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**日常八場景文稿純雙拼鍵頻圖（含標點）**
+
+![QZ-e8f37a 21×21 雙拼純雙拼鍵頻圖](docs/shenyun-qz-e8f37a-keyboard-heat.svg)
+
+鍵頻圖由 benchmark 頁面內建的 \`r9MacroHeat\` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
 
 **十一場景 5500 字最佳路徑全按鍵鍵頻**
 
@@ -1959,6 +2000,7 @@ ${zhtBenchmark}
 				letterHeading: "#### 英数入口",
 				rulesHeading: "#### 声韵编码规则",
 				mappingHeading: "**声母—韵母映射**",
+				pureHeatHeading: "**日常八场景文稿纯双拼键频图（含标点）**",
 				heatHeading: "**十一场景 5500 字最优路径全按键键频**",
 			},
 		],
@@ -1969,6 +2011,7 @@ ${zhtBenchmark}
 				letterHeading: "#### 英数入口",
 				rulesHeading: "#### 声韵编码规则",
 				mappingHeading: "**声母—韵母映射**",
+				pureHeatHeading: "**日常八场景文稿纯双拼键频图（含标点）**",
 				heatHeading: "**十一场景 5500 字最优路径全按键键频**",
 			},
 		],
@@ -1979,6 +2022,8 @@ ${zhtBenchmark}
 				letterHeading: "#### Letter and number entry",
 				rulesHeading: "#### Initial and final coding rules",
 				mappingHeading: "**Initial–final mapping**",
+				pureHeatHeading:
+					"**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**",
 				heatHeading:
 					"**Eleven-scenario optimal-path all-key frequency over 5,500 characters**",
 			},
@@ -1990,6 +2035,8 @@ ${zhtBenchmark}
 				letterHeading: "#### Letter and number entry",
 				rulesHeading: "#### Initial and final coding rules",
 				mappingHeading: "**Initial–final mapping**",
+				pureHeatHeading:
+					"**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**",
 				heatHeading:
 					"**Eleven-scenario optimal-path all-key frequency over 5,500 characters**",
 			},
@@ -2001,6 +2048,7 @@ ${zhtBenchmark}
 				letterHeading: "#### 英數入口",
 				rulesHeading: "#### 聲韻編碼規則",
 				mappingHeading: "**聲母—韻母映射**",
+				pureHeatHeading: "**日常八場景文稿純雙拼鍵頻圖（含標點）**",
 				heatHeading: "**十一場景 5500 字最佳路徑全按鍵鍵頻**",
 			},
 		],
@@ -2011,6 +2059,7 @@ ${zhtBenchmark}
 				letterHeading: "#### 英數入口",
 				rulesHeading: "#### 聲韻編碼規則",
 				mappingHeading: "**聲母—韻母映射**",
+				pureHeatHeading: "**日常八場景文稿純雙拼鍵頻圖（含標點）**",
 				heatHeading: "**十一場景 5500 字最佳路徑全按鍵鍵頻**",
 			},
 		],
