@@ -21,14 +21,6 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump(label)
-    local result = {}
-    for i, v in ipairs(cand) do
-      if i > 12 then break end
-      result[#result + 1] = i .. ":" .. v.text .. "[" .. tostring(v.comment) .. "]"
-    end
-    return label .. " preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " cand=" .. table.concat(result, "|")
-  end
 deploy:
   schema_menu:
     tests:
@@ -49,8 +41,8 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: bxpyvo
-        assert: error(dump("sentence"))
+      - send: bkxepryr
+        assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
@@ -172,8 +164,8 @@ deploy:
       # 顶功
       - send: yfgsyfgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bkovxeooa
-        assert: error(dump("popping"))
+      - send: bkovxev
+        assert: commit == "冰" and cand[1].text == "雪"
       - send: pryrlrf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 强制上屏尾字；原 d/l 一码仍然保留
@@ -208,8 +200,8 @@ deploy:
       - send: "o whv2gc2tlxr  wgtx"
         assert: cand[1].text == "5G通信"
       # 健道和弎拼的元音字母简拼都使用共享载体 x。
-      - send: "o dkou epoi{Down}{Down}{space}xw{Down}{space}mtv{Down}{Down}{space} dlxm"
-        assert: error(dump("doraemon"))
+      - send: "o dkou epoi{Down}{Down}{space}xw mtv{Down}{Down}{space} dexm"
+        assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:
     tests:

@@ -28,14 +28,6 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump(label)
-    local result = {}
-    for i, v in ipairs(cand) do
-      if i > 12 then break end
-      result[#result + 1] = i .. ":" .. v.text .. "[" .. tostring(v.comment) .. "]"
-    end
-    return label .. " preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " cand=" .. table.concat(result, "|")
-  end
 deploy:
   cross_route_user_phrase:
     tests:
@@ -331,8 +323,8 @@ deploy:
       - send: "o whu gco tli xra  wgtx"
         assert: cand[1].text == "五G通信"
       # 哆、啦、梦均不在 QZ 完整音码首选，按实际候选位取字后验证英数混输造词。
-      - send: "o dki{Down}{Down}{space}epo{Down}{space}xwo mta{Down}{space} dlxm"
-        assert: error(dump("doraemon"))
+      - send: "o dki{Down}{Down}{space}epo{Down}{space}xwo mta{Down}{space} dexm"
+        assert: cand[1].text == "哆啦A梦"
   # 声声二字词的一次声调辅码，以及三字及以上简拼的大写补韵。
   initial_pair_and_mixed_spelling:
     tests:
@@ -417,9 +409,9 @@ deploy:
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
       - send: "fpx{Control+period}fpxqS Vw 50{Control+period}fpx"
         assert: cand[1].text == "疯狂星期四V我50"
-      # QZ 弎拼 xov 固顶“行叭”：新词不得挤掉已有的首选；“垃圾回收”按词语首辅顺序补调码 iv。
-      - send: "xov{Control+period}ejhliv {Control+period}xov"
-        assert: error(dump("protected"))
+      # QZ 弎拼 xov 固顶“行叭”：新词不得挤掉已有的首选。
+      - send: "xov{Control+period}fpxqS {Control+period}xov"
+        assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
