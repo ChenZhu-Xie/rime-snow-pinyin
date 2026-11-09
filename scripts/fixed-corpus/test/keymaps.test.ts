@@ -36,19 +36,19 @@ const schemes = [
 const firstGenerationKeymaps = [
 	[
 		"snow_jiandao_first.svg",
-		"c8ce4a129b8048d806d70865a5e35ec27a89e6961a16723685b6074251e7a376",
+		"2c4839b8e1660d3633545e73d86b4072f83dd53b6bf02ce3863656baee22de01",
 	],
 	[
 		"snow_sanpin_first.svg",
-		"5a27e29183a85d5336d855ac30234887f257638d9156d76bcbb60c20d5d6f2d0",
+		"32cd34be777180ff7ce530ab455e6285131a3d23f13d39c859101d9dd2cb4b57",
 	],
 	[
 		"snow_shenyun_shape_first.svg",
-		"e75571db8a8e21f0346d3e400c03307375e97a6e46b735ae8215cedf4d817144",
+		"80d7d93aab0caf2f869891ab171e4367440fe6a117b816ca94cba35e77b352fb",
 	],
 	[
 		"snow_shenyun_tone_first.svg",
-		"d2a43939013bf5ef768442fe486445b5a20eaf0e141dd39710db87b1405c45ec",
+		"ff5f8116b274647f0bac80ccc89e447a3e89a8701f7d992f4141250e687f6941",
 	],
 ] as const;
 
@@ -212,6 +212,45 @@ test("active diagrams identify QZ-e8f37a and D3/V1 while initial diagrams stay f
 		assert.match(svg, new RegExp(label.replace("/", "\\/"), "u"));
 		assert.equal([...svg.matchAll(/data-key="[A-Z]"/gu)].length, 26, image);
 	}
+});
+
+test("README diagrams preserve source-to-target link colors from benchmark", () => {
+	for (const [image, source, target, initial, color] of [
+		["docs/shenyun-d3v1-keyboard.svg", "Q", "F", "q", "#e83e8c"],
+		["docs/shenyun-d3v1-keyboard.svg", "S", "Q", "s", "#00a651"],
+		["docs/shenyun-d3v1-keyboard.svg", "X", "Y", "x", "#7e57c2"],
+		["docs/shenyun-qz-e8f37a-keyboard.svg", "K", "P", "k", "#00acc1"],
+		["docs/shenyun-qz-e8f37a-keyboard.svg", "L", "E", "l", "#fb8c00"],
+	] as const) {
+		const svg = read(image);
+		assert.match(
+			keyGroup(svg, source),
+			new RegExp(
+				`<text\\b[^>]*fill="${color}"[^>]*font-weight="500"[^>]*>${source}<\\/text>`,
+				"u",
+			),
+		);
+		assert.match(
+			keyGroup(svg, target),
+			new RegExp(
+				`<text\\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*fill="${color}"[^>]*>${initial}<\\/text>`,
+				"u",
+			),
+		);
+	}
+	const d3 = read("docs/shenyun-d3v1-keyboard.svg");
+	assert.match(
+		keyGroup(d3, "J"),
+		/fill="#e2edf0" stroke="#789aa2"[^>]*stroke-dasharray="4 2"/u,
+	);
+	assert.match(
+		keyGroup(d3, "W"),
+		/fill="#f0e5ec" stroke="#aa879e"[^>]*stroke-dasharray="4 2"/u,
+	);
+	assert.match(
+		keyGroup(d3, "Y"),
+		/fill="#f1e4e1" stroke="#ad8178"[^>]*stroke-dasharray="4 2"/u,
+	);
 });
 
 test("tone and shape diagrams keep their auxiliary semantics separate", () => {
@@ -414,19 +453,19 @@ test("both Shenyun diagrams keep the crowded er and u finals readable", () => {
 	}
 });
 
-test("only vacated traditional initials soften their physical keycap letters", () => {
+test("moved initials pair source keycaps with target labels by distinct colors", () => {
 	const softenedKeys: Record<string, string> = {
 		"snow_sipin.svg": "",
 		"snow_sanpin.svg": "KL",
 		"snow_jiandao.svg": "KL",
 		"snow_sanpin_classic.svg": "",
 		"snow_jiandao_classic.svg": "",
-		"snow_shenyun_shape.svg": "QSX",
-		"snow_shenyun_tone.svg": "QSX",
-		"snow_jiandao_first.svg": "",
-		"snow_sanpin_first.svg": "",
-		"snow_shenyun_shape_first.svg": "F",
-		"snow_shenyun_tone_first.svg": "F",
+		"snow_shenyun_shape.svg": "QWSYX",
+		"snow_shenyun_tone.svg": "QWSYX",
+		"snow_jiandao_first.svg": "W",
+		"snow_sanpin_first.svg": "W",
+		"snow_shenyun_shape_first.svg": "FW",
+		"snow_shenyun_tone_first.svg": "FW",
 	};
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
@@ -437,30 +476,86 @@ test("only vacated traditional initials soften their physical keycap letters", (
 			)?.[0];
 			assert.ok(keycap, `${image} should label keycap ${key}`);
 			const keycapWeight = Number(keycap.match(/font-weight="([^"]+)"/u)?.[1]);
-			const displacedInitial = group.match(
-				/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u,
-			)?.[0];
 			const shouldSoften = softenedKeys[image].includes(key);
 			assert.equal(
 				keycapWeight,
 				shouldSoften ? 500 : 800,
-				`${image} ${key} should follow only its same-letter traditional initial`,
+				`${image} ${key} should follow its same-letter traditional or W/Y zero initial`,
 			);
-			if (displacedInitial) {
-				const keycapColor = keycap.match(/fill="([^"]+)"/u)?.[1];
-				const initialColor = displacedInitial.match(/fill="([^"]+)"/u)?.[1];
-				assert.equal(keycapColor, "#c02f4b");
-				assert.equal(initialColor, keycapColor);
-				assert.match(displacedInitial, /text-decoration="underline"/u);
-				assert.match(displacedInitial, /font-weight="700"/u);
-			}
 		}
 	}
+	const linkCases = [
+		["snow_shenyun_shape.svg", "Q", "F", "q", "#e83e8c"],
+		["snow_shenyun_shape.svg", "S", "Q", "s", "#00a651"],
+		["snow_shenyun_shape.svg", "X", "Y", "x", "#7e57c2"],
+		["snow_jiandao.svg", "K", "P", "k", "#00acc1"],
+		["snow_jiandao.svg", "L", "E", "l", "#fb8c00"],
+		["snow_shenyun_shape_first.svg", "F", "J", "f", "#00897b"],
+	] as const;
+	for (const [image, source, target, initial, color] of linkCases) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		const sourceKeycap = keyGroup(svg, source).match(
+			/<text\b[^>]*data-key-label="true"[^>]*>/u,
+		)?.[0];
+		const targetInitial = keyGroup(svg, target).match(
+			new RegExp(
+				`<text\\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*fill="([^"]+)"[^>]*>${initial}<\\/text>`,
+				"u",
+			),
+		);
+		assert.ok(sourceKeycap, `${image} should contain source ${source}`);
+		assert.ok(
+			targetInitial,
+			`${image} should contain target ${target}/${initial}`,
+		);
+		assert.equal(sourceKeycap.match(/fill="([^"]+)"/u)?.[1], color);
+		assert.equal(targetInitial[1], color);
+		assert.match(sourceKeycap, /font-weight="500"/u);
+	}
+	assert.notEqual(linkCases[0][4], linkCases[1][4]);
+	assert.notEqual(linkCases[0][4], linkCases[2][4]);
+
 	const d3F = keyGroup(read("lua/snow/keymaps/snow_shenyun_shape.svg"), "F");
 	const d3FKeycap = d3F.match(/<text\b[^>]*data-key-label="true"[^>]*>/u)?.[0];
 	assert.ok(d3FKeycap);
 	assert.match(d3FKeycap, /font-weight="800"/u);
 	assert.match(d3F, />q<\/text>/u);
+});
+
+test("moved W/Y zero initials use separate Morandi foregrounds and cards", () => {
+	const svg = read("lua/snow/keymaps/snow_shenyun_shape.svg");
+	for (const [source, target, label, foreground, background, border] of [
+		["W", "J", "Ø W", "#5f7f86", "#e2edf0", "#789aa2"],
+		["Y", "W", "Ø Y/YU", "#8a6d82", "#f0e5ec", "#aa879e"],
+	] as const) {
+		const sourceKeycap = keyGroup(svg, source).match(
+			/<text\b[^>]*data-key-label="true"[^>]*>/u,
+		)?.[0];
+		const targetGroup = keyGroup(svg, target);
+		assert.ok(sourceKeycap);
+		assert.match(sourceKeycap, new RegExp(`fill="${foreground}"`, "u"));
+		assert.match(sourceKeycap, /font-weight="500"/u);
+		assert.match(
+			targetGroup,
+			new RegExp(
+				`<rect\\b[^>]*fill="${background}"[^>]*stroke="${border}"[^>]*stroke-dasharray="4 2"`,
+				"u",
+			),
+		);
+		assert.match(
+			targetGroup,
+			new RegExp(
+				`<text\\b[^>]*font-style="italic"[^>]*fill="${foreground}"[^>]*>${label}<\\/text>`,
+				"u",
+			),
+		);
+	}
+	const aeoTarget = keyGroup(svg, "Y");
+	assert.match(aeoTarget, /fill="#f1e4e1" stroke="#ad8178"/u);
+	assert.match(
+		aeoTarget,
+		/font-style="italic" fill="#765b5c">Ø A\/E\/O<\/text>/u,
+	);
 });
 
 test("KeyTao final e does not inherit keycap emphasis", () => {

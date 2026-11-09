@@ -854,43 +854,117 @@ function render(diagram: Diagram) {
 }
 
 const traditionalInitials = new Set([..."bpmfdtnlgkhjqxrzcs"]);
-const displacedInitialColor = "#c02f4b";
+const initialLinkColors: Record<string, string> = {
+	b: "#d81b60",
+	p: "#e64a19",
+	m: "#8e24aa",
+	f: "#00897b",
+	d: "#1e88e5",
+	t: "#f4511e",
+	n: "#43a047",
+	l: "#fb8c00",
+	g: "#3949ab",
+	k: "#00acc1",
+	h: "#7cb342",
+	j: "#c2185b",
+	q: "#e83e8c",
+	x: "#7e57c2",
+	r: "#ef6c00",
+	z: "#0097a7",
+	c: "#5e35b1",
+	s: "#00a651",
+};
+const zeroInitialLinkStyles = {
+	W: { foreground: "#5f7f86", background: "#e2edf0", border: "#789aa2" },
+	Y: { foreground: "#8a6d82", background: "#f0e5ec", border: "#aa879e" },
+} as const;
 
-function styleDisplacedInitials(svg: string, mapping?: Mapping) {
+function initialTarget(mapping: Mapping, initial: string) {
+	return mapping.initialMap[initial]?.toUpperCase();
+}
+
+function zeroInitialTarget(mapping: Mapping, carrier: "W" | "Y") {
+	return (
+		mapping.initialMap[carrier] ?? mapping.initialMap[carrier.toLowerCase()]
+	)?.toUpperCase();
+}
+
+function styleInitialLinks(svg: string, mapping?: Mapping) {
 	return svg.replace(
 		/<g data-key="([A-Z])"[\s\S]*?(?=<g data-key=|<text x="24" y="535")/gu,
 		(group, key: string) => {
 			const source = key.toLowerCase();
-			const homeInitialMoved =
+			const movedInitial =
 				mapping !== undefined &&
 				traditionalInitials.has(source) &&
-				mapping.initialMap[source]?.toUpperCase() !== key;
-			const displacedInitial =
-				/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u.test(
-					group,
-				);
+				initialTarget(mapping, source) !== key;
+			const movedZeroCarrier =
+				mapping === undefined
+					? undefined
+					: (["W", "Y"] as const).find(
+							(carrier) =>
+								carrier === key && zeroInitialTarget(mapping, carrier) !== key,
+						);
+			const sourceColor = movedInitial
+				? initialLinkColors[source]
+				: movedZeroCarrier
+					? zeroInitialLinkStyles[movedZeroCarrier].foreground
+					: "#4f5962";
 			let styled = group.replace(
 				/<text\b[^>]*data-key-label="true"[^>]*>/u,
 				(keycap) =>
 					keycap
 						.replace(
 							/font-weight="(?:500|800)"/u,
-							`font-weight="${homeInitialMoved ? 500 : 800}"`,
+							`font-weight="${movedInitial || movedZeroCarrier ? 500 : 800}"`,
 						)
-						.replace(
-							/fill="#[0-9a-fA-F]{6}"/u,
-							`fill="${displacedInitial ? displacedInitialColor : "#4f5962"}"`,
-						),
+						.replace(/fill="#[0-9a-fA-F]{6}"/u, `fill="${sourceColor}"`),
 			);
-			if (displacedInitial) {
+			if (mapping) {
+				const incomingInitial = [...traditionalInitials].find(
+					(initial) =>
+						initialTarget(mapping, initial) === key &&
+						initialTarget(mapping, initial) !== initial.toUpperCase(),
+				);
 				styled = styled.replace(
 					/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u,
-					(initial) =>
-						initial.replace(
+					(initialLabel) =>
+						initialLabel.replace(
 							/fill="#[0-9a-fA-F]{6}"/u,
-							`fill="${displacedInitialColor}"`,
+							`fill="${incomingInitial ? initialLinkColors[incomingInitial] : "#66506a"}"`,
 						),
 				);
+
+				const incomingZeroCarrier = (["W", "Y"] as const).find(
+					(carrier) =>
+						zeroInitialTarget(mapping, carrier) === key &&
+						zeroInitialTarget(mapping, carrier) !== carrier,
+				);
+				const zeroStyle = incomingZeroCarrier
+					? zeroInitialLinkStyles[incomingZeroCarrier]
+					: {
+							foreground: "#765b5c",
+							background: "#f1e4e1",
+							border: "#ad8178",
+						};
+				styled = styled
+					.replace(/<rect\b[^>]*stroke-dasharray="4 2"[^>]*>/u, (zeroCard) =>
+						zeroCard
+							.replace(
+								/fill="#[0-9a-fA-F]{6}"/u,
+								`fill="${zeroStyle.background}"`,
+							)
+							.replace(
+								/stroke="#[0-9a-fA-F]{6}"/u,
+								`stroke="${zeroStyle.border}"`,
+							),
+					)
+					.replace(/<text\b[^>]*font-style="italic"[^>]*>/u, (zeroLabel) =>
+						zeroLabel.replace(
+							/fill="#[0-9a-fA-F]{6}"/u,
+							`fill="${zeroStyle.foreground}"`,
+						),
+					);
 			}
 			return styled;
 		},
@@ -911,7 +985,7 @@ function update(path: string, content: Uint8Array | string) {
 }
 
 for (const diagram of diagrams) {
-	const svg = styleDisplacedInitials(render(diagram), diagram.mapping);
+	const svg = styleInitialLinks(render(diagram), diagram.mapping);
 	update(join(outputDirectory, `${diagram.filename}.svg`), svg);
 	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })
 		.render()
@@ -926,7 +1000,7 @@ for (const [filename, mapping] of [
 	["snow_shenyun_tone_first", overall17First],
 ] as const) {
 	const svgPath = join(outputDirectory, `${filename}.svg`);
-	const svg = styleDisplacedInitials(
+	const svg = styleInitialLinks(
 		readFileSync(svgPath, "utf8").replace(/\r\n?/gu, "\n"),
 		mapping,
 	);
