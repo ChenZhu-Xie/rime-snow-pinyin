@@ -858,7 +858,7 @@ const initialLinkColors: Record<string, string> = {
 	b: "#d81b60",
 	p: "#e64a19",
 	m: "#8e24aa",
-	f: "#00897b",
+	f: "#009b88",
 	d: "#1e88e5",
 	t: "#f4511e",
 	n: "#43a047",
@@ -868,15 +868,15 @@ const initialLinkColors: Record<string, string> = {
 	h: "#7cb342",
 	j: "#c2185b",
 	q: "#e83e8c",
-	x: "#7e57c2",
+	x: "#005bd8",
 	r: "#ef6c00",
 	z: "#0097a7",
 	c: "#5e35b1",
 	s: "#00a651",
 };
 const zeroInitialLinkStyles = {
-	W: { foreground: "#5f7f86", background: "#e2edf0", border: "#789aa2" },
-	Y: { foreground: "#8a6d82", background: "#f0e5ec", border: "#aa879e" },
+	W: { foreground: "#3e98b0", background: "#deedf1", border: "#6e9eaa" },
+	Y: { foreground: "#b67747", background: "#f2e5da", border: "#b88a68" },
 } as const;
 
 function initialTarget(mapping: Mapping, initial: string) {

@@ -19,6 +19,41 @@ const keyGroup = (svg: string, key: string) =>
 		),
 	)?.[0] ?? "";
 
+function oklab(hex: string) {
+	const [red, green, blue] =
+		hex
+			.slice(1)
+			.match(/../gu)
+			?.map((component) => Number.parseInt(component, 16) / 255)
+			.map((component) =>
+				component <= 0.04045
+					? component / 12.92
+					: ((component + 0.055) / 1.055) ** 2.4,
+			) ?? [];
+	const long = Math.cbrt(
+		0.4122214708 * red + 0.5363325363 * green + 0.0514459929 * blue,
+	);
+	const medium = Math.cbrt(
+		0.2119034982 * red + 0.6806995451 * green + 0.1073969566 * blue,
+	);
+	const short = Math.cbrt(
+		0.0883024619 * red + 0.2817188376 * green + 0.6299787005 * blue,
+	);
+	return [
+		0.2104542553 * long + 0.793617785 * medium - 0.0040720468 * short,
+		1.9779984951 * long - 2.428592205 * medium + 0.4505937099 * short,
+		0.0259040371 * long + 0.7827717662 * medium - 0.808675766 * short,
+	];
+}
+
+function colorDistance(left: string, right: string) {
+	const leftLab = oklab(left);
+	const rightLab = oklab(right);
+	return Math.hypot(
+		...leftLab.map((component, index) => component - rightLab[index]),
+	);
+}
+
 const schemes = [
 	["snow_sipin.schema.yaml", "e", "snow_sipin.svg"],
 	["snow_sanpin.schema.yaml", "v", "snow_sanpin.svg"],
@@ -36,19 +71,19 @@ const schemes = [
 const firstGenerationKeymaps = [
 	[
 		"snow_jiandao_first.svg",
-		"2c4839b8e1660d3633545e73d86b4072f83dd53b6bf02ce3863656baee22de01",
+		"d0cde710e1b352910cfba942eeb00fa4f08244854c7a0043afb18304b5b0524d",
 	],
 	[
 		"snow_sanpin_first.svg",
-		"32cd34be777180ff7ce530ab455e6285131a3d23f13d39c859101d9dd2cb4b57",
+		"580fa97dc777fef11f8b9291734107bbc093ba562f9aa053f6f49178295f09bd",
 	],
 	[
 		"snow_shenyun_shape_first.svg",
-		"80d7d93aab0caf2f869891ab171e4367440fe6a117b816ca94cba35e77b352fb",
+		"6c7b6236fa29b67baa817e06af7fe4bb2fb49891d91a14fea1f016016a208215",
 	],
 	[
 		"snow_shenyun_tone_first.svg",
-		"ff5f8116b274647f0bac80ccc89e447a3e89a8701f7d992f4141250e687f6941",
+		"240539b88f74b0d513b849857f0cce4427329f64b801dac33d0dab9b323cba8f",
 	],
 ] as const;
 
@@ -218,7 +253,7 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 	for (const [image, source, target, initial, color] of [
 		["docs/shenyun-d3v1-keyboard.svg", "Q", "F", "q", "#e83e8c"],
 		["docs/shenyun-d3v1-keyboard.svg", "S", "Q", "s", "#00a651"],
-		["docs/shenyun-d3v1-keyboard.svg", "X", "Y", "x", "#7e57c2"],
+		["docs/shenyun-d3v1-keyboard.svg", "X", "Y", "x", "#005bd8"],
 		["docs/shenyun-qz-e8f37a-keyboard.svg", "K", "P", "k", "#00acc1"],
 		["docs/shenyun-qz-e8f37a-keyboard.svg", "L", "E", "l", "#fb8c00"],
 	] as const) {
@@ -241,11 +276,11 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 	const d3 = read("docs/shenyun-d3v1-keyboard.svg");
 	assert.match(
 		keyGroup(d3, "J"),
-		/fill="#e2edf0" stroke="#789aa2"[^>]*stroke-dasharray="4 2"/u,
+		/fill="#deedf1" stroke="#6e9eaa"[^>]*stroke-dasharray="4 2"/u,
 	);
 	assert.match(
 		keyGroup(d3, "W"),
-		/fill="#f0e5ec" stroke="#aa879e"[^>]*stroke-dasharray="4 2"/u,
+		/fill="#f2e5da" stroke="#b88a68"[^>]*stroke-dasharray="4 2"/u,
 	);
 	assert.match(
 		keyGroup(d3, "Y"),
@@ -487,10 +522,10 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 	const linkCases = [
 		["snow_shenyun_shape.svg", "Q", "F", "q", "#e83e8c"],
 		["snow_shenyun_shape.svg", "S", "Q", "s", "#00a651"],
-		["snow_shenyun_shape.svg", "X", "Y", "x", "#7e57c2"],
+		["snow_shenyun_shape.svg", "X", "Y", "x", "#005bd8"],
 		["snow_jiandao.svg", "K", "P", "k", "#00acc1"],
 		["snow_jiandao.svg", "L", "E", "l", "#fb8c00"],
-		["snow_shenyun_shape_first.svg", "F", "J", "f", "#00897b"],
+		["snow_shenyun_shape_first.svg", "F", "J", "f", "#009b88"],
 	] as const;
 	for (const [image, source, target, initial, color] of linkCases) {
 		const svg = read(`lua/snow/keymaps/${image}`);
@@ -522,11 +557,43 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 	assert.match(d3F, />q<\/text>/u);
 });
 
+test("every moved initial contrasts strongly with the initial letter on its key", () => {
+	const minimumDistance = 0.18;
+	for (const [, , image] of schemes) {
+		const svg = read(`lua/snow/keymaps/${image}`);
+		for (const key of [..."QWERTYUIOPASDFGHJKLZXCVBNM"]) {
+			const group = keyGroup(svg, key);
+			const keycap = group.match(
+				/<text\b[^>]*data-key-label="true"[^>]*>/u,
+			)?.[0];
+			assert.ok(keycap, `${image} should label keycap ${key}`);
+			const keycapColor = keycap.match(/fill="(#[0-9a-f]{6})"/u)?.[1];
+			assert.ok(keycapColor);
+			const movedKeycap = /font-weight="500"/u.test(keycap);
+			const initialLabels = group.match(
+				/<text\b[^>]*(?:font-weight="700"[^>]*text-decoration="underline"|font-style="italic")[^>]*>[^<]+<\/text>/gu,
+			);
+			for (const label of initialLabels ?? []) {
+				if (/>Ø A\/E\/O<\/text>/u.test(label)) continue;
+				const labelColor = label.match(/fill="(#[0-9a-f]{6})"/u)?.[1];
+				assert.ok(labelColor);
+				const movedLabel = !["#66506a", "#765b5c"].includes(labelColor);
+				if (!movedKeycap && !movedLabel) continue;
+				const distance = colorDistance(keycapColor, labelColor);
+				assert.ok(
+					distance >= minimumDistance,
+					`${image} ${key} keycap ${keycapColor} and ${labelColor} initial should differ by at least ${minimumDistance}, got ${distance.toFixed(3)}`,
+				);
+			}
+		}
+	}
+});
+
 test("moved W/Y zero initials use separate Morandi foregrounds and cards", () => {
 	const svg = read("lua/snow/keymaps/snow_shenyun_shape.svg");
 	for (const [source, target, label, foreground, background, border] of [
-		["W", "J", "Ø W", "#5f7f86", "#e2edf0", "#789aa2"],
-		["Y", "W", "Ø Y/YU", "#8a6d82", "#f0e5ec", "#aa879e"],
+		["W", "J", "Ø W", "#3e98b0", "#deedf1", "#6e9eaa"],
+		["Y", "W", "Ø Y/YU", "#b67747", "#f2e5da", "#b88a68"],
 	] as const) {
 		const sourceKeycap = keyGroup(svg, source).match(
 			/<text\b[^>]*data-key-label="true"[^>]*>/u,
