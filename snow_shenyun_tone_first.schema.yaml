@@ -31,6 +31,7 @@ __patch:
   - snow_shenyun_tone_first.custom:/patch?
 
 patch:
+  translator/user_dict_name: snow_shenyun_tone
   translator/shape_elements: snow_bushou
   translator/shape_mapping: "radical_sanpin_first.txt"
   speller/shape:

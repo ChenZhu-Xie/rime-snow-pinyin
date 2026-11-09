@@ -119,10 +119,16 @@ test("经典 schema 保留迁移前名称并以独立 ID 进入发布方案", ()
 	);
 	assert.match(releasedJiandao, /schema_id: snow_jiandao_classic/u);
 	assert.match(releasedJiandao, /name: 冰雪键道/u);
-	assert.match(releasedJiandao, /translator\/user_dict_name: snow_jiandao/u);
+	assert.match(
+		releasedJiandao,
+		/translator\/user_dict_name: snow_jiandao_classic/u,
+	);
 	assert.match(releasedSanpin, /schema_id: snow_sanpin_classic/u);
 	assert.match(releasedSanpin, /name: 冰雪三拼/u);
-	assert.match(releasedSanpin, /translator\/user_dict_name: snow_sanpin/u);
+	assert.match(
+		releasedSanpin,
+		/translator\/user_dict_name: snow_sanpin_classic/u,
+	);
 	for (const file of ["lua/snow/fix.lua", "lua/snow/user_dict.lua"]) {
 		assert.match(
 			readFileSync(rootPath(file), "utf8"),

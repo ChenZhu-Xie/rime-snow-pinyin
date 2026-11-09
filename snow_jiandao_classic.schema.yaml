@@ -211,7 +211,7 @@ patch:
   translator/prism: snow_jiandao_classic
   translator/preedit_format: null
   translator/enable_schema_user_dict: true
-  translator/user_dict_name: snow_jiandao
+  translator/user_dict_name: snow_jiandao_classic
   translator/shape_elements: snow_jiandao_chaifen
   translator/shape_mapping: "radical_jiandao.txt"
   translator/reserved_initial_pair_pattern: "^(?:fc|gc|kc|hc|zc|cc|sc|rc|yc|wc|ec)$"

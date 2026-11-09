@@ -126,6 +126,45 @@ test("next-generation mappings preserve complete first-generation snapshots", ()
 	}
 });
 
+test("double-pinyin schemes isolate fixed-code databases while sharing snow_pinyin learning", () => {
+	const fixedDatabases = new Map([
+		["snow_jiandao.schema.yaml", "snow_jiandao_qz_e8f37a"],
+		["snow_sanpin.schema.yaml", "snow_sanpin_qz_e8f37a"],
+		["snow_shenyun_shape.schema.yaml", "snow_shenyun_shape_d3v1"],
+		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_d3v1"],
+		["snow_jiandao_first.schema.yaml", "snow_jiandao"],
+		["snow_sanpin_first.schema.yaml", "snow_sanpin"],
+		["snow_shenyun_shape_first.schema.yaml", "snow_shenyun_shape"],
+		["snow_shenyun_tone_first.schema.yaml", "snow_shenyun_tone"],
+		["snow_jiandao_classic.schema.yaml", "snow_jiandao_classic"],
+		["snow_sanpin_classic.schema.yaml", "snow_sanpin_classic"],
+	]);
+	assert.equal(new Set(fixedDatabases.values()).size, fixedDatabases.size);
+	for (const [file, database] of fixedDatabases) {
+		assert.match(
+			read(file),
+			new RegExp(`translator/user_dict_name: ${database}(?:\\r?\\n|$)`, "u"),
+			file,
+		);
+	}
+	for (const file of [
+		"snow_jiandao.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_jiandao_first.schema.yaml",
+		"snow_sanpin_first.schema.yaml",
+		"snow_jiandao_classic.schema.yaml",
+		"snow_sanpin_classic.schema.yaml",
+	]) {
+		assert.match(read(file), /dictionary: snow_pinyin/u, file);
+	}
+	for (const file of [
+		"snow_shenyun_common.yaml",
+		"snow_shenyun_first_common.yaml",
+	]) {
+		assert.match(read(file), /__include: snow_pinyin\.schema\.yaml:\//u, file);
+	}
+});
+
 test("active 21x21 mapping is QZ-e8f37a with QZ and ZQ vacant", () => {
 	const mapping = JSON.parse(read("config/shenyun-21x21-mapping.json")) as {
 		id: string;

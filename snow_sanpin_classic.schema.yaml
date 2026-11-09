@@ -244,7 +244,7 @@ patch:
   translator/prism: snow_sanpin_classic
   translator/preedit_format: null
   translator/enable_schema_user_dict: true
-  translator/user_dict_name: snow_sanpin
+  translator/user_dict_name: snow_sanpin_classic
   translator/shape_elements: snow_bushou
   translator/shape_mapping: "radical_sanpin.txt"
   translator/reserved_letter_pattern: "^(?:fca|gca|kca|hca|zca|cca|sca|rca|yca|wca|eca)$"

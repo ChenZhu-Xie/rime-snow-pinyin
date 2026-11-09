@@ -216,6 +216,7 @@ patch:
   translator/prism: snow_jiandao_first
   translator/preedit_format: null
   translator/enable_schema_user_dict: true
+  translator/user_dict_name: snow_jiandao
   translator/shape_elements: snow_jiandao_chaifen
   translator/shape_mapping: "radical_jiandao_first.txt"
   # xh/xw 同时是 U/A 的二键入口，不能让声声词候选改变缓冲模式的字母首选。

@@ -27,4 +27,8 @@ keymap:
   image: snow_shenyun_shape.svg
 
 __patch:
+  - patch
   - snow_shenyun_shape.custom:/patch?
+
+patch:
+  translator/user_dict_name: snow_shenyun_shape_d3v1
