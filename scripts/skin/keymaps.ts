@@ -8,6 +8,10 @@ export const keymapSchemes = [
 	["snow_shenyun_tone", "冰雪散拼"],
 	["snow_jiandao_classic", "冰雪键道"],
 	["snow_sanpin_classic", "冰雪三拼"],
+	["snow_jiandao_first", "冰雪健道·初代"],
+	["snow_sanpin_first", "冰雪弎拼·初代"],
+	["snow_shenyun_shape_first", "冰雪简道·初代"],
+	["snow_shenyun_tone_first", "冰雪散拼·初代"],
 ] as const;
 
 export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
@@ -17,11 +21,11 @@ export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 			colorful: false,
 			label: true,
 			keyInfos: [
-				keymapSchemes.slice(0, 4).map(([id, name]) => ({
+				keymapSchemes.slice(0, 6).map(([id, name]) => ({
 					action: `!keymap_${id}`,
 					label: name,
 				})),
-				keymapSchemes.slice(4).map(([id, name]) => ({
+				keymapSchemes.slice(6).map(([id, name]) => ({
 					action: `!keymap_${id}`,
 					label: name,
 				})),

@@ -27,13 +27,11 @@ const scheme = JSON.parse(
 	finalMap: Record<string, string>;
 };
 const targetSchemeId = is21x26 ? scheme.id : (scheme.candidateId ?? scheme.id);
-const displayName = is21x26
-	? "神韵(Overall-17) 21×26 双拼"
-	: "无飞键道(U357) 21×21 双拼";
+const displayName = is21x26 ? "神韵(D3/V1) 21×26 双拼" : "QZ-e8f37a 21×21 双拼";
 const outputPath = join(
 	root,
 	"docs",
-	is21x26 ? "shenyun-overall17-keyboard.svg" : "shenyun-u357-keyboard.svg",
+	is21x26 ? "shenyun-d3v1-keyboard.svg" : "shenyun-qz-e8f37a-keyboard.svg",
 );
 
 const check = args.includes("--check");

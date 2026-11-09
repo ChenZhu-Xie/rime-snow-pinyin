@@ -315,14 +315,14 @@ const diagrams: Diagram[] = [
 	},
 	{
 		filename: "snow_sanpin",
-		title: "冰雪弎拼 · 无飞键道(U357)",
+		title: "冰雪弎拼 · QZ-e8f37a",
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: toneNotes(u357),
 	},
 	{
 		filename: "snow_jiandao",
-		title: "冰雪健道 · 无飞键道(U357)",
+		title: "冰雪健道 · QZ-e8f37a",
 		subtitle: "21×21 声韵与形笔字根映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: shapeNotes(u357.shapeKeysByMeaning),
@@ -343,14 +343,14 @@ const diagrams: Diagram[] = [
 	},
 	{
 		filename: "snow_shenyun_tone",
-		title: "冰雪散拼 · 神韵(Overall-17)",
+		title: "冰雪散拼 · D3/V1",
 		subtitle: "21×26 声韵与声调映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: toneNotes(overall17),
 	},
 	{
 		filename: "snow_shenyun_shape",
-		title: "冰雪简道 · 神韵(Overall-17)",
+		title: "冰雪简道 · D3/V1",
 		subtitle: "21×26 声韵与形笔字根映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: shapeNotes(overall17.shapeKeysByMeaning),
@@ -863,6 +863,21 @@ for (const diagram of diagrams) {
 	update(join(outputDirectory, `${diagram.filename}.png`), png);
 }
 
+for (const filename of [
+	"snow_jiandao_first",
+	"snow_sanpin_first",
+	"snow_shenyun_shape_first",
+	"snow_shenyun_tone_first",
+]) {
+	const svg = readFileSync(join(outputDirectory, `${filename}.svg`), "utf8");
+	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })
+		.render()
+		.asPng();
+	update(join(outputDirectory, `${filename}.png`), png);
+}
+
 console.log(
-	check ? "七份键位图均为最新。" : `已生成七份键位图：${outputDirectory}`,
+	check
+		? "七份活动／经典键位图与四份初代 PNG 均为最新。"
+		: `已生成七份活动／经典键位图与四份初代 PNG：${outputDirectory}`,
 );

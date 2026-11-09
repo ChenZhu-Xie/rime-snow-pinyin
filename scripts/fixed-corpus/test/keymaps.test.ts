@@ -27,6 +27,10 @@ const schemes = [
 	["snow_jiandao_classic.schema.yaml", "v", "snow_jiandao_classic.svg"],
 	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.svg"],
 	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.svg"],
+	["snow_jiandao_first.schema.yaml", "v", "snow_jiandao_first.svg"],
+	["snow_sanpin_first.schema.yaml", "v", "snow_sanpin_first.svg"],
+	["snow_shenyun_shape_first.schema.yaml", "e", "snow_shenyun_shape_first.svg"],
+	["snow_shenyun_tone_first.schema.yaml", "e", "snow_shenyun_tone_first.svg"],
 ] as const;
 
 const firstGenerationKeymaps = [
@@ -60,7 +64,7 @@ test("first-generation schemes freeze their current keymaps", () => {
 	}
 });
 
-test("seven released schemes bind only their vacant standalone key to a keymap", () => {
+test("eleven released diagrams bind only their vacant standalone key to a keymap", () => {
 	for (const [schema, key, image] of schemes) {
 		const content = read(schema);
 		assert.match(
@@ -135,8 +139,8 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 			keyInfos: [[{ action: "e" }, { action: "v" }]],
 		},
 	});
-	assert.equal(Object.keys(keyboards).length, 9);
-	assert.equal(keyboards.keymaps.keyInfos.flat().length, 7);
+	assert.equal(Object.keys(keyboards).length, 13);
+	assert.equal(keyboards.keymaps.keyInfos.flat().length, 11);
 	const mobileImageKey = keyboards.keymap_snow_sipin.keyInfos[0][0] as {
 		action: string;
 		up?: string;
@@ -189,6 +193,25 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.equal(trime.preset_keys[trimeImageKey.long_click].select, undefined);
 	const sipinSelector = trime.preset_keyboards.keymaps.keys[0].click;
 	assert.equal(trime.preset_keys[sipinSelector].label, "冰雪四拼");
+	const firstSelector = trime.preset_keyboards.keymaps.keys.at(-1)?.click;
+	assert.equal(trime.preset_keys[firstSelector ?? ""].label, "冰雪散拼·初代");
+});
+
+test("active diagrams identify QZ-e8f37a and D3/V1 while initial diagrams stay frozen", () => {
+	for (const image of ["snow_jiandao.svg", "snow_sanpin.svg"]) {
+		assert.match(read(`lua/snow/keymaps/${image}`), /QZ-e8f37a/u);
+	}
+	for (const image of ["snow_shenyun_shape.svg", "snow_shenyun_tone.svg"]) {
+		assert.match(read(`lua/snow/keymaps/${image}`), /D3\/V1/u);
+	}
+	for (const [image, label] of [
+		["docs/shenyun-qz-e8f37a-keyboard.svg", "QZ-e8f37a"],
+		["docs/shenyun-d3v1-keyboard.svg", "D3/V1"],
+	] as const) {
+		const svg = read(image);
+		assert.match(svg, new RegExp(label.replace("/", "\\/"), "u"));
+		assert.equal([...svg.matchAll(/data-key="[A-Z]"/gu)].length, 26, image);
+	}
 });
 
 test("tone and shape diagrams keep their auxiliary semantics separate", () => {
