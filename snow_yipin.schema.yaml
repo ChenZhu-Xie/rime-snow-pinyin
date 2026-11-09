@@ -11,8 +11,9 @@ schema:
     - 张皓哲 <576440085@qq.com>
     - 谭淞宸 <i@tansongchen.com>
   description: |
-    带调拼音字词顶功输入方案
-    拼读并击的顶功和整句版，使用脚本翻译器来达到更好的打词体验
+    一击一个带调音节的并击顶功输入方案
+    单音节为 B、A、Ab，多音节为 Aa、Aaa、Aaaa，属于“一码顶”
+    拼读并击的顶功和整句版，使用脚本翻译器改善词语输入体验
   dependencies:
     - snow_pinyin
     - snow_xingpang

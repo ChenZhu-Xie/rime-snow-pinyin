@@ -56,10 +56,11 @@ local expected = {
   { "snow_shenyun_shape", "冰雪简道", "21¹26¹5⁴ 无重键道 没有 630" },
   { "snow_shenyun_tone", "冰雪散拼", "21¹26¹5ⁿ 无重三拼 顶功版廿六" },
   { "snow_sipin", "冰雪四拼", "21¹5ⁿ 动态调频 多音节词王" },
+  { "snow_yipin", "冰雪一拼", "1200⁴95¹ 顶功并击 带调音节/击" },
   { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
 }
 
-assert(#menu.entries == #expected, "方案数必须为 8")
+assert(#menu.entries == #expected, "方案数必须为 9")
 for index, item in ipairs(expected) do
   local entry = menu.entries[index]
   assert(entry.schema_id == item[1], "schema_id 顺序错误：" .. index)
@@ -73,6 +74,9 @@ assert(names(menu.filter_entries("jd")) == "冰雪键道|冰雪健道|冰雪简�
 assert(names(menu.filter_entries("jdjd")) == "冰雪键道", "jdjd 必须定位经典键道")
 assert(names(menu.filter_entries("lfjd")) == "冰雪健道", "lfjd 必须定位零飞键道")
 assert(names(menu.filter_entries("wzjd")) == "冰雪简道", "wzjd 必须定位无重键道")
+assert(names(menu.filter_entries("yp")) == "冰雪一拼", "yp 必须定位冰雪一拼")
+assert(names(menu.filter_entries("dgbj")) == "冰雪一拼", "描述声母必须定位顶功并击")
+assert(names(menu.filter_entries("dtyjj")) == "冰雪一拼", "描述声母必须定位带调音节每击")
 assert(names(menu.filter_entries("bxqy")) == "冰雪清韵", "连续声母必须定位冰雪清韵")
 assert(names(menu.filter_entries("jdedc")) == "冰雪键道", "有序子序列必须能够筛选描述")
 assert(menu.filter_entries("qqqq")[1] == nil, "无匹配必须返回空列表")

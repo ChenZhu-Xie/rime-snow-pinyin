@@ -76,6 +76,12 @@ menu.entries = {
     aliases = { "bxsp", "sp", "dtdp", "dyjcw", "bxspdtdpdyjcw" },
   },
   {
+    schema_id = "snow_yipin",
+    name = "冰雪一拼",
+    comment = "1200⁴95¹ 顶功并击 带调音节/击",
+    aliases = { "bxyp", "yp", "dgbj", "dtyjj", "bxypdgbjdtyjj" },
+  },
+  {
     schema_id = "snow_qingyun",
     name = "冰雪清韵",
     comment = "21ᵐ9¹ 四码前缀 多字根字王",
