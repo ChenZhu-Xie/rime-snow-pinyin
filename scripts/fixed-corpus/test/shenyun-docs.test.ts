@@ -213,25 +213,40 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	assert.ok(!buckets.includes("🥇"));
 });
 
-test("次世代追加报告保留初代数据并按五布局排名", () => {
+test("次世代追加报告以新旧四布局和首道组成五方案完整明细", () => {
 	const report = read("reports/shenyun-comparison.md");
 	includes(report, "## 次世代布局追加对比");
 	includes(report, "上面的历史四方案报告原样保留");
 	includes(
 		report,
-		"| 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 |",
+		"| 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | [首道 B04]",
 	);
 	includes(
 		report,
-		"| 综合补全 CKT v5.1 | **9.103000** ★★ 🥇 | 9.567898 | **9.204752** ★ | 9.717167 | 9.999357 | 9.202834 |",
+		"| 综合补全 CKT v5.1 | **9.103000** ★★ 🥇 | 9.567898 | 9.204752 | 9.717167 | **9.202834** ★ |",
 	);
-	includes(report, "是第六列外部参照");
+	for (const heading of [
+		"### 五方案 [CKT v4]",
+		"### 五方案冻结语料加权非首选率",
+		"### 五方案逐级辅键后的频率加权残余非首选率",
+		"### 五方案二／三／四字词终局碰撞桶",
+	])
+		includes(report, heading);
+	includes(
+		report,
+		"| 编码轨 | 词长 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | [首道 B04]",
+	);
+	assert.ok(!report.includes("是第六列外部参照"));
 
 	const comparison = JSON.parse(read("reports/shenyun-comparison.json")) as {
 		nextGenerationComparison: {
 			rankedLayouts: string[];
-			externalReference: string;
+			schemes: Record<string, unknown>;
 			metrics: { cktV51: Record<string, number | string> };
+			weightedNonfirstRates: Record<string, unknown>;
+			stagedResidualNonfirstRates: Record<string, unknown>;
+			terminalWordCollisionBuckets: Record<string, unknown>;
+			cktV4Explanation: Record<string, unknown>;
 		};
 	};
 	assert.deepEqual(comparison.nextGenerationComparison.rankedLayouts, [
@@ -239,9 +254,17 @@ test("次世代追加报告保留初代数据并按五布局排名", () => {
 		"QZ",
 		"Overall17First",
 		"U357First",
-		"S005",
+		"B04",
 	]);
-	assert.equal(comparison.nextGenerationComparison.externalReference, "B04");
+	assert.ok(!comparison.nextGenerationComparison.schemes.S005);
+	assert.ok(comparison.nextGenerationComparison.weightedNonfirstRates.keytao);
+	assert.ok(
+		comparison.nextGenerationComparison.stagedResidualNonfirstRates.sanpin,
+	);
+	assert.ok(
+		comparison.nextGenerationComparison.terminalWordCollisionBuckets.keytao,
+	);
+	assert.ok(comparison.nextGenerationComparison.cktV4Explanation);
 	assert.equal(
 		comparison.nextGenerationComparison.metrics.cktV51.D3V1,
 		9.10299979136027,
@@ -687,6 +710,24 @@ test("两份 README 只以 D3/V1 与 QZ-e8f37a 为现行双拼并链接全量报
 		includes(readme, "docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg");
 		includes(readme, "Overall-17·初代");
 		includes(readme, "U357·初代");
+		for (const header of [
+			/\| 指标 \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何为好 \|/u,
+			/\| Metric \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| Shoudao (?:B04|\[B04\]\([^)]+\)) \| Better \|/u,
+			/\| 指標 \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何者為佳 \|/u,
+		])
+			assert.match(readme, header);
+		includes(
+			readme,
+			"| 综合补全 CKT v5.1 | 9.103000 | 9.567898 | 9.202834 | 越低越好 |",
+		);
+		includes(
+			readme,
+			"| CKT v5.1 completion | 9.103000 | 9.567898 | 9.202834 | Lower |",
+		);
+		includes(
+			readme,
+			"| 綜合補全 CKT v5.1 | 9.103000 | 9.567898 | 9.202834 | 越低越好 |",
+		);
 		includes(readme, "reports/冰雪十二方案_500字_最短键码实战测评.txt");
 		includes(readme, "reports/十篇五百字_十二方案最优切分及字词比率报告.md");
 		includes(readme, "reports/十篇五百字_十三方案最优切分及字词比率报告.md");

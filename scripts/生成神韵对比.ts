@@ -114,7 +114,7 @@ interface CompletionTrack {
 interface CompletionScheme {
 	modes: Record<Mode, Record<Kind, CompletionTrack>>;
 }
-const weighted = (
+const weightedFor = (
 	scheme: CompletionScheme,
 	getter: (track: CompletionTrack) => number,
 ) => {
@@ -125,17 +125,24 @@ const weighted = (
 	}
 	return total / 12;
 };
-const aggregateScore = (getter: (track: CompletionTrack) => number) => {
+const weighted = (getter: (track: CompletionTrack) => number) =>
+	weightedFor(completion, getter);
+const aggregateScoreFor = (
+	scheme: CompletionScheme,
+	getter: (track: CompletionTrack) => number,
+) => {
 	let total = 0;
 	for (const mode of modes) {
 		for (const kind of kinds) {
 			const ratio =
-				getter(completion.modes[mode][kind]) / getter(s005.modes[mode][kind]);
+				getter(scheme.modes[mode][kind]) / getter(s005.modes[mode][kind]);
 			total += weights[kind] * ratio ** 4;
 		}
 	}
 	return 10 * (total / 12) ** 0.25;
 };
+const aggregateScore = (getter: (track: CompletionTrack) => number) =>
+	aggregateScoreFor(completion, getter);
 const motor = (track: CompletionTrack) => track.motorUpperMs;
 const motorAndAux = (track: CompletionTrack) =>
 	motor(track) + 300 * track.firstAuxRate + 300 * track.secondAuxRate;
@@ -146,24 +153,15 @@ const fullWithoutPage = (track: CompletionTrack) =>
 const full = (track: CompletionTrack) =>
 	fullWithoutPage(track) + 300 * track.meanPageActions;
 
-const aggregateSelectionRate = weighted(
-	completion,
-	(track) => track.selectionRate,
-);
-const aggregateFirstAuxRate = weighted(
-	completion,
-	(track) => track.firstAuxRate,
-);
-const aggregateSecondAuxRate = weighted(
-	completion,
-	(track) => track.secondAuxRate,
-);
+const aggregateSelectionRate = weighted((track) => track.selectionRate);
+const aggregateFirstAuxRate = weighted((track) => track.firstAuxRate);
+const aggregateSecondAuxRate = weighted((track) => track.secondAuxRate);
 const macro = benchmark.macroxue.values[overallId]["daily|native-punctuation"];
 const load = benchmark.r11LoadSummaries[overallId];
 const keys = benchmark.ckt.keys as string;
-const groupPeak = (group: string) =>
+const groupPeakFor = (schemeId: string, group: string) =>
 	Object.entries(
-		benchmark.ckt.tracks[overallId] as Record<string, { load: number[] }>,
+		benchmark.ckt.tracks[schemeId] as Record<string, { load: number[] }>,
 	)
 		.map(([track, value]) => ({
 			track,
@@ -173,6 +171,7 @@ const groupPeak = (group: string) =>
 			),
 		}))
 		.reduce((best, current) => (current.value > best.value ? current : best));
+const groupPeak = (group: string) => groupPeakFor(overallId, group);
 const leftPinkyPeak = groupPeak("QAZ");
 const indexFingerPeak = groupPeak("TYB");
 
@@ -357,13 +356,13 @@ for (const mode of modes) {
 }
 
 const components = {
-	motor: weighted(completion, motor),
+	motor: weighted(motor),
 	firstAux: 300 * aggregateFirstAuxRate,
 	secondAux: 300 * aggregateSecondAuxRate,
 	selectionDecision: 600 * aggregateSelectionRate,
-	scan: 50 * weighted(completion, (track) => track.meanRejectedCandidates),
+	scan: 50 * weighted((track) => track.meanRejectedCandidates),
 	selectionAction: 0,
-	page: 300 * weighted(completion, (track) => track.meanPageActions),
+	page: 300 * weighted((track) => track.meanPageActions),
 };
 data.cktV4Explanation.weightedMeanComponentsMs[overallKey] = {
 	...components,
@@ -413,7 +412,13 @@ const table = (headers: string[], rows: string[][]) =>
 const metricTable = table(
 	["指标", ...schemes.map((scheme) => labels[scheme]), "何为好"],
 	[
-		["M-R2 记忆项", "M-R2", "number", "越低越好", "min"],
+		[
+			"[M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 记忆项",
+			"M-R2",
+			"number",
+			"越低越好",
+			"min",
+		],
 		[
 			"声母／韵母乱序度 D/V",
 			"soundRhymeDisorder",
@@ -681,7 +686,6 @@ const nextSchemes = [
 	"QZ",
 	"Overall17First",
 	"U357First",
-	"S005",
 	"B04",
 ] as const;
 type NextScheme = (typeof nextSchemes)[number];
@@ -690,7 +694,6 @@ const nextLabels: Record<NextScheme, string> = {
 	QZ: "QZ-e8f37a 21×21",
 	Overall17First: "Overall-17·初代 21×26",
 	U357First: "U357·初代 21×21",
-	S005: "星空键道 S005",
 	B04: "首道 B04",
 };
 const requiredNumber = (value: unknown, label: string) => {
@@ -702,17 +705,62 @@ const d3Production = d3Entry.productionCandidateMetrics;
 const qzReadme = qzEntry.readmeBenchmarkMetrics;
 if (!d3Production || !qzReadme)
 	throw new Error("Benchmark HTML 缺少 D3/V1 或 QZ 的定稿指标。");
-const nextValue = (
-	name: string,
-	d3Value: number | number[],
-	qzValue: number | number[],
-) => ({
+const nextEntries = { D3V1: d3Entry, QZ: qzEntry } as const;
+const nextIds = { D3V1: d3Id, QZ: qzId } as const;
+const nextCompletions = {
+	D3V1: benchmark.completionBV4.schemes[d3Id] as CompletionScheme,
+	QZ: benchmark.completionBV4.schemes[qzId] as CompletionScheme,
+} as const;
+for (const scheme of ["D3V1", "QZ"] as const) {
+	if (!nextCompletions[scheme])
+		throw new Error(
+			`Benchmark HTML 缺少 ${nextIds[scheme]} 的 CKT v4 逐轨数据。`,
+		);
+}
+const collisionStats = (scheme: "D3V1" | "QZ") => {
+	const audit = nextEntries[scheme].memoryAuditR2;
+	const buckets = Object.values(audit?.collisionBuckets ?? {}) as string[][];
+	return {
+		unique: requiredNumber(
+			audit?.unique,
+			`${nextIds[scheme]} Common399 唯一码`,
+		),
+		excess: requiredNumber(
+			audit?.collisionExcess,
+			`${nextIds[scheme]} Common399 重码盈余`,
+		),
+		buckets: buckets.length,
+		affected: buckets.reduce((sum, values) => sum + values.length, 0),
+	};
+};
+const nextCollision = {
+	D3V1: collisionStats("D3V1"),
+	QZ: collisionStats("QZ"),
+};
+const nextFair = {
+	D3V1: benchmark.fairCKT.values[d3Id],
+	QZ: benchmark.fairCKT.values[qzId],
+};
+const nextMacro = {
+	D3V1: benchmark.macroxue.values[d3Id]["daily|native-punctuation"],
+	QZ: benchmark.macroxue.values[qzId]["daily|native-punctuation"],
+};
+const nextLoad = {
+	D3V1: benchmark.r11LoadSummaries[d3Id],
+	QZ: benchmark.r11LoadSummaries[qzId],
+};
+const nextAggregate = (
+	scheme: "D3V1" | "QZ",
+	getter: (track: CompletionTrack) => number,
+) => weightedFor(nextCompletions[scheme], getter);
+const nextGroupPeak = (scheme: "D3V1" | "QZ", group: string) =>
+	groupPeakFor(nextIds[scheme], group).value;
+const nextValue = (name: string, d3Value: unknown, qzValue: unknown) => ({
 	D3V1: d3Value,
 	QZ: qzValue,
-	Overall17First: data.metrics[name].Overall17 as number | number[],
-	U357First: data.metrics[name].U357 as number | number[],
-	S005: data.metrics[name].S005 as number | number[],
-	B04: data.metrics[name].B04 as number | number[],
+	Overall17First: data.metrics[name].Overall17,
+	U357First: data.metrics[name].U357,
+	B04: data.metrics[name].B04,
 });
 const nextMetrics = {
 	"M-R2": {
@@ -721,6 +769,22 @@ const nextMetrics = {
 			"M-R2",
 			requiredNumber(d3Entry.memoryAuditR2?.M, `${d3Id} M-R2`),
 			requiredNumber(qzReadme["M-R2"], `${qzId} M-R2`),
+		),
+	},
+	logicAuditFA1: {
+		better: "higher",
+		...nextValue(
+			"logicAuditFA1",
+			d3Entry.logicAudit.score,
+			qzEntry.logicAudit.score,
+		),
+	},
+	logicUniformityLUv1r: {
+		better: "higher",
+		...nextValue(
+			"logicUniformityLUv1r",
+			d3Entry.logicUniformity.score,
+			qzEntry.logicUniformity.score,
 		),
 	},
 	soundRhymeDisorder: {
@@ -739,22 +803,72 @@ const nextMetrics = {
 		better: "lower",
 		...nextValue(
 			"common399CollisionBuckets",
-			Object.keys(d3Entry.memoryAuditR2?.collisionBuckets ?? {}).length,
-			requiredNumber(
-				qzReadme.common399CollisionBuckets,
-				`${qzId} Common399 重码桶`,
-			),
+			nextCollision.D3V1.buckets,
+			nextCollision.QZ.buckets,
+		),
+	},
+	common399UniqueRate: {
+		better: "higher",
+		...nextValue(
+			"common399UniqueRate",
+			nextCollision.D3V1.unique / 399,
+			nextCollision.QZ.unique / 399,
+		),
+	},
+	common399CollisionExcess: {
+		better: "lower",
+		...nextValue(
+			"common399CollisionExcess",
+			nextCollision.D3V1.excess,
+			nextCollision.QZ.excess,
 		),
 	},
 	common399AffectedSyllables: {
 		better: "lower",
 		...nextValue(
 			"common399AffectedSyllables",
-			d3Entry.memoryAuditR2?.unique === 399 ? 0 : Number.NaN,
-			requiredNumber(
-				qzReadme.common399AffectedSyllables,
-				`${qzId} Common399 受影响音节`,
-			),
+			nextCollision.D3V1.affected,
+			nextCollision.QZ.affected,
+		),
+	},
+	common399AffectedRate: {
+		better: "lower",
+		...nextValue(
+			"common399AffectedRate",
+			nextCollision.D3V1.affected / 399,
+			nextCollision.QZ.affected / 399,
+		),
+	},
+	s2FrequencyWeightedMiss: {
+		better: "lower",
+		...nextValue(
+			"s2FrequencyWeightedMiss",
+			nextFair.D3V1.S2miss,
+			nextFair.QZ.S2miss,
+		),
+	},
+	s2CompletionMeanKeys: {
+		better: "lower",
+		...nextValue(
+			"s2CompletionMeanKeys",
+			nextFair.D3V1.S2Completion.meanKeys,
+			nextFair.QZ.S2Completion.meanKeys,
+		),
+	},
+	s2CompletionCenterMs: {
+		better: "lower",
+		...nextValue(
+			"s2CompletionCenterMs",
+			nextFair.D3V1.S2Completion.centerMs,
+			nextFair.QZ.S2Completion.centerMs,
+		),
+	},
+	s2DifferentKeySameFingerRate: {
+		better: "lower",
+		...nextValue(
+			"s2DifferentKeySameFingerRate",
+			benchmark.ckt.tracks[d3Id].S2.sfb,
+			benchmark.ckt.tracks[qzId].S2.sfb,
 		),
 	},
 	cktV3: {
@@ -789,6 +903,118 @@ const nextMetrics = {
 			requiredNumber(qzReadme.cktV51, `${qzId} CKT v5.1`),
 		),
 	},
+	ensembleV3: {
+		better: "lower",
+		...nextValue(
+			"ensembleV3",
+			benchmark.ensembleV3.values[d3Id].score,
+			benchmark.ensembleV3.values[qzId].score,
+		),
+	},
+	ensembleV4: {
+		better: "lower",
+		...nextValue(
+			"ensembleV4",
+			benchmark.ensembleV4.values[d3Id].score,
+			benchmark.ensembleV4.values[qzId].score,
+		),
+	},
+	ensembleV5: {
+		better: "lower",
+		...nextValue(
+			"ensembleV5",
+			benchmark.ensembleV5.values[d3Id].score,
+			benchmark.ensembleV5.values[qzId].score,
+		),
+	},
+	ensembleV6CW150: {
+		better: "lower",
+		...nextValue(
+			"ensembleV6CW150",
+			benchmark.ensembleV6.values[d3Id].score,
+			benchmark.ensembleV6.values[qzId].score,
+		),
+	},
+	aggregateSelectionRate: {
+		better: "lower",
+		...nextValue(
+			"aggregateSelectionRate",
+			nextAggregate("D3V1", (track) => track.selectionRate),
+			nextAggregate("QZ", (track) => track.selectionRate),
+		),
+	},
+	aggregateFirstAuxRate: {
+		better: "lower",
+		...nextValue(
+			"aggregateFirstAuxRate",
+			nextAggregate("D3V1", (track) => track.firstAuxRate),
+			nextAggregate("QZ", (track) => track.firstAuxRate),
+		),
+	},
+	aggregateSecondAuxRate: {
+		better: "lower",
+		...nextValue(
+			"aggregateSecondAuxRate",
+			nextAggregate("D3V1", (track) => track.secondAuxRate),
+			nextAggregate("QZ", (track) => track.secondAuxRate),
+		),
+	},
+	dailyLeftRightLoad: {
+		better: "left-share-closer-to-0.5",
+		...nextValue(
+			"dailyLeftRightLoad",
+			{
+				left: nextMacro.D3V1.left_load,
+				right: nextMacro.D3V1.right_load,
+				leftShare: nextMacro.D3V1.left_load / nextMacro.D3V1.hits,
+			},
+			{
+				left: nextMacro.QZ.left_load,
+				right: nextMacro.QZ.right_load,
+				leftShare: nextMacro.QZ.left_load / nextMacro.QZ.hits,
+			},
+		),
+	},
+	dailySameHandRate: {
+		better: "lower-but-not-standalone-speed",
+		...nextValue(
+			"dailySameHandRate",
+			nextMacro.D3V1.same_hand_rate,
+			nextMacro.QZ.same_hand_rate,
+		),
+	},
+	dailyMeanEffectiveDistance: {
+		better: "lower",
+		...nextValue(
+			"dailyMeanEffectiveDistance",
+			nextMacro.D3V1.avg_effective_distance,
+			nextMacro.QZ.avg_effective_distance,
+		),
+	},
+	leftPinkyQAZPeak20Contracts: {
+		better: "lower",
+		...nextValue(
+			"leftPinkyQAZPeak20Contracts",
+			nextGroupPeak("D3V1", "QAZ"),
+			nextGroupPeak("QZ", "QAZ"),
+		),
+	},
+	rightPinkyPeak20Contracts: {
+		better: "lower",
+		...nextValue(
+			"rightPinkyPeak20Contracts",
+			nextLoad.D3V1.rightPinkyMax20,
+			nextLoad.QZ.rightPinkyMax20,
+		),
+	},
+	maxFingerPeak20Contracts: {
+		better: "lower",
+		...nextValue(
+			"maxFingerPeak20Contracts",
+			nextLoad.D3V1.maxFinger20,
+			nextLoad.QZ.maxFinger20,
+		),
+	},
 	dailyEightScenarioMovingHand: {
 		better: "higher",
 		...nextValue(
@@ -814,12 +1040,184 @@ const nextMetrics = {
 			requiredNumber(qzReadme.homeShareS2, `${qzId} S2 主键区占比`),
 		),
 	},
+	indexFingerTYBPeak20Contracts: {
+		better: "lower",
+		...nextValue(
+			"indexFingerTYBPeak20Contracts",
+			nextGroupPeak("D3V1", "TYB"),
+			nextGroupPeak("QZ", "TYB"),
+		),
+	},
+	homeFloor20Contracts: {
+		better: "higher",
+		...nextValue(
+			"homeFloor20Contracts",
+			nextLoad.D3V1.homeFloor,
+			nextLoad.QZ.homeFloor,
+		),
+	},
+};
+
+const historicalKeys = {
+	Overall17First: "Overall17",
+	U357First: "U357",
+	B04: "B04",
+} as const;
+const detailedValue = (
+	scheme: NextScheme,
+	newValue: (active: "D3V1" | "QZ") => unknown,
+	historicalValue: (historical: "Overall17" | "U357" | "B04") => unknown,
+) => {
+	if (scheme === "D3V1" || scheme === "QZ") return newValue(scheme);
+	return historicalValue(historicalKeys[scheme]);
+};
+const nextWeightedNonfirstRates = Object.fromEntries(
+	modes.map((mode) => [
+		mode,
+		Object.fromEntries(
+			(["char", "word2", "word3", "word4"] as const).map((kind) => [
+				kind,
+				Object.fromEntries(
+					nextSchemes.map((scheme) => [
+						scheme,
+						detailedValue(
+							scheme,
+							(active) =>
+								nextCompletions[active].modes[mode][
+									kind === "char" ? "character" : kind
+								].selectionRate,
+							(historical) =>
+								data.weightedNonfirstRates[mode][kind][historical],
+						),
+					]),
+				),
+			]),
+		),
+	]),
+);
+const nextStagedResidualNonfirstRates = Object.fromEntries(
+	modes.map((mode) => [
+		mode,
+		Object.fromEntries(
+			(["char", "word2", "word3", "word4"] as const).map((kind) => [
+				kind,
+				Object.fromEntries(
+					(
+						[
+							["afterZeroAux", "firstAuxRate"],
+							["afterOneAux", "secondAuxRate"],
+							["afterTwoAux", "selectionRate"],
+						] as const
+					).map(([stage, field]) => [
+						stage,
+						Object.fromEntries(
+							nextSchemes.map((scheme) => [
+								scheme,
+								detailedValue(
+									scheme,
+									(active) =>
+										nextCompletions[active].modes[mode][
+											kind === "char" ? "character" : kind
+										][field],
+									(historical) =>
+										data.stagedResidualNonfirstRates[mode][kind][stage][
+											historical
+										],
+								),
+							]),
+						),
+					]),
+				),
+			]),
+		),
+	]),
+);
+const nextTerminalWordCollisionBuckets = Object.fromEntries(
+	modes.map((mode) => [
+		mode,
+		Object.fromEntries(
+			(["word2", "word3", "word4"] as const).map((kind) => [
+				kind,
+				Object.fromEntries(
+					nextSchemes.map((scheme) => [
+						scheme,
+						detailedValue(
+							scheme,
+							(active) => nextEntries[active].terminalBucketAudit[mode][kind],
+							(historical) =>
+								data.terminalWordCollisionBuckets[mode][kind][historical],
+						),
+					]),
+				),
+			]),
+		),
+	]),
+);
+const componentFor = (scheme: CompletionScheme) => {
+	const firstAuxRate = weightedFor(scheme, (track) => track.firstAuxRate);
+	const secondAuxRate = weightedFor(scheme, (track) => track.secondAuxRate);
+	const selectionRate = weightedFor(scheme, (track) => track.selectionRate);
+	const result = {
+		motor: weightedFor(scheme, motor),
+		firstAux: 300 * firstAuxRate,
+		secondAux: 300 * secondAuxRate,
+		selectionDecision: 600 * selectionRate,
+		scan: 50 * weightedFor(scheme, (track) => track.meanRejectedCandidates),
+		selectionAction: 0,
+		page: 300 * weightedFor(scheme, (track) => track.meanPageActions),
+	};
+	return {
+		...result,
+		total: Object.values(result).reduce((sum, value) => sum + value, 0),
+	};
+};
+const counterfactualFor = (scheme: CompletionScheme) => ({
+	motorOnly: aggregateScoreFor(scheme, motor),
+	motorAndAuxNoSelection: aggregateScoreFor(scheme, motorAndAux),
+	fullExceptPageActionZero: aggregateScoreFor(scheme, fullWithoutPage),
+	fullDefault: aggregateScoreFor(scheme, full),
+});
+const nextCktV4Explanation = {
+	weightedMeanComponentsMs: Object.fromEntries(
+		nextSchemes.map((scheme) => [
+			scheme,
+			detailedValue(
+				scheme,
+				(active) => componentFor(nextCompletions[active]),
+				(historical) =>
+					data.cktV4Explanation.weightedMeanComponentsMs[historical],
+			),
+		]),
+	),
+	counterfactualScores: Object.fromEntries(
+		(
+			[
+				"motorOnly",
+				"motorAndAuxNoSelection",
+				"fullExceptPageActionZero",
+				"fullDefault",
+			] as const
+		).map((key) => [
+			key,
+			Object.fromEntries(
+				nextSchemes.map((scheme) => [
+					scheme,
+					detailedValue(
+						scheme,
+						(active) => counterfactualFor(nextCompletions[active])[key],
+						(historical) =>
+							data.cktV4Explanation.counterfactualScores[key][historical],
+					),
+				]),
+			),
+		]),
+	),
 };
 
 data.nextGenerationComparison = {
-	version: "shenyun-five-layout-generation-comparison-v1",
-	rankedLayouts: nextSchemes.slice(0, 5),
-	externalReference: "B04",
+	version: "shenyun-five-scheme-detailed-comparison-v2",
+	rankedLayouts: [...nextSchemes],
+	normalizationAnchor: "S005",
 	schemes: Object.fromEntries(
 		nextSchemes.map((scheme) => [scheme, { label: nextLabels[scheme] }]),
 	),
@@ -836,7 +1234,6 @@ data.nextGenerationComparison = {
 		},
 		Overall17First: { benchmarkId: overallId },
 		U357First: { benchmarkId: benchmarkIds.U357 },
-		S005: { benchmarkId: benchmarkIds.S005 },
 		B04: { benchmarkId: benchmarkIds.B04 },
 	},
 	auxiliaryOrders: {
@@ -845,10 +1242,13 @@ data.nextGenerationComparison = {
 			?.selectedPolicies,
 		Overall17First: data.comparisonPolicy.cktV51.auxiliaryOrders.Overall17,
 		U357First: data.comparisonPolicy.cktV51.auxiliaryOrders.U357,
-		S005: data.comparisonPolicy.cktV51.auxiliaryOrders.S005,
 		B04: data.comparisonPolicy.cktV51.auxiliaryOrders.B04,
 	},
 	metrics: nextMetrics,
+	weightedNonfirstRates: nextWeightedNonfirstRates,
+	stagedResidualNonfirstRates: nextStagedResidualNonfirstRates,
+	terminalWordCollisionBuckets: nextTerminalWordCollisionBuckets,
+	cktV4Explanation: nextCktV4Explanation,
 };
 cktV51.nextGeneration = {
 	version: "next-generation-shuangpin-aux-order-appendix-v1",
@@ -886,7 +1286,7 @@ const appendJsonProperty = (source: string, name: string, value: unknown) => {
 };
 
 const nextMetricDefinitions = [
-	["M-R2 记忆项", "M-R2", "integer", "越低越好", "min"],
+	["M-R2 记忆项", "M-R2", "number", "越低越好", "min"],
 	[
 		"声母／韵母乱序度 D/V",
 		"soundRhymeDisorder",
@@ -894,7 +1294,15 @@ const nextMetricDefinitions = [
 		"按 D+V 越低越好",
 		"sum",
 	],
-	["Common399 唯一码", "common399UniqueCodes", "integer", "越高越好", "max"],
+	["FA-1 逻辑审计", "logicAuditFA1", "number", "越高越一致", "max"],
+	["LU-v1r 逻辑均匀度", "logicUniformityLUv1r", "number", "越高越统一", "max"],
+	[
+		"Common399 唯一码／唯一率",
+		"common399UniqueCodes",
+		"unique-rate",
+		"越高越好",
+		"max",
+	],
 	[
 		"Common399 重码桶",
 		"common399CollisionBuckets",
@@ -909,10 +1317,56 @@ const nextMetricDefinitions = [
 		"越低越好",
 		"min",
 	],
+	["频率加权 S2 miss", "s2FrequencyWeightedMiss", "percent", "越低越好", "min"],
+	["S2 补全平均码长", "s2CompletionMeanKeys", "four", "越低越好", "min"],
+	["S2 补全中心时间（ms）", "s2CompletionCenterMs", "three", "越低越好", "min"],
+	[
+		"S2 异键同指率",
+		"s2DifferentKeySameFingerRate",
+		"percent",
+		"越低越好",
+		"min",
+	],
 	["综合补全 CKT v3", "cktV3", "number", "越低越好", "min"],
 	["综合补全 CKT v4", "cktV4", "number", "越低越好", "min"],
 	["综合补全 CKT v5", "cktV5", "number", "越低越好", "min"],
 	["综合补全 CKT v5.1", "cktV51", "number", "越低越好", "min"],
+	["A7E-v3 系综当量", "ensembleV3", "number", "越低越好", "min"],
+	["A7E-v4 系综当量", "ensembleV4", "number", "越低越好", "min"],
+	["A7E-v5 系综当量", "ensembleV5", "number", "越低越好", "min"],
+	["A7E-v6-CW150", "ensembleV6CW150", "number", "越低越好", "min"],
+	["八轨综合选重率", "aggregateSelectionRate", "percent", "越低越好", "min"],
+	["八轨第一辅键率", "aggregateFirstAuxRate", "percent", "越低越好", "min"],
+	["八轨第二辅键率", "aggregateSecondAuxRate", "percent", "越低越好", "min"],
+	[
+		"日常同手率",
+		"dailySameHandRate",
+		"percent",
+		"越低越好；非独立速度结论",
+		"min",
+	],
+	["日常平均有效距离", "dailyMeanEffectiveDistance", "four", "越低越好", "min"],
+	[
+		"20 合同 QAZ 左小指组峰值",
+		"leftPinkyQAZPeak20Contracts",
+		"percent",
+		"越低越好",
+		"min",
+	],
+	[
+		"20 合同 P 区右小指组峰值",
+		"rightPinkyPeak20Contracts",
+		"percent",
+		"越低越好",
+		"min",
+	],
+	[
+		"20 合同最大单指峰值",
+		"maxFingerPeak20Contracts",
+		"percent",
+		"越低越好",
+		"min",
+	],
 	[
 		"日常纯双拼移动手分数（含标点）",
 		"dailyEightScenarioMovingHand",
@@ -921,6 +1375,14 @@ const nextMetricDefinitions = [
 		"max",
 	],
 	["S2 主键区占比", "homeShareS2", "percent", "越高越好", "max"],
+	[
+		"20 合同 TYB 双食指组峰值",
+		"indexFingerTYBPeak20Contracts",
+		"percent",
+		"越低越好",
+		"min",
+	],
+	["20 合同主键区下限", "homeFloor20Contracts", "percent", "越高越好", "max"],
 ] as const;
 const nextMetricTable = table(
 	["指标", ...nextSchemes.map((scheme) => nextLabels[scheme]), "何为好"],
@@ -931,6 +1393,8 @@ const nextMetricTable = table(
 			if (format === "pair") return (value as number[]).join(" / ");
 			if (format === "percent") return percent(value as number);
 			if (format === "integer") return String(value);
+			if (format === "unique-rate")
+				return `${value} / ${percent((value as number) / 399)}`;
 			if (format === "three") return number(value as number, 3);
 			return number(value as number);
 		});
@@ -945,6 +1409,107 @@ const nextMetricTable = table(
 				5,
 			),
 			good,
+		];
+	}),
+);
+const decorateNext = (
+	displays: string[],
+	values: Array<number | number[]>,
+	direction: ComparisonDirection,
+) =>
+	decorateComparison(
+		displays.map((display, index) => ({ display, score: values[index] })),
+		direction,
+		5,
+	);
+const nextRateRows: string[][] = [];
+const nextStagedRows: string[][] = [];
+const nextBucketRows: string[][] = [];
+for (const mode of modes) {
+	for (const kind of ["char", "word2", "word3", "word4"] as const) {
+		const rateValues = nextSchemes.map(
+			(scheme) => nextWeightedNonfirstRates[mode][kind][scheme] as number,
+		);
+		nextRateRows.push([
+			trackNames[mode],
+			kindNames[kind],
+			...decorateNext(
+				rateValues.map((value) => percent(value)),
+				rateValues,
+				"min",
+			),
+		]);
+		for (const [stage, stageName] of [
+			["afterZeroAux", "零辅后"],
+			["afterOneAux", "一辅后"],
+			["afterTwoAux", "二辅后"],
+		] as const) {
+			const values = nextSchemes.map(
+				(scheme) =>
+					nextStagedResidualNonfirstRates[mode][kind][stage][scheme] as number,
+			);
+			nextStagedRows.push([
+				trackNames[mode],
+				kindNames[kind],
+				stageName,
+				...decorateNext(
+					values.map((value) => percent(value)),
+					values,
+					"min",
+				),
+			]);
+		}
+		if (kind !== "char") {
+			nextBucketRows.push([
+				trackNames[mode],
+				kindNames[kind],
+				...nextSchemes.map((scheme) => {
+					const value = nextTerminalWordCollisionBuckets[mode][kind][scheme];
+					return `${value.buckets}／${value.residualEntries}／${value.crossLengthBuckets}／${value.maxBucketSize}`;
+				}),
+			]);
+		}
+	}
+}
+const nextComponentDecorations = Object.fromEntries(
+	componentNames.map(([key]) => {
+		const values = nextSchemes.map(
+			(scheme) =>
+				nextCktV4Explanation.weightedMeanComponentsMs[scheme][key] as number,
+		);
+		return [
+			key,
+			decorateNext(
+				values.map((value) => number(value, key === "page" ? 4 : 3)),
+				values,
+				"min",
+			),
+		];
+	}),
+) as Record<(typeof componentNames)[number][0], string[]>;
+const nextComponentTable = table(
+	["方案", ...componentNames.map(([, label]) => `${label}（ms）`)],
+	nextSchemes.map((scheme, schemeIndex) => [
+		nextLabels[scheme],
+		...componentNames.map(
+			([key]) => nextComponentDecorations[key][schemeIndex],
+		),
+	]),
+);
+const nextCounterfactualTable = table(
+	["CKT v4 情景", ...nextSchemes.map((scheme) => nextLabels[scheme])],
+	counterfactuals.map(([key, label]) => {
+		const values = nextSchemes.map(
+			(scheme) =>
+				nextCktV4Explanation.counterfactualScores[key][scheme] as number,
+		);
+		return [
+			label,
+			...decorateNext(
+				values.map((value) => number(value)),
+				values,
+				"min",
+			),
 		];
 	}),
 );
@@ -1001,7 +1566,7 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 
 ## 边界与结论
 
-- 神韵(Overall-17)以 21×26 声韵域实现 Common399 399 个唯一码、M-R2＝36，并采用飞花式四码顶；它在现行 CKT v4 中与 B04 接近，同时保持零飞键，但日常文稿移动手分数及主键区指标不如无飞键道(U357)。
+- 神韵(Overall-17)以 21×26 声韵域实现 Common399 399 个唯一码、[M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)＝36，并采用飞花式四码顶；它在现行 CKT v4 中与 B04 接近，同时保持零飞键，但日常文稿移动手分数及主键区指标不如无飞键道(U357)。
 - 无飞键道(U357)在 21×21 键域中保留 42 个音节重码桶，换来更高的日常纯双拼移动手分数、较高主键区占比和较低最大单指峰值；它与 S005 才是直接的同键域比较。
 - B04 的 26×26 大码域、原资料记录的辅键映射以及本报告套用的飞花式四码顶路由带来零音节重码及较低补全成本；这不是 B04 原方案的顶功声明，其飞键、记忆项和日常路径指标也采用另一种取舍。
 - 所有模型分数都用于同语料、同模型横向复算，不等同真人输入速度。
@@ -1012,13 +1577,35 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 const report = `${historicalReport}
 ## 次世代布局追加对比
 
-上面的历史四方案报告原样保留。本节追加当前 D3/V1 21×26 与 QZ-e8f37a 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。星级名次只在 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代、S005 五个布局间计算；首道 B04 是第六列外部参照，只参与全列最佳值的 🥇 标记。
+上面的历史四方案报告原样保留。本节追加当前 D3/V1 21×26 与 QZ-e8f37a 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。以下所有表格统一比较 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代与首道 B04 五个方案；S005 仅继续充当 CKT 归一化锚点，不占五方案展示列。五方案拉通排名，第 1 名标 ★★，第 2 名标 ★，全列最佳同时标 🥇。
 
 D3/V1 的定稿与稳健辅序见 [\`2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，QZ-e8f37a 的定稿与稳健辅序见 [\`2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)。D3/V1 的冰雪简道／冰雪散拼辅序为 \`12/12/24\`、\`12/21/13\`；QZ-e8f37a 的冰雪健道／冰雪弎拼辅序为 \`12/213/24\`、\`12/213/23\`。初代方案继续使用历史报告中冻结的映射与辅序。
 
 ${nextMetricTable}
 
-这里的 CKT v3/v4/v5/v5.1、日常移动手分数与 S2 主键区占比均直接取自同一份 \`a7_CKT_R11.html\` 冻结 payload；旧两代、S005、B04 的数值沿用上方历史快照。五个布局跨 21×21 与 21×26 键域，表中排名用于同语料复算，不把跨键域差异解释为同键域映射的单变量胜负。
+这里的全部总览值均直接取自同一份 \`a7_CKT_R11.html\` 冻结 payload；初代与 B04 数值沿用上方历史快照。五个方案跨 21×21、21×26 与 26×26 键域，表中排名用于同语料复算，不把跨键域差异解释为同键域映射的单变量胜负。
+
+### 五方案 CKT v4 成本分解
+
+${nextComponentTable}
+
+${nextCounterfactualTable}
+
+### 五方案冻结语料加权非首选率
+
+${table(["编码轨", "词长", ...nextSchemes.map((scheme) => nextLabels[scheme])], nextRateRows)}
+
+### 五方案逐级辅键后的频率加权残余非首选率
+
+“零辅后”是裸编码后仍需第一辅键的权重；“一辅后”是第一辅键后仍需第二辅键的权重；“二辅后”是第二辅键后仍需人工选重的权重。本节沿用 CKT v4 的两级辅键观察面，CKT v5.1 的三字词第三辅另见稳健辅序报告。
+
+${table(["编码轨", "词长", "阶段", ...nextSchemes.map((scheme) => nextLabels[scheme])], nextStagedRows)}
+
+### 五方案二／三／四字词终局碰撞桶
+
+单元格依次为“碰撞桶数／残余条目数／跨词长桶数／最大桶成员数”。不同合同的共享池结构不同，复合单元格不标单一胜负。
+
+${table(["编码轨", "词长", ...nextSchemes.map((scheme) => nextLabels[scheme])], nextBucketRows)}
 `;
 
 writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");

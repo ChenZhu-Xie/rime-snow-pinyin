@@ -1100,15 +1100,15 @@
     }
   },
   "nextGenerationComparison": {
-    "version": "shenyun-five-layout-generation-comparison-v1",
+    "version": "shenyun-five-scheme-detailed-comparison-v2",
     "rankedLayouts": [
       "D3V1",
       "QZ",
       "Overall17First",
       "U357First",
-      "S005"
+      "B04"
     ],
-    "externalReference": "B04",
+    "normalizationAnchor": "S005",
     "schemes": {
       "D3V1": {
         "label": "D3/V1 21×26"
@@ -1121,9 +1121,6 @@
       },
       "U357First": {
         "label": "U357·初代 21×21"
-      },
-      "S005": {
-        "label": "星空键道 S005"
       },
       "B04": {
         "label": "首道 B04"
@@ -1143,9 +1140,6 @@
       },
       "U357First": {
         "benchmarkId": "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13"
-      },
-      "S005": {
-        "benchmarkId": "S005"
       },
       "B04": {
         "benchmarkId": "B04"
@@ -1184,10 +1178,6 @@
         "keytao": "12/231/24",
         "sanpin": "12/213/23"
       },
-      "S005": {
-        "keytao": "12/231/24",
-        "sanpin": "12/213/23"
-      },
       "B04": {
         "keytao": "12/12/23",
         "sanpin": "21/12/23"
@@ -1200,8 +1190,23 @@
         "QZ": 42,
         "Overall17First": 36,
         "U357First": 40,
-        "S005": 44,
         "B04": 51
+      },
+      "logicAuditFA1": {
+        "better": "higher",
+        "D3V1": 98.75902641532414,
+        "QZ": 98.5388961616055,
+        "Overall17First": 98.2983148805112,
+        "U357First": 98.2983148805112,
+        "B04": 99.76339133454266
+      },
+      "logicUniformityLUv1r": {
+        "better": "higher",
+        "D3V1": 81.16591615618118,
+        "QZ": 71.51041743538595,
+        "Overall17First": 81.04338985886288,
+        "U357First": 73.52980278134712,
+        "B04": 83.10743423059613
       },
       "soundRhymeDisorder": {
         "better": "lower-sum",
@@ -1221,10 +1226,6 @@
           0,
           5
         ],
-        "S005": [
-          0,
-          4
-        ],
         "B04": [
           0,
           0
@@ -1236,7 +1237,6 @@
         "QZ": 345,
         "Overall17First": 399,
         "U357First": 357,
-        "S005": 372,
         "B04": 399
       },
       "common399CollisionBuckets": {
@@ -1245,7 +1245,22 @@
         "QZ": 54,
         "Overall17First": 0,
         "U357First": 42,
-        "S005": 27,
+        "B04": 0
+      },
+      "common399UniqueRate": {
+        "better": "higher",
+        "D3V1": 1,
+        "QZ": 0.8646616541353384,
+        "Overall17First": 1,
+        "U357First": 0.8947368421052632,
+        "B04": 1
+      },
+      "common399CollisionExcess": {
+        "better": "lower",
+        "D3V1": 0,
+        "QZ": 54,
+        "Overall17First": 0,
+        "U357First": 42,
         "B04": 0
       },
       "common399AffectedSyllables": {
@@ -1254,8 +1269,47 @@
         "QZ": 108,
         "Overall17First": 0,
         "U357First": 84,
-        "S005": 54,
         "B04": 0
+      },
+      "common399AffectedRate": {
+        "better": "lower",
+        "D3V1": 0,
+        "QZ": 0.2706766917293233,
+        "Overall17First": 0,
+        "U357First": 0.21052631578947367,
+        "B04": 0
+      },
+      "s2FrequencyWeightedMiss": {
+        "better": "lower",
+        "D3V1": 0,
+        "QZ": 0.026097696596776163,
+        "Overall17First": 0,
+        "U357First": 0.03269629838870512,
+        "B04": 0
+      },
+      "s2CompletionMeanKeys": {
+        "better": "lower",
+        "D3V1": 2,
+        "QZ": 2.109821593891579,
+        "Overall17First": 2,
+        "U357First": 2.147407755379495,
+        "B04": 2
+      },
+      "s2CompletionCenterMs": {
+        "better": "lower",
+        "D3V1": 70.02261230047928,
+        "QZ": 86.21900830786332,
+        "Overall17First": 75.67172265421343,
+        "U357First": 89.91726901936407,
+        "B04": 79.89008054833775
+      },
+      "s2DifferentKeySameFingerRate": {
+        "better": "lower",
+        "D3V1": 0.05345632486277227,
+        "QZ": 0.040587142415596876,
+        "Overall17First": 0.09251887998300894,
+        "U357First": 0.04255326008481471,
+        "B04": 0.11343047534562911
       },
       "cktV3": {
         "better": "lower",
@@ -1263,7 +1317,6 @@
         "QZ": 9.66207210386573,
         "Overall17First": 9.63003905019381,
         "U357First": 9.78213509012612,
-        "S005": 10,
         "B04": 9.461105076391659
       },
       "cktV4": {
@@ -1272,7 +1325,6 @@
         "QZ": 9.56073454942596,
         "Overall17First": 9.18525432170247,
         "U357First": 9.716420811869073,
-        "S005": 10,
         "B04": 9.184606967934092
       },
       "cktV5": {
@@ -1281,7 +1333,6 @@
         "QZ": 9.564806157286291,
         "Overall17First": 9.195026476171616,
         "U357First": 9.715586951861038,
-        "S005": 10,
         "B04": 9.195421507104937
       },
       "cktV51": {
@@ -1290,8 +1341,131 @@
         "QZ": 9.56789806405906,
         "Overall17First": 9.204752315229815,
         "U357First": 9.717167494529612,
-        "S005": 9.999357236116698,
         "B04": 9.202833940639168
+      },
+      "ensembleV3": {
+        "better": "lower",
+        "D3V1": 10.60726398338645,
+        "QZ": 10.749064371154692,
+        "Overall17First": 10.620559150544011,
+        "U357First": 10.737187881113314,
+        "B04": 10.519451838203382
+      },
+      "ensembleV4": {
+        "better": "lower",
+        "D3V1": 10.670635896300677,
+        "QZ": 10.815673343336183,
+        "Overall17First": 10.684701738454178,
+        "U357First": 10.80459797260479,
+        "B04": 10.58328972190508
+      },
+      "ensembleV5": {
+        "better": "lower",
+        "D3V1": 10.258403898737619,
+        "QZ": 10.599487784435112,
+        "Overall17First": 10.821924771017104,
+        "U357First": 10.473306361599604,
+        "B04": 11.091225045886269
+      },
+      "ensembleV6CW150": {
+        "better": "lower",
+        "D3V1": 9.263107848468916,
+        "QZ": 9.587200490238061,
+        "Overall17First": 9.534119412067561,
+        "U357First": 9.512904345556624,
+        "B04": 9.589632131373175
+      },
+      "aggregateSelectionRate": {
+        "better": "lower",
+        "D3V1": 0.006230429773509193,
+        "QZ": 0.012587683733847608,
+        "Overall17First": 0.006091510265527643,
+        "U357First": 0.014433590315629736,
+        "B04": 0.005715323990599
+      },
+      "aggregateFirstAuxRate": {
+        "better": "lower",
+        "D3V1": 0.20939963883278057,
+        "QZ": 0.2516205970643412,
+        "Overall17First": 0.20830786162326684,
+        "U357First": 0.26150090277696786,
+        "B04": 0.19746239078704744
+      },
+      "aggregateSecondAuxRate": {
+        "better": "lower",
+        "D3V1": 0.04490270089381046,
+        "QZ": 0.06449091311323103,
+        "Overall17First": 0.044593084542001664,
+        "U357First": 0.07040222381139052,
+        "B04": 0.04157855845518199
+      },
+      "dailyLeftRightLoad": {
+        "better": "left-share-closer-to-0.5",
+        "D3V1": {
+          "left": 1028,
+          "right": 1121,
+          "leftShare": 0.4783620288506282
+        },
+        "QZ": {
+          "left": 1196,
+          "right": 953,
+          "leftShare": 0.5565379246161005
+        },
+        "Overall17First": {
+          "left": 1017,
+          "right": 1132,
+          "leftShare": 0.47324336900884134
+        },
+        "U357First": {
+          "left": 1091,
+          "right": 1058,
+          "leftShare": 0.5076779897626803
+        },
+        "B04": {
+          "left": 1004,
+          "right": 1145,
+          "leftShare": 0.467194043741275
+        }
+      },
+      "dailySameHandRate": {
+        "better": "lower-but-not-standalone-speed",
+        "D3V1": 0.4150767798976268,
+        "QZ": 0.46905537459283386,
+        "Overall17First": 0.45881805490926014,
+        "U357First": 0.46533271288971617,
+        "B04": 0.454164727780363
+      },
+      "dailyMeanEffectiveDistance": {
+        "better": "lower",
+        "D3V1": 0.6630150643716033,
+        "QZ": 0.6946703959282425,
+        "Overall17First": 0.7118327735786475,
+        "U357First": 0.6554918624581969,
+        "B04": 0.7011719708044104
+      },
+      "leftPinkyQAZPeak20Contracts": {
+        "better": "lower",
+        "D3V1": 0.17047601534052387,
+        "QZ": 0.1671654539183134,
+        "Overall17First": 0.18895188019749198,
+        "U357First": 0.1631186082848794,
+        "B04": 0.16661462136610428
+      },
+      "rightPinkyPeak20Contracts": {
+        "better": "lower",
+        "D3V1": 0.031498080493856884,
+        "QZ": 0.04749769054254873,
+        "Overall17First": 0.03516423185567739,
+        "U357First": 0.051044914723866866,
+        "B04": 0.018880630404428396
+      },
+      "maxFingerPeak20Contracts": {
+        "better": "lower",
+        "D3V1": 0.34438623462871315,
+        "QZ": 0.26392457362566674,
+        "Overall17First": 0.27670899124039056,
+        "U357First": 0.25214941827887194,
+        "B04": 0.2927069252273797
       },
       "dailyEightScenarioMovingHand": {
         "better": "higher",
@@ -1299,7 +1473,6 @@
         "QZ": 135.21763800074055,
         "Overall17First": 132.2185188145348,
         "U357First": 143.37998127078376,
-        "S005": 138.67226692391787,
         "B04": 135.3104607733463
       },
       "homeShareS2": {
@@ -1308,8 +1481,557 @@
         "QZ": 0.5454176784562723,
         "Overall17First": 0.3702492154382634,
         "U357First": 0.5203069214183453,
-        "S005": 0.49000641085261276,
         "B04": 0.36599551595942004
+      },
+      "indexFingerTYBPeak20Contracts": {
+        "better": "lower",
+        "D3V1": 0.11594543929162865,
+        "QZ": 0.14100616386613932,
+        "Overall17First": 0.1242151227315823,
+        "U357First": 0.14091953200048554,
+        "B04": 0.12358148940271357
+      },
+      "homeFloor20Contracts": {
+        "better": "higher",
+        "D3V1": 0.3251879737912793,
+        "QZ": 0.3473341306048462,
+        "Overall17First": 0.24733118234751789,
+        "U357First": 0.3762039577208698,
+        "B04": 0.24242726368425396
+      }
+    },
+    "weightedNonfirstRates": {
+      "keytao": {
+        "char": {
+          "D3V1": 0.0044320858902234936,
+          "QZ": 0.00515089418886881,
+          "Overall17First": 0.0044320858902234936,
+          "U357First": 0.004885405279346378,
+          "B04": 0.0044320858902234936
+        },
+        "word2": {
+          "D3V1": 0.004156859065332114,
+          "QZ": 0.003797544664273374,
+          "Overall17First": 0.004119742983832463,
+          "U357First": 0.004403161535325068,
+          "B04": 0.004125659670348659
+        },
+        "word3": {
+          "D3V1": 0.008565971628709564,
+          "QZ": 0.04303344036817244,
+          "Overall17First": 0.00808915551619829,
+          "U357First": 0.04948250439280748,
+          "B04": 0.00729309746914853
+        },
+        "word4": {
+          "D3V1": 0.004572776926881535,
+          "QZ": 0.002505195873193648,
+          "Overall17First": 0.00421149094735467,
+          "U357First": 0.003664212874977981,
+          "B04": 0.003828136145096513
+        }
+      },
+      "sanpin": {
+        "char": {
+          "D3V1": 0.00702191172015471,
+          "QZ": 0.007728031940155728,
+          "Overall17First": 0.00702191172015471,
+          "U357First": 0.007858796024188468,
+          "B04": 0.00702191172015471
+        },
+        "word2": {
+          "D3V1": 0.005954325898707536,
+          "QZ": 0.005750929672201663,
+          "Overall17First": 0.005820451571165186,
+          "U357First": 0.006323204277796981,
+          "B04": 0.005870261725452118
+        },
+        "word3": {
+          "D3V1": 0.013691383506584552,
+          "QZ": 0.060023859652973445,
+          "Overall17First": 0.013213517898208696,
+          "U357First": 0.06947811695537248,
+          "B04": 0.010903917043038792
+        },
+        "word4": {
+          "D3V1": 0.006147472717437516,
+          "QZ": 0.003965359773382103,
+          "Overall17First": 0.006309377549198916,
+          "U357First": 0.005654950821497893,
+          "B04": 0.005116975432123629
+        }
+      }
+    },
+    "stagedResidualNonfirstRates": {
+      "keytao": {
+        "char": {
+          "afterZeroAux": {
+            "D3V1": 0.20850873242144716,
+            "QZ": 0.218121974727561,
+            "Overall17First": 0.20850873242144716,
+            "U357First": 0.21960473613501713,
+            "B04": 0.20850873242144716
+          },
+          "afterOneAux": {
+            "D3V1": 0.040974002787984416,
+            "QZ": 0.04549339593413676,
+            "Overall17First": 0.040974002787984416,
+            "U357First": 0.04652871496467419,
+            "B04": 0.040974002787984416
+          },
+          "afterTwoAux": {
+            "D3V1": 0.0044320858902234936,
+            "QZ": 0.00515089418886881,
+            "Overall17First": 0.0044320858902234936,
+            "U357First": 0.004885405279346378,
+            "B04": 0.0044320858902234936
+          }
+        },
+        "word2": {
+          "afterZeroAux": {
+            "D3V1": 0.1853321500023193,
+            "QZ": 0.19437698818018978,
+            "Overall17First": 0.18490258230173165,
+            "U357First": 0.20066270262968833,
+            "B04": 0.18533409365215264
+          },
+          "afterOneAux": {
+            "D3V1": 0.03642977499770968,
+            "QZ": 0.0357239160166171,
+            "Overall17First": 0.03640380944523959,
+            "U357First": 0.03794801357220962,
+            "B04": 0.03639345135931124
+          },
+          "afterTwoAux": {
+            "D3V1": 0.004156859065332114,
+            "QZ": 0.003797544664273374,
+            "Overall17First": 0.004119742983832463,
+            "U357First": 0.004403161535325068,
+            "B04": 0.004125659670348659
+          }
+        },
+        "word3": {
+          "afterZeroAux": {
+            "D3V1": 0.2465941285387346,
+            "QZ": 0.48665645900600063,
+            "Overall17First": 0.2445578260301074,
+            "U357First": 0.5036489291655059,
+            "B04": 0.21566142179050507
+          },
+          "afterOneAux": {
+            "D3V1": 0.06258406940775897,
+            "QZ": 0.18131962564148416,
+            "Overall17First": 0.061671145093698435,
+            "U357First": 0.19783123422691012,
+            "B04": 0.052508742967835254
+          },
+          "afterTwoAux": {
+            "D3V1": 0.008565971628709564,
+            "QZ": 0.04303344036817244,
+            "Overall17First": 0.00808915551619829,
+            "U357First": 0.04948250439280748,
+            "B04": 0.00729309746914853
+          }
+        },
+        "word4": {
+          "afterZeroAux": {
+            "D3V1": 0.24454543471664625,
+            "QZ": 0.22107260219917166,
+            "Overall17First": 0.24131977706995406,
+            "U357First": 0.2430098642772593,
+            "B04": 0.20384882224097717
+          },
+          "afterOneAux": {
+            "D3V1": 0.04073063982134638,
+            "QZ": 0.02846492914825045,
+            "Overall17First": 0.039620887443315746,
+            "U357First": 0.038215745303558715,
+            "B04": 0.0326344167796972
+          },
+          "afterTwoAux": {
+            "D3V1": 0.004572776926881535,
+            "QZ": 0.002505195873193648,
+            "Overall17First": 0.00421149094735467,
+            "U357First": 0.003664212874977981,
+            "B04": 0.003828136145096513
+          }
+        }
+      },
+      "sanpin": {
+        "char": {
+          "afterZeroAux": {
+            "D3V1": 0.21001490704724196,
+            "QZ": 0.21960513855304975,
+            "Overall17First": 0.21001490704724196,
+            "U357First": 0.22111229452493728,
+            "B04": 0.21001490704724196
+          },
+          "afterOneAux": {
+            "D3V1": 0.047479030055437785,
+            "QZ": 0.05149004259064681,
+            "Overall17First": 0.047479030055437785,
+            "U357First": 0.05378569169650108,
+            "B04": 0.047479030055437785
+          },
+          "afterTwoAux": {
+            "D3V1": 0.00702191172015471,
+            "QZ": 0.007728031940155728,
+            "Overall17First": 0.00702191172015471,
+            "U357First": 0.007858796024188468,
+            "B04": 0.00702191172015471
+          }
+        },
+        "word2": {
+          "afterZeroAux": {
+            "D3V1": 0.1853321500023193,
+            "QZ": 0.19437698818018978,
+            "Overall17First": 0.18490258230173165,
+            "U357First": 0.20066270262968833,
+            "B04": 0.18533409365215264
+          },
+          "afterOneAux": {
+            "D3V1": 0.039745229298790014,
+            "QZ": 0.040303095091274,
+            "Overall17First": 0.03960004517669286,
+            "U357First": 0.042749447132411966,
+            "B04": 0.03960554316690663
+          },
+          "afterTwoAux": {
+            "D3V1": 0.005954325898707536,
+            "QZ": 0.005750929672201663,
+            "Overall17First": 0.005820451571165186,
+            "U357First": 0.006323204277796981,
+            "B04": 0.005870261725452118
+          }
+        },
+        "word3": {
+          "afterZeroAux": {
+            "D3V1": 0.2465941285387346,
+            "QZ": 0.48665645900600063,
+            "Overall17First": 0.2445578260301074,
+            "U357First": 0.5036489291655059,
+            "B04": 0.21566142179050507
+          },
+          "afterOneAux": {
+            "D3V1": 0.07196148654494462,
+            "QZ": 0.20294469220162856,
+            "Overall17First": 0.0704421115902552,
+            "U357First": 0.22102790177903295,
+            "B04": 0.05995816357230831
+          },
+          "afterTwoAux": {
+            "D3V1": 0.013691383506584552,
+            "QZ": 0.060023859652973445,
+            "Overall17First": 0.013213517898208696,
+            "U357First": 0.06947811695537248,
+            "B04": 0.010903917043038792
+          }
+        },
+        "word4": {
+          "afterZeroAux": {
+            "D3V1": 0.24454543471664625,
+            "QZ": 0.22107260219917166,
+            "Overall17First": 0.24131977706995406,
+            "U357First": 0.2430098642772593,
+            "B04": 0.20384882224097717
+          },
+          "afterOneAux": {
+            "D3V1": 0.04657816921875421,
+            "QZ": 0.03609723851895241,
+            "Overall17First": 0.04691827366753094,
+            "U357First": 0.04534501565214442,
+            "B04": 0.0373913617202673
+          },
+          "afterTwoAux": {
+            "D3V1": 0.006147472717437516,
+            "QZ": 0.003965359773382103,
+            "Overall17First": 0.006309377549198916,
+            "U357First": 0.005654950821497893,
+            "B04": 0.005116975432123629
+          }
+        }
+      }
+    },
+    "terminalWordCollisionBuckets": {
+      "keytao": {
+        "word2": {
+          "D3V1": {
+            "buckets": 3355,
+            "residualEntries": 4006,
+            "crossLengthBuckets": 742,
+            "maxBucketSize": 9
+          },
+          "QZ": {
+            "buckets": 3096,
+            "residualEntries": 3742,
+            "crossLengthBuckets": 235,
+            "maxBucketSize": 6
+          },
+          "Overall17First": {
+            "buckets": 3352,
+            "residualEntries": 4000,
+            "crossLengthBuckets": 735,
+            "maxBucketSize": 7
+          },
+          "U357First": {
+            "buckets": 3499,
+            "residualEntries": 4298,
+            "crossLengthBuckets": 404,
+            "maxBucketSize": 8
+          },
+          "B04": {
+            "buckets": 3314,
+            "residualEntries": 3965,
+            "crossLengthBuckets": 714,
+            "maxBucketSize": 9
+          }
+        },
+        "word3": {
+          "D3V1": {
+            "buckets": 2206,
+            "residualEntries": 2767,
+            "crossLengthBuckets": 682,
+            "maxBucketSize": 8
+          },
+          "QZ": {
+            "buckets": 7541,
+            "residualEntries": 12214,
+            "crossLengthBuckets": 0,
+            "maxBucketSize": 14
+          },
+          "Overall17First": {
+            "buckets": 2157,
+            "residualEntries": 2713,
+            "crossLengthBuckets": 630,
+            "maxBucketSize": 8
+          },
+          "U357First": {
+            "buckets": 8070,
+            "residualEntries": 13632,
+            "crossLengthBuckets": 0,
+            "maxBucketSize": 25
+          },
+          "B04": {
+            "buckets": 1873,
+            "residualEntries": 2295,
+            "crossLengthBuckets": 740,
+            "maxBucketSize": 9
+          }
+        },
+        "word4": {
+          "D3V1": {
+            "buckets": 1250,
+            "residualEntries": 1530,
+            "crossLengthBuckets": 411,
+            "maxBucketSize": 9
+          },
+          "QZ": {
+            "buckets": 681,
+            "residualEntries": 836,
+            "crossLengthBuckets": 185,
+            "maxBucketSize": 8
+          },
+          "Overall17First": {
+            "buckets": 1200,
+            "residualEntries": 1482,
+            "crossLengthBuckets": 354,
+            "maxBucketSize": 8
+          },
+          "U357First": {
+            "buckets": 950,
+            "residualEntries": 1159,
+            "crossLengthBuckets": 320,
+            "maxBucketSize": 13
+          },
+          "B04": {
+            "buckets": 962,
+            "residualEntries": 1143,
+            "crossLengthBuckets": 482,
+            "maxBucketSize": 8
+          }
+        }
+      },
+      "sanpin": {
+        "word2": {
+          "D3V1": {
+            "buckets": 4873,
+            "residualEntries": 6264,
+            "crossLengthBuckets": 1118,
+            "maxBucketSize": 10
+          },
+          "QZ": {
+            "buckets": 4690,
+            "residualEntries": 6069,
+            "crossLengthBuckets": 531,
+            "maxBucketSize": 8
+          },
+          "Overall17First": {
+            "buckets": 4806,
+            "residualEntries": 6147,
+            "crossLengthBuckets": 1036,
+            "maxBucketSize": 9
+          },
+          "U357First": {
+            "buckets": 5126,
+            "residualEntries": 6741,
+            "crossLengthBuckets": 712,
+            "maxBucketSize": 9
+          },
+          "B04": {
+            "buckets": 4903,
+            "residualEntries": 6278,
+            "crossLengthBuckets": 1151,
+            "maxBucketSize": 10
+          }
+        },
+        "word3": {
+          "D3V1": {
+            "buckets": 3178,
+            "residualEntries": 4370,
+            "crossLengthBuckets": 1068,
+            "maxBucketSize": 10
+          },
+          "QZ": {
+            "buckets": 9163,
+            "residualEntries": 17129,
+            "crossLengthBuckets": 0,
+            "maxBucketSize": 20
+          },
+          "Overall17First": {
+            "buckets": 3060,
+            "residualEntries": 4272,
+            "crossLengthBuckets": 969,
+            "maxBucketSize": 10
+          },
+          "U357First": {
+            "buckets": 9642,
+            "residualEntries": 18936,
+            "crossLengthBuckets": 0,
+            "maxBucketSize": 21
+          },
+          "B04": {
+            "buckets": 2640,
+            "residualEntries": 3491,
+            "crossLengthBuckets": 1095,
+            "maxBucketSize": 11
+          }
+        },
+        "word4": {
+          "D3V1": {
+            "buckets": 1689,
+            "residualEntries": 2062,
+            "crossLengthBuckets": 642,
+            "maxBucketSize": 10
+          },
+          "QZ": {
+            "buckets": 1051,
+            "residualEntries": 1265,
+            "crossLengthBuckets": 371,
+            "maxBucketSize": 10
+          },
+          "Overall17First": {
+            "buckets": 1690,
+            "residualEntries": 2083,
+            "crossLengthBuckets": 586,
+            "maxBucketSize": 9
+          },
+          "U357First": {
+            "buckets": 1412,
+            "residualEntries": 1721,
+            "crossLengthBuckets": 545,
+            "maxBucketSize": 9
+          },
+          "B04": {
+            "buckets": 1263,
+            "residualEntries": 1466,
+            "crossLengthBuckets": 683,
+            "maxBucketSize": 11
+          }
+        }
+      }
+    },
+    "cktV4Explanation": {
+      "weightedMeanComponentsMs": {
+        "D3V1": {
+          "motor": 340.6407046758431,
+          "firstAux": 62.81989164983417,
+          "secondAux": 13.470810268143138,
+          "selectionDecision": 3.738257864105516,
+          "scan": 0.3999940063982371,
+          "selectionAction": 0,
+          "page": 0.0003606505009592698,
+          "total": 421.0700191148251
+        },
+        "QZ": {
+          "motor": 345.4646754286893,
+          "firstAux": 75.48617911930236,
+          "secondAux": 19.34727393396931,
+          "selectionDecision": 7.552610240308565,
+          "scan": 0.9587562750283478,
+          "selectionAction": 0,
+          "page": 0.009098497870155677,
+          "total": 448.81859349516805
+        },
+        "Overall17First": {
+          "motor": 345.23574824780025,
+          "firstAux": 62.49235848698005,
+          "secondAux": 13.377925362600498,
+          "selectionDecision": 3.6549061593165857,
+          "scan": 0.3863785914377155,
+          "selectionAction": 0,
+          "page": 0.00024282187842386544,
+          "total": 425.1475596700135
+        },
+        "U357First": {
+          "motor": 348.002978980943,
+          "firstAux": 78.45027083309036,
+          "secondAux": 21.120667143417155,
+          "selectionDecision": 8.660154189377842,
+          "scan": 1.1383095427188505,
+          "selectionAction": 0,
+          "page": 0.016658754695102133,
+          "total": 457.38903944424237
+        },
+        "B04": {
+          "motor": 345.47157568609623,
+          "firstAux": 59.23871723611423,
+          "secondAux": 12.473567536554597,
+          "selectionDecision": 3.4291943943593997,
+          "scan": 0.3642804520078731,
+          "selectionAction": 0,
+          "page": 0.0002628070828248129,
+          "total": 420.9775981122151
+        }
+      },
+      "counterfactualScores": {
+        "motorOnly": {
+          "D3V1": 9.435276277547285,
+          "QZ": 9.568146507690843,
+          "Overall17First": 9.576826257659523,
+          "U357First": 9.63456752156577,
+          "B04": 9.573777999485444
+        },
+        "motorAndAuxNoSelection": {
+          "D3V1": 9.123787658393391,
+          "QZ": 9.579633518178053,
+          "Overall17First": 9.227535479940919,
+          "U357First": 9.718997364113662,
+          "B04": 9.219064184323237
+        },
+        "fullExceptPageActionZero": {
+          "D3V1": 9.08367664000724,
+          "QZ": 9.560828058170546,
+          "Overall17First": 9.18535591552509,
+          "U357First": 9.716407534466805,
+          "B04": 9.184685015252875
+        },
+        "fullDefault": {
+          "D3V1": 9.083575240979213,
+          "QZ": 9.56073454942596,
+          "Overall17First": 9.185254321702468,
+          "U357First": 9.716420811869073,
+          "B04": 9.184606967934092
+        }
       }
     }
   }
