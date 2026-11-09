@@ -1,0 +1,249 @@
+# 冰雪简道 / 冰雪散拼共用配置
+# 21×26 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）。
+
+__include: snow_pinyin.schema.yaml:/
+
+engine:
+  processors:
+    - lua_processor@*snow.statistics*processor
+    - ascii_composer
+    - lua_processor@*snow.abbreviation
+    - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
+    - recognizer
+    - lua_processor@*snow.schema_menu*processor
+    - lua_processor@*snow.keymap
+    - lua_processor@*snow.code_navigator
+    - lua_processor@*snow.user_dict
+    - lua_processor@*snow.shape_processor
+    - lua_processor@*snow.history
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - affix_segmentor@schema_menu
+    - affix_segmentor@stroke
+    - affix_segmentor@pinyin
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - lua_translator@*snow.schema_menu*translator
+    - lua_translator@*snow.shenyun
+    - table_translator@stroke
+    - script_translator@pinyin
+    - lua_translator@*snow.buffered
+    - lua_translator@*snow.datetime
+    - lua_translator@*snow.statistics*translator
+    - lua_translator@*snow.number
+    - lua_translator@*snow.calculator
+    - lua_translator@*snow.history
+  filters:
+    - lua_filter@*snow.placeholder
+    - reverse_lookup_filter@lookup_pinyin
+    - lua_filter@*snow.length_balance
+    - lua_filter@*snow.fix
+    - lua_filter@*snow.postpone
+    - lua_filter@*snow.learned_priority
+    - lua_filter@*snow.simplified
+    - simplifier
+    - uniquifier
+    - lua_filter@*snow.hint
+
+shenyun_algebra:
+  # Common399 不编码的扩展音节。
+  - erase/^(hng|m|n|ng|ê)\d$/
+  # 儿化轻声并入 er5，避免占用单键 r。
+  - xform/(^| )r5(?= |$)/$1er5/
+  # j/q/x 与零声母 yu 系列统一使用 v 韵尾语义。
+  - xform/([jqx])uan(?=\d)/$1van/
+  - xform/([jqx])ue(?=\d)/$1ve/
+  - xform/([jqx])un(?=\d)/$1vn/
+  - xform/([jqx])u(?=\d)/$1v/
+  # 词典来源偶尔使用 ue 书写 üe；统一并入 ve 规范韵母。
+  - xform/ue(?=\d)/ve/
+  - xform/(^| )yuan(?=\d)/$1Yvan/
+  - xform/(^| )yue(?=\d)/$1Yve/
+  - xform/(^| )yun(?=\d)/$1Yvn/
+  - xform/(^| )yu(?=\d)/$1Yv/
+  # 零声母载体 A/E/O、W、Y 分别映射到 X、Q、Y。
+  - xform/(^| )(?=[aoe])/$1X/
+  - xform/(^| )w/$1Q/
+  - xform/(^| )y/$1Y/
+  # Overall-17 的声母宿主键；普通声母只移动 f，合键依靠互斥的合法韵集合消歧。
+  - xform/(^| )zh/$1F/
+  - xform/(^| )ch/$1V/
+  - xform/(^| )sh/$1W/
+  - xform/(^| )f/$1J/
+  # 26 个纯字母韵键；较长韵尾先行，保留 a/e/i/u 的原键。
+  - xform/iang(?=\d)/L/
+  - xform/iong(?=\d)/Q/
+  - xform/uang(?=\d)/P/
+  - xform/ian(?=\d)/P/
+  - xform/iao(?=\d)/D/
+  - xform/ing(?=\d)/R/
+  - xform/uai(?=\d)/R/
+  - xform/uan(?=\d)/Q/
+  - xform/van(?=\d)/T/
+  - xform/eng(?=\d)/N/
+  - xform/ang(?=\d)/Y/
+  - xform/ong(?=\d)/K/
+  - xform/ai(?=\d)/H/
+  - xform/an(?=\d)/O/
+  - xform/ao(?=\d)/S/
+  - xform/ei(?=\d)/W/
+  - xform/en(?=\d)/J/
+  - xform/er(?=\d)/U/
+  - xform/ia(?=\d)/K/
+  - xform/ie(?=\d)/Z/
+  - xform/in(?=\d)/C/
+  - xform/iu(?=\d)/X/
+  - xform/ou(?=\d)/F/
+  - xform/ua(?=\d)/X/
+  - xform/ui(?=\d)/L/
+  - xform/un(?=\d)/T/
+  - xform/uo(?=\d)/M/
+  - xform/ve(?=\d)/G/
+  - xform/vn(?=\d)/B/
+  - xform/v(?=\d)/V/
+  - xform/a(?=\d)/A/
+  - xform/e(?=\d)/E/
+  - xform/i(?=\d)/I/
+  - xform/o(?=\d)/M/
+  - xform/u(?=\d)/U/
+  - xform/\d//
+  - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
+
+shenyun:
+  dictionary: snow_pinyin
+  prism: snow_shenyun_first
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+  enable_sentence: false
+  enable_completion: false
+  enable_user_dict: true
+  preedit_format: null
+
+learned_priority:
+  memory_namespace: shenyun_first
+  minimum_input_length: 4
+  maximum_candidates: 120
+
+# 空桶只看系统词典，不受个人调频影响；词频 0/1 的大字集兜底读音由 Lua 忽略。
+vacancy:
+  dictionary: snow_pinyin
+  prism: snow_shenyun_first
+  canonical_format:
+    __include: /shenyun_algebra
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+  enable_sentence: false
+  enable_completion: false
+  enable_user_dict: false
+
+speller:
+  alphabet: abcdefghijklmnopqrstuvwxyz
+  initials: bpmfdtnlgkhjqwvxrzcsy
+  delimiter: " "
+  popping:
+    # 四码顶的未完成主码必须直接续写，不依赖中间态是否恰好有候选。
+    # A 后的第二码既可能是单字 U，也可能是三、四字词的 A2。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy]$"
+      accept: "[a-z]"
+      strategy: append
+    # AU/AA 后的第三码分流为单字 B 或词语 A；A、B 正好划分 26 个小写字母。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z]$"
+      accept: "[a-z]"
+      strategy: append
+    # AUA/AAA 后完整接收 26 键 U，形成 AUAU、AAAU 或 AAAA。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy]$"
+      accept: "[a-z]"
+      strategy: append
+    # 单字 AU 后最多追加四个辅码，与 21×21 的 AABBBB 单字合同一致。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$"
+      accept: "[aeuio]"
+      strategy: append
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]{2}$"
+      accept: "[aeuio]"
+      strategy: append
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]{3}$"
+      accept: "[aeuio]"
+      strategy: append
+    # 二、三、四字词的四码主码后依次追加 B1、B2（其中二字词实际为 B2、B1）。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy][a-z]$"
+      accept: "[aeuio]"
+      strategy: append
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$"
+      accept: "[aeuio]"
+      strategy: append
+    # 其余字母先尝试追加；不能形成候选时顶出完整码首选，再重放该键。
+    - match: "^[a-z]+$"
+      accept: "[a-z]"
+      strategy: conditional
+    # 标点先顶出候选，再由 punctuator 输出；逗号和句号不参与编码。
+    - match: ".*[a-z0-9]"
+      accept: "[^a-z0-9 ]"
+  algebra:
+    __include: /shenyun_algebra
+    __append:
+      - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/$1/
+
+lookup_shenyun:
+  tags: [pinyin]
+  overwrite_comment: true
+  dictionary: snow_pinyin
+  comment_format:
+    __include: /shenyun_algebra
+
+translator:
+  prism: snow_shenyun_first
+  preedit_format: null
+  enable_schema_user_dict: true
+  shape_elements: snow_jiandao_chaifen
+  shape_mapping: "radical_jiandao_first.txt"
+  shenyun_initial_keys: bpmfdtnlgkhjqwvxrzcsy
+  shenyun_final_keys: abcdefghijklmnopqrstuvwxyz
+  shenyun_auxiliary_keys: aeuio
+
+# 与 21×21 方案一致：编码完成时 ;/ 先顶出当前候选，再追加高频尾字“的/了”。
+punctuator:
+  half_shape:
+    __include: snow_pinyin.schema.yaml:/punctuator/half_shape
+    ";": 的
+    "/": 了
+
+switches:
+  - name: ascii_mode
+    states: [中文, 西文]
+    reset: 0
+  - name: full_shape
+    states: [半角, 全角]
+  - name: traditionalization
+    states: [汉字, 漢字]
+  - name: ascii_punct
+    states: [。，, ．，]
+  - name: popping
+    states: [整句, 飞码]
+    reset: 1
+  - name: buffered
+    states: [结束, 缓冲]
+    reset: 0
+  - name: add
+    states: [结束, 加词中]
+    reset: 0
+
+menu:
+  alternative_select_keys: "_23890"
+  page_size: 6

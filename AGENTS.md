@@ -47,6 +47,10 @@
 | 冰雪散拼 | 散拼 | `snow_shenyun_tone` |
 | 冰雪键道 | 键道 | `snow_jiandao_classic` |
 | 冰雪三拼 | 三拼 | `snow_sanpin_classic` |
+| 冰雪健道·初代 | 健道·初代 | `snow_jiandao_first` |
+| 冰雪弎拼·初代 | 弎拼·初代 | `snow_sanpin_first` |
+| 冰雪简道·初代 | 简道·初代 | `snow_shenyun_shape_first` |
+| 冰雪散拼·初代 | 散拼·初代 | `snow_shenyun_tone_first` |
 
 对话和报告里称呼方案时，优先用全称（冰雪四拼），其次用简称（四拼），再次用完整的 schema_id（`snow_sipin`）。不要用不带 `snow_` 前缀的 `sipin` 之类，除非是在引用代码或命令参数。
 
@@ -157,14 +161,14 @@ patch:
 
 `bun scripts/benchmark-latency.ts --ci` 执行五方案统一发布预算（`scripts/lib/latency-budget.ts` 中的 `LATENCY_BUDGET`）：P50 < 15 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；每场景及按键位置的 P99 也须 < 50 ms，首次反馈最大值 < 100 ms。不得按方案放宽标准或用低耗时的并击按下、松开事件稀释反馈分布。CI 和发布共用 `.github/workflows/latency.yml`，发布必须依赖门禁成功。
 
-测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。不要在本机调用 `mira` 或 `bun scripts/test.ts`；先完成本地静态、生成和语料检查并推送分支，再仅由 GitHub Actions 调用 `scripts/test.ts` 并行验证九个发布方案。GitHub Actions 分别使用明确的 `mira-rime1.13.1` 与 `mira-rime1.17` 资产，以同时覆盖当前稳定版小狼毫和新版 librime；失败时只打印失败用例，完整输出留在它给出的临时目录里。
+测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。不要在本机调用 `mira` 或 `bun scripts/test.ts`；先完成本地静态、生成和语料检查并推送分支，再仅由 GitHub Actions 调用 `scripts/test.ts` 并行验证十三个发布方案。GitHub Actions 分别使用明确的 `mira-rime1.13.1` 与 `mira-rime1.17` 资产，以同时覆盖当前稳定版小狼毫和新版 librime；失败时只打印失败用例，完整输出留在它给出的临时目录里。
 
 `generate-pinyin-dict.ts` 在写文件前校验全部输入读音；`scripts/test.ts`、CI 和发布流程也会离线检查现有词典在全部九个发布方案中的完整音节编码。各方案的正则定义在 `scripts/lib/pinyin-validation.ts`，依据 `../input` 中对应的拼写教程及经典快照：冰雪四拼为声码加一至二码韵母加调码，冰雪弎拼与冰雪三拼为声韵调三码，冰雪健道与冰雪键道为声韵两码，冰雪简道与冰雪散拼为 21×26 声韵两码，冰雪清韵为声码加九键韵码，冰雪一拼为声介加可省略的韵基加四声标记。检查展开实际方案的拼写规则及引用，保留完整音节的 `derive` 分支，不检查 `abbrev`、简码、顶功或其他输入规则；字母伪音节不属于汉字音节，予以跳过。更新词典或拼写运算后运行 `bun scripts/check-pinyin-dict.ts`；结构异常应修正来源或运算，不应为已有异常放宽正则。
 
 `scripts/test.ts` 为每个方案准备一份独立环境，这几步都是为了提速或者能并行，不要省掉：
 
 - **精简的源目录**：mira 的每个 deploy 都会把整个 `source_dir`（spec 里写的是 `..`，也就是整个仓库，带 `.git`、`node_modules`、`cache`，约 1 GB）复制一遍。脚本只复制 `git ls-files -co --exclude-standard` 列出的文件，相当于 CI 的全新 checkout。本机的 `*.userdb`、`user.yaml` 自然被排除在外，不用再 `rm -rf *.userdb`。
-- **`default.custom.yaml` 只留被测方案并保留测试所需的全局热键 patch**：否则每个 deploy 都要检查 `schema_list` 里的全部九个发布方案，或因覆盖配置而让热键场景退回原生行为。这两项加起来可显著缩短部署时间且保证测试与发布配置一致。
+- **`default.custom.yaml` 只留被测方案并保留测试所需的全局热键 patch**：否则每个 deploy 都要检查 `schema_list` 里的全部十三个发布方案，或因覆盖配置而让热键场景退回原生行为。这两项加起来可显著缩短部署时间且保证测试与发布配置一致。
 - **独立的 `TMPDIR`**：mira 的工作目录写死为 `$TMPDIR/mira`，启动时整个删掉，两个 mira 同时跑会互相删目录然后崩溃。
 - **独立的缓存副本**：`-C` 指向的 staging 目录不能共用。带 `patch` 的 deploy（冰雪弎拼、冰雪健道的 `sentence`，冰雪四拼的 `special`）会把改过的方案编译进缓存，改了词典后几个进程还会同时重建同一份 `.bin`。脚本先把仓库的 `cache/` 复制给每个方案，跑完再把更新过的文件写回去。
 
@@ -263,7 +267,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 
 ## processors 顺序
 
-九个发布方案共用一套相对顺序，新增或移动处理器时按下表对齐；方案专属组件仍按表中注释增减：
+十三个发布方案共用一套相对顺序，新增或移动处理器时按下表对齐；方案专属组件仍按表中注释增减：
 
 ```yaml
   processors:

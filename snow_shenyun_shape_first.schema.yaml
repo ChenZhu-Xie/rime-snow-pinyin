@@ -1,0 +1,30 @@
+# Rime schema
+# encoding: utf-8
+
+__include: snow_shenyun_first_common.yaml:/
+
+schema:
+  schema_id: snow_shenyun_shape_first
+  name: 冰雪简道·初代
+  version: "0.3.14"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    AUBBBB 飞花式 21×26 顶功方案
+    “简道”强调记忆更简单：M=36、无飞键、无音节重码、无 630
+    共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
+    单字 AU 后最多追加四个形辅；二／三／四字词形辅字位顺序：12/21/42
+  dependencies:
+    - snow_pinyin
+    - snow_bihua
+    - snow_jiandao_chaifen
+
+shenyun_options:
+  auxiliary: shape
+
+keymap:
+  key: e
+  image: snow_shenyun_shape_first.svg
+
+__patch:
+  - snow_shenyun_shape_first.custom:/patch?

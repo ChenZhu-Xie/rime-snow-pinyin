@@ -1,0 +1,235 @@
+# Rime schema
+# encoding: utf-8
+
+__include: snow_pinyin.schema.yaml:/
+
+schema:
+  schema_id: snow_jiandao_first
+  name: 冰雪健道·初代
+  version: "0.3.14"
+  author:
+    - 吅吅大山
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    单字三码起顶、词组四码起顶的双拼词顶功方案
+    双拼编码：无飞键道·神韵
+    “健”取健步、矫健之意，突出击键效率与人体工学
+  dependencies:
+    - snow_pinyin
+    - radical_pinyin
+    - snow_jiandao_bihua_first
+    - snow_jiandao_jianpin_first
+    - snow_jiandao_chaifen
+
+keymap:
+  key: v
+  image: snow_jiandao_first.svg
+
+engine:
+  processors:
+    - lua_processor@*snow.statistics*processor
+    - ascii_composer
+    # select_character 必须早于 popping，否则 [/] 以词定字会先被顶功处理器吞掉。
+    - lua_processor@*snow.shape_processor
+    - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
+    - recognizer
+    - lua_processor@*snow.schema_menu*processor
+    - lua_processor@*snow.keymap
+    - lua_processor@*snow.code_navigator
+    - lua_processor@*snow.user_dict
+    - lua_processor@*snow.history
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - affix_segmentor@schema_menu
+    - affix_segmentor@stroke
+    - affix_segmentor@pinyin
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - lua_translator@*snow.schema_menu*translator
+    - lua_translator@*snow.table_like*main
+    # 简拼留在 abc 段内查询，避免第三个声母触发 recognizer/affix 重分段。
+    - lua_translator@*snow.table_like*jianpin
+    # 空置 AA 码仍在 abc 段上，由此补入真正的声声二字词候选；xh/xw 保留给 U/A 字母入口。
+    - lua_translator@*snow.table_like*initial_pair
+    - table_translator@stroke
+    - table_translator@radical
+    - script_translator@pinyin
+    - lua_translator@*snow.buffered
+    - lua_translator@*snow.datetime
+    - lua_translator@*snow.statistics*translator
+    - lua_translator@*snow.number
+    - lua_translator@*snow.unicode*translator
+    - lua_translator@*snow.calculator
+    - lua_translator@*snow.history
+  filters:
+    - lua_filter@*snow.placeholder
+    - lua_filter@*snow.bihua
+    - lua_filter@*snow.enforce
+    - reverse_lookup_filter@lookup_pinyin
+    - reverse_lookup_filter@lookup_jiandao
+    - lua_filter@*snow.fix
+    - lua_filter@*snow.shape_filter
+    - lua_filter@*snow.postpone
+    - lua_filter@*snow.learned_priority
+    - lua_filter@*snow.simplified
+    - simplifier
+    - uniquifier
+    - lua_filter@*snow.hint
+    - lua_filter@*snow.unicode*filter
+
+speller:
+  alphabet: bpmfdtnlgkhjqxzcsrwyeBPMFDTNLGKHJQXZCSRWYE
+  initials: bpmfdtnlgkhjqxzcsrwye
+  delimiter: " "
+  shape:
+    # 运行时空音码的 AA 是声声二字词；仅接受一个首字首形辅码。
+    - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
+      match_shape: "^$"
+      accept: "[viuoa]"
+      status: initial_pair
+    - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
+      match_shape: ".+"
+      accept: "[viuoa]"
+      block: true
+    # 二／三／四字词的前两位形辅字位顺序为 12/23/24；三字词最多三辅，四字词最多两辅。
+    - match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3}"
+      match_shape: "^.{0,2}$"
+      accept: "[viuoa]"
+    - match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){4,}"
+      match_shape: "^.{0,1}$"
+      accept: "[viuoa]"
+    - match: "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?[viuoa]*"
+      accept: "[viuoa]"
+    - match: "[bpmfdtnlgkhjqxzcsrywe][viuoa]*"
+      accept: "[viuoa]"
+  popping:
+    # 四顶模式
+    # 630
+    - when: popping
+      match: "[bpmfdtnlgkhjqxzcsrywe][viuoa]+"
+      accept: "[bpmfdtnlgkhjqxzcsrywe]"
+    # 单字和三字词
+    - when: popping
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){2,3}[viuoa]+"
+      accept: "[bpmfdtnlgkhjqxzcsrywe]"
+    # 四字词和多字词
+    - when: popping
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){4,}[viuoa]*"
+      accept: "[bpmfdtnlgkhjqxzcsrywe]"
+    # 已有至少四个小写字母时，大写转成小写追加下一个字的声母
+    - when: popping
+      match: "(?=(?:[A-Z]*[a-z]){4})[bpmfdtnlgkhjqxzcsrywe][a-zA-Z]*"
+      accept: "[BPMFDTNLGKHJQXZCSRYWE]"
+      strategy: append
+    # 不足四个小写声母时，大写原样追加为前一个字的韵母
+    - when: popping
+      match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){0,2}[bpmfdtnlgkhjqxzcsrywe]"
+      accept: "[BPMFDTNLGKHJQXZCSRYWE]"
+      strategy: append_raw
+    # 顶标点
+    - match: ".*[^a-zA-Z0-9]"
+      accept: "[bpmfdtnlgkhjqxzcsrywe]"
+    # 标点大写顶
+    - match: ".*[a-z0-9]"
+      accept: "[^a-z0-9 ]"
+  algebra:
+    __include: snow_sanpin_first.schema.yaml:/sanpin_algebra
+    __append:
+      # 字母入口与三拼共享二键基码：辅音借用 c 列，元音使用 x 载体。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrywe])/$1c/
+      - xform/~{1,2}v/xg/
+      - xform/~{1,2}i/xl/
+      - xform/~{1,2}u/xh/
+      - xform/~{1,2}o/xd/
+      - xform/~{1,2}a/xw/
+      - xform/[viuoa]$// # 无声调
+
+jianpin:
+  dictionary: snow_pinyin
+  prism: snow_jiandao_jianpin_first
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+
+initial_pair:
+  __include: /jianpin
+  tag: abc
+
+# 空桶只看系统词典，不受个人调频影响；词频 0/1 的大字集兜底读音由 Lua 忽略。
+vacancy:
+  dictionary: snow_pinyin
+  prism: snow_jiandao_first
+  canonical_format:
+    __include: snow_sanpin_first.schema.yaml:/sanpin_algebra
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+  enable_sentence: false
+  enable_completion: false
+  enable_user_dict: false
+
+lookup_jiandao:
+  tags: [pinyin]
+  overwrite_comment: true
+  dictionary: snow_pinyin
+  comment_format:
+    __include: snow_sanpin_first.schema.yaml:/sanpin_algebra
+    __append:
+      - xform/q([zhe])/f$1/
+      - xform/[viuoa]( |$)/$1/ # 无声调
+
+__patch:
+  - patch
+  - snow_jiandao_first.custom:/patch?
+
+patch:
+  switches/+:
+    - name: popping
+      states: [整句, 顶功]
+      reset: 1
+    - name: chaifen
+      states: [默认, 拆分]
+      reset: 0
+    - name: buffered
+      states: [结束, 缓冲]
+      reset: 0
+    - name: add
+      states: [结束, 加词中]
+      reset: 0
+  translator/prism: snow_jiandao_first
+  translator/preedit_format: null
+  translator/enable_schema_user_dict: true
+  translator/shape_elements: snow_jiandao_chaifen
+  translator/shape_mapping: "radical_jiandao_first.txt"
+  # xh/xw 同时是 U/A 的二键入口，不能让声声词候选改变缓冲模式的字母首选。
+  translator/reserved_initial_pair_pattern: "^(?:xh|xw)$"
+  translator/jianpin_pattern: "^(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}$"
+  # 与四拼一致：先顶出当前候选，再直接提交高频尾字。
+  # 保留 d→的、l→了，;/ 只作为可选的强制上屏尾字键。
+  punctuator/half_shape/+:
+    ";": 的
+    "|": ；
+    "/": 了
+    "\\": 、
+  key_binder/bindings/+:
+    - { when: composing, accept: v, send: v }
+  menu/alternative_select_keys: "_23890"
+  stroke/prism: snow_jiandao_bihua_first
+  stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]

@@ -32,7 +32,7 @@ function filter.func(translation, env)
     full_input = full_input .. shape_input
   end
   local id = env.engine.schema.schema_id
-  local affix = (id == "snow_sanpin" or id == "snow_sanpin_classic")
+  local affix = (id == "snow_sanpin" or id == "snow_sanpin_first" or id == "snow_sanpin_classic")
       and { "i", "v", "u", "a", "o" }
       or { "v", "i", "u", "o", "a" }
   local first = true

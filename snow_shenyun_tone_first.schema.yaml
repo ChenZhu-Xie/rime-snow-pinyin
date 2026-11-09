@@ -1,0 +1,40 @@
+# Rime schema
+# encoding: utf-8
+
+__include: snow_shenyun_first_common.yaml:/
+
+schema:
+  schema_id: snow_shenyun_tone_first
+  name: 冰雪散拼·初代
+  version: "0.3.14"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    AUBBBB 飞花式 21×26 顶功方案
+    “散拼”取“形散神不散”：不使用字形辅码，保留声调与笔画辅码
+    共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵布局；单字首 B 为声调，后续 B 为笔画，1 独立进入部首码
+    单字 AU 后依次追加声调和最多三笔画；二／三／四字词调辅字位顺序：12/21/13
+  dependencies:
+    - snow_pinyin
+    - snow_bihua
+    - snow_bushou
+
+shenyun_options:
+  auxiliary: tone
+
+keymap:
+  key: e
+  image: snow_shenyun_tone_first.svg
+
+__patch:
+  - patch
+  - snow_shenyun_tone_first.custom:/patch?
+
+patch:
+  translator/shape_elements: snow_bushou
+  translator/shape_mapping: "radical_sanpin_first.txt"
+  speller/shape:
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]?$"
+      accept: "1"
+    - match_shape: "1"
+      accept: "[a-z]"

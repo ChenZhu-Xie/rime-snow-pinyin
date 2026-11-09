@@ -52,10 +52,22 @@ menu.entries = {
     aliases = { "bxjd", "jd", "lfjd", "sszcdc", "bxjdlfjdsszcdc" },
   },
   {
+    schema_id = "snow_jiandao_first",
+    name = "冰雪健道·初代",
+    comment = "21²5⁴ 零飞键道 U357 初代",
+    aliases = { "cd", "bxjdcd", "jdcd", "lfjdcd", "u357cd", "bxjdlfjdu357cd" },
+  },
+  {
     schema_id = "snow_sanpin",
     name = "冰雪弎拼",
     comment = "21²5ⁿ 零飞三拼 人体工学",
     aliases = { "bxsp", "sp", "lfsp", "rtgx", "bxsplfsprtgx" },
+  },
+  {
+    schema_id = "snow_sanpin_first",
+    name = "冰雪弎拼·初代",
+    comment = "21²5ⁿ 零飞三拼 U357 初代",
+    aliases = { "cd", "bxspcd", "spcd", "lfspcd", "u357cd", "bxsplfspu357cd" },
   },
   {
     schema_id = "snow_shenyun_shape",
@@ -64,10 +76,22 @@ menu.entries = {
     aliases = { "bxjd", "jd", "wzjd", "myl", "bxjdwzjdmyl" },
   },
   {
+    schema_id = "snow_shenyun_shape_first",
+    name = "冰雪简道·初代",
+    comment = "21¹26¹5⁴ Overall-17 初代",
+    aliases = { "cd", "bxjdcd", "jdcd", "wzjdcd", "o17cd", "bxjdwzjdo17cd" },
+  },
+  {
     schema_id = "snow_shenyun_tone",
     name = "冰雪散拼",
     comment = "21¹26¹5ⁿ 无重三拼 顶功版廿六",
     aliases = { "bxsp", "sp", "wzsp", "dgbenl", "bxspwzspdgbenl" },
+  },
+  {
+    schema_id = "snow_shenyun_tone_first",
+    name = "冰雪散拼·初代",
+    comment = "21¹26¹5ⁿ Overall-17 初代",
+    aliases = { "cd", "bxspcd", "spcd", "wzspcd", "o17cd", "bxspwzspo17cd" },
   },
   {
     schema_id = "snow_sipin",

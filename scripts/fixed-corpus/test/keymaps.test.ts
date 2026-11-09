@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
@@ -27,6 +28,37 @@ const schemes = [
 	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.svg"],
 	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.svg"],
 ] as const;
+
+const firstGenerationKeymaps = [
+	[
+		"snow_jiandao_first.svg",
+		"5914372fd95c8753fef397386946fbf809e2861d8dec1a8a71d2ea4fb325e989",
+	],
+	[
+		"snow_sanpin_first.svg",
+		"32187e19c06682d127fdbe4acaa20cb4f374e85ae173a7a8585af0fec6340f68",
+	],
+	[
+		"snow_shenyun_shape_first.svg",
+		"e7f1047eb423b723552fc54e8868eaba79b24b81ae25c2e23096d318d34fefba",
+	],
+	[
+		"snow_shenyun_tone_first.svg",
+		"2dc78fd6741725d29a79cee1188b02d6d0f6c1c94c6c5ecc6b552777f9c0bd8a",
+	],
+] as const;
+
+test("first-generation schemes freeze their current keymaps", () => {
+	for (const [file, expectedHash] of firstGenerationKeymaps) {
+		assert.equal(
+			createHash("sha256")
+				.update(readFileSync(join(root, "lua", "snow", "keymaps", file)))
+				.digest("hex"),
+			expectedHash,
+			file,
+		);
+	}
+});
 
 test("seven released schemes bind only their vacant standalone key to a keymap", () => {
 	for (const [schema, key, image] of schemes) {

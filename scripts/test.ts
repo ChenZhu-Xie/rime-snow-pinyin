@@ -1,4 +1,4 @@
-// 并行运行九个方案的 mira 测试
+// 并行运行十三个方案的 mira 测试
 //
 //   bun scripts/test.ts                  # 全部方案
 //   bun scripts/test.ts yipin qingyun    # 只跑指定方案，snow_ 前缀可省
@@ -28,11 +28,15 @@ import { copyRimeDependencies } from "./lib/rime-dependencies";
 const SCHEMAS = [
 	"snow_sipin",
 	"snow_sanpin",
+	"snow_sanpin_first",
 	"snow_yipin",
 	"snow_jiandao",
+	"snow_jiandao_first",
 	"snow_qingyun",
 	"snow_shenyun_shape",
+	"snow_shenyun_shape_first",
 	"snow_shenyun_tone",
+	"snow_shenyun_tone_first",
 	"snow_jiandao_classic",
 	"snow_sanpin_classic",
 ];

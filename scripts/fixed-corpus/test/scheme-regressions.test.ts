@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
@@ -9,6 +10,80 @@ import { makeMiraDefaultCustomization } from "../../lib/mira-default-custom";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
+
+const firstGenerationSchemes = [
+	[
+		"snow_jiandao",
+		"冰雪健道·初代",
+		"cbbc1691ccbef0e02f6d408fd288051ea70f96d6be9ff2eadb70f81a97028bb9",
+	],
+	[
+		"snow_sanpin",
+		"冰雪弎拼·初代",
+		"20b01fef6ab389ccb9601f8b445a54337bdf8f1a9364b53ec6e586e5c893f92f",
+	],
+	[
+		"snow_shenyun_shape",
+		"冰雪简道·初代",
+		"29d201dfeb529fbff22cbcb5d761b32ec5b886cf695ec0fc5dd8c91c44e5cb2d",
+	],
+	[
+		"snow_shenyun_tone",
+		"冰雪散拼·初代",
+		"a5b9d46296a4cfb59f0c85a98c054d8b858a23658837530200be502a7369ff51",
+	],
+] as const;
+
+test("first-generation U357 and Overall-17 schemes are complete frozen copies", () => {
+	const menu = read("lua/snow/schema_menu.lua");
+	const release = read(".github/workflows/release.yml");
+	for (const [base, name, expectedFixedHash] of firstGenerationSchemes) {
+		const id = `${base}_first`;
+		const schema = load(read(`${id}.schema.yaml`)) as {
+			schema: { schema_id: string; name: string };
+			keymap: { image: string };
+		};
+		assert.equal(schema.schema.schema_id, id);
+		assert.equal(schema.schema.name, name);
+		assert.equal(schema.keymap.image, `${id}.svg`);
+		assert.equal(
+			createHash("sha256")
+				.update(readFileSync(join(root, `${id}.fixed.txt`)))
+				.digest("hex"),
+			expectedFixedHash,
+			`${id}.fixed.txt`,
+		);
+		assert.match(
+			menu,
+			new RegExp(`schema_id = "${id}"[\\s\\S]+name = "${name}"`, "u"),
+		);
+		assert.ok(release.includes(`schema: ${id}`), id);
+	}
+	assert.ok(
+		read("snow_jiandao_first.schema.yaml").includes(
+			"snow_sanpin_first.schema.yaml:/sanpin_algebra",
+		),
+	);
+	assert.ok(
+		read("snow_jiandao_jianpin_first.schema.yaml").includes(
+			"snow_sanpin_first.schema.yaml:/sanpin_algebra",
+		),
+	);
+	assert.ok(
+		read("snow_shenyun_shape_first.schema.yaml").includes(
+			"snow_shenyun_first_common.yaml:/",
+		),
+	);
+	assert.ok(
+		read("snow_shenyun_tone_first.schema.yaml").includes(
+			"snow_shenyun_first_common.yaml:/",
+		),
+	);
+	assert.doesNotMatch(
+		read("snow_shenyun_first_common.yaml"),
+		/prism: snow_shenyun$/mu,
+	);
+});
 
 test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme", () => {
 	for (const source of [

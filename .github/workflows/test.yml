@@ -112,16 +112,24 @@ jobs:
             schema: snow_sipin
           - name: 冰雪弎拼
             schema: snow_sanpin
+          - name: 冰雪弎拼·初代
+            schema: snow_sanpin_first
           - name: 冰雪一拼
             schema: snow_yipin
           - name: 冰雪健道
             schema: snow_jiandao
+          - name: 冰雪健道·初代
+            schema: snow_jiandao_first
           - name: 冰雪清韵
             schema: snow_qingyun
           - name: 冰雪简道
             schema: snow_shenyun_shape
+          - name: 冰雪简道·初代
+            schema: snow_shenyun_shape_first
           - name: 冰雪散拼
             schema: snow_shenyun_tone
+          - name: 冰雪散拼·初代
+            schema: snow_shenyun_tone_first
           - name: 冰雪键道
             schema: snow_jiandao_classic
           - name: 冰雪三拼

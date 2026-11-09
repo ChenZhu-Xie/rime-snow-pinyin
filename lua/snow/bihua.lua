@@ -68,9 +68,9 @@ function filter.init(env)
   env.comment_format = Projection(config:get_list(namespace .. "/comment_format") or {})
   local prism = config:get_string(namespace .. "/prism") or "snow_bihua"
   env.stroke_mapping = { e = "1", i = "2", u = "3", o = "4", a = "5" }
-  if prism == "snow_jiandao_bihua" then
+  if prism == "snow_jiandao_bihua" or prism == "snow_jiandao_bihua_first" then
     env.stroke_mapping = { v = "1", i = "2", u = "3", o = "4", a = "5" }
-  elseif prism == "snow_sanpin_bihua" then
+  elseif prism == "snow_sanpin_bihua" or prism == "snow_sanpin_bihua_first" then
     env.stroke_mapping = { i = "1", v = "2", u = "3", a = "4", o = "5" }
   end
 end

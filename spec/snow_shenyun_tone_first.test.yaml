@@ -1,0 +1,148 @@
+schema: snow_shenyun_tone_first
+source_dir: ..
+script: |
+  function rank(text)
+    for index, candidate in ipairs(cand) do
+      if candidate.text == text then return index end
+    end
+    return math.huge
+  end
+  function has(text)
+    return rank(text) < math.huge
+  end
+  function page(text)
+    return rank(text) <= 6
+  end
+  function comment(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return candidate.comment end
+    end
+    return ""
+  end
+  function all_have_length(length)
+    if #cand == 0 then return false end
+    for _, candidate in ipairs(cand) do
+      if utf8.len(candidate.text) ~= length then return false end
+    end
+    return true
+  end
+  function page_length_count(length)
+    local count = 0
+    for index = 1, math.min(6, #cand) do
+      if utf8.len(cand[index].text) == length then count = count + 1 end
+    end
+    return count
+  end
+deploy:
+  cross_route_user_phrase:
+    tests:
+      # 先证明空用户库中的首选仍是“九霄”，避免测试在未发生学习时假阳性。
+      - send: jxxd
+        assert: cand[1].text == "九霄"
+      # 先学习一次“九霄”，再用实际可见的首枚调辅 i 及第六选键 0 学习“方案选单”。动态码长随后会把
+      # 方案选单迁入短码 jxxd；其较新的用户权重应压过九霄，直接成为短码首选。
+      - send: "jxxd jxxdi0 jxxd"
+        assert: cand[1].text == "方案选单"
+  buffered_command:
+    tests:
+      - send: o
+        assert: cand[1].text == "📝 开启缓冲" and commit == nil
+      - send: "o o"
+        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
+      - send: "o o "
+        assert: commit == nil and preedit == nil
+  popping:
+    tests:
+      # 输入统计沿用公共 lua 前缀 o。
+      - send: otj
+        assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
+      # Overall-17 换位后的一级固顶字。
+      - send: d
+        assert: cand[1].text == "都" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
+      - send: p
+        assert: cand[1].text == "平"
+      - send: q
+        assert: cand[1].text == "我"
+      # 占用桶保留汉字首选，字母固定为大写第 2、小写第 3。
+      - send: by
+        assert: cand[1].text == "帮" and cand[2].text == "B" and cand[3].text == "b"
+      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      - send: "q["
+        assert: commit == "我我"
+      - send: "q]"
+        assert: commit == "我得"
+      - send: w
+        assert: cand[1].text == "是"
+      - send: r
+        assert: cand[1].text == "人"
+      - send: z
+        assert: cand[1].text == "在"
+      # 合法 AU 不得混入同键位的声声二字词。
+      - send: br
+        assert: all_have_length(1) and has("冰") and comment("冰"):find("〔调 io〕", 1, true) and preedit == "br"
+      # 冰 bing1 首 B=i（阴平），后续的 o/e 为前两笔（丶一）；调码归音节，笔画另入括号。
+      - send: bri
+        assert: has("冰") and comment("冰"):find("〔调 oe〕", 1, true) and preedit == "bri"
+      - send: brio
+        assert: has("冰") and comment("冰"):find("〔调 ei〕", 1, true) and preedit == "bri 笔[o]"
+      # 四码顶的 AU→AUA 中间态不得把「测」顶屏；cewi 为「测试」。
+      - send: cewi
+        assert: commit == nil and has("测试") and preedit == "ce wi"
+      - send: cewia
+        assert: has("测试") and preedit == "cea wi"
+      - send: cewiaa
+        assert: has("测试") and preedit == "cea wia"
+      # AU 空桶回退为声声二字词；第三码按第一字声调筛选。
+      - send: cw
+        assert: all_have_length(2) and has("测试")
+      # be 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
+      - send: be
+        assert: "#cand == 0 and commit == nil"
+      - send: bea
+        assert: "#cand == 0 and commit == nil"
+      - send: yxu
+        assert: has("也许") and has("也需") and not has("一些")
+      - send: yxe
+        assert: not has("也需")
+      - send: yxa
+        assert: not has("也需")
+      - send: yxi
+        assert: has("一些") and not has("也需") and not has("也许")
+      # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
+      - send: brxg
+        assert: has("冰雪")
+      - send: wrj
+        assert: has("输入法")
+      - send: wrja
+        assert: has("输入法")
+      - send: rgfn
+        assert: has("人工智能")
+      # 同一四码桶跨词长分层排序，第一页在候选充足时各取两个二、三、四字词。
+      - send: jxxd
+        assert: page_length_count(2) == 2 and page_length_count(3) == 2 and page_length_count(4) == 2
+      - send: jxxdiu
+        assert: cand[1].text == "方案选单"
+      # cw、yx 都不是合法音节；cwyx 只能走 AAAA，不能混入二、三字前缀候选。
+      - send: cwyx
+        assert: all_have_length(4) and has("测试一下") and not has("测试仪")
+      # yi 是合法完整音节，cwyi 仍应走 AAAU 得到三字词。
+      - send: cwyi
+        assert: all_have_length(3) and has("测试仪")
+      # xk 是合法的 xia 音节；dyxki 走标准 AAAU+B2，调辅给出第二字一声。
+      - send: dyxki
+        assert: has("等一下")
+      # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
+      - send: cewi;
+        assert: commit == "测试的"
+      - send: cewi/
+        assert: commit == "测试了"
+      # 第三音节的 yu 空桶可把第二字三声辅键 u 前移，ykyu 是 AAA+B 的可选短码。
+      - send: ykyu
+        assert: has("也可以")
+      - send: brioe
+        assert: has("冰")
+      # 部首冫的三拼部首码以 b 开头；数字 1 与声调、笔画互不混淆。
+      - send: "bri1b"
+        assert: has("冰")
+      - send: "bri1x"
+        assert: not has("冰")
