@@ -98,7 +98,7 @@ test("生成的运行时语义表提供三拼 B2 与独立笔画反查所需映�
 	);
 });
 
-test("21×21 发布方案的 U 笔画反查统一使用形义换算后的笔画序", () => {
+test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () => {
 	const semantics = loadAuxiliarySemantics("21x21");
 	assert.equal(semantics.strokeKeysByStroke, "viuoa");
 	assert.notEqual(semantics.strokeKeysByStroke, semantics.toneKeysByTone);
@@ -109,8 +109,6 @@ test("21×21 发布方案的 U 笔画反查统一使用形义换算后的笔画�
 	for (const path of [
 		"snow_jiandao_bihua.schema.yaml",
 		"snow_jiandao_bihua_first.schema.yaml",
-		"snow_sanpin_bihua.schema.yaml",
-		"snow_sanpin_bihua_first.schema.yaml",
 	]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
 		assert.match(
@@ -124,11 +122,39 @@ test("21×21 发布方案的 U 笔画反查统一使用形义换算后的笔画�
 			path,
 		);
 	}
+	for (const path of [
+		"snow_sanpin_bihua.schema.yaml",
+		"snow_sanpin_bihua_first.schema.yaml",
+	]) {
+		const schema = readFileSync(new URL(path, root), "utf8");
+		assert.match(
+			schema,
+			new RegExp(`xlit/12345/${semantics.toneKeysByTone}/`, "u"),
+			path,
+		);
+		assert.doesNotMatch(
+			schema,
+			new RegExp(`xlit/12345/${semantics.strokeKeysByStroke}/`, "u"),
+			path,
+		);
+	}
 
 	for (const path of [
 		"snow_jiandao.schema.yaml",
 		"snow_jiandao_first.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
+	]) {
+		const schema = readFileSync(new URL(path, root), "utf8");
+		assert.match(
+			schema,
+			new RegExp(
+				`stroke/preedit_format: \\[xlit/${semantics.strokeKeysByStroke}/`,
+				"u",
+			),
+			path,
+		);
+	}
+	for (const path of [
 		"snow_sanpin.schema.yaml",
 		"snow_sanpin_first.schema.yaml",
 		"snow_sanpin_classic.schema.yaml",
@@ -137,7 +163,7 @@ test("21×21 发布方案的 U 笔画反查统一使用形义换算后的笔画�
 		assert.match(
 			schema,
 			new RegExp(
-				`stroke/preedit_format: \\[xlit/${semantics.strokeKeysByStroke}/`,
+				`stroke/preedit_format: \\[xlit/${semantics.toneKeysByTone}/`,
 				"u",
 			),
 			path,

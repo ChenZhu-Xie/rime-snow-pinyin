@@ -273,5 +273,5 @@ patch:
     - { when: composing, accept: v, send: v }
   menu/alternative_select_keys: "_23890"
   stroke/prism: snow_sanpin_bihua
-  # 笔画按形义序 AVUIO 映射：横竖撇点折 → VIUOA；不得沿用声调序 IVUAO。
-  stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]
+  # u 前缀的独立笔画反查沿用调键序 IVUAO；主方案 B2 由 shape_filter 按形义序映射为 VIUOA。
+  stroke/preedit_format: [xlit/ivuao/一丨丿丶乙/]

@@ -669,16 +669,25 @@ test("两个飞花原型都随部署带上共用配置", () => {
 	assert.match(read("scripts/link.ts"), /"snow_shenyun_common\.yaml"/u);
 });
 
-test("冰雪简道/散拼接入共用 u 入口的部件全拼反查", () => {
-	const common = load(commonSource) as {
-		engine: { translators: string[] };
-	};
-	const stroke = common.engine.translators.indexOf("table_translator@stroke");
-	const radical = common.engine.translators.indexOf("table_translator@radical");
-	assert.ok(stroke >= 0 && radical === stroke + 1);
+test("冰雪简道/散拼及初代接入共用 u 入口的部件全拼反查", () => {
+	for (const file of [
+		"snow_shenyun_common.yaml",
+		"snow_shenyun_first_common.yaml",
+	]) {
+		const common = load(read(file)) as {
+			engine: { translators: string[] };
+		};
+		const stroke = common.engine.translators.indexOf("table_translator@stroke");
+		const radical = common.engine.translators.indexOf(
+			"table_translator@radical",
+		);
+		assert.ok(stroke >= 0 && radical === stroke + 1, file);
+	}
 	for (const file of [
 		"snow_shenyun_shape.schema.yaml",
 		"snow_shenyun_tone.schema.yaml",
+		"snow_shenyun_shape_first.schema.yaml",
+		"snow_shenyun_tone_first.schema.yaml",
 	]) {
 		const schema = load(read(file)) as {
 			schema: { dependencies: string[] };

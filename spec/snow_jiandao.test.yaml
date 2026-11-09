@@ -41,7 +41,7 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: btxkpbyb
+      - send: bkxepkyr
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
@@ -49,64 +49,64 @@ deploy:
       - send: r
         assert: page("人") and has("日")
       # r5 并入 er5 后，无调键道仍可在 er 的本地 re 码页查询「儿」。
-      - send: re
+      - send: cj
         assert: has("儿")
       # 组词规则
-      - send: btxk
+      - send: bkxe
         assert: has("冰雪")
-      - send: erf
+      - send: lrf
         assert: has("输入法")
-      - send: wmxs
+      - send: smxw
         assert: has("充满希望")
       # 编码导航：14567 直达字位；Y/O 物理循环，U/I 逻辑左/右循环
-      - send: "wmxs1{BackSpace}"
-        assert: eq(preedit, "m x s")
-      - send: "wmxs4{BackSpace}"
-        assert: eq(preedit, "wxs")
-      - send: "wmxs5{BackSpace}"
-        assert: eq(preedit, "wms")
-      - send: "wmxs6{BackSpace}"
-        assert: eq(preedit, "w m x")
-      - send: "wmxs7{BackSpace}"
-        assert: eq(preedit, "w m x")
-      - send: "wmxs{Control+y}{BackSpace}"
-        assert: eq(preedit, "wms")
-      - send: "wmxs1{Control+u}{BackSpace}"
-        assert: eq(preedit, "w m x")
-      - send: "wmxs1{Control+i}{BackSpace}"
-        assert: eq(preedit, "wxs")
-      - send: "wmxs1{Control+y}{Control+y}{Control+y}{BackSpace}"
-        assert: eq(preedit, "wms")
-      - send: "wmxs{Control+o}{Control+o}{BackSpace}"
-        assert: eq(preedit, "m x s")
-      - send: kserF
+      - send: "smxw1{BackSpace}"
+        assert: eq(preedit, "m x w")
+      - send: "smxw4{BackSpace}"
+        assert: eq(preedit, "sxw")
+      - send: "smxw5{BackSpace}"
+        assert: eq(preedit, "smw")
+      - send: "smxw6{BackSpace}"
+        assert: eq(preedit, "s m x")
+      - send: "smxw7{BackSpace}"
+        assert: eq(preedit, "s m x")
+      - send: "smxw{Control+y}{BackSpace}"
+        assert: eq(preedit, "smw")
+      - send: "smxw1{Control+u}{BackSpace}"
+        assert: eq(preedit, "s m x")
+      - send: "smxw1{Control+i}{BackSpace}"
+        assert: eq(preedit, "sxw")
+      - send: "smxw1{Control+y}{Control+y}{Control+y}{BackSpace}"
+        assert: eq(preedit, "smw")
+      - send: "smxw{Control+o}{Control+o}{BackSpace}"
+        assert: eq(preedit, "m x w")
+      - send: kwlrF
         assert: has("中文输入法")
       - send: khrmGHG
         assert: has("中华人民共和国")
       # 第五字声母仍可用大写补全；本地神韵把 zh/ch 映射到 k/w。
-      - send: kxfkG
+      - send: pxfkG
         assert: cand[1].text == "科学发展观"
       # 固顶词
       - send: p
-        assert: cand[1].text == "配"
-      - send: xk
+        assert: cand[1].text == "平"
+      - send: xe
         assert: cand[1].text == "学"
-      - send: btov
+      - send: bkova
         assert: cand[1].text == "冰"
-      - send: by
+      - send: bhyz
         assert: cand[1].text == "不要"
-      - send: fe
+      - send: fl
         assert: cand[1].text == "非" and not has("(zhei4)")
-      - send: se
+      - send: sl
         assert: not has("(sei1)")
-      - send: seu
+      - send: slu
         assert: not has("(sei3)")
-      - send: ge
+      - send: gl
         assert: cand[1].text == "给"
       # 辅音字母使用共享 c 列；三拼在同一基码后追加轻声键 o。
       - send: gc
-        assert: cand[1].text == "挂" and has("G") and has("g")
-      - send: ge
+        assert: cand[1].text == "光" and has("G") and has("g")
+      - send: gl
         assert: not has("G") and not has("g")
       # 元音字母使用共享 x 载体；O 的二键基码为 xd。
       - send: xd
@@ -115,68 +115,68 @@ deploy:
         assert: not has("O") and not has("o")
       # 上游新增的字母和数字候选按当前声韵映射落在原有固顶码后。
       - send: bc
-        assert: cand[1].text == "表" and cand[2].text == "B" and cand[3].text == "b"
+        assert: cand[1].text == "别" and cand[2].text == "B" and cand[3].text == "b"
       - send: xg
-        assert: cand[1].text == "需" and cand[2].text == "V" and cand[3].text == "v"
-      - send: re
+        assert: cand[1].text == "寻" and cand[2].text == "V" and cand[3].text == "v"
+      - send: cj
         assert: cand[1].text == "二" and cand[2].text == "2"
-      - send: sj
-        assert: cand[1].text == "三" and cand[2].text == "3"
-      - send: s
+      - send: sm
+        assert: cand[1].text == "伞" and cand[2].text == "3"
+      - send: w
         assert: cand[1].text == "我" and not has("3")
       - send: xh
-        assert: cand[1].text == "喜欢" and cand[2].text == "U" and cand[3].text == "u"
-      - send: sli
+        assert: cand[1].text == "兄" and cand[2].text == "U" and cand[3].text == "u"
+      - send: sfi
         assert: cand[1].text == "四" and cand[2].text == "4"
-      - send: we
+      - send: sl
         assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
       - send: sd
         assert: not has("四但")
       - send: rc
         assert: not has("人从")
-      - send: yu
+      - send: yj
         assert: cand[1].text == "以及"
-      - send: ho
+      - send: hb
         assert: cand[1].text == "好吧"
       - send: xo
         assert: cand[1].text == "行吧"
       - send: xou
         assert: cand[1].text == "行叭"
-      - send: ylgs
+      - send: yfgs
         assert: cand[1].text == "一个"
       # 以词定字：[ 取词首，] 取词尾
-      - send: "ylgs["
+      - send: "yfgs["
         assert: commit == "一"
-      - send: "ylgs]"
+      - send: "yfgs]"
         assert: commit == "个"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
-        assert: commit == "配配"
+        assert: commit == "平平"
       - send: "p]"
-        assert: commit == "配得"
-      - send: nwyn
+        assert: commit == "平得"
+      - send: nv
         assert: cand[1].text == "那样"
       # 首选后置
-      - send: elel
+      - send: lflf
         assert: cand[1].text == "事实"
-      - send: elelv
+      - send: lflfv
         assert: cand[2].text == "事实"
       # 顶功
-      - send: ylgsylgs
+      - send: yfgsyfgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: btovxkv
+      - send: bkoxev
         assert: commit == "冰" and cand[1].text == "雪"
-      - send: pbyberf
+      - send: pkyrlrf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 强制上屏尾字；原 d/l 一码仍然保留
-      - send: ylgs;
+      - send: yfgs;
         assert: commit == "一个的"
-      - send: ylgs/
+      - send: yfgs/
         assert: commit == "一个了"
       - send: d
-        assert: cand[1].text == "都"
+        assert: cand[1].text == "的"
       - send: l
-        assert: cand[1].text == "来"
+        assert: cand[1].text == "是"
       # 声声二字词只接受一个首字首形辅码，辅码不进入上屏文本。
       - send: yx
         assert: cand[2] ~= nil
@@ -189,33 +189,33 @@ deploy:
       - send: yxab
         assert: utf8.len(commit) == 2 and not commit:find("a", 1, true)
       # 动态码长
-      - send: "eleliielel"
+      - send: "lflfiilflf"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "o wn mf  wnmf"
+      - send: "o sy mz  symz"
         assert: cand[1].text == "长猫"
-      - send: "o btxkerf  bxerF"
+      - send: "o bkxelrf  bxlrF"
         assert: cand[1].text == "冰雪输入法"
       # 本地键道使用 shv/gc/tp/xb；数字和字母取第二候选。
-      - send: "o shv2gc2tpxb  sgtx"
+      - send: "o whv2gc2tlxr  wgtx"
         assert: cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
-      - send: "o dyou lw xw mr  dlxm"
+      - send: "o dko ep xw2 mt  dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:
     tests:
       - send: X
         assert: preedit == nil and commit == nil
-      - send: eHrf
-        assert: has("输入法") and preedit == "eH r f"
-      - send: erHf
-        assert: has("输入法") and preedit == "e rH f"
-      - send: erfW
-        assert: has("输入法") and preedit == "e r fW"
-      - send: eHrHfW
-        assert: has("输入法") and preedit == "eH rH fW"
-      - send: zLxTwS
+      - send: lHrf
+        assert: has("输入法") and preedit == "lH r f"
+      - send: lrHf
+        assert: has("输入法") and preedit == "l rH f"
+      - send: lrfP
+        assert: has("输入法") and preedit == "l r fP"
+      - send: lHrHfP
+        assert: has("输入法") and preedit == "lH rH fP"
+      - send: zFxKsS
         assert: has("自行车")
   buffered_command:
     tests:
@@ -227,11 +227,11 @@ deploy:
         assert: cand[1].text == "📝 关闭缓冲" and commit == nil
       - send: "o o "
         assert: commit == nil and preedit == nil
-      - send: "o{Escape}erf "
+      - send: "o{Escape}lrf "
         assert: commit == "输入法"
-      - send: "o btxkerf "
+      - send: "o bkxelrf "
         assert: commit == nil
-      - send: "o btxkerf  erf "
+      - send: "o bkxelrf  lrf "
         assert: commit == "冰雪输入法输入法"
   # 高级功能
   advanced:
@@ -253,7 +253,7 @@ deploy:
       - send: uviuoa
         assert: cand[1].text == "札"
       # 重复上屏（`i` 引导）
-      - send: "wpfh i"
+      - send: "slfh i"
         assert: cand[1].text == "重复"
       # 符号（`i` 引导）
       - send: ia
@@ -275,35 +275,35 @@ deploy:
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
       # 以词定字：`[` 取首字、`]` 取末字
-      - send: "xlrn["
+      - send: "xfv["
         assert: commit == "熙"
       # 词不在首选时先用方向键选中再定字
-      - send: "jpdf{Down}]"
+      - send: "jjdz{Down}]"
         assert: commit == "刀"
   # 方案码用户词典：这些操作会写入 snow_jiandao.userdb，故单独部署并按顺序执行
   schema_userdb:
     tests:
       # 固定：本地固定键为 Control+,，编码/剪刀使用当前神韵码。
-      - send: bpmw
+      - send: bjmp
         assert: not pinned(1)
-      - send: "bpmw{Control+slash}bpmw"
+      - send: "bjmp{Control+slash}bjmp"
         assert: cand[1].text == "编码" and pinned(1)
-      - send: "bpmw{Control+slash}bpmw"
+      - send: "bjmp{Control+slash}bjmp"
         assert: not pinned(1)
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
-      - send: "kfc{Control+period}fkxqS Vs 50{Control+period}kfc"
+      - send: "fpxqS{Control+period}fpxqS Vs 50{Control+period}fpxqS"
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 键道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
       - send: "xou{Control+period}fkxqS Vs 50{Control+period}xou"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四V我50"
-      - send: "jpdf{Control+slash}{Down}{Control+slash}{Up}"
+      - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
-      - send: "jpdf{Control+bracketright}jpdf"
+      - send: "jjdz{Control+bracketright}jjdz"
         assert: cand[1].text == "剪刀" and cand[2].text == "见到"
-      - send: "jpdf{Down}{Control+bracketleft}jpdf"
+      - send: "jjdz{Down}{Control+bracketleft}jjdz"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
-      - send: "jpdf{Control+backslash}jpdf"
+      - send: "jjdz{Control+backslash}jjdz"
         assert: not pinned(1) and not pinned(2)
   shape_g:
     patch:

@@ -17,6 +17,7 @@ schema:
   dependencies:
     - snow_pinyin
     - snow_bihua
+    - radical_pinyin
     - snow_jiandao_chaifen
 
 shenyun_options:

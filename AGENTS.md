@@ -108,7 +108,7 @@ bun run --cwd scripts check:format    # 检查格式
 
 外部 Rime 方案子模块统一放在 `deps/`：雾凇拼音为 `deps/rime-ice`，英文词库为 `deps/rime-easy-en`，部件全拼为 `deps/rime-radical-pinyin`。
 
-部件全拼反查依赖子模块 `deps/rime-radical-pinyin`，首次克隆或更新依赖后运行 `git submodule update --init deps/rime-radical-pinyin`。发布、功能测试和性能测试会把其中的 `radical_pinyin.schema.yaml`、`radical_pinyin.dict.yaml` 复制到独立方案目录的根目录；不要手改或提交根目录里的副本。冰雪四拼、冰雪弎拼、冰雪健道、冰雪键道、冰雪三拼、冰雪简道和冰雪散拼与笔画反查共用 `u` 和 `stroke` 标签；冰雪清韵与拼音、笔画反查共用反引号和 `pinyin` 标签。`lookup_pinyin` 为这些候选显示拼音，冰雪一拼不接入反查。
+部件全拼反查依赖子模块 `deps/rime-radical-pinyin`，首次克隆或更新依赖后运行 `git submodule update --init deps/rime-radical-pinyin`。发布、功能测试和性能测试会把其中的 `radical_pinyin.schema.yaml`、`radical_pinyin.dict.yaml` 复制到独立方案目录的根目录；不要手改或提交根目录里的副本。冰雪四拼、冰雪弎拼、冰雪健道、冰雪键道、冰雪三拼、冰雪简道、冰雪散拼及对应的四个初代双拼方案与笔画反查共用 `u` 和 `stroke` 标签；冰雪清韵与拼音、笔画反查共用反引号和 `pinyin` 标签。`lookup_pinyin` 为这些候选显示拼音，冰雪一拼不接入反查。
 
 `link.ts` 在 Linux 使用 `~/.local/share/fcitx5/rime`，在 Windows 优先读取 `HKCU\\Software\\Rime\\Weasel` 的 `RimeUserDir`（也可用 `RIME_USER_DIR` 覆盖）；其中的 `snow_*.schema.yaml`、`snow_*.dict.yaml`、`snow_*.fixed.txt`、`lua/snow` 都是指回本仓库的软链。若 Windows 已把仓库本身设为小狼毫用户目录，脚本跳过同源文件，只补齐子模块依赖。软链模式**没有「同步」这一步**：改哪边都是改同一份文件，`git pull` 后重新部署即可。
 

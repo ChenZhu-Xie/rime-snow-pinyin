@@ -46,16 +46,16 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
-      # u 前缀的独立笔画反查按形义序 AVUIO 换算：横竖撇点折 → viuoa。
-      - send: uv
-        assert: has("一")
+      # u 前缀的独立笔画反查沿用三拼调键序：横竖撇点折 → ivuao。
       - send: ui
+        assert: has("一")
+      - send: uv
         assert: has("丨")
       - send: uu
         assert: has("丿")
-      - send: uo
-        assert: has("丶")
       - send: ua
+        assert: has("丶")
+      - send: uo
         assert: has("乙")
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
       - send: r
@@ -362,8 +362,8 @@ deploy:
         assert: commit == "琰"
       - send: "uwangyan{BackSpace}n"
         assert: page("琰") and commit == nil
-      # 独立笔画反查与主方案的调后笔辅都使用形义换算后的笔画序 VIUOA。
-      - send: uviuoa
+      # 独立笔画反查使用调键序 IVUAO；主方案的调后笔辅另按形义序 VIUOA。
+      - send: uivuao
         assert: cand[1].text == "札"
       - send: "wpfh i"
         assert: cand[1].text == "重复"

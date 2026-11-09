@@ -111,7 +111,7 @@ test("next-generation mappings preserve complete first-generation snapshots", ()
 		],
 		[
 			"snow_shenyun_first_common.yaml",
-			"5f0e17c0ff6a5862ee0b35c372f62797d5e46e3434da8a35d2a62b7da010c965",
+			"f378f0d577837ef4c96e430096b506bd834fce31ca411611eab4816ee0310898",
 		],
 	] as const;
 	for (const [file, expected] of firstSnapshots) {
