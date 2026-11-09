@@ -28,6 +28,10 @@ Rime 的候选接口只有文本与注释，没有跨前端的图片接口，因
 
 移动端由 `scripts/skin/keymaps.ts` 向每套元书和同文皮肤注入统一选择页。元书使用各明暗资源目录中的 PNG 与图片描述文件；同文使用 `backgrounds/` 中的 PNG。七份 PNG 与桌面 SVG 均由 `scripts/generate-keymaps.ts` 从同一份原生矢量定义生成，包括冰雪键道，不再包装旧键位截图。图形定义沿用 README 两份“声韵辅-键映射”图的莫兰迪语义：声韵占用、纯辅键与多韵键使用独立背景、纹理和边框，韵母前景色按音系族区分；七图的五笔辅统一使用键帽右上角绿框，五调辅与单双码形辅在键中无框显示，冰雪四拼的韵腹、韵尾、声调和笔画使用四种前景色。声调中文首选霞鹜文楷并回退到平台楷体或衬线体，桌面包不捆绑字体；移动端 PNG 在发布构建时已经栅格化，不依赖手机字体。
 
+声母位移 link 的纯算法核心来自 benchmark 仓库，并以 `scripts/vendor/keymap-link-colors.js` 固定快照进入本仓库；共享范围仅包括首选色与候选池、OKLab `0.18` 门槛、同图 link 颜色不重复、DSATUR 动态求解及最终验证。本仓库自己的 `scripts/lib/keymap-link-colors.ts` 把 `Mapping.initialMap` 适配成核心所需的语义状态，SVG/PNG 渲染、键帽粗细、W/Y 卡片样式和产物测试仍由本仓库负责；benchmark 的 HTML 注入器与浏览器全量审计器不属于共享核心。
+
+更新共享核心时，在 benchmark 仓库先完成测试与提交，再运行 `bun scripts/sync-keymap-link-colors.ts --source <shuangpin-layout-benchmark 路径>`；脚本复制上游文件并更新来源提交和 SHA-256。普通生成和 CI 只运行 `bun scripts/sync-keymap-link-colors.ts --check`，只校验仓库内快照，不依赖相邻工作树；本机需要核对两仓库时可额外传入 `--source`。
+
 本机开发时运行：
 
 ```powershell

@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { load } from "js-yaml";
+import { keymapLinkColorDistance } from "../../lib/keymap-link-colors";
 import { makeHamsterSkin } from "../../skin/hamster";
 import { withKeymaps } from "../../skin/keymaps";
 import { makeTrimeSkin } from "../../skin/trime";
@@ -18,41 +19,6 @@ const keyGroup = (svg: string, key: string) =>
 			"u",
 		),
 	)?.[0] ?? "";
-
-function oklab(hex: string) {
-	const [red, green, blue] =
-		hex
-			.slice(1)
-			.match(/../gu)
-			?.map((component) => Number.parseInt(component, 16) / 255)
-			.map((component) =>
-				component <= 0.04045
-					? component / 12.92
-					: ((component + 0.055) / 1.055) ** 2.4,
-			) ?? [];
-	const long = Math.cbrt(
-		0.4122214708 * red + 0.5363325363 * green + 0.0514459929 * blue,
-	);
-	const medium = Math.cbrt(
-		0.2119034982 * red + 0.6806995451 * green + 0.1073969566 * blue,
-	);
-	const short = Math.cbrt(
-		0.0883024619 * red + 0.2817188376 * green + 0.6299787005 * blue,
-	);
-	return [
-		0.2104542553 * long + 0.793617785 * medium - 0.0040720468 * short,
-		1.9779984951 * long - 2.428592205 * medium + 0.4505937099 * short,
-		0.0259040371 * long + 0.7827717662 * medium - 0.808675766 * short,
-	];
-}
-
-function colorDistance(left: string, right: string) {
-	const leftLab = oklab(left);
-	const rightLab = oklab(right);
-	return Math.hypot(
-		...leftLab.map((component, index) => component - rightLab[index]),
-	);
-}
 
 const schemes = [
 	["snow_sipin.schema.yaml", "e", "snow_sipin.svg"],
@@ -579,7 +545,7 @@ test("every moved initial contrasts strongly with the initial letter on its key"
 				assert.ok(labelColor);
 				const movedLabel = !["#66506a", "#765b5c"].includes(labelColor);
 				if (!movedKeycap && !movedLabel) continue;
-				const distance = colorDistance(keycapColor, labelColor);
+				const distance = keymapLinkColorDistance(keycapColor, labelColor);
 				assert.ok(
 					distance >= minimumDistance,
 					`${image} ${key} keycap ${keycapColor} and ${labelColor} initial should differ by at least ${minimumDistance}, got ${distance.toFixed(3)}`,

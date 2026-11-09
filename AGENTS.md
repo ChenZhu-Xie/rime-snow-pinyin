@@ -98,6 +98,8 @@ bun run --cwd scripts check:format    # 检查格式
 
 桌面键位图 helper 位于 `tools/keymap-helper/`，直接渲染 `lua/snow/keymaps/*.svg`，禁止恢复 PowerShell/WPF 脚本。发布工作流分别编译 Windows、macOS、Linux GUI 二进制并注入 `lua/snow/bin/`；Lua 仅在空输入、中文模式下写命令文件。修改后至少运行 helper 的 `cargo test`、键位图固定语料测试和皮肤实际生成。
 
+声母位移 link 的颜色契约、OKLab 色差、动态求解与验证共用 benchmark 上游核心的受跟踪快照 `scripts/vendor/keymap-link-colors.js`，不得手改；本仓库只在 `scripts/lib/keymap-link-colors.ts` 适配 `Mapping`，同步和边界说明见 [`docs/keymaps.md`](docs/keymaps.md)。
+
 ### 实验工具
 
 `scripts/experiments/` 依赖自行提供的外部语料，不参与发布：`generate-sanpin-shortcuts.ts <词频表> [输出文件]` 生成冰雪弎拼简词候选，默认写入 `output/sanpin-shortcuts.tsv`；`frequency/derive-character-frequency.ts <语料目录> [输出文件]` 推导单字剩余词频，`frequency/resegment-word-frequency.ts <语料目录> <玲珑词表> [输出文件]` 重新分词。具体输入文件约定见各脚本。

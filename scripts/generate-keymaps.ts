@@ -2,6 +2,10 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
+import {
+	KEYMAP_LINK_COLOR_CONTRACT,
+	resolveMappingLinkColors,
+} from "./lib/keymap-link-colors";
 
 type Mapping = {
 	initialMap: Record<string, string>;
@@ -853,63 +857,24 @@ function render(diagram: Diagram) {
 	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, semanticLegend, { size: 14, fill: "#5f5862" })}${text(24, 559, "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组", { size: 12, fill: "#74717a" })}</svg>\n`;
 }
 
-const traditionalInitials = new Set([..."bpmfdtnlgkhjqxrzcs"]);
-const initialLinkColors: Record<string, string> = {
-	b: "#d81b60",
-	p: "#e64a19",
-	m: "#8e24aa",
-	f: "#009b88",
-	d: "#1e88e5",
-	t: "#f4511e",
-	n: "#43a047",
-	l: "#fb8c00",
-	g: "#3949ab",
-	k: "#00acc1",
-	h: "#7cb342",
-	j: "#c2185b",
-	q: "#e83e8c",
-	x: "#005bd8",
-	r: "#ef6c00",
-	z: "#0097a7",
-	c: "#5e35b1",
-	s: "#00a651",
-};
-const zeroInitialLinkStyles = {
-	W: { foreground: "#3e98b0", background: "#deedf1", border: "#6e9eaa" },
-	Y: { foreground: "#b67747", background: "#f2e5da", border: "#b88a68" },
-} as const;
-
-function initialTarget(mapping: Mapping, initial: string) {
-	return mapping.initialMap[initial]?.toUpperCase();
-}
-
-function zeroInitialTarget(mapping: Mapping, carrier: "W" | "Y") {
-	return (
-		mapping.initialMap[carrier] ?? mapping.initialMap[carrier.toLowerCase()]
-	)?.toUpperCase();
-}
-
 function styleInitialLinks(svg: string, mapping?: Mapping) {
+	const resolved = mapping
+		? resolveMappingLinkColors(mapping.initialMap)
+		: undefined;
+	const colors = resolved?.colors ?? KEYMAP_LINK_COLOR_CONTRACT;
 	return svg.replace(
 		/<g data-key="([A-Z])"[\s\S]*?(?=<g data-key=|<text x="24" y="535")/gu,
 		(group, key: string) => {
 			const source = key.toLowerCase();
-			const movedInitial =
-				mapping !== undefined &&
-				traditionalInitials.has(source) &&
-				initialTarget(mapping, source) !== key;
-			const movedZeroCarrier =
-				mapping === undefined
-					? undefined
-					: (["W", "Y"] as const).find(
-							(carrier) =>
-								carrier === key && zeroInitialTarget(mapping, carrier) !== key,
-						);
+			const movedInitial = resolved?.state.ordinaryMoved[source] ?? false;
+			const movedZeroCarrier = (["W", "Y"] as const).find(
+				(carrier) => carrier === key && resolved?.state.zeroMoved[carrier],
+			);
 			const sourceColor = movedInitial
-				? initialLinkColors[source]
+				? colors.initialLinkInk[source]
 				: movedZeroCarrier
-					? zeroInitialLinkStyles[movedZeroCarrier].foreground
-					: "#4f5962";
+					? colors.zeroLinkStyle[movedZeroCarrier].ink
+					: colors.defaultKeycapInk;
 			let styled = group.replace(
 				/<text\b[^>]*data-key-label="true"[^>]*>/u,
 				(keycap) =>
@@ -920,49 +885,46 @@ function styleInitialLinks(svg: string, mapping?: Mapping) {
 						)
 						.replace(/fill="#[0-9a-fA-F]{6}"/u, `fill="${sourceColor}"`),
 			);
-			if (mapping) {
-				const incomingInitial = [...traditionalInitials].find(
+			if (resolved) {
+				const incomingInitial = [...colors.traditionalInitials].find(
 					(initial) =>
-						initialTarget(mapping, initial) === key &&
-						initialTarget(mapping, initial) !== initial.toUpperCase(),
+						resolved.state.ordinaryMoved[initial] &&
+						resolved.state.ordinaryTargets[initial].includes(key),
 				);
 				styled = styled.replace(
 					/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u,
 					(initialLabel) =>
 						initialLabel.replace(
 							/fill="#[0-9a-fA-F]{6}"/u,
-							`fill="${incomingInitial ? initialLinkColors[incomingInitial] : "#66506a"}"`,
+							`fill="${incomingInitial ? colors.initialLinkInk[incomingInitial] : colors.defaultInitialInk}"`,
 						),
 				);
 
 				const incomingZeroCarrier = (["W", "Y"] as const).find(
 					(carrier) =>
-						zeroInitialTarget(mapping, carrier) === key &&
-						zeroInitialTarget(mapping, carrier) !== carrier,
+						resolved.state.zeroMoved[carrier] &&
+						resolved.state.zeroTargets[carrier].includes(key),
 				);
 				const zeroStyle = incomingZeroCarrier
-					? zeroInitialLinkStyles[incomingZeroCarrier]
+					? colors.zeroLinkStyle[incomingZeroCarrier]
 					: {
-							foreground: "#765b5c",
-							background: "#f1e4e1",
-							border: "#ad8178",
+							ink: colors.defaultZeroInitialInk,
+							fill: "#f1e4e1",
+							stroke: "#ad8178",
 						};
 				styled = styled
 					.replace(/<rect\b[^>]*stroke-dasharray="4 2"[^>]*>/u, (zeroCard) =>
 						zeroCard
-							.replace(
-								/fill="#[0-9a-fA-F]{6}"/u,
-								`fill="${zeroStyle.background}"`,
-							)
+							.replace(/fill="#[0-9a-fA-F]{6}"/u, `fill="${zeroStyle.fill}"`)
 							.replace(
 								/stroke="#[0-9a-fA-F]{6}"/u,
-								`stroke="${zeroStyle.border}"`,
+								`stroke="${zeroStyle.stroke}"`,
 							),
 					)
 					.replace(/<text\b[^>]*font-style="italic"[^>]*>/u, (zeroLabel) =>
 						zeroLabel.replace(
 							/fill="#[0-9a-fA-F]{6}"/u,
-							`fill="${zeroStyle.foreground}"`,
+							`fill="${zeroStyle.ink}"`,
 						),
 					);
 			}
