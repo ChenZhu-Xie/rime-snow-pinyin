@@ -583,21 +583,48 @@ test("default traditional source entries are postponed before conversion and ded
 	}
 });
 
-test("reported phrase codes follow the active Shenyun U357 mapping", () => {
-	const fixture = JSON.parse(read("docs/shenyun-u357-mapping.json")) as {
+test("reported phrase codes follow the active QZ-e8f37a mapping", () => {
+	const fixture = JSON.parse(read("docs/shenyun-qz-e8f37a-mapping.json")) as {
 		scheme: string;
 		payloadCodes: Record<string, string | null>;
 		codes: Record<string, string>;
 	};
-	assert.equal(fixture.scheme, "U357-21X21-M40-D0");
-	assert.equal(fixture.codes.na + fixture.codes.yang, "nwyn");
-	assert.notEqual(fixture.codes.na + fixture.codes.yang, "nnff");
-	assert.equal(fixture.codes.ben, "bm");
-	assert.equal(fixture.codes.bo, "bd");
-	assert.equal(fixture.codes.duan, "dx");
-	assert.equal(fixture.codes.jun, "je");
-	assert.equal(fixture.codes.yun, "ye");
-	assert.equal(fixture.codes.yo, "yd");
+	assert.equal(fixture.scheme, "QZ-e8f37a0998f9");
+	assert.equal(fixture.codes.na + fixture.codes.yang, "npyy");
+	assert.equal(fixture.codes.ben, "bd");
+	assert.equal(fixture.codes.bo, "bg");
+	assert.equal(fixture.codes.duan, "de");
+	assert.equal(fixture.codes.jun, "jg");
+	assert.equal(fixture.codes.yun, "yg");
+	assert.equal(fixture.codes.yo, "yg");
+	assert.equal(fixture.codes.ju, "jd");
+	assert.equal(fixture.codes.jue, "je");
+	assert.equal(fixture.codes.lv, "ed");
+	assert.equal(fixture.codes.lve, "ee");
+	const rules = parseAlgebraRules(
+		read("snow_sanpin.schema.yaml"),
+		"sanpin_algebra",
+	);
+	for (const syllable of [
+		"na",
+		"yang",
+		"ben",
+		"bo",
+		"duan",
+		"jun",
+		"yun",
+		"yo",
+		"ju",
+		"jue",
+		"lv",
+		"lve",
+	]) {
+		assert.equal(
+			applyAlgebra(`${syllable}1`, rules).canonical,
+			`${fixture.codes[syllable]}i`,
+			syllable,
+		);
+	}
 
 	const summarize = (values: Array<string | null>) => {
 		const codes = values.filter((code): code is string => code !== null);
@@ -614,18 +641,20 @@ test("reported phrase codes follow the active Shenyun U357 mapping", () => {
 			vacant: 21 * 21 - unique,
 		};
 	};
-	const expectedU357Space = {
-		common: { encoded: 399, unique: 357, collisionBuckets: 42, vacant: 84 },
-		extended: { encoded: 416, unique: 366, collisionBuckets: 50, vacant: 75 },
+	const expectedQzSpace = {
+		common: { encoded: 399, unique: 345, collisionBuckets: 54, vacant: 96 },
+		extended: { encoded: 416, unique: 351, collisionBuckets: 61, vacant: 90 },
 	};
 	assert.deepEqual(
 		summarize(Object.values(fixture.payloadCodes)),
-		expectedU357Space.common,
+		expectedQzSpace.common,
 	);
 	assert.deepEqual(
 		summarize(Object.values(fixture.codes)),
-		expectedU357Space.extended,
+		expectedQzSpace.extended,
 	);
+	assert.ok(!Object.values(fixture.codes).includes("qz"));
+	assert.ok(!Object.values(fixture.codes).includes("zq"));
 });
 
 test("all current schemes keep the legacy two-position jump on Ctrl+P", () => {
@@ -704,7 +733,7 @@ test("Three-Code keeps two-syllable full codes ahead of colliding initial abbrev
 	);
 });
 
-test("U357 KeyTao letter and number candidates follow the active schema", () => {
+test("QZ KeyTao letter and number candidates follow the active schema", () => {
 	const lines = new Map(
 		read("snow_jiandao.fixed.txt")
 			.split(/\r?\n/u)
@@ -731,28 +760,28 @@ test("U357 KeyTao letter and number candidates follow the active schema", () => 
 		);
 	}
 	for (const [number, code] of Object.entries({
-		0: "ltv",
+		0: "ekv",
 		1: "y",
-		2: "re",
-		3: "sj",
-		4: "sli",
-		5: "shv",
-		6: "ldo",
-		7: "qlv",
-		8: "bwu",
-		9: "jdu",
-		10: "elu",
+		2: "cj",
+		3: "sm",
+		4: "sfi",
+		5: "whv",
+		6: "ebo",
+		7: "qfv",
+		8: "bpu",
+		9: "jbu",
+		10: "lfu",
 	})) {
 		assert.ok(
 			lines.get(code)?.split(" ").includes(number),
 			`${number}: ${code}`,
 		);
 	}
-	assert.ok(lines.get("re")?.split(" ").includes("2"));
+	assert.ok(lines.get("cj")?.split(" ").includes("2"));
 	assert.ok(lines.get("xh")?.split(" ").includes("U"));
 });
 
-test("U357 Three-Code fills every 630 slot with a unique fixed candidate", () => {
+test("QZ Three-Code fills every 630 slot with a unique fixed candidate", () => {
 	const fixed = read("snow_sanpin.fixed.txt");
 	const section = fixed.match(/# 630\r?\n([\s\S]*?)\r?\n# 单字/u)?.[1];
 	assert.ok(section);
@@ -773,7 +802,7 @@ test("U357 Three-Code fills every 630 slot with a unique fixed candidate", () =>
 	assert.equal(new Set(words).size, 630);
 });
 
-test("U357 KeyTao fills every 630 auxiliary slot exactly once", () => {
+test("QZ KeyTao fills every 630 auxiliary slot exactly once", () => {
 	const section = read("snow_jiandao.fixed.txt")
 		.split(/^# 630\r?$/mu)[1]
 		?.split(/^#/mu)[0];
@@ -794,7 +823,7 @@ test("U357 KeyTao fills every 630 auxiliary slot exactly once", () => {
 	assert.deepEqual(new Set(codes), new Set(expected));
 });
 
-test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", () => {
+test("QZ KeyTao and Three-Code keep letters and numbers on semantic codes", () => {
 	const jiandao = read("snow_jiandao.schema.yaml");
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(jiandao, /prism: snow_jiandao_jianpin/u);
@@ -822,13 +851,13 @@ test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 	];
 	assert.equal(new Set(letterBaseCodes).size, 26);
 	assert.equal(new Set(letterFullCodes).size, 26);
-	const mapping = JSON.parse(read("docs/shenyun-u357-mapping.json")) as {
+	const mapping = JSON.parse(read("docs/shenyun-qz-e8f37a-mapping.json")) as {
 		codes: Record<string, string>;
 	};
 	const occupiedBaseCodes = new Set(Object.values(mapping.codes));
 	assert.deepEqual(
 		letterBaseCodes.filter((code) => !occupiedBaseCodes.has(code)),
-		["zc", "cc", "sc", "yc", "xh", "xw"],
+		["fc", "zc", "cc", "rc", "wc", "yc", "xw"],
 	);
 	const toneKeys: Record<string, string> = {
 		"1": "i",
@@ -858,7 +887,7 @@ test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 	}
 	assert.deepEqual(
 		letterFullCodes.filter((code) => occupiedFullCodes.has(code)),
-		["tco", "hco", "xgo", "xlo"],
+		["pco", "mco", "hco", "jco", "xco", "eco", "xgo", "xlo", "xho", "xdo"],
 	);
 	const sanpinCore = read("snow_sanpin.fixed.txt").split("# 字母")[0];
 	for (const code of letterFullCodes) {
@@ -888,32 +917,32 @@ test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 	}
 	for (const [code, candidates] of [
 		["y", "一 1"],
-		["re", "二 2"],
-		["sj", "三 3"],
-		["sli", "四 4"],
-		["shv", "五 5"],
-		["ldo", "六 6"],
-		["qlv", "妻 七 7"],
-		["bwu", "八 8"],
-		["jdu", "九 9"],
-		["elu", "十 10"],
-		["ltv", "零 0"],
+		["cj", "二 2"],
+		["sm", "三 3"],
+		["sfi", "四 4"],
+		["whv", "五 5"],
+		["ebo", "六 6"],
+		["qfv", "七 7"],
+		["bpu", "八 8"],
+		["jbu", "九 9"],
+		["lfu", "十 10"],
+		["ekv", "零 0"],
 	]) {
 		const number = candidates.split(" ").at(-1);
 		assert.match(jiandaoCore, new RegExp(`^${code}\\t.* ${number}$`, "mu"));
 	}
 	for (const [code, candidates] of [
 		["y", "一 1"],
-		["re", "二 2"],
-		["sj", "三 3"],
-		["sla", "四 4"],
-		["shu", "五 5"],
-		["lda", "六 6"],
-		["qli", "七 7"],
-		["bwi", "八 8"],
-		["jdu", "九 9"],
-		["elv", "十 10"],
-		["ltv", "零 0"],
+		["cj", "二 2"],
+		["sm", "三 3"],
+		["sfa", "四 4"],
+		["whu", "五 5"],
+		["eba", "六 6"],
+		["qfi", "七 7"],
+		["bpi", "八 8"],
+		["jbu", "九 9"],
+		["lfv", "十 10"],
+		["ekv", "零 0"],
 	]) {
 		const number = candidates.split(" ").at(-1);
 		assert.match(sanpinFixed, new RegExp(`^${code}\\t.* ${number}$`, "mu"));
@@ -922,7 +951,7 @@ test("U357 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		assert.doesNotMatch(sanpinFixed, new RegExp(`^${stale}$`, "mu"));
 });
 
-test("U357 KeyTao and Three-Code keep their processors in a compatible order", () => {
+test("QZ KeyTao and Three-Code keep their processors in a compatible order", () => {
 	for (const file of ["snow_jiandao.schema.yaml", "snow_sanpin.schema.yaml"]) {
 		const schema = load(read(file)) as { engine: { processors: string[] } };
 		const processors = schema.engine.processors;
@@ -945,7 +974,7 @@ test("U357 KeyTao and Three-Code keep their processors in a compatible order", (
 });
 
 test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
-	const fixture = JSON.parse(read("docs/shenyun-u357-mapping.json")) as {
+	const fixture = JSON.parse(read("docs/shenyun-qz-e8f37a-mapping.json")) as {
 		codes: Record<string, string | null>;
 	};
 	const keys = [..."bpmfdtnlgkhjqxzcsrwye"];
@@ -953,7 +982,7 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 	const vacant = keys
 		.flatMap((first) => keys.map((second) => first + second))
 		.filter((code) => !occupied.has(code));
-	assert.equal(vacant.length, 75);
+	assert.equal(vacant.length, 90);
 	const sanpinRules = parseAlgebraRules(
 		read("snow_sanpin.schema.yaml"),
 		"sanpin_algebra",
@@ -972,9 +1001,9 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 	const runtimeVacant = keys
 		.flatMap((first) => keys.map((second) => first + second))
 		.filter((code) => !runtimeOccupied.has(code));
-	assert.equal(runtimeVacant.length, 80);
-	assert.equal(runtimeVacant.includes("yx"), true);
-	assert.equal(runtimeVacant.includes("lk"), false);
+	assert.equal(runtimeVacant.length, 94);
+	assert.equal(runtimeVacant.includes("qz"), true);
+	assert.equal(runtimeVacant.includes("zq"), true);
 	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
 		const schema = load(read(file)) as {
 			vacancy: { enable_user_dict: boolean };
@@ -1015,10 +1044,10 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		"u",
 	);
 	assert.deepEqual(
-		["zco", "cco", "sco", "yco", "xho", "xwo"].filter((code) =>
+		["fco", "zco", "cco", "rco", "wco", "yco", "xwo"].filter((code) =>
 			reservedLetters.test(code),
 		),
-		["zco", "cco", "sco", "yco", "xho", "xwo"],
+		["fco", "zco", "cco", "rco", "wco", "yco", "xwo"],
 	);
 	assert.match(read("lua/snow/fix.lua"), /shape_status ~= "initial_pair"/u);
 	assert.match(
@@ -1083,11 +1112,14 @@ test("KeyTao keeps three-initial jianpin on the abc segment", () => {
 	assert.match(read("lua/snow/shape_filter.lua"), /jiandao_shape_cache/u);
 });
 
-test("U357 three-character words allow a third auxiliary but four-character words stop at two", () => {
+test("QZ three-character words allow a third auxiliary but four-character words stop at two", () => {
 	const keytao = read("snow_jiandao.schema.yaml");
 	assert.match(keytao, /\{3\}"\r?\n\s+match_shape: "\^\.\{0,2\}\$"/u);
 	assert.match(keytao, /\{4,\}"\r?\n\s+match_shape: "\^\.\{0,1\}\$"/u);
-	assert.match(read("lua/snow/shape_filter.lua"), /positions = \{ 2, 4 \}/u);
+	assert.match(
+		read("lua/snow/shape_filter.lua"),
+		/schema_id == "snow_jiandao" and \{ 2, 1, 3 \} or \{ 2, 3, 1 \}/u,
+	);
 
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(sanpin, /\{3\}\[ivuao\]\{0,3\}/u);
@@ -1168,7 +1200,7 @@ test("split translators preserve native user phrase priority across routes", () 
 	);
 });
 
-test("latency cases follow the active U357 layout and repository fixture", () => {
+test("latency cases follow the active QZ layout and repository fixture", () => {
 	const cases = read("scripts/data/latency-cases.ts");
 	for (const code of ["btxkiu", "erfaiu", "wmxsui", "btov", "kxfkG", "khrmG"])
 		assert.ok(cases.includes(`keys: "${code}"`), `缺少当前 U357 用例 ${code}`);

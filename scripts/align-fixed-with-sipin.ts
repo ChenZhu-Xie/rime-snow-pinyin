@@ -501,6 +501,7 @@ function render21x21(
 ): string {
 	const lines = source.trimEnd().split("\n");
 	const reservedPhraseWords = new Set<string>();
+	const originalSingleCodeByWord = new Map<string, string>();
 	let sourceSection = "";
 	for (const line of lines) {
 		if (line.startsWith("#")) {
@@ -509,6 +510,14 @@ function render21x21(
 		}
 		if (sourceSection !== "二简词" && line.includes("\t")) {
 			reservedPhraseWords.add(firstWord(line.split("\t")[1]));
+		}
+		if (sourceSection === "单字" && line.includes("\t")) {
+			const [code, candidates] = line.split("\t");
+			for (const word of candidates.split(" ")) {
+				if (/^\p{Script=Han}+$/u.test(word)) {
+					originalSingleCodeByWord.set(word, code);
+				}
+			}
 		}
 	}
 	const output: string[] = [];
@@ -542,6 +551,12 @@ function render21x21(
 					: digits
 						? numberWordByDigits.get(digits)
 						: bases.get(code);
+			const originalCode = replacement
+				? originalSingleCodeByWord.get(replacement)
+				: undefined;
+			if (originalCode !== undefined && originalCode !== code) {
+				replacement = undefined;
+			}
 		}
 		let renderedCandidates = replacement
 			? mergeFirst(candidates, replacement)

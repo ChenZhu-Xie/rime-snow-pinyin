@@ -86,7 +86,9 @@ function navigator.logical_positions(input, word_length, schema_id)
   end
   local auxiliary_count = math.min(input_length - word_length, 3)
   local auxiliary_positions
-  if (schema_id == "snow_jiandao" or schema_id == "snow_jiandao_first") and word_length == 3 then
+  if schema_id == "snow_jiandao" and word_length == 3 then
+    auxiliary_positions = { 2, 1, 3 }
+  elseif schema_id == "snow_jiandao_first" and word_length == 3 then
     auxiliary_positions = { 2, 3, 1 }
   elseif (schema_id == "snow_jiandao" or schema_id == "snow_jiandao_first") and word_length == 4 then
     auxiliary_positions = { 2, 4, 1 }

@@ -351,8 +351,6 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 	assert.equal(classicJiandaoAlgebra.apply("~~b"), "bc");
 	assert.equal(classicJiandaoAlgebra.apply("~v"), "xg");
 	assert.equal(classicJiandaoAlgebra.apply("~~a"), "xw");
-	const currentJiandao = fixedSections("snow_jiandao.fixed.txt");
-	const currentSanpin = fixedSections("snow_sanpin.fixed.txt");
 	const words = (rows: Array<[string, string[]]>) =>
 		new Set(rows.map(([, candidates]) => candidates[0]));
 	assert.deepEqual(
@@ -375,10 +373,7 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 		"经典冰雪键道应覆盖全部 21×5 个二码位与 21×5×5 个三码位",
 	);
 	assert.equal(words(jiandao.get("# 630") ?? []).size, 630);
-	assert.ok(
-		words(jiandao.get("# 单字") ?? []).size >=
-			words(currentJiandao.get("# 单字") ?? []).size,
-	);
+	assert.equal(words(jiandao.get("# 单字") ?? []).size, 1936);
 	assert.equal(sanpin.get("# 630")?.length, 630);
 	const sanpin630Codes = (sanpin.get("# 630") ?? []).map(([code]) => code);
 	assert.deepEqual(
@@ -390,10 +385,7 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 		words(sanpin.get("# 630") ?? []).size,
 		sanpin.get("# 630")?.length,
 	);
-	assert.ok(
-		words(sanpin.get("# 单字") ?? []).size >=
-			words(currentSanpin.get("# 单字") ?? []).size,
-	);
+	assert.equal(words(sanpin.get("# 单字") ?? []).size, 392);
 	assert.equal(sanpin.get("# 字母")?.length, 26);
 	assert.equal(sanpin.get("# 临时数字")?.length, 7);
 	const candidatesAt = (

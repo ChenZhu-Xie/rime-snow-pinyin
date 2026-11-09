@@ -149,7 +149,7 @@ end
 ---@param radicals_map ReverseLookup|nil
 ---@param map table<string, string>
 ---@param cache table<string, string>
-local function jiandao_encode(text, current, radicals_map, map, cache)
+local function jiandao_encode(text, current, radicals_map, map, cache, schema_id)
   -- 把 UTF-8 编码的词语拆成单个字符的列表
   ---@type string[]
   local codes = {}
@@ -174,8 +174,8 @@ local function jiandao_encode(text, current, radicals_map, map, cache)
     -- 如果只有一个字符，直接返回对应的编码
     return codes[1] or "??"
   end
-  -- 普通词组取每个字的形码首码；冰雪键道与冰雪健道
-  -- 共用二／三／四字 CKT v5.1 辅序 12/231/24。
+  -- 普通词组取每个字的形码首码；活动冰雪健道采用 QZ-e8f37a 的
+  -- 12/213/24，初代与经典冰雪键道继续使用 12/231/24。
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
   end
@@ -183,7 +183,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache)
   if #codes == 2 then
     positions = { 1, 2 }
   elseif #codes == 3 then
-    positions = { 2, 3, 1 }
+    positions = schema_id == "snow_jiandao" and { 2, 1, 3 } or { 2, 3, 1 }
   elseif #codes == 4 then
     positions = { 2, 4 }
   else
@@ -408,7 +408,7 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
       or state.id == "snow_jiandao_classic" then -- 冰雪健道／冰雪键道
     if state.is_pinyin or state.jiandao_active then
       local code = jiandao_encode(
-        text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache)
+        text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache, state.id)
       local prompt = shape_input:len() > 0
           and (state.initial_pair and " 形[" .. shape_input .. "]" or " 形 [" .. shape_input .. "]") or nil
       local match = code == "" or code:sub(1, #shape_input) == shape_input
