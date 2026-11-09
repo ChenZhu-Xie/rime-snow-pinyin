@@ -41,7 +41,7 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: bkxepkyr
+      - send: bxpy
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
@@ -91,11 +91,11 @@ deploy:
         assert: cand[1].text == "平"
       - send: xe
         assert: cand[1].text == "学"
-      - send: bkova
+      - send: bko
         assert: cand[1].text == "冰"
       - send: bhyz
         assert: cand[1].text == "不要"
-      - send: fl
+      - send: fli
         assert: cand[1].text == "非" and not has("(zhei4)")
       - send: sl
         assert: not has("(sei1)")
@@ -164,9 +164,9 @@ deploy:
       # 顶功
       - send: yfgsyfgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bkoxev
+      - send: bkoxeo
         assert: commit == "冰" and cand[1].text == "雪"
-      - send: pkyrlrf
+      - send: pryrlrf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 强制上屏尾字；原 d/l 一码仍然保留
       - send: yfgs;
@@ -192,7 +192,7 @@ deploy:
       - send: "lflfiilflf"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "o sy mz  symz"
+      - send: "o syu mzu  symz"
         assert: cand[1].text == "长猫"
       - send: "o bkxelrf  bxlrF"
         assert: cand[1].text == "冰雪输入法"
@@ -200,7 +200,7 @@ deploy:
       - send: "o whv2gc2tlxr  wgtx"
         assert: cand[1].text == "5G通信"
       # 键道和三拼的元音字母简拼都使用共享载体 x。
-      - send: "o dko ep xw2 mt  dlxm"
+      - send: "o dko epo xw2 mtv  dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:
@@ -275,7 +275,7 @@ deploy:
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
       # 以词定字：`[` 取首字、`]` 取末字
-      - send: "xfv["
+      - send: "xfvioo["
         assert: commit == "熙"
       # 词不在首选时先用方向键选中再定字
       - send: "jjdz{Down}]"
@@ -292,10 +292,10 @@ deploy:
         assert: not pinned(1)
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
-      - send: "fpxqS{Control+period}fpxqS Vs 50{Control+period}fpxqS"
+      - send: "fpx{Control+period}fpx Vs 50{Control+period}fpx"
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 键道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
-      - send: "xou{Control+period}fkxqS Vs 50{Control+period}xou"
+      - send: "xou{Control+period}fpx Vs 50{Control+period}xou"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四V我50"
       - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"

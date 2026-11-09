@@ -39,7 +39,7 @@ deploy:
       'switches/@4/reset': 0
     tests:
       # 上游 bgxhpbyb：两字词连输；U357 双拼为 bt xk pb yb。
-      - send: bkxepkyr
+      - send: bxpy
         assert: cand[1].text == "冰雪拼音"
       # 上游 bgvxhupbvybv：四字逐音节打满声韵调；神韵调码 1=i、3=u。
       - send: bkixeupriyri
@@ -323,7 +323,7 @@ deploy:
       - send: "o whu gco tli2 xra  wgtx"
         assert: commit == "五G通信"
       # 啦读轻声 la5（lwo），梦的二码固顶为 mn；la1/meng4 的首选会组成「垃/孟」。
-      - send: "o dki epi xwo mta  dlxm"
+      - send: "o dki ep xwo mt  dlxm"
         assert: commit == "哆啦A梦"
   # 声声二字词的一次声调辅码，以及三字及以上简拼的大写补韵。
   initial_pair_and_mixed_spelling:
@@ -389,9 +389,9 @@ deploy:
       # 嶅 ao2：U357 为 rfv，与“饶”等音节碰撞；山部首首码 e 将它保留在首页。
       - send: rzvvv
         assert: not page("嶅")
-      - send: rzv1e
+      - send: rzv1l
         assert: page("嶅")
-      - send: "xfi["
+      - send: "xfivii["
         assert: commit == "熙"
       # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。
       - send: "jjdz{Down}]"
@@ -407,10 +407,10 @@ deploy:
       - send: "bjmp{Control+slash}bjmp"
         assert: not pinned(1)
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
-      - send: "fpxqS{Control+period}fpxqS Vs 50{Control+period}fpxqS"
+      - send: "fpx{Control+period}fpx Vs 50{Control+period}fpx"
         assert: cand[1].text == "疯狂星期四V我50"
       # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选；四字词首辅取第二字“圾”，一声为 i。
-      - send: "hzbp{Control+period}ejhli {Control+period}hzbp"
+      - send: "hzbp{Control+period}ejhliv {Control+period}hzbp"
         assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"

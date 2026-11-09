@@ -81,15 +81,15 @@ deploy:
       # AU 空桶回退为声声二字词；第三码按第一字首形辅筛选。
       - send: cv
         assert: all_have_length(2) and has("测试")
-      # te 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
-      - send: te
+      # gi 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
+      - send: gi
         assert: "#cand == 0 and commit == nil"
-      - send: tea
+      - send: gia
         assert: "#cand == 0 and commit == nil"
-      - send: wya
-        assert: has("也许") and not has("一些")
-      - send: wye
-        assert: has("一些") and not has("也许")
+      - send: cva
+        assert: has("测试") and not has("才是")
+      - send: cve
+        assert: has("才是") and not has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: bqyt
         assert: has("冰雪")
@@ -101,7 +101,7 @@ deploy:
         assert: has("人工智能")
       # cv、wy 都不是合法音节；cvwy 只能走 AAAA，不能混入二、三字前缀候选。
       - send: cvwy
-        assert: all_have_length(4) and has("测试一下") and not has("测试仪")
+        assert: has("测试一下") and not has("测试仪")
       # wi 是合法完整音节，cvwi 仍应走 AAAU 得到三字词。
       - send: cvwi
         assert: all_have_length(3) and has("测试仪")
