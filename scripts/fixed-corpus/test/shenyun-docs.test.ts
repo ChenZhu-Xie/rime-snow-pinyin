@@ -796,3 +796,51 @@ test("两份 README 只以 D3/V1 与 QZ-e8f37a 为现行双拼并链接全量报
 		includes(readme, "reports/十篇五百字_十四方案最优切分及字词比率报告.md");
 	}
 });
+
+test("两份 README 完整记录现行双拼的英数入口与声韵规则", () => {
+	for (const filename of ["README.md", "README_CN.md"]) {
+		const readme = read(filename);
+		assert.equal(readme.split("#### 英数入口").length - 1, 2);
+		assert.equal(readme.split("#### Letter and number entry").length - 1, 2);
+		assert.equal(readme.split("#### 英數入口").length - 1, 2);
+		assert.equal(readme.split("#### 声韵编码规则").length - 1, 2);
+		assert.equal(
+			readme.split("#### Initial and final coding rules").length - 1,
+			2,
+		);
+		assert.equal(readme.split("#### 聲韻編碼規則").length - 1, 2);
+
+		includes(readme, "M=40、无飞键、无音节重码、无 630");
+		assert.ok(!readme.includes("M=36、无飞键、无音节重码、无 630"));
+		includes(readme, "`D/J/X` 分别使用 `dd/jg/xo`");
+		includes(readme, "| D | `dd` | 扽 | Q | `qn` | 桑 |");
+		includes(readme, "配置状态仍为 `calculated-not-enabled`");
+		includes(readme, "| 四／4 | `qii` | `qia` |");
+		includes(readme, "| 四／4 | `sfi` | `sfa` |");
+		includes(readme, "| 零／0 | `ekv` | `ekv` |");
+		assert.ok(!readme.includes("| D | `dj`"));
+		assert.ok(!readme.includes("| 四／4 | `sii` | `sia` |"));
+
+		includes(readme, "| `q` | `F` | `x` | `Y` | `zh` | `S` |");
+		includes(readme, "| `A` | `R` | `E` | `C` | `O` | `R` |");
+		includes(readme, "144 个 `AU` 空码，其中 131 个为 `AA`、13 个为 `AB`");
+		includes(readme, "94 个 `AA` 空码，包含保留码 `qz`、`zq`");
+		includes(readme, "两个方案的 630 固顶区都完整覆盖 630 个码位且词项不重复");
+		includes(readme, "### 固顶、空桶与逐级简码");
+		includes(
+			readme,
+			"### Fixed candidates, vacant buckets, and staged abbreviations",
+		);
+		includes(readme, "### 固頂、空桶與逐級簡碼");
+		includes(
+			readme,
+			"各含 21 个一级简码、376 个二码单字、108 个二简词和 26 个字母入口",
+		);
+		includes(
+			readme,
+			"以 351 个二码单字和 90 个二简词完整覆盖 441 个 `AA` 位置",
+		);
+		includes(readme, "由 105 个二码位与 525 个三码位组成");
+		includes(readme, "覆盖 133,205 条可编码读音及 1,372 个二简／630 槽位");
+	}
+});

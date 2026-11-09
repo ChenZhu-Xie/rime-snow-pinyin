@@ -21,7 +21,7 @@
 
 [冰雪拼音](https://input.tansongchen.com)的发布列表包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪弎拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪健道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)、[冰雪简道](snow_shenyun_shape.schema.yaml)、[冰雪散拼](snow_shenyun_tone.schema.yaml)，以及经典的[冰雪键道](snow_jiandao_classic.schema.yaml)和[冰雪三拼](snow_sanpin_classic.schema.yaml)。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
 
-四套双拼顶功方案按合同分为两组：21×21 的冰雪健道与冰雪弎拼中，“健”取健步、矫健之意，突出击键效率与人体工学；“弎”兼具“三”与繁体形意，表示可简繁通打。21×26 的冰雪简道与冰雪散拼中，“简道”强调记忆更简单（M=36、无飞键、无音节重码、无 630）；“散拼”取“形散神不散”，不使用字形辅码，但保留声调与笔画辅码。schema_id 为兼容既有用户配置保持不变。
+四套双拼顶功方案按合同分为两组：21×21 的冰雪健道与冰雪弎拼中，“健”取健步、矫健之意，突出击键效率与人体工学；“弎”兼具“三”与繁体形意，表示可简繁通打。21×26 的冰雪简道与冰雪散拼中，“简道”强调记忆更简单（M=40、无飞键、无音节重码、无 630）；“散拼”取“形散神不散”，不使用字形辅码，但保留声调与笔画辅码。schema_id 为兼容既有用户配置保持不变。
 
 发布列表同时保留四份冻结的初代布局：[冰雪健道·初代](snow_jiandao_first.schema.yaml)、[冰雪弎拼·初代](snow_sanpin_first.schema.yaml)、[冰雪简道·初代](snow_shenyun_shape_first.schema.yaml)与[冰雪散拼·初代](snow_shenyun_tone_first.schema.yaml)。它们完整保留本版本的 U357 21×21 与 Overall-17 21×26 双拼规则、固定候选和键位图，使用独立的用户词典与输入统计，不跟随后续原方案的双拼升级。
 
@@ -35,7 +35,86 @@
 
 五辅语义保持“折横撇竖点→`AEUIO`、一二三四轻→`IEUAO`”，按形义序观察声调仍为 `42310`。冰雪简道的二／三／四字词形辅序为 `12/12/24`，冰雪散拼的调辅序为 `12/21/13`；记号表示从各字位依次取辅码，运行规则以方案文件为准。
 
+#### 英数入口
+
+两个 21×26 方案共用同一套字母入口。21 个辅音字母通常使用“字母原键 + `n`”，其中 `D/J/X` 分别使用 `dd/jg/xo`；五个元音字母使用 `x` 载体。入口只借用已有汉字候选的占用桶，不消耗空码；原汉字保持首选，大写、小写字母固定为第 2、3 候选。下表的“原首选”由当前冻结词典与映射计算，完整审计数据见 [字母桶配置](config/shenyun-21x26-letter-buckets.json)。
+
+| 字母 | 输入码 | 原首选 | 字母 | 输入码 | 原首选 |
+| --- | :---: | :---: | --- | :---: | :---: |
+| A | `xw` | 踹 | N | `nn` | 囊 |
+| B | `bn` | 帮 | O | `xi` | 吃 |
+| C | `cn` | 藏 | P | `pn` | 胖 |
+| D | `dd` | 扽 | Q | `qn` | 桑 |
+| E | `xp` | 吹 | R | `rn` | 让 |
+| F | `fn` | 放 | S | `sn` | 张 |
+| G | `gn` | 刚 | T | `tn` | 躺 |
+| H | `hn` | 行 | U | `xc` | 床 |
+| I | `xf` | 拆 | V | `vn` | 上 |
+| J | `jg` | 炅 | W | `wn` | 养 |
+| K | `kn` | 扛 | X | `xo` | 戳 |
+| L | `ln` | 狼 | Y | `yn` | 昂 |
+| M | `mn` | 忙 | Z | `zn` | 脏 |
+
+数字入口已经按对应汉字的当前最短码完成计算，但配置状态仍为 `calculated-not-enabled`，尚未写入两个现行 fixed 表，所以下表是待启用映射，不是当前可用承诺。所有数字码均复用已有汉字码位，不占空码。
+
+| 数字 | 冰雪简道 | 冰雪散拼 |
+| --- | :---: | :---: |
+| 零／0 | `lqe` | `lqe` |
+| 一／1 | `w` | `w` |
+| 二／2 | `ye` | `ye` |
+| 三／3 | `q` | `q` |
+| 四／4 | `qii` | `qia` |
+| 五／5 | `jue` | `juu` |
+| 六／6 | `lvo` | `lva` |
+| 七／7 | `fie` | `fii` |
+| 八／8 | `bau` | `bai` |
+| 九／9 | `jvu` | `jvu` |
+| 十／10 | `viu` | `vie` |
+
+字母和待启用数字均不侵占 `ABA` 的 `21×5×21=2205` 个状态，既有 `AAB`、`AAAB` 路由也保持不变。
+
+#### 声韵编码规则
+
+声母及零声母载体使用下列首键：
+
+| 声母／载体 | 首键 | 声母／载体 | 首键 | 声母／载体 | 首键 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `b` | `B` | `p` | `P` | `m` | `M` |
+| `f` | `F` | `d` | `D` | `t` | `T` |
+| `n` | `N` | `l` | `L` | `g` | `G` |
+| `k` | `K` | `h` | `H` | `j` | `J` |
+| `q` | `F` | `x` | `Y` | `zh` | `S` |
+| `ch` | `X` | `sh` | `V` | `r` | `R` |
+| `z` | `Z` | `c` | `C` | `s` | `Q` |
+| `A` | `Y` | `E` | `Y` | `O` | `Y` |
+| `W` | `J` | `Y` | `W` | `YU` | `W` |
+
+韵母使用下列次键；`v/van/ve/vn` 表示 ü 系：
+
+| 韵母 | 次键 | 韵母 | 次键 | 韵母 | 次键 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `a` | `A` | `ai` | `F` | `an` | `L` |
+| `ang` | `N` | `ao` | `K` | `e` | `H` |
+| `ei` | `E` | `en` | `D` | `eng` | `J` |
+| `er` | `E` | `i` | `I` | `ia` | `R` |
+| `ian` | `S` | `iang` | `X` | `iao` | `Z` |
+| `ie` | `C` | `in` | `B` | `ing` | `Q` |
+| `iong` | `G` | `iu` | `V` | `o` | `O` |
+| `ong` | `R` | `ou` | `Y` | `u` | `U` |
+| `ua` | `S` | `uai` | `W` | `uan` | `M` |
+| `uang` | `C` | `ui` | `P` | `un` | `G` |
+| `uo` | `O` | `v` | `P` | `van` | `M` |
+| `ve` | `T` | `vn` | `W` |  |  |
+
+- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 399 个音节全部拥有唯一双拼码；静态 21×26 键域有 147 个空码。按当前系统词典的实际占用口径运行时有 144 个 `AU` 空码，其中 131 个为 `AA`、13 个为 `AB`。
+- 单字主码为 `AU`。继续输入声母可进入 `AUA/AAA` 等词语路由，辅码只在相应阶段追加；二／三／四字词的方案专属辅序以上文 `12/12/24` 与 `12/21/13` 为准。
+- 冰雪简道的形辅键为 `A/E/U/I/O = 折/横/撇/竖/点`；冰雪散拼的调辅键为 `I/E/U/A/O = 一/二/三/四/轻`。空码补字只查询系统词典，不受个人词频影响。
+
+**声母—韵母映射**
+
 ![D3/V1 21×26 双拼声韵键盘图](docs/shenyun-d3v1-keyboard.svg)
+
+**十一场景 5500 字最优路径全按键键频**
 
 ![D3/V1 21×26 双拼 5500 字最优路径全按键键频图](docs/shenyun-d3v1-5500-keyboard-heat.svg)
 
@@ -47,11 +126,79 @@
 
 五辅语义保持“折横撇竖点→`AVUIO`、一二三四轻→`IVUAO`”，按形义序观察声调同为 `42310`。冰雪健道的二／三／四字词形辅序为 `12/213/24`，冰雪弎拼的调辅序为 `12/213/23`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
 
+#### 英数入口
+
+冰雪健道与冰雪弎拼共用字母基码：21 个辅音字母使用“字母原键 + `c`”，五个元音使用 `A=xw、I=xl、O=xd、U=xh、V=xg`。冰雪健道直接使用基码，原汉字保持首选，大写、小写字母为第 2、3 候选；冰雪弎拼在基码后追加轻声键 `o`，大写、小写字母为第 1、2 候选。即使字母码与真实音节重合，固定候选顺序也保持不变。
+
+数字与对应汉字共用码位；存在汉字候选时数字追加在其后，不占用额外空码。
+
+| 数字 | 冰雪健道 | 冰雪弎拼 |
+| --- | :---: | :---: |
+| 零／0 | `ekv` | `ekv` |
+| 一／1 | `y` | `y` |
+| 二／2 | `cj` | `cj` |
+| 三／3 | `sm` | `sm` |
+| 四／4 | `sfi` | `sfa` |
+| 五／5 | `whv` | `whu` |
+| 六／6 | `ebo` | `eba` |
+| 七／7 | `qfv` | `qfi` |
+| 八／8 | `bpu` | `bpi` |
+| 九／9 | `jbu` | `jbu` |
+| 十／10 | `lfu` | `lfv` |
+
+#### 声韵编码规则
+
+声母及零声母载体使用下列首键：
+
+| 声母／载体 | 首键 | 声母／载体 | 首键 | 声母／载体 | 首键 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `A` | `R` | `E` | `C` | `O` | `R` |
+| `W` | `W` | `Y` | `Y` | `YU` | `Y` |
+| `b` | `B` | `c` | `C` | `ch` | `S` |
+| `d` | `D` | `f` | `F` | `g` | `G` |
+| `h` | `H` | `j` | `J` | `k` | `P` |
+| `l` | `E` | `m` | `M` | `n` | `N` |
+| `p` | `P` | `q` | `Q` | `r` | `R` |
+| `s` | `S` | `sh` | `L` | `t` | `T` |
+| `x` | `X` | `z` | `Z` | `zh` | `K` |
+
+韵母使用下列次键；`v/van/ve/vn` 表示 ü 系：
+
+| 韵母 | 次键 | 韵母 | 次键 | 韵母 | 次键 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `a` | `P` | `ai` | `N` | `an` | `M` |
+| `ang` | `Y` | `ao` | `Z` | `e` | `S` |
+| `ei` | `L` | `en` | `D` | `eng` | `T` |
+| `er` | `J` | `i` | `F` | `ia` | `L` |
+| `ian` | `J` | `iang` | `P` | `iao` | `Q` |
+| `ie` | `C` | `in` | `R` | `ing` | `K` |
+| `iong` | `H` | `iu` | `B` | `o` | `G` |
+| `ong` | `L` | `ou` | `W` | `u` | `H` |
+| `ua` | `Q` | `uai` | `X` | `uan` | `E` |
+| `uang` | `C` | `ui` | `R` | `un` | `G` |
+| `uo` | `K` | `v` | `D` | `van` | `T` |
+| `ve` | `E` | `vn` | `G` |  |  |
+
+- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 形成 345 个唯一码和 54 个双音节重码桶，静态键域有 96 个空码；按当前系统词典的实际占用口径运行时有 94 个 `AA` 空码，包含保留码 `qz`、`zq`。
+- 冰雪健道使用形辅键 `A/V/U/I/O = 折/横/撇/竖/点`，冰雪弎拼使用调辅键 `I/V/U/A/O = 一/二/三/四/轻`；`j/q/x` 后的 ü 系按 `v/van/ve/vn` 统一编码。
+- 两个方案的 630 固顶区都完整覆盖 630 个码位且词项不重复；大写补韵、动态空桶和多字词辅码按各方案文件中的现行规则运行。
+
+**声母—韵母映射**
+
 ![QZ-e8f37a 21×21 双拼声韵键盘图](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**十一场景 5500 字最优路径全按键键频**
 
 ![QZ-e8f37a 21×21 双拼 5500 字最优路径全按键键频图](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
 
 5500 字十一场景的实际最优路径共 9,444 键，其中空格 376、Shift 307；原始统计见 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
+
+### 固顶、空桶与逐级简码
+
+- 冰雪简道、冰雪散拼的现行 fixed 表各含 21 个一级简码、376 个二码单字、108 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
+- 冰雪健道、冰雪弎拼以 351 个二码单字和 90 个二简词完整覆盖 441 个 `AA` 位置。两方案的 630 区均由 105 个二码位与 525 个三码位组成，每码固定一个不重复词项。
+- 冰雪健道、冰雪弎拼及对应经典方案的大写字母用于三字及以上简拼补韵：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
+- [二字词逐级排序研究](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音及 1,372 个二简／630 槽位。它作为候选常用度证据保留，不把“完整码已是首选”的词重复塞入短码。
 
 ### 现行双拼与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) benchmark
 
@@ -211,7 +358,86 @@ Recipe: ℞ **snow-pinyin**
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AEUIO` and tones 1/2/3/4/neutral→`IEUAO`, yielding `42310` in shape-meaning order. 冰雪简道 uses shape order `12/12/24` and 冰雪散拼 uses tone order `12/21/13` for two-/three-/four-character words.
 
+#### Letter and number entry
+
+Both 21×26 schemes share one letter-entry map. The 21 consonant letters normally use their own key plus `n`; `D/J/X` instead use `dd/jg/xo`. The five vowels use the `x` carrier. These entries reuse occupied Han-character buckets and consume no vacant codes: the existing Han candidate stays first, with uppercase and lowercase in positions 2 and 3. “Original first” below is calculated from the current frozen dictionaries and mapping; see the complete [letter-bucket configuration](config/shenyun-21x26-letter-buckets.json).
+
+| Letter | Input | Original first | Letter | Input | Original first |
+| --- | :---: | :---: | --- | :---: | :---: |
+| A | `xw` | 踹 | N | `nn` | 囊 |
+| B | `bn` | 帮 | O | `xi` | 吃 |
+| C | `cn` | 藏 | P | `pn` | 胖 |
+| D | `dd` | 扽 | Q | `qn` | 桑 |
+| E | `xp` | 吹 | R | `rn` | 让 |
+| F | `fn` | 放 | S | `sn` | 张 |
+| G | `gn` | 刚 | T | `tn` | 躺 |
+| H | `hn` | 行 | U | `xc` | 床 |
+| I | `xf` | 拆 | V | `vn` | 上 |
+| J | `jg` | 炅 | W | `wn` | 养 |
+| K | `kn` | 扛 | X | `xo` | 戳 |
+| L | `ln` | 狼 | Y | `yn` | 昂 |
+| M | `mn` | 忙 | Z | `zn` | 脏 |
+
+Number codes have been calculated from each corresponding Han numeral's current shortest code, but the configuration status remains `calculated-not-enabled`. They have not been written to either current fixed table, so the following is a pending map rather than a currently available input contract. Every code reuses an occupied Han-character bucket.
+
+| Number | 冰雪简道 | 冰雪散拼 |
+| --- | :---: | :---: |
+| 零／0 | `lqe` | `lqe` |
+| 一／1 | `w` | `w` |
+| 二／2 | `ye` | `ye` |
+| 三／3 | `q` | `q` |
+| 四／4 | `qii` | `qia` |
+| 五／5 | `jue` | `juu` |
+| 六／6 | `lvo` | `lva` |
+| 七／7 | `fie` | `fii` |
+| 八／8 | `bau` | `bai` |
+| 九／9 | `jvu` | `jvu` |
+| 十／10 | `viu` | `vie` |
+
+Neither the letters nor the pending numbers consume the `21×5×21=2205` `ABA` states; the existing `AAB` and `AAAB` routes are also preserved.
+
+#### Initial and final coding rules
+
+Initials and zero-initial carriers use these first keys:
+
+| Initial/carrier | First key | Initial/carrier | First key | Initial/carrier | First key |
+| --- | :---: | --- | :---: | --- | :---: |
+| `b` | `B` | `p` | `P` | `m` | `M` |
+| `f` | `F` | `d` | `D` | `t` | `T` |
+| `n` | `N` | `l` | `L` | `g` | `G` |
+| `k` | `K` | `h` | `H` | `j` | `J` |
+| `q` | `F` | `x` | `Y` | `zh` | `S` |
+| `ch` | `X` | `sh` | `V` | `r` | `R` |
+| `z` | `Z` | `c` | `C` | `s` | `Q` |
+| `A` | `Y` | `E` | `Y` | `O` | `Y` |
+| `W` | `J` | `Y` | `W` | `YU` | `W` |
+
+Finals use these second keys; `v/van/ve/vn` denote the ü series:
+
+| Final | Second key | Final | Second key | Final | Second key |
+| --- | :---: | --- | :---: | --- | :---: |
+| `a` | `A` | `ai` | `F` | `an` | `L` |
+| `ang` | `N` | `ao` | `K` | `e` | `H` |
+| `ei` | `E` | `en` | `D` | `eng` | `J` |
+| `er` | `E` | `i` | `I` | `ia` | `R` |
+| `ian` | `S` | `iang` | `X` | `iao` | `Z` |
+| `ie` | `C` | `in` | `B` | `ing` | `Q` |
+| `iong` | `G` | `iu` | `V` | `o` | `O` |
+| `ong` | `R` | `ou` | `Y` | `u` | `U` |
+| `ua` | `S` | `uai` | `W` | `uan` | `M` |
+| `uang` | `C` | `ui` | `P` | `un` | `G` |
+| `uo` | `O` | `v` | `P` | `van` | `M` |
+| `ve` | `T` | `vn` | `W` |  |  |
+
+- All 399 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) syllables have unique double-pinyin codes. The static 21×26 domain has 147 vacant codes; under the current system-dictionary occupancy rule, 144 `AU` codes are vacant at runtime, comprising 131 `AA` and 13 `AB` codes.
+- A single-character main code is `AU`. Further initials enter word routes such as `AUA/AAA`, and auxiliaries are appended only at the applicable stage; the scheme-specific two-/three-/four-character orders are `12/12/24` and `12/21/13` above.
+- 冰雪简道 maps shape auxiliaries as `A/E/U/I/O = bend/horizontal/left-falling/vertical/dot`; 冰雪散拼 maps tone auxiliaries as `I/E/U/A/O = 1/2/3/4/neutral`. Vacant-code fallback queries system dictionaries only and is unaffected by personal frequency.
+
+**Initial–final mapping**
+
 ![D3/V1 21×26 initial/final keyboard map](docs/shenyun-d3v1-keyboard.svg)
+
+**Eleven-scenario optimal-path all-key frequency over 5,500 characters**
 
 ![D3/V1 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-d3v1-5500-keyboard-heat.svg)
 
@@ -223,11 +449,79 @@ The eleven-scenario 5,500-character replay uses 9,895 keys, including 382 spaces
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AVUIO` and tones 1/2/3/4/neutral→`IVUAO`, again yielding `42310`. 冰雪健道 uses shape order `12/213/24`, while 冰雪弎拼 uses tone order `12/213/23`; three-character words retain the complete three-auxiliary route.
 
+#### Letter and number entry
+
+冰雪健道 and 冰雪弎拼 share the same letter base codes. The 21 consonants use their own key plus `c`; the five vowels use `A=xw, I=xl, O=xd, U=xh, V=xg`. 冰雪健道 uses each base code directly, keeping the original Han candidate first and uppercase/lowercase in positions 2/3. 冰雪弎拼 appends neutral-tone key `o`, with uppercase/lowercase in positions 1/2. The fixed order remains intact even when a letter code overlaps a real syllable.
+
+Numbers share the codes of their corresponding Han numerals. When Han candidates exist, the digit follows them instead of consuming a separate vacant code.
+
+| Number | 冰雪健道 | 冰雪弎拼 |
+| --- | :---: | :---: |
+| 零／0 | `ekv` | `ekv` |
+| 一／1 | `y` | `y` |
+| 二／2 | `cj` | `cj` |
+| 三／3 | `sm` | `sm` |
+| 四／4 | `sfi` | `sfa` |
+| 五／5 | `whv` | `whu` |
+| 六／6 | `ebo` | `eba` |
+| 七／7 | `qfv` | `qfi` |
+| 八／8 | `bpu` | `bpi` |
+| 九／9 | `jbu` | `jbu` |
+| 十／10 | `lfu` | `lfv` |
+
+#### Initial and final coding rules
+
+Initials and zero-initial carriers use these first keys:
+
+| Initial/carrier | First key | Initial/carrier | First key | Initial/carrier | First key |
+| --- | :---: | --- | :---: | --- | :---: |
+| `A` | `R` | `E` | `C` | `O` | `R` |
+| `W` | `W` | `Y` | `Y` | `YU` | `Y` |
+| `b` | `B` | `c` | `C` | `ch` | `S` |
+| `d` | `D` | `f` | `F` | `g` | `G` |
+| `h` | `H` | `j` | `J` | `k` | `P` |
+| `l` | `E` | `m` | `M` | `n` | `N` |
+| `p` | `P` | `q` | `Q` | `r` | `R` |
+| `s` | `S` | `sh` | `L` | `t` | `T` |
+| `x` | `X` | `z` | `Z` | `zh` | `K` |
+
+Finals use these second keys; `v/van/ve/vn` denote the ü series:
+
+| Final | Second key | Final | Second key | Final | Second key |
+| --- | :---: | --- | :---: | --- | :---: |
+| `a` | `P` | `ai` | `N` | `an` | `M` |
+| `ang` | `Y` | `ao` | `Z` | `e` | `S` |
+| `ei` | `L` | `en` | `D` | `eng` | `T` |
+| `er` | `J` | `i` | `F` | `ia` | `L` |
+| `ian` | `J` | `iang` | `P` | `iao` | `Q` |
+| `ie` | `C` | `in` | `R` | `ing` | `K` |
+| `iong` | `H` | `iu` | `B` | `o` | `G` |
+| `ong` | `L` | `ou` | `W` | `u` | `H` |
+| `ua` | `Q` | `uai` | `X` | `uan` | `E` |
+| `uang` | `C` | `ui` | `R` | `un` | `G` |
+| `uo` | `K` | `v` | `D` | `van` | `T` |
+| `ve` | `E` | `vn` | `G` |  |  |
+
+- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) forms 345 unique codes and 54 two-syllable collision buckets. The static domain has 96 vacant codes; the current system-dictionary occupancy rule leaves 94 runtime-vacant `AA` codes, including reserved `qz` and `zq`.
+- 冰雪健道 maps shape auxiliaries as `A/V/U/I/O = bend/horizontal/left-falling/vertical/dot`; 冰雪弎拼 maps tone auxiliaries as `I/V/U/A/O = 1/2/3/4/neutral`. The ü series after `j/q/x` is normalized to `v/van/ve/vn`.
+- Both schemes fill all 630 fixed-candidate slots with no repeated entries. Uppercase final completion, dynamic vacant buckets, and multi-character auxiliary routes follow the current rules in each schema.
+
+**Initial–final mapping**
+
 ![QZ-e8f37a 21×21 initial/final keyboard map](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**Eleven-scenario optimal-path all-key frequency over 5,500 characters**
 
 ![QZ-e8f37a 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
 
 The eleven-scenario 5,500-character replay uses 9,444 keys, including 376 spaces and 307 Shift presses; see the [raw JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json).
+
+### Fixed candidates, vacant buckets, and staged abbreviations
+
+- Each current 冰雪简道/冰雪散拼 fixed table contains 21 one-key abbreviations, 376 two-key characters, 108 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
+- 冰雪健道 and 冰雪弎拼 cover all 441 `AA` positions with 351 two-key characters and 90 two-key word abbreviations. Each 630 section comprises 105 two-key and 525 three-key slots, with one non-repeated word fixed per code.
+- In 冰雪健道, 冰雪弎拼, and their classic counterparts, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials.
+- The [staged bigram-ranking study](reports/sipin-bigram-ranking-research.md) covers 133,205 encodable readings and 1,372 two-key/630 slots. It remains frequency evidence without duplicating words that are already first at full code into shorter fixed slots.
 
 ### Current double-pinyin layouts versus KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md)
 
@@ -316,7 +610,86 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao [S005](https://pingshu
 
 五輔語義保持「折橫撇豎點→`AEUIO`、一二三四輕→`IEUAO`」，按形義序觀察聲調仍為 `42310`。冰雪簡道的二／三／四字詞形輔序為 `12/12/24`，冰雪散拼的調輔序為 `12/21/13`。
 
+#### 英數入口
+
+兩個 21×26 方案共用同一套字母入口。21 個輔音字母通常使用「字母原鍵 + `n`」，其中 `D/J/X` 分別使用 `dd/jg/xo`；五個母音字母使用 `x` 載體。入口只借用已有漢字候選的占用桶，不消耗空碼；原漢字保持首選，大寫、小寫字母固定為第 2、3 候選。下表的「原首選」由目前凍結詞典與映射計算，完整稽核資料見[字母桶設定](config/shenyun-21x26-letter-buckets.json)。
+
+| 字母 | 輸入碼 | 原首選 | 字母 | 輸入碼 | 原首選 |
+| --- | :---: | :---: | --- | :---: | :---: |
+| A | `xw` | 踹 | N | `nn` | 囊 |
+| B | `bn` | 帮 | O | `xi` | 吃 |
+| C | `cn` | 藏 | P | `pn` | 胖 |
+| D | `dd` | 扽 | Q | `qn` | 桑 |
+| E | `xp` | 吹 | R | `rn` | 让 |
+| F | `fn` | 放 | S | `sn` | 张 |
+| G | `gn` | 刚 | T | `tn` | 躺 |
+| H | `hn` | 行 | U | `xc` | 床 |
+| I | `xf` | 拆 | V | `vn` | 上 |
+| J | `jg` | 炅 | W | `wn` | 养 |
+| K | `kn` | 扛 | X | `xo` | 戳 |
+| L | `ln` | 狼 | Y | `yn` | 昂 |
+| M | `mn` | 忙 | Z | `zn` | 脏 |
+
+數字入口已按對應漢字的目前最短碼完成計算，但設定狀態仍為 `calculated-not-enabled`，尚未寫入兩個現行 fixed 表，因此下表是待啟用映射，不是目前可用承諾。所有數字碼均重用已有漢字碼位，不占空碼。
+
+| 數字 | 冰雪簡道 | 冰雪散拼 |
+| --- | :---: | :---: |
+| 零／0 | `lqe` | `lqe` |
+| 一／1 | `w` | `w` |
+| 二／2 | `ye` | `ye` |
+| 三／3 | `q` | `q` |
+| 四／4 | `qii` | `qia` |
+| 五／5 | `jue` | `juu` |
+| 六／6 | `lvo` | `lva` |
+| 七／7 | `fie` | `fii` |
+| 八／8 | `bau` | `bai` |
+| 九／9 | `jvu` | `jvu` |
+| 十／10 | `viu` | `vie` |
+
+字母和待啟用數字均不侵占 `ABA` 的 `21×5×21=2205` 個狀態，既有 `AAB`、`AAAB` 路由也保持不變。
+
+#### 聲韻編碼規則
+
+聲母及零聲母載體使用下列首鍵：
+
+| 聲母／載體 | 首鍵 | 聲母／載體 | 首鍵 | 聲母／載體 | 首鍵 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `b` | `B` | `p` | `P` | `m` | `M` |
+| `f` | `F` | `d` | `D` | `t` | `T` |
+| `n` | `N` | `l` | `L` | `g` | `G` |
+| `k` | `K` | `h` | `H` | `j` | `J` |
+| `q` | `F` | `x` | `Y` | `zh` | `S` |
+| `ch` | `X` | `sh` | `V` | `r` | `R` |
+| `z` | `Z` | `c` | `C` | `s` | `Q` |
+| `A` | `Y` | `E` | `Y` | `O` | `Y` |
+| `W` | `J` | `Y` | `W` | `YU` | `W` |
+
+韻母使用下列次鍵；`v/van/ve/vn` 表示 ü 系：
+
+| 韻母 | 次鍵 | 韻母 | 次鍵 | 韻母 | 次鍵 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `a` | `A` | `ai` | `F` | `an` | `L` |
+| `ang` | `N` | `ao` | `K` | `e` | `H` |
+| `ei` | `E` | `en` | `D` | `eng` | `J` |
+| `er` | `E` | `i` | `I` | `ia` | `R` |
+| `ian` | `S` | `iang` | `X` | `iao` | `Z` |
+| `ie` | `C` | `in` | `B` | `ing` | `Q` |
+| `iong` | `G` | `iu` | `V` | `o` | `O` |
+| `ong` | `R` | `ou` | `Y` | `u` | `U` |
+| `ua` | `S` | `uai` | `W` | `uan` | `M` |
+| `uang` | `C` | `ui` | `P` | `un` | `G` |
+| `uo` | `O` | `v` | `P` | `van` | `M` |
+| `ve` | `T` | `vn` | `W` |  |  |
+
+- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 399 個音節全部擁有唯一雙拼碼；靜態 21×26 鍵域有 147 個空碼。按目前系統詞典的實際占用口徑執行時有 144 個 `AU` 空碼，其中 131 個為 `AA`、13 個為 `AB`。
+- 單字主碼為 `AU`。繼續輸入聲母可進入 `AUA/AAA` 等詞語路由，輔碼只在相應階段追加；二／三／四字詞的方案專屬輔序以上文 `12/12/24` 與 `12/21/13` 為準。
+- 冰雪簡道的形輔鍵為 `A/E/U/I/O = 折/橫/撇/豎/點`；冰雪散拼的調輔鍵為 `I/E/U/A/O = 一/二/三/四/輕`。空碼補字只查詢系統詞典，不受個人詞頻影響。
+
+**聲母—韻母映射**
+
 ![D3/V1 21×26 雙拼聲韻鍵盤圖](docs/shenyun-d3v1-keyboard.svg)
+
+**十一場景 5500 字最佳路徑全按鍵鍵頻**
 
 ![D3/V1 21×26 雙拼 5500 字最佳路徑全按鍵鍵頻圖](docs/shenyun-d3v1-5500-keyboard-heat.svg)
 
@@ -328,11 +701,79 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao [S005](https://pingshu
 
 五輔語義保持「折橫撇豎點→`AVUIO`、一二三四輕→`IVUAO`」，按形義序觀察聲調同為 `42310`。冰雪健道的二／三／四字詞形輔序為 `12/213/24`，冰雪弎拼的調輔序為 `12/213/23`；三字詞保留完整三輔鍵路由。
 
+#### 英數入口
+
+冰雪健道與冰雪弎拼共用字母基碼：21 個輔音字母使用「字母原鍵 + `c`」，五個母音使用 `A=xw、I=xl、O=xd、U=xh、V=xg`。冰雪健道直接使用基碼，原漢字保持首選，大寫、小寫字母為第 2、3 候選；冰雪弎拼在基碼後追加輕聲鍵 `o`，大寫、小寫字母為第 1、2 候選。即使字母碼與真實音節重合，固定候選順序也保持不變。
+
+數字與對應漢字共用碼位；存在漢字候選時數字追加在其後，不占用額外空碼。
+
+| 數字 | 冰雪健道 | 冰雪弎拼 |
+| --- | :---: | :---: |
+| 零／0 | `ekv` | `ekv` |
+| 一／1 | `y` | `y` |
+| 二／2 | `cj` | `cj` |
+| 三／3 | `sm` | `sm` |
+| 四／4 | `sfi` | `sfa` |
+| 五／5 | `whv` | `whu` |
+| 六／6 | `ebo` | `eba` |
+| 七／7 | `qfv` | `qfi` |
+| 八／8 | `bpu` | `bpi` |
+| 九／9 | `jbu` | `jbu` |
+| 十／10 | `lfu` | `lfv` |
+
+#### 聲韻編碼規則
+
+聲母及零聲母載體使用下列首鍵：
+
+| 聲母／載體 | 首鍵 | 聲母／載體 | 首鍵 | 聲母／載體 | 首鍵 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `A` | `R` | `E` | `C` | `O` | `R` |
+| `W` | `W` | `Y` | `Y` | `YU` | `Y` |
+| `b` | `B` | `c` | `C` | `ch` | `S` |
+| `d` | `D` | `f` | `F` | `g` | `G` |
+| `h` | `H` | `j` | `J` | `k` | `P` |
+| `l` | `E` | `m` | `M` | `n` | `N` |
+| `p` | `P` | `q` | `Q` | `r` | `R` |
+| `s` | `S` | `sh` | `L` | `t` | `T` |
+| `x` | `X` | `z` | `Z` | `zh` | `K` |
+
+韻母使用下列次鍵；`v/van/ve/vn` 表示 ü 系：
+
+| 韻母 | 次鍵 | 韻母 | 次鍵 | 韻母 | 次鍵 |
+| --- | :---: | --- | :---: | --- | :---: |
+| `a` | `P` | `ai` | `N` | `an` | `M` |
+| `ang` | `Y` | `ao` | `Z` | `e` | `S` |
+| `ei` | `L` | `en` | `D` | `eng` | `T` |
+| `er` | `J` | `i` | `F` | `ia` | `L` |
+| `ian` | `J` | `iang` | `P` | `iao` | `Q` |
+| `ie` | `C` | `in` | `R` | `ing` | `K` |
+| `iong` | `H` | `iu` | `B` | `o` | `G` |
+| `ong` | `L` | `ou` | `W` | `u` | `H` |
+| `ua` | `Q` | `uai` | `X` | `uan` | `E` |
+| `uang` | `C` | `ui` | `R` | `un` | `G` |
+| `uo` | `K` | `v` | `D` | `van` | `T` |
+| `ve` | `E` | `vn` | `G` |  |  |
+
+- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) 形成 345 個唯一碼和 54 個雙音節重碼桶，靜態鍵域有 96 個空碼；按目前系統詞典的實際占用口徑執行時有 94 個 `AA` 空碼，包含保留碼 `qz`、`zq`。
+- 冰雪健道使用形輔鍵 `A/V/U/I/O = 折/橫/撇/豎/點`，冰雪弎拼使用調輔鍵 `I/V/U/A/O = 一/二/三/四/輕`；`j/q/x` 後的 ü 系按 `v/van/ve/vn` 統一編碼。
+- 兩個方案的 630 固頂區都完整覆蓋 630 個碼位且詞項不重複；大寫補韻、動態空桶和多字詞輔碼按各方案檔案中的現行規則執行。
+
+**聲母—韻母映射**
+
 ![QZ-e8f37a 21×21 雙拼聲韻鍵盤圖](docs/shenyun-qz-e8f37a-keyboard.svg)
+
+**十一場景 5500 字最佳路徑全按鍵鍵頻**
 
 ![QZ-e8f37a 21×21 雙拼 5500 字最佳路徑全按鍵鍵頻圖](docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg)
 
 5500 字十一場景的實際最佳路徑共 9,444 鍵，其中空格 376、Shift 307；原始統計見 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
+
+### 固頂、空桶與逐級簡碼
+
+- 冰雪簡道、冰雪散拼的現行 fixed 表各含 21 個一級簡碼、376 個二碼單字、108 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
+- 冰雪健道、冰雪弎拼以 351 個二碼單字和 90 個二簡詞完整覆蓋 441 個 `AA` 位置。兩方案的 630 區均由 105 個二碼位與 525 個三碼位組成，每碼固定一個不重複詞項。
+- 冰雪健道、冰雪弎拼及對應經典方案的大寫字母用於三字及以上簡拼補韻：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
+- [二字詞逐級排序研究](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音及 1,372 個二簡／630 槽位。它作為候選常用度證據保留，不把「完整碼已是首選」的詞重複放入短碼。
 
 ### 現行雙拼與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md) benchmark
 
