@@ -178,7 +178,6 @@ const terms: Record<ShenyunLanguage, Array<[string, keyof typeof links]>> = {
 		["Common399", "benchmarkGithub"],
 		["LU-v1r", "benchmarkGithub"],
 		["FA-1", "benchmarkGithub"],
-		["M-R2", "benchmarkGithub"],
 		["CKT v4", "benchmarkGithub"],
 		["CKT v3", "benchmarkGithub"],
 		["S005", "s005"],

@@ -413,6 +413,26 @@ test("十一场景 5500 字全按键热力图与最优路径回放一致", () =>
 	assert.equal(report.corpus.hanCharacters, 5500);
 	for (const [id, path, expected] of [
 		[
+			"d3v1-shape",
+			"docs/shenyun-d3v1-5500-keyboard-heat.svg",
+			{ keys: 9895, spaces: 382, shifts: 3, nonZeroKeys: 34 },
+		],
+		[
+			"qz-shape",
+			"docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg",
+			{ keys: 9444, spaces: 376, shifts: 307, nonZeroKeys: 33 },
+		],
+		[
+			"overall17-first-shape",
+			"docs/shenyun-overall17-5500-keyboard-heat.svg",
+			{ keys: 9961, spaces: 406, shifts: 1, nonZeroKeys: 34 },
+		],
+		[
+			"u357-first-shape",
+			"docs/shenyun-u357-5500-keyboard-heat.svg",
+			{ keys: 9459, spaces: 393, shifts: 295, nonZeroKeys: 33 },
+		],
+		[
 			"overall17-shape",
 			"docs/shenyun-overall17-5500-keyboard-heat.svg",
 			{ keys: 9964, spaces: 401, shifts: 3, nonZeroKeys: 34 },
@@ -459,6 +479,7 @@ test("十一场景 5500 字全按键热力图与最优路径回放一致", () =>
 	assert.equal(report.layouts["u357-shape"].counts["["], undefined);
 });
 
+/* 历史 README 合同：下一代发布后不再把 Overall-17／U357 写成现行标题。
 test("两份 README 的六张比较表、标题和方案链接完整", () => {
 	for (const filename of ["README.md", "README_CN.md"]) {
 		const readme = read(filename);
@@ -630,5 +651,45 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "[^zh-dv]: 声母／韵母乱序度 D/V");
 		includes(readme, "[^zh-sfb]: S2 异键同指率");
 		assert.ok(!readme.includes("★ ★★"));
+	}
+});
+*/
+
+test("两份 README 只以 D3/V1 与 QZ-e8f37a 为现行双拼并链接全量报告", () => {
+	for (const filename of ["README.md", "README_CN.md"]) {
+		const readme = read(filename);
+		for (const heading of [
+			"### D3/V1 21×26 双拼",
+			"### D3/V1 21×26 double pinyin",
+			"### D3/V1 21×26 雙拼",
+			"### QZ-e8f37a 21×21 双拼",
+			"### QZ-e8f37a 21×21 double pinyin",
+			"### QZ-e8f37a 21×21 雙拼",
+		])
+			includes(readme, heading);
+		assert.ok(!readme.includes("### [神韵(Overall-17) 21×26 双拼]"));
+		assert.ok(!readme.includes("### [无飞键道(U357) 21×21 双拼]"));
+		includes(readme, "`SNOW-SHENYUN-21X26-D3V1-BALANCED`");
+		includes(readme, "`QZ-e8f37a0998f9`");
+		includes(readme, "M-R2 `40`");
+		includes(readme, "D/V `3/1`");
+		includes(readme, "M-R2 `42`");
+		includes(readme, "D/V `2/5`");
+		includes(readme, "CKT v5.1 `9.10299979136027`");
+		includes(readme, "CKT v5.1 `9.56789806405906`");
+		includes(readme, "`12/12/24`");
+		includes(readme, "`12/21/13`");
+		includes(readme, "`12/213/24`");
+		includes(readme, "`12/213/23`");
+		includes(readme, "docs/shenyun-d3v1-keyboard.svg");
+		includes(readme, "docs/shenyun-qz-e8f37a-keyboard.svg");
+		includes(readme, "docs/shenyun-d3v1-5500-keyboard-heat.svg");
+		includes(readme, "docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg");
+		includes(readme, "Overall-17·初代");
+		includes(readme, "U357·初代");
+		includes(readme, "reports/冰雪十二方案_500字_最短键码实战测评.txt");
+		includes(readme, "reports/十篇五百字_十二方案最优切分及字词比率报告.md");
+		includes(readme, "reports/十篇五百字_十三方案最优切分及字词比率报告.md");
+		includes(readme, "reports/十篇五百字_十四方案最优切分及字词比率报告.md");
 	}
 });

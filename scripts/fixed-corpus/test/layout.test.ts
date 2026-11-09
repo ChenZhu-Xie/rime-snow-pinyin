@@ -25,25 +25,25 @@ const original: LayoutDefinition = {
 };
 
 test("layout encodes representative zero initials, initials, and ju/jue", () => {
-	assert.deepEqual(encodeSyllable("a1", shenyun, "canonical"), ["rw"]);
+	assert.deepEqual(encodeSyllable("a1", shenyun, "canonical"), ["rp"]);
 	assert.deepEqual(encodeSyllable("a1", original, "canonical"), ["xs"]);
-	assert.deepEqual(encodeSyllable("zhang1", shenyun, "canonical"), ["kn"]);
+	assert.deepEqual(encodeSyllable("zhang1", shenyun, "canonical"), ["ky"]);
 	assert.deepEqual(encodeSyllable("zhang1", original, "canonical"), ["qp"]);
-	assert.deepEqual(encodeSyllable("chang2", shenyun, "canonical"), ["wn"]);
-	assert.deepEqual(encodeSyllable("shang4", shenyun, "canonical"), ["en"]);
-	assert.deepEqual(encodeSyllable("ju1", shenyun, "canonical"), ["jg"]);
+	assert.deepEqual(encodeSyllable("chang2", shenyun, "canonical"), ["sy"]);
+	assert.deepEqual(encodeSyllable("shang4", shenyun, "canonical"), ["ly"]);
+	assert.deepEqual(encodeSyllable("ju1", shenyun, "canonical"), ["jd"]);
 	assert.deepEqual(encodeSyllable("jue2", original, "canonical"), ["jh"]);
 });
 
-test("Shenyun U357 uses the audited 21x21 initial and final mapping", () => {
-	assert.deepEqual(encodeSyllable("ben1", shenyun, "canonical"), ["bm"]);
-	assert.deepEqual(encodeSyllable("bo1", shenyun, "canonical"), ["bd"]);
-	assert.deepEqual(encodeSyllable("duan1", shenyun, "canonical"), ["dx"]);
-	assert.deepEqual(encodeSyllable("jun1", shenyun, "canonical"), ["je"]);
-	assert.deepEqual(encodeSyllable("yun1", shenyun, "canonical"), ["ye"]);
-	assert.deepEqual(encodeSyllable("en1", shenyun, "canonical"), ["rm"]);
-	assert.deepEqual(encodeSyllable("o1", shenyun, "canonical"), ["rd"]);
-	assert.deepEqual(encodeSyllable("yo1", shenyun, "canonical"), ["yd"]);
+test("QZ-e8f37a uses the audited 21x21 initial and final mapping", () => {
+	assert.deepEqual(encodeSyllable("ben1", shenyun, "canonical"), ["bd"]);
+	assert.deepEqual(encodeSyllable("bo1", shenyun, "canonical"), ["bg"]);
+	assert.deepEqual(encodeSyllable("duan1", shenyun, "canonical"), ["de"]);
+	assert.deepEqual(encodeSyllable("jun1", shenyun, "canonical"), ["jg"]);
+	assert.deepEqual(encodeSyllable("yun1", shenyun, "canonical"), ["yg"]);
+	assert.deepEqual(encodeSyllable("en1", shenyun, "canonical"), ["cd"]);
+	assert.deepEqual(encodeSyllable("o1", shenyun, "canonical"), ["rg"]);
+	assert.deepEqual(encodeSyllable("yo1", shenyun, "canonical"), ["yg"]);
 });
 
 test("original accepted mode exposes derived spellings without changing canonical", () => {
@@ -53,11 +53,11 @@ test("original accepted mode exposes derived spellings without changing canonica
 		"hx",
 		"hm",
 	]);
-	assert.deepEqual(encodeSyllable("huang4", shenyun, "accepted"), ["ht"]);
+	assert.deepEqual(encodeSyllable("huang4", shenyun, "accepted"), ["hc"]);
 });
 
 test("two-character words use full syllable codes and four-character words use initials", () => {
-	assert.deepEqual(encodeWord(["a1", "ba4"], shenyun, "canonical"), ["rwbw"]);
+	assert.deepEqual(encodeWord(["a1", "ba4"], shenyun, "canonical"), ["rpbp"]);
 	assert.deepEqual(encodeWord(["a1", "ba4"], original, "canonical"), ["xsbs"]);
 	assert.deepEqual(
 		encodeWord(["zhong1", "hua2", "ren2", "min2"], shenyun, "canonical"),
@@ -72,7 +72,7 @@ test("two-character words use full syllable codes and four-character words use i
 });
 
 test("real severe buckets independently recompute from their source readings", () => {
-	assert.deepEqual(encodeWord(["yi1", "zhi1"], shenyun, "canonical"), ["ylkl"]);
+	assert.deepEqual(encodeWord(["yi1", "zhi1"], shenyun, "canonical"), ["yfkf"]);
 	assert.deepEqual(
 		encodeWord(["zhu3", "yao4", "yuan2", "yin1"], shenyun, "canonical"),
 		["kyyy"],
