@@ -28,6 +28,14 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
+  function dump(label)
+    local result = {}
+    for i, v in ipairs(cand) do
+      if i > 12 then break end
+      result[#result + 1] = i .. ":" .. v.text .. "[" .. tostring(v.comment) .. "]"
+    end
+    return label .. " preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " cand=" .. table.concat(result, "|")
+  end
 deploy:
   cross_route_user_phrase:
     tests:
@@ -40,7 +48,9 @@ deploy:
     tests:
       # 上游 bgxhpbyb：两字词连输；U357 双拼为 bt xk pb yb。
       - send: bxpy
-        assert: cand[1].text == "冰雪拼音"
+        assert: error(dump("bxpy"))
+      - send: bkxepkyr
+        assert: error(dump("bkxepkyr"))
       # 上游 bgvxhupbvybv：四字逐音节打满声韵调；神韵调码 1=i、3=u。
       - send: bkixeupriyri
         assert: cand[1].text == "冰雪拼音"
@@ -321,10 +331,10 @@ deploy:
         assert: cand[1].text == "I" and cand[2].text == "i"
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
       - send: "o whu gco tli2 xra  wgtx"
-        assert: commit == "五G通信"
+        assert: error(dump("manual-5g"))
       # 啦读轻声 la5（lwo），梦的二码固顶为 mn；la1/meng4 的首选会组成「垃/孟」。
       - send: "o dki ep xwo mt  dlxm"
-        assert: commit == "哆啦A梦"
+        assert: error(dump("manual-doraemon"))
   # 声声二字词的一次声调辅码，以及三字及以上简拼的大写补韵。
   initial_pair_and_mixed_spelling:
     tests:
@@ -392,7 +402,13 @@ deploy:
       - send: rzv1l
         assert: page("嶅")
       - send: "xfivii["
-        assert: commit == "熙"
+        assert: error(dump("xfivii"))
+      - send: "xfi["
+        assert: error(dump("xfi"))
+      - send: "xfiv["
+        assert: error(dump("xfiv"))
+      - send: "xfivi["
+        assert: error(dump("xfivi"))
       # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。
       - send: "jjdz{Down}]"
         assert: commit == "刀"
@@ -408,10 +424,12 @@ deploy:
         assert: not pinned(1)
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
       - send: "fpx{Control+period}fpx Vs 50{Control+period}fpx"
-        assert: cand[1].text == "疯狂星期四V我50"
+        assert: error(dump("free-fpx"))
+      - send: "fpxqS{Control+period}fpxqS Vs 50{Control+period}fpxqS"
+        assert: error(dump("free-fpxqS"))
       # U357 三拼 hou 固顶“好吧”：新词不得挤掉已有的首选；四字词首辅取第二字“圾”，一声为 i。
       - send: "hzbp{Control+period}ejhliv {Control+period}hzbp"
-        assert: cand[1].text == "好吧" and cand[2].text == "垃圾回收"
+        assert: error(dump("free-garbage"))
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
       - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
