@@ -104,9 +104,17 @@ function navigator.logical_positions(input, word_length, schema_id)
     auxiliary_positions = { 2, 1, 3 }
   elseif schema_id == "snow_sanpin_classic" and word_length == 4 then
     auxiliary_positions = { 2, 3 }
-  elseif (schema_id == "snow_shenyun_shape" or schema_id == "snow_shenyun_shape_first")
-      and word_length == 4 then
+  elseif schema_id == "snow_shenyun_shape" and word_length == 3 then
+    auxiliary_positions = { 1, 2, 3 }
+  elseif schema_id == "snow_shenyun_shape" and word_length == 4 then
+    auxiliary_positions = { 2, 4, 1 }
+  elseif schema_id == "snow_shenyun_shape_first" and word_length == 3 then
+    auxiliary_positions = { 2, 1, 3 }
+  elseif schema_id == "snow_shenyun_shape_first" and word_length == 4 then
     auxiliary_positions = { 4, 2, 1 }
+  elseif (schema_id == "snow_shenyun_tone" or schema_id == "snow_shenyun_tone_first")
+      and word_length == 3 then
+    auxiliary_positions = { 2, 1, 3 }
   elseif (schema_id == "snow_shenyun_tone" or schema_id == "snow_shenyun_tone_first")
       and word_length == 4 then
     auxiliary_positions = { 1, 3, 2 }

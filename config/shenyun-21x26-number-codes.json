@@ -19,57 +19,57 @@
 			"digit": "0",
 			"han": "零",
 			"pinyin": "ling2",
-			"shapeCode": "lre",
-			"toneCode": "lre"
+			"shapeCode": "lqe",
+			"toneCode": "lqe"
 		},
 		{
 			"digit": "1",
 			"han": "一",
 			"pinyin": "yi1",
-			"shapeCode": "y",
-			"toneCode": "y"
+			"shapeCode": "w",
+			"toneCode": "w"
 		},
 		{
 			"digit": "2",
 			"han": "二",
 			"pinyin": "er4",
-			"shapeCode": "xu",
-			"toneCode": "xu"
+			"shapeCode": "ye",
+			"toneCode": "ye"
 		},
 		{
 			"digit": "3",
 			"han": "三",
 			"pinyin": "san1",
-			"shapeCode": "s",
-			"toneCode": "s"
+			"shapeCode": "q",
+			"toneCode": "q"
 		},
 		{
 			"digit": "4",
 			"han": "四",
 			"pinyin": "si4",
-			"shapeCode": "sii",
-			"toneCode": "sia"
+			"shapeCode": "qii",
+			"toneCode": "qia"
 		},
 		{
 			"digit": "5",
 			"han": "五",
 			"pinyin": "wu3",
-			"shapeCode": "que",
-			"toneCode": "quu"
+			"shapeCode": "jue",
+			"toneCode": "juu"
 		},
 		{
 			"digit": "6",
 			"han": "六",
 			"pinyin": "liu4",
-			"shapeCode": "lxo",
-			"toneCode": "lxa"
+			"shapeCode": "lvo",
+			"toneCode": "lva"
 		},
 		{
 			"digit": "7",
 			"han": "七",
 			"pinyin": "qi1",
-			"shapeCode": "qie",
-			"toneCode": "qii"
+			"shapeCode": "fie",
+			"toneCode": "fii"
 		},
 		{
 			"digit": "8",
@@ -82,15 +82,15 @@
 			"digit": "9",
 			"han": "九",
 			"pinyin": "jiu3",
-			"shapeCode": "jxu",
-			"toneCode": "jxu"
+			"shapeCode": "jvu",
+			"toneCode": "jvu"
 		},
 		{
 			"digit": "10",
 			"han": "十",
 			"pinyin": "shi2",
-			"shapeCode": "wiu",
-			"toneCode": "wie"
+			"shapeCode": "viu",
+			"toneCode": "vie"
 		}
 	]
 }

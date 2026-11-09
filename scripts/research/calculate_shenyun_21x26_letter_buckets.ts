@@ -25,13 +25,7 @@ const dictionaryFiles = [
 	"snow_pinyin.user.dict.yaml",
 ];
 const consonants = [..."bcdfghjklmnpqrstvwxyz"];
-const vowelAssignments: Readonly<Record<string, string>> = {
-	a: "xw",
-	e: "xj",
-	i: "xb",
-	o: "xf",
-	u: "xx",
-};
+const vowels = [..."aeiou"];
 const valuableWeight = 10_000;
 const algebra = new SpellingAlgebra(
 	rootPath("snow_shenyun_common.yaml"),
@@ -162,19 +156,16 @@ const commonSuffixes = [..."abcdefghijklmnopqrstuvwxyz"]
 	.map((suffix) => aggregateSuffix(suffix, buckets))
 	.filter((value) => value !== null)
 	.sort(compareSuffixes);
-if (commonSuffixes[0]?.suffix !== "y") {
-	throw new Error(
-		`最低影响的全占用共同尾键不再是 y：${commonSuffixes[0]?.suffix}`,
-	);
-}
+const commonSuffix = commonSuffixes[0]?.suffix;
+if (!commonSuffix) throw new Error("不存在 21 个声键全部占用的共同尾键。");
 
 const mapping = new Map<string, ReturnType<typeof renderBucket>>();
 const exceptions: Record<string, string> = {};
 for (const letter of consonants) {
-	const common = buckets.get(`${letter}y`);
-	if (!common) throw new Error(`${letter}y 不再是占用桶。`);
+	const common = buckets.get(`${letter}${commonSuffix}`);
+	if (!common) throw new Error(`${letter}${commonSuffix} 不再是占用桶。`);
 	let selected = common;
-	let reason = "共同尾键 y";
+	let reason = `共同尾键 ${commonSuffix}`;
 	if (
 		common.candidates.slice(1).some(({ weight }) => weight >= valuableWeight)
 	) {
@@ -189,28 +180,21 @@ for (const letter of consonants) {
 }
 
 const xCode = mapping.get("x")?.code;
-if (xCode !== "xy") throw new Error(`X 的共同尾键应为 xy，实际为 ${xCode}`);
+if (!xCode) throw new Error("X 缺少共同尾键字母桶。");
 const bestVowelBuckets = [..."abcdefghijklmnopqrstuvwxyz"]
 	.map((suffix) => buckets.get(`x${suffix}`))
 	.filter((bucket) => bucket !== undefined && bucket.code !== xCode)
 	.sort(compareBuckets)
 	.slice(0, 5);
-const expectedVowelCodes = new Set(bestVowelBuckets.map(({ code }) => code));
-for (const [letter, code] of Object.entries(vowelAssignments)) {
-	if (!expectedVowelCodes.delete(code)) {
-		throw new Error(
-			`${letter.toUpperCase()} 的 ${code} 不在 x 行最低影响的五个占用桶中。`,
-		);
-	}
-	const bucket = buckets.get(code);
-	if (!bucket) throw new Error(`${code} 不再是占用桶。`);
+if (bestVowelBuckets.length !== vowels.length) {
+	throw new Error(`x 行只有 ${bestVowelBuckets.length} 个可用元音字母桶。`);
+}
+for (const [index, letter] of vowels.entries()) {
+	const bucket = bestVowelBuckets[index];
 	mapping.set(
 		letter,
 		renderBucket(letter, bucket, "x 载体行最低影响的五个占用桶之一"),
 	);
-}
-if (expectedVowelCodes.size > 0) {
-	throw new Error(`x 行最低影响桶没有全部分配：${[...expectedVowelCodes]}`);
 }
 
 const entries = [..."abcdefghijklmnopqrstuvwxyz"].map((letter) => {
@@ -231,7 +215,7 @@ const output = {
 	contract: {
 		candidateOrder: ["existing-han", "uppercase-letter", "lowercase-letter"],
 		vacantBucketsUsed: 0,
-		commonConsonantSuffix: "y",
+		commonConsonantSuffix: commonSuffix,
 		valuableCandidateWeight: valuableWeight,
 		consonantExceptions: exceptions,
 		vowelCarrier: "x",
@@ -279,5 +263,5 @@ if (process.argv.includes("--check")) {
 	writeFileSync(outputPath, rendered, "utf8");
 }
 console.log(
-	`21×26 字母占用桶：共同尾键 y；例外 ${JSON.stringify(exceptions)}；26 个桶均有汉字首选，未占空桶。`,
+	`21×26 字母占用桶：共同尾键 ${commonSuffix}；例外 ${JSON.stringify(exceptions)}；26 个桶均有汉字首选，未占空桶。`,
 );

@@ -12,12 +12,12 @@
       "lowercase-letter"
     ],
     "vacantBucketsUsed": 0,
-    "commonConsonantSuffix": "y",
+    "commonConsonantSuffix": "n",
     "valuableCandidateWeight": 10000,
     "consonantExceptions": {
-      "d": "dj",
-      "q": "qq",
-      "v": "vm"
+      "d": "dd",
+      "j": "jg",
+      "x": "xo"
     },
     "vowelCarrier": "x",
     "preservedNamespaces": {
@@ -39,7 +39,7 @@
   },
   "commonSuffixAudit": [
     {
-      "suffix": "y",
+      "suffix": "n",
       "valuable10000": 4,
       "valuable1000": 38,
       "secondThirdWeight": 135364,
@@ -47,7 +47,7 @@
       "candidateCount": 329
     },
     {
-      "suffix": "m",
+      "suffix": "o",
       "valuable10000": 6,
       "valuable1000": 47,
       "secondThirdWeight": 194019,
@@ -55,7 +55,7 @@
       "candidateCount": 386
     },
     {
-      "suffix": "o",
+      "suffix": "l",
       "valuable10000": 8,
       "valuable1000": 75,
       "secondThirdWeight": 361610,
@@ -70,19 +70,27 @@
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
-          "text": "欸",
-          "weight": 657
+          "text": "踹",
+          "weight": 2210
+        },
+        {
+          "text": "揣",
+          "weight": 306
+        },
+        {
+          "text": "搋",
+          "weight": 75
         }
       ],
-      "candidateCount": 1,
+      "candidateCount": 4,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 0,
-      "displacedWeight": 0
+      "displacedWeight": 383
     },
     {
       "letter": "b",
-      "code": "by",
-      "reason": "共同尾键 y",
+      "code": "bn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "帮",
@@ -104,8 +112,8 @@
     },
     {
       "letter": "c",
-      "code": "cy",
-      "reason": "共同尾键 y",
+      "code": "cn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "藏",
@@ -127,7 +135,7 @@
     },
     {
       "letter": "d",
-      "code": "dj",
+      "code": "dd",
       "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
       "naturalTop3": [
         {
@@ -142,54 +150,54 @@
     },
     {
       "letter": "e",
-      "code": "xj",
+      "code": "xp",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
-          "text": "恩",
-          "weight": 33119
+          "text": "吹",
+          "weight": 11315
         },
         {
-          "text": "摁",
-          "weight": 792
+          "text": "锤",
+          "weight": 652
         },
         {
-          "text": "蒽",
-          "weight": 304
+          "text": "捶",
+          "weight": 648
         }
       ],
-      "candidateCount": 3,
+      "candidateCount": 10,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 0,
-      "displacedWeight": 1096
+      "displacedWeight": 1693
     },
     {
       "letter": "f",
-      "code": "fy",
-      "reason": "共同尾键 y",
+      "code": "fn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
-          "text": "张",
-          "weight": 16065
+          "text": "放",
+          "weight": 31001
         },
         {
-          "text": "涨",
-          "weight": 5784
+          "text": "房",
+          "weight": 6299
         },
         {
-          "text": "长",
-          "weight": 2149
+          "text": "方",
+          "weight": 3575
         }
       ],
-      "candidateCount": 25,
+      "candidateCount": 19,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 3,
-      "displacedWeight": 12557
+      "displacedWeight": 13666
     },
     {
       "letter": "g",
-      "code": "gy",
-      "reason": "共同尾键 y",
+      "code": "gn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "刚",
@@ -211,8 +219,8 @@
     },
     {
       "letter": "h",
-      "code": "hy",
-      "reason": "共同尾键 y",
+      "code": "hn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "行",
@@ -234,54 +242,54 @@
     },
     {
       "letter": "i",
-      "code": "xb",
+      "code": "xf",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
-          "text": "寻",
-          "weight": 1854
+          "text": "拆",
+          "weight": 4795
         },
         {
-          "text": "熏",
-          "weight": 736
+          "text": "钗",
+          "weight": 1083
         },
         {
-          "text": "讯",
-          "weight": 615
+          "text": "柴",
+          "weight": 688
         }
       ],
-      "candidateCount": 39,
+      "candidateCount": 9,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 2166
+      "displacedAtLeast1000": 1,
+      "displacedWeight": 2247
     },
     {
       "letter": "j",
-      "code": "jy",
-      "reason": "共同尾键 y",
+      "code": "jg",
+      "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
       "naturalTop3": [
         {
-          "text": "放",
-          "weight": 31001
+          "text": "炅",
+          "weight": 106
         },
         {
-          "text": "房",
-          "weight": 6299
+          "text": "窘",
+          "weight": 74
         },
         {
-          "text": "方",
-          "weight": 3575
+          "text": "冏",
+          "weight": 68
         }
       ],
-      "candidateCount": 19,
+      "candidateCount": 11,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 3,
-      "displacedWeight": 13666
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 177
     },
     {
       "letter": "k",
-      "code": "ky",
-      "reason": "共同尾键 y",
+      "code": "kn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "扛",
@@ -303,8 +311,8 @@
     },
     {
       "letter": "l",
-      "code": "ly",
-      "reason": "共同尾键 y",
+      "code": "ln",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "狼",
@@ -326,8 +334,8 @@
     },
     {
       "letter": "m",
-      "code": "my",
-      "reason": "共同尾键 y",
+      "code": "mn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "忙",
@@ -349,8 +357,8 @@
     },
     {
       "letter": "n",
-      "code": "ny",
-      "reason": "共同尾键 y",
+      "code": "nn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "囊",
@@ -372,31 +380,31 @@
     },
     {
       "letter": "o",
-      "code": "xf",
+      "code": "xi",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
-          "text": "偶",
-          "weight": 10505
+          "text": "吃",
+          "weight": 121249
         },
         {
-          "text": "欧",
-          "weight": 2023
+          "text": "迟",
+          "weight": 1263
         },
         {
-          "text": "藕",
-          "weight": 616
+          "text": "痴",
+          "weight": 853
         }
       ],
-      "candidateCount": 15,
+      "candidateCount": 44,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 1,
-      "displacedWeight": 3437
+      "displacedWeight": 4777
     },
     {
       "letter": "p",
-      "code": "py",
-      "reason": "共同尾键 y",
+      "code": "pn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "胖",
@@ -418,31 +426,31 @@
     },
     {
       "letter": "q",
-      "code": "qq",
-      "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
+      "code": "qn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
-          "text": "穷",
-          "weight": 6730
+          "text": "桑",
+          "weight": 1011
         },
         {
-          "text": "琼",
-          "weight": 84
+          "text": "嗓",
+          "weight": 296
         },
         {
-          "text": "茕",
-          "weight": 31
+          "text": "丧",
+          "weight": 105
         }
       ],
-      "candidateCount": 9,
+      "candidateCount": 6,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 0,
-      "displacedWeight": 130
+      "displacedWeight": 413
     },
     {
       "letter": "r",
-      "code": "ry",
-      "reason": "共同尾键 y",
+      "code": "rn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "让",
@@ -464,31 +472,31 @@
     },
     {
       "letter": "s",
-      "code": "sy",
-      "reason": "共同尾键 y",
+      "code": "sn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
-          "text": "桑",
-          "weight": 1011
+          "text": "张",
+          "weight": 16065
         },
         {
-          "text": "嗓",
-          "weight": 296
+          "text": "涨",
+          "weight": 5784
         },
         {
-          "text": "丧",
-          "weight": 105
+          "text": "长",
+          "weight": 2149
         }
       ],
-      "candidateCount": 6,
+      "candidateCount": 25,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 413
+      "displacedAtLeast1000": 3,
+      "displacedWeight": 12557
     },
     {
       "letter": "t",
-      "code": "ty",
-      "reason": "共同尾键 y",
+      "code": "tn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "躺",
@@ -510,30 +518,76 @@
     },
     {
       "letter": "u",
-      "code": "xx",
+      "code": "xc",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
-          "text": "秀",
-          "weight": 8754
+          "text": "床",
+          "weight": 8415
         },
         {
-          "text": "修",
-          "weight": 5443
+          "text": "闯",
+          "weight": 1350
         },
         {
-          "text": "休",
-          "weight": 1394
+          "text": "窗",
+          "weight": 1071
         }
       ],
-      "candidateCount": 24,
+      "candidateCount": 8,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 2,
-      "displacedWeight": 9295
+      "displacedWeight": 3254
     },
     {
       "letter": "v",
-      "code": "vm",
+      "code": "vn",
+      "reason": "共同尾键 n",
+      "naturalTop3": [
+        {
+          "text": "上",
+          "weight": 320537
+        },
+        {
+          "text": "伤",
+          "weight": 8750
+        },
+        {
+          "text": "尚",
+          "weight": 1235
+        }
+      ],
+      "candidateCount": 13,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 3,
+      "displacedWeight": 12141
+    },
+    {
+      "letter": "w",
+      "code": "wn",
+      "reason": "共同尾键 n",
+      "naturalTop3": [
+        {
+          "text": "养",
+          "weight": 13935
+        },
+        {
+          "text": "样",
+          "weight": 5166
+        },
+        {
+          "text": "羊",
+          "weight": 5038
+        }
+      ],
+      "candidateCount": 32,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 4,
+      "displacedWeight": 19194
+    },
+    {
+      "letter": "x",
+      "code": "xo",
       "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
       "naturalTop3": [
         {
@@ -555,32 +609,9 @@
       "displacedWeight": 85
     },
     {
-      "letter": "w",
-      "code": "wy",
-      "reason": "共同尾键 y",
-      "naturalTop3": [
-        {
-          "text": "上",
-          "weight": 320537
-        },
-        {
-          "text": "伤",
-          "weight": 8750
-        },
-        {
-          "text": "尚",
-          "weight": 1235
-        }
-      ],
-      "candidateCount": 13,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 3,
-      "displacedWeight": 12141
-    },
-    {
-      "letter": "x",
-      "code": "xy",
-      "reason": "共同尾键 y",
+      "letter": "y",
+      "code": "yn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "昂",
@@ -601,32 +632,9 @@
       "displacedWeight": 7
     },
     {
-      "letter": "y",
-      "code": "yy",
-      "reason": "共同尾键 y",
-      "naturalTop3": [
-        {
-          "text": "养",
-          "weight": 13935
-        },
-        {
-          "text": "样",
-          "weight": 5166
-        },
-        {
-          "text": "羊",
-          "weight": 5038
-        }
-      ],
-      "candidateCount": 32,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 4,
-      "displacedWeight": 19194
-    },
-    {
       "letter": "z",
-      "code": "zy",
-      "reason": "共同尾键 y",
+      "code": "zn",
+      "reason": "共同尾键 n",
       "naturalTop3": [
         {
           "text": "脏",
@@ -648,9 +656,9 @@
     }
   ],
   "totals": {
-    "candidateCount": 368,
+    "candidateCount": 363,
     "displacedAtLeast10000": 0,
-    "displacedAtLeast1000": 28,
-    "displacedWeight": 119747
+    "displacedAtLeast1000": 29,
+    "displacedWeight": 116154
   }
 }

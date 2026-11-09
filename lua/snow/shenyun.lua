@@ -1,10 +1,10 @@
 -- 冰雪简道 / 冰雪散拼的飞码式翻译器
 --
 -- 主码族：一简 A、单字 AU / AUBBBB、空桶二字 AA、二字 AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA。
--- 两个方案共用 SNOW-SHENYUN-21X26-PRODUCTION（Overall-17）声韵映射，只在 B 辅码语义上不同：
+-- 两个活动方案共用 SNOW-SHENYUN-21X26-D3V1-BALANCED 声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
--- 二／三／四字最优辅序分别为形 12/21/42、调 12/21/13。
+-- 活动方案二／三／四字最优辅序分别为形 12/12/24、调 12/21/13；初代形辅保留 12/21/42。
 
 local snow = require "snow.snow"
 local bihua = require "snow.bihua"
@@ -31,6 +31,7 @@ local this = {}
 ---@field final_keys string
 ---@field auxiliary_keys string
 ---@field auxiliary_mode string
+---@field first_generation boolean
 ---@field auxiliary_cache table<string, string[]>
 ---@field vacancy_cache table<string, boolean>
 
@@ -81,12 +82,16 @@ end
 
 ---@param length integer
 ---@param mode string
+---@param first_generation boolean
 ---@return integer[]
-local function auxiliary_positions(length, mode)
+local function auxiliary_positions(length, mode, first_generation)
   if length == 2 then return { 1, 2 } end
-  if length == 3 then return { 2, 1 } end
+  if length == 3 then
+    return mode == "shape" and not first_generation and { 1, 2 } or { 2, 1 }
+  end
   if length == 4 then
-    return mode == "tone" and { 1, 3 } or { 4, 2 }
+    if mode == "tone" then return { 1, 3 } end
+    return first_generation and { 4, 2 } or { 2, 4 }
   end
   return { 1, 2 }
 end
@@ -111,7 +116,7 @@ local function shape_codes(text, env)
   if #codes == 1 then
     return { codes[1] }
   elseif #codes >= 2 then
-    return { ordered_initials(codes, auxiliary_positions(#codes, "shape")) }
+    return { ordered_initials(codes, auxiliary_positions(#codes, "shape", env.first_generation)) }
   end
   return { "" }
 end
@@ -177,7 +182,7 @@ local function tone_codes(text, env, spellings)
       end
     end
   else
-    local positions = auxiliary_positions(#chars, "tone")
+    local positions = auxiliary_positions(#chars, "tone", env.first_generation)
     for _, first in ipairs(tones[positions[1]]) do
       for _, second in ipairs(tones[positions[2]]) do
         table.insert(result, first .. second)
@@ -214,8 +219,9 @@ end
 ---@param route ShenyunRoute
 ---@param mode string
 ---@return string
-local function format_preedit(route, mode)
-  local positions = route.length == 1 and { 1 } or auxiliary_positions(route.length, "tone")
+local function format_preedit(route, mode, first_generation)
+  local positions = route.length == 1 and { 1 }
+      or auxiliary_positions(route.length, mode, first_generation)
   return auxiliary_hint.format_preedit(route.proxy, route.suffix, mode, positions)
 end
 
@@ -373,6 +379,7 @@ function this.init(env)
   env.final_keys = config:get_string("translator/shenyun_final_keys") or "abcdefghijklmnopqrstuvwxyz"
   env.auxiliary_keys = config:get_string("translator/shenyun_auxiliary_keys") or "aeuio"
   env.auxiliary_mode = config:get_string("shenyun_options/auxiliary") or "shape"
+  env.first_generation = env.engine.schema.schema_id:match("_first$") ~= nil
   env.auxiliary_cache = {}
   env.vacancy_cache = {}
   if env.auxiliary_mode == "tone" then bihua.load_strokes(env) end
@@ -419,11 +426,11 @@ function this.func(input, segment, env)
     if not seen[candidate.text] then
       seen[candidate.text] = true
       candidate._end = segment._end
-      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode)
+      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode, env.first_generation)
       local length = utf8.len(candidate.text)
       local order = ""
       if length and length >= 2 then
-        local positions = auxiliary_positions(length, env.auxiliary_mode)
+        local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation)
         local raw_order = ("%d%d"):format(positions[1], positions[2])
         order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
       end

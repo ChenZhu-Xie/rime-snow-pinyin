@@ -620,6 +620,7 @@ function render21x26(
 	ones: Map<string, string>,
 	bases: Map<string, string>,
 	phrases: Map<string, string>,
+	targetAlgebra: SpellingAlgebra,
 ): string {
 	const original = new Map<string, string>();
 	for (const line of source.split("\n")) {
@@ -631,7 +632,8 @@ function render21x26(
 	const letterCodes = new Set(shenyunLetterByCode.keys());
 	const mergeOriginal = (code: string, word: string): string =>
 		original.has(code) ? mergeFirst(original.get(code) ?? "", word) : word;
-	if (!ones.has("s")) ones.set("s", "三");
+	const sanKey = targetAlgebra.apply("san1").slice(0, 1);
+	if (sanKey && !ones.has(sanKey)) ones.set(sanKey, "三");
 	const output = [
 		"# 冰雪神韵 21×26 固顶候选；单字与二简词优先级参考冰雪四拼并按本方案物理码重映射。",
 		"# 一级简码只固定首选；二简词只占用无单字音节的空槽；字母保持大写第 2、小写第 3。",
@@ -657,7 +659,7 @@ function render21x26(
 	return `${output.join("\n")}\n`;
 }
 
-export function alignFixedContent(fixed: string, source: string): string {
+function alignFixedContentOnce(fixed: string, source: string): string {
 	const target = targets.find((entry) => entry.fixed === fixed);
 	if (!target) throw new Error(`不支持对齐固顶文件：${fixed}`);
 	const algebra = new SpellingAlgebra(
@@ -691,8 +693,18 @@ export function alignFixedContent(fixed: string, source: string): string {
 					phrases,
 					target.fixed.includes("jiandao"),
 				)
-			: render21x26(source, ones, bases, phrases);
+			: render21x26(source, ones, bases, phrases, algebra);
 	return replaceDirectlyComposableRows(rendered, target, algebra);
+}
+
+export function alignFixedContent(fixed: string, source: string): string {
+	let rendered = source;
+	for (let iteration = 0; iteration < 10; iteration += 1) {
+		const next = alignFixedContentOnce(fixed, rendered);
+		if (next === rendered) return next;
+		rendered = next;
+	}
+	throw new Error(`${fixed} 的固顶优先级对齐未能在 10 轮内收敛`);
 }
 
 function main() {

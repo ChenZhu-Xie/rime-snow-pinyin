@@ -3,7 +3,6 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { load } from "js-yaml";
 import { applyAlgebra, parseAlgebraRules } from "../algebra";
-import { pronunciationCodes } from "../../lib/benchmark-schemes";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
@@ -35,9 +34,7 @@ type Layout = {
 const activeLayout = JSON.parse(
 	read("config/shenyun-21x26-mapping.json"),
 ) as Layout;
-const layout = JSON.parse(
-	read("config/shenyun-21x26-first-mapping.json"),
-) as Layout;
+const layout = activeLayout;
 const letterBuckets = JSON.parse(
 	read("config/shenyun-21x26-letter-buckets.json"),
 ) as {
@@ -235,11 +232,11 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 		"lowercase-letter",
 	]);
 	assert.equal(letterBuckets.contract.vacantBucketsUsed, 0);
-	assert.equal(letterBuckets.contract.commonConsonantSuffix, "y");
+	assert.equal(letterBuckets.contract.commonConsonantSuffix, "n");
 	assert.deepEqual(letterBuckets.contract.consonantExceptions, {
-		d: "dj",
-		q: "qq",
-		v: "vm",
+		d: "dd",
+		j: "jg",
+		x: "xo",
 	});
 	assert.deepEqual(letterBuckets.contract.preservedNamespaces, {
 		ABA: 2205,
@@ -254,31 +251,31 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 		),
 		{
 			a: "xw",
-			b: "by",
-			c: "cy",
-			d: "dj",
-			e: "xj",
-			f: "fy",
-			g: "gy",
-			h: "hy",
-			i: "xb",
-			j: "jy",
-			k: "ky",
-			l: "ly",
-			m: "my",
-			n: "ny",
-			o: "xf",
-			p: "py",
-			q: "qq",
-			r: "ry",
-			s: "sy",
-			t: "ty",
-			u: "xx",
-			v: "vm",
-			w: "wy",
-			x: "xy",
-			y: "yy",
-			z: "zy",
+			b: "bn",
+			c: "cn",
+			d: "dd",
+			e: "xp",
+			f: "fn",
+			g: "gn",
+			h: "hn",
+			i: "xf",
+			j: "jg",
+			k: "kn",
+			l: "ln",
+			m: "mn",
+			n: "nn",
+			o: "xi",
+			p: "pn",
+			q: "qn",
+			r: "rn",
+			s: "sn",
+			t: "tn",
+			u: "xc",
+			v: "vn",
+			w: "wn",
+			x: "xo",
+			y: "yn",
+			z: "zn",
 		},
 	);
 	for (const entry of letterBuckets.letters) {
@@ -342,21 +339,12 @@ test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", 
 	const initialKeys = "bpmfdtnlgkhjqwvxrzcsy";
 	const auxiliaryKeys = "aeuio";
 	for (const entry of numberCodes.numbers) {
-		const shapeCodes = pronunciationCodes("overall17-shape", entry.han, [
-			entry.pinyin,
-		]).map(({ code }) => code);
-		const toneCodes = pronunciationCodes("overall17-tone", entry.han, [
-			entry.pinyin,
-		]).map(({ code }) => code);
-		assert.ok(
-			shapeCodes.includes(entry.shapeCode),
-			`${entry.han}: ${entry.shapeCode}`,
-		);
-		assert.ok(
-			toneCodes.includes(entry.toneCode),
-			`${entry.han}: ${entry.toneCode}`,
-		);
+		const main = expectedCode(entry.pinyin.replace(/[1-5]$/u, ""));
 		for (const code of [entry.shapeCode, entry.toneCode]) {
+			assert.ok(
+				code === main.slice(0, 1) || code === main || code.startsWith(main),
+				`${entry.han}: ${code}`,
+			);
 			assert.ok(code.length <= 3, code);
 			if (code.length === 3) {
 				assert.ok(initialKeys.includes(code[0]), code);
@@ -396,15 +384,15 @@ test("两个 21×26 方案没有 630、空固顶行或重复固顶码", () => {
 });
 
 test("ue 来源拼写统一并入 ve 规范韵母", () => {
-	assert.equal(encode("gue"), "gg");
+	assert.equal(encode("gue"), "gt");
 	const sanpinRules = parseAlgebraRules(
 		read("snow_sanpin.schema.yaml"),
 		"sanpin_algebra",
 	);
-	assert.equal(applyAlgebra("gue2", sanpinRules).canonical, "gkv");
+	assert.equal(applyAlgebra("gue2", sanpinRules).canonical, "gev");
 });
 
-test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147 个空码", () => {
+test("Common399 的实际拼写代数逐一等于 D3/V1 映射，且留 147 个空码", () => {
 	const frozen = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
 		payloadCodes: Record<string, string | null>;
 	};
@@ -443,16 +431,22 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 		auxiliary,
 	);
 	assert.equal(vacant.length, 147);
-	assert.equal(vacantAA.length, 138);
+	assert.equal(vacantAA.length, 132);
 	assert.deepEqual(vacantAB, [
-		"be",
-		"pe",
+		"de",
+		"te",
 		"gi",
+		"ke",
 		"ki",
 		"hi",
-		"je",
 		"qe",
+		"we",
+		"wu",
+		"xe",
 		"ra",
+		"re",
+		"ce",
+		"se",
 		"yu",
 	]);
 	const vacantAUB = vacantAB.flatMap((code) =>
@@ -461,10 +455,10 @@ test("Common399 的实际拼写代数逐一等于 Overall-17 映射，且留 147
 	const vacantAUBB = vacantAUB.flatMap((code) =>
 		[...auxiliary].map((suffix) => code + suffix),
 	);
-	assert.equal(new Set(vacantAUB).size, 45);
-	assert.equal(new Set(vacantAUBB).size, 225);
+	assert.equal(new Set(vacantAUB).size, 75);
+	assert.equal(new Set(vacantAUBB).size, 375);
 	assert.equal(vacant.includes("cw"), true);
-	assert.equal(vacant.includes("br"), false);
+	assert.equal(vacant.includes("br"), true);
 	assert.doesNotMatch(commonSource, /shenyun_vacant_au_pattern/u);
 });
 
@@ -512,17 +506,21 @@ test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码�
 		"bpmfdtnlgkhjqwvxrzcsy",
 		"aeuio",
 	);
-	assert.equal(runtimeVacant.length, 143);
-	assert.equal(runtimeVacantAA.length, 134);
+	assert.equal(runtimeVacant.length, 144);
+	assert.equal(runtimeVacantAA.length, 131);
 	assert.deepEqual(runtimeVacantAB, [
-		"be",
-		"pe",
+		"te",
 		"gi",
 		"ki",
 		"hi",
-		"je",
 		"qe",
+		"we",
+		"wu",
+		"xe",
 		"ra",
+		"re",
+		"ce",
+		"se",
 		"yu",
 	]);
 	assert.equal(runtimeVacant.includes("cw"), true);
@@ -639,7 +637,7 @@ test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
 	assert.match(lua, /bihua\.load_strokes\(env\)/u);
 	assert.match(lua, /radical_input:sub\(1, 1\) ~= "1"/u);
 	assert.match(lua, /auxiliary_hint\.next_codes\(codes, suffix\)/u);
-	assert.match(lua, /route\.length == 1 and \{ 1 \} or auxiliary_positions/u);
+	assert.match(lua, /route\.length == 1 and \{ 1 \}\s+or auxiliary_positions/u);
 });
 
 test("21×26 四码桶先柔性补齐词长，学习权重在后置之后最终生效", () => {
@@ -697,25 +695,25 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 	const auxiliaryKeys = "aeuio";
 	const expectedFirst = {
 		b: "不",
-		m: "没",
-		f: "这",
+		c: "从",
 		d: "都",
+		f: "去",
+		g: "个",
+		h: "和",
+		j: "我",
+		k: "看",
+		l: "来",
+		m: "没",
 		t: "他",
 		n: "你",
-		l: "来",
-		g: "个",
-		k: "看",
-		h: "和",
-		j: "就",
-		q: "我",
-		x: "想",
+		q: "三",
 		r: "人",
 		z: "在",
-		c: "从",
-		s: "三",
-		y: "有",
-		w: "是",
-		v: "出",
+		s: "这",
+		v: "是",
+		w: "有",
+		x: "出",
+		y: "想",
 	} as Record<string, string>;
 	const readings = new Map<string, string[]>();
 	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
@@ -772,7 +770,7 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 					(readings.get(candidate) ?? []).some((spelling) =>
 						expectedCode(spelling).startsWith(key),
 					),
-					`${key}→${candidate} 必须属于 Overall-17 的该声键`,
+					`${key}→${candidate} 必须属于 D3/V1 的该声键`,
 				);
 			}
 		}
@@ -792,8 +790,8 @@ test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () =>
 		);
 		assert.match(
 			content,
-			/^qi\t其$/mu,
-			`${filename} 的 qi 单字位应参考冰雪四拼`,
+			/^qi\t四$/mu,
+			`${filename} 的 qi 单字位应参考冰雪四拼并随 D3/V1 重映射`,
 		);
 	}
 

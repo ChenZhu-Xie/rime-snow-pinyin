@@ -814,7 +814,7 @@ bzi	保
 bzo	宝
 bzu	刨
 bzv	雹
-c	才
+c	从
 cd	岑
 cda	参
 cdi	摁
@@ -862,7 +862,7 @@ cma	叁
 cmi	餐
 cmo	灿
 cmv	残
-cn	财
+cn	才
 cni	菜
 cno	踩
 cnu	采
@@ -1396,7 +1396,7 @@ jbi	旧
 jbo	究
 jbu	九 9
 jbv	救
-jc	节 J j
+jc	接 J j
 jca	结
 jci	界
 jco	竭
@@ -2466,7 +2466,7 @@ xji	县
 xjo	显
 xju	先
 xjv	现
-xk	性
+xk	行
 xka	姓
 xki	擤
 xko	星

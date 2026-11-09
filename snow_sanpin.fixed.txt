@@ -732,13 +732,13 @@ bk	并
 bl	被
 bm	办
 bn	白
-bp	把
+bp	吧
 bq	表
 br	宾
 bt	蹦
 by	帮
 bz	爆
-c	才
+c	从
 cd	岑
 ce	窜
 cf	次
@@ -748,7 +748,7 @@ cj	二 2
 ck	错
 cl	葱
 cm	惨
-cn	财
+cn	才
 cp	擦
 cr	催
 cs	测
@@ -756,7 +756,7 @@ ct	曾
 cw	凑
 cy	仓
 cz	操
-d	的
+d	都
 db	丢
 dc	跌
 dd	扽
@@ -769,7 +769,7 @@ dk	多
 dl	懂
 dm	但
 dn	带
-dp	打
+dp	大
 dq	掉
 dr	对
 ds	得
@@ -777,7 +777,7 @@ dt	等
 dw	读
 dy	当
 dz	到
-e	了
+e	来
 eb	留
 ec	咧
 ed	率
@@ -791,7 +791,7 @@ el	类
 em	蓝
 en	赖
 ep	啦
-eq	聊
+eq	了
 er	林
 es	乐
 et	冷
@@ -840,7 +840,7 @@ hm	喊
 hn	还
 hp	哈
 hq	话
-hr	回
+hr	会
 hs	鹤
 ht	哼
 hw	后
@@ -849,13 +849,13 @@ hy	巷
 hz	好
 j	就
 jb	久
-jc	节
+jc	接
 jd	据
 je	倔
 jf	即
 jg	均
 jh	炅
-jj	间
+jj	见
 jk	经
 jl	加
 jp	将
@@ -876,7 +876,7 @@ kn	宅
 kp	炸
 kq	爪
 kr	追
-ks	者
+ks	着
 kt	整
 kw	周
 kx	拽
@@ -888,8 +888,8 @@ ld	深
 le	涮
 lf	时
 lg	顺
-lh	书
-lk	数
+lh	数
+lk	说
 ll	谁
 lm	删
 ln	晒
@@ -907,7 +907,7 @@ mb	谬
 mc	灭
 md	门
 mf	幂
-mg	魔
+mg	末
 mh	木
 mj	面
 mk	明
@@ -935,7 +935,7 @@ nk	诺
 nl	弄
 nm	南
 nn	乃
-np	拿
+np	那
 nq	鸟
 nr	您
 ns	哪
@@ -997,7 +997,7 @@ rt	仍
 rw	肉
 ry	让
 rz	凹
-s	三
+s	出
 sc	床
 sd	趁
 se	算
@@ -1006,7 +1006,7 @@ sg	纯
 sh	处
 sk	所
 sl	重
-sm	伞 3
+sm	三 3
 sn	塞
 sp	飒
 sq	抓
@@ -1015,7 +1015,7 @@ ss	色
 st	成
 sw	搜
 sx	踹
-sy	丧
+sy	长
 sz	扫
 t	他
 tc	帖
@@ -1055,12 +1055,12 @@ xf	系
 xg	寻
 xh	胸
 xj	先
-xk	性
+xk	行
 xl	下
 xp	像
 xq	小
 xr	新
-xt	嬛
+xt	选
 y	有 1
 yd	与
 ye	越
@@ -1091,7 +1091,7 @@ zr	最
 zs	则
 zt	增
 zw	走
-zy	脏
+zy	藏
 zz	早
 # 字母
 bco	B b
