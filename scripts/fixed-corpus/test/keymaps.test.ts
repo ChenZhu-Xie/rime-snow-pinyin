@@ -36,19 +36,19 @@ const schemes = [
 const firstGenerationKeymaps = [
 	[
 		"snow_jiandao_first.svg",
-		"5914372fd95c8753fef397386946fbf809e2861d8dec1a8a71d2ea4fb325e989",
+		"8b591af99260437952713b5bc35e61ae0bba4671c9a2707bc508e23d0d342ece",
 	],
 	[
 		"snow_sanpin_first.svg",
-		"32187e19c06682d127fdbe4acaa20cb4f374e85ae173a7a8585af0fec6340f68",
+		"f6fd81e28485c32fdf7e13865cae98a22f244530d8dc47386a33cc3258388c43",
 	],
 	[
 		"snow_shenyun_shape_first.svg",
-		"e7f1047eb423b723552fc54e8868eaba79b24b81ae25c2e23096d318d34fefba",
+		"facfa8534fd8c4137f9b4a5368743effec4bdc56b6c5b0c85f1f33427f4e4ae7",
 	],
 	[
 		"snow_shenyun_tone_first.svg",
-		"2dc78fd6741725d29a79cee1188b02d6d0f6c1c94c6c5ecc6b552777f9c0bd8a",
+		"91fd4acbd2bc9269c8c64de2bb59f9688436d19fc8ff57212a834088b94a9b77",
 	],
 ] as const;
 
@@ -414,19 +414,39 @@ test("both Shenyun diagrams keep the crowded er and u finals readable", () => {
 	}
 });
 
-test("all diagrams use one weight for uppercase keycap labels", () => {
-	const weights = new Set<number>();
+test("displaced initials soften only their physical keycap letters", () => {
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
-		const tags = [
-			...svg.matchAll(/<text\b[^>]*data-key-label="true"[^>]*>/gu),
-		].map(([tag]) => tag);
-		assert.equal(tags.length, 26, `${image} should label all keycaps`);
-		for (const tag of tags) {
-			weights.add(Number(tag.match(/font-weight="([^"]+)"/u)?.[1]));
+		let displacedCount = 0;
+		for (const key of [..."QWERTYUIOPASDFGHJKLZXCVBNM"]) {
+			const group = keyGroup(svg, key);
+			const keycap = group.match(
+				/<text\b[^>]*data-key-label="true"[^>]*>/u,
+			)?.[0];
+			assert.ok(keycap, `${image} should label keycap ${key}`);
+			const keycapWeight = Number(keycap.match(/font-weight="([^"]+)"/u)?.[1]);
+			const displacedInitial = group.match(
+				/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u,
+			)?.[0];
+			if (displacedInitial) {
+				displacedCount++;
+				assert.equal(
+					keycapWeight,
+					500,
+					`${image} ${key} keycap should not compete with its displaced initial`,
+				);
+				assert.match(displacedInitial, /text-decoration="underline"/u);
+				assert.match(displacedInitial, /font-weight="700"/u);
+			} else {
+				assert.equal(
+					keycapWeight,
+					800,
+					`${image} ${key} keycap without a displaced initial should stay bold`,
+				);
+			}
 		}
+		assert.ok(displacedCount > 0, `${image} should expose displaced initials`);
 	}
-	assert.deepEqual([...weights], [800]);
 });
 
 test("KeyTao final e does not inherit keycap emphasis", () => {

@@ -841,6 +841,19 @@ function render(diagram: Diagram) {
 	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, semanticLegend, { size: 14, fill: "#5f5862" })}${text(24, 559, "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组", { size: 12, fill: "#74717a" })}</svg>\n`;
 }
 
+function softenDisplacedInitialKeycaps(svg: string) {
+	return svg.replace(
+		/<g data-key="[A-Z]"[\s\S]*?(?=<g data-key=|<text x="24" y="535")/gu,
+		(group) => {
+			if (!/text-decoration="underline"/u.test(group)) return group;
+			return group.replace(
+				/<text\b[^>]*data-key-label="true"[^>]*>/u,
+				(keycap) => keycap.replace(/font-weight="800"/u, 'font-weight="500"'),
+			);
+		},
+	);
+}
+
 function update(path: string, content: Uint8Array | string) {
 	const expected =
 		typeof content === "string" ? Buffer.from(content) : Buffer.from(content);
@@ -855,7 +868,7 @@ function update(path: string, content: Uint8Array | string) {
 }
 
 for (const diagram of diagrams) {
-	const svg = render(diagram);
+	const svg = softenDisplacedInitialKeycaps(render(diagram));
 	update(join(outputDirectory, `${diagram.filename}.svg`), svg);
 	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })
 		.render()
@@ -869,7 +882,9 @@ for (const filename of [
 	"snow_shenyun_shape_first",
 	"snow_shenyun_tone_first",
 ]) {
-	const svg = readFileSync(join(outputDirectory, `${filename}.svg`), "utf8");
+	const svgPath = join(outputDirectory, `${filename}.svg`);
+	const svg = softenDisplacedInitialKeycaps(readFileSync(svgPath, "utf8"));
+	update(svgPath, svg);
 	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })
 		.render()
 		.asPng();
