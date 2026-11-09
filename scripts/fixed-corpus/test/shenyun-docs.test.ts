@@ -809,6 +809,60 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 			2,
 		);
 		assert.equal(readme.split("#### 聲韻編碼規則").length - 1, 2);
+		for (const [layout, next, mapping, rules, letters] of [
+			[
+				"### D3/V1 21×26 双拼",
+				"### QZ-e8f37a 21×21 双拼",
+				"**声母—韵母映射**",
+				"#### 声韵编码规则",
+				"#### 英数入口",
+			],
+			[
+				"### QZ-e8f37a 21×21 双拼",
+				"### 固顶、空桶与逐级简码",
+				"**声母—韵母映射**",
+				"#### 声韵编码规则",
+				"#### 英数入口",
+			],
+			[
+				"### D3/V1 21×26 double pinyin",
+				"### QZ-e8f37a 21×21 double pinyin",
+				"**Initial–final mapping**",
+				"#### Initial and final coding rules",
+				"#### Letter and number entry",
+			],
+			[
+				"### QZ-e8f37a 21×21 double pinyin",
+				"### Fixed candidates, vacant buckets, and staged abbreviations",
+				"**Initial–final mapping**",
+				"#### Initial and final coding rules",
+				"#### Letter and number entry",
+			],
+			[
+				"### D3/V1 21×26 雙拼",
+				"### QZ-e8f37a 21×21 雙拼",
+				"**聲母—韻母映射**",
+				"#### 聲韻編碼規則",
+				"#### 英數入口",
+			],
+			[
+				"### QZ-e8f37a 21×21 雙拼",
+				"### 固頂、空桶與逐級簡碼",
+				"**聲母—韻母映射**",
+				"#### 聲韻編碼規則",
+				"#### 英數入口",
+			],
+		] as const) {
+			const section = readme.slice(
+				readme.indexOf(layout),
+				readme.indexOf(next),
+			);
+			assert.ok(
+				section.indexOf(mapping) < section.indexOf(rules) &&
+					section.indexOf(rules) < section.indexOf(letters),
+				`${filename} 的 ${layout} 子节顺序错误`,
+			);
+		}
 
 		includes(readme, "M=40、无飞键、无音节重码、无 630");
 		assert.ok(!readme.includes("M=36、无飞键、无音节重码、无 630"));

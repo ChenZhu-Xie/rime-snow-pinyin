@@ -1562,6 +1562,51 @@ const mappingTable = (
 	].join("\n");
 };
 
+type LayoutDocumentationOrder = {
+	letterHeading: string;
+	rulesHeading: string;
+	mappingHeading: string;
+	heatHeading: string;
+};
+
+function reorderLayoutDocumentation(
+	markdown: string,
+	layoutHeading: string,
+	nextHeading: string,
+	order: LayoutDocumentationOrder,
+) {
+	const start = markdown.indexOf(`${layoutHeading}\n`);
+	const end = markdown.indexOf(
+		`${nextHeading}\n`,
+		start + layoutHeading.length,
+	);
+	if (start < 0 || end < 0)
+		throw new Error(`README 缺少布局区间：${layoutHeading} → ${nextHeading}`);
+	const section = markdown.slice(start, end);
+	const letterStart = section.indexOf(order.letterHeading);
+	const rulesStart = section.indexOf(order.rulesHeading);
+	const mappingStart = section.indexOf(order.mappingHeading);
+	const heatStart = section.indexOf(order.heatHeading);
+	if (
+		letterStart < 0 ||
+		rulesStart < 0 ||
+		mappingStart < 0 ||
+		heatStart < 0 ||
+		!(
+			letterStart < rulesStart &&
+			rulesStart < mappingStart &&
+			mappingStart < heatStart
+		)
+	)
+		throw new Error(`README 布局子节结构异常：${layoutHeading}`);
+	const prefix = section.slice(0, letterStart);
+	const letter = section.slice(letterStart, rulesStart).trimEnd();
+	const rules = section.slice(rulesStart, mappingStart).trimEnd();
+	const mapping = section.slice(mappingStart, heatStart).trimEnd();
+	const suffix = section.slice(heatStart);
+	return `${markdown.slice(0, start)}${prefix}${mapping}\n\n${rules}\n\n${letter}\n\n${suffix}${markdown.slice(end)}`;
+}
+
 function replaceCurrentLayoutDocumentation(
 	markdown: string,
 	host: "github" | "gitee",
@@ -1893,7 +1938,7 @@ ${zhtBenchmark}
 - [5000 字十四方案報告（再加入小鶴音形）](reports/十篇五百字_十四方案最优切分及字词比率报告.md)
 
 `;
-	return markdown
+	let replaced = markdown
 		.replace(
 			/^### (?:(?:\[)?神韵\(Overall-17\)|D3\/V1 21×26 双拼)[^\n]*\n[\s\S]*?(?=^### 快捷键$)/mu,
 			zh,
@@ -1906,6 +1951,77 @@ ${zhtBenchmark}
 			/^### (?:(?:\[)?神韻\(Overall-17\)|D3\/V1 21×26 雙拼)[^\n]*\n[\s\S]*?(?=^### 研究報告與稽核資料$)/mu,
 			zht,
 		);
+	for (const [layoutHeading, nextHeading, order] of [
+		[
+			"### D3/V1 21×26 双拼",
+			"### QZ-e8f37a 21×21 双拼",
+			{
+				letterHeading: "#### 英数入口",
+				rulesHeading: "#### 声韵编码规则",
+				mappingHeading: "**声母—韵母映射**",
+				heatHeading: "**十一场景 5500 字最优路径全按键键频**",
+			},
+		],
+		[
+			"### QZ-e8f37a 21×21 双拼",
+			"### 固顶、空桶与逐级简码",
+			{
+				letterHeading: "#### 英数入口",
+				rulesHeading: "#### 声韵编码规则",
+				mappingHeading: "**声母—韵母映射**",
+				heatHeading: "**十一场景 5500 字最优路径全按键键频**",
+			},
+		],
+		[
+			"### D3/V1 21×26 double pinyin",
+			"### QZ-e8f37a 21×21 double pinyin",
+			{
+				letterHeading: "#### Letter and number entry",
+				rulesHeading: "#### Initial and final coding rules",
+				mappingHeading: "**Initial–final mapping**",
+				heatHeading:
+					"**Eleven-scenario optimal-path all-key frequency over 5,500 characters**",
+			},
+		],
+		[
+			"### QZ-e8f37a 21×21 double pinyin",
+			"### Fixed candidates, vacant buckets, and staged abbreviations",
+			{
+				letterHeading: "#### Letter and number entry",
+				rulesHeading: "#### Initial and final coding rules",
+				mappingHeading: "**Initial–final mapping**",
+				heatHeading:
+					"**Eleven-scenario optimal-path all-key frequency over 5,500 characters**",
+			},
+		],
+		[
+			"### D3/V1 21×26 雙拼",
+			"### QZ-e8f37a 21×21 雙拼",
+			{
+				letterHeading: "#### 英數入口",
+				rulesHeading: "#### 聲韻編碼規則",
+				mappingHeading: "**聲母—韻母映射**",
+				heatHeading: "**十一場景 5500 字最佳路徑全按鍵鍵頻**",
+			},
+		],
+		[
+			"### QZ-e8f37a 21×21 雙拼",
+			"### 固頂、空桶與逐級簡碼",
+			{
+				letterHeading: "#### 英數入口",
+				rulesHeading: "#### 聲韻編碼規則",
+				mappingHeading: "**聲母—韻母映射**",
+				heatHeading: "**十一場景 5500 字最佳路徑全按鍵鍵頻**",
+			},
+		],
+	] as const)
+		replaced = reorderLayoutDocumentation(
+			replaced,
+			layoutHeading,
+			nextHeading,
+			order,
+		);
+	return replaced;
 }
 
 function deduplicateOverallSections(markdown: string) {
