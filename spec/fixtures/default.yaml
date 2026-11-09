@@ -3,11 +3,15 @@
 schema_list:
   - schema: snow_sipin
   - schema: snow_sanpin
+  - schema: snow_sanpin_first
   - schema: snow_yipin
   - schema: snow_jiandao
+  - schema: snow_jiandao_first
   - schema: snow_qingyun
   - schema: snow_shenyun_shape
+  - schema: snow_shenyun_shape_first
   - schema: snow_shenyun_tone
+  - schema: snow_shenyun_tone_first
   - schema: snow_jiandao_classic
   - schema: snow_sanpin_classic
 

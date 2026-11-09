@@ -37,6 +37,7 @@ const firstGenerationSchemes = [
 test("first-generation U357 and Overall-17 schemes are complete frozen copies", () => {
 	const menu = read("lua/snow/schema_menu.lua");
 	const release = read(".github/workflows/release.yml");
+	const miraDefault = read("spec/fixtures/default.yaml");
 	for (const [base, name, expectedFixedHash] of firstGenerationSchemes) {
 		const id = `${base}_first`;
 		const schema = load(read(`${id}.schema.yaml`)) as {
@@ -58,6 +59,7 @@ test("first-generation U357 and Overall-17 schemes are complete frozen copies", 
 			new RegExp(`schema_id = "${id}"[\\s\\S]+name = "${name}"`, "u"),
 		);
 		assert.ok(release.includes(`schema: ${id}`), id);
+		assert.ok(miraDefault.includes(`schema: ${id}`), id);
 	}
 	assert.ok(
 		read("snow_jiandao_first.schema.yaml").includes(
