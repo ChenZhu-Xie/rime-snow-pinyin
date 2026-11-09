@@ -78,7 +78,7 @@ menu.entries = {
   {
     schema_id = "snow_yipin",
     name = "冰雪一拼",
-    comment = "1200⁴95¹ 顶功并击 带调音节/击",
+    comment = "1200ᵐ95¹ 顶功并击 带调音节/击",
     aliases = { "bxyp", "yp", "dgbj", "dtyjj", "bxypdgbjdtyjj" },
   },
   {
