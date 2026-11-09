@@ -92,6 +92,18 @@ describe("神韵文档比较装饰", () => {
 		assert.ok(!once.includes("★ ★★"));
 	});
 
+	test("Markdown 表格按 A/I/D/V 的 D+V 排名且奖牌覆盖全表", () => {
+		const source = [
+			"| 指标 | D3 | QZ | S005 | B04 | 何为好 |",
+			"| --- | ---: | ---: | ---: | ---: | --- |",
+			"| A/I/D/V | 8 / 5 / 3 / 1 | 5 / 2 / 2 / 5 | 3 / 0 / 0 / 4 | 1 / 0 / 0 / 0 | D+V 越低越好 |",
+		].join("\n");
+		includes(
+			decorateMarkdownTable(source, ["traditional-final-sum"]),
+			"| A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | D+V 越低越好 |",
+		);
+	});
+
 	test("五个布局参与星级排名且 B04 只参与六列奖牌", () => {
 		const compared = decorateComparison(
 			values(
