@@ -21,39 +21,7 @@ script: |
     print("Right = " .. tostring(right))
     return left == right
   end
-  function dump(label)
-    local result = {}
-    for i, v in ipairs(cand) do
-      if i > 12 then break end
-      result[#result + 1] = i .. ":" .. v.text .. "[" .. tostring(v.comment) .. "]"
-    end
-    return label .. " preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " cand=" .. table.concat(result, "|")
-  end
 deploy:
-  probe:
-    tests:
-      - send: syu
-        assert: error(dump("syu"))
-      - send: syuv
-        assert: error(dump("syuv"))
-      - send: dko
-        assert: error(dump("dko"))
-      - send: dkou
-        assert: error(dump("dkou"))
-      - send: epo
-        assert: error(dump("epo"))
-      - send: epoi
-        assert: error(dump("epoi"))
-      - send: xw
-        assert: error(dump("xw"))
-      - send: mtv
-        assert: error(dump("mtv"))
-      - send: mtvv
-        assert: error(dump("mtvv"))
-      - send: xfv
-        assert: error(dump("xfv"))
-      - send: xfvi
-        assert: error(dump("xfvi"))
   schema_menu:
     tests:
       - send: "{F4}"
@@ -73,10 +41,8 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: bxpy
-        assert: error(dump("bxpy"))
-      - send: bkxepkyr
-        assert: error(dump("bkxepkyr"))
+      - send: bxpyvo
+        assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
       # r5 不应占用单键 r，仍能查询其他 r 声母的字
@@ -125,12 +91,8 @@ deploy:
         assert: cand[1].text == "平"
       - send: xe
         assert: cand[1].text == "学"
-      - send: bko
-        assert: error(dump("bko"))
       - send: bkov
-        assert: error(dump("bkov"))
-      - send: bkova
-        assert: error(dump("bkova"))
+        assert: cand[1].text == "冰"
       - send: bhyz
         assert: cand[1].text == "不要"
       - send: fli
@@ -202,12 +164,8 @@ deploy:
       # 顶功
       - send: yfgsyfgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bkoxeo
-        assert: error(dump("bkoxeo"))
-      - send: bkovxeo
-        assert: error(dump("bkovxeo"))
-      - send: bkovxeov
-        assert: error(dump("bkovxeov"))
+      - send: bkovxeooa
+        assert: commit == "冰" and cand[1].text == "雪"
       - send: pryrlrf
         assert: commit == "拼音" and cand[1].text == "输入法"
       # 强制上屏尾字；原 d/l 一码仍然保留
@@ -234,16 +192,16 @@ deploy:
       - send: "lflfiilflf"
         assert: cand[1].text == "誓师"
       # 缓冲造词
-      - send: "o syu mzu  symz"
-        assert: error(dump("manual-changmao"))
+      - send: "o syuv mzu  symz"
+        assert: cand[1].text == "长猫"
       - send: "o bkxelrf  bxlrF"
         assert: cand[1].text == "冰雪输入法"
-      # 本地键道使用 shv/gc/tp/xb；数字和字母取第二候选。
+      # 本地 QZ 健道使用 whv/gc/tl/xr；数字和字母按实际候选位选取。
       - send: "o whv2gc2tlxr  wgtx"
         assert: cand[1].text == "5G通信"
-      # 键道和三拼的元音字母简拼都使用共享载体 x。
-      - send: "o dko epo xw2 mtv  dlxm"
-        assert: error(dump("manual-doraemon"))
+      # 健道和弎拼的元音字母简拼都使用共享载体 x。
+      - send: "o dkou epoi{Down}{Down}{space}xw{Down}{space}mtv{Down}{Down}{space} dlxm"
+        assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:
     tests:
@@ -317,16 +275,8 @@ deploy:
       - send: ors
         assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
       # 以词定字：`[` 取首字、`]` 取末字
-      - send: "xfvioo["
-        assert: error(dump("xfvioo"))
-      - send: "xf["
-        assert: error(dump("xf"))
-      - send: "xfv["
-        assert: error(dump("xfv"))
-      - send: "xfvi["
-        assert: error(dump("xfvi"))
-      - send: "xfvio["
-        assert: error(dump("xfvio"))
+      - send: "xfry["
+        assert: commit == "熙"
       # 词不在首选时先用方向键选中再定字
       - send: "jjdz{Down}]"
         assert: commit == "刀"
@@ -342,12 +292,10 @@ deploy:
         assert: not pinned(1)
       # 自由加词：Control+' → 任意方式输入 → Control+'
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
-      - send: "fpx{Control+period}fpx Vs 50{Control+period}fpx"
-        assert: error(dump("free-fpx"))
-      - send: "fpxqS{Control+period}fpxqS Vs 50{Control+period}fpxqS"
-        assert: error(dump("free-fpxqS"))
-      # U357 键道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
-      - send: "xou{Control+period}fpx Vs 50{Control+period}xou"
+      - send: "fpx{Control+period}fpxqS Vw 50{Control+period}fpx"
+        assert: cand[1].text == "疯狂星期四V我50"
+      # QZ 健道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
+      - send: "xou{Control+period}fpxqS Vw 50{Control+period}xou"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四V我50"
       - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"
         assert: cand[1].text == "见到" and cand[2].text == "剪刀"
