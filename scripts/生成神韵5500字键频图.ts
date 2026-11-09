@@ -1,6 +1,6 @@
-// 从十方案最优切分逐键回放生成神韵 5500 字全按键键频图。
+// 从十四方案最优切分逐键回放生成神韵 5500 字全按键键频图。
 
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
 	ALL_BENCHMARK_SCHEMES,
@@ -9,10 +9,10 @@ import {
 import { rootPath } from "./lib/paths";
 
 const title = "十一场景 5500 字最优路径全按键键频图";
-const replayDirectory = rootPath("reports", "十篇五百字_十方案逐键对齐回放");
+const replayDirectory = rootPath("reports", "十篇五百字_十四方案逐键对齐回放");
 const benchmarkReportPath = rootPath(
 	"reports",
-	"5000字_十方案最优切分实测结果.json",
+	"5000字_十四方案最优切分实测结果.json",
 );
 const outputReportPath = rootPath(
 	"reports",
@@ -69,16 +69,30 @@ const benchmarkSchemes = new Map(
 );
 const layouts: readonly Layout[] = [
 	{
-		id: "overall17-shape",
-		displayName: "神韵(Overall-17) 21×26",
-		benchmarkName: benchmarkSchemes.get("overall17-shape")?.name ?? "",
+		id: "d3v1-shape",
+		displayName: "D3/V1 21×26",
+		benchmarkName: benchmarkSchemes.get("d3v1-shape")?.name ?? "",
+		filename: "shenyun-d3v1-5500-keyboard-heat.svg",
+		auxiliaryKeys: [..."AEUIO"],
+	},
+	{
+		id: "qz-shape",
+		displayName: "QZ-e8f37a 21×21",
+		benchmarkName: benchmarkSchemes.get("qz-shape")?.name ?? "",
+		filename: "shenyun-qz-e8f37a-5500-keyboard-heat.svg",
+		auxiliaryKeys: [..."AVUIO"],
+	},
+	{
+		id: "overall17-first-shape",
+		displayName: "Overall-17·初代 21×26",
+		benchmarkName: benchmarkSchemes.get("overall17-first-shape")?.name ?? "",
 		filename: "shenyun-overall17-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AEUIO"],
 	},
 	{
-		id: "u357-shape",
-		displayName: "无飞键道(U357) 21×21",
-		benchmarkName: benchmarkSchemes.get("u357-shape")?.name ?? "",
+		id: "u357-first-shape",
+		displayName: "U357·初代 21×21",
+		benchmarkName: benchmarkSchemes.get("u357-first-shape")?.name ?? "",
 		filename: "shenyun-u357-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AVUIO"],
 	},
@@ -240,7 +254,7 @@ function collectCounts(layout: Layout): KeyCounts {
 	});
 	const article10 = stat.articles.find(({ id }) => id === 10);
 	if (!article10) throw new Error(`${layout.displayName} 总报告缺少第 10 篇。`);
-	const standaloneScene = collectFiles(layout, [duplicateReplay]);
+	const standaloneScene = collectFiles(layout, [duplicateReplay!]);
 	assertCounts(
 		`${layout.displayName} 独立 500 字场景`,
 		standaloneScene,
@@ -309,20 +323,36 @@ function renderSvg(layout: Layout, result: KeyCounts): string {
 			`<g data-mxkey="${escapeXml(key)}"><title>${escapeXml(label)}：${count} 次，${percentage.toFixed(3)}%</title><rect x="${x}" y="${y}" width="${width}" height="76" rx="7" fill="${heatColor(count, maximum)}" stroke="#a89dc9"/><text x="${x + 10}" y="${y + 23}" font-size="${label.length > 2 ? 14 : 18}" fill="${foreground}">${escapeXml(label)}</text><text x="${center}" y="${y + 49}" text-anchor="middle" font-size="14" fill="${foreground}">${percentage.toFixed(3)}%</text><text x="${center}" y="${y + 65}" text-anchor="middle" font-size="10" fill="${secondary}">${count} 次</text></g>`,
 		);
 	}
-	const description = `${layout.displayName}；来自十方案最优切分逐键回放，共十一场景、5500 汉字、392 标点、${totalKeystrokes} 次实际按键；包含短码、五辅键、Space、Shift、标点与选重，选重为 ${selections} 次；只绘制计数非 0 的按键。第 10 篇按十篇语料和独立赛文两个场景计两遍。`;
+	const description = `${layout.displayName}；来自十四方案最优切分逐键回放，共十一场景、5500 汉字、392 标点、${totalKeystrokes} 次实际按键；包含短码、五辅键、Space、Shift、标点与选重，选重为 ${selections} 次；只绘制计数非 0 的按键。第 10 篇按十篇语料和独立赛文两个场景计两遍。`;
 	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 ${height}" role="img" aria-labelledby="title desc"><title id="title">${title}</title><desc id="desc">${description}</desc><rect width="940" height="${height}" fill="#f8f7ff"/>${groups.join("")}</svg>\n`;
 }
 
+const previousSummary = existsSync(outputReportPath)
+	? (JSON.parse(readFileSync(outputReportPath, "utf8")) as {
+			contract?: string;
+			corpus?: unknown;
+			layouts?: Record<string, unknown>;
+			historical?: unknown;
+		})
+	: {};
+const historical =
+	previousSummary.contract === "snow-shenyun-5500-optimal-path-all-keys-v2"
+		? {
+				contract: previousSummary.contract,
+				corpus: previousSummary.corpus,
+			}
+		: previousSummary.historical;
 const summary: Record<string, unknown> = {
-	contract: "snow-shenyun-5500-optimal-path-all-keys-v2",
+	contract: "snow-shenyun-5500-optimal-path-all-keys-v3",
+	historical,
 	corpus: {
 		scenes: 11,
 		hanCharacters: 5500,
 		punctuationCharacters: 392,
-		source: "reports/十篇五百字_十方案逐键对齐回放",
+		source: "reports/十篇五百字_十四方案逐键对齐回放",
 		note: "十篇 500 字最优切分逐键回放加独立 500 字赛文；独立赛文与第 10 篇相同，按两个场景计两遍。所有实际非 0 按键均计入。",
 	},
-	layouts: {},
+	layouts: { ...previousSummary.layouts },
 };
 
 for (const layout of layouts) {

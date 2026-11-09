@@ -23,6 +23,16 @@ export interface FlypyRankedCode {
 	layer: string;
 }
 
+export function selectFlypyCacheId(
+	explicitCacheId: string | undefined,
+	computeCacheId: () => string,
+): string {
+	if (explicitCacheId === undefined) return computeCacheId();
+	if (!/^[0-9a-f]{64}$/u.test(explicitCacheId))
+		throw new Error("小鹤音形缓存哈希必须是 64 位小写 SHA-256");
+	return explicitCacheId;
+}
+
 function effectiveWeight(weight: number, layer: FlypyLayer): number {
 	return layer.defaultWeight ?? weight;
 }

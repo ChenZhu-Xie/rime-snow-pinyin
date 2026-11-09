@@ -1,0 +1,616 @@
+冰雪十二方案：500 字赛文最短键码实战测评
+====================================================================================================
+口径：500 个汉字；中文逗号/句号 43 个；标点计键；均码 = 总实际按键 / 500。
+重算轨：冰雪四拼、冰雪健道（QZ-e8f37a 21×21）、冰雪弎拼（QZ-e8f37a 21×21）、冰雪清韵、冰雪简道（D3/V1 21×26）、冰雪散拼（D3/V1 21×26）、冰雪健道·初代（U357 21×21）、冰雪弎拼·初代（U357 21×21）、冰雪简道·初代（Overall-17 21×26）、冰雪散拼·初代（Overall-17 21×26）、冰雪键道、冰雪三拼；十二条轨均按各自冻结或现行布局、现行功能与同一最短路径模型复算。
+编码结构／辅序：冰雪四拼 单字笔画／部件；冰雪健道（QZ-e8f37a 21×21） 12/213/24；冰雪弎拼（QZ-e8f37a 21×21） 12/213/23；冰雪清韵 词语音码／单字形码；冰雪简道（D3/V1 21×26） 12/12/24；冰雪散拼（D3/V1 21×26） 12/21/13；冰雪健道·初代（U357 21×21） 12/231/24；冰雪弎拼·初代（U357 21×21） 12/213/23；冰雪简道·初代（Overall-17 21×26） 12/21/42；冰雪散拼·初代（Overall-17 21×26） 12/21/13；冰雪键道 12/231/24；冰雪三拼 12/213/23。
+优化目标：先最少选重次数，再最少实际按键；同为首选时优先最短标准码，不为节省一个 Space 多补辅助码。某字词存在首选编码时不保留其二、三选短码，只有完全没有首选打法时才允许前三候选选重兜底。
+结构略码：冰雪四拼、冰雪简道、冰雪散拼及其两个“·初代”方案使用；六条 21×21 轨只使用大写补韵机制。冰雪清韵的词语走九键韵音码，单字同时枚举形码。
+记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。每个词首与对应编码首位纵向对齐。
+
+Benchmark 排名表
+----------------------------------------------------------------------------------------------------
+排名  方案                 总按键   平均码长   Space  Shift  非标点分词段   相对第一名
+ 1    冰雪键道                  899     1.7980      44     20           226   +  0
+ 2    冰雪四拼                  902     1.8040      50      2           232   +  3
+ 3    冰雪健道·初代（U357 21×21）    909     1.8180      49     20           228   + 10
+ 4    冰雪弎拼·初代（U357 21×21）    914     1.8280      54     23           230   + 15
+ 5    冰雪弎拼（QZ-e8f37a 21×21）    914     1.8280      53     23           229   + 15
+ 6    冰雪三拼                  918     1.8360      48     23           229   + 19
+ 7    冰雪健道（QZ-e8f37a 21×21）    920     1.8400      44     23           227   + 21
+ 8    冰雪简道（D3/V1 21×26）     924     1.8480      44      0           229   + 25
+ 9    冰雪散拼（D3/V1 21×26）     933     1.8660      42      0           229   + 34
+10    冰雪散拼·初代（Overall-17 21×26）    944     1.8880      49      0           231   + 45
+11    冰雪简道·初代（Overall-17 21×26）    947     1.8940      50      0           234   + 48
+12    冰雪清韵                 1061     2.1220     130      2           366   +162
+
+十二条仓库内可复算轨最短路径使用统计
+----------------------------------------------------------------------------------------------------
+冰雪四拼：总实际按键 902；平均码长 1.8040；Space 50；Shift 2；标点 43；非标点编码动作 232（1字 44；2字 132；3字 36；4字 16；5字以上 4）。
+  简码命中：一简 13；二简单字 71；二简词 0；630 0；结构略码 0；尾字键 20；普通码 128；次选 0。
+冰雪健道（QZ-e8f37a 21×21）：总实际按键 920；平均码长 1.8400；Space 44；Shift 23；标点 43；非标点编码动作 227（1字 37；2字 132；3字 37；4字 17；5字以上 4）。
+  简码命中：一简 8；二简单字 28；二简词 7；630 25；结构略码 0；尾字键 20；普通码 139；次选 0。
+冰雪弎拼（QZ-e8f37a 21×21）：总实际按键 914；平均码长 1.8280；Space 53；Shift 23；标点 43；非标点编码动作 229（1字 40；2字 130；3字 39；4字 17；5字以上 3）。
+  简码命中：一简 15；二简单字 18；二简词 7；630 26；结构略码 0；尾字键 19；普通码 144；次选 0。
+冰雪清韵：总实际按键 1061；平均码长 2.1220；Space 130；Shift 2；标点 43；非标点编码动作 366（1字 266；2字 75；3字 18；4字 5；5字以上 2）。
+  简码命中：一简 18；二简单字 240；二简词 0；630 0；结构略码 0；尾字键 34；普通码 74；次选 0。
+冰雪简道（D3/V1 21×26）：总实际按键 924；平均码长 1.8480；Space 44；Shift 0；标点 43；非标点编码动作 229（1字 38；2字 129；3字 45；4字 16；5字以上 1）。
+  简码命中：一简 14；二简单字 18；二简词 8；630 0；结构略码 1；尾字键 21；普通码 167；次选 0。
+冰雪散拼（D3/V1 21×26）：总实际按键 933；平均码长 1.8660；Space 42；Shift 0；标点 43；非标点编码动作 229（1字 35；2字 135；3字 42；4字 16；5字以上 1）。
+  简码命中：一简 13；二简单字 17；二简词 8；630 0；结构略码 1；尾字键 19；普通码 171；次选 0。
+冰雪健道·初代（U357 21×21）：总实际按键 909；平均码长 1.8180；Space 49；Shift 20；标点 43；非标点编码动作 228（1字 40；2字 128；3字 40；4字 16；5字以上 4）。
+  简码命中：一简 14；二简单字 25；二简词 7；630 26；结构略码 0；尾字键 20；普通码 136；次选 0。
+冰雪弎拼·初代（U357 21×21）：总实际按键 914；平均码长 1.8280；Space 54；Shift 23；标点 43；非标点编码动作 230（1字 40；2字 132；3字 39；4字 16；5字以上 3）。
+  简码命中：一简 15；二简单字 21；二简词 7；630 28；结构略码 0；尾字键 19；普通码 140；次选 0。
+冰雪简道·初代（Overall-17 21×26）：总实际按键 947；平均码长 1.8940；Space 50；Shift 0；标点 43；非标点编码动作 234（1字 42；2字 133；3字 45；4字 13；5字以上 1）。
+  简码命中：一简 17；二简单字 17；二简词 11；630 0；结构略码 1；尾字键 19；普通码 169；次选 0。
+冰雪散拼·初代（Overall-17 21×26）：总实际按键 944；平均码长 1.8880；Space 49；Shift 0；标点 43；非标点编码动作 231（1字 39；2字 133；3字 42；4字 16；5字以上 1）。
+  简码命中：一简 15；二简单字 19；二简词 11；630 0；结构略码 1；尾字键 18；普通码 167；次选 0。
+冰雪键道：总实际按键 899；平均码长 1.7980；Space 44；Shift 20；标点 43；非标点编码动作 226（1字 33；2字 135；3字 39；4字 15；5字以上 4）。
+  简码命中：一简 8；二简单字 23；二简词 6；630 37；结构略码 0；尾字键 19；普通码 133；次选 0。
+冰雪三拼：总实际按键 918；平均码长 1.8360；Space 48；Shift 23；标点 43；非标点编码动作 229（1字 35；2字 137；3字 40；4字 14；5字以上 3）。
+  简码命中：一简 9；二简单字 20；二简词 7；630 31；结构略码 0；尾字键 17；普通码 145；次选 0。
+
+完整方案-specific 分词 / 键码对齐回放
+====================================================================================================
+[01]
+原文       清  晨   的 城 市 刚 刚 醒   来 ，
+冰雪四拼　　 qyeo;       yvi   ggxiea     l  ,
+冰雪健道（QZ-e8f37a 21×21） qksd;       stlf  ggxi       en ,
+冰雪弎拼（QZ-e8f37a 21×21） qksd;       stlf  ggYx_      e  ,
+冰雪清韵　　 kv_ rcv_ e  csi   gg,   xvr_ k_ ,
+冰雪简道（D3/V1 21×26） fqxd;       xve   ggyqi      l  ,
+冰雪散拼（D3/V1 21×26） fqxd;       xve   ggyqi      l  ,
+冰雪健道·初代（U357 21×21） qtwm;       wev   ggxi       l  ,
+冰雪弎拼·初代（U357 21×21） qtwm;       wav   ggNx_      l  ,
+冰雪简道·初代（Overall-17 21×26） qrvj;       vwe   ggxri      l  ,
+冰雪散拼·初代（Overall-17 21×26） qrvj;       vwe   ggxri      l  ,
+冰雪键道　　 qgjn;       jrek  ggxi       l  ,
+冰雪三拼　　 qgjn     djevo    ggPx_      l  ,
+
+[02]
+原文       街   边   的 小 店  打  开 卷 帘 门 ，
+冰雪四拼　　 jbuoe;       xduou  dka    jlme     ,
+冰雪健道（QZ-e8f37a 21×21） jcbj;        xqdji  dppn   jemo     ,
+冰雪弎拼（QZ-e8f37a 21×21） jcbj;        xqdju  diu    jemv     ,
+冰雪清韵　　 dtt_ lhzi e  xo gh_ nk_ ki jlm.     ,
+冰雪简道（D3/V1 21×26） jcbs;        yzdsi  dakf   jlmd     ,
+冰雪散拼（D3/V1 21×26） jcbs;        yzdsu  dakf   jlmd     ,
+冰雪健道·初代（U357 21×21） jzbp;        xcdpi  dwkk   jlmo     ,
+冰雪弎拼·初代（U357 21×21） jzbp;        xcdpu  diu    jlmv     ,
+冰雪简道·初代（Overall-17 21×26） jzbp;        xddpi  dakh   jlmjo    ,
+冰雪散拼·初代（Overall-17 21×26） jzbp;        xddpu  dakh   jlmje    ,
+冰雪键道　　 jdbmu;       xcdmi  dskh   jlmo     ,
+冰雪三拼　　 jdbmi;       xcdmu  diu    jlmv     ,
+
+[03]
+原文       第 一 班   公 交 车 从 路  口 慢 慢 开 过 。
+冰雪四拼　　 dfi   baoi gjy_     c_ lkou   mmkai    go .
+冰雪健道（QZ-e8f37a 21×21） dfyf  bmv  gjs_     c_ ehpw   mmpoo    gk .
+冰雪弎拼（QZ-e8f37a 21×21） dfyf  bmi  gjs_     c_ ehpw   mMmpa    gk .
+冰雪清韵　　 dyi   wd_  gjce     r/ fm_ fo mm;   ki c_ .
+冰雪简道（D3/V1 21×26） dwu   ble  gjxh     c_ luky   mmkf     go .
+冰雪散拼（D3/V1 21×26） dwa   bli  gjxh     c_ luky   mmkf     go .
+冰雪健道·初代（U357 21×21） dlyl  bjv  gjw_     c_ lhkq   mmkK_    gy .
+冰雪弎拼·初代（U357 21×21） dlyl  bji  gjw_     c_ lhkq   mmkK_    gy .
+冰雪简道·初代（Overall-17 21×26） diyi  boe  gjv_     c_ lukf   mmkh     gm .
+冰雪散拼·初代（Overall-17 21×26） diyi  boi  gjv_     c_ lukf   mmkh     gm .
+冰雪键道　　 dkyk  bfv  gjw_     c_ ljkd   mmkH_    gl .
+冰雪三拼　　 dkyk  bfi  gjw_     c_ ljkd   mmkH_    gl .
+
+[04]
+原文       有 人 拿 着 早 餐   赶   去 上 班  ， 有 人 沿   着 河  边   跑   步  ，
+冰雪四拼　　 fr_   nwe   zcao    gqaa    vbao   ,  fr_   fwhbuo           pbuaa    ,
+冰雪健道（QZ-e8f37a 21×21） ywrd  npks  zzcm    gmv  qlYb      ,  ywrd  ykhSb            pzbh     ,
+冰雪弎拼（QZ-e8f37a 21×21） y_ r_ npks  zci     gmqd    lybm   ,  y_ r_ ykhbov           pau      ,
+冰雪清韵　　 yr.   nze   zo hjg_ tzg_ t_ s, wd_ ,  yr.   ktf_ de kk_ lhzi fms_ mm_ ,
+冰雪简道（D3/V1 21×26） w_ r_ nash  zcoi    glfp    vbie   ,  w_ r_ wshboa           pkbu     ,
+冰雪散拼（D3/V1 21×26） w_ r_ nash  zcui    glfp    vnbl   ,  w_ r_ wshbee           pkbu     ,
+冰雪健道·初代（U357 21×21） y_ r_ nwks  zfcj    gjv  qeNb      ,  y_ r_ ykhSb            pfbh     ,
+冰雪弎拼·初代（U357 21×21） y_ r_ nwks  zci     gjqg    eia    ,  y_ r_ yJkhbo           pau      ,
+冰雪简道·初代（Overall-17 21×26） y_ r_ nafe  zcoi    goqv    wbie   ,  y_ r_ yfhbao           pboi     ,
+冰雪散拼·初代（Overall-17 21×26） y_ r_ nafe  zcui    goqv    wybo   ,  y_ r_ yfhbee           pbua     ,
+冰雪键道　　 yr_   nsfe  zzcf    gfql    epbf   ,  yr_   yfhEb            pzbj     ,
+冰雪三拼　　 yr_   nsfe  zci     gfql    epbf   ,  yr_   yfhbov           pau      ,
+
+[05]
+原文       也 有 人 坐   在 窗   前 整   理 今 天 的 计 划 。
+冰雪四拼　　 fe fr_   zzyqu           wliu    jtdjH          .
+冰雪健道（QZ-e8f37a 21×21） yyr_     zzsqv           ktef    jtdjH          .
+冰雪弎拼（QZ-e8f37a 21×21） yyr_     zKzsq           ktef    jtdjH          .
+冰雪清韵　　 yyr_     rrt_ ;  bbhk d; kfp_ wi jtdjH          .
+冰雪简道（D3/V1 21×26） wwr_     zzxfe           sjli    jbts;    jho   .
+冰雪散拼（D3/V1 21×26） wwr_     zzxfa           sjli    jbts;    jha   .
+冰雪健道·初代（U357 21×21） yyrv     zzwqv           krll    jtdjH          .
+冰雪弎拼·初代（U357 21×21） yyru     zzwqa           krll    jtdjH          .
+冰雪简道·初代（Overall-17 21×26） yyr_     zzvqo           fnli    jtde     jho   .
+冰雪散拼·初代（Overall-17 21×26） yyr_     zzvqa           fnli    jtde     jha   .
+冰雪键道　　 yyr_     zzwq            qrlk    jtdjH          .
+冰雪三拼　　 yyr_     zzwq            qrlk    jtdjH          .
+
+[06]
+原文       输 入 法 像  一 件  不 起 眼 的 小 工  具   ，
+冰雪四拼　　 vrf_     xue fjuoii bqfu;       xgjaa       ,
+冰雪健道（QZ-e8f37a 21×21） lrf_     xpi yiu    bqyM;       xgLj        ,
+冰雪弎拼（QZ-e8f37a 21×21） lrf_     xp_ yfjji  bqyM;       xgLj        ,
+冰雪清韵　　 srf_     lx, yj;    bqy_     e  xo xke nsb_ ,
+冰雪简道（D3/V1 21×26） vrf_     yx_ wijse  bfw;        ygjpi       ,
+冰雪散拼（D3/V1 21×26） vrf_     yx_ wijsi  bfw;        ygjpi       ,
+冰雪健道·初代（U357 21×21） erf_     xj_ yiu    bqy;        xCgj        ,
+冰雪弎拼·初代（U357 21×21） erf_     xj_ yljpi  bqy;        xCgj        ,
+冰雪简道·初代（Overall-17 21×26） wrj_     xl_ yijpe  bqydu       xgjvei      ,
+冰雪散拼·初代（Overall-17 21×26） wrj_     xl_ yijpi  bqyou;      xgjvi       ,
+冰雪键道　　 erf_     xx_ ykjmv  bqyv;       xCgj        ,
+冰雪三拼　　 eau      xx_ ykjmi  bqyu;       xCgj        ,
+
+[07]
+原文       却  会 在 每 天 的 工 作 和 聊   天 里  反 复   出 现 ，
+冰雪四拼　　 qo  hu zmtu;       gz_   h_ lt_     li  ffyxuoa       ,
+冰雪健道（QZ-e8f37a 21×21） qehr   zmtu;       glzk  h_ eqtj    ef_ ffsHx         ,
+冰雪弎拼（QZ-e8f37a 21×21） qehr   zmtu;       glzk  h_ eqtj    ef_ ffsHx         ,
+冰雪清韵　　 ty_ r_ zmt;     e  gzo   /  khl_ k; jvi f; zrw_ cx;   ,
+冰雪简道（D3/V1 21×26） fthp   zmts;       gz_   h_ lzts    li_ ffxyue        ,
+冰雪散拼（D3/V1 21×26） fthp   zmts;       gz_   h_ lzts    li_ ffua    xuys  ,
+冰雪健道·初代（U357 21×21） qkhg   zmtu;       gz_   h_ lctp    ll_ ffwHx         ,
+冰雪弎拼·初代（U357 21×21） qkhg   zmtu;       gz_   h_ lctp    ll_ ffwHx         ,
+冰雪简道·初代（Overall-17 21×26） qghl   z_ mtu;     gz_   h_ ldtp    li_ jjvxeu        ,
+冰雪散拼·初代（Overall-17 21×26） qg_ hza   mtu;     gz_   h_ ldtp    li_ joju    vx    ,
+冰雪键道　　 qhhb   zmtu;       gi    h_ lctm    lk_ ffjJx         ,
+冰雪三拼　　 qhhb   z_ mi;      ga    h_ lctm    lk_ fFfjxa        ,
+
+[08]
+原文       速 度 和 准  确   往 往 来 自 长 期 形 成 的 习  惯  。
+冰雪四拼　　 sd_   h_ wqoa     ss_   lz_   yqi   xy;      xgio    .
+冰雪健道（QZ-e8f37a 21×21） shdh  h_ kgqe     wwu   eui   squ   xs;      xfge    .
+冰雪弎拼（QZ-e8f37a 21×21） shdh  h_ kgqe     wwu   eav   syqf  xs;      xfge    .
+冰雪清韵　　 sdu   /  dl_ dfj_ ww,   k_ hi z, c, xc/   e  mxi sj_ .
+冰雪简道（D3/V1 21×26） qudu  h_ sgft     jn[   lfzi  xnfi  yqxj;    yigm    .
+冰雪散拼（D3/V1 21×26） qudu  h_ sgft     jn[   lfzi  xnfi  yqxj  dygme      .
+冰雪健道·初代（U357 21×21） shdh  h_ kbqk     snsn  lkzl  wnql  xw;      xlgx    .
+冰雪弎拼·初代（U357 21×21） shdh  h_ kbqk     snsn  lkzl  wnql  xw;      xlgx    .
+冰雪简道·初代（Overall-17 21×26） sd_   h_ ftqg     qy[   lhzi  vyqi  xrvn;    xigq    .
+冰雪散拼·初代（Overall-17 21×26） sd_   h_ ftqg     qy[   lhzi  vyqi  xrvn  dxgqe      .
+冰雪键道　　 sov   h_ qwqh     wpwp  lui   jpqk  xgjr  dxgao      .
+冰雪三拼　　 sjdj  h_ qwqh     wpwp  lav   jpqk  xgjr  dxgvo      .
+
+[09]
+原文       好 的 编 码 不 只 要 短   ， 还  要 让  手 指  移   动 自 然 ，
+冰雪四拼　　 ha;   bma   b_ wfu   diou ,  hfu    rae vwfdoeo        zr    ,
+冰雪健道（QZ-e8f37a 21×21） hz;   bjmp  b_ kv    deuv ,  hvi    ry_ lkydiv         zfrm  ,
+冰雪弎拼（QZ-e8f37a 21×21） hz;   bjmp  b_ kau   deu  ,  hn_ yzry   lkyduv         zva   ,
+冰雪清韵　　 x_ e  bma   u  zy.   zdk_ ,  dm_ yr,    na nb_ hpjg vu zr;   ,
+冰雪简道（D3/V1 21×26） hk;   bma   b_ siwk  dmu  ,  hf_ wkrn   vswdie         zirl  ,
+冰雪散拼（D3/V1 21×26） hk;   bmi   b_ siwk  dmu  ,  hf_ wkrn   vswdue         zirl  ,
+冰雪健道·初代（U357 21×21） hf;   bpmw  b_ kv    dxu  ,  hvi    rn_ ekydiv         zlrj  ,
+冰雪弎拼·初代（U357 21×21） hf;   bpmw  b_ kau   dxu  ,  hk_ yfrn   eQkydu         zva   ,
+冰雪简道·初代（Overall-17 21×26） hs;   bpma  b_ fiys  dqu  ,  hh_ ysry   wfydei         zr    ,
+冰雪散拼·初代（Overall-17 21×26） hs;   bpma  b_ fiys  dqu  ,  hh_ ysry   wfydue         zr    ,
+冰雪键道　　 hz;   bmms  b_ fvi   dtu  ,  hvi    rp_ efydiv         zkrf  ,
+冰雪三拼　　 hz;   bmms  b_ fkyz  dtu  ,  hh_ yzrp   eDfyduv        zv    ,
+
+[10]
+原文       让  常  用 词   能 够 顺  手 打  出 ，
+冰雪四拼　　 rae yfci        ngo   vvouu  dau y  ,
+冰雪健道（QZ-e8f37a 21×21） ry_ sycF_       ntgw  lglw   dpsh   ,
+冰雪弎拼（QZ-e8f37a 21×21） ry_ sycF_       nga   lglw   dpsh   ,
+冰雪清韵　　 js, sf_ n/ jlk_ nga   cd_ na nk_ cu ,
+冰雪简道（D3/V1 21×26） rn_ xwci        nga   vgvy   daxu   ,
+冰雪散拼（D3/V1 21×26） rn_ xwci        nge   vgvy   daxu   ,
+冰雪健道·初代（U357 21×21） rn_ wycu        nrgq  ebeq   dwwh   ,
+冰雪弎拼·初代（U357 21×21） rn_ wyca        nrgq  ebeq   dwwh   ,
+冰雪简道·初代（Overall-17 21×26） ry_ vyi ykci    nngf  wtwf   davu   ,
+冰雪散拼·初代（Overall-17 21×26） ry_ vyciae      nngf  wtwf   davu   ,
+冰雪键道　　 rp_ jycu        nua   ewed   dsjj   ,
+冰雪三拼　　 rp_ jPyc_       nrgd  ewed   dsjj   ,
+
+[11]
+原文       让  连 续 输   入  时  少 一 点 停 顿 。 测  试  一 套 方 案 时 ，
+冰雪四拼　　 rae lxvru          vi  vfduo    tduoi .  cv_     ftfr        vi ,
+冰雪健道（QZ-e8f37a 21×21） ry_ exlra          lf_ lydJ_    tkdg  .  co      ytfr        lf ,
+冰雪弎拼（QZ-e8f37a 21×21） ry_ exlra          lf_ lydJ_    tkdg  .  ca      ytfr        lf ,
+冰雪清韵　　 js, lxu   dsj_ hgi ru  syd;     td.   .  kn_ jk_ ytfv        ru ,
+冰雪简道（D3/V1 21×26） rn_ lyvra          vi_ vwds     tqdg  .  cv_     wtfye       vi ,
+冰雪散拼（D3/V1 21×26） rn_ lyvre          vi_ vwds     tqdg  .  cv_     wtfyii      vi ,
+冰雪健道·初代（U357 21×21） rn_ laa   ereu         eFyd_    ttdb  .  co      ytfrv       el ,
+冰雪弎拼·初代（U357 21×21） rn_ lpxg  erea         eFyd_    ttdb  .  ca      yLtfr       el ,
+冰雪简道·初代（Overall-17 21×26） ry_ lxwru          wi_ wydpe    trdt  .  cw_     yits  jyxo  wi ,
+冰雪散拼·初代（Overall-17 21×26） ry_ lxwre          wi_ wydpi    trdt  .  cw_     ytjxii      wi ,
+冰雪键道　　 rp_ laa   ereu         eydM_    tgdw  .  coa     ytfPx       ek ,
+冰雪三拼　　 rp_ lmxl  erea         eydM_    tgdw  .  caa     ytZfx       ek ,
+
+[12]
+原文       不 能 只 看 几 个 漂 亮 的 编 码 ，
+冰雪四拼　　 bn_   wi k_ jg_   pl;      bma   ,
+冰雪健道（QZ-e8f37a 21×21） ba    kfpm  jfgs  pov;     bjmp  ,
+冰雪弎拼（QZ-e8f37a 21×21） bva   kfpm  jfgs  paa;     bjmp  ,
+冰雪清韵　　 u  y_ zi n_ to ge pl,   e  bma   ,
+冰雪简道（D3/V1 21×26） bunj  sikl  jigh  pzlx;    bma   ,
+冰雪散拼（D3/V1 21×26） bunj  sikl  jigh  pzlx;    bmi   ,
+冰雪健道·初代（U357 21×21） ba    klkjo jlgs  pov;     bpmw  ,
+冰雪弎拼·初代（U357 21×21） bva   klkji jlgs  paa;     bpmw  ,
+冰雪简道·初代（Overall-17 21×26） bunn  fiko  jige  pl;      bpma  ,
+冰雪散拼·初代（Overall-17 21×26） bunn  fiko  jige  pl;      bpma  ,
+冰雪键道　　 ba    fkkf  jii   po;      bmms  ,
+冰雪三拼　　 bv    fkkf  jau   paa;     bmms  ,
+
+[13]
+原文       也  要 看 普   通  句 子 里 面 真  正 需 要 多 少 按   键  。
+冰雪四拼　　 ffuu   k_ pt_      jzi   lm_   wwe    xf_   dva   rjuoa    .
+冰雪健道（QZ-e8f37a 21×21） ySyp_     phtl     jzu   ev    kdkt   xy_   diu   rmjj     .
+冰雪弎拼（QZ-e8f37a 21×21） ySyp_     pi       jdzf  eau   kdkt   xy_   dui   rmjj     .
+冰雪清韵　　 yyo    n_ dkh_ lg_ ju l; lm;   zzo    xye   dso   nbx_ qx_ .
+冰雪简道（D3/V1 21×26） wwkla     pt_      jpzi  lims  sd_ sywk     dovk  yljs     .
+冰雪散拼（D3/V1 21×26） wwkla     pt_      jpzi  lims  sdsj   ywdvii      yljs     .
+冰雪健道·初代（U357 21×21） ySykvi    pa       jgzl  lm_   kmkr   xy_   diu   rjjp     .
+冰雪弎拼·初代（U357 21×21） ys_ yfkj  pi       jgzl  lm_   kmkr   xy_   dui   rjjp     .
+冰雪简道·初代（Overall-17 21×26） yykoe     pt_      jvzi  limp  fj_ fnxv  ydwsu    xojp     .
+冰雪散拼·初代（Overall-17 21×26） yykoa     pt_      jvzi  limp  fjfn   xydwii      xojp     .
+冰雪键道　　 yEyk_     pa       jlzk  lv    qn_ qxyv     di    xfjm     .
+冰雪三拼　　 yEyk_     pt_      jlzk  lau   qn_ qxyi     du    xfjm     .
+
+[14]
+原文       词   库   越   大 ， 可 选 的 分 词   就 越 多 ，
+冰雪四拼　　 ckuai     kdaa    ,  kxoo;    fciee   jkdo     ,
+冰雪健道（QZ-e8f37a 21×21） cfph      yedp    ,  psxt;    fdcfu   jydK     ,
+冰雪弎拼（QZ-e8f37a 21×21） cfph      yedp    ,  psxt;    fdcfi   jydK     ,
+冰雪清韵　　 jlk_ gdsi tzk_ da ,  kx;   e  bo jlk_ jydo     ,
+冰雪简道（D3/V1 21×26） ciku      wtda    ,  khym;    fdciu   jwdo     ,
+冰雪散拼（D3/V1 21×26） ciku      wtda    ,  khym;    fdcii   jwdo     ,
+冰雪健道·初代（U357 21×21） clkh      ykdw    ,  ksxr;    fmclu   jydY     ,
+冰雪弎拼·初代（U357 21×21） clkh      ykdw    ,  ksxr;    fmcli   jydY     ,
+冰雪简道·初代（Overall-17 21×26） ciku      ygda    ,  kext;    jjciu   jydme    ,
+冰雪散拼·初代（Overall-17 21×26） ciku      ygda    ,  kext;    jjcii   jydma    ,
+冰雪键道　　 ckkj      yhds    ,  kext;    fncku   jydL     ,
+冰雪三拼　　 ckkj      yhds    ,  kext;    fncki   jydL     ,
+
+[15]
+原文       但  最 短   的 分 词   未 必  总  是 最 容 易 用  ，
+冰雪四拼　　 dao zdiou;     fciee   sbiaui zvi    zrf_     foe ,
+冰雪健道（QZ-e8f37a 21×21） dm_ zrde;      fdcfu   wlbf   zoi    zry_     yl  ,
+冰雪弎拼（QZ-e8f37a 21×21） dm_ zrde;      fdcfi   wlbf   zllf   zry_     yl  ,
+冰雪清韵　　 lr_ re zdk_ e  bo jlk_ we bi  df_ i  zry_     n/  ,
+冰雪简道（D3/V1 21×26） dl_ zpdm;      fdciu   jebi   zvo    zrw_     wr  ,
+冰雪散拼（D3/V1 21×26） dl_ zpdm;      fdcii   jebi   zvu    zrw_     wr  ,
+冰雪健道·初代（U357 21×21） dj_ zgdx;      fmclu   sebl   zoi    zry_     yp  ,
+冰雪弎拼·初代（U357 21×21） dj_ zdu;       fmcli   sebl   zpel   zry_     yp  ,
+冰雪简道·初代（Overall-17 21×26） do_ zldq;      jjciu   qwbi   zkwi   zry_     yk  ,
+冰雪散拼·初代（Overall-17 21×26） do_ zdau;      jjcii   qwbi   zkwi   zry_     yk  ,
+冰雪键道　　 df_ zbdt;      fncku   wwbk   zo     zry_     yy  ,
+冰雪三拼　　 df_ zbdt;      fncki   wwbk   zyek   zry_     yy  ,
+
+[16]
+原文       也 未 必 符 合  真 实 使  用 习  惯  。
+冰雪四拼　　 fsbia    fheeue wviee vf_    xgio    .
+冰雪健道（QZ-e8f37a 21×21） ywbF_    fiv    kdlfu lyxFgu         .
+冰雪弎拼（QZ-e8f37a 21×21） ywbF_    fvv    kdlfi lau    xfge    .
+冰雪清韵　　 ywbi     fhe    z. bu sy/    mxi sj_ .
+冰雪简道（D3/V1 21×26） wjbia    fuhh   sdviu vii wygmu      .
+冰雪散拼（D3/V1 21×26） wjbia    fuhh   sdvii vwygu          .
+冰雪健道·初代（U357 21×21） ysbLv    fiv    kmelu eyxLgu         .
+冰雪弎拼·初代（U357 21×21） ysbLa    fvv    kmeli eau    xlgx    .
+冰雪简道·初代（Overall-17 21×26） yqbiea   juhe   fjwiu wii yxgqa      .
+冰雪散拼·初代（Overall-17 21×26） yqbia    juhe   fjwii wyxgue         .
+冰雪键道　　 ywbK_    fh_    qneku eyxKgu         .
+冰雪三拼　　 ywbK_    fh_    qneki eyxgav         .
+
+[17]
+原文       因 此 这 次  比 较 只  把  总  按 键 数 作 为 目 标 ，
+冰雪四拼　　 fc_   wc_    bj_   wi  bzoea   rjvu     zsmb        ,
+冰雪健道（QZ-e8f37a 21×21） yc_   kscf   bfjq  kf_ bpzl    rjlH_    zwmb        ,
+冰雪弎拼（QZ-e8f37a 21×21） yc_   kscf   bau   kf_ bpzl    rjlH_    zwmb        ,
+冰雪清韵　　 yco   w_ dbo bjo   zi  nm_ df_ vjsu     zwmb        ,
+冰雪简道（D3/V1 21×26） wc_   shci   bijz  si_ bazr    yjvui    zjmbo       ,
+冰雪散拼（D3/V1 21×26） wc_   shci   bijz  si_ bazr    yjvuaa   zjmba       ,
+冰雪健道·初代（U357 21×21） yc_   kscl   bljc  kl_ bwzp    rjeH_    zsmb        ,
+冰雪弎拼·初代（U357 21×21） yc_   kscl   bau   kl_ bwzp    rjeH_    zsmb        ,
+冰雪简道·初代（Overall-17 21×26） ycci  fc_    bijd  fi_ bazk    xjwui    zqmb        ,
+冰雪散拼·初代（Overall-17 21×26） ycci  fc_    bijd  fi_ bazk    xjwua    zqmb        ,
+冰雪键道　　 yc_   fc_    bkjc  fk_ bszy    xjeJi    zwmb        ,
+冰雪三拼　　 yc_   fc_    bau   fk_ bszy    xjeJa    zwmb        ,
+
+[18]
+原文       把  每 个 空 格 和 每   次  按 下 换  挡   键  都  单 独 算  作  一 次 。
+冰雪四拼　　 bmge      kge   h_ mc_      rxua  hdjuoi       d_  ddsioa    zoa fci   .
+冰雪健道（QZ-e8f37a 21×21） bmgS_     plgs  h_ mov      rmxl  hdjJi        dw_ dmdh  sezk    yov   .
+冰雪弎拼（QZ-e8f37a 21×21） bmgS_     plgs  h_ mau      rmxl  hdjua        d_  ddsv      zki yca   .
+冰雪清韵　　 nm_ mg;   kge   /  zjl_ dbo vxa   nj_ nsxe qx_ s_  ddu   zm_ lz_ yci   .
+冰雪简道（D3/V1 21×26） bmgh      krgh  h_ meci     ylyr  hdjsii       d_  dldu  qmzo    wce   .
+冰雪散拼（D3/V1 21×26） bmgh      krgh  h_ meci     ylyr  hdjsua       d_  dldu  qmzo    wci   .
+冰雪健道·初代（U357 21×21） bmgS_     kpgs  h_ mov      rjxf  hdjPi        d_  djdh  sxzy    yov   .
+冰雪弎拼·初代（U357 21×21） bmgS_     kpgs  h_ mau      rjxf  hdjua        d_  djdh  sxzy    yca   .
+冰雪简道·初代（Overall-17 21×26） bai mg_   kkge  h_ mwci     xoxk  hdjpi        d_  dodu  sqzm    yici  .
+冰雪散拼·初代（Overall-17 21×26） bmgeu     kkge  h_ mwci     xoxk  hdjpu        d_  dodu  sqzm    yici  .
+冰雪键道　　 bmgE_     kyge  h_ mov      xfxs  hdjMi        d_  dfdj  stzl    yov   .
+冰雪三拼　　 bsu ma    kyge  h_ mau      xfxs  hdjua        d_  ddsv      zli ykck  .
+
+[19]
+原文       遇  到 可 以 由  后 续   的 按   键  顶   出 的 编 码 ，
+冰雪四拼　　 kdau   kf_   fou hxaa;      rjuoa    die  y;    bma   ,
+冰雪健道（QZ-e8f37a 21×21） yddz   pa    yzi hwxd;      rmjj     dkv  sh;   bjmp  ,
+冰雪弎拼（QZ-e8f37a 21×21） yddz   pu    ywv hwxd;      rmjj     dku  s;    bjmp  ,
+冰雪清韵　　 rn_ ko k/    ya  ga vks_ e  nbx_ qx_ kmd_ cu e  bma   ,
+冰雪简道（D3/V1 21×26） wdi    kwwyea    hyyp;      yljs     dq_  x;    bma   ,
+冰雪散拼（D3/V1 21×26） wpdk   kwwyuu    hyyp;      yljs     dq_  x;    bmi   ,
+冰雪健道·初代（U357 21×21） ygdf   ka    yfi hqxg;      rjjp     dt_  w;    bpmw  ,
+冰雪弎拼·初代（U357 21×21） ygdf   ku    yqv hqxg;      rjjp     dt_  w;    bpmw  ,
+冰雪简道·初代（Overall-17 21×26） ydi    kyyfae    hfxv;      xojp     dr_  v;    bpma  ,
+冰雪散拼·初代（Overall-17 21×26） yvds   kyyfuu    hfxv;      xojp     dr_  v;    bpma  ,
+冰雪键道　　 yldz   ka    ydi hdxl;      xfjm     dg_  j;    bmms  ,
+冰雪三拼　　 yldz   ku    ydv hdxl;      xfjm     dg_  j;    bmms  ,
+
+[20]
+原文       就 不 额 外 加  入  空 格 ，
+冰雪四拼　　 j_ b_ rsi   jrua    kge   ,
+冰雪健道（QZ-e8f37a 21×21） j_ b_ cswn  jlrh    plgs  ,
+冰雪弎拼（QZ-e8f37a 21×21） j_ b_ cswn  jlrh    plgs  ,
+冰雪清韵　　 j_ u  vwi   lh_ hgi kge   ,
+冰雪简道（D3/V1 21×26） jvbu  yhjf  jrru    krgh  ,
+冰雪散拼（D3/V1 21×26） jvbu  yhjf  jrru    krgh  ,
+冰雪健道·初代（U357 21×21） j_ b_ rssk  jfrh    kpgs  ,
+冰雪弎拼·初代（U357 21×21） j_ b_ rssk  jfrh    kpgs  ,
+冰雪简道·初代（Overall-17 21×26） j_ b_ xeqh  jkru    kkge  ,
+冰雪散拼·初代（Overall-17 21×26） j_ b_ xeqh  jkru    kkge  ,
+冰雪键道　　 jqbj  xewh  jsrj    kyge  ,
+冰雪三拼　　 jqbj  xewh  jsrj    kyge  ,
+
+[21]
+原文       遇  到 不 能 安 全 顶   出 的 编 码 ，
+冰雪四拼　　 kdau   bn_   rqo   die  y;    bma   ,
+冰雪健道（QZ-e8f37a 21×21） yddz   ba    rmqt  dkv  sh;   bjmp  ,
+冰雪弎拼（QZ-e8f37a 21×21） yddz   b_ nrqi     dku  s;    bjmp  ,
+冰雪清韵　　 rn_ ko u  y_ vq;   kmd_ cu e  bma   ,
+冰雪简道（D3/V1 21×26） wdi    b_ nyfma    dq_  x;    bma   ,
+冰雪散拼（D3/V1 21×26） wpdk   b_ nyfmi    dq_  x;    bmi   ,
+冰雪健道·初代（U357 21×21） ygdf   ba    rjqr  dt_  w;    bpmw  ,
+冰雪弎拼·初代（U357 21×21） ygdf   b_ nrqi     dt_  w;    bpmw  ,
+冰雪简道·初代（Overall-17 21×26） ydi    b_ nxqto    dr_  v;    bpma  ,
+冰雪散拼·初代（Overall-17 21×26） yvds   b_ nxqti    dr_  v;    bpma  ,
+冰雪键道　　 yldz   ba    xiv   dg_  j;    bmms  ,
+冰雪三拼　　 yldz   bv    xfqt  dg_  j;    bmms  ,
+
+[22]
+原文       则   用 空 格 明 确 上 屏   。
+冰雪四拼　　 zfoee   kge   mqo   vpieae  .
+冰雪健道（QZ-e8f37a 21×21） zsyl    plgs  mvu   lypk    .
+冰雪弎拼（QZ-e8f37a 21×21） zsyl    plgs  mkqe  lypk    .
+冰雪清韵　　 nrdo n/ kge   mqe   s, gdk_ .
+冰雪简道（D3/V1 21×26） zhwr    krgh  mqft  vnpq    .
+冰雪散拼（D3/V1 21×26） zhwr    krgh  mqft  vnpq    .
+冰雪健道·初代（U357 21×21） zsyp    kpgs  mvu   enpt    .
+冰雪弎拼·初代（U357 21×21） zsyp    kpgs  mtqk  enpt    .
+冰雪简道·初代（Overall-17 21×26） zeyk    kkge  mqo   wypr    .
+冰雪散拼·初代（Overall-17 21×26） zeyk    kkge  mqe   wypr    .
+冰雪键道　　 zeyy    kyge  mvu   eppgi   .
+冰雪三拼　　 zeyy    kyge  mgqh  eppga   .
+
+[23]
+原文       这 样 得 到 的 结 果 更  接  近  连 续 跟  打  时 的 理 论  底   线   ，
+冰雪四拼　　 wf_   dddjG          gjjio       lxa   gdaueo  vi;   ll_    dxuoiu    ,
+冰雪健道（QZ-e8f37a 21×21） kvo   dddjG          gjji        ejxd  gd_ dp_ lf;   eoa    dfxj      ,
+冰雪弎拼（QZ-e8f37a 21×21） ksyy  dddjG          gjCj_       ejxd  gddpi   lf;   efeg   dfxj      ,
+冰雪清韵　　 za    dddjG          kr_ nl_ gx_ lxu   f.  nk_ ru e  wi jl. gxj_ vkv_ ,
+冰雪简道（D3/V1 21×26） shwn  dedk;    jcgo  gjjbei      lsyp  gdda    vi;   lilg   diys      ,
+冰雪散拼（D3/V1 21×26） shwn  dedk  djgoe    gjjbia      lsyp  gdda    vi;   lilg   diys      ,
+冰雪健道·初代（U357 21×21） ksyn  dddjG          gjji        laa   gmdwoi  el;   loa    dlxp      ,
+冰雪弎拼·初代（U357 21×21） ksyn  dddjG          gjZj_       lpxg  gmdwi   el;   lau    dlxp      ,
+冰雪简道·初代（Overall-17 21×26） feyy  deds;    jzgm  gjjci       lpxv  gjda    wi;   lilt   dixp      ,
+冰雪散拼·初代（Overall-17 21×26） feyy  deds  djgme    gjjcia      lpxv  gjda    wi;   lilt   dixp      ,
+冰雪键道　　 fv    dddjG          gjji        laa   gndso   ek;   loa    dkxm      ,
+冰雪三拼　　 qaa   dddjG          gjDj_       lmxl  gndsi   ek;   lklw   dkxm      ,
+
+[24]
+原文       同 时 保 留 了 可 以 人 工 检 查 的 编 码 路  径   。
+冰雪四拼　　 tv_   blo/     kf_   rgjy;          bma   ljieu    .
+冰雪健道（QZ-e8f37a 21×21） to    bei/     pa    rgjJs;         bjmp  ehjk     .
+冰雪弎拼（QZ-e8f37a 21×21） tv    bzeb/    pu    rgjJs;         bjmp  ehjk     .
+冰雪清韵　　 ts;   bla   a  k/    rgjc        e  bma   fm_ dvx_ .
+冰雪简道（D3/V1 21×26） tv_   bklv/    khwi  rgjx;          bma   lujq     .
+冰雪散拼（D3/V1 21×26） tv_   bklv/    khwi  rgjx;          bmi   lujq     .
+冰雪健道·初代（U357 21×21） tpel  bfld/    ka    rgjw;          bpmw  lhjt     .
+冰雪弎拼·初代（U357 21×21） tev   bfld/    ku    rgjw;          bpmw  lhjt     .
+冰雪简道·初代（Overall-17 21×26） tw_   bli/     keyi  rgjve;         bpma  ljou     .
+冰雪散拼·初代（Overall-17 21×26） tw_   blue/    keyi  rgjve;         bpma  lujr     .
+冰雪键道　　 toi   bzlq/    ka    rgjw;          bmms  ljjg     .
+冰雪三拼　　 tvv   bzlq/    ku    rgjw;          bmms  ljjg     .
+
+[25]
+原文       四 种 方 案 使 用 同  一 段   文 字  ，
+冰雪四拼　　 swoei fra   vf_   to  fdszia         ,
+冰雪健道（QZ-e8f37a 21×21） sfkl  fr_   lfyl  tl_ ydEwz          ,
+冰雪弎拼（QZ-e8f37a 21×21） sfkl  fr_   lau   tl_ ydwza          ,
+冰雪清韵　　 ni h/ fv;   sy/   t/  ke jks_ w. bl_ ,
+冰雪简道（D3/V1 21×26） qisr  fnyl  viwr  tr_ wdjzuo         ,
+冰雪散拼（D3/V1 21×26） qisr  fnyl  viwr  twdmie      jdzi   ,
+冰雪健道·初代（U357 21×21） slkp  fo    elyp  tp_ ydXsz          ,
+冰雪弎拼·初代（U357 21×21） slkp  fai   eau   tp_ ydsza          ,
+冰雪简道·初代（Overall-17 21×26） sifk  jyxo  wiyk  tydqei      qjzi   ,
+冰雪散拼·初代（Overall-17 21×26） sifk  jyxo  wiyk  tk_ yidq    qjzi   ,
+冰雪键道　　 skfy  foo   ey_   ty_ ydTwz          ,
+冰雪三拼　　 skfy  fpxf  ey_   ty_ ydTwz          ,
+
+[26]
+原文       标  点 位 置 完 全 相 同 ，
+冰雪四拼　　 bduou  swi   sqxt        ,
+冰雪健道（QZ-e8f37a 21×21） bqdj   wk_   wqxt        ,
+冰雪弎拼（QZ-e8f37a 21×21） bqdj   wk_   wqxt        ,
+冰雪清韵　　 pv_ h; wzi   wqxt        ,
+冰雪简道（D3/V1 21×26） bzds   jesi  jfyti       ,
+冰雪散拼（D3/V1 21×26） bzds   jesi  jlfm  yxtr  ,
+冰雪健道·初代（U357 21×21） bcdp   sekl  sqxt        ,
+冰雪弎拼·初代（U357 21×21） bcdp   sekl  sqxt        ,
+冰雪简道·初代（Overall-17 21×26） bddp   qfii  qqxti       ,
+冰雪散拼·初代（Overall-17 21×26） bddp   qfa   qqxtei      ,
+冰雪键道　　 bcdm   wia   wqxt        ,
+冰雪三拼　　 bcdm   wwfk  wqxt        ,
+
+[27]
+原文       但  它 们   会  选 择 不 同 长 度 的 词   ，
+冰雪四拼　　 dao tmeo    hu  xze   btydua;        cie  ,
+冰雪健道（QZ-e8f37a 21×21） dm_ tpmdo   px_ xiu   btsYd;         cfo  ,
+冰雪弎拼（QZ-e8f37a 21×21） dm_ to      hr_ xv    btsdvv      dscf    ,
+冰雪清韵　　 lr_ ta lgne r_  xze   u  tcdu     e  jlk_ ,
+冰雪简道（D3/V1 21×26） dl_ tamdo   hyzhi     b_ txdu     dhci    ,
+冰雪散拼（D3/V1 21×26） dl_ tamdio  hp_ yzbtu       xndu  dhci    ,
+冰雪健道·初代（U357 21×21） dj_ twmmo   hg_ xiu   btwNd;         clo  ,
+冰雪弎拼·初代（U357 21×21） dj_ to      hg_ xv    btwdvv      dscl    ,
+冰雪简道·初代（Overall-17 21×26） do_ tamjo   hxzeui    b_ tvdu     deci    ,
+冰雪散拼·初代（Overall-17 21×26） do_ tamjio  hl_ xzbtu       vdea  dco     ,
+冰雪键道　　 df_ tsmno   hb_ xiu   btjPd;         cko  ,
+冰雪三拼　　 df_ toi     hb_ xvu   btjdvv      deck    ,
+
+[28]
+原文       有 的 偏 爱 二 字  词   ， 有 的 更 适 合 三 字  或   四 字  词   。
+冰雪四拼　　 f;    prai  rzci        ,  f;    gvhe     hzia   hoa  szc         .
+冰雪健道（QZ-e8f37a 21×21） ywv;  pjrn  czco        ,  ywv;  glhu     smzf   hk_  szcF        .
+冰雪弎拼（QZ-e8f37a 21×21） y;    pjrn  czca        ,  y;    glha     smzf   hk_  szca        .
+冰雪清韵　　 q_ e  pvi   vi bl_ jlk_ ,  q_ e  gshe     s; bl_ kfk_ ni bl_ jlk_ .
+冰雪简道（D3/V1 21×26） w;    psyf  yzcieo      ,  w;    gvhh     qlzi   ho_  qzc         .
+冰雪散拼（D3/V1 21×26） w;    psyf  yzciaa      ,  w;    gvhh     qlzi   ho_  qzc         .
+冰雪健道·初代（U357 21×21） y;    pprk  rzco        ,  y;    gehu     sjzl   hy_  szc         .
+冰雪弎拼·初代（U357 21×21） y;    pprk  rzca        ,  y;    geha     sjzl   hy_  szc         .
+冰雪简道·初代（Overall-17 21×26） y;    ppxh  xzcio       ,  y;    gwhe     sozi   hm_  szc         .
+冰雪散拼·初代（Overall-17 21×26） y;    ppxh  xzciaa      ,  y;    gwhe     sozi   hm_  szc         .
+冰雪键道　　 y;    pmxh  xzco        ,  y;    gehu     sfzk   hl_  szc         .
+冰雪三拼　　 y;    pmxh  xzKc        ,  y;    geha     sfzk   hl_  szc         .
+
+[29]
+原文       把 这 些 编 码 放  在 原 句  下 面 ，
+冰雪四拼　　 bwx_     bma   fza    kjaaoo xm    ,
+冰雪健道（QZ-e8f37a 21×21） bkx_     bjmp  fzo    ytjdv  xm    ,
+冰雪弎拼（QZ-e8f37a 21×21） bkx_     bjmp  fza    ytjdv  xm    ,
+冰雪清韵　　 bzx_     bma   fw. ;  c; ju  xmi   ,
+冰雪简道（D3/V1 21×26） bsy_     bma   fnzf   wmjp   yrms  ,
+冰雪散拼（D3/V1 21×26） bsy_     bmi   fnzf   wmjp   yrms  ,
+冰雪健道·初代（U357 21×21） bkx_     bpmw  fzo    yrjgv  xm    ,
+冰雪弎拼·初代（U357 21×21） bkx_     bpmw  fza    yrjgv  xm    ,
+冰雪简道·初代（Overall-17 21×26） bfx_     bpma  jyzh   ytjv   xkmp  ,
+冰雪散拼·初代（Overall-17 21×26） bfx_     bpma  jyzh   ytjv   xkmp  ,
+冰雪键道　　 bfx_     bmms  fpzh   ytjl   xvu   ,
+冰雪三拼　　 bfx_     bmms  fpzh   ytjl   xsmm  ,
+
+[30]
+原文       可 以 直  观 看 出 哪  里  节  省   了 按   键  ，
+冰雪四拼　　 kf_   wgioi  ky_   nli     jvee/       rjuoa    ,
+冰雪健道（QZ-e8f37a 21×21） pa    kfge   pmsh  npefo   jclt/       rmjj     ,
+冰雪弎拼（QZ-e8f37a 21×21） pu    kfge   pmsh  nuu     jclt/       rmjj     ,
+冰雪清韵　　 k/    sn_ gk;   cu fl_ jvi cd; xhm_ a  nbx_ qx_ ,
+冰雪简道（D3/V1 21×26） khwi  sigm   kx_   nalio   jcvj/       yljs     ,
+冰雪散拼（D3/V1 21×26） khwi  sigm   kx_   naliu   jcvj/       yljs     ,
+冰雪健道·初代（U357 21×21） ka    klgx   kai   nwllo   jzer/       rjjp     ,
+冰雪弎拼·初代（U357 21×21） ku    klgx   kia   nuu     jzer/       rjjp     ,
+冰雪简道·初代（Overall-17 21×26） keyi  fgua   kv_   nalio   jzwn/       xojp     ,
+冰雪散拼·初代（Overall-17 21×26） keyi  fgei   kv_   naliu   jzwn/       xojp     ,
+冰雪键道　　 ka    fkgt   kai   nslko   jder/       xfjm     ,
+冰雪三拼　　 ku    fkgt   kia   nuu     jder/       xfjm     ,
+
+[31]
+原文       哪  里  因 为 编 码 冲   突   需 要 多 一 次 确 认 。
+冰雪四拼　　 nli     fs_   bma   ytu       xf_   dfci     qr    .
+冰雪健道（QZ-e8f37a 21×21） npefo   you   bjmp  slth      xy_   dKyc_    qerd  .
+冰雪弎拼（QZ-e8f37a 21×21） nuu     ya    bjmp  slth      xy_   dKyc_    qerd  .
+冰雪清韵　　 fl_ jvi y;    bma   dfme bbq; xye   je yci   qr.   .
+冰雪简道（D3/V1 21×26） nalio   wj_   bma   xto       ypwk  dwciu    ftrd  .
+冰雪散拼（D3/V1 21×26） naliu   wj_   bmi   xrtu      ypwk  dwcii    ftrd  .
+冰雪健道·初代（U357 21×21） nwllo   you   bpmw  wpth      xy_   dYyc_    qkrm  .
+冰雪弎拼·初代（U357 21×21） nuu     ya    bpmw  wpth      xy_   dYyc_    qkrm  .
+冰雪简道·初代（Overall-17 21×26） nalio   yq_   bpma  vktu      xvys  dycieu   qgrj  .
+冰雪散拼·初代（Overall-17 21×26） naliu   yq_   bpma  vktu      xvys  dyciii   qgrj  .
+冰雪键道　　 nslko   yo    bmms  wytj      xvi   dLyc_    qhrn  .
+冰雪三拼　　 nuu     yai   bmms  wytj      xai   dLyc_    qhrn  .
+
+[32]
+原文       平 均 长 度 只 是 一 个 汇 总 数  字  ，
+冰雪四拼　　 pjydu       wvfge       hzoe  vzi     ,
+冰雪健道（QZ-e8f37a 21×21） pjsYd       klygo       hrzl  lhzf    ,
+冰雪弎拼（QZ-e8f37a 21×21） pKjsdi      kFlyg       hzLl_     zf  ,
+冰雪清韵　　 pj.   z, gu zi i  yo    hz/   dp_ bl_ ,
+冰雪简道（D3/V1 21×26） pjxde       svwgo       hpzr  vzo     ,
+冰雪散拼（D3/V1 21×26） pjxde       svwgu       hpzr  vza     ,
+冰雪健道·初代（U357 21×21） pjwdv       keygo       hzPe_     zl  ,
+冰雪弎拼·初代（U357 21×21） pjEwd       kLeyg       hzPe_     zl  ,
+冰雪简道·初代（Overall-17 21×26） pjvdoe      fwygio      hlzk  wzo     ,
+冰雪散拼·初代（Overall-17 21×26） pjvdee      fwygu       hlzk  wza     ,
+冰雪键道　　 pjjdv       feygo       hzYe_     zk  ,
+冰雪三拼　　 pGjjd       fau   ya    hzYe_     zk  ,
+
+[33]
+原文       真 正 影 响 手 感 的 还 有 左 右 手 分 布  ， 连 续 按   键  ，
+冰雪四拼　　 wwfxuee     vgao;    hf_   zfvo     fbuaeo ,  lxa   rjuoa    ,
+冰雪健道（QZ-e8f37a 21×21） kkyxvo      lwgm;    hv    zKyl_    fdbh   ,  ejxd  rmjj     ,
+冰雪弎拼（QZ-e8f37a 21×21） kkyxau      lwgm;    huv   zKyl_    fdbh   ,  ejxd  rmjj     ,
+冰雪清韵　　 zzo   yx,   sg;   e  hyi   zysa     bo qro ,  lxu   nbx_ qx_ ,
+冰雪简道（D3/V1 21×26） sswyeo      vygl;    hfwy  zwvy     fdbu   ,  lsyp  yljs     ,
+冰雪散拼（D3/V1 21×26） sswyiu      vygl;    hfwy  zwvy     fdbu   ,  lsyp  yljs     ,
+冰雪健道·初代（U357 21×21） kkyxvo      eqgj;    hv    zyeQ_    fmbh   ,  laa   rjjp     ,
+冰雪弎拼·初代（U357 21×21） kMkyxau     eqgj;    huv   zyeQ_    fmbh   ,  lpxg  rjjp     ,
+冰雪简道·初代（Overall-17 21×26） ffyxoe      wfgo;    hhyf  zywfe    jjbu   ,  lpxv  xojp     ,
+冰雪散拼·初代（Overall-17 21×26） ffyxiu      wfgo;    hhyf  zywfa    jjbu   ,  lpxv  xojp     ,
+冰雪键道　　 qnqr  yxo   edgf;    hv    zLye_    fnbj   ,  laa   xfjm     ,
+冰雪三拼　　 qnqr  yxu   edgf;    hu    zLye_    fnbj   ,  lmxl  xfjm     ,
+
+[34]
+原文       跨   排  移   动 以 及 记  忆  负   担   。
+冰雪四拼　　 kia  pai fdo     fji   jfiai   fdaou     .
+冰雪健道（QZ-e8f37a 21×21） pqo  bni yfdl    yj_   jfyf    fhdm      .
+冰雪弎拼（QZ-e8f37a 21×21） pq_  pnv yfdl    yj_   jfyf    fhdm      .
+冰雪清韵　　 fmdj nfe hpjg vu yji   jji sle jnr_ nrk_ .
+冰雪简道（D3/V1 21×26） ks_  pfi wdu     wja   jiwi    fudl      .
+冰雪散拼（D3/V1 21×26） ks_  pfe wde     wju   jiwi    fudl      .
+冰雪健道·初代（U357 21×21） kc_  pki yldpu   yu    jlyl    fhdj      .
+冰雪弎拼·初代（U357 21×21） kc_  pkv yldpv   yv    jlyl    fhdj      .
+冰雪简道·初代（Overall-17 21×26） kx_  phi ydu     yja   jiyi    judo      .
+冰雪散拼·初代（Overall-17 21×26） kx_  phe yde     yju   jiyi    judo      .
+冰雪键道　　 kq_  phi ykdy    ykjk  jkyk    fjdf      .
+冰雪三拼　　 kq_  phv ykdy    yjv   jkyk    fjdf      .
+
+[35]
+原文       若   把 这 些 因  素   也 加  入  目 标  函 数 ，
+冰雪四拼　　 roa  bwx_     fsuai    fjrua      mbhvu        ,
+冰雪健道（QZ-e8f37a 21×21） rk_  bkx_     yrsh     yjra       mbhlv        ,
+冰雪弎拼（QZ-e8f37a 21×21） rk_  bkx_     yrsh     ySjr_      mbhli        ,
+冰雪清韵　　 cqf_ bzx_     nd_ vyx_ d_ lh_ hgi mu pv_ hsu   ,
+冰雪简道（D3/V1 21×26） ro_  bsy_     wbqu     wjrua      mbhve        ,
+冰雪散拼（D3/V1 21×26） ro_  bsy_     wbqu     wjrui      mbhva        ,
+冰雪健道·初代（U357 21×21） ry_  bkx_     ybsh     yjra       mbhev        ,
+冰雪弎拼·初代（U357 21×21） ry_  bkx_     ybsh     ySjr_      mbChe        ,
+冰雪简道·初代（Overall-17 21×26） rm_  bfx_     ycsu     yjrua      mbhwo        ,
+冰雪散拼·初代（Overall-17 21×26） rm_  bfx_     ycsu     yjrui      mbhwa        ,
+冰雪键道　　 rl_  bfx_     ybsj     yjra       mbhev        ,
+冰雪三拼　　 rl_  bfx_     ybsj     yEjr_      mbChe        ,
+
+[36]
+原文       最 佳  分 词   可 能 会 发 生 变 化 ，
+冰雪四拼　　 zjui   fciee   knh_     fvbh        ,
+冰雪健道（QZ-e8f37a 21×21） zrjl   fdcfu   pnh_     flbh        ,
+冰雪弎拼（QZ-e8f37a 21×21） zrjl   fdcfi   pnh_     flbh        ,
+冰雪清韵　　 re lt_ bo jlk_ knh_     fsbh        ,
+冰雪简道（D3/V1 21×26） zpjr   fdciu   knh_     fvbh        ,
+冰雪散拼（D3/V1 21×26） zpjr   fdcii   knh_     fvbh        ,
+冰雪健道·初代（U357 21×21） zgjf   fmclu   knh_     febh        ,
+冰雪弎拼·初代（U357 21×21） zgjf   fmcli   knh_     febh        ,
+冰雪简道·初代（Overall-17 21×26） zljk   jjciu   knh_     jwbhi       ,
+冰雪散拼·初代（Overall-17 21×26） zljk   jjcii   knh_     jwbhia      ,
+冰雪键道　　 zbjs   fncku   knh_     febh        ,
+冰雪三拼　　 zbjs   fncki   knh_     febh        ,
+
+[37]
+原文       不 过 本 次  先  把 问 题 限  定 在 最 少  按   键  。
+冰雪四拼　　 bg_   bci    xuo bst_     xdieu  z_ zvau   rjuoa    .
+冰雪健道（QZ-e8f37a 21×21） bv    bdcf   xjbp   wo    xjdk   z_ zrlz   rmjj     .
+冰雪弎拼（QZ-e8f37a 21×21） bhgk  bdcf   xjbp   wv    xjdk   z_ zrlz   rmjj     .
+冰雪清韵　　 u  c_ b. dbo h.  bwt_     vg_ b/ ;  re xhe nbx_ qx_ .
+冰雪简道（D3/V1 21×26） bg_   bdci   ys_ bjtii    ysdq   z_ zpvk   yljs     .
+冰雪散拼（D3/V1 21×26） bg_   bdci   ys_ bjtia    ysdq   z_ zpvk   yljs     .
+冰雪健道·初代（U357 21×21） bg_   bmcl   xp_ bst_     xpdt   z_ zgef   rjjp     .
+冰雪弎拼·初代（U357 21×21） bg_   bmcl   xp_ bst_     xpdt   z_ zgef   rjjp     .
+冰雪简道·初代（Overall-17 21×26） bg_   bjci   xp_ bqt_     xpdr   z_ zlws   xojp     .
+冰雪散拼·初代（Overall-17 21×26） bg_   bjci   xp_ bqt_     xpdr   z_ zlws   xojp     .
+冰雪键道　　 bv    bnck   xmbs   wo    xmdg   z_ zbez   xfjm     .
+冰雪三拼　　 bjgl  bnck   xmbs   wv    xmdg   z_ zbez   xfjm     .
+
+核验说明
+====================================================================================================
+1. 十二条本地轨均读取各自独立 fixed 表与运行时合同；活动方案使用 D3/V1 或 QZ-e8f37a，四个“·初代”方案使用冻结的 Overall-17 或 U357，冰雪键道、冰雪三拼保留更早的经典声韵代数。十二轨共用当前五部拼音词典和受版本控制的字形／笔画源；冰雪清韵另读取当前形码词典。
+2. 单字与二／三／四字词均枚举合法标准码、空桶短码和逐级扩展码；每个编码都在独立空白 user dict、无提交、无调频的 librime 部署中查询实际候选，交由全文动态规划先最少化选重次数、再最少化总按键。
+3. 只有不能由下一词首键或标点顶屏的候选才补 Space；结构略码的大写触发键按 Shift+字母两键计。
+4. 四个“·初代”方案与冰雪键道／冰雪三拼均不采用外部冻结统计；只冻结其对应声韵布局与方案专属 fixed，AA/AAB、630、动态首选后置与辅序仍按各自发布合同复算。
+5. 冰雪四拼与冰雪清韵现已由本仓库直接复算，不再采用历史外部冻结回放；声笔小鹤、小鹤音形的旧冻结回放仍含已知错误且未满足 snow-benchmark-frozen-v2 契约，因此不导入、不排名。

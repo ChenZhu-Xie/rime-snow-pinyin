@@ -5,7 +5,23 @@ import {
 	parseFlypyWdatDump,
 	preferredFlypyCodes,
 	rankFlypyEntries,
+	selectFlypyCacheId,
 } from "../../lib/flypy-benchmark";
+
+test("显式冻结缓存哈希跳过已离线的源文件计算", () => {
+	const cacheId =
+		"7fbdb7203833b2184ed351fd8c2b015c90144d666a914d04cf8b7b05d4912ba0";
+	assert.equal(
+		selectFlypyCacheId(cacheId, () => {
+			throw new Error("不应读取已离线的源文件");
+		}),
+		cacheId,
+	);
+	assert.throws(
+		() => selectFlypyCacheId("not-a-sha256", () => "unused"),
+		/缓存哈希必须是 64 位小写 SHA-256/u,
+	);
+});
 
 test("小鹤音形主库导出保留官方全局顺序并应用整库权重", () => {
 	assert.deepEqual(

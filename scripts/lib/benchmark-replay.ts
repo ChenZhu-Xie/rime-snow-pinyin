@@ -23,6 +23,21 @@ export function writeBenchmarkReplayCache(
 	writeFileSync(path, `${JSON.stringify(cache)}\n`, "utf8");
 }
 
+export function assertBenchmarkReplaySchemes(
+	cache: BenchmarkReplayCache,
+	expectedIds: readonly string[],
+	label: string,
+): void {
+	const actualIds = Object.keys(cache.schemes);
+	if (
+		actualIds.length !== expectedIds.length ||
+		actualIds.some((id, index) => id !== expectedIds[index])
+	)
+		throw new Error(
+			`${label}回放方案顺序不一致：${actualIds.join(",")} / ${expectedIds.join(",")}`,
+		);
+}
+
 export function benchmarkReplay<Source extends string>(
 	path: BenchmarkPathResult<Source>,
 ): BenchmarkLineReplay {

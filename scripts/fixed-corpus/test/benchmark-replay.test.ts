@@ -2,9 +2,24 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { BenchmarkPathResult } from "../../lib/benchmark-paths";
 import {
+	assertBenchmarkReplaySchemes,
 	benchmarkReplay,
 	renderBenchmarkReplays,
 } from "../../lib/benchmark-replay";
+
+test("回放缓存严格校验方案数量与顺序", () => {
+	const cache = {
+		contract: "test",
+		schemes: { a: [], b: [] },
+	};
+	assert.doesNotThrow(() =>
+		assertBenchmarkReplaySchemes(cache, ["a", "b"], "内部方案"),
+	);
+	assert.throws(
+		() => assertBenchmarkReplaySchemes(cache, ["b", "a"], "内部方案"),
+		/内部方案回放方案顺序不一致/u,
+	);
+});
 
 test("回放序列只保留统一对齐所需的起点和实际键码", () => {
 	const path = {
