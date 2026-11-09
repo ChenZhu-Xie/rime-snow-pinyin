@@ -36,19 +36,19 @@ const schemes = [
 const firstGenerationKeymaps = [
 	[
 		"snow_jiandao_first.svg",
-		"8b591af99260437952713b5bc35e61ae0bba4671c9a2707bc508e23d0d342ece",
+		"c8ce4a129b8048d806d70865a5e35ec27a89e6961a16723685b6074251e7a376",
 	],
 	[
 		"snow_sanpin_first.svg",
-		"f6fd81e28485c32fdf7e13865cae98a22f244530d8dc47386a33cc3258388c43",
+		"5a27e29183a85d5336d855ac30234887f257638d9156d76bcbb60c20d5d6f2d0",
 	],
 	[
 		"snow_shenyun_shape_first.svg",
-		"facfa8534fd8c4137f9b4a5368743effec4bdc56b6c5b0c85f1f33427f4e4ae7",
+		"e75571db8a8e21f0346d3e400c03307375e97a6e46b735ae8215cedf4d817144",
 	],
 	[
 		"snow_shenyun_tone_first.svg",
-		"91fd4acbd2bc9269c8c64de2bb59f9688436d19fc8ff57212a834088b94a9b77",
+		"d2a43939013bf5ef768442fe486445b5a20eaf0e141dd39710db87b1405c45ec",
 	],
 ] as const;
 
@@ -414,10 +414,22 @@ test("both Shenyun diagrams keep the crowded er and u finals readable", () => {
 	}
 });
 
-test("displaced initials soften only their physical keycap letters", () => {
+test("only vacated traditional initials soften their physical keycap letters", () => {
+	const softenedKeys: Record<string, string> = {
+		"snow_sipin.svg": "",
+		"snow_sanpin.svg": "KL",
+		"snow_jiandao.svg": "KL",
+		"snow_sanpin_classic.svg": "",
+		"snow_jiandao_classic.svg": "",
+		"snow_shenyun_shape.svg": "QSX",
+		"snow_shenyun_tone.svg": "QSX",
+		"snow_jiandao_first.svg": "",
+		"snow_sanpin_first.svg": "",
+		"snow_shenyun_shape_first.svg": "F",
+		"snow_shenyun_tone_first.svg": "F",
+	};
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
-		let displacedCount = 0;
 		for (const key of [..."QWERTYUIOPASDFGHJKLZXCVBNM"]) {
 			const group = keyGroup(svg, key);
 			const keycap = group.match(
@@ -428,25 +440,27 @@ test("displaced initials soften only their physical keycap letters", () => {
 			const displacedInitial = group.match(
 				/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u,
 			)?.[0];
+			const shouldSoften = softenedKeys[image].includes(key);
+			assert.equal(
+				keycapWeight,
+				shouldSoften ? 500 : 800,
+				`${image} ${key} should follow only its same-letter traditional initial`,
+			);
 			if (displacedInitial) {
-				displacedCount++;
-				assert.equal(
-					keycapWeight,
-					500,
-					`${image} ${key} keycap should not compete with its displaced initial`,
-				);
+				const keycapColor = keycap.match(/fill="([^"]+)"/u)?.[1];
+				const initialColor = displacedInitial.match(/fill="([^"]+)"/u)?.[1];
+				assert.equal(keycapColor, "#c02f4b");
+				assert.equal(initialColor, keycapColor);
 				assert.match(displacedInitial, /text-decoration="underline"/u);
 				assert.match(displacedInitial, /font-weight="700"/u);
-			} else {
-				assert.equal(
-					keycapWeight,
-					800,
-					`${image} ${key} keycap without a displaced initial should stay bold`,
-				);
 			}
 		}
-		assert.ok(displacedCount > 0, `${image} should expose displaced initials`);
 	}
+	const d3F = keyGroup(read("lua/snow/keymaps/snow_shenyun_shape.svg"), "F");
+	const d3FKeycap = d3F.match(/<text\b[^>]*data-key-label="true"[^>]*>/u)?.[0];
+	assert.ok(d3FKeycap);
+	assert.match(d3FKeycap, /font-weight="800"/u);
+	assert.match(d3F, />q<\/text>/u);
 });
 
 test("KeyTao final e does not inherit keycap emphasis", () => {

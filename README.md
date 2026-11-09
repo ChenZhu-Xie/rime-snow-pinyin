@@ -54,7 +54,7 @@
 
 ### D3/V1 21×26 双拼
 
-冰雪简道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪散拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）现共用 [D3/V1 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，仓库标识为 `SNOW-SHENYUN-21X26-D3V1-BALANCED`。布局在 Common399 上无音节重码，M-R2 `40`，声母／韵母乱序度 D/V `3/1`；按 21×26 原生四码封顶、跨词长联合候选池与 `soft-page-fill-v2` 计分，方案专属稳健结果为 CKT v5.1 `9.10299979136027`。
+冰雪简道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪散拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）现共用 [D3/V1 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，仓库标识为 `SNOW-SHENYUN-21X26-D3V1-BALANCED`。布局在 Common399 上无音节重码，M-R2 `40`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `8/5/3/1`；按 21×26 原生四码封顶、跨词长联合候选池与 `soft-page-fill-v2` 计分，方案专属稳健结果为 CKT v5.1 `9.10299979136027`。
 
 五辅语义保持“折横撇竖点→`AEUIO`、一二三四轻→`IEUAO`”，按形义序观察声调仍为 `42310`。冰雪简道的二／三／四字词形辅序为 `12/12/24`，冰雪散拼的调辅序为 `12/21/13`；记号表示从各字位依次取辅码，运行规则以方案文件为准。
 
@@ -66,7 +66,7 @@
 
 ### QZ-e8f37a 21×21 双拼
 
-冰雪健道（`snow_jiandao`）与冰雪弎拼（`snow_sanpin`）现共用 [QZ-e8f37a 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)，仓库标识为 `QZ-e8f37a0998f9`。布局指标为 M-R2 `42`、声母／韵母乱序度 D/V `2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.56789806405906`。
+冰雪健道（`snow_jiandao`）与冰雪弎拼（`snow_sanpin`）现共用 [QZ-e8f37a 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)，仓库标识为 `QZ-e8f37a0998f9`。布局指标为 M-R2 `42`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `5/2/2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.56789806405906`。
 
 五辅语义保持“折横撇竖点→`AVUIO`、一二三四轻→`IVUAO`”，按形义序观察声调同为 `42310`。冰雪健道的二／三／四字词形辅序为 `12/213/24`，冰雪弎拼的调辅序为 `12/213/23`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
 
@@ -85,7 +85,8 @@
 | 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | 原键道 S005 | 首道 B04 | 何为好 |
 | --- | ---: | ---: | ---: | ---: | --- |
 | M-R2 记忆项 | **40** ★★ 🥇 | **42** ★ | 44 | 51 | 越低越好 |
-| 声母／韵母乱序度 D/V | **3 / 1** ★★ | 2 / 5 | **0 / 4** ★★ | 0 / 0 🥇 | D+V 越低越好 |
+| 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ 🥇 | **5 / 2 / 2 / 5** ★★ 🥇 | **3 / 0 / 0 / 4** ★★ 🥇 | 1 / 0 / 0 / 0 🥇 | A、I 为诊断；仍按 D+V 越低越好 |
+| 飞键成分（声母／零声母组／韵母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | FA-1 逻辑审计 | **98.759026** ★★ | **98.538896** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | LU-v1r 逻辑均匀度 | **81.165916** ★★ | 71.510417 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
 | Common399 唯一码／唯一率 | **399 / 100.000%** ★★ 🥇 | 345 / 86.466% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |
@@ -245,7 +246,7 @@ Recipe: ℞ **snow-pinyin**
 
 ### D3/V1 21×26 double pinyin
 
-冰雪简道 ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and 冰雪散拼 ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) now share the [D3/V1 21×26 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md), identified in this repository as `SNOW-SHENYUN-21X26-D3V1-BALANCED`. It has no Common399 syllable collisions, M-R2 `40`, and initial/final disorder D/V `3/1`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and `soft-page-fill-v2`, its scheme-specific robust score is CKT v5.1 `9.10299979136027`.
+冰雪简道 ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and 冰雪散拼 ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) now share the [D3/V1 21×26 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md), identified in this repository as `SNOW-SHENYUN-21X26-D3V1-BALANCED`. It has no Common399 syllable collisions, M-R2 `40`, and all/written/traditional-initial/final disorder A/I/D/V `8/5/3/1`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and `soft-page-fill-v2`, its scheme-specific robust score is CKT v5.1 `9.10299979136027`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AEUIO` and tones 1/2/3/4/neutral→`IEUAO`, yielding `42310` in shape-meaning order. 冰雪简道 uses shape order `12/12/24` and 冰雪散拼 uses tone order `12/21/13` for two-/three-/four-character words.
 
@@ -257,7 +258,7 @@ The eleven-scenario 5,500-character replay uses 9,895 keys, including 382 spaces
 
 ### QZ-e8f37a 21×21 double pinyin
 
-冰雪健道 (`snow_jiandao`) and 冰雪弎拼 (`snow_sanpin`) now share the [QZ-e8f37a 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md), identified as `QZ-e8f37a0998f9`. Its layout metrics are M-R2 `42` and initial/final disorder D/V `2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.56789806405906`.
+冰雪健道 (`snow_jiandao`) and 冰雪弎拼 (`snow_sanpin`) now share the [QZ-e8f37a 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md), identified as `QZ-e8f37a0998f9`. Its layout metrics are M-R2 `42` and all/written/traditional-initial/final disorder A/I/D/V `5/2/2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.56789806405906`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AVUIO` and tones 1/2/3/4/neutral→`IVUAO`, again yielding `42310`. 冰雪健道 uses shape order `12/213/24`, while 冰雪弎拼 uses tone order `12/213/23`; three-character words retain the complete three-auxiliary route.
 
@@ -276,7 +277,8 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 | Metric | D3/V1 21×26 | QZ-e8f37a 21×21 | KeyTao S005 | Shoudao B04 | Better |
 | --- | ---: | ---: | ---: | ---: | --- |
 | M-R2 memory items | **40** ★★ 🥇 | **42** ★ | 44 | 51 | Lower |
-| Initial/final disorder D/V | **3 / 1** ★★ | 2 / 5 | **0 / 4** ★★ | 0 / 0 🥇 | Lower D+V |
+| All/written/traditional-initial/final disorder A/I/D/V | **8 / 5 / 3 / 1** ★★ 🥇 | **5 / 2 / 2 / 5** ★★ 🥇 | **3 / 0 / 0 / 4** ★★ 🥇 | 1 / 0 / 0 / 0 🥇 | A/I diagnostic; ranking remains lower D+V |
+| Flying-key components (initials/zero-initial groups/finals) | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | Lower |
 | FA-1 logic audit | **98.759026** ★★ | **98.538896** ★ | 97.708694 | 99.763391 🥇 | Higher |
 | LU-v1r logic uniformity | **81.165916** ★★ | 71.510417 | **78.897555** ★ | 83.107434 🥇 | Higher |
 | Common399 unique codes/rate | **399 / 100.000%** ★★ 🥇 | 345 / 86.466% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | Higher |
@@ -349,7 +351,7 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 
 ### D3/V1 21×26 雙拼
 
-冰雪簡道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪散拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）現共用 [D3/V1 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，倉庫標識為 `SNOW-SHENYUN-21X26-D3V1-BALANCED`。布局在 Common399 上無音節重碼，M-R2 `40`，聲母／韻母亂序度 D/V `3/1`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 `soft-page-fill-v2` 計分，方案專屬穩健結果為 CKT v5.1 `9.10299979136027`。
+冰雪簡道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪散拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）現共用 [D3/V1 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，倉庫標識為 `SNOW-SHENYUN-21X26-D3V1-BALANCED`。布局在 Common399 上無音節重碼，M-R2 `40`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `8/5/3/1`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 `soft-page-fill-v2` 計分，方案專屬穩健結果為 CKT v5.1 `9.10299979136027`。
 
 五輔語義保持「折橫撇豎點→`AEUIO`、一二三四輕→`IEUAO`」，按形義序觀察聲調仍為 `42310`。冰雪簡道的二／三／四字詞形輔序為 `12/12/24`，冰雪散拼的調輔序為 `12/21/13`。
 
@@ -361,7 +363,7 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 
 ### QZ-e8f37a 21×21 雙拼
 
-冰雪健道（`snow_jiandao`）與冰雪弎拼（`snow_sanpin`）現共用 [QZ-e8f37a 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)，倉庫標識為 `QZ-e8f37a0998f9`。布局指標為 M-R2 `42`、聲母／韻母亂序度 D/V `2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.56789806405906`。
+冰雪健道（`snow_jiandao`）與冰雪弎拼（`snow_sanpin`）現共用 [QZ-e8f37a 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)，倉庫標識為 `QZ-e8f37a0998f9`。布局指標為 M-R2 `42`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `5/2/2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.56789806405906`。
 
 五輔語義保持「折橫撇豎點→`AVUIO`、一二三四輕→`IVUAO`」，按形義序觀察聲調同為 `42310`。冰雪健道的二／三／四字詞形輔序為 `12/213/24`，冰雪弎拼的調輔序為 `12/213/23`；三字詞保留完整三輔鍵路由。
 
@@ -380,7 +382,8 @@ The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first p
 | 指標 | D3/V1 21×26 | QZ-e8f37a 21×21 | 原鍵道 S005 | 首道 B04 | 何者為佳 |
 | --- | ---: | ---: | ---: | ---: | --- |
 | M-R2 記憶項 | **40** ★★ 🥇 | **42** ★ | 44 | 51 | 越低越好 |
-| 聲母／韻母亂序度 D/V | **3 / 1** ★★ | 2 / 5 | **0 / 4** ★★ | 0 / 0 🥇 | D+V 越低越好 |
+| 全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ 🥇 | **5 / 2 / 2 / 5** ★★ 🥇 | **3 / 0 / 0 / 4** ★★ 🥇 | 1 / 0 / 0 / 0 🥇 | A、I 為診斷；仍按 D+V 越低越好 |
+| 飛鍵成分（聲母／零聲母組／韻母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | FA-1 邏輯稽核 | **98.759026** ★★ | **98.538896** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | LU-v1r 邏輯均勻度 | **81.165916** ★★ | 71.510417 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
 | Common399 唯一碼／唯一率 | **399 / 100.000%** ★★ 🥇 | 345 / 86.466% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |

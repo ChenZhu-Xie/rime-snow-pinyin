@@ -69,6 +69,18 @@ const u357 = JSON.parse(
 const overall17 = JSON.parse(
 	readFileSync(join(root, "config", "shenyun-21x26-mapping.json"), "utf8"),
 ) as Mapping;
+const u357First = JSON.parse(
+	readFileSync(
+		join(root, "config", "shenyun-21x21-first-mapping.json"),
+		"utf8",
+	),
+) as Mapping;
+const overall17First = JSON.parse(
+	readFileSync(
+		join(root, "config", "shenyun-21x26-first-mapping.json"),
+		"utf8",
+	),
+) as Mapping;
 
 const classic: Mapping = {
 	shapeKeysByMeaning: "AVUIO",
@@ -841,15 +853,46 @@ function render(diagram: Diagram) {
 	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, semanticLegend, { size: 14, fill: "#5f5862" })}${text(24, 559, "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组", { size: 12, fill: "#74717a" })}</svg>\n`;
 }
 
-function softenDisplacedInitialKeycaps(svg: string) {
+const traditionalInitials = new Set([..."bpmfdtnlgkhjqxrzcs"]);
+const displacedInitialColor = "#c02f4b";
+
+function styleDisplacedInitials(svg: string, mapping?: Mapping) {
 	return svg.replace(
-		/<g data-key="[A-Z]"[\s\S]*?(?=<g data-key=|<text x="24" y="535")/gu,
-		(group) => {
-			if (!/text-decoration="underline"/u.test(group)) return group;
-			return group.replace(
+		/<g data-key="([A-Z])"[\s\S]*?(?=<g data-key=|<text x="24" y="535")/gu,
+		(group, key: string) => {
+			const source = key.toLowerCase();
+			const homeInitialMoved =
+				mapping !== undefined &&
+				traditionalInitials.has(source) &&
+				mapping.initialMap[source]?.toUpperCase() !== key;
+			const displacedInitial =
+				/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u.test(
+					group,
+				);
+			let styled = group.replace(
 				/<text\b[^>]*data-key-label="true"[^>]*>/u,
-				(keycap) => keycap.replace(/font-weight="800"/u, 'font-weight="500"'),
+				(keycap) =>
+					keycap
+						.replace(
+							/font-weight="(?:500|800)"/u,
+							`font-weight="${homeInitialMoved ? 500 : 800}"`,
+						)
+						.replace(
+							/fill="#[0-9a-fA-F]{6}"/u,
+							`fill="${displacedInitial ? displacedInitialColor : "#4f5962"}"`,
+						),
 			);
+			if (displacedInitial) {
+				styled = styled.replace(
+					/<text\b[^>]*font-weight="700"[^>]*text-decoration="underline"[^>]*>/u,
+					(initial) =>
+						initial.replace(
+							/fill="#[0-9a-fA-F]{6}"/u,
+							`fill="${displacedInitialColor}"`,
+						),
+				);
+			}
+			return styled;
 		},
 	);
 }
@@ -868,7 +911,7 @@ function update(path: string, content: Uint8Array | string) {
 }
 
 for (const diagram of diagrams) {
-	const svg = softenDisplacedInitialKeycaps(render(diagram));
+	const svg = styleDisplacedInitials(render(diagram), diagram.mapping);
 	update(join(outputDirectory, `${diagram.filename}.svg`), svg);
 	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })
 		.render()
@@ -876,15 +919,16 @@ for (const diagram of diagrams) {
 	update(join(outputDirectory, `${diagram.filename}.png`), png);
 }
 
-for (const filename of [
-	"snow_jiandao_first",
-	"snow_sanpin_first",
-	"snow_shenyun_shape_first",
-	"snow_shenyun_tone_first",
-]) {
+for (const [filename, mapping] of [
+	["snow_jiandao_first", u357First],
+	["snow_sanpin_first", u357First],
+	["snow_shenyun_shape_first", overall17First],
+	["snow_shenyun_tone_first", overall17First],
+] as const) {
 	const svgPath = join(outputDirectory, `${filename}.svg`);
-	const svg = softenDisplacedInitialKeycaps(
+	const svg = styleDisplacedInitials(
 		readFileSync(svgPath, "utf8").replace(/\r\n?/gu, "\n"),
+		mapping,
 	);
 	update(svgPath, svg);
 	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })

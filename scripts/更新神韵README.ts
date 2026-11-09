@@ -723,7 +723,7 @@ The map is recomputed directly from the ten-scheme optimal-path replays over ele
 
 const readmeDirections = [
 	"min", // M-R2
-	"sum", // 声母／韵母乱序度 D/V
+	"traditional-final-sum", // 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V，仍按 D+V
 	"triple-sum", // 飞键成分
 	"max", // FA-1
 	"max", // LU-v1r
@@ -856,9 +856,9 @@ function ensureCktV51Documentation(markdown: string) {
 
 function ensureSfbDocumentation(markdown: string) {
 	const definitionRows = [
-		"[^zh-dv]: 声母／韵母乱序度 D/V 沿用 benchmark 的移位口径：D 是未落在同名字母键上的普通声母数；V 是未落在 `A/E/I/O/U` 原键上的基础韵母 `a/e/i/o/u` 数。两项均越低越接近字母原键，表中按 D+V 合计排名；它与按实际二键码统计的飞键不同。",
-		"[^en-dv]: The initial/final disorder D/V follows the benchmark's displacement definition: D counts ordinary initials not placed on their same-letter keys; V counts base finals `a/e/i/o/u` not placed on `A/E/I/O/U`. Lower values stay closer to the alphabetic home keys, and the table ranks by D+V; this differs from fly-key branching over actual two-key codes.",
-		"[^zht-dv]: 聲母／韻母亂序度 D/V 沿用 benchmark 的移位口徑：D 是未落在同名字母鍵上的普通聲母數；V 是未落在 `A/E/I/O/U` 原鍵上的基礎韻母 `a/e/i/o/u` 數。兩項均越低越接近字母原鍵，表中按 D+V 合計排名；它與按實際二鍵碼統計的飛鍵不同。",
+		"[^zh-dv]: A/I/D/V 保留 benchmark 的 D/V 原义并追加两个诊断量：D 只统计 18 个传统单字母声母；I 在 D 外计入 W/Y；A 再计入 A/E/O；V 统计基础韵母 `a/e/i/o/u`。可用键集不再恰好等于同名原键即计乱序，所以保留原键同时增加飞键也计入（如 B04 的 E→E/U 使 A 增加 1）。M 已包含这些非直映映射与路由成本，故不修正；历史排名仍按 D+V，A/I 不参与排名。",
+		"[^en-dv]: A/I/D/V preserves the benchmark's D/V contract and adds two diagnostics: D counts only the 18 traditional single-letter initials; I additionally counts W/Y; A additionally counts A/E/O; V covers the base finals `a/e/i/o/u`. A component is disordered whenever its key set is not exactly its same-letter home key, so an added flying route still counts (for example, B04 E→E/U adds 1 to A). M already includes these non-identity mapping and routing costs. Existing rankings remain based on D+V; A/I are diagnostic only.",
+		"[^zht-dv]: A/I/D/V 保留 benchmark 的 D/V 原義並追加兩個診斷量：D 只統計 18 個傳統單字母聲母；I 在 D 外計入 W/Y；A 再計入 A/E/O；V 統計基礎韻母 `a/e/i/o/u`。可用鍵集不再恰好等於同名原鍵即計亂序，所以保留原鍵同時增加飛鍵也計入（如 B04 的 E→E/U 使 A 增加 1）。M 已包含這些非直映映射與路由成本，故不修正；歷史排名仍按 D+V，A/I 不參與排名。",
 		"[^zh-sfb]: S2 异键同指率按相邻键对的频率权重统计：两键不同、但由同一物理手指负责的码内与边界键对权重，除以全部键对权重；同键重复不计入此项。",
 		"[^en-sfb]: The S2 different-key same-finger rate is the frequency-weighted share of within-code and boundary key pairs that use different keys assigned to the same physical finger, divided by all key-pair mass; exact-key repeats are excluded.",
 		"[^zht-sfb]: S2 異鍵同指率按相鄰鍵對的頻率權重統計：兩鍵不同、但由同一物理手指負責的碼內與邊界鍵對權重，除以全部鍵對權重；同鍵重複不計入此項。",
@@ -957,6 +957,7 @@ type ReadmeBenchmarkFormat =
 	| "three"
 	| "percent"
 	| "disorder"
+	| "flying"
 	| "unique"
 	| "affected"
 	| "left-right";
@@ -974,14 +975,28 @@ const readmeBenchmarkRows: readonly [
 		"integer",
 	],
 	[
-		"soundRhymeDisorder",
+		"initialDisorderAIDV",
 		{
-			zh: "声母／韵母乱序度 D/V",
-			en: "Initial/final disorder D/V",
-			zht: "聲母／韻母亂序度 D/V",
+			zh: "全声母／字母声母／传统声母／韵母乱序度 A/I/D/V",
+			en: "All/written/traditional-initial/final disorder A/I/D/V",
+			zht: "全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V",
 		},
-		{ zh: "D+V 越低越好", en: "Lower D+V", zht: "D+V 越低越好" },
+		{
+			zh: "A、I 为诊断；仍按 D+V 越低越好",
+			en: "A/I diagnostic; ranking remains lower D+V",
+			zht: "A、I 為診斷；仍按 D+V 越低越好",
+		},
 		"disorder",
+	],
+	[
+		"flyingKeyComponents",
+		{
+			zh: "飞键成分（声母／零声母组／韵母）",
+			en: "Flying-key components (initials/zero-initial groups/finals)",
+			zht: "飛鍵成分（聲母／零聲母組／韻母）",
+		},
+		{ zh: "越少越好", en: "Lower", zht: "越少越好" },
+		"flying",
 	],
 	[
 		"logicAuditFA1",
@@ -1267,7 +1282,8 @@ function benchmarkNumber(value: unknown) {
 }
 
 function readmeBenchmarkDirection(key: string): ComparisonDirection {
-	if (key === "soundRhymeDisorder") return "sum";
+	if (key === "initialDisorderAIDV") return "traditional-final-sum";
+	if (key === "flyingKeyComponents") return "triple-sum";
 	if (key === "dailyLeftRightLoad") return "closest-to-half";
 	if (
 		[
@@ -1296,9 +1312,14 @@ function formatReadmeBenchmarkValue(
 	if (format === "percent")
 		return `${(benchmarkNumber(value) * 100).toFixed(3)}%`;
 	if (format === "disorder") {
-		if (!Array.isArray(value) || value.length !== 2)
-			throw new Error("D/V 指标格式错误");
-		return `${benchmarkNumber(value[0]).toFixed(0)} / ${benchmarkNumber(value[1]).toFixed(0)}`;
+		if (!Array.isArray(value) || value.length !== 4)
+			throw new Error("A/I/D/V 指标格式错误");
+		return value.map((item) => benchmarkNumber(item).toFixed(0)).join(" / ");
+	}
+	if (format === "flying") {
+		if (!Array.isArray(value) || value.length !== 3)
+			throw new Error("飞键成分指标格式错误");
+		return value.map((item) => benchmarkNumber(item).toFixed(0)).join(" / ");
 	}
 	if (format === "unique") {
 		const rate = metrics.common399UniqueRate?.[scheme];
@@ -1374,7 +1395,7 @@ function replaceCurrentLayoutDocumentation(
 	const zhtBenchmarkLegend = readmeBenchmarkLegends.zht;
 	const zh = `### D3/V1 21×26 双拼
 
-冰雪简道（\`snow_shenyun_shape\`）与冰雪散拼（\`snow_shenyun_tone\`）现共用 [D3/V1 21×26 布局](${d3Source})，仓库标识为 \`SNOW-SHENYUN-21X26-D3V1-BALANCED\`。布局在 Common399 上无音节重码，M-R2 \`40\`，声母／韵母乱序度 D/V \`3/1\`；按 21×26 原生四码封顶、跨词长联合候选池与 \`soft-page-fill-v2\` 计分，方案专属稳健结果为 CKT v5.1 \`9.10299979136027\`。
+冰雪简道（\`snow_shenyun_shape\`）与冰雪散拼（\`snow_shenyun_tone\`）现共用 [D3/V1 21×26 布局](${d3Source})，仓库标识为 \`SNOW-SHENYUN-21X26-D3V1-BALANCED\`。布局在 Common399 上无音节重码，M-R2 \`40\`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`8/5/3/1\`；按 21×26 原生四码封顶、跨词长联合候选池与 \`soft-page-fill-v2\` 计分，方案专属稳健结果为 CKT v5.1 \`9.10299979136027\`。
 
 五辅语义保持“折横撇竖点→\`AEUIO\`、一二三四轻→\`IEUAO\`”，按形义序观察声调仍为 \`42310\`。冰雪简道的二／三／四字词形辅序为 \`12/12/24\`，冰雪散拼的调辅序为 \`12/21/13\`；记号表示从各字位依次取辅码，运行规则以方案文件为准。
 
@@ -1386,7 +1407,7 @@ function replaceCurrentLayoutDocumentation(
 
 ### QZ-e8f37a 21×21 双拼
 
-冰雪健道（\`snow_jiandao\`）与冰雪弎拼（\`snow_sanpin\`）现共用 [QZ-e8f37a 21×21 布局](${qzSource})，仓库标识为 \`QZ-e8f37a0998f9\`。布局指标为 M-R2 \`42\`、声母／韵母乱序度 D/V \`2/5\`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 \`9.56789806405906\`。
+冰雪健道（\`snow_jiandao\`）与冰雪弎拼（\`snow_sanpin\`）现共用 [QZ-e8f37a 21×21 布局](${qzSource})，仓库标识为 \`QZ-e8f37a0998f9\`。布局指标为 M-R2 \`42\`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`5/2/2/5\`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 \`9.56789806405906\`。
 
 五辅语义保持“折横撇竖点→\`AVUIO\`、一二三四轻→\`IVUAO\`”，按形义序观察声调同为 \`42310\`。冰雪健道的二／三／四字词形辅序为 \`12/213/24\`，冰雪弎拼的调辅序为 \`12/213/23\`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
 
@@ -1416,7 +1437,7 @@ ${zhBenchmark}
 `;
 	const en = `### D3/V1 21×26 double pinyin
 
-冰雪简道 (\`snow_shenyun_shape\`) and 冰雪散拼 (\`snow_shenyun_tone\`) now share the [D3/V1 21×26 layout](${d3Source}), identified in this repository as \`SNOW-SHENYUN-21X26-D3V1-BALANCED\`. It has no Common399 syllable collisions, M-R2 \`40\`, and initial/final disorder D/V \`3/1\`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and \`soft-page-fill-v2\`, its scheme-specific robust score is CKT v5.1 \`9.10299979136027\`.
+冰雪简道 (\`snow_shenyun_shape\`) and 冰雪散拼 (\`snow_shenyun_tone\`) now share the [D3/V1 21×26 layout](${d3Source}), identified in this repository as \`SNOW-SHENYUN-21X26-D3V1-BALANCED\`. It has no Common399 syllable collisions, M-R2 \`40\`, and all/written/traditional-initial/final disorder A/I/D/V \`8/5/3/1\`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and \`soft-page-fill-v2\`, its scheme-specific robust score is CKT v5.1 \`9.10299979136027\`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→\`AEUIO\` and tones 1/2/3/4/neutral→\`IEUAO\`, yielding \`42310\` in shape-meaning order. 冰雪简道 uses shape order \`12/12/24\` and 冰雪散拼 uses tone order \`12/21/13\` for two-/three-/four-character words.
 
@@ -1428,7 +1449,7 @@ The eleven-scenario 5,500-character replay uses 9,895 keys, including 382 spaces
 
 ### QZ-e8f37a 21×21 double pinyin
 
-冰雪健道 (\`snow_jiandao\`) and 冰雪弎拼 (\`snow_sanpin\`) now share the [QZ-e8f37a 21×21 layout](${qzSource}), identified as \`QZ-e8f37a0998f9\`. Its layout metrics are M-R2 \`42\` and initial/final disorder D/V \`2/5\`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 \`9.56789806405906\`.
+冰雪健道 (\`snow_jiandao\`) and 冰雪弎拼 (\`snow_sanpin\`) now share the [QZ-e8f37a 21×21 layout](${qzSource}), identified as \`QZ-e8f37a0998f9\`. Its layout metrics are M-R2 \`42\` and all/written/traditional-initial/final disorder A/I/D/V \`5/2/2/5\`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 \`9.56789806405906\`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→\`AVUIO\` and tones 1/2/3/4/neutral→\`IVUAO\`, again yielding \`42310\`. 冰雪健道 uses shape order \`12/213/24\`, while 冰雪弎拼 uses tone order \`12/213/23\`; three-character words retain the complete three-auxiliary route.
 
@@ -1458,7 +1479,7 @@ ${enBenchmark}
 `;
 	const zht = `### D3/V1 21×26 雙拼
 
-冰雪簡道（\`snow_shenyun_shape\`）與冰雪散拼（\`snow_shenyun_tone\`）現共用 [D3/V1 21×26 布局](${d3Source})，倉庫標識為 \`SNOW-SHENYUN-21X26-D3V1-BALANCED\`。布局在 Common399 上無音節重碼，M-R2 \`40\`，聲母／韻母亂序度 D/V \`3/1\`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 \`soft-page-fill-v2\` 計分，方案專屬穩健結果為 CKT v5.1 \`9.10299979136027\`。
+冰雪簡道（\`snow_shenyun_shape\`）與冰雪散拼（\`snow_shenyun_tone\`）現共用 [D3/V1 21×26 布局](${d3Source})，倉庫標識為 \`SNOW-SHENYUN-21X26-D3V1-BALANCED\`。布局在 Common399 上無音節重碼，M-R2 \`40\`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`8/5/3/1\`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 \`soft-page-fill-v2\` 計分，方案專屬穩健結果為 CKT v5.1 \`9.10299979136027\`。
 
 五輔語義保持「折橫撇豎點→\`AEUIO\`、一二三四輕→\`IEUAO\`」，按形義序觀察聲調仍為 \`42310\`。冰雪簡道的二／三／四字詞形輔序為 \`12/12/24\`，冰雪散拼的調輔序為 \`12/21/13\`。
 
@@ -1470,7 +1491,7 @@ ${enBenchmark}
 
 ### QZ-e8f37a 21×21 雙拼
 
-冰雪健道（\`snow_jiandao\`）與冰雪弎拼（\`snow_sanpin\`）現共用 [QZ-e8f37a 21×21 布局](${qzSource})，倉庫標識為 \`QZ-e8f37a0998f9\`。布局指標為 M-R2 \`42\`、聲母／韻母亂序度 D/V \`2/5\`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 \`9.56789806405906\`。
+冰雪健道（\`snow_jiandao\`）與冰雪弎拼（\`snow_sanpin\`）現共用 [QZ-e8f37a 21×21 布局](${qzSource})，倉庫標識為 \`QZ-e8f37a0998f9\`。布局指標為 M-R2 \`42\`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`5/2/2/5\`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 \`9.56789806405906\`。
 
 五輔語義保持「折橫撇豎點→\`AVUIO\`、一二三四輕→\`IVUAO\`」，按形義序觀察聲調同為 \`42310\`。冰雪健道的二／三／四字詞形輔序為 \`12/213/24\`，冰雪弎拼的調輔序為 \`12/213/23\`；三字詞保留完整三輔鍵路由。
 

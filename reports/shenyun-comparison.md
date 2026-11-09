@@ -13,7 +13,8 @@
 | 指标 | [神韵(Overall-17) 21×26 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md) | [无飞键道(U357) 21×21 双拼](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/11713b652cd6a2350d8bf6d0a16d3383d8f0038f/research/notes/2026-10-29-prodgate-directed-repair-final-report.md) | [星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | 何为好 |
 | --- | --- | --- | --- | --- | --- |
 | [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 记忆项 | **36.000000** ★★ 🥇 | **40.000000** ★ | 44.000000 | 51.000000 | 越低越好 |
-| 声母／韵母乱序度 D/V | **1 / 1** ★★ | 0 / 5 | **0 / 4** ★ | 0 / 0 🥇 | 越低越接近字母原键 |
+| 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | **5 / 2 / 1 / 1** ★★ | 4 / 1 / 0 / 5 | **3 / 0 / 0 / 4** ★ | 1 / 0 / 0 / 0 🥇 | A、I 为诊断；仍按 D+V 越低越好 |
+| 飞键成分（声母／零声母组／韵母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑审计 | **98.298315** ★★ | **98.298315** ★★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑均匀度 | **81.043390** ★★ | 73.529803 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
 | [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一码 | **399** ★★ 🥇 | 357 | **372** ★ | 399 🥇 | 越高越少重码 |
@@ -42,7 +43,7 @@
 | 20 合同主键区下限 | 24.733% | **37.620%** ★★ 🥇 | **30.815%** ★ | 24.243% | 越高越好 |
 | 日常纯双拼移动手分数（含标点） | 132.219 | **143.380** ★★ 🥇 | **138.672** ★ | 135.310 | 越高越好 |
 
-“声母／韵母乱序度 D/V”沿用 benchmark 的移位口径：D 统计普通声母未落在同名字母键上的数量；V 统计基础韵母 `a/e/i/o/u` 未落在 `A/E/I/O/U` 原键上的数量。两项分别列出，均越低越接近字母原键，表中按 D+V 合计排名；它与按实际二键码统计的飞键不是同一指标。
+“全声母／字母声母／传统声母／韵母乱序度 A/I/D/V”保留 benchmark 的 D/V 原义，并只追加两个诊断视角：D 统计 18 个传统单字母声母的可用键集不再恰好等于同名原键的数量；I 在 D 之外计入 W/Y 两个零声母族；A 再计入 A/E/O 三个零声母族；V 对基础韵母 `a/e/i/o/u` 使用同一口径。因此保留原键同时增加飞键仍计乱序，例如 [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 的 E→E/U 使 A 增加 1。M 已逐条包含这些非直映映射与路由成本，故不随新增视角修正；历史排名仍按 D+V，A/I 不参与排名。乱序与按实际二键码统计的飞键仍是两个不同指标。
 
 “S2 异键同指率”统计 S2 相邻键对中“两键不同、但由同一物理手指负责”的码内与边界频率权重，再除以全部键对权重；同键重复另计，不包含在此项中。
 
@@ -149,7 +150,8 @@ D3/V1 的定稿与稳健辅序见 [`2026-11-09-d3v1-ckt-v51-soft-balance-aux-ord
 | 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | 何为好 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | M-R2 记忆项 | **40.000000** ★ | 42.000000 | **36.000000** ★★ 🥇 | **40.000000** ★ | 44.000000 | 51.000000 | 越低越好 |
-| 声母／韵母乱序度 D/V | **3 / 1** ★ | 2 / 5 | **1 / 1** ★★ | 0 / 5 | **0 / 4** ★ | 0 / 0 🥇 | 按 D+V 越低越好 |
+| 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | **8 / 5 / 3 / 1** ★ | 5 / 2 / 2 / 5 | **5 / 2 / 1 / 1** ★★ | 4 / 1 / 0 / 5 | **3 / 0 / 0 / 4** ★ | 1 / 0 / 0 / 0 🥇 | A、I 为诊断；仍按 D+V 越低越好 |
+| 飞键成分（声母／零声母组／韵母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑审计 | **98.759026** ★★ | **98.538896** ★ | 98.298315 | 98.298315 | 97.708694 | 99.763391 🥇 | 越高越一致 |
 | [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 逻辑均匀度 | **81.165916** ★★ | 71.510417 | **81.043390** ★ | 73.529803 | 78.897555 | 83.107434 🥇 | 越高越统一 |
 | [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一码／唯一率 | **399 / 100.000%** ★★ 🥇 | 345 / 86.466% | **399 / 100.000%** ★★ 🥇 | 357 / 89.474% | 372 / 93.233% | 399 / 100.000% 🥇 | 越高越好 |

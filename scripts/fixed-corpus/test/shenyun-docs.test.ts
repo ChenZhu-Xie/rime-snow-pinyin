@@ -185,14 +185,18 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	);
 	includes(
 		report,
-		"| 声母／韵母乱序度 D/V | **1 / 1** ★★ | 0 / 5 | **0 / 4** ★ | 0 / 0 🥇 | 越低越接近字母原键 |",
+		"| 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | **5 / 2 / 1 / 1** ★★ | 4 / 1 / 0 / 5 | **3 / 0 / 0 / 4** ★ | 1 / 0 / 0 / 0 🥇 | A、I 为诊断；仍按 D+V 越低越好 |",
+	);
+	includes(
+		report,
+		"| 飞键成分（声母／零声母组／韵母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |",
 	);
 	includes(
 		report,
 		"| S2 异键同指率 | **9.252%** ★ | **4.255%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |",
 	);
-	includes(report, "D 统计普通声母未落在同名字母键上的数量");
-	includes(report, "同键重复另计，不包含在此项中");
+	includes(report, "可用键集不再恰好等于同名原键");
+	includes(report, "E→E/U 使 A 增加 1");
 	includes(
 		report,
 		"[Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)",
@@ -721,9 +725,9 @@ test("两份 README 只以 D3/V1 与 QZ-e8f37a 为现行双拼并链接全量报
 		includes(readme, "`SNOW-SHENYUN-21X26-D3V1-BALANCED`");
 		includes(readme, "`QZ-e8f37a0998f9`");
 		includes(readme, "M-R2 `40`");
-		includes(readme, "D/V `3/1`");
+		includes(readme, "A/I/D/V `8/5/3/1`");
 		includes(readme, "M-R2 `42`");
-		includes(readme, "D/V `2/5`");
+		includes(readme, "A/I/D/V `5/2/2/5`");
 		includes(readme, "CKT v5.1 `9.10299979136027`");
 		includes(readme, "CKT v5.1 `9.56789806405906`");
 		includes(readme, "`12/12/24`");

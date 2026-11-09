@@ -872,6 +872,56 @@
         0,
         0
       ]
+    },
+    "initialDisorderAIDV": {
+      "better": "lower-d-plus-v",
+      "Overall17": [
+        5,
+        2,
+        1,
+        1
+      ],
+      "U357": [
+        4,
+        1,
+        0,
+        5
+      ],
+      "S005": [
+        3,
+        0,
+        0,
+        4
+      ],
+      "B04": [
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    "flyingKeyComponents": {
+      "better": "lower-sum",
+      "Overall17": [
+        0,
+        0,
+        0
+      ],
+      "U357": [
+        0,
+        0,
+        0
+      ],
+      "S005": [
+        2,
+        0,
+        1
+      ],
+      "B04": [
+        0,
+        1,
+        7
+      ]
     }
   },
   "stagedResidualNonfirstRates": {
@@ -1255,6 +1305,78 @@
         "B04": [
           0,
           0
+        ]
+      },
+      "initialDisorderAIDV": {
+        "better": "lower-d-plus-v",
+        "D3V1": [
+          8,
+          5,
+          3,
+          1
+        ],
+        "QZ": [
+          5,
+          2,
+          2,
+          5
+        ],
+        "Overall17First": [
+          5,
+          2,
+          1,
+          1
+        ],
+        "U357First": [
+          4,
+          1,
+          0,
+          5
+        ],
+        "S005": [
+          3,
+          0,
+          0,
+          4
+        ],
+        "B04": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "flyingKeyComponents": {
+        "better": "lower-sum",
+        "D3V1": [
+          0,
+          0,
+          0
+        ],
+        "QZ": [
+          0,
+          0,
+          0
+        ],
+        "Overall17First": [
+          0,
+          0,
+          0
+        ],
+        "U357First": [
+          0,
+          0,
+          0
+        ],
+        "S005": [
+          2,
+          0,
+          1
+        ],
+        "B04": [
+          0,
+          1,
+          7
         ]
       },
       "common399UniqueCodes": {

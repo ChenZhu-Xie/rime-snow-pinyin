@@ -77,9 +77,22 @@ const displacement = (id: string) => {
 		({ id: entryId }: { id: string }) => entryId === id,
 	);
 	if (!scheme) throw new Error(`Benchmark HTML 中缺少 ${id}。`);
-	const initials =
+	const traditionalInitials =
 		scheme.mappingAudit?.ordinaryInitialDisplacements ??
 		scheme.memoryAuditR2?.ordinaryDisplacedCount;
+	const initialLinks = scheme.memoryAuditR2?.initialLinks ?? {};
+	const zeroRules = scheme.memoryAuditR2?.zeroRules ?? {};
+	const displacedCarrier = (carrier: "A" | "E" | "O" | "W" | "Y") => {
+		const keys = initialLinks[carrier] ?? Object.keys(zeroRules[carrier] ?? {});
+		return keys.length === 1 && keys[0] === carrier ? 0 : 1;
+	};
+	const writtenInitials =
+		traditionalInitials + displacedCarrier("W") + displacedCarrier("Y");
+	const allInitials =
+		writtenInitials +
+		displacedCarrier("A") +
+		displacedCarrier("E") +
+		displacedCarrier("O");
 	const explicitFinals = scheme.mappingAudit?.baseFinalDisplacements;
 	const finalLinks = scheme.memoryAuditR2?.finalLinkKeys ?? {};
 	const finals =
@@ -89,9 +102,23 @@ const displacement = (id: string) => {
 				finalLinks[final]?.length !== 1 ||
 				finalLinks[final][0] !== final.toUpperCase(),
 		).length;
-	if (!Number.isInteger(initials) || !Number.isInteger(finals))
-		throw new Error(`Benchmark HTML 中 ${id} 的 D/V 不完整。`);
-	return [initials, finals] as [number, number];
+	if (
+		!Number.isInteger(traditionalInitials) ||
+		!Number.isInteger(writtenInitials) ||
+		!Number.isInteger(allInitials) ||
+		!Number.isInteger(finals)
+	)
+		throw new Error(`Benchmark HTML 中 ${id} 的 A/I/D/V 不完整。`);
+	return [allInitials, writtenInitials, traditionalInitials, finals] as [
+		number,
+		number,
+		number,
+		number,
+	];
+};
+const traditionalDisplacement = (id: string) => {
+	const [, , traditionalInitials, finals] = displacement(id);
+	return [traditionalInitials, finals] as [number, number];
 };
 const completion = benchmark.completionBV4.schemes[overallId];
 const s005 = benchmark.completionBV4.schemes.S005;
@@ -219,6 +246,15 @@ setMetric("dailyEightScenarioMovingHand", macro.score);
 data.metrics.soundRhymeDisorder = {
 	better: "lower",
 	...Object.fromEntries(
+		Object.entries(benchmarkIds).map(([key, id]) => [
+			key,
+			traditionalDisplacement(id),
+		]),
+	),
+};
+data.metrics.initialDisorderAIDV = {
+	better: "lower-d-plus-v",
+	...Object.fromEntries(
 		Object.entries(benchmarkIds).map(([key, id]) => [key, displacement(id)]),
 	),
 };
@@ -334,6 +370,21 @@ data.flyingKeyComponents[overallKey] = {
 	zeroInitialGroups: {},
 	finals: {},
 };
+const flyingTuple = (scheme: string) => {
+	const counts = data.flyingKeyComponents[scheme]?.counts;
+	if (!counts) throw new Error(`缺少 ${scheme} 的飞键审计。`);
+	return [counts.initials, counts.zeroInitialGroups, counts.finals] as [
+		number,
+		number,
+		number,
+	];
+};
+data.metrics.flyingKeyComponents = {
+	better: "lower-sum",
+	...Object.fromEntries(
+		Object.keys(benchmarkIds).map((scheme) => [scheme, flyingTuple(scheme)]),
+	),
+};
 
 for (const mode of modes) {
 	for (const kind of kinds) {
@@ -420,11 +471,18 @@ const metricTable = table(
 			"min",
 		],
 		[
-			"声母／韵母乱序度 D/V",
-			"soundRhymeDisorder",
-			"pair",
-			"越低越接近字母原键",
-			"sum",
+			"全声母／字母声母／传统声母／韵母乱序度 A/I/D/V",
+			"initialDisorderAIDV",
+			"tuple",
+			"A、I 为诊断；仍按 D+V 越低越好",
+			"traditional-final-sum",
+		],
+		[
+			"飞键成分（声母／零声母组／韵母）",
+			"flyingKeyComponents",
+			"tuple",
+			"越少越好",
+			"triple-sum",
 		],
 		["FA-1 逻辑审计", "logicAuditFA1", "number", "越高越一致", "max"],
 		[
@@ -540,7 +598,7 @@ const metricTable = table(
 	].map(([title, name, format, good, direction]) => {
 		const rawValues = schemes.map((scheme) => metricValue(name, scheme));
 		const displays = rawValues.map((value) => {
-			if (format === "pair") return value.join(" / ");
+			if (format === "pair" || format === "tuple") return value.join(" / ");
 			if (format === "percent") return percent(value);
 			if (format === "integer") return String(value);
 			if (format === "three") return number(value, 3);
@@ -792,7 +850,19 @@ const nextMetrics = {
 	},
 	soundRhymeDisorder: {
 		better: "lower-sum",
-		...nextValue("soundRhymeDisorder", displacement(d3Id), displacement(qzId)),
+		...nextValue(
+			"soundRhymeDisorder",
+			traditionalDisplacement(d3Id),
+			traditionalDisplacement(qzId),
+		),
+	},
+	initialDisorderAIDV: {
+		better: "lower-d-plus-v",
+		...nextValue("initialDisorderAIDV", displacement(d3Id), displacement(qzId)),
+	},
+	flyingKeyComponents: {
+		better: "lower-sum",
+		...nextValue("flyingKeyComponents", [0, 0, 0], [0, 0, 0]),
 	},
 	common399UniqueCodes: {
 		better: "higher",
@@ -1298,11 +1368,18 @@ const appendJsonProperty = (source: string, name: string, value: unknown) => {
 const nextMetricDefinitions = [
 	["M-R2 记忆项", "M-R2", "number", "越低越好", "min"],
 	[
-		"声母／韵母乱序度 D/V",
-		"soundRhymeDisorder",
-		"pair",
-		"按 D+V 越低越好",
-		"sum",
+		"全声母／字母声母／传统声母／韵母乱序度 A/I/D/V",
+		"initialDisorderAIDV",
+		"tuple",
+		"A、I 为诊断；仍按 D+V 越低越好",
+		"traditional-final-sum",
+	],
+	[
+		"飞键成分（声母／零声母组／韵母）",
+		"flyingKeyComponents",
+		"tuple",
+		"越少越好",
+		"triple-sum",
 	],
 	["FA-1 逻辑审计", "logicAuditFA1", "number", "越高越一致", "max"],
 	["LU-v1r 逻辑均匀度", "logicUniformityLUv1r", "number", "越高越统一", "max"],
@@ -1400,7 +1477,8 @@ const nextMetricTable = table(
 		const metric = nextMetrics[name];
 		const rawValues = nextSchemes.map((scheme) => metric[scheme]);
 		const displays = rawValues.map((value) => {
-			if (format === "pair") return (value as number[]).join(" / ");
+			if (format === "pair" || format === "tuple")
+				return (value as number[]).join(" / ");
 			if (format === "percent") return percent(value as number);
 			if (format === "integer") return String(value);
 			if (format === "unique-rate")
@@ -1538,7 +1616,7 @@ const historicalReport = `# 神韵两代布局与 S005、B04 四方案比较
 
 ${metricTable}
 
-“声母／韵母乱序度 D/V”沿用 benchmark 的移位口径：D 统计普通声母未落在同名字母键上的数量；V 统计基础韵母 \`a/e/i/o/u\` 未落在 \`A/E/I/O/U\` 原键上的数量。两项分别列出，均越低越接近字母原键，表中按 D+V 合计排名；它与按实际二键码统计的飞键不是同一指标。
+“全声母／字母声母／传统声母／韵母乱序度 A/I/D/V”保留 benchmark 的 D/V 原义，并只追加两个诊断视角：D 统计 18 个传统单字母声母的可用键集不再恰好等于同名原键的数量；I 在 D 之外计入 W/Y 两个零声母族；A 再计入 A/E/O 三个零声母族；V 对基础韵母 \`a/e/i/o/u\` 使用同一口径。因此保留原键同时增加飞键仍计乱序，例如 B04 的 E→E/U 使 A 增加 1。M 已逐条包含这些非直映映射与路由成本，故不随新增视角修正；历史排名仍按 D+V，A/I 不参与排名。乱序与按实际二键码统计的飞键仍是两个不同指标。
 
 “S2 异键同指率”统计 S2 相邻键对中“两键不同、但由同一物理手指负责”的码内与边界频率权重，再除以全部键对权重；同键重复另计，不包含在此项中。
 
