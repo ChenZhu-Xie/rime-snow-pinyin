@@ -134,7 +134,7 @@ shenyun:
   preedit_format: null
 
 learned_priority:
-  memory_namespace: shenyun_first
+  memory_namespace: shenyun
   minimum_input_length: 4
   maximum_candidates: 120
 

@@ -85,6 +85,10 @@ test("first-generation U357 and Overall-17 schemes are complete frozen copies", 
 		read("snow_shenyun_first_common.yaml"),
 		/prism: snow_shenyun$/mu,
 	);
+	assert.match(
+		read("snow_shenyun_first_common.yaml"),
+		/learned_priority:\s+memory_namespace: shenyun\s/mu,
+	);
 });
 
 test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme", () => {
