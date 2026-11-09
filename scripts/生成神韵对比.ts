@@ -686,6 +686,7 @@ const nextSchemes = [
 	"QZ",
 	"Overall17First",
 	"U357First",
+	"S005",
 	"B04",
 ] as const;
 type NextScheme = (typeof nextSchemes)[number];
@@ -694,6 +695,7 @@ const nextLabels: Record<NextScheme, string> = {
 	QZ: "QZ-e8f37a 21×21",
 	Overall17First: "Overall-17·初代 21×26",
 	U357First: "U357·初代 21×21",
+	S005: "原键道 S005",
 	B04: "首道 B04",
 };
 const requiredNumber = (value: unknown, label: string) => {
@@ -760,6 +762,7 @@ const nextValue = (name: string, d3Value: unknown, qzValue: unknown) => ({
 	QZ: qzValue,
 	Overall17First: data.metrics[name].Overall17,
 	U357First: data.metrics[name].U357,
+	S005: data.metrics[name].S005,
 	B04: data.metrics[name].B04,
 });
 const nextMetrics = {
@@ -1061,12 +1064,15 @@ const nextMetrics = {
 const historicalKeys = {
 	Overall17First: "Overall17",
 	U357First: "U357",
+	S005: "S005",
 	B04: "B04",
 } as const;
 const detailedValue = (
 	scheme: NextScheme,
 	newValue: (active: "D3V1" | "QZ") => unknown,
-	historicalValue: (historical: "Overall17" | "U357" | "B04") => unknown,
+	historicalValue: (
+		historical: "Overall17" | "U357" | "S005" | "B04",
+	) => unknown,
 ) => {
 	if (scheme === "D3V1" || scheme === "QZ") return newValue(scheme);
 	return historicalValue(historicalKeys[scheme]);
@@ -1215,8 +1221,10 @@ const nextCktV4Explanation = {
 };
 
 data.nextGenerationComparison = {
-	version: "shenyun-five-scheme-detailed-comparison-v2",
-	rankedLayouts: [...nextSchemes],
+	version: "shenyun-six-scheme-detailed-comparison-v3",
+	displayedLayouts: [...nextSchemes],
+	rankedLayouts: nextSchemes.filter((scheme) => scheme !== "B04"),
+	externalReference: "B04",
 	normalizationAnchor: "S005",
 	schemes: Object.fromEntries(
 		nextSchemes.map((scheme) => [scheme, { label: nextLabels[scheme] }]),
@@ -1234,6 +1242,7 @@ data.nextGenerationComparison = {
 		},
 		Overall17First: { benchmarkId: overallId },
 		U357First: { benchmarkId: benchmarkIds.U357 },
+		S005: { benchmarkId: benchmarkIds.S005 },
 		B04: { benchmarkId: benchmarkIds.B04 },
 	},
 	auxiliaryOrders: {
@@ -1242,6 +1251,7 @@ data.nextGenerationComparison = {
 			?.selectedPolicies,
 		Overall17First: data.comparisonPolicy.cktV51.auxiliaryOrders.Overall17,
 		U357First: data.comparisonPolicy.cktV51.auxiliaryOrders.U357,
+		S005: data.comparisonPolicy.cktV51.auxiliaryOrders.S005,
 		B04: data.comparisonPolicy.cktV51.auxiliaryOrders.B04,
 	},
 	metrics: nextMetrics,
@@ -1577,31 +1587,33 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 const report = `${historicalReport}
 ## 次世代布局追加对比
 
-上面的历史四方案报告原样保留。本节追加当前 D3/V1 21×26 与 QZ-e8f37a 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。以下所有表格统一比较 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代与首道 B04 五个方案；S005 仅继续充当 CKT 归一化锚点，不占五方案展示列。五方案拉通排名，第 1 名标 ★★，第 2 名标 ★，全列最佳同时标 🥇。
+上面的历史四方案报告原样保留。本节追加当前 D3/V1 21×26 与 QZ-e8f37a 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。以下所有表格统一比较 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代、原键道 S005 与首道 B04 六个方案；S005 同时继续充当 CKT 归一化锚点。
+
+表中在 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代与原键道 S005 五个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，其余名次不加粗、不标星；首道 B04 不参与五方案名次。🥇 独立比较全部六方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
 
 D3/V1 的定稿与稳健辅序见 [\`2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，QZ-e8f37a 的定稿与稳健辅序见 [\`2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)。D3/V1 的冰雪简道／冰雪散拼辅序为 \`12/12/24\`、\`12/21/13\`；QZ-e8f37a 的冰雪健道／冰雪弎拼辅序为 \`12/213/24\`、\`12/213/23\`。初代方案继续使用历史报告中冻结的映射与辅序。
 
 ${nextMetricTable}
 
-这里的全部总览值均直接取自同一份 \`a7_CKT_R11.html\` 冻结 payload；初代与 B04 数值沿用上方历史快照。五个方案跨 21×21、21×26 与 26×26 键域，表中排名用于同语料复算，不把跨键域差异解释为同键域映射的单变量胜负。
+这里的全部总览值均直接取自同一份 \`a7_CKT_R11.html\` 冻结 payload；初代、S005 与 B04 数值沿用上方历史快照。六个方案跨 21×21、21×26 与 26×26 键域，表中排名用于同语料复算，不把跨键域差异解释为同键域映射的单变量胜负。
 
-### 五方案 CKT v4 成本分解
+### 六方案 CKT v4 成本分解
 
 ${nextComponentTable}
 
 ${nextCounterfactualTable}
 
-### 五方案冻结语料加权非首选率
+### 六方案冻结语料加权非首选率
 
 ${table(["编码轨", "词长", ...nextSchemes.map((scheme) => nextLabels[scheme])], nextRateRows)}
 
-### 五方案逐级辅键后的频率加权残余非首选率
+### 六方案逐级辅键后的频率加权残余非首选率
 
 “零辅后”是裸编码后仍需第一辅键的权重；“一辅后”是第一辅键后仍需第二辅键的权重；“二辅后”是第二辅键后仍需人工选重的权重。本节沿用 CKT v4 的两级辅键观察面，CKT v5.1 的三字词第三辅另见稳健辅序报告。
 
 ${table(["编码轨", "词长", "阶段", ...nextSchemes.map((scheme) => nextLabels[scheme])], nextStagedRows)}
 
-### 五方案二／三／四字词终局碰撞桶
+### 六方案二／三／四字词终局碰撞桶
 
 单元格依次为“碰撞桶数／残余条目数／跨词长桶数／最大桶成员数”。不同合同的共享池结构不同，复合单元格不标单一胜负。
 

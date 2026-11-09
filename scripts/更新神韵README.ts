@@ -947,6 +947,7 @@ type ReadmeBenchmarkLanguage = "zh" | "en" | "zht";
 type ReadmeBenchmarkMetric = {
 	D3V1: unknown;
 	QZ: unknown;
+	S005: unknown;
 	B04: unknown;
 };
 
@@ -1265,6 +1266,23 @@ function benchmarkNumber(value: unknown) {
 	return value;
 }
 
+function readmeBenchmarkDirection(key: string): ComparisonDirection {
+	if (key === "soundRhymeDisorder") return "sum";
+	if (key === "dailyLeftRightLoad") return "closest-to-half";
+	if (
+		[
+			"logicAuditFA1",
+			"logicUniformityLUv1r",
+			"common399UniqueCodes",
+			"dailyEightScenarioMovingHand",
+			"homeShareS2",
+			"homeFloor20Contracts",
+		].includes(key)
+	)
+		return "max";
+	return "min";
+}
+
 function formatReadmeBenchmarkValue(
 	metrics: Record<string, ReadmeBenchmarkMetric>,
 	key: string,
@@ -1311,22 +1329,32 @@ function currentReadmeBenchmarkTable(language: ReadmeBenchmarkLanguage) {
 	};
 	const metrics = report.nextGenerationComparison.metrics;
 	const headers = {
-		zh: ["指标", "首道 B04", "何为好"],
-		en: ["Metric", "Shoudao B04", "Better"],
-		zht: ["指標", "首道 B04", "何者為佳"],
+		zh: ["指标", "原键道 S005", "首道 B04", "何为好"],
+		en: ["Metric", "KeyTao S005", "Shoudao B04", "Better"],
+		zht: ["指標", "原鍵道 S005", "首道 B04", "何者為佳"],
 	} as const;
-	const [metricHeader, b04Header, betterHeader] = headers[language];
+	const [metricHeader, s005Header, b04Header, betterHeader] = headers[language];
 	const lines = [
-		`| ${metricHeader} | D3/V1 21×26 | QZ-e8f37a 21×21 | ${b04Header} | ${betterHeader} |`,
-		"| --- | ---: | ---: | ---: | --- |",
+		`| ${metricHeader} | D3/V1 21×26 | QZ-e8f37a 21×21 | ${s005Header} | ${b04Header} | ${betterHeader} |`,
+		"| --- | ---: | ---: | ---: | ---: | --- |",
 	];
 	for (const [key, labels, better, format] of readmeBenchmarkRows) {
 		lines.push(
-			`| ${labels[language]} | ${formatReadmeBenchmarkValue(metrics, key, "D3V1", format)} | ${formatReadmeBenchmarkValue(metrics, key, "QZ", format)} | ${formatReadmeBenchmarkValue(metrics, key, "B04", format)} | ${better[language]} |`,
+			`| ${labels[language]} | ${formatReadmeBenchmarkValue(metrics, key, "D3V1", format)} | ${formatReadmeBenchmarkValue(metrics, key, "QZ", format)} | ${formatReadmeBenchmarkValue(metrics, key, "S005", format)} | ${formatReadmeBenchmarkValue(metrics, key, "B04", format)} | ${better[language]} |`,
 		);
 	}
-	return lines.join("\n");
+	return decorateMarkdownTable(
+		lines.join("\n"),
+		readmeBenchmarkRows.map(([key]) => readmeBenchmarkDirection(key)),
+		3,
+	);
 }
+
+const readmeBenchmarkLegends: Record<ReadmeBenchmarkLanguage, string> = {
+	zh: "表中在 D3/V1、QZ-e8f37a 与原键道 S005 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；首道 B04 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。",
+	en: "The table ranks D3/V1, QZ-e8f37a, and the original KeyTao S005 together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao B04 is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.",
+	zht: "表中在 D3/V1、QZ-e8f37a 與原鍵道 S005 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；首道 B04 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。",
+};
 
 function replaceCurrentLayoutDocumentation(
 	markdown: string,
@@ -1341,6 +1369,9 @@ function replaceCurrentLayoutDocumentation(
 	const zhBenchmark = currentReadmeBenchmarkTable("zh");
 	const enBenchmark = currentReadmeBenchmarkTable("en");
 	const zhtBenchmark = currentReadmeBenchmarkTable("zht");
+	const zhBenchmarkLegend = readmeBenchmarkLegends.zh;
+	const enBenchmarkLegend = readmeBenchmarkLegends.en;
+	const zhtBenchmarkLegend = readmeBenchmarkLegends.zht;
 	const zh = `### D3/V1 21×26 双拼
 
 冰雪简道（\`snow_shenyun_shape\`）与冰雪散拼（\`snow_shenyun_tone\`）现共用 [D3/V1 21×26 布局](${d3Source})，仓库标识为 \`SNOW-SHENYUN-21X26-D3V1-BALANCED\`。布局在 Common399 上无音节重码，M-R2 \`40\`，声母／韵母乱序度 D/V \`3/1\`；按 21×26 原生四码封顶、跨词长联合候选池与 \`soft-page-fill-v2\` 计分，方案专属稳健结果为 CKT v5.1 \`9.10299979136027\`。
@@ -1365,9 +1396,11 @@ function replaceCurrentLayoutDocumentation(
 
 5500 字十一场景的实际最优路径共 9,444 键，其中空格 376、Shift 307；原始统计见 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
 
-### 现行双拼与首道 B04 benchmark
+### 现行双拼与原键道 S005、首道 B04 benchmark
 
-下表用当前 D3/V1 与 QZ-e8f37a 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和首道 B04 作参照；初代布局只保留在后面的全量追加报告中。
+下表用当前 D3/V1 与 QZ-e8f37a 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 S005、首道 B04 作参照；初代布局只保留在后面的全量追加报告中。
+
+${zhBenchmarkLegend}
 
 ${zhBenchmark}
 
@@ -1405,9 +1438,11 @@ The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→
 
 The eleven-scenario 5,500-character replay uses 9,444 keys, including 376 spaces and 307 Shift presses; see the [raw JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json).
 
-### Current double-pinyin layouts versus Shoudao B04
+### Current double-pinyin layouts versus KeyTao S005 and Shoudao B04
 
-This table directly replaces Overall-17 and U357 in the historical README comparison with the current D3/V1 and QZ-e8f37a results, using the same frozen payload and Shoudao B04 reference. The first-generation layouts remain in the appended full report only.
+This table directly replaces Overall-17 and U357 in the historical README comparison with the current D3/V1 and QZ-e8f37a results, using the same frozen payload and the original KeyTao S005 and Shoudao B04 references. The first-generation layouts remain in the appended full report only.
+
+${enBenchmarkLegend}
 
 ${enBenchmark}
 
@@ -1445,9 +1480,11 @@ ${enBenchmark}
 
 5500 字十一場景的實際最佳路徑共 9,444 鍵，其中空格 376、Shift 307；原始統計見 [JSON](reports/神韵十一场景_5500字_最优路径全按键键频.json)。
 
-### 現行雙拼與首道 B04 benchmark
+### 現行雙拼與原鍵道 S005、首道 B04 benchmark
 
-下表以目前 D3/V1 與 QZ-e8f37a 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和首道 B04 作參照；初代布局只保留在後面的全量追加報告中。
+下表以目前 D3/V1 與 QZ-e8f37a 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 S005、首道 B04 作參照；初代布局只保留在後面的全量追加報告中。
+
+${zhtBenchmarkLegend}
 
 ${zhtBenchmark}
 

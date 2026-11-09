@@ -213,34 +213,51 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 	assert.ok(!buckets.includes("🥇"));
 });
 
-test("次世代追加报告以新旧四布局和首道组成五方案完整明细", () => {
+test("次世代追加报告以新旧四布局、S005 和首道组成六方案完整明细", () => {
 	const report = read("reports/shenyun-comparison.md");
 	includes(report, "## 次世代布局追加对比");
 	includes(report, "上面的历史四方案报告原样保留");
 	includes(
 		report,
-		"| 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | [首道 B04]",
+		"| 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | 原键道 [S005]",
 	);
 	includes(
 		report,
-		"| 综合补全 CKT v5.1 | **9.103000** ★★ 🥇 | 9.567898 | 9.204752 | 9.717167 | **9.202834** ★ |",
+		"| 综合补全 CKT v5.1 | **9.103000** ★★ 🥇 | 9.567898 | **9.204752** ★ | 9.717167 | 9.999357 | 9.202834 |",
 	);
+	includes(report, "不参与五方案名次");
+	includes(report, "🥇 独立比较全部六方案");
 	for (const heading of [
-		"### 五方案 [CKT v4]",
-		"### 五方案冻结语料加权非首选率",
-		"### 五方案逐级辅键后的频率加权残余非首选率",
-		"### 五方案二／三／四字词终局碰撞桶",
+		"### 六方案 [CKT v4]",
+		"### 六方案冻结语料加权非首选率",
+		"### 六方案逐级辅键后的频率加权残余非首选率",
+		"### 六方案二／三／四字词终局碰撞桶",
 	])
 		includes(report, heading);
 	includes(
 		report,
-		"| 编码轨 | 词长 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | [首道 B04]",
+		"| 编码轨 | 词长 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | 原键道 [S005]",
 	);
-	assert.ok(!report.includes("是第六列外部参照"));
+	includes(report, "| [首道 B04]");
+	const nextSection = report.split("## 次世代布局追加对比")[1] ?? "";
+	const nextSummary = nextSection.split("\n### ")[0];
+	includes(nextSummary, "★");
+	includes(nextSummary, "🥇");
+	for (const heading of [
+		"### 六方案 [CKT v4]",
+		"### 六方案冻结语料加权非首选率",
+		"### 六方案逐级辅键后的频率加权残余非首选率",
+	]) {
+		const section = nextSection.split(heading)[1]?.split("\n### ")[0] ?? "";
+		includes(section, "★", heading);
+		includes(section, "🥇", heading);
+	}
 
 	const comparison = JSON.parse(read("reports/shenyun-comparison.json")) as {
 		nextGenerationComparison: {
+			displayedLayouts: string[];
 			rankedLayouts: string[];
+			externalReference: string;
 			schemes: Record<string, unknown>;
 			metrics: { cktV51: Record<string, number | string> };
 			weightedNonfirstRates: Record<string, unknown>;
@@ -254,9 +271,18 @@ test("次世代追加报告以新旧四布局和首道组成五方案完整明�
 		"QZ",
 		"Overall17First",
 		"U357First",
+		"S005",
+	]);
+	assert.deepEqual(comparison.nextGenerationComparison.displayedLayouts, [
+		"D3V1",
+		"QZ",
+		"Overall17First",
+		"U357First",
+		"S005",
 		"B04",
 	]);
-	assert.ok(!comparison.nextGenerationComparison.schemes.S005);
+	assert.equal(comparison.nextGenerationComparison.externalReference, "B04");
+	assert.ok(comparison.nextGenerationComparison.schemes.S005);
 	assert.ok(comparison.nextGenerationComparison.weightedNonfirstRates.keytao);
 	assert.ok(
 		comparison.nextGenerationComparison.stagedResidualNonfirstRates.sanpin,
@@ -711,23 +737,43 @@ test("两份 README 只以 D3/V1 与 QZ-e8f37a 为现行双拼并链接全量报
 		includes(readme, "Overall-17·初代");
 		includes(readme, "U357·初代");
 		for (const header of [
-			/\| 指标 \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何为好 \|/u,
-			/\| Metric \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| Shoudao (?:B04|\[B04\]\([^)]+\)) \| Better \|/u,
-			/\| 指標 \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何者為佳 \|/u,
+			/\| 指标 \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| 原键道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何为好 \|/u,
+			/\| Metric \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| KeyTao (?:S005|\[S005\]\([^)]+\)) \| Shoudao (?:B04|\[B04\]\([^)]+\)) \| Better \|/u,
+			/\| 指標 \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| 原鍵道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何者為佳 \|/u,
 		])
 			assert.match(readme, header);
+		assert.match(
+			readme,
+			/(?:首道 B04|\[首道 B04\]\([^)]+\)) 不参与三方案名次/u,
+		);
+		includes(readme, "🥇 独立比较全部四方案");
 		includes(
 			readme,
-			"| 综合补全 CKT v5.1 | 9.103000 | 9.567898 | 9.202834 | 越低越好 |",
+			"| 综合补全 CKT v5.1 | **9.103000** ★★ 🥇 | **9.567898** ★ | 9.999357 | 9.202834 | 越低越好 |",
 		);
 		includes(
 			readme,
-			"| CKT v5.1 completion | 9.103000 | 9.567898 | 9.202834 | Lower |",
+			"| CKT v5.1 completion | **9.103000** ★★ 🥇 | **9.567898** ★ | 9.999357 | 9.202834 | Lower |",
 		);
 		includes(
 			readme,
-			"| 綜合補全 CKT v5.1 | 9.103000 | 9.567898 | 9.202834 | 越低越好 |",
+			"| 綜合補全 CKT v5.1 | **9.103000** ★★ 🥇 | **9.567898** ★ | 9.999357 | 9.202834 | 越低越好 |",
 		);
+		const tableLines = readme.split("\n");
+		const currentTableStarts = tableLines
+			.map((line, index) =>
+				/^\| (?:指标|Metric|指標) \| D3\/V1 21×26/u.test(line) ? index : -1,
+			)
+			.filter((index) => index >= 0);
+		assert.equal(currentTableStarts.length, 3);
+		for (const start of currentTableStarts) {
+			let end = start + 2;
+			while (end < tableLines.length && tableLines[end].startsWith("|")) end++;
+			for (const row of tableLines.slice(start + 2, end)) {
+				includes(row, "★");
+				includes(row, "🥇");
+			}
+		}
 		includes(readme, "reports/冰雪十二方案_500字_最短键码实战测评.txt");
 		includes(readme, "reports/十篇五百字_十二方案最优切分及字词比率报告.md");
 		includes(readme, "reports/十篇五百字_十三方案最优切分及字词比率报告.md");
