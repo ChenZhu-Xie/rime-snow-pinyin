@@ -180,11 +180,15 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		BENCHMARK_SCHEMES.map(({ id, auxiliaryOrder }) => [id, auxiliaryOrder]),
 		[
 			["sipin", "单字笔画／部件"],
-			["u357-shape", "12/231/24"],
-			["u357-tone", "12/213/23"],
+			["qz-shape", "12/213/24"],
+			["qz-tone", "12/213/23"],
 			["qingyun", "词语音码／单字形码"],
-			["overall17-shape", "12/21/42"],
-			["overall17-tone", "12/21/13"],
+			["d3v1-shape", "12/12/24"],
+			["d3v1-tone", "12/21/13"],
+			["u357-first-shape", "12/231/24"],
+			["u357-first-tone", "12/213/23"],
+			["overall17-first-shape", "12/21/42"],
+			["overall17-first-tone", "12/21/13"],
 		],
 	);
 	assert.ok(
@@ -197,14 +201,14 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 			({ code }) => code === "bxe",
 		),
 	);
-	const u357Three = pronunciationCodes("u357-tone", "天地人", [
+	const u357Three = pronunciationCodes("u357-first-tone", "天地人", [
 		"tian1",
 		"di2",
 		"ren3",
 	]);
 	assert.equal(u357Three[0].mainLength, 3);
 	assert.equal(u357Three.at(-1)?.code.slice(-3), "viu");
-	const overallThree = pronunciationCodes("overall17-tone", "天地人", [
+	const overallThree = pronunciationCodes("overall17-first-tone", "天地人", [
 		"tian1",
 		"di2",
 		"ren3",
@@ -216,14 +220,14 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		[3, 4],
 	);
 	assert.equal(overallThree.at(-1)?.code.slice(-2), "ei");
-	const u357Four = pronunciationCodes("u357-tone", "天地人和", [
+	const u357Four = pronunciationCodes("u357-first-tone", "天地人和", [
 		"tian1",
 		"di2",
 		"ren3",
 		"he2",
 	]);
 	assert.equal(u357Four.at(-1)?.code.slice(-2), "vu");
-	const overallFour = pronunciationCodes("overall17-tone", "天地人和", [
+	const overallFour = pronunciationCodes("overall17-first-tone", "天地人和", [
 		"tian1",
 		"di2",
 		"ren3",
@@ -231,11 +235,11 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 	]);
 	assert.equal(overallFour.at(-1)?.code.slice(-2), "iu");
 
-	const jiandaoSingle = pronunciationCodes("u357-shape", "时", ["shi2"]);
-	const shenyunShapeSingle = pronunciationCodes("overall17-shape", "时", [
+	const jiandaoSingle = pronunciationCodes("u357-first-shape", "时", ["shi2"]);
+	const shenyunShapeSingle = pronunciationCodes("overall17-first-shape", "时", [
 		"shi2",
 	]);
-	const shenyunToneSingle = pronunciationCodes("overall17-tone", "时", [
+	const shenyunToneSingle = pronunciationCodes("overall17-first-tone", "时", [
 		"shi2",
 	]);
 	assert.equal(jiandaoSingle.at(-1)?.auxiliaryLength, 4);
@@ -261,8 +265,8 @@ test("四个 21×21 benchmark 方案的多字词大写补韵不受六码限制",
 	const word = "中华人民共和国";
 	const syllables = ["zhong1", "hua2", "ren2", "min2", "gong4", "he2", "guo2"];
 	for (const scheme of [
-		"u357-shape",
-		"u357-tone",
+		"u357-first-shape",
+		"u357-first-tone",
 		"classic-shape",
 		"classic-tone",
 	] as const) {
@@ -285,7 +289,7 @@ test("benchmark 逐级模拟首选后置并保留最短合法单字码", () => {
 		{ word: "时", syllables: ["shi2"], weight: 10 },
 	];
 	const ranked = rankBenchmarkCodes(
-		"overall17-shape",
+		"overall17-first-shape",
 		[entries[1]],
 		entries,
 		new Map([["w", { word: "是" }]]),
@@ -300,7 +304,7 @@ test("固定候选覆盖首位时不后置底层翻译器候选", () => {
 		{ word: "超时", syllables: ["chao1", "shi2"], weight: 48970 },
 	];
 	const ranked = rankBenchmarkCodes(
-		"u357-shape",
+		"u357-first-shape",
 		entries,
 		entries,
 		new Map([["we", { word: "产生" }]]),
@@ -326,7 +330,7 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 		["gNxl", ["钢箱梁", "刚醒来", "刚下来"]],
 	]);
 	const from = rankBenchmarkCodes(
-		"overall17-shape",
+		"overall17-first-shape",
 		[entries[0]],
 		[entries[0]],
 		new Map([["c", { word: "才" }]]),
@@ -334,7 +338,7 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 	);
 	assert.equal(from.find(({ code }) => code === "ck")?.rank, 1);
 	const waking = rankBenchmarkCodes(
-		"u357-tone",
+		"u357-first-tone",
 		[entries[1]],
 		[entries[1]],
 		new Map(),

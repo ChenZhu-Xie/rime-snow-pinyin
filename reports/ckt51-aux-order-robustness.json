@@ -2342,5 +2342,262 @@
         "score": 10.0
       }
     }
+  },
+  "nextGeneration": {
+    "version": "next-generation-shuangpin-aux-order-appendix-v1",
+    "preservedHistoricalCases": true,
+    "schemes": {
+      "D3V1": {
+        "benchmarkId": "SNOW-SHENYUN-21X26-D3V1-BALANCED",
+        "report": "research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md",
+        "selectedPolicies": {
+          "keytao": {
+            "word2": "12",
+            "word3": "12",
+            "word4": "24"
+          },
+          "sanpin": {
+            "word2": "12",
+            "word3": "21",
+            "word4": "13"
+          }
+        },
+        "robustness": {
+          "version": "d3v1-ckt51-soft-balance-aux-order-robustness-1",
+          "report": "research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md",
+          "contract": "native-four-code-top-six-code",
+          "lengthBalance": {
+            "version": "soft-page-fill-v2",
+            "pageSize": 6,
+            "maximumCandidates": 120,
+            "minimumInputLength": 4,
+            "sourceCommit": "a1f471d3704093c3624f56129dd8622db68b6e2d",
+            "snowHead": "b719b65f09c016a9ed1417dd3014fe34a7dafbf3",
+            "sourceFile": "lua/snow/length_balance.lua"
+          },
+          "selectedPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "12",
+              "word4": "24"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "21",
+              "word4": "13"
+            }
+          },
+          "referencePolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "213",
+              "word4": "24"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "213",
+              "word4": "23"
+            }
+          },
+          "normalized": {
+            "selectedPairScore": 9.10299979136027,
+            "historicalFixedPairScore": 9.104645274517786,
+            "preSoftBalancePairScore": 9.104619328754065
+          },
+          "grid": {
+            "rangePercent": [
+              0,
+              500
+            ],
+            "stepPercent": 50,
+            "coefficients": [
+              "firstAuxMs",
+              "secondAuxMs",
+              "thirdAuxMs",
+              "selectionDecisionMs",
+              "scanPerCandidateMs",
+              "pageActionMs"
+            ],
+            "combinations": 1771561
+          },
+          "cases": {
+            "keytao": {
+              "winner": {
+                "policy": "12/12/24",
+                "top1Rate": 0.993030440385626,
+                "top3Rate": 0.9995851116614105,
+                "meanRank": 1.0087312827500718,
+                "worstRank": 16
+              },
+              "runnerUp": {
+                "policy": "12/12/23",
+                "top1Rate": 0,
+                "top3Rate": 0.988968485984959,
+                "meanRank": 2.046163806947658,
+                "worstRank": 22
+              },
+              "meanRankDistance": 1.0374325241975864,
+              "historicalFixed": {
+                "policy": "12/21/14",
+                "meanRank": 5.406295916426248,
+                "worstRank": 42
+              }
+            },
+            "sanpin": {
+              "winner": {
+                "policy": "12/21/13",
+                "top1Rate": 0.887770728752778,
+                "top3Rate": 0.9645149108610993,
+                "meanRank": 1.2983893865353775,
+                "worstRank": 13
+              },
+              "runnerUp": {
+                "policy": "12/21/14",
+                "top1Rate": 0,
+                "top3Rate": 0.8824008882561764,
+                "meanRank": 2.7021700071293058,
+                "worstRank": 19
+              },
+              "meanRankDistance": 1.4037806205939283,
+              "historicalFixed": {
+                "policy": "12/21/13",
+                "meanRank": 1.2983893865353775,
+                "worstRank": 13
+              }
+            }
+          },
+          "scope": {
+            "learnedPriority": "excluded: no personal user history in frozen corpus",
+            "downstreamFilters": "fixed/postpone/simplified excluded to match historical CKT scope"
+          }
+        }
+      },
+      "QZ": {
+        "benchmarkId": "QZ-e8f37a0998f9",
+        "report": "research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md",
+        "selectedPolicies": {
+          "keytao": {
+            "word2": "12",
+            "word3": "213",
+            "word4": "24"
+          },
+          "sanpin": {
+            "word2": "12",
+            "word3": "213",
+            "word4": "23"
+          }
+        },
+        "robustness": {
+          "version": "e8f37a-ckt51-aux-order-robustness-1",
+          "report": "research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md",
+          "selectedPolicies": {
+            "keytao": {
+              "word2": "12",
+              "word3": "213",
+              "word4": "24"
+            },
+            "sanpin": {
+              "word2": "12",
+              "word3": "213",
+              "word4": "23"
+            }
+          },
+          "cases": {
+            "keytao": {
+              "main0To500Step50": {
+                "winner": {
+                  "policy": "12/213/24",
+                  "meanRank": 1.1810668670172801
+                },
+                "runnerUp": {
+                  "policy": "12/231/24",
+                  "meanRank": 1.9415634008651128
+                },
+                "meanRankDistance": 0.7604965338478327
+              },
+              "mainPositive50To500Step50": {
+                "winner": {
+                  "policy": "12/213/24",
+                  "meanRank": 1.109
+                },
+                "runnerUp": {
+                  "policy": "12/231/24",
+                  "meanRank": 1.952278
+                },
+                "meanRankDistance": 0.843278
+              },
+              "extreme0To1000Step100": {
+                "winner": {
+                  "policy": "12/213/24",
+                  "meanRank": 1.1502629601803156
+                },
+                "runnerUp": {
+                  "policy": "12/231/24",
+                  "meanRank": 2.0330911552015425
+                },
+                "meanRankDistance": 0.8828281950212269
+              },
+              "extremePositive100To1000Step100": {
+                "winner": {
+                  "policy": "12/213/24",
+                  "meanRank": 1.079
+                },
+                "runnerUp": {
+                  "policy": "12/231/24",
+                  "meanRank": 2.014432
+                },
+                "meanRankDistance": 0.9354319999999998
+              }
+            },
+            "sanpin": {
+              "main0To500Step50": {
+                "winner": {
+                  "policy": "12/213/23",
+                  "meanRank": 2.2261192247966624
+                },
+                "runnerUp": {
+                  "policy": "12/213/21",
+                  "meanRank": 3.7478624783453687
+                },
+                "meanRankDistance": 1.5217432535487063
+              },
+              "mainPositive50To500Step50": {
+                "winner": {
+                  "policy": "12/213/23",
+                  "meanRank": 1.43565
+                },
+                "runnerUp": {
+                  "policy": "12/213/21",
+                  "meanRank": 2.723167
+                },
+                "meanRankDistance": 1.287517
+              },
+              "extreme0To1000Step100": {
+                "winner": {
+                  "policy": "12/213/23",
+                  "meanRank": 1.6540632809144027
+                },
+                "runnerUp": {
+                  "policy": "12/213/21",
+                  "meanRank": 2.748019966571854
+                },
+                "meanRankDistance": 1.0939566856574512
+              },
+              "extremePositive100To1000Step100": {
+                "winner": {
+                  "policy": "12/213/23",
+                  "meanRank": 1.212486
+                },
+                "runnerUp": {
+                  "policy": "12/213/21",
+                  "meanRank": 2.121716
+                },
+                "meanRankDistance": 0.9092300000000002
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

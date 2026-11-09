@@ -91,6 +91,38 @@ describe("神韵文档比较装饰", () => {
 		assert.equal(decorateMarkdownTable(once, ["min", "triple-sum"]), once);
 		assert.ok(!once.includes("★ ★★"));
 	});
+
+	test("五个布局参与星级排名且 B04 只参与六列奖牌", () => {
+		const compared = decorateComparison(
+			values(
+				["D3", 3],
+				["QZ", 1],
+				["Overall", 2],
+				["U357", 4],
+				["S005", 5],
+				["B04", 0],
+			),
+			"min",
+			5,
+		);
+		assert.deepEqual(compared, [
+			"D3",
+			"**QZ** ★★",
+			"**Overall** ★",
+			"U357",
+			"S005",
+			"B04 🥇",
+		]);
+		const source = [
+			"| 指标 | D3 | QZ | Overall | U357 | S005 | B04 | 何为好 |",
+			"| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+			"| 得分 | 3 | 1 | 2 | 4 | 5 | 0 | 越低越好 |",
+		].join("\n");
+		includes(
+			decorateMarkdownTable(source, ["min"], 5),
+			"| 得分 | 3 | **1** ★★ | **2** ★ | 4 | 5 | 0 🥇 | 越低越好 |",
+		);
+	});
 });
 
 test("为四个方案名补链接且不嵌套已有链接", () => {
@@ -179,6 +211,69 @@ test("生成报告在所有可比较表中保留图例、星标与奖牌", () =>
 		report.split("## 二／三／四字词的终局碰撞桶")[1]?.split("\n## ")[0] ?? "";
 	assert.ok(!buckets.includes("★"));
 	assert.ok(!buckets.includes("🥇"));
+});
+
+test("次世代追加报告保留初代数据并按五布局排名", () => {
+	const report = read("reports/shenyun-comparison.md");
+	includes(report, "## 次世代布局追加对比");
+	includes(report, "上面的历史四方案报告原样保留");
+	includes(
+		report,
+		"| 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 |",
+	);
+	includes(
+		report,
+		"| 综合补全 CKT v5.1 | **9.103000** ★★ 🥇 | 9.567898 | **9.204752** ★ | 9.717167 | 9.999357 | 9.202834 |",
+	);
+	includes(report, "是第六列外部参照");
+
+	const comparison = JSON.parse(read("reports/shenyun-comparison.json")) as {
+		nextGenerationComparison: {
+			rankedLayouts: string[];
+			externalReference: string;
+			metrics: { cktV51: Record<string, number | string> };
+		};
+	};
+	assert.deepEqual(comparison.nextGenerationComparison.rankedLayouts, [
+		"D3V1",
+		"QZ",
+		"Overall17First",
+		"U357First",
+		"S005",
+	]);
+	assert.equal(comparison.nextGenerationComparison.externalReference, "B04");
+	assert.equal(
+		comparison.nextGenerationComparison.metrics.cktV51.D3V1,
+		9.10299979136027,
+	);
+	assert.equal(
+		comparison.nextGenerationComparison.metrics.cktV51.Overall17First,
+		9.204752315229815,
+	);
+
+	const robustness = JSON.parse(
+		read("reports/ckt51-aux-order-robustness.json"),
+	) as {
+		cases: Record<string, unknown>;
+		nextGeneration: {
+			preservedHistoricalCases: boolean;
+			schemes: Record<
+				string,
+				{ selectedPolicies: { keytao: { word3: string } } }
+			>;
+		};
+	};
+	assert.ok(robustness.cases["21x26-keytao"]);
+	assert.ok(robustness.cases["21x21-keytao"]);
+	assert.equal(robustness.nextGeneration.preservedHistoricalCases, true);
+	assert.equal(
+		robustness.nextGeneration.schemes.D3V1.selectedPolicies.keytao.word3,
+		"12",
+	);
+	assert.equal(
+		robustness.nextGeneration.schemes.QZ.selectedPolicies.keytao.word3,
+		"213",
+	);
 });
 
 test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健辅序", () => {

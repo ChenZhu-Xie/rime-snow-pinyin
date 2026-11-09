@@ -108,7 +108,43 @@ test("经典 schema 保留迁移前名称并以独立 ID 进入发布方案", ()
 	assert.equal(sanpin.schema.schema_id, "snow_sanpin");
 	assert.equal(sanpin.schema.name, "冰雪三拼");
 	assert.equal(LEGACY_BENCHMARK_SCHEMES.length, 2);
-	assert.equal(ALL_BENCHMARK_SCHEMES.length, 8);
+	assert.equal(ALL_BENCHMARK_SCHEMES.length, 12);
+	assert.deepEqual(
+		ALL_BENCHMARK_SCHEMES.map(({ id }) => id),
+		[
+			"sipin",
+			"qz-shape",
+			"qz-tone",
+			"qingyun",
+			"d3v1-shape",
+			"d3v1-tone",
+			"u357-first-shape",
+			"u357-first-tone",
+			"overall17-first-shape",
+			"overall17-first-tone",
+			"classic-shape",
+			"classic-tone",
+		],
+	);
+	assert.deepEqual(
+		ALL_BENCHMARK_SCHEMES.slice(6, 10).map(
+			({ schemaId, fixedFile, shortName }) => [schemaId, fixedFile, shortName],
+		),
+		[
+			["snow_jiandao_first", "snow_jiandao_first.fixed.txt", "冰雪健道·初代"],
+			["snow_sanpin_first", "snow_sanpin_first.fixed.txt", "冰雪弎拼·初代"],
+			[
+				"snow_shenyun_shape_first",
+				"snow_shenyun_shape_first.fixed.txt",
+				"冰雪简道·初代",
+			],
+			[
+				"snow_shenyun_tone_first",
+				"snow_shenyun_tone_first.fixed.txt",
+				"冰雪散拼·初代",
+			],
+		],
+	);
 	const releasedJiandao = readFileSync(
 		rootPath("snow_jiandao_classic.schema.yaml"),
 		"utf8",
@@ -208,7 +244,7 @@ test("经典发布方案接入 AA 空桶与 AAB 二字辅码", () => {
 	}
 	for (const [scheme, occupant] of [
 		["classic-tone", { word: "里", syllables: ["li3"], weight: 1000 }],
-		["u357-tone", { word: "来", syllables: ["lai2"], weight: 1000 }],
+		["u357-first-tone", { word: "来", syllables: ["lai2"], weight: 1000 }],
 	] as Array<[BenchmarkSchemeId, BenchmarkDictionaryEntry]>) {
 		const target = { word: "离开", syllables: ["li2", "kai1"], weight: 100 };
 		const codes = rankBenchmarkCodes(

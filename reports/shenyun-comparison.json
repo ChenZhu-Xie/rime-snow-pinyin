@@ -1098,5 +1098,219 @@
         "Overall17": 0.006309377549198916
       }
     }
+  },
+  "nextGenerationComparison": {
+    "version": "shenyun-five-layout-generation-comparison-v1",
+    "rankedLayouts": [
+      "D3V1",
+      "QZ",
+      "Overall17First",
+      "U357First",
+      "S005"
+    ],
+    "externalReference": "B04",
+    "schemes": {
+      "D3V1": {
+        "label": "D3/V1 21×26"
+      },
+      "QZ": {
+        "label": "QZ-e8f37a 21×21"
+      },
+      "Overall17First": {
+        "label": "Overall-17·初代 21×26"
+      },
+      "U357First": {
+        "label": "U357·初代 21×21"
+      },
+      "S005": {
+        "label": "星空键道 S005"
+      },
+      "B04": {
+        "label": "首道 B04"
+      }
+    },
+    "sources": {
+      "D3V1": {
+        "benchmarkId": "SNOW-SHENYUN-21X26-D3V1-BALANCED",
+        "report": "research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md"
+      },
+      "QZ": {
+        "benchmarkId": "QZ-e8f37a0998f9",
+        "report": "research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md"
+      },
+      "Overall17First": {
+        "benchmarkId": "SNOW-SHENYUN-21X26-PRODUCTION"
+      },
+      "U357First": {
+        "benchmarkId": "gen0107-p5-f1h-11_13-d2-f25_26-d3-f4_22-d4-f11_13"
+      },
+      "S005": {
+        "benchmarkId": "S005"
+      },
+      "B04": {
+        "benchmarkId": "B04"
+      }
+    },
+    "auxiliaryOrders": {
+      "D3V1": {
+        "keytao": {
+          "word2": "12",
+          "word3": "12",
+          "word4": "24"
+        },
+        "sanpin": {
+          "word2": "12",
+          "word3": "21",
+          "word4": "13"
+        }
+      },
+      "QZ": {
+        "keytao": {
+          "word2": "12",
+          "word3": "213",
+          "word4": "24"
+        },
+        "sanpin": {
+          "word2": "12",
+          "word3": "213",
+          "word4": "23"
+        }
+      },
+      "Overall17First": {
+        "keytao": "12/21/14",
+        "sanpin": "12/21/13"
+      },
+      "U357First": {
+        "keytao": "12/231/24",
+        "sanpin": "12/213/23"
+      },
+      "S005": {
+        "keytao": "12/231/24",
+        "sanpin": "12/213/23"
+      },
+      "B04": {
+        "keytao": "12/12/23",
+        "sanpin": "21/12/23"
+      }
+    },
+    "metrics": {
+      "M-R2": {
+        "better": "lower",
+        "D3V1": 40,
+        "QZ": 42,
+        "Overall17First": 36,
+        "U357First": 40,
+        "S005": 44,
+        "B04": 51
+      },
+      "soundRhymeDisorder": {
+        "better": "lower-sum",
+        "D3V1": [
+          3,
+          1
+        ],
+        "QZ": [
+          2,
+          5
+        ],
+        "Overall17First": [
+          1,
+          1
+        ],
+        "U357First": [
+          0,
+          5
+        ],
+        "S005": [
+          0,
+          4
+        ],
+        "B04": [
+          0,
+          0
+        ]
+      },
+      "common399UniqueCodes": {
+        "better": "higher",
+        "D3V1": 399,
+        "QZ": 345,
+        "Overall17First": 399,
+        "U357First": 357,
+        "S005": 372,
+        "B04": 399
+      },
+      "common399CollisionBuckets": {
+        "better": "lower",
+        "D3V1": 0,
+        "QZ": 54,
+        "Overall17First": 0,
+        "U357First": 42,
+        "S005": 27,
+        "B04": 0
+      },
+      "common399AffectedSyllables": {
+        "better": "lower",
+        "D3V1": 0,
+        "QZ": 108,
+        "Overall17First": 0,
+        "U357First": 84,
+        "S005": 54,
+        "B04": 0
+      },
+      "cktV3": {
+        "better": "lower",
+        "D3V1": 9.586333866724333,
+        "QZ": 9.66207210386573,
+        "Overall17First": 9.63003905019381,
+        "U357First": 9.78213509012612,
+        "S005": 10,
+        "B04": 9.461105076391659
+      },
+      "cktV4": {
+        "better": "lower",
+        "D3V1": 9.083575240979213,
+        "QZ": 9.56073454942596,
+        "Overall17First": 9.18525432170247,
+        "U357First": 9.716420811869073,
+        "S005": 10,
+        "B04": 9.184606967934092
+      },
+      "cktV5": {
+        "better": "lower",
+        "D3V1": 9.096336062543223,
+        "QZ": 9.564806157286291,
+        "Overall17First": 9.195026476171616,
+        "U357First": 9.715586951861038,
+        "S005": 10,
+        "B04": 9.195421507104937
+      },
+      "cktV51": {
+        "better": "lower",
+        "D3V1": 9.10299979136027,
+        "QZ": 9.56789806405906,
+        "Overall17First": 9.204752315229815,
+        "U357First": 9.717167494529612,
+        "S005": 9.999357236116698,
+        "B04": 9.202833940639168
+      },
+      "dailyEightScenarioMovingHand": {
+        "better": "higher",
+        "D3V1": 142.3218631169652,
+        "QZ": 135.21763800074055,
+        "Overall17First": 132.2185188145348,
+        "U357First": 143.37998127078376,
+        "S005": 138.67226692391787,
+        "B04": 135.3104607733463
+      },
+      "homeShareS2": {
+        "better": "higher",
+        "D3V1": 0.4391204207421518,
+        "QZ": 0.5454176784562723,
+        "Overall17First": 0.3702492154382634,
+        "U357First": 0.5203069214183453,
+        "S005": 0.49000641085261276,
+        "B04": 0.36599551595942004
+      }
+    }
   }
 }

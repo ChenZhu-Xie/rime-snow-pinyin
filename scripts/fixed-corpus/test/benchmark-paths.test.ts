@@ -168,8 +168,10 @@ test("冰雪清韵使用自己的单键直出且不继承的了尾字键", () =>
 test("只有冰雪四拼、冰雪简道和冰雪散拼启用结构略码", () => {
 	for (const scheme of [
 		"qingyun",
-		"u357-shape",
-		"u357-tone",
+		"qz-shape",
+		"qz-tone",
+		"u357-first-shape",
+		"u357-first-tone",
 		"classic-shape",
 		"classic-tone",
 	] as const) {
@@ -177,8 +179,10 @@ test("只有冰雪四拼、冰雪简道和冰雪散拼启用结构略码", () =>
 	}
 	for (const scheme of [
 		"sipin",
-		"overall17-shape",
-		"overall17-tone",
+		"d3v1-shape",
+		"d3v1-tone",
+		"overall17-first-shape",
+		"overall17-first-tone",
 	] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), true, scheme);
 	}

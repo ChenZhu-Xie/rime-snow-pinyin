@@ -137,3 +137,25 @@ CKT v5.1 保留各布局的原生主码路由，并把二／三／四字词的�
 - 所有模型分数都用于同语料、同模型横向复算，不等同真人输入速度。
 
 机器可复核数据见 [`shenyun-comparison.json`](shenyun-comparison.json)。[神韵(Overall-17)](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md)的底层方案 ID 为 `SNOW-SHENYUN-21X26-PRODUCTION`。两代方案的来源、得来过程与定稿映射以上述固定提交报告为准。
+
+## 次世代布局追加对比
+
+上面的历史四方案报告原样保留。本节追加当前 D3/V1 21×26 与 QZ-e8f37a 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。星级名次只在 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代、[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 五个布局间计算；[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 是第六列外部参照，只参与全列最佳值的 🥇 标记。
+
+D3/V1 的定稿与稳健辅序见 [`2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，QZ-e8f37a 的定稿与稳健辅序见 [`2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)。D3/V1 的冰雪简道／冰雪散拼辅序为 `12/12/24`、`12/21/13`；QZ-e8f37a 的冰雪健道／冰雪弎拼辅序为 `12/213/24`、`12/213/23`。初代方案继续使用历史报告中冻结的映射与辅序。
+
+| 指标 | D3/V1 21×26 | QZ-e8f37a 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | [星空键道 S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | 何为好 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| [M-R2](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 记忆项 | **40** ★ | 42 | **36** ★★ 🥇 | **40** ★ | 44 | 51 | 越低越好 |
+| 声母／韵母乱序度 D/V | **3 / 1** ★ | 2 / 5 | **1 / 1** ★★ | 0 / 5 | **0 / 4** ★ | 0 / 0 🥇 | 按 D+V 越低越好 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 唯一码 | **399** ★★ 🥇 | 345 | **399** ★★ 🥇 | 357 | 372 | 399 🥇 | 越高越好 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 重码桶 | **0** ★★ 🥇 | 54 | **0** ★★ 🥇 | 42 | 27 | 0 🥇 | 越低越好 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 受影响音节 | **0** ★★ 🥇 | 108 | **0** ★★ 🥇 | 84 | 54 | 0 🥇 | 越低越好 |
+| 综合补全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | **9.586334** ★★ | 9.662072 | **9.630039** ★ | 9.782135 | 10.000000 | 9.461105 🥇 | 越低越好 |
+| 综合补全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) | **9.083575** ★★ 🥇 | 9.560735 | **9.185254** ★ | 9.716421 | 10.000000 | 9.184607 | 越低越好 |
+| 综合补全 CKT v5 | **9.096336** ★★ 🥇 | 9.564806 | **9.195026** ★ | 9.715587 | 10.000000 | 9.195422 | 越低越好 |
+| 综合补全 CKT v5.1 | **9.103000** ★★ 🥇 | 9.567898 | **9.204752** ★ | 9.717167 | 9.999357 | 9.202834 | 越低越好 |
+| 日常纯双拼移动手分数（含标点） | **142.322** ★ | 135.218 | 132.219 | **143.380** ★★ 🥇 | 138.672 | 135.310 | 越高越好 |
+| S2 主键区占比 | 43.912% | **54.542%** ★★ 🥇 | 37.025% | **52.031%** ★ | 49.001% | 36.600% | 越高越好 |
+
+这里的 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md)/v4/v5/v5.1、日常移动手分数与 S2 主键区占比均直接取自同一份 `a7_CKT_R11.html` 冻结 payload；旧两代、[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md) 的数值沿用上方历史快照。五个布局跨 21×21 与 21×26 键域，表中排名用于同语料复算，不把跨键域差异解释为同键域映射的单变量胜负。

@@ -42,7 +42,8 @@ const cktV5 = existsSync(cktV5Path)
 		};
 if (!existsSync(cktV51Path))
 	throw new Error(`缺少 CKT v5.1 结果：${cktV51Path}`);
-const cktV51 = JSON.parse(readFileSync(cktV51Path, "utf8"));
+const cktV51Text = readFileSync(cktV51Path, "utf8");
+const cktV51 = JSON.parse(cktV51Text);
 const html = readFileSync(resolve(benchmarkPath), "utf8");
 const payloadMatch = html.match(
 	/<script id="payload"[^>]*>([\s\S]*?)<\/script>/u,
@@ -54,6 +55,8 @@ const benchmark = JSON.parse(
 ) as any;
 
 const overallId = "SNOW-SHENYUN-21X26-PRODUCTION";
+const d3Id = "SNOW-SHENYUN-21X26-D3V1-BALANCED";
+const qzId = "QZ-e8f37a0998f9";
 const overallKey = "Overall17";
 const benchmarkIds = {
 	Overall17: overallId,
@@ -65,6 +68,10 @@ const entry = benchmark.entries.find(
 	({ id }: { id: string }) => id === overallId,
 );
 if (!entry) throw new Error(`Benchmark HTML 中缺少 ${overallId}。`);
+const d3Entry = benchmark.entries.find(({ id }: { id: string }) => id === d3Id);
+const qzEntry = benchmark.entries.find(({ id }: { id: string }) => id === qzId);
+if (!d3Entry || !qzEntry)
+	throw new Error(`Benchmark HTML 中缺少 ${d3Id} 或 ${qzId}。`);
 const displacement = (id: string) => {
 	const scheme = benchmark.entries.find(
 		({ id: entryId }: { id: string }) => entryId === id,
@@ -669,7 +676,280 @@ const flyingDisplays = decorate(
 	"triple-sum",
 );
 
-const report = `# 神韵两代布局与 S005、B04 四方案比较
+const nextSchemes = [
+	"D3V1",
+	"QZ",
+	"Overall17First",
+	"U357First",
+	"S005",
+	"B04",
+] as const;
+type NextScheme = (typeof nextSchemes)[number];
+const nextLabels: Record<NextScheme, string> = {
+	D3V1: "D3/V1 21×26",
+	QZ: "QZ-e8f37a 21×21",
+	Overall17First: "Overall-17·初代 21×26",
+	U357First: "U357·初代 21×21",
+	S005: "星空键道 S005",
+	B04: "首道 B04",
+};
+const requiredNumber = (value: unknown, label: string) => {
+	if (typeof value !== "number" || !Number.isFinite(value))
+		throw new Error(`Benchmark HTML 中 ${label} 不是有限数字。`);
+	return value;
+};
+const d3Production = d3Entry.productionCandidateMetrics;
+const qzReadme = qzEntry.readmeBenchmarkMetrics;
+if (!d3Production || !qzReadme)
+	throw new Error("Benchmark HTML 缺少 D3/V1 或 QZ 的定稿指标。");
+const nextValue = (
+	name: string,
+	d3Value: number | number[],
+	qzValue: number | number[],
+) => ({
+	D3V1: d3Value,
+	QZ: qzValue,
+	Overall17First: data.metrics[name].Overall17 as number | number[],
+	U357First: data.metrics[name].U357 as number | number[],
+	S005: data.metrics[name].S005 as number | number[],
+	B04: data.metrics[name].B04 as number | number[],
+});
+const nextMetrics = {
+	"M-R2": {
+		better: "lower",
+		...nextValue(
+			"M-R2",
+			requiredNumber(d3Entry.memoryAuditR2?.M, `${d3Id} M-R2`),
+			requiredNumber(qzReadme["M-R2"], `${qzId} M-R2`),
+		),
+	},
+	soundRhymeDisorder: {
+		better: "lower-sum",
+		...nextValue("soundRhymeDisorder", displacement(d3Id), displacement(qzId)),
+	},
+	common399UniqueCodes: {
+		better: "higher",
+		...nextValue(
+			"common399UniqueCodes",
+			requiredNumber(d3Entry.memoryAuditR2?.unique, `${d3Id} Common399 唯一码`),
+			requiredNumber(qzReadme.common399UniqueCodes, `${qzId} Common399 唯一码`),
+		),
+	},
+	common399CollisionBuckets: {
+		better: "lower",
+		...nextValue(
+			"common399CollisionBuckets",
+			Object.keys(d3Entry.memoryAuditR2?.collisionBuckets ?? {}).length,
+			requiredNumber(
+				qzReadme.common399CollisionBuckets,
+				`${qzId} Common399 重码桶`,
+			),
+		),
+	},
+	common399AffectedSyllables: {
+		better: "lower",
+		...nextValue(
+			"common399AffectedSyllables",
+			d3Entry.memoryAuditR2?.unique === 399 ? 0 : Number.NaN,
+			requiredNumber(
+				qzReadme.common399AffectedSyllables,
+				`${qzId} Common399 受影响音节`,
+			),
+		),
+	},
+	cktV3: {
+		better: "lower",
+		...nextValue(
+			"cktV3",
+			requiredNumber(d3Production.replayedCktV3, `${d3Id} CKT v3`),
+			requiredNumber(qzReadme.cktV3, `${qzId} CKT v3`),
+		),
+	},
+	cktV4: {
+		better: "lower",
+		...nextValue(
+			"cktV4",
+			requiredNumber(d3Production.replayedCktV4, `${d3Id} CKT v4`),
+			requiredNumber(qzReadme.cktV4, `${qzId} CKT v4`),
+		),
+	},
+	cktV5: {
+		better: "lower",
+		...nextValue(
+			"cktV5",
+			requiredNumber(d3Production.replayedCktV5, `${d3Id} CKT v5`),
+			requiredNumber(qzReadme.cktV5, `${qzId} CKT v5`),
+		),
+	},
+	cktV51: {
+		better: "lower",
+		...nextValue(
+			"cktV51",
+			requiredNumber(d3Production.replayedCktV51, `${d3Id} CKT v5.1`),
+			requiredNumber(qzReadme.cktV51, `${qzId} CKT v5.1`),
+		),
+	},
+	dailyEightScenarioMovingHand: {
+		better: "higher",
+		...nextValue(
+			"dailyEightScenarioMovingHand",
+			requiredNumber(
+				benchmark.macroxue.values[d3Id]?.["daily|native-punctuation"]?.score,
+				`${d3Id} 日常移动手分数`,
+			),
+			requiredNumber(
+				qzReadme.dailyEightScenarioMovingHand,
+				`${qzId} 日常移动手分数`,
+			),
+		),
+	},
+	homeShareS2: {
+		better: "higher",
+		...nextValue(
+			"homeShareS2",
+			requiredNumber(
+				benchmark.r11LoadSummaries[d3Id]?.homeS2,
+				`${d3Id} S2 主键区占比`,
+			),
+			requiredNumber(qzReadme.homeShareS2, `${qzId} S2 主键区占比`),
+		),
+	},
+};
+
+data.nextGenerationComparison = {
+	version: "shenyun-five-layout-generation-comparison-v1",
+	rankedLayouts: nextSchemes.slice(0, 5),
+	externalReference: "B04",
+	schemes: Object.fromEntries(
+		nextSchemes.map((scheme) => [scheme, { label: nextLabels[scheme] }]),
+	),
+	sources: {
+		D3V1: {
+			benchmarkId: d3Id,
+			report:
+				"research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md",
+		},
+		QZ: {
+			benchmarkId: qzId,
+			report:
+				"research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md",
+		},
+		Overall17First: { benchmarkId: overallId },
+		U357First: { benchmarkId: benchmarkIds.U357 },
+		S005: { benchmarkId: benchmarkIds.S005 },
+		B04: { benchmarkId: benchmarkIds.B04 },
+	},
+	auxiliaryOrders: {
+		D3V1: d3Production.cktV51AuxOrderRobustness?.selectedPolicies,
+		QZ: qzEntry.productionCandidateMetrics?.cktV51AuxOrderRobustness
+			?.selectedPolicies,
+		Overall17First: data.comparisonPolicy.cktV51.auxiliaryOrders.Overall17,
+		U357First: data.comparisonPolicy.cktV51.auxiliaryOrders.U357,
+		S005: data.comparisonPolicy.cktV51.auxiliaryOrders.S005,
+		B04: data.comparisonPolicy.cktV51.auxiliaryOrders.B04,
+	},
+	metrics: nextMetrics,
+};
+cktV51.nextGeneration = {
+	version: "next-generation-shuangpin-aux-order-appendix-v1",
+	preservedHistoricalCases: true,
+	schemes: {
+		D3V1: {
+			benchmarkId: d3Id,
+			report:
+				"research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md",
+			selectedPolicies: d3Production.cktV51AuxOrderRobustness?.selectedPolicies,
+			robustness: d3Production.cktV51AuxOrderRobustness,
+		},
+		QZ: {
+			benchmarkId: qzId,
+			report:
+				"research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md",
+			selectedPolicies:
+				qzEntry.productionCandidateMetrics?.cktV51AuxOrderRobustness
+					?.selectedPolicies,
+			robustness: qzEntry.productionCandidateMetrics?.cktV51AuxOrderRobustness,
+		},
+	},
+};
+const appendJsonProperty = (source: string, name: string, value: unknown) => {
+	const marker = `,\n  "${name}": `;
+	const markerIndex = source.indexOf(marker);
+	let base =
+		markerIndex >= 0
+			? source.slice(0, markerIndex).trimEnd()
+			: source.trimEnd().slice(0, -1).trimEnd();
+	if (!base.endsWith("}"))
+		throw new Error(`无法在 JSON 顶层追加 ${name}：末尾结构异常。`);
+	const serialized = JSON.stringify(value, null, 2).replaceAll("\n", "\n  ");
+	return `${base},\n  "${name}": ${serialized}\n}\n`;
+};
+
+const nextMetricDefinitions = [
+	["M-R2 记忆项", "M-R2", "integer", "越低越好", "min"],
+	[
+		"声母／韵母乱序度 D/V",
+		"soundRhymeDisorder",
+		"pair",
+		"按 D+V 越低越好",
+		"sum",
+	],
+	["Common399 唯一码", "common399UniqueCodes", "integer", "越高越好", "max"],
+	[
+		"Common399 重码桶",
+		"common399CollisionBuckets",
+		"integer",
+		"越低越好",
+		"min",
+	],
+	[
+		"Common399 受影响音节",
+		"common399AffectedSyllables",
+		"integer",
+		"越低越好",
+		"min",
+	],
+	["综合补全 CKT v3", "cktV3", "number", "越低越好", "min"],
+	["综合补全 CKT v4", "cktV4", "number", "越低越好", "min"],
+	["综合补全 CKT v5", "cktV5", "number", "越低越好", "min"],
+	["综合补全 CKT v5.1", "cktV51", "number", "越低越好", "min"],
+	[
+		"日常纯双拼移动手分数（含标点）",
+		"dailyEightScenarioMovingHand",
+		"three",
+		"越高越好",
+		"max",
+	],
+	["S2 主键区占比", "homeShareS2", "percent", "越高越好", "max"],
+] as const;
+const nextMetricTable = table(
+	["指标", ...nextSchemes.map((scheme) => nextLabels[scheme]), "何为好"],
+	nextMetricDefinitions.map(([title, name, format, good, direction]) => {
+		const metric = nextMetrics[name];
+		const rawValues = nextSchemes.map((scheme) => metric[scheme]);
+		const displays = rawValues.map((value) => {
+			if (format === "pair") return (value as number[]).join(" / ");
+			if (format === "percent") return percent(value as number);
+			if (format === "integer") return String(value);
+			if (format === "three") return number(value as number, 3);
+			return number(value as number);
+		});
+		return [
+			title,
+			...decorateComparison(
+				displays.map((display, index) => ({
+					display,
+					score: rawValues[index],
+				})),
+				direction,
+				5,
+			),
+			good,
+		];
+	}),
+);
+
+const historicalReport = `# 神韵两代布局与 S005、B04 四方案比较
 
 方案来源：神韵(Overall-17) 21×26 双拼出自 \`production/ckt-v4-2126-strict-d0-20261030\` 分支的提交 \`7a7e154\`；无飞键道(U357) 21×21 双拼出自 \`production/ckt-v4-2121-strict-avuio-20261024\` 分支的提交 \`11713b6\`。方案名分别链接到对应固定提交的最终报告，报告记录了搜索过程、候选取舍和定稿映射。
 
@@ -729,6 +1009,23 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 机器可复核数据见 [\`shenyun-comparison.json\`](shenyun-comparison.json)。神韵(Overall-17)的底层方案 ID 为 \`${overallId}\`。两代方案的来源、得来过程与定稿映射以上述固定提交报告为准。
 `;
 
+const report = `${historicalReport}
+## 次世代布局追加对比
+
+上面的历史四方案报告原样保留。本节追加当前 D3/V1 21×26 与 QZ-e8f37a 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。星级名次只在 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代、S005 五个布局间计算；首道 B04 是第六列外部参照，只参与全列最佳值的 🥇 标记。
+
+D3/V1 的定稿与稳健辅序见 [\`2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，QZ-e8f37a 的定稿与稳健辅序见 [\`2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)。D3/V1 的冰雪简道／冰雪散拼辅序为 \`12/12/24\`、\`12/21/13\`；QZ-e8f37a 的冰雪健道／冰雪弎拼辅序为 \`12/213/24\`、\`12/213/23\`。初代方案继续使用历史报告中冻结的映射与辅序。
+
+${nextMetricTable}
+
+这里的 CKT v3/v4/v5/v5.1、日常移动手分数与 S2 主键区占比均直接取自同一份 \`a7_CKT_R11.html\` 冻结 payload；旧两代、S005、B04 的数值沿用上方历史快照。五个布局跨 21×21 与 21×26 键域，表中排名用于同语料复算，不把跨键域差异解释为同键域映射的单变量胜负。
+`;
+
 writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
+writeFileSync(
+	cktV51Path,
+	appendJsonProperty(cktV51Text, "nextGeneration", cktV51.nextGeneration),
+	"utf8",
+);
 writeFileSync(reportPath, linkShenyunTerms(report, "zh", "github"), "utf8");
-console.log(`已生成 ${reportPath}\n已生成 ${jsonPath}`);
+console.log(`已生成 ${reportPath}\n已生成 ${jsonPath}\n已生成 ${cktV51Path}`);

@@ -13,7 +13,6 @@ export interface ComparisonValue {
 export type ShenyunLanguage = "zh" | "en" | "zht";
 export type LinkHost = "github" | "gitee";
 
-const threeSchemeIndices: readonly number[] = [0, 1, 2];
 const epsilon = 1e-12;
 
 export const readComparisonScore = (
@@ -44,11 +43,19 @@ const isTied = (left: number, right: number) =>
 export function decorateComparison(
 	values: readonly ComparisonValue[],
 	direction: ComparisonDirection,
-	rankedIndices: readonly number[] = threeSchemeIndices,
+	rankedCount = 3,
 ) {
 	if (values.length === 0) return [];
-	if (rankedIndices.some((index) => index < 0 || index >= values.length))
-		throw new Error("排名方案索引超出比较值范围。");
+	if (
+		!Number.isInteger(rankedCount) ||
+		rankedCount < 0 ||
+		rankedCount > values.length
+	)
+		throw new Error("排名方案数量超出比较值范围。");
+	const rankedIndices = Array.from(
+		{ length: rankedCount },
+		(_, index) => index,
+	);
 	const scores = values.map(({ score }) =>
 		readComparisonScore(score, direction),
 	);
@@ -91,8 +98,20 @@ const parseTableValue = (display: string, direction: ComparisonDirection) => {
 export function decorateMarkdownTable(
 	markdown: string,
 	directions: readonly ComparisonDirection[],
+	rankedCount = 3,
 ) {
 	const lines = markdown.split("\n");
+	const headerCells = lines[0]
+		?.trim()
+		.slice(1, -1)
+		.split("|")
+		.map((cell) => cell.trim());
+	if (!headerCells || headerCells.length < 5)
+		throw new Error("比较表至少需要指标列和四个方案列。");
+	const hasTrailingExplanation = /^(?:何为好|Better|何者為佳)$/u.test(
+		headerCells.at(-1) ?? "",
+	);
+	const schemeCount = headerCells.length - 1 - (hasTrailingExplanation ? 1 : 0);
 	let rowIndex = 0;
 	for (let index = 2; index < lines.length; index++) {
 		if (!lines[index].trimStart().startsWith("|")) continue;
@@ -103,16 +122,18 @@ export function decorateMarkdownTable(
 			.slice(1, -1)
 			.split("|")
 			.map((cell) => cell.trim());
-		if (cells.length < 5) throw new Error("比较表至少需要指标列和四个方案列。");
-		const displays = cells.slice(1, 5);
+		if (cells.length !== headerCells.length)
+			throw new Error("比较表数据列数与表头不一致。");
+		const displays = cells.slice(1, 1 + schemeCount);
 		const decorated = decorateComparison(
 			displays.map((display) => ({
 				display,
 				score: parseTableValue(display, direction),
 			})),
 			direction,
+			rankedCount,
 		);
-		cells.splice(1, 4, ...decorated);
+		cells.splice(1, schemeCount, ...decorated);
 		lines[index] = `| ${cells.join(" | ")} |`;
 		rowIndex++;
 	}
