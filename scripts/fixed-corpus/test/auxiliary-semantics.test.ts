@@ -79,7 +79,7 @@ test("四个生产方案逐位使用形义序、声调序和笔画序", () => {
 	});
 });
 
-test("生成的运行时语义表区分三拼 B2 与独立笔画反查", () => {
+test("生成的运行时语义表提供三拼 B2 与独立笔画反查所需映射", () => {
 	const lua = readFileSync(
 		new URL("lua/snow/auxiliary_semantics.lua", root),
 		"utf8",
@@ -92,27 +92,57 @@ test("生成的运行时语义表区分三拼 B2 与独立笔画反查", () => {
 		lua,
 		/\["21x26"\][\s\S]*shape_keys_by_meaning = "aeuio"[\s\S]*tone_keys_by_tone = "ieuao"[\s\S]*stroke_keys_by_stroke = "eiuoa"/u,
 	);
-	const sanpinStroke = readFileSync(
-		new URL("snow_sanpin_bihua.schema.yaml", root),
-		"utf8",
-	);
-	const sanpinSemantics = loadAuxiliarySemantics("21x21");
-	assert.match(
-		sanpinStroke,
-		new RegExp(`xlit/12345/${sanpinSemantics.toneKeysByTone}/`, "u"),
-	);
-	const sanpin = readFileSync(new URL("snow_sanpin.schema.yaml", root), "utf8");
-	assert.match(
-		sanpin,
-		new RegExp(
-			`stroke/preedit_format: \\[xlit/${sanpinSemantics.toneKeysByTone}/`,
-			"u",
-		),
-	);
 	assert.match(
 		readFileSync(new URL("lua/snow/shape_filter.lua", root), "utf8"),
 		/auxiliary_semantics\["21x21"\][\s\S]*stroke_keys_by_digit/u,
 	);
+});
+
+test("21×21 发布方案的 U 笔画反查统一使用形义换算后的笔画序", () => {
+	const semantics = loadAuxiliarySemantics("21x21");
+	assert.equal(semantics.strokeKeysByStroke, "viuoa");
+	assert.notEqual(semantics.strokeKeysByStroke, semantics.toneKeysByTone);
+	const common = readFileSync(new URL("snow_pinyin.schema.yaml", root), "utf8");
+	assert.match(common, /^stroke:\r?\n[\s\S]*?^  prefix: "u"$/mu);
+	assert.match(common, /^radical:\r?\n[\s\S]*?^  prefix: "u"$/mu);
+
+	for (const path of [
+		"snow_jiandao_bihua.schema.yaml",
+		"snow_jiandao_bihua_first.schema.yaml",
+		"snow_sanpin_bihua.schema.yaml",
+		"snow_sanpin_bihua_first.schema.yaml",
+	]) {
+		const schema = readFileSync(new URL(path, root), "utf8");
+		assert.match(
+			schema,
+			new RegExp(`xlit/12345/${semantics.strokeKeysByStroke}/`, "u"),
+			path,
+		);
+		assert.doesNotMatch(
+			schema,
+			new RegExp(`xlit/12345/${semantics.toneKeysByTone}/`, "u"),
+			path,
+		);
+	}
+
+	for (const path of [
+		"snow_jiandao.schema.yaml",
+		"snow_jiandao_first.schema.yaml",
+		"snow_jiandao_classic.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_sanpin_first.schema.yaml",
+		"snow_sanpin_classic.schema.yaml",
+	]) {
+		const schema = readFileSync(new URL(path, root), "utf8");
+		assert.match(
+			schema,
+			new RegExp(
+				`stroke/preedit_format: \\[xlit/${semantics.strokeKeysByStroke}/`,
+				"u",
+			),
+			path,
+		);
+	}
 });
 
 test("键道二分形辅保留折横撇竖点含义", () => {

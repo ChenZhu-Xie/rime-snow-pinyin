@@ -10,7 +10,7 @@ schema:
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
-    用 ivuao 输入笔画，用于三拼反查
+    用 viuoa 输入笔画，用于三拼反查
 
 __patch:
   - patch
@@ -20,9 +20,9 @@ patch:
   speller/alphabet: aiouv
   speller/algebra:
     - xform/[A-Z]+$//
-    - xlit/12345/ivuao/
+    - xlit/12345/viuoa/
   translator/prism: snow_sanpin_bihua_first
-  translator/preedit_format: [xlit/ivuao/一丨丿丶乙/]
+  translator/preedit_format: [xlit/viuoa/一丨丿丶乙/]
   translator/comment_format:
     - xform/[A-Z]+$//
-    - xlit/12345/ivuao/
+    - xlit/12345/viuoa/
