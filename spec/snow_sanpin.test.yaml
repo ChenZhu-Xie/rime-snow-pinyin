@@ -37,6 +37,28 @@ script: |
     return label .. " preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " cand=" .. table.concat(result, "|")
   end
 deploy:
+  probe:
+    tests:
+      - send: whu
+        assert: error(dump("whu"))
+      - send: gco
+        assert: error(dump("gco"))
+      - send: tli
+        assert: error(dump("tli"))
+      - send: xra
+        assert: error(dump("xra"))
+      - send: dki
+        assert: error(dump("dki"))
+      - send: epo
+        assert: error(dump("epo"))
+      - send: xwo
+        assert: error(dump("xwo"))
+      - send: mta
+        assert: error(dump("mta"))
+      - send: xfiv
+        assert: error(dump("xfiv"))
+      - send: xov
+        assert: error(dump("xov"))
   cross_route_user_phrase:
     tests:
       # 用前三字完整声韵、第四字声母唯一上屏“方案选单”，再退回 frxd 验证跨路径用户词优先。

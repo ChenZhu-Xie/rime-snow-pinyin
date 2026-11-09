@@ -30,6 +30,30 @@ script: |
     return label .. " preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " cand=" .. table.concat(result, "|")
   end
 deploy:
+  probe:
+    tests:
+      - send: syu
+        assert: error(dump("syu"))
+      - send: syuv
+        assert: error(dump("syuv"))
+      - send: dko
+        assert: error(dump("dko"))
+      - send: dkou
+        assert: error(dump("dkou"))
+      - send: epo
+        assert: error(dump("epo"))
+      - send: epoi
+        assert: error(dump("epoi"))
+      - send: xw
+        assert: error(dump("xw"))
+      - send: mtv
+        assert: error(dump("mtv"))
+      - send: mtvv
+        assert: error(dump("mtvv"))
+      - send: xfv
+        assert: error(dump("xfv"))
+      - send: xfvi
+        assert: error(dump("xfvi"))
   schema_menu:
     tests:
       - send: "{F4}"
