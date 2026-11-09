@@ -20,6 +20,61 @@ const keyGroup = (svg: string, key: string) =>
 		),
 	)?.[0] ?? "";
 
+const letterKeys = [..."QWERTYUIOPASDFGHJKLZXCVBNM"];
+
+function textTags(group: string) {
+	return group.match(/<text\b[^>]*>[^<]*<\/text>/gu) ?? [];
+}
+
+function keycapTag(group: string, key: string) {
+	return textTags(group).find(
+		(tag) =>
+			tag.endsWith(`>${key}</text>`) &&
+			(/data-key-label="true"/u.test(tag) || /font-size="21"/u.test(tag)),
+	);
+}
+
+function assertEveryMovedKeycapHasOneColorLink(svg: string, image: string) {
+	const groups = Object.fromEntries(
+		letterKeys.map((key) => [key, keyGroup(svg, key)]),
+	);
+	const movedColors = new Set<string>();
+	for (const source of letterKeys) {
+		const sourceTag = keycapTag(groups[source], source);
+		assert.ok(sourceTag, `${image} should contain source keycap ${source}`);
+		if (!/font-weight="500"/u.test(sourceTag)) continue;
+		const color = sourceTag.match(/fill="(#[0-9a-f]{6})"/u)?.[1];
+		assert.ok(color, `${image} ${source} should have a link color`);
+		assert.ok(
+			!movedColors.has(color),
+			`${image} should not reuse moved link color ${color}`,
+		);
+		movedColors.add(color);
+
+		const target = letterKeys.find((key) =>
+			textTags(groups[key]).some((tag) => {
+				if (!tag.includes(`fill="${color}"`)) return false;
+				if (source === "W")
+					return /font-style="italic"[^>]*>Ø W<\/text>/u.test(tag);
+				if (source === "Y")
+					return /font-style="italic"[^>]*>Ø Y(?:\/YU)?<\/text>/u.test(tag);
+				return (
+					/text-decoration="underline"/u.test(tag) &&
+					tag.endsWith(`>${source.toLowerCase()}</text>`)
+				);
+			}),
+		);
+		assert.ok(target, `${image} ${source} should link to one target label`);
+		const targetKeycap = keycapTag(groups[target], target);
+		const targetColor = targetKeycap?.match(/fill="(#[0-9a-f]{6})"/u)?.[1];
+		assert.ok(targetColor, `${image} ${target} should have a keycap color`);
+		assert.ok(
+			keymapLinkColorDistance(color, targetColor) >= 0.18,
+			`${image} ${source} link ${color} should contrast with ${target} keycap ${targetColor}`,
+		);
+	}
+}
+
 const schemes = [
 	["snow_sipin.schema.yaml", "e", "snow_sipin.svg"],
 	["snow_sanpin.schema.yaml", "v", "snow_sanpin.svg"],
@@ -252,6 +307,16 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 		keyGroup(d3, "Y"),
 		/fill="#f1e4e1" stroke="#ad8178"[^>]*stroke-dasharray="4 2"/u,
 	);
+});
+
+test("README and popup diagrams link every moved source with one distinct color", () => {
+	for (const image of [
+		"docs/shenyun-d3v1-keyboard.svg",
+		"docs/shenyun-qz-e8f37a-keyboard.svg",
+		...schemes.map(([, , image]) => `lua/snow/keymaps/${image}`),
+	]) {
+		assertEveryMovedKeycapHasOneColorLink(read(image), image);
+	}
 });
 
 test("tone and shape diagrams keep their auxiliary semantics separate", () => {

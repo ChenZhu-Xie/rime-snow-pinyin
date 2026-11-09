@@ -70,11 +70,14 @@ if (check) {
 
 const sourceCommit = execFileSync(
 	"git",
-	["-C", sourceRoot, "rev-parse", "HEAD"],
+	["-C", sourceRoot, "log", "-1", "--format=%H", "--", manifest.sourcePath],
 	{
 		encoding: "utf8",
 	},
 ).trim();
+if (!sourceCommit) {
+	throw new Error(`上游核心尚无 Git 提交：${sourcePath}`);
+}
 writeFileSync(vendorPath, source);
 writeFileSync(
 	manifestPath,

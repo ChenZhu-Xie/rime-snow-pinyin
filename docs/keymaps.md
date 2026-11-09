@@ -26,11 +26,29 @@ Rime 的候选接口只有文本与注释，没有跨前端的图片接口，因
 
 桌面端的 `tools/keymap-helper/` 是无控制台、单实例、常驻的 Rust GUI 程序。它轮询用户临时目录中的命令文件，直接把 `lua/snow/keymaps/*.svg` 栅格化到无边框、置顶且不抢焦点的窗口，并通过同目录心跳文件让重新部署后的 Lua 复用现有进程。方案初始化和切换只写跟随命令，helper 未运行时也不会自动启动或预加载 SVG；只有用户实际按键打开键位图时才按需启动。窗口首次创建后持续复用，后续显隐与方案切换路径不启动 PowerShell、CMD 或新的 helper 进程。发布工作流分别生成 Windows x64、macOS x64 和 Linux x64 可执行文件，再放入安装包的 `lua/snow/bin/`。
 
-移动端由 `scripts/skin/keymaps.ts` 向每套元书和同文皮肤注入统一选择页。元书使用各明暗资源目录中的 PNG 与图片描述文件；同文使用 `backgrounds/` 中的 PNG。七份 PNG 与桌面 SVG 均由 `scripts/generate-keymaps.ts` 从同一份原生矢量定义生成，包括冰雪键道，不再包装旧键位截图。图形定义沿用 README 两份“声韵辅-键映射”图的莫兰迪语义：声韵占用、纯辅键与多韵键使用独立背景、纹理和边框，韵母前景色按音系族区分；七图的五笔辅统一使用键帽右上角绿框，五调辅与单双码形辅在键中无框显示，冰雪四拼的韵腹、韵尾、声调和笔画使用四种前景色。声调中文首选霞鹜文楷并回退到平台楷体或衬线体，桌面包不捆绑字体；移动端 PNG 在发布构建时已经栅格化，不依赖手机字体。
+移动端由 `scripts/skin/keymaps.ts` 向每套元书和同文皮肤注入统一选择页。元书使用各明暗资源目录中的 PNG 与图片描述文件；同文使用 `backgrounds/` 中的 PNG。十一份 PNG 与桌面 SVG 均由 `scripts/generate-keymaps.ts` 从同一份原生矢量定义生成，包括冰雪键道、冰雪三拼和四份初代方案，不再包装旧键位截图。图形定义沿用 README 两份“声韵辅-键映射”图的莫兰迪语义：声韵占用、纯辅键与多韵键使用独立背景、纹理和边框，韵母前景色按音系族区分；十一图的五笔辅统一使用键帽右上角绿框，五调辅与单双码形辅在键中无框显示，冰雪四拼的韵腹、韵尾、声调和笔画使用四种前景色。声调中文首选霞鹜文楷并回退到平台楷体或衬线体，桌面包不捆绑字体；移动端 PNG 在发布构建时已经栅格化，不依赖手机字体。
 
 声母位移 link 的纯算法核心来自 benchmark 仓库，并以 `scripts/vendor/keymap-link-colors.js` 固定快照进入本仓库；共享范围仅包括首选色与候选池、OKLab `0.18` 门槛、同图 link 颜色不重复、DSATUR 动态求解及最终验证。本仓库自己的 `scripts/lib/keymap-link-colors.ts` 把 `Mapping.initialMap` 适配成核心所需的语义状态，SVG/PNG 渲染、键帽粗细、W/Y 卡片样式和产物测试仍由本仓库负责；benchmark 的 HTML 注入器与浏览器全量审计器不属于共享核心。
 
 更新共享核心时，在 benchmark 仓库先完成测试与提交，再运行 `bun scripts/sync-keymap-link-colors.ts --source <shuangpin-layout-benchmark 路径>`；脚本复制上游文件并更新来源提交和 SHA-256。普通生成和 CI 只运行 `bun scripts/sync-keymap-link-colors.ts --check`，只校验仓库内快照，不依赖相邻工作树；本机需要核对两仓库时可额外传入 `--source`。
+
+README 引用的 D3/V1 与 QZ-e8f37a 两张声韵图由 `scripts/生成神韵键盘图.ts` 从 benchmark HTML 原生导出；十一份方案浮窗 SVG/PNG 则由本仓库生成器产生。以下命令依次更新 README 图、浮窗图并执行结构与配色审计：
+
+```powershell
+$benchmark = "D:\path\to\shuangpin-layout-benchmark"
+bun scripts/生成神韵键盘图.ts "$benchmark\a7_CKT_R11.html" --21x26
+bun scripts/生成神韵键盘图.ts "$benchmark\a7_CKT_R11.html"
+bun scripts/generate-keymaps.ts
+bun test --cwd scripts fixed-corpus/test/keymap-link-colors.test.ts fixed-corpus/test/keymaps.test.ts
+```
+
+若 Windows 上 Playwright 的浏览器调试管道无法握手，可先以隐藏窗口启动本机 Edge CDP，再给两条导出命令追加 `--cdp=http://127.0.0.1:9333`；该模式仍由脚本创建独立页面并等待 benchmark 就绪，不会绕过原生导出和配色逻辑。
+
+```powershell
+$profile = Join-Path $env:TEMP "snow-keymap-cdp-9333"
+New-Item -ItemType Directory -Path $profile -Force | Out-Null
+Start-Process -FilePath "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -ArgumentList @("--headless=new", "--disable-gpu", "--no-first-run", "--remote-debugging-port=9333", "--user-data-dir=$profile", "about:blank") -WindowStyle Hidden
+```
 
 本机开发时运行：
 
