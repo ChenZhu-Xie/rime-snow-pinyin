@@ -380,10 +380,14 @@ patch:
     - name: buffered
       states: [结束, 缓冲]
       reset: 0
+    - name: unicode
+      states: [隐藏, 注解]
+      reset: 0
     - name: add
       states: [结束, 加词中]
       reset: 0
   key_binder/bindings/+:
+    - { when: always, accept: "Control+q", toggle: unicode }
     - { when: composing, accept: bracketright, send: Page_Down }
     - { when: composing, accept: bracketleft, send: Page_Up }
   menu/alternative_select_keys: null

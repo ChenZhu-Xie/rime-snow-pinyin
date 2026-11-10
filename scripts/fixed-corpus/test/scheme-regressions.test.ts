@@ -365,9 +365,22 @@ test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme
 
 test("the shared key binder does not alias Ctrl+F to an arrow key", () => {
 	const schema = load(read("snow_pinyin.schema.yaml")) as {
-		key_binder: { bindings: Array<{ accept?: string }> };
+		key_binder: {
+			bindings?:
+				| Array<{ accept?: string }>
+				| { __append?: Array<{ accept?: string }> };
+			bindings_common?: Array<{ accept?: string }>;
+		};
 	};
-	const acceptedKeys = schema.key_binder.bindings.flatMap((binding) =>
+	const rawBindings = schema.key_binder.bindings;
+	const bindings = Array.isArray(rawBindings)
+		? rawBindings
+		: [
+				...(schema.key_binder.bindings_common ?? []),
+				...((rawBindings as { __append?: Array<{ accept?: string }> })
+					?.__append ?? []),
+			];
+	const acceptedKeys = bindings.flatMap((binding) =>
 		binding.accept ? [binding.accept] : [],
 	);
 	assert.ok(!acceptedKeys.includes("Control+f"));

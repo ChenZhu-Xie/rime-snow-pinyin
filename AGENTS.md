@@ -58,6 +58,8 @@
 
 一个段落、一个列表项写成一行，不按最大行长度硬换行。中文段落中间的换行在渲染时会变成多余的空格，续行前的缩进也会带进排版。只在段落、列表项、标题、表格行、代码块之间换行；列表项里的第二段照常空一行并缩进。代码块和 yaml 注释不受这条约束。
 
+中文叙述统一使用直角引号「」，嵌套引用使用『』。代码语法的引号、输入方案实际输出的标点及其说明保留原字符。
+
 ## 开发脚本
 
 依赖安装在 `scripts/`：`bun install --cwd scripts`。以下命令在仓库根目录运行；脚本通过 `lib/paths.ts` 定位仓库资源，显式传入的相对路径按调用目录解析。`generate-*` 生成数据，`export-*` 导出已有数据；公共逻辑、源数据、皮肤生成和实验工具分别放在 `scripts/lib/`、`scripts/data/`、`scripts/skin/`、`scripts/experiments/`。
@@ -278,7 +280,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
     - lua_processor@*snow.schema_menu*processor # 仅冰雪一拼；须先于 chord_composer 接收筛选字母
     - chord_composer                        # 仅冰雪一拼
     - lua_processor@*snow.shape_processor    # 冰雪清韵无
-    - lua_processor@*snow.abbreviation      # 仅冰雪四拼
+    - lua_processor@*snow.abbreviation      # 仅冰雪四拼、冰雪简道、冰雪散拼及两套初代双拼方案
     - lua_processor@*snow.select_character  # 冰雪一拼无
     - lua_processor@*snow.popping           # 冰雪一拼用 combo_popping
     - recognizer

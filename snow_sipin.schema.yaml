@@ -194,6 +194,9 @@ patch:
     - name: buffered
       states: [结束, 缓冲]
       reset: 0
+    - name: unicode
+      states: [隐藏, 注解]
+      reset: 0
     - name: add
       states: [结束, 加词中]
       reset: 0
@@ -215,4 +218,5 @@ patch:
     - { when: has_menu, accept: 6, send_sequence: "{Shift+Right}{Shift+Right}{Shift+Right}{Shift+Right}" }
     - { when: has_menu, accept: 7, send_sequence: "{End}" }
     - { when: composing, accept: e, send: e }
+    - { when: always, accept: "Control+q", toggle: unicode }
   menu/alternative_select_keys: "_23890"

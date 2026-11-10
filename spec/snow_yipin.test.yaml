@@ -54,7 +54,12 @@ deploy:
         assert: cand[1].text:match("^📊 .* · ") ~= nil
   buffered:
     tests:
-      # 右手并击 jio 等效于公共 Ctrl+B，直接开启缓冲
+      # Control+b 开启缓冲，再按一次关闭，恢复音节间顶屏
+      - send: "{Control+b}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}"
+        assert: commit == nil and cand[1].text == "雪"
+      - send: "{Control+b}{Control+b}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}"
+        assert: commit == "冰" and cand[1].text == "雪"
+      # 右手并击 jio 直接开启缓冲，不产生文字或命令候选
       - send: jio{Release+j}{Release+i}{Release+o}
         assert: commit == nil and preedit == nil
       # 连续两组音节只确认前一组，不提前上屏
@@ -63,9 +68,9 @@ deploy:
       # 左手一简字也留在缓冲区
       - send: jio{Release+j}{Release+i}{Release+o}f{Release+f}d{Release+d}
         assert: commit == nil and preedit == "的一"
-      # 已开启时再次并击直接关闭缓冲
-      - send: jio{Release+j}{Release+i}{Release+o}jio{Release+j}{Release+i}{Release+o}
-        assert: commit == nil and preedit == nil
+      # 再次并击关闭缓冲，恢复音节间顶屏，与两次 Control+b 一致
+      - send: jio{Release+j}{Release+i}{Release+o}jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
+        assert: commit == "冰" and cand[1].text == "雪"
       # 两次空格上屏整句，随后恢复普通顶屏
       - send: jio{Release+j}{Release+i}{Release+o}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{space}{Release+space}{space}{Release+space}sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}
         assert: commit == "冰雪冰" and cand[1].text == "雪"
