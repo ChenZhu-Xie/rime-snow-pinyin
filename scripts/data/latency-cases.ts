@@ -311,13 +311,13 @@ for (const [schema, keys, commit, source] of [
 	[
 		"snow_sanpin",
 		"bkxelrf_smxw_khrmGHG_.",
-		"冰雪输入法充满希望中华人民共和国。",
+		"冰雪输入法充满希望中华人民共和国主席。",
 		"spec/snow_sanpin.test.yaml",
 	],
 	[
 		"snow_jiandao",
 		"bkxelrf_smxw_khrmGHG_.",
-		"冰雪输入法充满希望中华人民共和国。",
+		"冰雪输入法充满希望中华人民共和国主席。",
 		"spec/snow_jiandao.test.yaml",
 	],
 	[
