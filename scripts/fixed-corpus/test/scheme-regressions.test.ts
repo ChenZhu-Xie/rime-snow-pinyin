@@ -1202,13 +1202,24 @@ test("split translators preserve native user phrase priority across routes", () 
 
 test("latency cases follow the active QZ layout and repository fixture", () => {
 	const cases = read("scripts/data/latency-cases.ts");
-	for (const code of ["btxkiu", "erfaiu", "wmxsui", "btov", "kxfkG", "khrmG"])
-		assert.ok(cases.includes(`keys: "${code}"`), `缺少当前 U357 用例 ${code}`);
+	for (const code of ["bkxeiu", "lrfaiu", "smxwui", "bkov", "pxfkG", "khrmGHG"])
+		assert.ok(cases.includes(`keys: "${code}"`), `缺少当前 QZ 用例 ${code}`);
 	const qingyun = read("snow_qingyun.schema.yaml");
 	assert.match(qingyun, /"punctuator\/full_shape\/`": null/u);
 	assert.match(qingyun, /"punctuator\/half_shape\/`": null/u);
-	for (const obsolete of ["bgxhuv", "wmxwov", "bgov", "kxfquoaaa"])
-		assert.ok(!cases.includes(obsolete), `仍有旧布局用例 ${obsolete}`);
+	for (const obsolete of [
+		"bti",
+		"btxkiu",
+		"erfaiu",
+		"wmxsui",
+		"btov",
+		"kxfkG",
+		"khrmG",
+	])
+		assert.ok(
+			!cases.includes(`keys: "${obsolete}"`),
+			`仍有旧布局用例 ${obsolete}`,
+		);
 	assert.match(
 		read("scripts/benchmark-latency.ts"),
 		/join\(source, "spec", "fixtures", "default\.yaml"\)/u,
