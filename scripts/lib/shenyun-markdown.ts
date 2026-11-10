@@ -161,9 +161,29 @@ const links = {
 	feihua: "https://input.tansongchen.com/snow-feihua/basic.html",
 	s005: "https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts",
 	benchmarkGithub:
-		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README_CN.md",
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md",
 	benchmarkGitee:
 		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md",
+	b04Github:
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段",
+	b04Gitee:
+		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段",
+	cktv4Github:
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md",
+	cktv4Gitee:
+		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md",
+	cktv3Github:
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md",
+	cktv3Gitee:
+		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md",
+	common399Github:
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399",
+	common399Gitee:
+		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399",
+	ensembleGithub:
+		"https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能",
+	ensembleGitee:
+		"https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能",
 } as const;
 
 const terms: Record<ShenyunLanguage, Array<[string, keyof typeof links]>> = {
@@ -174,19 +194,19 @@ const terms: Record<ShenyunLanguage, Array<[string, keyof typeof links]>> = {
 		["无飞键道(U357)", "u357Github"],
 		["双拼布局 Benchmark", "benchmarkGithub"],
 		["星空键道 S005", "s005"],
-		["首道 B04", "benchmarkGithub"],
+		["首道 B04", "b04Github"],
 		["飞花式四码顶", "feihua"],
-		["A7E-v6-CW150", "benchmarkGithub"],
-		["A7E-v5", "benchmarkGithub"],
-		["A7E-v4", "benchmarkGithub"],
-		["A7E-v3", "benchmarkGithub"],
-		["Common399", "benchmarkGithub"],
-		["LU-v1r", "benchmarkGithub"],
-		["FA-1", "benchmarkGithub"],
-		["CKT v4", "benchmarkGithub"],
-		["CKT v3", "benchmarkGithub"],
+		["A7E-v6-CW150", "ensembleGithub"],
+		["A7E-v5", "ensembleGithub"],
+		["A7E-v4", "ensembleGithub"],
+		["A7E-v3", "ensembleGithub"],
+		["Common399", "common399Github"],
+		["LU-v1r", "ensembleGithub"],
+		["FA-1", "ensembleGithub"],
+		["CKT v4", "cktv4Github"],
+		["CKT v3", "cktv3Github"],
 		["S005", "s005"],
-		["B04", "benchmarkGithub"],
+		["B04", "b04Github"],
 	],
 	en: [
 		["Shenyun(Overall-17) 21×26 double pinyin", "overallGithub"],
@@ -196,7 +216,7 @@ const terms: Record<ShenyunLanguage, Array<[string, keyof typeof links]>> = {
 		["Shuangpin Layout Benchmark", "benchmarkGithub"],
 		["Feihua four-code-top", "feihua"],
 		["S005", "s005"],
-		["B04", "benchmarkGithub"],
+		["B04", "b04Github"],
 	],
 	zht: [
 		["神韻(Overall-17) 21×26 雙拼", "overallGithub"],
@@ -206,7 +226,7 @@ const terms: Record<ShenyunLanguage, Array<[string, keyof typeof links]>> = {
 		["雙拼布局 Benchmark", "benchmarkGithub"],
 		["飛花式四碼頂", "feihua"],
 		["S005", "s005"],
-		["B04", "benchmarkGithub"],
+		["B04", "b04Github"],
 	],
 };
 
@@ -215,6 +235,11 @@ const resolveLink = (key: keyof typeof links, host: LinkHost) => {
 		if (key === "overallGithub") return links.overallGitee;
 		if (key === "u357Github") return links.u357Gitee;
 		if (key === "benchmarkGithub") return links.benchmarkGitee;
+		if (key === "b04Github") return links.b04Gitee;
+		if (key === "cktv4Github") return links.cktv4Gitee;
+		if (key === "cktv3Github") return links.cktv3Gitee;
+		if (key === "common399Github") return links.common399Gitee;
+		if (key === "ensembleGithub") return links.ensembleGitee;
 	}
 	return links[key];
 };
@@ -240,7 +265,7 @@ export function linkShenyunTerms(
 	);
 	const protectedFragments: string[] = [];
 	const protectedMarkdown = markdown.replace(
-		/!?\[[^\]]*\]\([^)]+\)|`[^`]*`/gu,
+		/!?\[[^\]]*\]\([^)]+\)|``[\s\S]*?``|`[^`\n]+`/gu,
 		(fragment) => {
 			const index = protectedFragments.push(fragment) - 1;
 			return `\u0000${index}\u0000`;
