@@ -1,17 +1,25 @@
 import type { KeyboardCollection } from "./types";
 
+const jiandaoKeys = [
+	["snow_jiandao_classic", "键道"],
+	["snow_jiandao", "健道"],
+	["snow_shenyun_shape", "简道"],
+] as const;
+
+const sanpinKeys = [
+	["snow_sanpin_classic", "三拼"],
+	["snow_sanpin", "弎拼"],
+	["snow_shenyun_tone", "散拼"],
+] as const;
+
 export const keymapSchemes = [
-	["snow_sipin", "冰雪四拼"],
-	["snow_sanpin", "冰雪弎拼"],
-	["snow_jiandao", "冰雪健道"],
-	["snow_shenyun_shape", "冰雪简道"],
-	["snow_shenyun_tone", "冰雪散拼"],
-	["snow_jiandao_classic", "冰雪键道"],
-	["snow_sanpin_classic", "冰雪三拼"],
-	["snow_jiandao_first", "冰雪健道·初代"],
-	["snow_sanpin_first", "冰雪弎拼·初代"],
-	["snow_shenyun_shape_first", "冰雪简道·初代"],
-	["snow_shenyun_tone_first", "冰雪散拼·初代"],
+	["snow_sipin", "四拼"],
+	...jiandaoKeys,
+	["snow_jiandao_first", "健初"],
+	["snow_shenyun_shape_first", "简初"],
+	...sanpinKeys,
+	["snow_sanpin_first", "弎初"],
+	["snow_shenyun_tone_first", "散初"],
 ] as const;
 
 export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
@@ -21,14 +29,36 @@ export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 			colorful: false,
 			label: true,
 			keyInfos: [
-				keymapSchemes.slice(0, 6).map(([id, name]) => ({
-					action: `!keymap_${id}`,
-					label: name,
-				})),
-				keymapSchemes.slice(6).map(([id, name]) => ({
-					action: `!keymap_${id}`,
-					label: name,
-				})),
+				[
+					{ action: "!keymap_snow_sipin", label: "四拼" },
+					{ action: "!pinyin", label: "返回" },
+				],
+				[
+					...jiandaoKeys.map(([id, name]) => ({
+						action: `!keymap_${id}`,
+						label: name,
+					})),
+					{
+						action: "!keymap_snow_jiandao_first",
+						stack: [
+							{ action: "!keymap_snow_jiandao_first", label: "健初" },
+							{ action: "!keymap_snow_shenyun_shape_first", label: "简初" },
+						],
+					},
+				],
+				[
+					...sanpinKeys.map(([id, name]) => ({
+						action: `!keymap_${id}`,
+						label: name,
+					})),
+					{
+						action: "!keymap_snow_sanpin_first",
+						stack: [
+							{ action: "!keymap_snow_sanpin_first", label: "弎初" },
+							{ action: "!keymap_snow_shenyun_tone_first", label: "散初" },
+						],
+					},
+				],
 			],
 		},
 		...Object.fromEntries(

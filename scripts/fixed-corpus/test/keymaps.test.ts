@@ -196,7 +196,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 		},
 	});
 	assert.equal(Object.keys(keyboards).length, 13);
-	assert.equal(keyboards.keymaps.keyInfos.flat().length, 11);
+	assert.equal(keyboards.keymaps.keyInfos.flat().length, 10);
 	const mobileImageKey = keyboards.keymap_snow_sipin.keyInfos[0][0] as {
 		action: string;
 		up?: string;
@@ -248,9 +248,10 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.ok(trimeImageKey.long_click);
 	assert.equal(trime.preset_keys[trimeImageKey.long_click].select, undefined);
 	const sipinSelector = trime.preset_keyboards.keymaps.keys[0].click;
-	assert.equal(trime.preset_keys[sipinSelector].label, "冰雪四拼");
-	const firstSelector = trime.preset_keyboards.keymaps.keys.at(-1)?.click;
-	assert.equal(trime.preset_keys[firstSelector ?? ""].label, "冰雪散拼·初代");
+	assert.equal(trime.preset_keys[sipinSelector].label, "四拼");
+	const lastKey = trime.preset_keyboards.keymaps.keys.at(-1);
+	assert.equal(trime.preset_keys[lastKey?.swipe_up ?? ""].label, "弎初");
+	assert.equal(trime.preset_keys[lastKey?.swipe_down ?? ""].label, "散初");
 });
 
 test("active diagrams identify QZ-e8f37a and D3/V1 while initial diagrams stay frozen", () => {

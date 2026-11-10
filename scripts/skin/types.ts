@@ -19,6 +19,7 @@ export interface KeyInfo {
 	hold?: string;
 	image?: string;
 	width?: string;
+	stack?: KeyInfo[];
 }
 
 export type KeyboardType =

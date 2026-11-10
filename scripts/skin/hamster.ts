@@ -583,104 +583,118 @@ function makeKeyboardLayoutStyles(config: Config): Collection {
 		};
 		styles[`color${index}Alt`] = altBackgroundStyle;
 	}
+	const registerKey = (key: KeyInfo, keyIndex: number, rowLength: number) => {
+		const isCharacter = key.action.length === 1;
+		const isAlphabet = /^[a-zA-Z]$/.test(key.action);
+		const name = key.name ?? key.action;
+		const action = parseAction(key.action, config.symbol);
+		const foregroundStyle: string[] = [];
+		if (key.image) {
+			const imageName = `${name}Image`;
+			foregroundStyle.push(imageName);
+			styles[imageName] = {
+				buttonStyleType: "fileImage",
+				contentMode: "scaleAspectFit",
+				normalImage: { file: key.image, image: key.image },
+			};
+		} else if (action !== "space") {
+			// label
+			const labelName = `${name}Label`;
+			foregroundStyle.push(labelName);
+			if (isCharacter) {
+				styles[labelName] = {
+					...structuredClone(mainLabel),
+					text: key.label ?? key.action,
+				};
+			} else if (key.label && !materialIcons[key.label]) {
+				styles[labelName] = {
+					...structuredClone(mainLabel),
+					text: key.label,
+				};
+			} else {
+				styles[labelName] = {
+					...structuredClone(fnLabel),
+					systemImageName: systemImageName(key.label ?? key.action),
+				};
+			}
+		}
+		let swipeUpAction: Action | undefined;
+		let swipeDownAction: Action | undefined;
+		const repeatAction = key.hold
+			? parseAction(key.hold, config.symbol)
+			: undefined;
+		if (key.up || isAlphabet) {
+			const up = key.up ?? key.action.toUpperCase();
+			const swipeUpName = `${name}SwipeUp`;
+			foregroundStyle.push(swipeUpName);
+			styles[swipeUpName] = {
+				...structuredClone(upSwipe),
+				text: key.upLabel ?? up,
+			};
+			swipeUpAction = parseAction(up, config.symbol);
+		}
+		if (key.down) {
+			const swipeDownName = `${name}SwipeDown`;
+			foregroundStyle.push(swipeDownName);
+			styles[swipeDownName] = {
+				...structuredClone(downSwipe),
+				text: key.downLabel ?? key.down,
+			};
+			swipeDownAction = parseAction(key.down, config.symbol);
+		}
+		let backgroundStyle: string;
+		if (isCharacter) {
+			if (isAlphabet && config.colorful) {
+				const specialCharacters = config.specialCharacters ?? "aeiou";
+				backgroundStyle = specialCharacters.includes(key.action)
+					? `color${keyIndex}Alt`
+					: `color${keyIndex}`;
+			} else {
+				backgroundStyle = "mainBackground";
+			}
+		} else {
+			backgroundStyle = "fnBackground";
+		}
+		const c: Cell = {
+			size: { width: key.width ?? `1/${rowLength}` },
+			backgroundStyle,
+			foregroundStyle,
+			action,
+			repeatAction,
+			swipeUpAction,
+			swipeDownAction,
+		};
+		if (isAlphabet) {
+			const shiftName = `${name}Shift`;
+			styles[shiftName] = {
+				...structuredClone(mainLabel),
+				text: key.action.toUpperCase(),
+			};
+			const foreground = [...c.foregroundStyle];
+			foreground[0] = shiftName;
+			c.uppercasedStateForegroundStyle = foreground;
+			c.capsLockedStateForegroundStyle = structuredClone(foreground);
+			c.uppercasedStateAction = parseAction(
+				key.action.toUpperCase(),
+				config.symbol,
+			);
+		}
+		styles[name] = c;
+	};
+
 	for (const row of config.keyInfos) {
 		for (const [keyIndex, key] of row.entries()) {
-			const isCharacter = key.action.length === 1;
-			const isAlphabet = /^[a-zA-Z]$/.test(key.action);
-			const name = key.name ?? key.action;
-			const action = parseAction(key.action, config.symbol);
-			const foregroundStyle: string[] = [];
-			if (key.image) {
-				const imageName = `${name}Image`;
-				foregroundStyle.push(imageName);
-				styles[imageName] = {
-					buttonStyleType: "fileImage",
-					contentMode: "scaleAspectFit",
-					normalImage: { file: key.image, image: key.image },
-				};
-			} else if (action !== "space") {
-				// label
-				const labelName = `${name}Label`;
-				foregroundStyle.push(labelName);
-				if (isCharacter) {
-					styles[labelName] = {
-						...structuredClone(mainLabel),
-						text: key.label ?? key.action,
-					};
-				} else if (key.label && !materialIcons[key.label]) {
-					styles[labelName] = {
-						...structuredClone(mainLabel),
-						text: key.label,
-					};
-				} else {
-					styles[labelName] = {
-						...structuredClone(fnLabel),
-						systemImageName: systemImageName(key.label ?? key.action),
-					};
-				}
-			}
-			let swipeUpAction: Action | undefined;
-			let swipeDownAction: Action | undefined;
-			const repeatAction = key.hold
-				? parseAction(key.hold, config.symbol)
-				: undefined;
-			if (key.up || isAlphabet) {
-				const up = key.up ?? key.action.toUpperCase();
-				const swipeUpName = `${name}SwipeUp`;
-				foregroundStyle.push(swipeUpName);
-				styles[swipeUpName] = {
-					...structuredClone(upSwipe),
-					text: key.upLabel ?? up,
-				};
-				swipeUpAction = parseAction(up, config.symbol);
-			}
-			if (key.down) {
-				const swipeDownName = `${name}SwipeDown`;
-				foregroundStyle.push(swipeDownName);
-				styles[swipeDownName] = {
-					...structuredClone(downSwipe),
-					text: key.downLabel ?? key.down,
-				};
-				swipeDownAction = parseAction(key.down, config.symbol);
-			}
-			let backgroundStyle: string;
-			if (isCharacter) {
-				if (isAlphabet && config.colorful) {
-					const specialCharacters = config.specialCharacters ?? "aeiou";
-					backgroundStyle = specialCharacters.includes(key.action)
-						? `color${keyIndex}Alt`
-						: `color${keyIndex}`;
-				} else {
-					backgroundStyle = "mainBackground";
+			if (key.stack) {
+				for (const subKey of key.stack) {
+					registerKey(
+						{ ...subKey, width: key.width ?? `1/${row.length}` },
+						keyIndex,
+						row.length,
+					);
 				}
 			} else {
-				backgroundStyle = "fnBackground";
+				registerKey(key, keyIndex, row.length);
 			}
-			const c: Cell = {
-				size: { width: key.width ?? `1/${row.length}` },
-				backgroundStyle,
-				foregroundStyle,
-				action,
-				repeatAction,
-				swipeUpAction,
-				swipeDownAction,
-			};
-			if (isAlphabet) {
-				const shiftName = `${name}Shift`;
-				styles[shiftName] = {
-					...structuredClone(mainLabel),
-					text: key.action.toUpperCase(),
-				};
-				const foreground = [...c.foregroundStyle];
-				foreground[0] = shiftName;
-				c.uppercasedStateForegroundStyle = foreground;
-				c.capsLockedStateForegroundStyle = structuredClone(foreground);
-				c.uppercasedStateAction = parseAction(
-					key.action.toUpperCase(),
-					config.symbol,
-				);
-			}
-			styles[name] = c;
 		}
 	}
 	return styles;
@@ -1014,7 +1028,17 @@ function makeKeyboardLayout(
 	};
 	const keyboardLayout: Layout = config.keyInfos.map((row) => {
 		return {
-			HStack: { subviews: row.map((x) => ({ Cell: x.name ?? x.action })) },
+			HStack: {
+				subviews: row.map((x) =>
+					x.stack
+						? {
+								VStack: {
+									subviews: x.stack.map((s) => ({ Cell: s.name ?? s.action })),
+								},
+							}
+						: { Cell: x.name ?? x.action },
+				),
+			},
 		};
 	});
 	return [keyboardLayout, keyboardStyle, styles];
@@ -1104,32 +1128,60 @@ export function makeHamsterSkinPreview(config: Omit<Config, "dark">): Buffer {
 			let x = 0;
 			const y = header + rowIndex * rowHeight;
 			for (const key of row) {
-				const cell = skin[key.name ?? key.action] as Cell;
 				const [numerator, denominator] = (key.width ?? `1/${row.length}`)
 					.split("/")
 					.map(Number);
 				const keyWidth = (width * numerator) / denominator;
-				const background = skin[
-					cell.backgroundStyle ?? "mainBackground"
-				] as GeometryStyle;
-				const color = background.normalColor.replace(/^#/, "");
-				parts.push(
-					`<rect x="${x + 2}" y="${y + 2}" width="${keyWidth - 4}" height="${rowHeight - 4}" rx="${background.cornerRadius}" fill="#${color}"/>`,
-				);
-				const foregrounds = Array.isArray(cell.foregroundStyle)
-					? cell.foregroundStyle
-					: [cell.foregroundStyle];
-				for (const reference of foregrounds) {
-					const style = skin[reference] as TextStyle | SystemImageStyle;
-					const center =
-						style.buttonStyleType === "text" ? style.center : undefined;
-					const text =
-						style.buttonStyleType === "text"
-							? style.text
-							: (iconLabels[key.label ?? key.action] ?? key.action);
+				if (key.stack && key.stack.length > 0) {
+					const subHeight = (rowHeight - 4) / key.stack.length;
+					for (const [subIndex, subKey] of key.stack.entries()) {
+						const subY = y + 2 + subIndex * subHeight;
+						const subCell = skin[subKey.name ?? subKey.action] as Cell;
+						const background = skin[
+							subCell.backgroundStyle ?? "fnBackground"
+						] as GeometryStyle;
+						const color = background.normalColor.replace(/^#/, "");
+						parts.push(
+							`<rect x="${x + 2}" y="${subY + 1}" width="${keyWidth - 4}" height="${subHeight - 2}" rx="${background.cornerRadius}" fill="#${color}"/>`,
+						);
+						const foregrounds = Array.isArray(subCell.foregroundStyle)
+							? subCell.foregroundStyle
+							: [subCell.foregroundStyle];
+						for (const reference of foregrounds) {
+							const style = skin[reference] as TextStyle | SystemImageStyle;
+							const text =
+								style.buttonStyleType === "text"
+									? style.text
+									: (subKey.label ?? subKey.action);
+							parts.push(
+								`<text x="${x + keyWidth * 0.5}" y="${subY + subHeight * 0.5}" dy="0.35em" text-anchor="middle" font-size="13" font-weight="500" fill="#${style.normalColor.replace(/^#/, "")}">${escapeXml(text)}</text>`,
+							);
+						}
+					}
+				} else {
+					const cell = skin[key.name ?? key.action] as Cell;
+					const background = skin[
+						cell.backgroundStyle ?? "mainBackground"
+					] as GeometryStyle;
+					const color = background.normalColor.replace(/^#/, "");
 					parts.push(
-						`<text x="${x + keyWidth * (center?.x ?? 0.5)}" y="${y + rowHeight * (center?.y ?? 0.5)}" dy="0.35em" text-anchor="middle" font-size="${style.fontSize}" fill="#${style.normalColor.replace(/^#/, "")}">${escapeXml(text)}</text>`,
+						`<rect x="${x + 2}" y="${y + 2}" width="${keyWidth - 4}" height="${rowHeight - 4}" rx="${background.cornerRadius}" fill="#${color}"/>`,
 					);
+					const foregrounds = Array.isArray(cell.foregroundStyle)
+						? cell.foregroundStyle
+						: [cell.foregroundStyle];
+					for (const reference of foregrounds) {
+						const style = skin[reference] as TextStyle | SystemImageStyle;
+						const center =
+							style.buttonStyleType === "text" ? style.center : undefined;
+						const text =
+							style.buttonStyleType === "text"
+								? style.text
+								: (iconLabels[key.label ?? key.action] ?? key.action);
+						parts.push(
+							`<text x="${x + keyWidth * (center?.x ?? 0.5)}" y="${y + rowHeight * (center?.y ?? 0.5)}" dy="0.35em" text-anchor="middle" font-size="${style.fontSize}" fill="#${style.normalColor.replace(/^#/, "")}">${escapeXml(text)}</text>`,
+						);
+					}
 				}
 				x += keyWidth;
 			}
@@ -1167,7 +1219,13 @@ export function generateHamsterSkin(
 		const images = new Set(
 			Object.values(keyboards).flatMap((config) =>
 				config.keyInfos.flatMap((row) =>
-					row.flatMap((key) => (key.image ? [key.image] : [])),
+					row.flatMap((key) =>
+						key.stack
+							? key.stack.flatMap((s) => (s.image ? [s.image] : []))
+							: key.image
+								? [key.image]
+								: [],
+					),
 				),
 			),
 		);

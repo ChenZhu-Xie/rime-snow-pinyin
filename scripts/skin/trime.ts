@@ -255,6 +255,33 @@ function makeKeyboard(
 	};
 	for (const row of config.keyInfos) {
 		for (const [index, key] of row.entries()) {
+			if (key.stack && key.stack.length >= 2) {
+				const top = key.stack[0];
+				const bottom = key.stack[1];
+				const [numerator, denominator] = (key.width ?? `1/${row.length}`)
+					.split("/")
+					.map(Number);
+				const width = (100 * numerator) / denominator;
+				if (!Number.isFinite(width) || width <= 0 || width > 100) {
+					throw new Error(`无效的同文按键宽度：${key.width}`);
+				}
+				const click = addAction(top.action, top.label);
+				const swipe_up = addAction(top.action, top.label);
+				const swipe_down = addAction(bottom.action, bottom.label);
+				const rendered: TrimeKey = {
+					click,
+					width,
+					swipe_up,
+					label_symbol: top.label,
+					swipe_down,
+					hint: bottom.label,
+					long_click: swipe_down,
+					key_back_color: "fn_back",
+					hilited_key_back_color: "fn_hilited",
+				};
+				keys.push(rendered);
+				continue;
+			}
 			const isAlphabet = /^[a-z]$/.test(key.action);
 			const isCharacter = key.action.length === 1;
 			const up = key.up ?? (isAlphabet ? key.action.toUpperCase() : undefined);
