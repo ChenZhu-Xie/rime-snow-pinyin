@@ -4,6 +4,7 @@ import {
 	appendFileSync,
 	constants,
 	copyFileSync,
+	existsSync,
 	mkdirSync,
 	mkdtempSync,
 	readFileSync,
@@ -250,6 +251,7 @@ async function main() {
 	let binary = "rime_api_console";
 	let output = resolve("output/latency");
 	let ref = "";
+	let shared = "";
 	let maxP99 = Number.POSITIVE_INFINITY;
 	let casePattern = /./;
 	for (let i = 0; i < args.length; i++) {
@@ -267,6 +269,7 @@ async function main() {
 		else if (arg === "--output-dir") output = resolve(value());
 		else if (arg === "--ref") ref = value();
 		else if (arg === "--case") casePattern = new RegExp(value());
+		else if (arg === "--shared-data") shared = resolve(value());
 		else if (arg === "--max-p99-ms") maxP99 = Number(value());
 		else if (arg.startsWith("--")) throw new Error(`未知参数：${arg}`);
 		else names.push(arg.startsWith("snow_") ? arg : `snow_${arg}`);
@@ -301,6 +304,17 @@ async function main() {
 	if (!found)
 		throw new Error(`找不到 ${binary}；需要带 librime-lua 的 rime_api_console`);
 	binary = realpathSync(found);
+	if (!shared)
+		shared =
+			[
+				"/Library/Input Methods/Squirrel.app/Contents/SharedSupport",
+				"/usr/share",
+				"/usr/local/share",
+				"/usr/share/rime-data",
+				"/usr/local/share/rime-data",
+			].find((dir) => existsSync(join(dir, "opencc"))) ?? "";
+	if (!shared || !existsSync(join(shared, "opencc")))
+		throw new Error("请用 --shared-data 指定含 opencc/ 的共享数据目录");
 	mkdirSync(output, { recursive: true });
 	const base = mkdtempSync(join(tmpdir(), "snow-latency-"));
 	const source = join(base, "source");
@@ -496,6 +510,7 @@ async function main() {
 				/snow.version = "([^"]+)"/,
 			)?.[1],
 			binary,
+			shared,
 			rounds,
 			casePattern: casePattern.source,
 			casesSha256: new Bun.CryptoHasher("sha256")

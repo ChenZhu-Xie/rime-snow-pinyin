@@ -15,6 +15,9 @@ permissions:
   contents: write
 
 jobs:
+  functional:
+    name: 发布前功能门禁
+    uses: ./.github/workflows/functional.yml
   latency:
     name: 发布前性能门禁
     uses: ./.github/workflows/latency.yml
@@ -60,7 +63,7 @@ jobs:
           if-no-files-found: error
   build:
     name: 发布
-    needs: [latency, keymap-helper]
+    needs: [functional, latency, keymap-helper]
     runs-on: ubuntu-26.04
     steps:
       - name: 获取代码
@@ -82,7 +85,9 @@ jobs:
         with:
           bun-version: 1.3.14
       - name: 核对发布标签和全部版本号
-        run: bun scripts/version.ts --check "$GITHUB_REF_NAME"
+        env:
+          RELEASE_VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+        run: bun scripts/version.ts --check "$RELEASE_VERSION"
       - name: 打包用户安装包
         run: |
           cp deps/rime-radical-pinyin/radical_pinyin.{schema,dict}.yaml .

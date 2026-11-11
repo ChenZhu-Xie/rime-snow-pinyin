@@ -50,7 +50,7 @@ jobs:
           mkdir -p output/latency-runtime/librime/data/minimal/opencc
           cp -a /usr/share/opencc/. output/latency-runtime/librime/data/minimal/opencc/
       - name: 检查五个方案的统一性能预算
-        run: bun scripts/benchmark-latency.ts --ci --console output/latency-runtime/build/bin/rime_api_console --output-dir output/latency-ci
+        run: bun scripts/benchmark-latency.ts --ci --console output/latency-runtime/build/bin/rime_api_console --shared-data output/latency-runtime/librime/data/minimal --output-dir output/latency-ci
       - name: 展示性能结果
         if: always()
         run: |

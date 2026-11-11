@@ -238,6 +238,9 @@ patch:
     - name: buffered
       states: [结束, 缓冲]
       reset: 0
+    - name: unicode
+      states: [隐藏, 注解]
+      reset: 0
     - name: add
       states: [结束, 加词中]
       reset: 0
@@ -259,6 +262,7 @@ patch:
     "\\": 、
   key_binder/bindings/+:
     - { when: composing, accept: v, send: v }
+    - { when: always, accept: "Control+q", toggle: unicode }
   menu/alternative_select_keys: "_23890"
   stroke/prism: snow_sanpin_bihua
   stroke/preedit_format: [xlit/ivuao/一丨丿丶乙/]

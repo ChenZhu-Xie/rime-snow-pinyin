@@ -2,6 +2,7 @@ import { expect, test } from "bun:test";
 import { spawnSync } from "node:child_process";
 import {
 	chmodSync,
+	mkdirSync,
 	mkdtempSync,
 	readFileSync,
 	rmSync,
@@ -17,6 +18,8 @@ test.skipIf(process.platform === "win32")(
 		const dir = mkdtempSync(join(tmpdir(), "snow-failure-log-"));
 		try {
 			const binary = join(dir, "console");
+			const shared = join(dir, "shared");
+			mkdirSync(join(shared, "opencc"), { recursive: true });
 			writeFileSync(
 				binary,
 				`#!/usr/bin/env bun
@@ -47,6 +50,8 @@ for await (const line of createInterface({ input: process.stdin })) {
 					"2",
 					"--console",
 					binary,
+					"--shared-data",
+					shared,
 					"--output-dir",
 					output,
 				],

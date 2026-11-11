@@ -1,0 +1,163 @@
+name: 功能与词典检查
+
+on:
+  workflow_call:
+    inputs:
+      schema:
+        description: 只测试指定 schema_id；留空则测试全部方案
+        required: false
+        type: string
+        default: ''
+      deploy:
+        description: 只运行指定 deploy；留空则运行全部场景
+        required: false
+        type: string
+        default: ''
+  workflow_dispatch:
+    inputs:
+      schema:
+        description: 只测试指定 schema_id；留空则测试全部方案
+        required: false
+        type: string
+      deploy:
+        description: 只运行指定 deploy；留空则运行全部场景
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  dictionary:
+    name: 脚本、词典与版本检查
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 获取代码
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: 安装 Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - name: 安装脚本依赖
+        run: bun install --cwd scripts --frozen-lockfile
+      - name: 核对全部版本号
+        run: bun scripts/version.ts --check
+      - name: 检查发布脚本
+        run: bun test scripts/benchmark-latency.test.ts scripts/version.test.ts scripts/workflows.test.ts
+      - name: 检查九个方案的全部拼音音节编码
+        run: bun scripts/check-pinyin-dict.ts
+
+  validate-shenyun:
+    name: 核验神韵双拼映射
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 获取代码
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: 安装 Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - name: 安装校验依赖
+        working-directory: scripts
+        run: bun install --frozen-lockfile
+      - name: 批量核验映射和固顶词
+        run: |
+          bun scripts/生成神韵固顶词.ts --check
+          bun scripts/生成三拼简词.ts --check
+          bun scripts/验证神韵双拼.ts
+
+  keymaps:
+    name: 键位图桌面 helper 与移动皮肤
+    runs-on: ubuntu-24.04
+    steps:
+      - name: 获取代码
+        uses: actions/checkout@v4
+      - name: 安装 Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - name: 安装脚本依赖
+        run: bun install --cwd scripts --frozen-lockfile
+      - name: 检查移动皮肤
+        run: |
+          bun run --cwd scripts typecheck
+          bun test --cwd scripts fixed-corpus/test/keymaps.test.ts
+      - name: 安装 Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: 检查桌面 helper
+        run: cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml
+
+  test:
+    name: ${{ matrix.scheme.name }} / librime ${{ matrix.runtime.version }}
+    needs: [dictionary, validate-shenyun, keymaps]
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime:
+          - version: 1.13.1
+            asset: mira-rime1.13.1
+          - version: '1.17'
+            asset: mira-rime1.17
+        scheme:
+          - name: 冰雪四拼
+            schema: snow_sipin
+          - name: 冰雪弎拼
+            schema: snow_sanpin
+          - name: 冰雪弎拼·初代
+            schema: snow_sanpin_first
+          - name: 冰雪一拼
+            schema: snow_yipin
+          - name: 冰雪健道
+            schema: snow_jiandao
+          - name: 冰雪健道·初代
+            schema: snow_jiandao_first
+          - name: 冰雪清韵
+            schema: snow_qingyun
+          - name: 冰雪简道
+            schema: snow_shenyun_shape
+          - name: 冰雪简道·初代
+            schema: snow_shenyun_shape_first
+          - name: 冰雪散拼
+            schema: snow_shenyun_tone
+          - name: 冰雪散拼·初代
+            schema: snow_shenyun_tone_first
+          - name: 冰雪键道
+            schema: snow_jiandao_classic
+          - name: 冰雪三拼
+            schema: snow_sanpin_classic
+    steps:
+      - name: 获取代码
+        if: inputs.schema == '' || inputs.schema == matrix.scheme.schema
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: 准备方案依赖
+        if: inputs.schema == '' || inputs.schema == matrix.scheme.schema
+        run: |
+          cp spec/fixtures/default.yaml default.yaml
+          sudo apt-get update
+          sudo apt-get install --yes opencc
+          mkdir -p opencc
+          cp /usr/share/opencc/* opencc/
+      - name: 安装 Mira（librime ${{ matrix.runtime.version }}）
+        if: inputs.schema == '' || inputs.schema == matrix.scheme.schema
+        run: |
+          wget -O mira https://github.com/rimeinn/mira/releases/download/latest/${{ matrix.runtime.asset }}
+          chmod +x mira
+          sha256sum mira
+      - name: ${{ matrix.scheme.name }}
+        if: inputs.schema == '' || inputs.schema == matrix.scheme.schema
+        env:
+          MIRA_DEPLOY: ${{ inputs.deploy }}
+        run: |
+          cp deps/rime-radical-pinyin/radical_pinyin.{schema,dict}.yaml .
+          if [[ -n "$MIRA_DEPLOY" ]]; then
+            ./mira -C build -R "^${MIRA_DEPLOY}$" spec/${{ matrix.scheme.schema }}.test.yaml
+          else
+            ./mira -C build spec/${{ matrix.scheme.schema }}.test.yaml
+          fi

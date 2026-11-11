@@ -161,9 +161,19 @@ patch:
 
 ## 测试
 
-按键反馈性能测量见 [docs/latency.md](docs/latency.md)：`bun scripts/benchmark-latency.ts [方案]` 使用 `rime_api_console` 逐键测量。完整场景采样完成后自动更新文档中的当前结果，并在输出目录保存文档快照；分方案测量保留其他行的时间与环境，历史版本及部分场景探查不覆盖完整结果。性能测量不能与 mira 或其他基准并行运行。
+### 按键反馈延迟
 
-`bun scripts/benchmark-latency.ts --ci` 执行五方案统一发布预算（`scripts/lib/latency-budget.ts` 中的 `LATENCY_BUDGET`）：P50 < 15 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；每场景及按键位置的 P99 也须 < 50 ms，首次反馈最大值 < 100 ms。不得按方案放宽标准或用低耗时的并击按下、松开事件稀释反馈分布。CI 和发布共用 `.github/workflows/latency.yml`，发布必须依赖门禁成功。
+`bun scripts/benchmark-latency.ts [方案]` 使用带 librime-lua 的 `rime_api_console` 逐键测量，默认每场景 30 轮；依赖 Bun、`scripts/` 依赖、已初始化的部件子模块，以及含 `opencc/` 的共享数据目录。控制台从 PATH 查找，可用 `--console` 指定；共享数据自动尝试常见系统目录，也可用 `--shared-data` 指定。方案参数可省略 `snow_` 前缀，`--case` 接受场景名正则，`--output-dir` 指定输出目录，`--ref` 使用历史版本的方案、Lua、词典和对应子模块提交。
+
+```sh
+bun scripts/benchmark-latency.ts --ci  # 五方案全部场景，至少 200 轮，统一预算
+bun scripts/benchmark-latency.ts jiandao --case '^dense-prefix$' --rounds 200 --max-p99-ms 50
+bun scripts/check-latency.ts output/latency/report.json  # 复查已保存报告
+```
+
+- **环境与口径**：冻结源码，五方案串行，各场景使用独立临时目录、编译数据副本和空用户词典，不使用本机补丁或缓存；同一场景各轮共享学习结果。性能测量不能与 mira、其他基准或网站构建并行。常驻控制台每次只发一个按键事件，计时到完整候选页和只读 `print schema list` 屏障返回，包含 IPC、候选惰性生成、控制台序列化和解析，不含界面绘制、硬件、部署、断言与日志落盘；每方案另测 100 次空请求作通信开销参考，不从样本中扣除。
+- **采样与预算**：首轮 `first` 与后续 `repeat` 分开，首轮不等于清空系统页缓存后的冷启动。分位数使用 nearest rank；`scripts/lib/latency-budget.ts` 的 `LATENCY_BUDGET` 要求有效反馈 P50 < 15 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；各场景及按键位置的 P99 也须 < 50 ms，首次最大反馈 < 100 ms。不得按方案放宽、删除离群值、重跑择优，或用低耗时的并击按下、松开事件稀释分布。
+- **输出与 CI**：仅写输出目录中的 `samples.jsonl`、`report.json` 和控制台日志，不回写仓库文档。按方案、场景、事件位置、按键类型、首轮／重复轮统计分位数、最大值和超过 16／50／100 ms 的次数。超时、部署或控制台失败、按键处理或 Lua 错误、首轮结果不符、预算超限均失败；超限前先保存报告。`.github/workflows/latency.yml` 固定运行环境，在 Actions 摘要展示指标和失败项，并上传原始构件；push、PR 和发布共用，发布必须同时通过功能与性能门禁。
 
 测试位于 `spec/*.test.yaml`，由 [mira](https://github.com/rimeinn/mira) 运行。不要在本机调用 `mira` 或 `bun scripts/test.ts`；先完成本地静态、生成和语料检查并推送分支，再仅由 GitHub Actions 调用 `scripts/test.ts` 并行验证十三个发布方案。GitHub Actions 分别使用明确的 `mira-rime1.13.1` 与 `mira-rime1.17` 资产，以同时覆盖当前稳定版小狼毫和新版 librime；失败时只打印失败用例，完整输出留在它给出的临时目录里。
 

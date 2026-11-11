@@ -465,6 +465,40 @@ test("all released schemes expose manual word addition with a visible state", ()
 	}
 });
 
+test("all released schemes with Unicode components expose the shared toggle", () => {
+	for (const schema of [
+		"snow_sipin.schema.yaml",
+		"snow_sanpin.schema.yaml",
+		"snow_sanpin_first.schema.yaml",
+		"snow_sanpin_classic.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_jiandao_first.schema.yaml",
+		"snow_jiandao_classic.schema.yaml",
+		"snow_qingyun.schema.yaml",
+	]) {
+		const content = read(schema);
+		assert.match(content, /lua_filter@\*snow\.unicode\*filter/u, schema);
+		assert.match(
+			content,
+			/name: unicode\s+states: \[\s*隐藏,\s*注解\s*\]/u,
+			schema,
+		);
+		assert.match(content, /accept: "Control\+q", toggle: unicode/u, schema);
+	}
+	for (const schema of [
+		"snow_jiandao.schema.yaml",
+		"snow_jiandao_first.schema.yaml",
+		"snow_jiandao_classic.schema.yaml",
+		"snow_qingyun.schema.yaml",
+	])
+		assert.match(
+			read(schema),
+			/accept: "Control\+t", toggle: chaifen/u,
+			schema,
+		);
+});
+
 test("fixed-candidate filtering streams through codes without custom entries", () => {
 	const filter = read("lua/snow/fix.lua");
 	assert.match(filter, /if #fixed_phrases == 0 then/u);

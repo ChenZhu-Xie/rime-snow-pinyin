@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
 import { dump } from "js-yaml";
 import { rainbow } from "./palette";
-import type { Config, KeyboardCollection } from "./types";
+import type { Config, KeyboardCollection, KeyInfo } from "./types";
 
 const keymapDirectory = join(
 	dirname(fileURLToPath(import.meta.url)),
