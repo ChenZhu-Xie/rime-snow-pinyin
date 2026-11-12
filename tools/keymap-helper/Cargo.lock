@@ -1590,6 +1590,7 @@ dependencies = [
  "fs2",
  "resvg",
  "softbuffer",
+ "windows-sys 0.61.2",
  "winit",
 ]
 

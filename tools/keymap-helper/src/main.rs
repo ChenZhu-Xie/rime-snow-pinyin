@@ -20,10 +20,61 @@ use winit::event_loop::{ActiveEventLoop, EventLoop, EventLoopProxy};
 use winit::keyboard::{Key, NamedKey};
 use winit::window::{Window, WindowAttributes, WindowId, WindowLevel};
 
+#[cfg(target_os = "windows")]
+use windows_sys::Win32::Foundation::{ERROR_SUCCESS, GetLastError, SetLastError};
+#[cfg(target_os = "windows")]
+use windows_sys::Win32::UI::WindowsAndMessaging::{
+    GWL_EXSTYLE, GetWindowLongPtrW, SetWindowLongPtrW, WS_EX_TOOLWINDOW,
+};
+#[cfg(target_os = "windows")]
+use winit::platform::windows::WindowAttributesExtWindows;
+#[cfg(target_os = "windows")]
+use winit::raw_window_handle::{HasWindowHandle, RawWindowHandle};
+
 const POLL_INTERVAL: Duration = Duration::from_millis(30);
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 const MIN_ZOOM: f64 = 0.55;
 const MAX_ZOOM: f64 = 2.5;
+
+#[cfg(target_os = "windows")]
+fn tool_window_style(extended_style: isize) -> isize {
+    extended_style | WS_EX_TOOLWINDOW as isize
+}
+
+#[cfg(target_os = "windows")]
+fn mark_as_tool_window(window: &Window) -> Result<(), String> {
+    let handle = window
+        .window_handle()
+        .map_err(|error| format!("无法读取键位图窗口句柄：{error}"))?;
+    let RawWindowHandle::Win32(handle) = handle.as_raw() else {
+        return Err("键位图窗口没有 Win32 句柄".to_owned());
+    };
+    let hwnd = handle.hwnd.get() as _;
+
+    // SAFETY: hwnd belongs to this event-loop thread and remains valid for the duration of the
+    // calls. Clearing LastError distinguishes a legitimate zero style/result from API failure.
+    unsafe {
+        SetLastError(ERROR_SUCCESS);
+        let extended_style = GetWindowLongPtrW(hwnd, GWL_EXSTYLE);
+        let error = GetLastError();
+        if extended_style == 0 && error != ERROR_SUCCESS {
+            return Err(format!("无法读取键位图窗口样式：系统错误 {error}"));
+        }
+
+        SetLastError(ERROR_SUCCESS);
+        let previous = SetWindowLongPtrW(hwnd, GWL_EXSTYLE, tool_window_style(extended_style));
+        let error = GetLastError();
+        if previous == 0 && error != ERROR_SUCCESS {
+            return Err(format!("无法将键位图声明为工具窗口：系统错误 {error}"));
+        }
+    }
+    Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+fn mark_as_tool_window(_window: &Window) -> Result<(), String> {
+    Ok(())
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum CommandAction {
@@ -629,10 +680,17 @@ impl ApplicationHandler<UserEvent> for App {
             .with_visible(false)
             .with_active(false)
             .with_window_level(WindowLevel::AlwaysOnTop);
+        #[cfg(target_os = "windows")]
+        let attributes = attributes.with_skip_taskbar(true);
         let Ok(window) = event_loop.create_window(attributes) else {
             event_loop.exit();
             return;
         };
+        if let Err(error) = mark_as_tool_window(&window) {
+            eprintln!("{error}");
+            event_loop.exit();
+            return;
+        }
         let window = Arc::new(window);
         let Ok(context) = Context::new(window.clone()) else {
             event_loop.exit();
@@ -843,5 +901,12 @@ mod tests {
             heartbeat_path(Path::new("C:/Temp/snow-keymap.command")),
             PathBuf::from("C:/Temp/snow-keymap.command.alive")
         );
+    }
+
+    #[cfg(target_os = "windows")]
+    #[test]
+    fn tool_window_style_preserves_existing_flags() {
+        assert_eq!(tool_window_style(0x0000_0008), 0x0000_0088);
+        assert_eq!(tool_window_style(0x0000_0088), 0x0000_0088);
     }
 }

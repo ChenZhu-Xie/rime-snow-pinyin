@@ -845,6 +845,13 @@ test("the desktop helper stays dormant outside an idle Chinese composition", () 
 	);
 });
 
+test("the Windows desktop helper identifies itself as a tool window", () => {
+	const helper = read("tools/keymap-helper/src/main.rs");
+	assert.match(helper, /WS_EX_TOOLWINDOW/u);
+	assert.match(helper, /with_skip_taskbar\(true\)/u);
+	assert.match(helper, /mark_as_tool_window\(&window\)/u);
+});
+
 test("scheme initialization reuses the desktop helper without launching a process", () => {
 	const processor = read("lua/snow/keymap.lua");
 	const init = processor.slice(
