@@ -1,0 +1,35 @@
+# Rime schema
+# encoding: utf-8
+
+__include: snow_jiandao_jianpin.schema.yaml:/
+
+schema:
+  schema_id: snow_jiandao_toned_jianpin
+  name: 冰雪剑道简拼
+  version: "0.3.14"
+  description: |
+    用于辅助冰雪剑道实现，非常规方案
+  dependencies:
+    - snow_pinyin
+
+speller:
+  algebra:
+    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+    __append:
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1c/
+      - xform/~{1,2}v/xg/
+      - xform/~{1,2}i/xl/
+      - xform/~{1,2}u/xh/
+      - xform/~{1,2}o/xd/
+      - xform/~{1,2}a/xw/
+      # 前三字可用大写第二码补全；纯简拼只保留第一码。
+      - derive/^(.)(.)$/$1\u$2/
+      - xform/^([bpmfdtnlgkhjqxzcsrwye])[bpmfdtnlgkhjqxzcsrwye]$/$1/
+      - derive/^.+$/~/
+
+__patch:
+  - patch
+  - snow_jiandao_toned.custom:/patch?
+
+patch:
+  translator/prism: snow_jiandao_toned_jianpin

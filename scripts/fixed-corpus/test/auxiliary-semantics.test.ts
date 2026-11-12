@@ -141,6 +141,7 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 
 	for (const path of [
 		"snow_jiandao.schema.yaml",
+		"snow_jiandao_toned.schema.yaml",
 		"snow_jiandao_first.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
 	]) {

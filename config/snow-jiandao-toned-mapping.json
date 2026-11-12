@@ -1,0 +1,115 @@
+{
+	"id": "MARS10-AVUIO786-D1-final-9.203609845305",
+	"name": "冰雪剑道",
+	"sourceRepository": "more-14-different/shuangpin-layout-benchmark",
+	"sourceBranch": "research/mars10-qz-empty",
+	"sourceCommit": "1f01fb3c4be3757d2d24a30fba5141b73e20b893",
+	"capacity": [21, 21],
+	"tonedSyllableInventory": 1407,
+	"occupiedBuckets": 427,
+	"memoryLower": 21,
+	"memoryGuard": 23,
+	"ordinaryInitialDisplacements": 1,
+	"cktV51ShapeOnly": 9.203609845305,
+	"shapeKeysByMeaning": "AVUIO",
+	"toneKeysByTone": "IVUAO",
+	"toneDigitsByShapeMeaning": "42310",
+	"soundKeys": "QWERTYPSDFGHJKLZXCBNM",
+	"toneRegions": {
+		"4": "upper",
+		"2": "home",
+		"3": "home",
+		"1": "lower",
+		"5": "lower"
+	},
+	"firstKeys": {
+		"b": "B",
+		"p": "K",
+		"m": "M",
+		"f": "F",
+		"d": "D",
+		"t": "T",
+		"n": "N",
+		"l": "L",
+		"g": "G",
+		"k": "K",
+		"h": "H",
+		"j": "J",
+		"q": "Q",
+		"x": "X",
+		"zh": "E",
+		"ch": "S",
+		"sh": "P",
+		"r": "R",
+		"z": "Z",
+		"c": "C",
+		"s": "S",
+		"zero-A": "R",
+		"zero-E": "R",
+		"zero-O": "R",
+		"zero-W": "W",
+		"zero-Y": "Y"
+	},
+	"rhymeGroups": [
+		{
+			"id": "a-ou",
+			"label": "a/ou",
+			"finals": ["a", "ia", "ua", "ou", "iou"],
+			"keys": { "upper": "E", "home": "S", "lower": "Z" }
+		},
+		{
+			"id": "en-n",
+			"label": "en/n",
+			"finals": ["en", "in", "uen", "vn"],
+			"keys": { "upper": "T", "home": "K", "lower": "N" }
+		},
+		{
+			"id": "e-ei",
+			"label": "e/ei",
+			"finals": ["e", "ie", "ve", "ei", "uei"],
+			"keys": { "upper": "W", "home": "D", "lower": "M" }
+		},
+		{
+			"id": "eng-ai-v",
+			"label": "eng/ai/ü",
+			"finals": ["eng", "ing", "ueng", "v", "ai", "uai"],
+			"keys": { "upper": "P", "home": "G", "lower": "C" }
+		},
+		{
+			"id": "an",
+			"label": "an",
+			"finals": ["an", "ian", "uan", "van"],
+			"keys": { "upper": "Q", "home": "L", "lower": "M" }
+		},
+		{
+			"id": "ang",
+			"label": "ang",
+			"finals": ["ang", "iang", "uang"],
+			"keys": { "upper": "Y", "home": "J", "lower": "X" }
+		},
+		{
+			"id": "u",
+			"label": "u",
+			"finals": ["u"],
+			"keys": { "upper": "E", "home": "H", "lower": "N" }
+		},
+		{
+			"id": "i-er",
+			"label": "i/er",
+			"finals": ["i", "er"],
+			"keys": { "upper": "R", "home": "F", "lower": "B" }
+		},
+		{
+			"id": "o-ong",
+			"label": "o/ong",
+			"finals": ["o", "io", "uo", "ong", "iong"],
+			"keys": { "upper": "Y", "home": "K", "lower": "N" }
+		},
+		{
+			"id": "ao",
+			"label": "ao",
+			"finals": ["ao", "iao"],
+			"keys": { "upper": "T", "home": "H", "lower": "C" }
+		}
+	]
+}

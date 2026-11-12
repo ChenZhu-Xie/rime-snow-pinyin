@@ -1,0 +1,59 @@
+# Rime schema fragment
+# encoding: utf-8
+
+# 冰雪剑道：MARS10 声母／去韵头十韵组，四声走上排，二三声走中排，
+# 一声与轻声走下排。第二码已经包含声调，不再追加独立调辅。
+jiandao_toned_algebra:
+  # 研究音节表不编码这些扩展音节；儿化轻声并入 er5。
+  - erase/^(hm|hng|m|n|ng|ê)\d$/
+  - xform/(^| )r5(?= |$)/$1er5/
+  # j/q/x/y 的 u 实为 ü；词典中的 l/n ü 系列已写作 v。
+  - xform/([jqx])uan(?=\d)/$1van/
+  - xform/([jqx])ue(?=\d)/$1ve/
+  - xform/([jqx])un(?=\d)/$1vn/
+  - xform/([jqx])u(?=\d)/$1v/
+  - xform/ue(?=\d)/ve/
+  - xform/(^| )yu/$1Yv/
+  # 声码：p 是唯一普通声母位移；卷舌与零声母使用整族记忆规则。
+  - xform/(^| )zh/$1E/
+  - xform/(^| )ch/$1S/
+  - xform/(^| )sh/$1P/
+  - xform/(^| )p/$1K/
+  - xform/(^| )(?=[ao])/$1R/
+  - xform/(^| )(?=e)/$1R/
+  - xform/(^| )y/$1Y/
+  - xform/(^| )w/$1W/
+  # 四声：上排 7 键。
+  - xform/(ia|ua|ou|iu|a)4(?= |$)/E/
+  - xform/(en|in|un|vn)4(?= |$)/T/
+  - xform/(ie|ve|ei|ui|e)4(?= |$)/W/
+  - xform/(eng|ing|v|ai|uai)4(?= |$)/P/
+  - xform/(ian|uan|van|an)4(?= |$)/Q/
+  - xform/(iang|uang|ang)4(?= |$)/Y/
+  - xform/u4(?= |$)/E/
+  - xform/(i|er)4(?= |$)/R/
+  - xform/(iao|ao)4(?= |$)/T/
+  - xform/(iong|ong|uo|o)4(?= |$)/Y/
+  # 二、三声：中排 8 键。
+  - xform/(ia|ua|ou|iu|a)[23](?= |$)/S/
+  - xform/(en|in|un|vn)[23](?= |$)/K/
+  - xform/(ie|ve|ei|ui|e)[23](?= |$)/D/
+  - xform/(eng|ing|v|ai|uai)[23](?= |$)/G/
+  - xform/(ian|uan|van|an)[23](?= |$)/L/
+  - xform/(iang|uang|ang)[23](?= |$)/J/
+  - xform/u[23](?= |$)/H/
+  - xform/(i|er)[23](?= |$)/F/
+  - xform/(iao|ao)[23](?= |$)/H/
+  - xform/(iong|ong|uo|o)[23](?= |$)/K/
+  # 一声、轻声：下排 6 键。
+  - xform/(ia|ua|ou|iu|a)[15](?= |$)/Z/
+  - xform/(en|in|un|vn)[15](?= |$)/N/
+  - xform/(ie|ve|ei|ui|e)[15](?= |$)/M/
+  - xform/(eng|ing|v|ai|uai)[15](?= |$)/C/
+  - xform/(ian|uan|van|an)[15](?= |$)/M/
+  - xform/(iang|uang|ang)[15](?= |$)/X/
+  - xform/u[15](?= |$)/N/
+  - xform/(i|er)[15](?= |$)/B/
+  - xform/(iao|ao)[15](?= |$)/C/
+  - xform/(iong|ong|uo|o)[15](?= |$)/N/
+  - xlit/QWERTYPSDFGHJKLZXCBNM/qwertypsdfghjklzxcbnm/

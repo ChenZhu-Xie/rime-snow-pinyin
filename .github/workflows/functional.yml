@@ -130,6 +130,8 @@ jobs:
             schema: snow_jiandao_classic
           - name: 冰雪三拼
             schema: snow_sanpin_classic
+          - name: 冰雪剑道
+            schema: snow_jiandao_toned
     steps:
       - name: 获取代码
         if: inputs.schema == '' || inputs.schema == matrix.scheme.schema

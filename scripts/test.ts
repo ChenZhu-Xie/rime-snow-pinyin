@@ -1,4 +1,4 @@
-// 并行运行十三个方案的 mira 测试
+// 并行运行十四个方案的 mira 测试
 //
 //   bun scripts/test.ts                  # 全部方案
 //   bun scripts/test.ts yipin qingyun    # 只跑指定方案，snow_ 前缀可省
@@ -39,6 +39,7 @@ const SCHEMAS = [
 	"snow_shenyun_tone_first",
 	"snow_jiandao_classic",
 	"snow_sanpin_classic",
+	"snow_jiandao_toned",
 ];
 
 // 写时复制（APFS 上几乎不花时间），不支持时退化为普通复制

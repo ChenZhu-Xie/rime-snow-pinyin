@@ -36,6 +36,13 @@ export const SYLLABLE_PATTERNS = [
 		pattern: /^[bpmfdtnlgkhjqxzcsrywe]{2}$/,
 	},
 	{
+		schema: "snow_jiandao_toned",
+		name: "冰雪剑道",
+		key: "speller/algebra",
+		// 声调已经合入第二码；前两码均只使用 AVUIO 之外的 21 个音码键。
+		pattern: /^[bpmfdtnlgkhjqxzcsrwye]{2}$/,
+	},
+	{
 		schema: "snow_qingyun",
 		name: "冰雪清韵",
 		key: "speller/algebra",

@@ -1,0 +1,37 @@
+schema: snow_jiandao_toned
+source_dir: ..
+script: |
+  function rank(something)
+    for i, v in ipairs(cand) do
+      if v.text == something then return i end
+    end
+    return math.huge
+  end
+  function has(something)
+    return rank(something) < math.huge
+  end
+deploy:
+  popping:
+    tests:
+      # 声调已经进入第二码：冰 bing1→bc，雪 xue3→xd。
+      - send: bc
+        assert: has("冰")
+      - send: xd
+        assert: has("雪")
+      - send: bcxd
+        assert: has("冰雪")
+      # 原方案不强制 QZ 空桶；qia1、qiu1 都合法落在 qz。
+      - send: qz
+        assert: has("掐") and has("秋")
+      # 形笔辅仍为纯形辅，不再承担声调信息。
+      - send: bco
+        assert: has("冰")
+      # p 是唯一普通声母位移：pin1→kn。
+      - send: kn
+        assert: has("拼")
+  advanced:
+    tests:
+      - send: ashi
+        assert: cand[1].text == "是"
+      - send: uviuoa
+        assert: cand[1].text == "札"

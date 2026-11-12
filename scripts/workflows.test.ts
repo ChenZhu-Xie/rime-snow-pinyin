@@ -14,7 +14,7 @@ test("发布同时依赖本地功能、性能和键位图门禁", () => {
 	);
 });
 
-test("分支与 PR 复用十三方案功能门禁并监听门禁实现", () => {
+test("分支与 PR 复用十四方案功能门禁并监听门禁实现", () => {
 	const workflow = read(".github/workflows/test.yml");
 	expect(workflow).toContain("pull_request:");
 	expect(workflow).toContain("uses: ./.github/workflows/functional.yml");
@@ -38,6 +38,7 @@ test("分支与 PR 复用十三方案功能门禁并监听门禁实现", () => {
 		"snow_shenyun_tone_first",
 		"snow_jiandao_classic",
 		"snow_sanpin_classic",
+		"snow_jiandao_toned",
 	])
 		expect(functional).toContain(`schema: ${schema}`);
 	expect(functional).toContain("asset: mira-rime1.13.1");

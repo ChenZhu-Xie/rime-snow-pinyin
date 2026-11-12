@@ -49,6 +49,7 @@ type Diagram = {
 	title: string;
 	subtitle: string;
 	mapping?: Mapping;
+	finalLabels?: Record<string, string[]>;
 	auxiliary?: Record<string, KeyNote>;
 };
 
@@ -156,6 +157,37 @@ const classic: Mapping = {
 		ve: "H",
 	},
 };
+
+const tonedMarsSource = JSON.parse(
+	readFileSync(join(root, "config", "snow-jiandao-toned-mapping.json"), "utf8"),
+) as {
+	shapeKeysByMeaning: string;
+	toneKeysByTone: string;
+	firstKeys: Record<string, string>;
+	rhymeGroups: Array<{
+		label: string;
+		keys: Record<"upper" | "home" | "lower", string>;
+	}>;
+};
+const tonedMars: Mapping = {
+	shapeKeysByMeaning: tonedMarsSource.shapeKeysByMeaning,
+	toneKeysByTone: tonedMarsSource.toneKeysByTone,
+	initialMap: Object.fromEntries(
+		Object.entries(tonedMarsSource.firstKeys).map(([role, key]) => [
+			role.startsWith("zero-") ? role.slice("zero-".length) : role,
+			key,
+		]),
+	),
+	finalMap: {},
+};
+const tonedMarsFinalLabels: Record<string, string[]> = {};
+for (const rhyme of tonedMarsSource.rhymeGroups) {
+	for (const key of Object.values(rhyme.keys)) {
+		const labels = tonedMarsFinalLabels[key] ?? [];
+		if (!labels.includes(rhyme.label)) labels.push(rhyme.label);
+		tonedMarsFinalLabels[key] = labels;
+	}
+}
 
 function escapeXml(value: string) {
 	return value
@@ -342,6 +374,14 @@ const diagrams: Diagram[] = [
 		subtitle: "21×21 声韵与形笔字根映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: shapeNotes(u357.shapeKeysByMeaning),
+	},
+	{
+		filename: "snow_jiandao_toned",
+		title: "冰雪剑道 · MARS10-D1",
+		subtitle: "带调 21×21：四声上排 · 二三声中排 · 一轻声下排 · 纯形笔辅",
+		mapping: tonedMars,
+		finalLabels: tonedMarsFinalLabels,
+		auxiliary: shapeNotes(tonedMars.shapeKeysByMeaning),
 	},
 	{
 		filename: "snow_jiandao_classic",
@@ -653,7 +693,11 @@ function render(diagram: Diagram) {
 					displayInitialLabels(key, roles),
 				]),
 			);
-	const finals = diagram.mapping ? invert(diagram.mapping.finalMap) : new Map();
+	const finals = diagram.finalLabels
+		? new Map(Object.entries(diagram.finalLabels))
+		: diagram.mapping
+			? invert(diagram.mapping.finalMap)
+			: new Map();
 	const groups: string[] = [];
 	for (let row = 0; row < rows.length; row++) {
 		for (let column = 0; column < rows[row].length; column++) {
@@ -975,6 +1019,6 @@ for (const [filename, mapping] of [
 
 console.log(
 	check
-		? "七份活动／经典键位图与四份初代键位图均为最新。"
-		: `已生成七份活动／经典键位图与四份初代键位图：${outputDirectory}`,
+		? "八份活动／经典键位图与四份初代键位图均为最新。"
+		: `已生成八份活动／经典键位图与四份初代键位图：${outputDirectory}`,
 );

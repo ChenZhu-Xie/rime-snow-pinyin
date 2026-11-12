@@ -81,6 +81,7 @@ const schemes = [
 	["snow_jiandao.schema.yaml", "v", "snow_jiandao.svg"],
 	["snow_sanpin_classic.schema.yaml", "v", "snow_sanpin_classic.svg"],
 	["snow_jiandao_classic.schema.yaml", "v", "snow_jiandao_classic.svg"],
+	["snow_jiandao_toned.schema.yaml", "v", "snow_jiandao_toned.svg"],
 	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.svg"],
 	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.svg"],
 	["snow_jiandao_first.schema.yaml", "v", "snow_jiandao_first.svg"],
@@ -120,7 +121,7 @@ test("first-generation schemes freeze their current keymaps", () => {
 	}
 });
 
-test("eleven released diagrams bind only their vacant standalone key to a keymap", () => {
+test("twelve released diagrams bind only their vacant standalone key to a keymap", () => {
 	for (const [schema, key, image] of schemes) {
 		const content = read(schema);
 		assert.match(
@@ -195,8 +196,8 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 			keyInfos: [[{ action: "e" }, { action: "v" }]],
 		},
 	});
-	assert.equal(Object.keys(keyboards).length, 13);
-	assert.equal(keyboards.keymaps.keyInfos.flat().length, 10);
+	assert.equal(Object.keys(keyboards).length, 14);
+	assert.equal(keyboards.keymaps.keyInfos.flat().length, 11);
 	const mobileImageKey = keyboards.keymap_snow_sipin.keyInfos[0][0] as {
 		action: string;
 		up?: string;
@@ -525,6 +526,7 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 		"snow_sipin.svg": "",
 		"snow_sanpin.svg": "KL",
 		"snow_jiandao.svg": "KL",
+		"snow_jiandao_toned.svg": "P",
 		"snow_sanpin_classic.svg": "",
 		"snow_jiandao_classic.svg": "",
 		"snow_shenyun_shape.svg": "QWSYX",

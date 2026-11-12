@@ -1,0 +1,81 @@
+# Rime schema
+# encoding: utf-8
+
+# 复用冰雪健道的顶功、纯形笔辅、反查和候选处理，只替换带调双拼音码。
+__include: snow_jiandao.schema.yaml:/
+
+schema:
+  schema_id: snow_jiandao_toned
+  name: 冰雪剑道
+  version: "0.3.14"
+  author:
+    - 吅吅大山
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    声调进入前两码、后续只补形笔辅的 21×21 双拼词顶功方案
+    双拼编码：MARS10-AVUIO786-D1（M=21、D=1，1,407 带调音节占用 427 桶）
+    四声／二三声／一轻声依次使用上／中／下排第二码
+  dependencies:
+    - snow_pinyin
+    - radical_pinyin
+    - snow_jiandao_bihua
+    - snow_jiandao_toned_jianpin
+    - snow_jiandao_chaifen
+
+keymap:
+  key: v
+  image: snow_jiandao_toned.svg
+
+speller:
+  algebra:
+    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+    __append:
+      # 字母沿用键道二键入口；音节的第二码本身已经含调。
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1c/
+      - xform/~{1,2}v/xg/
+      - xform/~{1,2}i/xl/
+      - xform/~{1,2}u/xh/
+      - xform/~{1,2}o/xd/
+      - xform/~{1,2}a/xw/
+
+jianpin:
+  dictionary: snow_pinyin
+  prism: snow_jiandao_toned_jianpin
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+
+vacancy:
+  dictionary: snow_pinyin
+  prism: snow_jiandao_toned
+  canonical_format:
+    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+  enable_sentence: false
+  enable_completion: false
+  enable_user_dict: false
+
+# 复用父方案中的 reverse_lookup_filter@lookup_jiandao 组件名，替换其实际代数。
+lookup_jiandao:
+  tags: [pinyin]
+  overwrite_comment: true
+  dictionary: snow_pinyin
+  comment_format:
+    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+
+__patch:
+  - patch
+  - snow_jiandao_toned.custom:/patch?
+
+patch:
+  translator/prism: snow_jiandao_toned
+  translator/user_dict_name: snow_jiandao_toned_mars10_d1
+  translator/reserved_initial_pair_pattern: "^(?:bc|pc|mc|fc|dc|tc|nc|lc|gc|kc|hc|jc|qc|xc|zc|cc|sc|rc|wc|yc|ec|xg|xl|xh|xd|xw)$"
+  # 独立 U 笔画反查继续使用键道的折横撇竖点语义。
+  stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]

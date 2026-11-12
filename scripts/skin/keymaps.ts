@@ -3,6 +3,7 @@ import type { KeyboardCollection } from "./types";
 const jiandaoKeys = [
 	["snow_jiandao_classic", "键道"],
 	["snow_jiandao", "健道"],
+	["snow_jiandao_toned", "剑道"],
 	["snow_shenyun_shape", "简道"],
 ] as const;
 
