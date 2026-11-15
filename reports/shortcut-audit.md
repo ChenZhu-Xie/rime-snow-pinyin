@@ -70,7 +70,7 @@
 | `Ctrl+Y/U/I/O` 编码导航 | ✓ | ✓ | — | ✓ | ✓ | ✓ |
 | Lua 上屏历史面板 | ✓ | ✓ | — | ✓ | ✓ | ✓ |
 | 大写结构略码 | ✓ | — | — | — | — | ✓ |
-| Unicode/拆分/单字开关 | — | — | — | — | `Ctrl+Q` / `Ctrl+T` / `Shift+Tab` | — |
+| Unicode/拆分/单字开关 | — | — | — | — | `Ctrl+Q` / `Ctrl+S` / `Shift+Tab` | — |
 
 冰雪一拼的 `jio` 并击等效于 `Ctrl+B`。冰雪一拼仍不提供 Unicode 输入；本轮新增的是方案固定词管理，而不是 Unicode 功能。
 

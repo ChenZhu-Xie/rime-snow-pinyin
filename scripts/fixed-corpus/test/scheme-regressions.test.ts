@@ -496,7 +496,7 @@ test("all released schemes with Unicode components expose the shared toggle", ()
 	])
 		assert.match(
 			read(schema),
-			/accept: "Control\+t", toggle: chaifen/u,
+			/accept: "Control\+s", toggle: chaifen/u,
 			schema,
 		);
 });
