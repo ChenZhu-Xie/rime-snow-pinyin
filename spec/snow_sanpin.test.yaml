@@ -320,9 +320,9 @@ deploy:
       - send: xlo
         assert: cand[1].text == "I" and cand[2].text == "i"
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
-      - send: "o whu gco tli xra  wgtx"
+      - send: "o wmu gco tli xra  wgtx"
         assert: cand[1].text == "五G通信"
-      # 哆、啦、梦均不在 QZ 完整音码首选，按实际候选位取字后验证英数混输造词。
+      # 哆、啦、梦均不在 OC21 完整音码首选，按实际候选位取字后验证英数混输造词。
       - send: "o dki{Down}{Down}{space}epo{Down}{space}xwo mta{Down}{space} dexm"
         assert: cand[1].text == "哆啦A梦"
   # 声声二字词的一次声调辅码，以及三字及以上简拼的大写补韵。
@@ -365,7 +365,7 @@ deploy:
       # 独立笔画反查使用调键序 IVUAO；主方案的调后笔辅另按形义序 VIUOA。
       - send: uivuao
         assert: cand[1].text == "札"
-      - send: "slfh i"
+      - send: "slfm i"
         assert: cand[1].text == "重复"
       - send: ia
         assert: cand[1].text == "ā"

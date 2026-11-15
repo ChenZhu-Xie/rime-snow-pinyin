@@ -127,8 +127,8 @@ deploy:
         assert: has("输入法")
       - send: rgsn
         assert: has("人工智能")
-      # 同一四码桶跨词长分层排序，第一页在候选充足时各取两个二、三、四字词。
-      - send: jxxd
+      # wywp 同时容纳「由于」「优先于」「婴儿用品」等候选；跨词长分层排序，首页各取两个二、三、四字词。
+      - send: wywp
         assert: page_length_count(2) == 2 and page_length_count(3) == 2 and page_length_count(4) == 2
       - send: fyydiu
         assert: cand[1].text == "方案选单"

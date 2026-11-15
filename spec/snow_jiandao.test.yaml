@@ -251,7 +251,7 @@ deploy:
       - send: uviuoa
         assert: cand[1].text == "札"
       # 重复上屏（`i` 引导）
-      - send: "slfh i"
+      - send: "slfm i"
         assert: cand[1].text == "重复"
       # 符号（`i` 引导）
       - send: ia
