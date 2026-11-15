@@ -10,7 +10,7 @@ import {
 
 const root = join(import.meta.dirname, "..", "..", "..");
 
-test("D3/V1 keeps the shared core preferred link colors", () => {
+test("RC26-39a5bfdc045342cd keeps the shared core preferred link colors", () => {
 	const mapping = JSON.parse(
 		readFileSync(join(root, "config", "shenyun-21x26-mapping.json"), "utf8"),
 	) as { initialMap: Record<string, string> };

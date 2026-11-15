@@ -27,7 +27,10 @@ const dictionaries = [
 	"snow_pinyin.user.dict.yaml",
 ];
 const mapping = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-qz-e8f37a-mapping.json"), "utf8"),
+	readFileSync(
+		join(root, "docs", "shenyun-oc21-e1f155973380-mapping.json"),
+		"utf8",
+	),
 ) as { scheme: string; codes: Record<string, string | null> };
 
 interface Candidate {

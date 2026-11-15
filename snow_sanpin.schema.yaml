@@ -11,7 +11,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     带调拼音词顶功输入方案
-    双拼编码：QZ-e8f37a 21×21（M=42、D=2、V=5，QZ/ZQ 空桶）
+    双拼编码：OC21-e1f155973380 21×21（M=42、D=2、V=5，QZ/ZQ 空桶）
     “弎”兼具三声与繁体形意，表示可简繁通打
   dependencies:
     - snow_pinyin
@@ -83,57 +83,77 @@ engine:
     - lua_filter@*snow.unicode*filter
 
 sanpin_algebra:
-  # QZ-e8f37a0998f9（M=42、D=2、V=5，QZ/ZQ 空桶）
-  # 目标布局的 421 音节码表中不编码这 5 个扩展音节。
+  # OC21-e1f155973380；由 scripts/generate-layout-algebra.ts 生成。
   - erase/^(hng|m|n|ng|ê)\d$/
-  # 儿化轻声并入 er5，避免占用单键 r。
   - xform/(^| )r5(?= |$)/$1er5/
-  # j/q/x 与零声母 YU 系列统一按 v/van/ve/vn 韵尾编码。
   - xform/([jqx])uan(?=\d)/$1van/
   - xform/([jqx])ue(?=\d)/$1ve/
   - xform/([jqx])un(?=\d)/$1vn/
   - xform/([jqx])u(?=\d)/$1v/
-  # 词典来源偶尔使用 ue 书写 üe；在布局层统一并入 ve，不新增独立韵母。
   - xform/ue(?=\d)/ve/
   - xform/(^| )yu/$1Yv/
-  # 零声母载体：A/O → R，E → C，Y → Y，W → W。
-  - xform/(^| )(?=[ao])/$1R/
+  - xform/(^| )(?=a)/$1R/
   - xform/(^| )(?=e)/$1C/
+  - xform/(^| )(?=o)/$1C/
   - xform/(^| )y/$1Y/
   - xform/(^| )w/$1W/
-  # QZ-e8f37a 移动 l/k 与三组卷舌声母；k 与 p、ch 与 s 共用声码。
-  - xform/(^| )zh/$1K/
   - xform/(^| )ch/$1S/
   - xform/(^| )sh/$1L/
+  - xform/(^| )zh/$1K/
+  - xform/(^| )b/$1B/
+  - xform/(^| )c/$1C/
+  - xform/(^| )d/$1D/
+  - xform/(^| )f/$1F/
+  - xform/(^| )g/$1G/
+  - xform/(^| )h/$1H/
+  - xform/(^| )j/$1J/
   - xform/(^| )k/$1P/
   - xform/(^| )l/$1E/
-  # 21 键韵母映射；较长韵母必须先处理。
-  - xform/(iang)(?=\d)/P/
-  - xform/(uang|ie)(?=\d)/C/
-  - xform/iong(?=\d)/H/
-  - xform/(ian|er)(?=\d)/J/
-  - xform/(iao|ua)(?=\d)/Q/
-  - xform/(uai)(?=\d)/X/
-  - xform/(uan|ve)(?=\d)/E/
-  - xform/(van|eng)(?=\d)/T/
-  - xform/(un|vn)(?=\d)/G/
-  - xform/(ui|in)(?=\d)/R/
-  - xform/(uo|ing)(?=\d)/K/
-  - xform/(ei|ia|ong)(?=\d)/L/
-  - xform/(iu)(?=\d)/B/
-  - xform/(ou)(?=\d)/W/
-  - xform/(ang)(?=\d)/Y/
-  - xform/(ao)(?=\d)/Z/
-  - xform/(ai)(?=\d)/N/
-  - xform/(an)(?=\d)/M/
-  - xform/(en|v)(?=\d)/D/
-  - xform/i(?=\d)/F/
+  - xform/(^| )m/$1M/
+  - xform/(^| )n/$1N/
+  - xform/(^| )p/$1P/
+  - xform/(^| )q/$1Q/
+  - xform/(^| )r/$1R/
+  - xform/(^| )s/$1S/
+  - xform/(^| )t/$1T/
+  - xform/(^| )x/$1X/
+  - xform/(^| )z/$1Z/
+  - xform/iang(?=\d)/P/
+  - xform/iong(?=\d)/N/
+  - xform/uang(?=\d)/C/
+  - xform/ang(?=\d)/Y/
+  - xform/eng(?=\d)/T/
+  - xform/ian(?=\d)/J/
+  - xform/iao(?=\d)/Q/
+  - xform/ing(?=\d)/K/
+  - xform/ong(?=\d)/L/
+  - xform/uai(?=\d)/X/
+  - xform/uan(?=\d)/D/
+  - xform/van(?=\d)/T/
+  - xform/ai(?=\d)/H/
+  - xform/an(?=\d)/N/
+  - xform/ao(?=\d)/Z/
+  - xform/ei(?=\d)/L/
+  - xform/en(?=\d)/E/
+  - xform/er(?=\d)/J/
+  - xform/ia(?=\d)/L/
+  - xform/ie(?=\d)/C/
+  - xform/in(?=\d)/R/
+  - xform/iu(?=\d)/B/
+  - xform/ou(?=\d)/W/
+  - xform/ua(?=\d)/Q/
+  - xform/ui(?=\d)/R/
+  - xform/un(?=\d)/G/
+  - xform/uo(?=\d)/K/
+  - xform/ve(?=\d)/D/
+  - xform/vn(?=\d)/G/
   - xform/a(?=\d)/P/
-  - xform/u(?=\d)/H/
-  - xform/o(?=\d)/G/
   - xform/e(?=\d)/S/
+  - xform/i(?=\d)/F/
+  - xform/o(?=\d)/G/
+  - xform/u(?=\d)/M/
+  - xform/v(?=\d)/E/
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
-  # 声调
   - xlit/12345/ivuao/
 
 jianpin:
@@ -165,7 +185,7 @@ speller:
   initials: bpmfdtnlgkhjqxzcsrwye
   delimiter: " "
   shape:
-  # 二／三／四字词的完整后置调码字位顺序为 12/213/23；三字词最多三辅，四字词最多两辅。
+  # 二／三／四字词的完整后置调码字位顺序为 12/213/21；三字词最多三辅，四字词最多两辅。
     # 运行时空音码的 AA 是声声二字词；仅接受一个第二字声调辅码。
     - vacant: true
       match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
@@ -255,7 +275,7 @@ patch:
   translator/prism: snow_sanpin
   translator/preedit_format: null
   translator/enable_schema_user_dict: true
-  translator/user_dict_name: snow_sanpin_qz_e8f37a
+  translator/user_dict_name: snow_sanpin_oc21_e1f155973380
   translator/shape_elements: snow_bushou
   translator/shape_mapping: "radical_sanpin.txt"
   # 这些天然空二码追加 o 后是保留字母全码，不能把 o 当作声声二字词辅码吞掉。

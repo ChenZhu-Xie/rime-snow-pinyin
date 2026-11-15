@@ -10,6 +10,7 @@ local auxiliary_hint = require "snow.auxiliary_hint"
 ---@field shape_elements ReverseLookup|nil
 ---@field pinyin ReverseLookup|nil
 ---@field memory Memory|nil
+---@field oc21 boolean
 ---@field shape_mapping table<string, string>
 ---@field jiandao_shape_cache table<string, string>
 
@@ -174,7 +175,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
     -- 如果只有一个字符，直接返回对应的编码
     return codes[1] or "??"
   end
-  -- 普通词组取每个字的形码首码；活动冰雪健道采用 QZ-e8f37a 的
+  -- 普通词组取每个字的形码首码；活动冰雪健道采用 OC21-e1f155973380 的
   -- 12/213/24，经典冰雪键道继续使用 12/231/24。
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
@@ -197,12 +198,13 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
 end
 
 ---@param length integer
+---@param oc21 boolean
 ---@return integer[]
-local function sanpin_auxiliary_positions(length)
+local function sanpin_auxiliary_positions(length, oc21)
   if length == 1 then return { 1 } end
   if length == 2 then return { 1, 2 } end
   if length == 3 then return { 2, 1, 3 } end
-  if length == 4 then return { 2, 3 } end
+  if length == 4 then return oc21 and { 2, 1 } or { 2, 3 } end
   local positions = { length, 1, 2 }
   for index = 3, length - 1 do table.insert(positions, index) end
   return positions
@@ -245,8 +247,9 @@ end
 
 ---@param current string
 ---@param word_length integer
+---@param oc21 boolean
 ---@return integer[]?, string?
-local function sanpin_route(current, word_length)
+local function sanpin_route(current, word_length, oc21)
   local initial = "[bpmfdtnlgkhjqxzcsrywe]"
   local suffix
   if word_length == 1 then
@@ -261,7 +264,7 @@ local function sanpin_route(current, word_length)
   local groups = {}
   for group in sound:gmatch(initial .. "[A-Z]?") do table.insert(groups, group) end
   if #groups < 3 or table.concat(groups) ~= sound or word_length < #groups then return nil, nil end
-  return sanpin_auxiliary_positions(#groups), suffix
+  return sanpin_auxiliary_positions(#groups, oc21), suffix
 end
 
 ---@param text string
@@ -272,7 +275,7 @@ end
 local function sanpin_auxiliary_hint(text, current, env, candidate)
   local word_length = utf8.len(text)
   if not word_length then return nil end
-  local positions, suffix = sanpin_route(current, word_length)
+  local positions, suffix = sanpin_route(current, word_length, env.oc21)
   if not positions or suffix == nil then return nil end
   local spellings = sanpin_spellings(candidate, env)
   local codes = { "" }
@@ -356,6 +359,7 @@ function filter.init(env)
   local config = env.engine.schema.config
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
   local id = env.engine.schema.schema_id
+  env.oc21 = id == "snow_sanpin"
   if id == "snow_sipin" or id == "snow_sanpin"
       or id == "snow_sanpin_classic" then
     bihua.load_strokes(env)

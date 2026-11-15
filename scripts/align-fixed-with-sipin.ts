@@ -698,7 +698,61 @@ function alignFixedContentOnce(fixed: string, source: string): string {
 }
 
 export function alignFixedContent(fixed: string, source: string): string {
-	let rendered = source;
+	const target = targets.find((entry) => entry.fixed === fixed);
+	if (!target) throw new Error(`不支持对齐固顶文件：${fixed}`);
+	const algebra = new SpellingAlgebra(
+		resolve(root, target.schema),
+		"speller/algebra",
+		{ derive: false },
+	);
+	const numberReadings = [
+		"ling2",
+		"yi1",
+		"er4",
+		"san1",
+		"si4",
+		"wu3",
+		"liu4",
+		"qi1",
+		"ba1",
+		"jiu3",
+		"shi2",
+	];
+	// 数字必须跟随对应汉字的现行音码；先移走旧物理码，随后统一对齐首选。
+	const rows = source.split("\n");
+	const aliases = new Map<string, string[]>();
+	for (let index = 0; index < rows.length; index += 1) {
+		const [code, candidates] = rows[index].split("\t");
+		if (!candidates || code.startsWith("#")) continue;
+		const values = candidates.split(" ");
+		const digits = values.filter((value) => numberWordByDigits.has(value));
+		if (digits.length === 0) continue;
+		const remaining = values.filter((value) => !numberWordByDigits.has(value));
+		rows[index] = `${code}\t${remaining.join(" ")}`;
+		for (const digit of digits) {
+			const sound = algebra.apply(numberReadings[Number(digit)]).slice(0, 2);
+			const nextCode =
+				code.length === 1 ? sound.slice(0, 1) : sound + code.slice(2);
+			if (
+				nextCode !== code &&
+				remaining.length === 1 &&
+				remaining[0] === numberWordByDigits.get(digit)
+			)
+				rows[index] = "";
+			const next = aliases.get(nextCode) ?? [];
+			next.push(digit);
+			aliases.set(nextCode, next);
+		}
+	}
+	for (const [code, digits] of aliases) {
+		const index = rows.findIndex((line) => line.startsWith(`${code}\t`));
+		if (index >= 0) rows[index] += ` ${digits.join(" ")}`;
+		else
+			rows.push(
+				`${code}\t${numberWordByDigits.get(digits[0])} ${digits.join(" ")}`,
+			);
+	}
+	let rendered = `${rows.filter(Boolean).join("\n")}\n`;
 	for (let iteration = 0; iteration < 10; iteration += 1) {
 		const next = alignFixedContentOnce(fixed, rendered);
 		if (next === rendered) return next;

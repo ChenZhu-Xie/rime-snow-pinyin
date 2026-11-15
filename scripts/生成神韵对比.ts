@@ -55,8 +55,8 @@ const benchmark = JSON.parse(
 ) as any;
 
 const overallId = "SNOW-SHENYUN-21X26-PRODUCTION";
-const d3Id = "SNOW-SHENYUN-21X26-D3V1-BALANCED";
-const qzId = "QZ-e8f37a0998f9";
+const d3Id = "RC26-39a5bfdc045342cd";
+const qzId = "OC21-e1f155973380";
 const overallKey = "Overall17";
 const benchmarkIds = {
 	Overall17: overallId,
@@ -740,8 +740,8 @@ const flyingDisplays = decorate(
 );
 
 const nextSchemes = [
-	"D3V1",
-	"QZ",
+	"RC26",
+	"OC21",
 	"Overall17First",
 	"U357First",
 	"S005",
@@ -749,8 +749,8 @@ const nextSchemes = [
 ] as const;
 type NextScheme = (typeof nextSchemes)[number];
 const nextLabels: Record<NextScheme, string> = {
-	D3V1: "D3/V1 21×26",
-	QZ: "QZ-e8f37a 21×21",
+	RC26: "RC26-39a5bfdc045342cd 21×26",
+	OC21: "OC21-e1f155973380 21×21",
 	Overall17First: "Overall-17·初代 21×26",
 	U357First: "U357·初代 21×21",
 	S005: "原键道 S005",
@@ -764,20 +764,22 @@ const requiredNumber = (value: unknown, label: string) => {
 const d3Production = d3Entry.productionCandidateMetrics;
 const qzReadme = qzEntry.readmeBenchmarkMetrics;
 if (!d3Production || !qzReadme)
-	throw new Error("Benchmark HTML 缺少 D3/V1 或 QZ 的定稿指标。");
-const nextEntries = { D3V1: d3Entry, QZ: qzEntry } as const;
-const nextIds = { D3V1: d3Id, QZ: qzId } as const;
+	throw new Error(
+		"Benchmark HTML 缺少 RC26-39a5bfdc045342cd 或 OC21 的定稿指标。",
+	);
+const nextEntries = { RC26: d3Entry, OC21: qzEntry } as const;
+const nextIds = { RC26: d3Id, OC21: qzId } as const;
 const nextCompletions = {
-	D3V1: benchmark.completionBV4.schemes[d3Id] as CompletionScheme,
-	QZ: benchmark.completionBV4.schemes[qzId] as CompletionScheme,
+	RC26: benchmark.completionBV4.schemes[d3Id] as CompletionScheme,
+	OC21: benchmark.completionBV4.schemes[qzId] as CompletionScheme,
 } as const;
-for (const scheme of ["D3V1", "QZ"] as const) {
+for (const scheme of ["RC26", "OC21"] as const) {
 	if (!nextCompletions[scheme])
 		throw new Error(
 			`Benchmark HTML 缺少 ${nextIds[scheme]} 的 CKT v4 逐轨数据。`,
 		);
 }
-const collisionStats = (scheme: "D3V1" | "QZ") => {
+const collisionStats = (scheme: "RC26" | "OC21") => {
 	const audit = nextEntries[scheme].memoryAuditR2;
 	const buckets = Object.values(audit?.collisionBuckets ?? {}) as string[][];
 	return {
@@ -794,30 +796,30 @@ const collisionStats = (scheme: "D3V1" | "QZ") => {
 	};
 };
 const nextCollision = {
-	D3V1: collisionStats("D3V1"),
-	QZ: collisionStats("QZ"),
+	RC26: collisionStats("RC26"),
+	OC21: collisionStats("OC21"),
 };
 const nextFair = {
-	D3V1: benchmark.fairCKT.values[d3Id],
-	QZ: benchmark.fairCKT.values[qzId],
+	RC26: benchmark.fairCKT.values[d3Id],
+	OC21: benchmark.fairCKT.values[qzId],
 };
 const nextMacro = {
-	D3V1: benchmark.macroxue.values[d3Id]["daily|native-punctuation"],
-	QZ: benchmark.macroxue.values[qzId]["daily|native-punctuation"],
+	RC26: benchmark.macroxue.values[d3Id]["daily|native-punctuation"],
+	OC21: benchmark.macroxue.values[qzId]["daily|native-punctuation"],
 };
 const nextLoad = {
-	D3V1: benchmark.r11LoadSummaries[d3Id],
-	QZ: benchmark.r11LoadSummaries[qzId],
+	RC26: benchmark.r11LoadSummaries[d3Id],
+	OC21: benchmark.r11LoadSummaries[qzId],
 };
 const nextAggregate = (
-	scheme: "D3V1" | "QZ",
+	scheme: "RC26" | "OC21",
 	getter: (track: CompletionTrack) => number,
 ) => weightedFor(nextCompletions[scheme], getter);
-const nextGroupPeak = (scheme: "D3V1" | "QZ", group: string) =>
+const nextGroupPeak = (scheme: "RC26" | "OC21", group: string) =>
 	groupPeakFor(nextIds[scheme], group).value;
 const nextValue = (name: string, d3Value: unknown, qzValue: unknown) => ({
-	D3V1: d3Value,
-	QZ: qzValue,
+	RC26: d3Value,
+	OC21: qzValue,
 	Overall17First: data.metrics[name].Overall17,
 	U357First: data.metrics[name].U357,
 	S005: data.metrics[name].S005,
@@ -876,64 +878,64 @@ const nextMetrics = {
 		better: "lower",
 		...nextValue(
 			"common399CollisionBuckets",
-			nextCollision.D3V1.buckets,
-			nextCollision.QZ.buckets,
+			nextCollision.RC26.buckets,
+			nextCollision.OC21.buckets,
 		),
 	},
 	common399UniqueRate: {
 		better: "higher",
 		...nextValue(
 			"common399UniqueRate",
-			nextCollision.D3V1.unique / 399,
-			nextCollision.QZ.unique / 399,
+			nextCollision.RC26.unique / 399,
+			nextCollision.OC21.unique / 399,
 		),
 	},
 	common399CollisionExcess: {
 		better: "lower",
 		...nextValue(
 			"common399CollisionExcess",
-			nextCollision.D3V1.excess,
-			nextCollision.QZ.excess,
+			nextCollision.RC26.excess,
+			nextCollision.OC21.excess,
 		),
 	},
 	common399AffectedSyllables: {
 		better: "lower",
 		...nextValue(
 			"common399AffectedSyllables",
-			nextCollision.D3V1.affected,
-			nextCollision.QZ.affected,
+			nextCollision.RC26.affected,
+			nextCollision.OC21.affected,
 		),
 	},
 	common399AffectedRate: {
 		better: "lower",
 		...nextValue(
 			"common399AffectedRate",
-			nextCollision.D3V1.affected / 399,
-			nextCollision.QZ.affected / 399,
+			nextCollision.RC26.affected / 399,
+			nextCollision.OC21.affected / 399,
 		),
 	},
 	s2FrequencyWeightedMiss: {
 		better: "lower",
 		...nextValue(
 			"s2FrequencyWeightedMiss",
-			nextFair.D3V1.S2miss,
-			nextFair.QZ.S2miss,
+			nextFair.RC26.S2miss,
+			nextFair.OC21.S2miss,
 		),
 	},
 	s2CompletionMeanKeys: {
 		better: "lower",
 		...nextValue(
 			"s2CompletionMeanKeys",
-			nextFair.D3V1.S2Completion.meanKeys,
-			nextFair.QZ.S2Completion.meanKeys,
+			nextFair.RC26.S2Completion.meanKeys,
+			nextFair.OC21.S2Completion.meanKeys,
 		),
 	},
 	s2CompletionCenterMs: {
 		better: "lower",
 		...nextValue(
 			"s2CompletionCenterMs",
-			nextFair.D3V1.S2Completion.centerMs,
-			nextFair.QZ.S2Completion.centerMs,
+			nextFair.RC26.S2Completion.centerMs,
+			nextFair.OC21.S2Completion.centerMs,
 		),
 	},
 	s2DifferentKeySameFingerRate: {
@@ -1012,24 +1014,24 @@ const nextMetrics = {
 		better: "lower",
 		...nextValue(
 			"aggregateSelectionRate",
-			nextAggregate("D3V1", (track) => track.selectionRate),
-			nextAggregate("QZ", (track) => track.selectionRate),
+			nextAggregate("RC26", (track) => track.selectionRate),
+			nextAggregate("OC21", (track) => track.selectionRate),
 		),
 	},
 	aggregateFirstAuxRate: {
 		better: "lower",
 		...nextValue(
 			"aggregateFirstAuxRate",
-			nextAggregate("D3V1", (track) => track.firstAuxRate),
-			nextAggregate("QZ", (track) => track.firstAuxRate),
+			nextAggregate("RC26", (track) => track.firstAuxRate),
+			nextAggregate("OC21", (track) => track.firstAuxRate),
 		),
 	},
 	aggregateSecondAuxRate: {
 		better: "lower",
 		...nextValue(
 			"aggregateSecondAuxRate",
-			nextAggregate("D3V1", (track) => track.secondAuxRate),
-			nextAggregate("QZ", (track) => track.secondAuxRate),
+			nextAggregate("RC26", (track) => track.secondAuxRate),
+			nextAggregate("OC21", (track) => track.secondAuxRate),
 		),
 	},
 	dailyLeftRightLoad: {
@@ -1037,14 +1039,14 @@ const nextMetrics = {
 		...nextValue(
 			"dailyLeftRightLoad",
 			{
-				left: nextMacro.D3V1.left_load,
-				right: nextMacro.D3V1.right_load,
-				leftShare: nextMacro.D3V1.left_load / nextMacro.D3V1.hits,
+				left: nextMacro.RC26.left_load,
+				right: nextMacro.RC26.right_load,
+				leftShare: nextMacro.RC26.left_load / nextMacro.RC26.hits,
 			},
 			{
-				left: nextMacro.QZ.left_load,
-				right: nextMacro.QZ.right_load,
-				leftShare: nextMacro.QZ.left_load / nextMacro.QZ.hits,
+				left: nextMacro.OC21.left_load,
+				right: nextMacro.OC21.right_load,
+				leftShare: nextMacro.OC21.left_load / nextMacro.OC21.hits,
 			},
 		),
 	},
@@ -1052,40 +1054,40 @@ const nextMetrics = {
 		better: "lower-but-not-standalone-speed",
 		...nextValue(
 			"dailySameHandRate",
-			nextMacro.D3V1.same_hand_rate,
-			nextMacro.QZ.same_hand_rate,
+			nextMacro.RC26.same_hand_rate,
+			nextMacro.OC21.same_hand_rate,
 		),
 	},
 	dailyMeanEffectiveDistance: {
 		better: "lower",
 		...nextValue(
 			"dailyMeanEffectiveDistance",
-			nextMacro.D3V1.avg_effective_distance,
-			nextMacro.QZ.avg_effective_distance,
+			nextMacro.RC26.avg_effective_distance,
+			nextMacro.OC21.avg_effective_distance,
 		),
 	},
 	leftPinkyQAZPeak20Contracts: {
 		better: "lower",
 		...nextValue(
 			"leftPinkyQAZPeak20Contracts",
-			nextGroupPeak("D3V1", "QAZ"),
-			nextGroupPeak("QZ", "QAZ"),
+			nextGroupPeak("RC26", "QAZ"),
+			nextGroupPeak("OC21", "QAZ"),
 		),
 	},
 	rightPinkyPeak20Contracts: {
 		better: "lower",
 		...nextValue(
 			"rightPinkyPeak20Contracts",
-			nextLoad.D3V1.rightPinkyMax20,
-			nextLoad.QZ.rightPinkyMax20,
+			nextLoad.RC26.rightPinkyMax20,
+			nextLoad.OC21.rightPinkyMax20,
 		),
 	},
 	maxFingerPeak20Contracts: {
 		better: "lower",
 		...nextValue(
 			"maxFingerPeak20Contracts",
-			nextLoad.D3V1.maxFinger20,
-			nextLoad.QZ.maxFinger20,
+			nextLoad.RC26.maxFinger20,
+			nextLoad.OC21.maxFinger20,
 		),
 	},
 	dailyEightScenarioMovingHand: {
@@ -1117,16 +1119,16 @@ const nextMetrics = {
 		better: "lower",
 		...nextValue(
 			"indexFingerTYBPeak20Contracts",
-			nextGroupPeak("D3V1", "TYB"),
-			nextGroupPeak("QZ", "TYB"),
+			nextGroupPeak("RC26", "TYB"),
+			nextGroupPeak("OC21", "TYB"),
 		),
 	},
 	homeFloor20Contracts: {
 		better: "higher",
 		...nextValue(
 			"homeFloor20Contracts",
-			nextLoad.D3V1.homeFloor,
-			nextLoad.QZ.homeFloor,
+			nextLoad.RC26.homeFloor,
+			nextLoad.OC21.homeFloor,
 		),
 	},
 };
@@ -1139,12 +1141,12 @@ const historicalKeys = {
 } as const;
 const detailedValue = (
 	scheme: NextScheme,
-	newValue: (active: "D3V1" | "QZ") => unknown,
+	newValue: (active: "RC26" | "OC21") => unknown,
 	historicalValue: (
 		historical: "Overall17" | "U357" | "S005" | "B04",
 	) => unknown,
 ) => {
-	if (scheme === "D3V1" || scheme === "QZ") return newValue(scheme);
+	if (scheme === "RC26" || scheme === "OC21") return newValue(scheme);
 	return historicalValue(historicalKeys[scheme]);
 };
 const nextWeightedNonfirstRates = Object.fromEntries(
@@ -1300,15 +1302,15 @@ data.nextGenerationComparison = {
 		nextSchemes.map((scheme) => [scheme, { label: nextLabels[scheme] }]),
 	),
 	sources: {
-		D3V1: {
+		RC26: {
 			benchmarkId: d3Id,
 			report:
-				"research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md",
+				"research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md",
 		},
-		QZ: {
+		OC21: {
 			benchmarkId: qzId,
 			report:
-				"research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md",
+				"research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json",
 		},
 		Overall17First: { benchmarkId: overallId },
 		U357First: { benchmarkId: benchmarkIds.U357 },
@@ -1316,9 +1318,8 @@ data.nextGenerationComparison = {
 		B04: { benchmarkId: benchmarkIds.B04 },
 	},
 	auxiliaryOrders: {
-		D3V1: d3Production.cktV51AuxOrderRobustness?.selectedPolicies,
-		QZ: qzEntry.productionCandidateMetrics?.cktV51AuxOrderRobustness
-			?.selectedPolicies,
+		RC26: d3Production.cktV51AuxOrderRobustness?.selectedPolicies,
+		OC21: qzEntry.productionCandidateMetrics?.cktV51Policies?.candidate,
 		Overall17First: data.comparisonPolicy.cktV51.auxiliaryOrders.Overall17,
 		U357First: data.comparisonPolicy.cktV51.auxiliaryOrders.U357,
 		S005: data.comparisonPolicy.cktV51.auxiliaryOrders.S005,
@@ -1334,20 +1335,19 @@ cktV51.nextGeneration = {
 	version: "next-generation-shuangpin-aux-order-appendix-v1",
 	preservedHistoricalCases: true,
 	schemes: {
-		D3V1: {
+		RC26: {
 			benchmarkId: d3Id,
 			report:
-				"research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md",
+				"research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md",
 			selectedPolicies: d3Production.cktV51AuxOrderRobustness?.selectedPolicies,
 			robustness: d3Production.cktV51AuxOrderRobustness,
 		},
-		QZ: {
+		OC21: {
 			benchmarkId: qzId,
 			report:
-				"research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md",
+				"research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json",
 			selectedPolicies:
-				qzEntry.productionCandidateMetrics?.cktV51AuxOrderRobustness
-					?.selectedPolicies,
+				qzEntry.productionCandidateMetrics?.cktV51Policies?.candidate,
 			robustness: qzEntry.productionCandidateMetrics?.cktV51AuxOrderRobustness,
 		},
 	},
@@ -1665,11 +1665,11 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 const report = `${historicalReport}
 ## 次世代布局追加对比
 
-上面的历史四方案报告原样保留。本节追加当前 D3/V1 21×26 与 QZ-e8f37a 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。以下所有表格统一比较 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代、原键道 S005 与首道 B04 六个方案；S005 同时继续充当 CKT 归一化锚点。
+上面的历史四方案报告原样保留。本节追加当前 RC26-39a5bfdc045342cd 21×26 与 OC21-e1f155973380 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。以下所有表格统一比较 RC26-39a5bfdc045342cd、OC21-e1f155973380、Overall-17·初代、U357·初代、原键道 S005 与首道 B04 六个方案；S005 同时继续充当 CKT 归一化锚点。
 
-表中在 D3/V1、QZ-e8f37a、Overall-17·初代、U357·初代与原键道 S005 五个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，其余名次不加粗、不标星；首道 B04 不参与五方案名次。🥇 独立比较全部六方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
+表中在 RC26-39a5bfdc045342cd、OC21-e1f155973380、Overall-17·初代、U357·初代与原键道 S005 五个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，其余名次不加粗、不标星；首道 B04 不参与五方案名次。🥇 独立比较全部六方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
 
-D3/V1 的定稿与稳健辅序见 [\`2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-d3v1-ckt-v51-soft-balance-aux-order-robustness.md)，QZ-e8f37a 的定稿与稳健辅序见 [\`2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-e8f37a-ckt-v51-aux-order-robustness.md)。D3/V1 的冰雪简道／冰雪散拼辅序为 \`12/12/24\`、\`12/21/13\`；QZ-e8f37a 的冰雪健道／冰雪弎拼辅序为 \`12/213/24\`、\`12/213/23\`。初代方案继续使用历史报告中冻结的映射与辅序。
+RC26-39a5bfdc045342cd 的定稿与稳健辅序见 [\`2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，OC21-e1f155973380 的定稿与稳健辅序见 [\`2026-11-15-untoned-2121-candidates-aux-robustness.json\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json)。RC26-39a5bfdc045342cd 的冰雪简道／冰雪散拼辅序为 \`12/12/24\`、\`12/21/13\`；OC21-e1f155973380 的冰雪健道／冰雪弎拼辅序为 \`12/213/24\`、\`12/213/23\`。初代方案继续使用历史报告中冻结的映射与辅序。
 
 ${nextMetricTable}
 

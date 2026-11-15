@@ -221,16 +221,16 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.equal(lastKey.swipe_down, undefined);
 });
 
-test("active diagrams identify QZ-e8f37a and D3/V1", () => {
+test("active diagrams identify OC21-e1f155973380 and RC26-39a5bfdc045342cd", () => {
 	for (const image of ["snow_jiandao.svg", "snow_sanpin.svg"]) {
-		assert.match(read(`lua/snow/keymaps/${image}`), /QZ-e8f37a/u);
+		assert.match(read(`lua/snow/keymaps/${image}`), /OC21-e1f155973380/u);
 	}
 	for (const image of ["snow_shenyun_shape.svg", "snow_shenyun_tone.svg"]) {
-		assert.match(read(`lua/snow/keymaps/${image}`), /D3\/V1/u);
+		assert.match(read(`lua/snow/keymaps/${image}`), /RC26-39a5bfdc045342cd/u);
 	}
 	for (const [image, label] of [
-		["docs/shenyun-qz-e8f37a-keyboard.svg", "QZ-e8f37a"],
-		["docs/shenyun-d3v1-keyboard.svg", "D3/V1"],
+		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "OC21-e1f155973380"],
+		["docs/shenyun-rc26-keyboard.svg", "RC26-39a5bfdc045342cd"],
 	] as const) {
 		const svg = read(image);
 		assert.match(svg, new RegExp(label.replace("/", "\\/"), "u"));
@@ -240,11 +240,11 @@ test("active diagrams identify QZ-e8f37a and D3/V1", () => {
 
 test("README diagrams preserve source-to-target link colors from benchmark", () => {
 	for (const [image, source, target, initial, color] of [
-		["docs/shenyun-d3v1-keyboard.svg", "Q", "F", "q", "#e83e8c"],
-		["docs/shenyun-d3v1-keyboard.svg", "S", "Q", "s", "#00a651"],
-		["docs/shenyun-d3v1-keyboard.svg", "X", "Y", "x", "#005bd8"],
-		["docs/shenyun-qz-e8f37a-keyboard.svg", "K", "P", "k", "#00acc1"],
-		["docs/shenyun-qz-e8f37a-keyboard.svg", "L", "E", "l", "#fb8c00"],
+		["docs/shenyun-rc26-keyboard.svg", "Q", "F", "q", "#e83e8c"],
+		["docs/shenyun-rc26-keyboard.svg", "S", "Q", "s", "#00a651"],
+		["docs/shenyun-rc26-keyboard.svg", "X", "Y", "x", "#005bd8"],
+		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "K", "P", "k", "#00acc1"],
+		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "L", "E", "l", "#fb8c00"],
 	] as const) {
 		const svg = read(image);
 		assert.match(
@@ -262,7 +262,7 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 			),
 		);
 	}
-	const d3 = read("docs/shenyun-d3v1-keyboard.svg");
+	const d3 = read("docs/shenyun-rc26-keyboard.svg");
 	assert.match(
 		keyGroup(d3, "J"),
 		/fill="#deedf1" stroke="#6e9eaa"[^>]*stroke-dasharray="4 2"/u,
@@ -279,8 +279,8 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 
 test("README and popup diagrams link every moved source with one distinct color", () => {
 	for (const image of [
-		"docs/shenyun-d3v1-keyboard.svg",
-		"docs/shenyun-qz-e8f37a-keyboard.svg",
+		"docs/shenyun-rc26-keyboard.svg",
+		"docs/shenyun-oc21-e1f155973380-keyboard.svg",
 		...schemes.map(([, , image]) => `lua/snow/keymaps/${image}`),
 	]) {
 		assertEveryMovedKeycapHasOneColorLink(read(image), image);

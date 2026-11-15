@@ -11,8 +11,8 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     AUBBBB 飞花式 21×26 顶功方案
-    “简道”强调记忆更简单：D3/V1 为 M=40、D=3、V=1、无音节重码、无 630
-    共用 SNOW-SHENYUN-21X26-D3V1-BALANCED 声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
+    “简道”强调记忆更简单：RC26-39a5bfdc045342cd 为 M=40、D=3、V=1、无音节重码、无 630
+    共用 RC26-39a5bfdc045342cd 声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
     单字 AU 后最多追加四个形辅；二／三／四字词形辅字位顺序：12/12/24
   dependencies:
     - snow_pinyin
@@ -32,4 +32,4 @@ __patch:
   - snow_shenyun_shape.custom:/patch?
 
 patch:
-  translator/user_dict_name: snow_shenyun_shape_d3v1
+  translator/user_dict_name: snow_shenyun_shape_rc26

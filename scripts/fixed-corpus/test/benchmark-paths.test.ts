@@ -168,14 +168,14 @@ test("冰雪清韵使用自己的单键直出且不继承的了尾字键", () =>
 test("只有冰雪四拼、冰雪简道和冰雪散拼启用结构略码", () => {
 	for (const scheme of [
 		"qingyun",
-		"qz-shape",
-		"qz-tone",
+		"oc21-shape",
+		"oc21-tone",
 		"classic-shape",
 		"classic-tone",
 	] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), false, scheme);
 	}
-	for (const scheme of ["sipin", "d3v1-shape", "d3v1-tone"] as const) {
+	for (const scheme of ["sipin", "rc26-shape", "rc26-tone"] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), true, scheme);
 	}
 });

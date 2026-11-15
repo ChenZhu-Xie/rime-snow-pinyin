@@ -70,7 +70,7 @@ deploy:
       # 输入统计沿用公共 lua 前缀 o。
       - send: otj
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
-      # D3/V1 换位后的一级固顶字。
+      # RC26-39a5bfdc045342cd 换位后的一级固顶字。
       - send: d
         assert: cand[1].text == "都" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: p
@@ -119,7 +119,7 @@ deploy:
       - send: cve
         assert: has("财神") and has("才是") and not has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
-      - send: bqyt
+      - send: bqyv
         assert: has("冰雪")
       - send: vrf
         assert: has("输入法")
@@ -138,8 +138,8 @@ deploy:
       # wi 是合法完整音节，cvwi 仍应走 AAAU 得到三字词。
       - send: cvwi
         assert: all_have_length(3) and has("测试仪")
-      # yr 是合法的 xia 音节；dwyri 走标准 AAAU+B2，调辅给出第二字一声。
-      - send: dwyri
+      # yr 是合法的 xia 音节；dwybi 走标准 AAAU+B2，调辅给出第二字一声。
+      - send: dwybi
         assert: has("等一下")
       # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
       - send: chvi;

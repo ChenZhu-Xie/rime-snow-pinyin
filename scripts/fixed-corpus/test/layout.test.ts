@@ -31,18 +31,18 @@ test("layout encodes representative zero initials, initials, and ju/jue", () => 
 	assert.deepEqual(encodeSyllable("zhang1", original, "canonical"), ["qp"]);
 	assert.deepEqual(encodeSyllable("chang2", shenyun, "canonical"), ["sy"]);
 	assert.deepEqual(encodeSyllable("shang4", shenyun, "canonical"), ["ly"]);
-	assert.deepEqual(encodeSyllable("ju1", shenyun, "canonical"), ["jd"]);
+	assert.deepEqual(encodeSyllable("ju1", shenyun, "canonical"), ["je"]);
 	assert.deepEqual(encodeSyllable("jue2", original, "canonical"), ["jh"]);
 });
 
-test("QZ-e8f37a uses the audited 21x21 initial and final mapping", () => {
-	assert.deepEqual(encodeSyllable("ben1", shenyun, "canonical"), ["bd"]);
+test("OC21-e1f155973380 uses the audited 21x21 initial and final mapping", () => {
+	assert.deepEqual(encodeSyllable("ben1", shenyun, "canonical"), ["be"]);
 	assert.deepEqual(encodeSyllable("bo1", shenyun, "canonical"), ["bg"]);
-	assert.deepEqual(encodeSyllable("duan1", shenyun, "canonical"), ["de"]);
+	assert.deepEqual(encodeSyllable("duan1", shenyun, "canonical"), ["dd"]);
 	assert.deepEqual(encodeSyllable("jun1", shenyun, "canonical"), ["jg"]);
 	assert.deepEqual(encodeSyllable("yun1", shenyun, "canonical"), ["yg"]);
-	assert.deepEqual(encodeSyllable("en1", shenyun, "canonical"), ["cd"]);
-	assert.deepEqual(encodeSyllable("o1", shenyun, "canonical"), ["rg"]);
+	assert.deepEqual(encodeSyllable("en1", shenyun, "canonical"), ["ce"]);
+	assert.deepEqual(encodeSyllable("o1", shenyun, "canonical"), ["cg"]);
 	assert.deepEqual(encodeSyllable("yo1", shenyun, "canonical"), ["yg"]);
 });
 

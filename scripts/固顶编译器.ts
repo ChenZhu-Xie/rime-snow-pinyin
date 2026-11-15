@@ -244,9 +244,9 @@ for (const [code, letter] of [
 for (const [code, words] of [
 	["y", "1"],
 	["cj", "二 2"],
-	["sm", "3"],
+	["sn", "3"],
 	["sfi", "四 4"],
-	["whv", "五 5"],
+	["wmv", "五 5"],
 	["ebo", "六 6"],
 	["qfv", "七 7"],
 	["bpu", "8"],
@@ -284,7 +284,7 @@ export function renderJiandaoFixedTable(sections: FixedSections) {
 // 神韵固顶选优，但必须由同一生成器输出，避免下次生成时被覆盖。
 export const sanpinSingleAliases = new Map([
 	["cj", "2"],
-	["sm", "3"],
+	["sn", "3"],
 	["y", "1"],
 ]);
 
@@ -318,10 +318,10 @@ export const sanpinLetterEntries = [
 ] as const;
 
 // 上游统计功能用这些三音节全码同时提供中文数字与阿拉伯数字候选。
-// 码位按当前 QZ-e8f37a 的声、韵、调键重新编码，均不占用固顶区已有条目。
+// 码位按当前 OC21-e1f155973380 的声、韵、调键重新编码，均不占用固顶区已有条目。
 export const sanpinTemporaryNumberEntries = [
 	["sfa", "四 4"],
-	["whu", "五 5"],
+	["wmu", "五 5"],
 	["eba", "六 6"],
 	["qfi", "七 7"],
 	["bpi", "八 8"],

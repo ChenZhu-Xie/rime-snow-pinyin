@@ -22,7 +22,12 @@ if (!schemaSource.includes("erase/^(hng|m|n|ng|ê)\\d$/")) {
 const algebra = new SpellingAlgebra(schemaPath, "sanpin_algebra");
 const fixture = JSON.parse(
 	readFileSync(
-		join(scriptDirectory, "..", "docs", "shenyun-qz-e8f37a-mapping.json"),
+		join(
+			scriptDirectory,
+			"..",
+			"docs",
+			"shenyun-oc21-e1f155973380-mapping.json",
+		),
 		"utf8",
 	),
 ) as {
@@ -35,7 +40,7 @@ const fixtureHash = createHash("sha256")
 	.update(JSON.stringify(fixture.codes))
 	.digest("hex");
 if (
-	fixture.scheme !== "QZ-e8f37a0998f9" ||
+	fixture.scheme !== "OC21-e1f155973380" ||
 	fixtureHash !== fixture.mappingSha256
 ) {
 	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
@@ -51,11 +56,11 @@ for (const [syllable, code] of Object.entries(fixture.codes)) {
 }
 if (fixtureFailures.length > 0) {
 	throw new Error(
-		`神韵 QZ-e8f37a 映射核验失败：\n${fixtureFailures.join("\n")}`,
+		`神韵 OC21-e1f155973380 映射核验失败：\n${fixtureFailures.join("\n")}`,
 	);
 }
 console.log(
-	`神韵 QZ-e8f37a 映射核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
+	`神韵 OC21-e1f155973380 映射核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
 );
 
 const pronunciationMap = new Map<string, string[][]>();

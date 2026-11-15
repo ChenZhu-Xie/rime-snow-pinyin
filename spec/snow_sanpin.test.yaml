@@ -32,17 +32,17 @@ deploy:
   cross_route_user_phrase:
     tests:
       # 用前三字完整声韵、第四字声母唯一上屏“方案选单”，再退回 frxd 验证跨路径用户词优先。
-      - send: "fYrMxTd frxd"
+      - send: "fYrNxTd frxd"
         assert: cand[1].text == "方案选单"
   sentence:
     patch:
       'switches/@4/reset': 0
     tests:
-      # 上游 bgxhpbyb：本地 QZ 四字主码为 bxpy，再按词语首辅顺序补调码 ui。
+      # 上游 bgxhpbyb：本地 OC21 四字主码为 bxpy，再按词语首辅顺序补调码 ui。
       - send: bxpyui
         assert: cand[1].text == "冰雪拼音"
       # 上游 bgvxhupbvybv：四字逐音节打满声韵调；神韵调码 1=i、3=u。
-      - send: bkixeupriyri
+      - send: bkixdupriyri
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
@@ -75,13 +75,13 @@ deploy:
       - send: lrf
         assert: has("输入法") and comment("输入法"):find("〔调₂₁₃ ai〕", 1, true)
       - send: jjjs
-        assert: has("经济基础") and comment("经济基础"):find("〔调₂₃ ai〕", 1, true)
+        assert: has("经济基础") and comment("经济基础"):find("〔调₂₁ ai〕", 1, true)
       # 单字 IR+B1+B2：冰首笔丶 → o；当首笔丨 → i。
       - send: bkio
         assert: has("冰")
       - send: dyii
         assert: has("当")
-      - send: bkxe
+      - send: bkxd
         assert: has("冰雪")
       - send: jrlfaa
         assert: has("近世")
@@ -124,9 +124,9 @@ deploy:
       - send: br
         assert: cand[1].text == "宾"
       # 双字简码（4/5）与全码（6），声调按第一字、第二字排列。
-      - send: bkxei
+      - send: bkxdi
         assert: has("冰雪")
-      - send: bkxeiu
+      - send: bkxdiu
         assert: page("冰雪")
       # 三字简码 3/4/5 与全码 6，声调字位顺序为 2、1、3。
       - send: lrfa
@@ -135,7 +135,7 @@ deploy:
         assert: page("输入法")
       - send: lrfaiu
         assert: page("输入法")
-      # 四字简码 4/5 与全码 6，前两个声调取第二、第三字。
+      # 四字简码 4/5 与全码 6，前两个声调取第二、第一字。
       - send: smxwu
         assert: page("充满希望")
       - send: smxwui
@@ -167,9 +167,9 @@ deploy:
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
-      - send: xe
+      - send: xd
         assert: cand[1].text == "学"
-      - send: bhyz
+      - send: bmyz
         assert: cand[1].text == "不要"
       - send: fl
         assert: cand[1].text == "非" and not has("(zhei4)")
@@ -189,7 +189,7 @@ deploy:
       # 数字按当前 U357 声韵调语义重编码，不沿用上游的物理键位。
       - send: cj
         assert: cand[1].text == "二" and cand[2].text == "2"
-      - send: sm
+      - send: sn
         assert: cand[1].text == "三" and cand[2].text == "3"
       - send: sfa
         assert: cand[1].text == "四" and cand[2].text == "4"
@@ -238,7 +238,7 @@ deploy:
       # 顶功
       - send: yfgsyfgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bkixeu
+      - send: bkixdu
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pryrlrf
         assert: commit == "拼音" and cand[1].text == "输入法"
@@ -254,9 +254,9 @@ deploy:
       # 上游 pbg / xhbg / erf b：短码不能被后续声母顶出。
       - send: pbk
         assert: commit == nil or commit == ""
-      - send: xebk
+      - send: xdbk
         assert: commit == nil or commit == ""
-      - send: "xe "
+      - send: "xd "
         assert: commit == "学"
       - send: lrfb
         assert: commit == nil or commit == ""
@@ -285,9 +285,9 @@ deploy:
         assert: commit == nil and preedit == nil
       - send: "o{Escape}lrf "
         assert: commit == "输入法"
-      - send: "o bkxelrf "
+      - send: "o bkxdlrf "
         assert: commit == nil
-      - send: "o bkxelrf  lrf "
+      - send: "o bkxdlrf  lrf "
         assert: commit == "冰雪输入法输入法"
   # 六码二字词选完首字后，第二字可由下一个词顶屏，并与首字一起完成造词。
   encoding_popping:
@@ -303,7 +303,7 @@ deploy:
     tests:
       - send: "o sy mz  symz"
         assert: cand[1].text == "长猫"
-      - send: "o bkxelrf  bxlrF"
+      - send: "o bkxdlrf  bxlrF"
         assert: cand[1].text == "冰雪输入法"
       # 键道与三拼共享二键基码；三拼统一追加轻声键 o。
       - send: bco
@@ -339,11 +339,11 @@ deploy:
         assert: utf8.len(commit) == 2 and not commit:find("u", 1, true)
       - send: yxi
         assert: has("一些") and has("也需") and not has("也许")
-      - send: lHrf
+      - send: lMrf
         assert: has("输入法")
       - send: lrfP
         assert: has("输入法")
-      - send: lHrHfP
+      - send: lMrMfP
         assert: has("输入法")
       - send: zFxKsS
         assert: has("自行车")
@@ -409,7 +409,7 @@ deploy:
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
       - send: "fpx{Control+period}fpxqS Vw 50{Control+period}fpx"
         assert: cand[1].text == "疯狂星期四V我50"
-      # QZ 弎拼 xov 固顶“行叭”：新词不得挤掉已有的首选。
+      # OC21 弎拼 xov 固顶“行叭”：新词不得挤掉已有的首选。
       - send: "xov{Control+period}fpxqS {Control+period}xov"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。

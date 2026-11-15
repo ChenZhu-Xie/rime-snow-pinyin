@@ -39,7 +39,7 @@ deploy:
     patch:
       'switches/@4/reset': 0
     tests:
-      - send: bkxepryr
+      - send: bkxdpryr
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
@@ -50,7 +50,7 @@ deploy:
       - send: cj
         assert: has("儿")
       # 组词规则
-      - send: bkxe
+      - send: bkxd
         assert: has("冰雪")
       - send: lrf
         assert: has("输入法")
@@ -87,11 +87,11 @@ deploy:
       # 固顶词
       - send: p
         assert: cand[1].text == "平"
-      - send: xe
+      - send: xd
         assert: cand[1].text == "学"
       - send: bkov
         assert: cand[1].text == "冰"
-      - send: bhyz
+      - send: bmyz
         assert: cand[1].text == "不要"
       - send: fli
         assert: cand[1].text == "非" and not has("(zhei4)")
@@ -118,12 +118,12 @@ deploy:
         assert: cand[1].text == "寻" and cand[2].text == "V" and cand[3].text == "v"
       - send: cj
         assert: cand[1].text == "二" and cand[2].text == "2"
-      - send: sm
+      - send: sn
         assert: cand[1].text == "伞" and cand[2].text == "3"
       - send: w
         assert: cand[1].text == "我" and not has("3")
       - send: xh
-        assert: cand[1].text == "兄" and cand[2].text == "U" and cand[3].text == "u"
+        assert: cand[1].text == "喜欢" and cand[2].text == "U" and cand[3].text == "u"
       - send: sfi
         assert: cand[1].text == "四" and cand[2].text == "4"
       - send: sl
@@ -162,7 +162,7 @@ deploy:
       # 顶功
       - send: yfgsyfgs
         assert: commit == "一个" and cand[1].text == "一个"
-      - send: bkovxev
+      - send: bkovxdv
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pryrlrf
         assert: commit == "拼音" and cand[1].text == "输入法"
@@ -192,10 +192,10 @@ deploy:
       # 缓冲造词
       - send: "o syuv mzu  symz"
         assert: cand[1].text == "长猫"
-      - send: "o bkxelrf  bxlrF"
+      - send: "o bkxdlrf  bxlrF"
         assert: cand[1].text == "冰雪输入法"
-      # 本地 QZ 健道使用 whv/gc/tl/xr；数字和字母按实际候选位选取。
-      - send: "o whv2gc2tlxr  wgtx"
+      # 本地 OC21 健道使用 wmv/gc/tl/xr；数字和字母按实际候选位选取。
+      - send: "o wmv2gc2tlxr  wgtx"
         assert: cand[1].text == "5G通信"
       # 健道和弎拼的元音字母简拼都使用共享载体 x。
       - send: "o dkou epoi{Down}{Down}{space}xw mtv{Down}{Down}{space} dexm"
@@ -205,14 +205,14 @@ deploy:
     tests:
       - send: X
         assert: preedit == nil and commit == nil
-      - send: lHrf
-        assert: has("输入法") and preedit == "lH r f"
-      - send: lrHf
-        assert: has("输入法") and preedit == "l rH f"
+      - send: lMrf
+        assert: has("输入法") and preedit == "lM r f"
+      - send: lrMf
+        assert: has("输入法") and preedit == "l rM f"
       - send: lrfP
         assert: has("输入法") and preedit == "l r fP"
-      - send: lHrHfP
-        assert: has("输入法") and preedit == "lH rH fP"
+      - send: lMrMfP
+        assert: has("输入法") and preedit == "lM rM fP"
       - send: zFxKsS
         assert: has("自行车")
   buffered_command:
@@ -227,9 +227,9 @@ deploy:
         assert: commit == nil and preedit == nil
       - send: "o{Escape}lrf "
         assert: commit == "输入法"
-      - send: "o bkxelrf "
+      - send: "o bkxdlrf "
         assert: commit == nil
-      - send: "o bkxelrf  lrf "
+      - send: "o bkxdlrf  lrf "
         assert: commit == "冰雪输入法输入法"
   # 高级功能
   advanced:
@@ -292,7 +292,7 @@ deploy:
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
       - send: "fpx{Control+period}fpxqS Vw 50{Control+period}fpx"
         assert: cand[1].text == "疯狂星期四V我50"
-      # QZ 健道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
+      # OC21 健道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
       - send: "xou{Control+period}fpxqS Vw 50{Control+period}xou"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四V我50"
       - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"

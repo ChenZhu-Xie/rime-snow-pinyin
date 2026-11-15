@@ -196,7 +196,10 @@ function makeOptimizedCandidate(
 }
 
 const fixture = JSON.parse(
-	readFileSync(join(root, "docs", "shenyun-qz-e8f37a-mapping.json"), "utf8"),
+	readFileSync(
+		join(root, "docs", "shenyun-oc21-e1f155973380-mapping.json"),
+		"utf8",
+	),
 ) as {
 	scheme: string;
 	codes: Record<string, string | null>;
@@ -229,7 +232,7 @@ const layout: FixedLayout = {
 };
 assertLayout(layout);
 
-// 一码只保留一个冠军。QZ-e8f37a 的声母与零声母均由活动映射快照约束。
+// 一码只保留一个冠军。OC21-e1f155973380 的声母与零声母均由活动映射快照约束。
 const seedOneKeyWords = new Map<string, string>([
 	["b", "不"],
 	["c", "才"],
@@ -254,7 +257,7 @@ const seedOneKeyWords = new Map<string, string>([
 	["z", "在"],
 ]);
 
-// 旧版候选只作肌肉记忆偏好；QZ-e8f37a 的二简槽位按现行音码空间重新计算。
+// 旧版候选只作肌肉记忆偏好；OC21-e1f155973380 的二简槽位按现行音码空间重新计算。
 const legacySeedErjianWords = new Map<string, string>([
 	["bf", "不要"],
 	["bm", "部门"],
@@ -539,7 +542,7 @@ const occupiedGiveUpCodes = allMainPairsForErjian
 const erjianCodeSet = new Set([...naturalEmptyCodes, ...occupiedGiveUpCodes]);
 if (erjianCodeSet.size !== targetErjianCount) {
 	throw new Error(
-		`QZ-e8f37a 二简槽位不足 ${targetErjianCount}：天然空位 ${naturalEmptyCodes.length}，冷音码 ${occupiedGiveUpCodes.length}`,
+		`OC21-e1f155973380 二简槽位不足 ${targetErjianCount}：天然空位 ${naturalEmptyCodes.length}，冷音码 ${occupiedGiveUpCodes.length}`,
 	);
 }
 const seedErjianWords = new Map<string, string>();

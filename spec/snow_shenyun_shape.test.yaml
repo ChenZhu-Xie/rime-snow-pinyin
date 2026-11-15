@@ -49,7 +49,7 @@ deploy:
       # 输入统计沿用公共 lua 前缀 o。
       - send: otj
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
-      # D3/V1 换位后的一级固顶字。
+      # RC26-39a5bfdc045342cd 换位后的一级固顶字。
       - send: d
         assert: cand[1].text == "都" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: p
@@ -70,7 +70,7 @@ deploy:
         assert: cand[1].text == "人"
       - send: z
         assert: cand[1].text == "在"
-      # bing 的 D3/V1 声韵码为 bq，键道式首形码为 o（丶）。
+      # bing 的 RC26-39a5bfdc045342cd 声韵码为 bq，键道式首形码为 o（丶）。
       - send: bq
         assert: all_have_length(1) and has("冰") and preedit == "bq"
       - send: bqo
@@ -91,7 +91,7 @@ deploy:
       - send: cve
         assert: has("才是") and not has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
-      - send: bqyt
+      - send: bqyv
         assert: has("冰雪")
       - send: vrf
         assert: has("输入法")
@@ -105,7 +105,7 @@ deploy:
       # wi 是合法完整音节，cvwi 仍应走 AAAU 得到三字词。
       - send: cvwi
         assert: all_have_length(3) and has("测试仪")
-      - send: dwyru
+      - send: dwybu
         assert: has("等一下")
       # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
       - send: chvi;
@@ -113,7 +113,7 @@ deploy:
       - send: chvi/
         assert: commit == "测试了"
       # 「管理员」第二字形辅为 e；ye 是占用码，使用标准 AAAU+B 路由。
-      - send: glwmu
+      - send: glwtu
         assert: has("管理员")
       - send: "bq,"
         assert: commit and commit:find("，", 1, true)

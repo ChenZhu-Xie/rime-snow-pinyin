@@ -32,22 +32,14 @@ Rime 的候选接口只有文本与注释，没有跨前端的图片接口，因
 
 更新共享核心时，在 benchmark 仓库先完成测试与提交，再运行 `bun scripts/sync-keymap-link-colors.ts --source <shuangpin-layout-benchmark 路径>`；脚本复制上游文件并更新来源提交和 SHA-256。普通生成和 CI 只运行 `bun scripts/sync-keymap-link-colors.ts --check`，只校验仓库内快照，不依赖相邻工作树；本机需要核对两仓库时可额外传入 `--source`。
 
-README 引用的 D3/V1 与 QZ-e8f37a 两张声韵图由 `scripts/生成神韵键盘图.ts` 从 benchmark HTML 原生导出；十一份方案浮窗 SVG/PNG 则由本仓库生成器产生。以下命令依次更新 README 图、浮窗图并执行结构与配色审计：
+README 的两张活动声韵图与八份浮窗 SVG/PNG 共用本仓库的原生生成器；纯双拼热力图直接读取 benchmark 的压缩 payload 中已冻结的日常文稿键频，不依赖浏览器。
 
 ```powershell
 $benchmark = "D:\path\to\shuangpin-layout-benchmark"
-bun scripts/生成神韵键盘图.ts "$benchmark\a7_CKT_R11.html" --21x26
-bun scripts/生成神韵键盘图.ts "$benchmark\a7_CKT_R11.html"
 bun scripts/generate-keymaps.ts
+bun scripts/导出神韵热力图.ts "$benchmark\a7_CKT_R11.html" --21x26
+bun scripts/导出神韵热力图.ts "$benchmark\a7_CKT_R11.html"
 bun test --cwd scripts fixed-corpus/test/keymap-link-colors.test.ts fixed-corpus/test/keymaps.test.ts
-```
-
-若 Windows 上 Playwright 的浏览器调试管道无法握手，可先以隐藏窗口启动本机 Edge CDP，再给两条导出命令追加 `--cdp=http://127.0.0.1:9333`；该模式仍由脚本创建独立页面并等待 benchmark 就绪，不会绕过原生导出和配色逻辑。
-
-```powershell
-$profile = Join-Path $env:TEMP "snow-keymap-cdp-9333"
-New-Item -ItemType Directory -Path $profile -Force | Out-Null
-Start-Process -FilePath "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -ArgumentList @("--headless=new", "--disable-gpu", "--no-first-run", "--remote-debugging-port=9333", "--user-data-dir=$profile", "about:blank") -WindowStyle Hidden
 ```
 
 本机开发时运行：

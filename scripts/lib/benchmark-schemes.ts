@@ -9,10 +9,10 @@ export type BenchmarkSchemeId =
 	| "qingyun"
 	| "classic-tone"
 	| "classic-shape"
-	| "qz-tone"
-	| "qz-shape"
-	| "d3v1-tone"
-	| "d3v1-shape";
+	| "oc21-tone"
+	| "oc21-shape"
+	| "rc26-tone"
+	| "rc26-shape";
 
 export type BenchmarkCapacity = "四拼" | "21x9" | "21x21" | "21x26";
 export type BenchmarkAuxiliaryMode = "tone" | "shape";
@@ -23,7 +23,7 @@ export interface BenchmarkScheme {
 	name: string;
 	shortName: string;
 	capacity: BenchmarkCapacity;
-	soundLayout: "sipin" | "qingyun" | "classic" | "qz" | "d3v1";
+	soundLayout: "sipin" | "qingyun" | "classic" | "oc21" | "rc26";
 	auxiliaryMode: BenchmarkAuxiliaryMode;
 	fixedFile: string;
 	auxiliaryOrder: string;
@@ -48,26 +48,26 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 		auxiliaryOrder: "单字笔画／部件",
 	},
 	{
-		id: "qz-shape",
+		id: "oc21-shape",
 		schemaId: "snow_jiandao",
-		name: "冰雪健道（QZ-e8f37a 21×21）",
+		name: "冰雪健道（OC21-e1f155973380 21×21）",
 		shortName: "冰雪健道",
 		capacity: "21x21",
-		soundLayout: "qz",
+		soundLayout: "oc21",
 		auxiliaryMode: "shape",
 		fixedFile: "snow_jiandao.fixed.txt",
 		auxiliaryOrder: "12/213/24",
 	},
 	{
-		id: "qz-tone",
+		id: "oc21-tone",
 		schemaId: "snow_sanpin",
-		name: "冰雪弎拼（QZ-e8f37a 21×21）",
+		name: "冰雪弎拼（OC21-e1f155973380 21×21）",
 		shortName: "冰雪弎拼",
 		capacity: "21x21",
-		soundLayout: "qz",
+		soundLayout: "oc21",
 		auxiliaryMode: "tone",
 		fixedFile: "snow_sanpin.fixed.txt",
-		auxiliaryOrder: "12/213/23",
+		auxiliaryOrder: "12/213/21",
 	},
 	{
 		id: "qingyun",
@@ -81,23 +81,23 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 		auxiliaryOrder: "词语音码／单字形码",
 	},
 	{
-		id: "d3v1-shape",
+		id: "rc26-shape",
 		schemaId: "snow_shenyun_shape",
-		name: "冰雪简道（D3/V1 21×26）",
+		name: "冰雪简道（RC26-39a5bfdc045342cd 21×26）",
 		shortName: "冰雪简道",
 		capacity: "21x26",
-		soundLayout: "d3v1",
+		soundLayout: "rc26",
 		auxiliaryMode: "shape",
 		fixedFile: "snow_shenyun_shape.fixed.txt",
 		auxiliaryOrder: "12/12/24",
 	},
 	{
-		id: "d3v1-tone",
+		id: "rc26-tone",
 		schemaId: "snow_shenyun_tone",
-		name: "冰雪散拼（D3/V1 21×26）",
+		name: "冰雪散拼（RC26-39a5bfdc045342cd 21×26）",
 		shortName: "冰雪散拼",
 		capacity: "21x26",
-		soundLayout: "d3v1",
+		soundLayout: "rc26",
 		auxiliaryMode: "tone",
 		fixedFile: "snow_shenyun_tone.fixed.txt",
 		auxiliaryOrder: "12/21/13",
@@ -142,9 +142,12 @@ const semantics = {
 	"21x26": loadAuxiliarySemantics("21x26"),
 };
 const qzMapping = JSON.parse(
-	readFileSync(rootPath("docs", "shenyun-qz-e8f37a-mapping.json"), "utf8"),
+	readFileSync(
+		rootPath("docs", "shenyun-oc21-e1f155973380-mapping.json"),
+		"utf8",
+	),
 ) as { codes: Record<string, string | null> };
-const d3v1Algebra = new SpellingAlgebra(
+const rc26Algebra = new SpellingAlgebra(
 	rootPath("snow_shenyun_common.yaml"),
 	"shenyun_algebra",
 	{ derive: false },
@@ -231,7 +234,7 @@ function schemeById(id: BenchmarkSchemeId): BenchmarkScheme {
 export function supportsStructuralAbbreviations(
 	id: BenchmarkSchemeId,
 ): boolean {
-	return id === "sipin" || id === "d3v1-shape" || id === "d3v1-tone";
+	return id === "sipin" || id === "rc26-shape" || id === "rc26-tone";
 }
 
 export function directOutputCodes(
@@ -277,7 +280,7 @@ function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
 			.filter((code) => /^[bpmfdtnlgkhjqxzcsrwyv][aoeiu;,./]$/u.test(code));
 	}
 	const plain = plainSyllable(syllable);
-	if (scheme.soundLayout === "qz") {
+	if (scheme.soundLayout === "oc21") {
 		const code = qzMapping.codes[plain];
 		return code ? [code] : [];
 	}
@@ -292,7 +295,7 @@ function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
 			),
 		];
 	}
-	const code = d3v1Algebra.apply(`${plain}1`);
+	const code = rc26Algebra.apply(`${plain}1`);
 	return /^[a-z]{2}$/u.test(code) ? [code] : [];
 }
 

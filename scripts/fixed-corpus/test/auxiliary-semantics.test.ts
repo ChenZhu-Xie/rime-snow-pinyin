@@ -193,7 +193,7 @@ test("神韵机器可读配置显式区分形义序与声调序", () => {
 		"config/shenyun-21x21-mapping.json",
 		"config/shenyun-21x26-mapping.json",
 		"config/shenyun-21x28-mapping.json",
-		"docs/shenyun-qz-e8f37a-mapping.json",
+		"docs/shenyun-oc21-e1f155973380-mapping.json",
 		"docs/shenyun-u357-mapping.json",
 	]) {
 		const mapping = readMapping(path);
@@ -227,11 +227,11 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		BENCHMARK_SCHEMES.map(({ id, auxiliaryOrder }) => [id, auxiliaryOrder]),
 		[
 			["sipin", "单字笔画／部件"],
-			["qz-shape", "12/213/24"],
-			["qz-tone", "12/213/23"],
+			["oc21-shape", "12/213/24"],
+			["oc21-tone", "12/213/21"],
 			["qingyun", "词语音码／单字形码"],
-			["d3v1-shape", "12/12/24"],
-			["d3v1-tone", "12/21/13"],
+			["rc26-shape", "12/12/24"],
+			["rc26-tone", "12/21/13"],
 		],
 	);
 	assert.ok(
@@ -244,14 +244,14 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 			({ code }) => code === "bxe",
 		),
 	);
-	const qzThree = pronunciationCodes("qz-tone", "天地人", [
+	const qzThree = pronunciationCodes("oc21-tone", "天地人", [
 		"tian1",
 		"di2",
 		"ren3",
 	]);
 	assert.equal(qzThree[0].mainLength, 3);
 	assert.equal(qzThree.at(-1)?.code.slice(-3), "viu");
-	const d3Three = pronunciationCodes("d3v1-tone", "天地人", [
+	const d3Three = pronunciationCodes("rc26-tone", "天地人", [
 		"tian1",
 		"di2",
 		"ren3",
@@ -263,14 +263,14 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		[3, 4],
 	);
 	assert.equal(d3Three.at(-1)?.code.slice(-2), "ei");
-	const qzFour = pronunciationCodes("qz-tone", "天地人和", [
+	const qzFour = pronunciationCodes("oc21-tone", "天地人和", [
 		"tian1",
 		"di2",
 		"ren3",
 		"he2",
 	]);
-	assert.equal(qzFour.at(-1)?.code.slice(-2), "vu");
-	const d3Four = pronunciationCodes("d3v1-tone", "天地人和", [
+	assert.equal(qzFour.at(-1)?.code.slice(-2), "vi");
+	const d3Four = pronunciationCodes("rc26-tone", "天地人和", [
 		"tian1",
 		"di2",
 		"ren3",
@@ -278,9 +278,9 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 	]);
 	assert.equal(d3Four.at(-1)?.code.slice(-2), "iu");
 
-	const jiandaoSingle = pronunciationCodes("qz-shape", "时", ["shi2"]);
-	const shenyunShapeSingle = pronunciationCodes("d3v1-shape", "时", ["shi2"]);
-	const shenyunToneSingle = pronunciationCodes("d3v1-tone", "时", ["shi2"]);
+	const jiandaoSingle = pronunciationCodes("oc21-shape", "时", ["shi2"]);
+	const shenyunShapeSingle = pronunciationCodes("rc26-shape", "时", ["shi2"]);
+	const shenyunToneSingle = pronunciationCodes("rc26-tone", "时", ["shi2"]);
 	assert.equal(jiandaoSingle.at(-1)?.auxiliaryLength, 4);
 	assert.equal(shenyunShapeSingle.at(-1)?.auxiliaryLength, 4);
 	assert.equal(shenyunToneSingle.at(-1)?.auxiliaryLength, 4);
@@ -304,8 +304,8 @@ test("四个 21×21 benchmark 方案的多字词大写补韵不受六码限制",
 	const word = "中华人民共和国";
 	const syllables = ["zhong1", "hua2", "ren2", "min2", "gong4", "he2", "guo2"];
 	for (const scheme of [
-		"qz-shape",
-		"qz-tone",
+		"oc21-shape",
+		"oc21-tone",
 		"classic-shape",
 		"classic-tone",
 	] as const) {
@@ -328,7 +328,7 @@ test("benchmark 逐级模拟首选后置并保留最短合法单字码", () => {
 		{ word: "时", syllables: ["shi2"], weight: 10 },
 	];
 	const ranked = rankBenchmarkCodes(
-		"d3v1-shape",
+		"rc26-shape",
 		[entries[1]],
 		entries,
 		new Map([["v", { word: "是" }]]),
@@ -343,7 +343,7 @@ test("固定候选覆盖首位时不后置底层翻译器候选", () => {
 		{ word: "超时", syllables: ["chao1", "shi2"], weight: 48970 },
 	];
 	const ranked = rankBenchmarkCodes(
-		"qz-shape",
+		"oc21-shape",
 		entries,
 		entries,
 		new Map([["sl", { word: "产生" }]]),
@@ -365,19 +365,19 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 	];
 	const actualCandidates = new Map([
 		["c", ["才", "从"]],
-		["cr", ["从", "葱"]],
+		["cm", ["从", "葱"]],
 		["gYxe", ["钢箱梁", "刚醒来", "刚下来"]],
 	]);
 	const from = rankBenchmarkCodes(
-		"d3v1-shape",
+		"rc26-shape",
 		[entries[0]],
 		[entries[0]],
 		new Map([["c", { word: "才" }]]),
 		(code) => actualCandidates.get(code) ?? [],
 	);
-	assert.equal(from.find(({ code }) => code === "cr")?.rank, 1);
+	assert.equal(from.find(({ code }) => code === "cm")?.rank, 1);
 	const waking = rankBenchmarkCodes(
-		"qz-tone",
+		"oc21-tone",
 		[entries[1]],
 		[entries[1]],
 		new Map(),

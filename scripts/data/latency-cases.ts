@@ -79,7 +79,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 		{
 			id: "double",
-			keys: "bkxeiu",
+			keys: "bkxdiu",
 			page: "冰雪",
 			source: "spec/snow_sanpin.test.yaml",
 		},
@@ -108,19 +108,19 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 		{
 			id: "editing",
-			keys: "bkxeiu{BackSpace}",
+			keys: "bkxdiu{BackSpace}",
 			page: "冰雪",
 			source: "spec/snow_sanpin.test.yaml",
 		},
 		{
 			id: "popping",
-			keys: "bkxelrf",
+			keys: "bkxdlrf",
 			commit: "冰雪",
 			source: "spec/snow_sanpin.test.yaml",
 		},
 		{
 			id: "buffered",
-			keys: "bkxelrf  ",
+			keys: "bkxdlrf  ",
 			commit: "冰雪输入法",
 			options: ["buffered"],
 			source: "spec/snow_sanpin.test.yaml",
@@ -142,7 +142,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 		{
 			id: "double",
-			keys: "bkxe",
+			keys: "bkxd",
 			page: "冰雪",
 			source: "spec/snow_jiandao.test.yaml",
 		},
@@ -172,7 +172,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 		{
 			id: "mixed",
-			keys: "lHrHfP",
+			keys: "lMrMfP",
 			page: "输入法",
 			source: "snow-jiandao/index.md；spec/snow_jiandao.test.yaml",
 		},
@@ -183,19 +183,19 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 		{
 			id: "editing",
-			keys: "bkxeo{BackSpace}",
+			keys: "bkxdo{BackSpace}",
 			page: "冰雪",
 			source: "snow-jiandao/basic.md",
 		},
 		{
 			id: "popping",
-			keys: "bkovxev",
+			keys: "bkovxdv",
 			commit: "冰",
 			source: "snow-jiandao/basic.md",
 		},
 		{
 			id: "buffered",
-			keys: "bkxelrf  ",
+			keys: "bkxdlrf  ",
 			commit: "冰雪输入法",
 			options: ["buffered"],
 			source: "snow-jiandao/basic.md",
@@ -310,13 +310,13 @@ for (const [schema, keys, commit, source] of [
 	],
 	[
 		"snow_sanpin",
-		"bkxelrf_smxw_khrmGHG_.",
+		"bkxdlrf_smxw_khrmGHG_.",
 		"冰雪输入法充满希望中华人民共和国主席。",
 		"spec/snow_sanpin.test.yaml",
 	],
 	[
 		"snow_jiandao",
-		"bkxelrf_smxw_khrmGHG_.",
+		"bkxdlrf_smxw_khrmGHG_.",
 		"冰雪输入法充满希望中华人民共和国主席。",
 		"spec/snow_jiandao.test.yaml",
 	],

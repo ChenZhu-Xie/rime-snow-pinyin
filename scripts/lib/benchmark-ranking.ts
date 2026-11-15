@@ -100,7 +100,7 @@ function wordCodes(
 	);
 	const characters = [...entry.word];
 	if (characters.length !== entry.syllables.length) return [...result.values()];
-	const overall = scheme.startsWith("d3v1-");
+	const overall = scheme.startsWith("rc26-");
 	if (characters.length === 2) {
 		const regularMain = regular.find(
 			({ mainLength, auxiliaryLength }) =>
