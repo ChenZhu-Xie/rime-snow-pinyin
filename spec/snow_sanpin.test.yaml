@@ -114,6 +114,13 @@ deploy:
         assert: eq(preedit, "m x w")
       - send: jjjsai
         assert: has("经济基础")
+      # OC21 四字词取第二、第一字声调；「天时地利」的一声／四声能区分第一、第三字。
+      - send: tlde
+        assert: has("天时地利") and comment("天时地利"):find("〔调₂₁ vi〕", 1, true)
+      - send: tldevi
+        assert: has("天时地利")
+      - send: tldeva
+        assert: not has("天时地利")
       - send: kwlrF
         assert: has("中文输入法")
       - send: khrmGHG
