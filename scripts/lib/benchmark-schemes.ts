@@ -11,12 +11,8 @@ export type BenchmarkSchemeId =
 	| "classic-shape"
 	| "qz-tone"
 	| "qz-shape"
-	| "u357-first-tone"
-	| "u357-first-shape"
 	| "d3v1-tone"
-	| "d3v1-shape"
-	| "overall17-first-tone"
-	| "overall17-first-shape";
+	| "d3v1-shape";
 
 export type BenchmarkCapacity = "四拼" | "21x9" | "21x21" | "21x26";
 export type BenchmarkAuxiliaryMode = "tone" | "shape";
@@ -27,14 +23,7 @@ export interface BenchmarkScheme {
 	name: string;
 	shortName: string;
 	capacity: BenchmarkCapacity;
-	soundLayout:
-		| "sipin"
-		| "qingyun"
-		| "classic"
-		| "qz"
-		| "u357"
-		| "d3v1"
-		| "overall17";
+	soundLayout: "sipin" | "qingyun" | "classic" | "qz" | "d3v1";
 	auxiliaryMode: BenchmarkAuxiliaryMode;
 	fixedFile: string;
 	auxiliaryOrder: string;
@@ -113,50 +102,6 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 		fixedFile: "snow_shenyun_tone.fixed.txt",
 		auxiliaryOrder: "12/21/13",
 	},
-	{
-		id: "u357-first-shape",
-		schemaId: "snow_jiandao_first",
-		name: "冰雪健道·初代（U357 21×21）",
-		shortName: "冰雪健道·初代",
-		capacity: "21x21",
-		soundLayout: "u357",
-		auxiliaryMode: "shape",
-		fixedFile: "snow_jiandao_first.fixed.txt",
-		auxiliaryOrder: "12/231/24",
-	},
-	{
-		id: "u357-first-tone",
-		schemaId: "snow_sanpin_first",
-		name: "冰雪弎拼·初代（U357 21×21）",
-		shortName: "冰雪弎拼·初代",
-		capacity: "21x21",
-		soundLayout: "u357",
-		auxiliaryMode: "tone",
-		fixedFile: "snow_sanpin_first.fixed.txt",
-		auxiliaryOrder: "12/213/23",
-	},
-	{
-		id: "overall17-first-shape",
-		schemaId: "snow_shenyun_shape_first",
-		name: "冰雪简道·初代（Overall-17 21×26）",
-		shortName: "冰雪简道·初代",
-		capacity: "21x26",
-		soundLayout: "overall17",
-		auxiliaryMode: "shape",
-		fixedFile: "snow_shenyun_shape_first.fixed.txt",
-		auxiliaryOrder: "12/21/42",
-	},
-	{
-		id: "overall17-first-tone",
-		schemaId: "snow_shenyun_tone_first",
-		name: "冰雪散拼·初代（Overall-17 21×26）",
-		shortName: "冰雪散拼·初代",
-		capacity: "21x26",
-		soundLayout: "overall17",
-		auxiliaryMode: "tone",
-		fixedFile: "snow_shenyun_tone_first.fixed.txt",
-		auxiliaryOrder: "12/21/13",
-	},
 ] as const;
 
 export const LEGACY_BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
@@ -199,16 +144,8 @@ const semantics = {
 const qzMapping = JSON.parse(
 	readFileSync(rootPath("docs", "shenyun-qz-e8f37a-mapping.json"), "utf8"),
 ) as { codes: Record<string, string | null> };
-const u357Mapping = JSON.parse(
-	readFileSync(rootPath("docs", "shenyun-u357-mapping.json"), "utf8"),
-) as { codes: Record<string, string | null> };
 const d3v1Algebra = new SpellingAlgebra(
 	rootPath("snow_shenyun_common.yaml"),
-	"shenyun_algebra",
-	{ derive: false },
-);
-const overall17Algebra = new SpellingAlgebra(
-	rootPath("snow_shenyun_first_common.yaml"),
 	"shenyun_algebra",
 	{ derive: false },
 );
@@ -244,19 +181,6 @@ const activeShapeCodes = readShapeCodes(
 	rootPath("snow_jiandao_chaifen.dict.yaml"),
 	Object.fromEntries(shapeElementKeys),
 );
-const firstShapeElementKeys = new Map<string, string>();
-for (const line of readFileSync(
-	rootPath("lua", "snow", "radical_jiandao_first.txt"),
-	"utf8",
-).split(/\r?\n/u)) {
-	const [element, code] = line.split("\t");
-	if (element && code) firstShapeElementKeys.set(element, code);
-}
-const firstShapeCodes = readShapeCodes(
-	rootPath("snow_jiandao_chaifen.dict.yaml"),
-	Object.fromEntries(firstShapeElementKeys),
-);
-
 const sipinElementKeys = new Map<string, string>();
 for (const line of readFileSync(
 	rootPath("lua", "snow", "radical_sipin.txt"),
@@ -307,13 +231,7 @@ function schemeById(id: BenchmarkSchemeId): BenchmarkScheme {
 export function supportsStructuralAbbreviations(
 	id: BenchmarkSchemeId,
 ): boolean {
-	return (
-		id === "sipin" ||
-		id === "d3v1-shape" ||
-		id === "d3v1-tone" ||
-		id === "overall17-first-shape" ||
-		id === "overall17-first-tone"
-	);
+	return id === "sipin" || id === "d3v1-shape" || id === "d3v1-tone";
 }
 
 export function directOutputCodes(
@@ -359,9 +277,8 @@ function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
 			.filter((code) => /^[bpmfdtnlgkhjqxzcsrwyv][aoeiu;,./]$/u.test(code));
 	}
 	const plain = plainSyllable(syllable);
-	if (scheme.soundLayout === "qz" || scheme.soundLayout === "u357") {
-		const mapping = scheme.soundLayout === "qz" ? qzMapping : u357Mapping;
-		const code = mapping.codes[plain];
+	if (scheme.soundLayout === "qz") {
+		const code = qzMapping.codes[plain];
 		return code ? [code] : [];
 	}
 	if (scheme.soundLayout === "classic") {
@@ -375,9 +292,7 @@ function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
 			),
 		];
 	}
-	const algebra =
-		scheme.soundLayout === "d3v1" ? d3v1Algebra : overall17Algebra;
-	const code = algebra.apply(`${plain}1`);
+	const code = d3v1Algebra.apply(`${plain}1`);
 	return /^[a-z]{2}$/u.test(code) ? [code] : [];
 }
 
@@ -400,10 +315,7 @@ function remapShapeCode(code: string, capacity: "21x21" | "21x26"): string {
 
 function shapeCode(character: string, scheme: BenchmarkScheme): string {
 	if (!isDoublePinyinCapacity(scheme.capacity)) return "";
-	const source = scheme.id.includes("first")
-		? firstShapeCodes
-		: activeShapeCodes;
-	return remapShapeCode(source.get(character) ?? "", scheme.capacity);
+	return remapShapeCode(activeShapeCodes.get(character) ?? "", scheme.capacity);
 }
 
 function strokeCodes(character: string, capacity: BenchmarkCapacity): string[] {

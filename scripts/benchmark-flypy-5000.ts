@@ -413,10 +413,10 @@ const aggregate = {
 	),
 };
 
-const thirteenPath = join(
+const baselinePath = join(
 	ROOT,
 	"reports",
-	"5000字_十三方案最优切分实测结果.json",
+	"5000字_当前九方案最优切分实测结果.json",
 );
 interface CombinedArticleStat {
 	hanCount: number;
@@ -434,7 +434,7 @@ interface CombinedSchemeResult {
 	articles: CombinedArticleStat[];
 }
 
-const thirteen = JSON.parse(readFileSync(thirteenPath, "utf8")) as {
+const baseline = JSON.parse(readFileSync(baselinePath, "utf8")) as {
 	contract: string;
 	baseline: string;
 	schemes: Record<string, CombinedSchemeResult>;
@@ -451,17 +451,17 @@ const flypyResult = {
 	total: aggregate,
 	articles: articleResults.map(({ stat }) => stat),
 };
-const fourteenSchemes: Record<string, CombinedSchemeResult> = {
-	...thirteen.schemes,
+const combinedSchemes: Record<string, CombinedSchemeResult> = {
+	...baseline.schemes,
 	flypy: flypyResult,
 };
 writeFileSync(
-	join(ROOT, "reports", "5000字_十四方案最优切分实测结果.json"),
+	join(ROOT, "reports", "5000字_当前十方案最优切分实测结果.json"),
 	`${JSON.stringify(
 		{
-			contract: "current-fourteen-scheme-benchmark-v1-windinput-flypy",
-			baseline: thirteen.contract,
-			schemes: fourteenSchemes,
+			contract: "current-ten-scheme-benchmark-v1-windinput-flypy",
+			baseline: baseline.contract,
+			schemes: combinedSchemes,
 		},
 		null,
 		2,
@@ -470,7 +470,7 @@ writeFileSync(
 );
 
 const ranking = [
-	...Object.entries(thirteen.schemes).map(([id, value]) => ({
+	...Object.entries(baseline.schemes).map(([id, value]) => ({
 		id,
 		name: value.name,
 		keys: value.total.keys,
@@ -478,9 +478,9 @@ const ranking = [
 	{ id: "flypy", name: "小鹤音形", keys: aggregate.keys },
 ].sort((left, right) => left.keys - right.keys);
 const report = [
-	"# 十篇五百字（5000 字全语料）：十四方案最优切分实战测评",
+	"# 十篇五百字（5000 字全语料）：当前十方案最优切分实战测评",
 	"",
-	"> 本报告在十三方案同一赛文、同一按键计数和同一“先最少选重、再最少总按键”基线上加入小鹤音形。小鹤音形完全使用清风便携版 v1.26.11b 的静态发布词库、空白用户数据与官方候选顺序。",
+	"> 本报告在当前九方案同一赛文、同一按键计数和同一“先最少选重、再最少总按键”基线上加入小鹤音形。小鹤音形完全使用清风便携版 v1.26.11b 的静态发布词库、空白用户数据与官方候选顺序。",
 	"",
 	"## 总排名",
 	"",
@@ -525,7 +525,7 @@ const report = [
 	"| ---: | --- | ---: | ---: | ---: | ---: | --- |",
 	...articleResults.map(
 		({ article, stat }) =>
-			`| P${article.id} | ${article.genre} | ${stat.keys} | ${stat.avgLength.toFixed(4)} | ${stat.spaces} | ${stat.selectionCount} | [查看](./十篇五百字_十四方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_十四方案逐键对齐.md) |`,
+			`| P${article.id} | ${article.genre} | ${stat.keys} | ${stat.avgLength.toFixed(4)} | ${stat.spaces} | ${stat.selectionCount} | [查看](./十篇五百字_当前十方案逐键对齐回放/篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_当前十方案逐键对齐.md) |`,
 	),
 	"",
 	"## 字词切分",
@@ -542,13 +542,13 @@ const report = [
 	"- 逐键回放中的 `_` 表示 Space；标点计一键。",
 ];
 const comparisonFilename =
-	"十篇五百字_5000字_十四方案最优切分实战测评对齐汇编.txt";
+	"十篇五百字_5000字_当前十方案最优切分实战测评对齐汇编.txt";
 report.push(
 	"",
 	"## 对齐汇编",
 	"",
-	"- [十篇逐篇十四方案对齐回放](./十篇五百字_十四方案逐键对齐回放/)",
-	`- [5000 字十四方案纯文本对齐汇编](./${comparisonFilename})`,
+	"- [十篇逐篇当前十方案对齐回放](./十篇五百字_当前十方案逐键对齐回放/)",
+	`- [5000 字当前十方案纯文本对齐汇编](./${comparisonFilename})`,
 );
 
 const statSummary = (stat: CombinedArticleStat) => {
@@ -556,45 +556,45 @@ const statSummary = (stat: CombinedArticleStat) => {
 		`${((count / total) * 100).toFixed(1)}%`;
 	return `按键 ${stat.keys}；均码 ${stat.avgLength.toFixed(4)}；Space ${stat.spaces}；1字 ${ratio(stat.tokenCounts.c1, stat.tokenCounts.total)}（覆盖 ${ratio(stat.charCounts.c1, stat.charCounts.total)}）；2字 ${ratio(stat.tokenCounts.c2, stat.tokenCounts.total)}（覆盖 ${ratio(stat.charCounts.c2, stat.charCounts.total)}）；3字 ${ratio(stat.tokenCounts.c3, stat.tokenCounts.total)}（覆盖 ${ratio(stat.charCounts.c3, stat.charCounts.total)}）；4字 ${ratio(stat.tokenCounts.c4, stat.tokenCounts.total)}（覆盖 ${ratio(stat.charCounts.c4, stat.charCounts.total)}）；5字+ ${ratio(stat.tokenCounts.c5plus, stat.tokenCounts.total)}（覆盖 ${ratio(stat.charCounts.c5plus, stat.charCounts.total)}）`;
 };
-const schemeEntries = Object.entries(fourteenSchemes);
+const schemeEntries = Object.entries(combinedSchemes);
 const replayCacheDirectory = join(ROOT, "output", "benchmark-replays");
-const twelveReplays = readBenchmarkReplayCache(
-	join(replayCacheDirectory, "twelve.json"),
+const internalReplays = readBenchmarkReplayCache(
+	join(replayCacheDirectory, "internal.json"),
 );
 const sbxhReplays = readBenchmarkReplayCache(
 	join(replayCacheDirectory, "sbxh.json"),
 );
-if (twelveReplays.contract !== thirteen.baseline)
-	throw new Error("十二方案回放缓存与十三方案基线不一致，请重跑十二方案");
-if (sbxhReplays.contract !== thirteen.contract)
-	throw new Error("声笔小鹤回放缓存与十三方案结果不一致，请重跑声笔小鹤");
+if (internalReplays.contract !== baseline.baseline)
+	throw new Error("当前八方案回放缓存与当前九方案基线不一致，请重跑当前八方案");
+if (sbxhReplays.contract !== baseline.contract)
+	throw new Error("声笔小鹤回放缓存与当前九方案结果不一致，请重跑声笔小鹤");
 assertBenchmarkReplaySchemes(
-	twelveReplays,
-	Object.keys(thirteen.schemes).filter((id) => id !== "sbxh"),
-	"十二方案",
+	internalReplays,
+	Object.keys(baseline.schemes).filter((id) => id !== "sbxh"),
+	"当前八方案",
 );
 assertBenchmarkReplaySchemes(sbxhReplays, ["sbxh"], "声笔小鹤");
 const replays: Record<string, BenchmarkArticleReplay[]> = {
-	...twelveReplays.schemes,
+	...internalReplays.schemes,
 	...sbxhReplays.schemes,
 	flypy: articleResults.map(({ paths }) => paths.map(benchmarkReplay)),
 };
 for (const [id] of schemeEntries) {
 	if (replays[id]?.length !== exact500Articles.length)
 		throw new Error(
-			`方案 ${id} 缺少完整回放数据，请按十二、十三、十四方案顺序重跑`,
+			`方案 ${id} 缺少完整回放数据，请按当前八、九、十方案顺序重跑`,
 		);
 }
 const combinedReplayDirectory = join(
 	ROOT,
 	"reports",
-	"十篇五百字_十四方案逐键对齐回放",
+	"十篇五百字_当前十方案逐键对齐回放",
 );
 mkdirSync(combinedReplayDirectory, { recursive: true });
 for (const [articleIndex, article] of exact500Articles.entries()) {
 	const firstStat = schemeEntries[0][1].articles[articleIndex];
 	const lines = [
-		`# 篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}·500 字）十四方案实战回放`,
+		`# 篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}·500 字）当前十方案实战回放`,
 		"",
 		`- 口径：汉字 ${firstStat.hanCount} 个；标点 ${firstStat.punctCount} 个；均码 = 总实际按键 / ${firstStat.hanCount}。`,
 		...schemeEntries.map(
@@ -623,14 +623,14 @@ for (const [articleIndex, article] of exact500Articles.entries()) {
 	writeFileSync(
 		join(
 			combinedReplayDirectory,
-			`篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_十四方案逐键对齐.md`,
+			`篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_当前十方案逐键对齐.md`,
 		),
 		lines.join("\n"),
 		"utf8",
 	);
 }
 const comparison = [
-	"十四方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
+	"当前十方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
 	"====================================================================================================",
 	"口径：10 篇不同文体长文，每篇严格 500 汉字；标点计键；先最少选重次数，再最少实际按键；同为首选时优先最短标准码。只有完全没有首选打法时，才允许首页单键选重兜底（+1 键）。",
 	"记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。",
@@ -668,7 +668,7 @@ writeFileSync(
 	"utf8",
 );
 writeFileSync(
-	join(ROOT, "reports", "十篇五百字_十四方案最优切分及字词比率报告.md"),
+	join(ROOT, "reports", "十篇五百字_当前十方案最优切分及字词比率报告.md"),
 	report.join("\n"),
 	"utf8",
 );

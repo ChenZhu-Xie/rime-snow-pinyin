@@ -100,8 +100,7 @@ function wordCodes(
 	);
 	const characters = [...entry.word];
 	if (characters.length !== entry.syllables.length) return [...result.values()];
-	const overall =
-		scheme.startsWith("d3v1-") || scheme.startsWith("overall17-first-");
+	const overall = scheme.startsWith("d3v1-");
 	if (characters.length === 2) {
 		const regularMain = regular.find(
 			({ mainLength, auxiliaryLength }) =>
@@ -111,16 +110,14 @@ function wordCodes(
 		const shortMain = regularMain[0] + regularMain[2];
 		const vacant = !occupied.has(shortMain);
 		const fixedOwner = fixed?.get(shortMain)?.word === entry.word;
-		const reserved =
-			scheme === "u357-first-shape" && /^(?:xh|xw)$/u.test(shortMain);
-		if ((vacant || fixedOwner) && !reserved) {
+		if (vacant || fixedOwner) {
 			result.set(shortMain, {
 				code: shortMain,
 				mainLength: shortMain.length,
 				auxiliaryLength: 0,
 			});
 		}
-		if (vacant && !reserved) {
+		if (vacant) {
 			const regularMainLength = 4;
 			if (overall) {
 				for (const generated of regular) {

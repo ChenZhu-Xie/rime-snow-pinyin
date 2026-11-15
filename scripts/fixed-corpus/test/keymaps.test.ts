@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
@@ -84,44 +83,9 @@ const schemes = [
 	["snow_jiandao_toned.schema.yaml", "v", "snow_jiandao_toned.svg"],
 	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.svg"],
 	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.svg"],
-	["snow_jiandao_first.schema.yaml", "v", "snow_jiandao_first.svg"],
-	["snow_sanpin_first.schema.yaml", "v", "snow_sanpin_first.svg"],
-	["snow_shenyun_shape_first.schema.yaml", "e", "snow_shenyun_shape_first.svg"],
-	["snow_shenyun_tone_first.schema.yaml", "e", "snow_shenyun_tone_first.svg"],
 ] as const;
 
-const firstGenerationKeymaps = [
-	[
-		"snow_jiandao_first.svg",
-		"d0cde710e1b352910cfba942eeb00fa4f08244854c7a0043afb18304b5b0524d",
-	],
-	[
-		"snow_sanpin_first.svg",
-		"580fa97dc777fef11f8b9291734107bbc093ba562f9aa053f6f49178295f09bd",
-	],
-	[
-		"snow_shenyun_shape_first.svg",
-		"6c7b6236fa29b67baa817e06af7fe4bb2fb49891d91a14fea1f016016a208215",
-	],
-	[
-		"snow_shenyun_tone_first.svg",
-		"240539b88f74b0d513b849857f0cce4427329f64b801dac33d0dab9b323cba8f",
-	],
-] as const;
-
-test("first-generation schemes freeze their current keymaps", () => {
-	for (const [file, expectedHash] of firstGenerationKeymaps) {
-		assert.equal(
-			createHash("sha256")
-				.update(readFileSync(join(root, "lua", "snow", "keymaps", file)))
-				.digest("hex"),
-			expectedHash,
-			file,
-		);
-	}
-});
-
-test("twelve released diagrams bind only their vacant standalone key to a keymap", () => {
+test("eight released diagrams bind only their vacant standalone key to a keymap", () => {
 	for (const [schema, key, image] of schemes) {
 		const content = read(schema);
 		assert.match(
@@ -196,8 +160,8 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 			keyInfos: [[{ action: "e" }, { action: "v" }]],
 		},
 	});
-	assert.equal(Object.keys(keyboards).length, 14);
-	assert.equal(keyboards.keymaps.keyInfos.flat().length, 11);
+	assert.equal(Object.keys(keyboards).length, 10);
+	assert.equal(keyboards.keymaps.keyInfos.flat().length, 9);
 	const mobileImageKey = keyboards.keymap_snow_sipin.keyInfos[0][0] as {
 		action: string;
 		up?: string;
@@ -251,11 +215,13 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	const sipinSelector = trime.preset_keyboards.keymaps.keys[0].click;
 	assert.equal(trime.preset_keys[sipinSelector].label, "四拼");
 	const lastKey = trime.preset_keyboards.keymaps.keys.at(-1);
-	assert.equal(trime.preset_keys[lastKey?.swipe_up ?? ""].label, "弎初");
-	assert.equal(trime.preset_keys[lastKey?.swipe_down ?? ""].label, "散初");
+	assert.ok(lastKey);
+	assert.equal(trime.preset_keys[lastKey.click].label, "散拼");
+	assert.equal(lastKey.swipe_up, undefined);
+	assert.equal(lastKey.swipe_down, undefined);
 });
 
-test("active diagrams identify QZ-e8f37a and D3/V1 while initial diagrams stay frozen", () => {
+test("active diagrams identify QZ-e8f37a and D3/V1", () => {
 	for (const image of ["snow_jiandao.svg", "snow_sanpin.svg"]) {
 		assert.match(read(`lua/snow/keymaps/${image}`), /QZ-e8f37a/u);
 	}
@@ -531,10 +497,6 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 		"snow_jiandao_classic.svg": "",
 		"snow_shenyun_shape.svg": "QWSYX",
 		"snow_shenyun_tone.svg": "QWSYX",
-		"snow_jiandao_first.svg": "W",
-		"snow_sanpin_first.svg": "W",
-		"snow_shenyun_shape_first.svg": "FW",
-		"snow_shenyun_tone_first.svg": "FW",
 	};
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
@@ -559,7 +521,6 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 		["snow_shenyun_shape.svg", "X", "Y", "x", "#005bd8"],
 		["snow_jiandao.svg", "K", "P", "k", "#00acc1"],
 		["snow_jiandao.svg", "L", "E", "l", "#fb8c00"],
-		["snow_shenyun_shape_first.svg", "F", "J", "f", "#009b88"],
 	] as const;
 	for (const [image, source, target, initial, color] of linkCases) {
 		const svg = read(`lua/snow/keymaps/${image}`);
@@ -770,7 +731,7 @@ test("Four-Code puts tone rows below the key label and above every rhyme row", (
 	}
 });
 
-test("seven diagrams share the benchmark Morandi semantic vocabulary", () => {
+test("eight diagrams share the benchmark Morandi semantic vocabulary", () => {
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		assert.match(svg, /class="keysvg nf4-keysvg"/u, image);

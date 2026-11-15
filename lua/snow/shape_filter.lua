@@ -175,7 +175,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
     return codes[1] or "??"
   end
   -- 普通词组取每个字的形码首码；活动冰雪健道采用 QZ-e8f37a 的
-  -- 12/213/24，初代与经典冰雪键道继续使用 12/231/24。
+  -- 12/213/24，经典冰雪键道继续使用 12/231/24。
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
   end
@@ -323,12 +323,12 @@ local function current_state(env)
   if id == "snow_sipin" then
     sipin_passthrough = shape_input:len() == 0
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrwyv][aeiou]{3}")
-  elseif id == "snow_sanpin" or id == "snow_sanpin_first" or id == "snow_sanpin_classic" then
+  elseif id == "snow_sanpin" or id == "snow_sanpin_classic" then
     sanpin_initial_pair = shape_input:len() == 1
         and context:get_property("shape_status") == "initial_pair"
     sanpin_passthrough = shape_input:len() == 0
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]")
-  elseif id == "snow_jiandao" or id == "snow_jiandao_first" or id == "snow_jiandao_classic" then
+  elseif id == "snow_jiandao" or id == "snow_jiandao_classic" then
     if id == "snow_jiandao_classic" then
       jiandao_active = shape_input:len() > 0
           or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?")
@@ -356,11 +356,11 @@ function filter.init(env)
   local config = env.engine.schema.config
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
   local id = env.engine.schema.schema_id
-  if id == "snow_sipin" or id == "snow_sanpin" or id == "snow_sanpin_first"
+  if id == "snow_sipin" or id == "snow_sanpin"
       or id == "snow_sanpin_classic" then
     bihua.load_strokes(env)
   end
-  if id == "snow_sanpin" or id == "snow_sanpin_first" or id == "snow_sanpin_classic" then
+  if id == "snow_sanpin" or id == "snow_sanpin_classic" then
     env.pinyin = ReverseLookup("snow_pinyin")
     env.memory = Memory(env.engine, env.engine.schema, "translator")
   end
@@ -387,7 +387,7 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
     else
       return stroke_match(text, shape_input, env, sipin_reverse_stroke_map, sipin_direct_stroke_map)
     end
-  elseif state.id == "snow_sanpin" or state.id == "snow_sanpin_first"
+  elseif state.id == "snow_sanpin"
       or state.id == "snow_sanpin_classic" then -- 冰雪弎拼／冰雪三拼
     if state.sanpin_initial_pair then
       return sanpin_initial_pair_match(text, shape_input, env, candidate)
@@ -404,7 +404,7 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
     else
       return stroke_match(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map)
     end
-  elseif state.id == "snow_jiandao" or state.id == "snow_jiandao_first"
+  elseif state.id == "snow_jiandao"
       or state.id == "snow_jiandao_classic" then -- 冰雪健道／冰雪键道
     if state.is_pinyin or state.jiandao_active then
       local code = jiandao_encode(

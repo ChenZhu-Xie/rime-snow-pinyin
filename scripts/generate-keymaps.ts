@@ -74,18 +74,6 @@ const u357 = JSON.parse(
 const overall17 = JSON.parse(
 	readFileSync(join(root, "config", "shenyun-21x26-mapping.json"), "utf8"),
 ) as Mapping;
-const u357First = JSON.parse(
-	readFileSync(
-		join(root, "config", "shenyun-21x21-first-mapping.json"),
-		"utf8",
-	),
-) as Mapping;
-const overall17First = JSON.parse(
-	readFileSync(
-		join(root, "config", "shenyun-21x26-first-mapping.json"),
-		"utf8",
-	),
-) as Mapping;
 
 const classic: Mapping = {
 	shapeKeysByMeaning: "AVUIO",
@@ -999,26 +987,8 @@ for (const diagram of diagrams) {
 	update(join(outputDirectory, `${diagram.filename}.png`), png);
 }
 
-for (const [filename, mapping] of [
-	["snow_jiandao_first", u357First],
-	["snow_sanpin_first", u357First],
-	["snow_shenyun_shape_first", overall17First],
-	["snow_shenyun_tone_first", overall17First],
-] as const) {
-	const svgPath = join(outputDirectory, `${filename}.svg`);
-	const svg = styleInitialLinks(
-		readFileSync(svgPath, "utf8").replace(/\r\n?/gu, "\n"),
-		mapping,
-	);
-	update(svgPath, svg);
-	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })
-		.render()
-		.asPng();
-	update(join(outputDirectory, `${filename}.png`), png);
-}
-
 console.log(
 	check
-		? "八份活动／经典键位图与四份初代键位图均为最新。"
-		: `已生成八份活动／经典键位图与四份初代键位图：${outputDirectory}`,
+		? "八份活动／经典键位图均为最新。"
+		: `已生成八份活动／经典键位图：${outputDirectory}`,
 );

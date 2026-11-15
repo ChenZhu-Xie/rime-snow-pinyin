@@ -2,10 +2,6 @@
 
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import {
-	ALL_BENCHMARK_SCHEMES,
-	type BenchmarkSchemeId,
-} from "./lib/benchmark-schemes";
 import { rootPath } from "./lib/paths";
 
 const title = "十一场景 5500 字最优路径全按键键频图";
@@ -20,7 +16,7 @@ const outputReportPath = rootPath(
 );
 
 interface Layout {
-	id: BenchmarkSchemeId;
+	id: string;
 	displayName: string;
 	benchmarkName: string;
 	filename: string;
@@ -64,35 +60,32 @@ interface KeySpec {
 	width: number;
 }
 
-const benchmarkSchemes = new Map(
-	ALL_BENCHMARK_SCHEMES.map((scheme) => [scheme.id, scheme]),
-);
 const layouts: readonly Layout[] = [
 	{
 		id: "d3v1-shape",
 		displayName: "D3/V1 21×26",
-		benchmarkName: benchmarkSchemes.get("d3v1-shape")?.name ?? "",
+		benchmarkName: "冰雪简道（D3/V1 21×26）",
 		filename: "shenyun-d3v1-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AEUIO"],
 	},
 	{
 		id: "qz-shape",
 		displayName: "QZ-e8f37a 21×21",
-		benchmarkName: benchmarkSchemes.get("qz-shape")?.name ?? "",
+		benchmarkName: "冰雪健道（QZ-e8f37a 21×21）",
 		filename: "shenyun-qz-e8f37a-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AVUIO"],
 	},
 	{
 		id: "overall17-first-shape",
 		displayName: "Overall-17·初代 21×26",
-		benchmarkName: benchmarkSchemes.get("overall17-first-shape")?.name ?? "",
+		benchmarkName: "冰雪简道·初代（Overall-17 21×26）",
 		filename: "shenyun-overall17-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AEUIO"],
 	},
 	{
 		id: "u357-first-shape",
 		displayName: "U357·初代 21×21",
-		benchmarkName: benchmarkSchemes.get("u357-first-shape")?.name ?? "",
+		benchmarkName: "冰雪健道·初代（U357 21×21）",
 		filename: "shenyun-u357-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AVUIO"],
 	},

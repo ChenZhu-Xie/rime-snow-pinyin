@@ -14,7 +14,7 @@ test("发布同时依赖本地功能、性能和键位图门禁", () => {
 	);
 });
 
-test("分支与 PR 复用十四方案功能门禁并监听门禁实现", () => {
+test("分支与 PR 复用十方案功能门禁并监听门禁实现", () => {
 	const workflow = read(".github/workflows/test.yml");
 	expect(workflow).toContain("pull_request:");
 	expect(workflow).toContain("uses: ./.github/workflows/functional.yml");
@@ -27,15 +27,11 @@ test("分支与 PR 复用十四方案功能门禁并监听门禁实现", () => {
 	for (const schema of [
 		"snow_sipin",
 		"snow_sanpin",
-		"snow_sanpin_first",
 		"snow_yipin",
 		"snow_jiandao",
-		"snow_jiandao_first",
 		"snow_qingyun",
 		"snow_shenyun_shape",
-		"snow_shenyun_shape_first",
 		"snow_shenyun_tone",
-		"snow_shenyun_tone_first",
 		"snow_jiandao_classic",
 		"snow_sanpin_classic",
 		"snow_jiandao_toned",

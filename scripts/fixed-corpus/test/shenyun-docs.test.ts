@@ -754,8 +754,6 @@ test("两份 README 只以 D3/V1 与 QZ-e8f37a 为现行双拼并链接全量报
 		includes(readme, "docs/shenyun-qz-e8f37a-keyboard-heat.svg");
 		includes(readme, "docs/shenyun-d3v1-5500-keyboard-heat.svg");
 		includes(readme, "docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg");
-		includes(readme, "Overall-17·初代");
-		includes(readme, "U357·初代");
 		for (const header of [
 			/\| 指标 \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| 原键道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何为好 \|/u,
 			/\| Metric \| D3\/V1 21×26 \| QZ-e8f37a 21×21 \| KeyTao (?:S005|\[S005\]\([^)]+\)) \| Shoudao (?:B04|\[B04\]\([^)]+\)) \| Better \|/u,

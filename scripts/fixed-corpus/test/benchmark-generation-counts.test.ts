@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import test from "node:test";
-import { ALL_BENCHMARK_SCHEMES } from "../../lib/benchmark-schemes";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
@@ -11,8 +10,8 @@ const report = (count: "十二" | "十三" | "十四") =>
 		schemes: Record<string, unknown>;
 	};
 
-test("500 与 5000 字报告按十二、十三、十四方案逐级扩展", () => {
-	const internalIds = ALL_BENCHMARK_SCHEMES.map(({ id }) => id);
+test("历史 500 与 5000 字报告按十二、十三、十四方案逐级扩展", () => {
+	const internalIds = Object.keys(report("十二").schemes);
 	assert.equal(internalIds.length, 12);
 	assert.ok(
 		read("reports/冰雪十二方案_500字_最短键码实战测评.txt").startsWith(

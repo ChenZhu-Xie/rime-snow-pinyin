@@ -16,11 +16,7 @@ const sanpinKeys = [
 export const keymapSchemes = [
 	["snow_sipin", "四拼"],
 	...jiandaoKeys,
-	["snow_jiandao_first", "健初"],
-	["snow_shenyun_shape_first", "简初"],
 	...sanpinKeys,
-	["snow_sanpin_first", "弎初"],
-	["snow_shenyun_tone_first", "散初"],
 ] as const;
 
 export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
@@ -39,26 +35,12 @@ export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 						action: `!keymap_${id}`,
 						label: name,
 					})),
-					{
-						action: "!keymap_snow_jiandao_first",
-						stack: [
-							{ action: "!keymap_snow_jiandao_first", label: "健初" },
-							{ action: "!keymap_snow_shenyun_shape_first", label: "简初" },
-						],
-					},
 				],
 				[
 					...sanpinKeys.map(([id, name]) => ({
 						action: `!keymap_${id}`,
 						label: name,
 					})),
-					{
-						action: "!keymap_snow_sanpin_first",
-						stack: [
-							{ action: "!keymap_snow_sanpin_first", label: "弎初" },
-							{ action: "!keymap_snow_shenyun_tone_first", label: "散初" },
-						],
-					},
 				],
 			],
 		},

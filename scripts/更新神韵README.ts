@@ -1729,15 +1729,15 @@ ${mappingTable(activeQzLayout.finalMap, ["韵母", "次键"])}
 
 ### 现行双拼与原键道 S005、首道 B04 benchmark
 
-下表用当前 D3/V1 与 QZ-e8f37a 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 S005、首道 B04 作参照；初代布局只保留在后面的全量追加报告中。
+下表用当前 D3/V1 与 QZ-e8f37a 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 S005、首道 B04 作参照。
 
 ${zhBenchmarkLegend}
 
 ${zhBenchmark}
 
-#### 初代兼容方案与完整报告
+#### 完整测评报告
 
-冰雪简道·初代、冰雪散拼·初代冻结 Overall-17·初代；冰雪健道·初代、冰雪弎拼·初代冻结 U357·初代。四份初代方案保留独立 schema、声韵映射、固顶数据库和输入统计，不跟随现行方案升级；标准学习词频与系统词典仍按冰雪系约定共享。新旧布局的可复算比较见 [五布局／六布局追加报告](reports/shenyun-comparison.md)。
+现行与历史布局的可复算比较见 [五布局／六布局追加报告](reports/shenyun-comparison.md)。
 
 - [500 字冰雪十二方案实战测评](reports/冰雪十二方案_500字_最短键码实战测评.txt)
 - [5000 字冰雪十二方案全量报告](reports/十篇五百字_十二方案最优切分及字词比率报告.md)
@@ -1846,15 +1846,15 @@ The eleven-scenario 5,500-character replay uses 9,444 keys, including 376 spaces
 
 ### Current double-pinyin layouts versus KeyTao S005 and Shoudao B04
 
-This table directly replaces Overall-17 and U357 in the historical README comparison with the current D3/V1 and QZ-e8f37a results, using the same frozen payload and the original KeyTao S005 and Shoudao B04 references. The first-generation layouts remain in the appended full report only.
+This table directly replaces Overall-17 and U357 in the historical README comparison with the current D3/V1 and QZ-e8f37a results, using the same frozen payload and the original KeyTao S005 and Shoudao B04 references.
 
 ${enBenchmarkLegend}
 
 ${enBenchmark}
 
-#### First-generation compatibility schemes and complete reports
+#### Complete benchmark reports
 
-冰雪简道·初代 and 冰雪散拼·初代 freeze Overall-17·初代; 冰雪健道·初代 and 冰雪弎拼·初代 freeze U357·初代. Each keeps an independent schema, mapping, fixed-candidate database, and statistics database, while the standard learned frequencies and system dictionaries remain shared across Snow schemes. Reproducible old/new layout comparisons are in the [appended five-/six-layout report](reports/shenyun-comparison.md).
+Reproducible current and historical layout comparisons are in the [appended five-/six-layout report](reports/shenyun-comparison.md).
 
 - [500-character Snow twelve-scheme benchmark](reports/冰雪十二方案_500字_最短键码实战测评.txt)
 - [5,000-character Snow twelve-scheme report](reports/十篇五百字_十二方案最优切分及字词比率报告.md)
@@ -1963,15 +1963,15 @@ ${mappingTable(activeQzLayout.finalMap, ["韻母", "次鍵"])}
 
 ### 現行雙拼與原鍵道 S005、首道 B04 benchmark
 
-下表以目前 D3/V1 與 QZ-e8f37a 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 S005、首道 B04 作參照；初代布局只保留在後面的全量追加報告中。
+下表以目前 D3/V1 與 QZ-e8f37a 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 S005、首道 B04 作參照。
 
 ${zhtBenchmarkLegend}
 
 ${zhtBenchmark}
 
-#### 初代相容方案與完整報告
+#### 完整測評報告
 
-冰雪簡道·初代、冰雪散拼·初代凍結 Overall-17·初代；冰雪健道·初代、冰雪弎拼·初代凍結 U357·初代。四份初代方案保留獨立 schema、聲韻映射、固頂資料庫和輸入統計，不跟隨現行方案升級；標準學習詞頻與系統詞典仍按冰雪系約定共享。新舊布局的可復算比較見[五布局／六布局追加報告](reports/shenyun-comparison.md)。
+現行與歷史布局的可複算比較見[五布局／六布局追加報告](reports/shenyun-comparison.md)。
 
 - [500 字冰雪十二方案實戰測評](reports/冰雪十二方案_500字_最短键码实战测评.txt)
 - [5000 字冰雪十二方案全量報告](reports/十篇五百字_十二方案最优切分及字词比率报告.md)

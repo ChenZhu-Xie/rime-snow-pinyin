@@ -170,20 +170,12 @@ test("只有冰雪四拼、冰雪简道和冰雪散拼启用结构略码", () =>
 		"qingyun",
 		"qz-shape",
 		"qz-tone",
-		"u357-first-shape",
-		"u357-first-tone",
 		"classic-shape",
 		"classic-tone",
 	] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), false, scheme);
 	}
-	for (const scheme of [
-		"sipin",
-		"d3v1-shape",
-		"d3v1-tone",
-		"overall17-first-shape",
-		"overall17-first-tone",
-	] as const) {
+	for (const scheme of ["sipin", "d3v1-shape", "d3v1-tone"] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), true, scheme);
 	}
 });

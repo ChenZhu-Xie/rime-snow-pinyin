@@ -106,10 +106,7 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 	assert.match(common, /^stroke:\r?\n[\s\S]*?^  prefix: "u"$/mu);
 	assert.match(common, /^radical:\r?\n[\s\S]*?^  prefix: "u"$/mu);
 
-	for (const path of [
-		"snow_jiandao_bihua.schema.yaml",
-		"snow_jiandao_bihua_first.schema.yaml",
-	]) {
+	for (const path of ["snow_jiandao_bihua.schema.yaml"]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
 		assert.match(
 			schema,
@@ -122,10 +119,7 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 			path,
 		);
 	}
-	for (const path of [
-		"snow_sanpin_bihua.schema.yaml",
-		"snow_sanpin_bihua_first.schema.yaml",
-	]) {
+	for (const path of ["snow_sanpin_bihua.schema.yaml"]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
 		assert.match(
 			schema,
@@ -142,7 +136,6 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 	for (const path of [
 		"snow_jiandao.schema.yaml",
 		"snow_jiandao_toned.schema.yaml",
-		"snow_jiandao_first.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
 	]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
@@ -157,7 +150,6 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 	}
 	for (const path of [
 		"snow_sanpin.schema.yaml",
-		"snow_sanpin_first.schema.yaml",
 		"snow_sanpin_classic.schema.yaml",
 	]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
@@ -199,9 +191,7 @@ test("键道二分形辅保留折横撇竖点含义", () => {
 test("神韵机器可读配置显式区分形义序与声调序", () => {
 	for (const path of [
 		"config/shenyun-21x21-mapping.json",
-		"config/shenyun-21x21-first-mapping.json",
 		"config/shenyun-21x26-mapping.json",
-		"config/shenyun-21x26-first-mapping.json",
 		"config/shenyun-21x28-mapping.json",
 		"docs/shenyun-qz-e8f37a-mapping.json",
 		"docs/shenyun-u357-mapping.json",
@@ -242,10 +232,6 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 			["qingyun", "词语音码／单字形码"],
 			["d3v1-shape", "12/12/24"],
 			["d3v1-tone", "12/21/13"],
-			["u357-first-shape", "12/231/24"],
-			["u357-first-tone", "12/213/23"],
-			["overall17-first-shape", "12/21/42"],
-			["overall17-first-tone", "12/21/13"],
 		],
 	);
 	assert.ok(
@@ -258,47 +244,43 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 			({ code }) => code === "bxe",
 		),
 	);
-	const u357Three = pronunciationCodes("u357-first-tone", "天地人", [
+	const qzThree = pronunciationCodes("qz-tone", "天地人", [
 		"tian1",
 		"di2",
 		"ren3",
 	]);
-	assert.equal(u357Three[0].mainLength, 3);
-	assert.equal(u357Three.at(-1)?.code.slice(-3), "viu");
-	const overallThree = pronunciationCodes("overall17-first-tone", "天地人", [
+	assert.equal(qzThree[0].mainLength, 3);
+	assert.equal(qzThree.at(-1)?.code.slice(-3), "viu");
+	const d3Three = pronunciationCodes("d3v1-tone", "天地人", [
 		"tian1",
 		"di2",
 		"ren3",
 	]);
 	assert.deepEqual(
-		overallThree
+		d3Three
 			.filter(({ auxiliaryLength }) => auxiliaryLength === 0)
 			.map(({ mainLength }) => mainLength),
 		[3, 4],
 	);
-	assert.equal(overallThree.at(-1)?.code.slice(-2), "ei");
-	const u357Four = pronunciationCodes("u357-first-tone", "天地人和", [
+	assert.equal(d3Three.at(-1)?.code.slice(-2), "ei");
+	const qzFour = pronunciationCodes("qz-tone", "天地人和", [
 		"tian1",
 		"di2",
 		"ren3",
 		"he2",
 	]);
-	assert.equal(u357Four.at(-1)?.code.slice(-2), "vu");
-	const overallFour = pronunciationCodes("overall17-first-tone", "天地人和", [
+	assert.equal(qzFour.at(-1)?.code.slice(-2), "vu");
+	const d3Four = pronunciationCodes("d3v1-tone", "天地人和", [
 		"tian1",
 		"di2",
 		"ren3",
 		"he2",
 	]);
-	assert.equal(overallFour.at(-1)?.code.slice(-2), "iu");
+	assert.equal(d3Four.at(-1)?.code.slice(-2), "iu");
 
-	const jiandaoSingle = pronunciationCodes("u357-first-shape", "时", ["shi2"]);
-	const shenyunShapeSingle = pronunciationCodes("overall17-first-shape", "时", [
-		"shi2",
-	]);
-	const shenyunToneSingle = pronunciationCodes("overall17-first-tone", "时", [
-		"shi2",
-	]);
+	const jiandaoSingle = pronunciationCodes("qz-shape", "时", ["shi2"]);
+	const shenyunShapeSingle = pronunciationCodes("d3v1-shape", "时", ["shi2"]);
+	const shenyunToneSingle = pronunciationCodes("d3v1-tone", "时", ["shi2"]);
 	assert.equal(jiandaoSingle.at(-1)?.auxiliaryLength, 4);
 	assert.equal(shenyunShapeSingle.at(-1)?.auxiliaryLength, 4);
 	assert.equal(shenyunToneSingle.at(-1)?.auxiliaryLength, 4);
@@ -322,8 +304,8 @@ test("四个 21×21 benchmark 方案的多字词大写补韵不受六码限制",
 	const word = "中华人民共和国";
 	const syllables = ["zhong1", "hua2", "ren2", "min2", "gong4", "he2", "guo2"];
 	for (const scheme of [
-		"u357-first-shape",
-		"u357-first-tone",
+		"qz-shape",
+		"qz-tone",
 		"classic-shape",
 		"classic-tone",
 	] as const) {
@@ -346,13 +328,13 @@ test("benchmark 逐级模拟首选后置并保留最短合法单字码", () => {
 		{ word: "时", syllables: ["shi2"], weight: 10 },
 	];
 	const ranked = rankBenchmarkCodes(
-		"overall17-first-shape",
+		"d3v1-shape",
 		[entries[1]],
 		entries,
-		new Map([["w", { word: "是" }]]),
+		new Map([["v", { word: "是" }]]),
 	);
-	assert.equal(ranked.find(({ code }) => code === "w")?.rank, 2);
-	assert.equal(ranked.find(({ code }) => code === "wi")?.rank, 1);
+	assert.equal(ranked.find(({ code }) => code === "v")?.rank, 2);
+	assert.equal(ranked.find(({ code }) => code === "vi")?.rank, 1);
 });
 
 test("固定候选覆盖首位时不后置底层翻译器候选", () => {
@@ -361,17 +343,17 @@ test("固定候选覆盖首位时不后置底层翻译器候选", () => {
 		{ word: "超时", syllables: ["chao1", "shi2"], weight: 48970 },
 	];
 	const ranked = rankBenchmarkCodes(
-		"u357-first-shape",
+		"qz-shape",
 		entries,
 		entries,
-		new Map([["we", { word: "产生" }]]),
+		new Map([["sl", { word: "产生" }]]),
 	);
 	assert.equal(
-		ranked.find(({ word, code }) => word === "城市" && code === "wev")?.rank,
+		ranked.find(({ word, code }) => word === "城市" && code === "slv")?.rank,
 		1,
 	);
 	assert.equal(
-		ranked.find(({ word, code }) => word === "超时" && code === "wev")?.rank,
+		ranked.find(({ word, code }) => word === "超时" && code === "slv")?.rank,
 		2,
 	);
 });
@@ -383,23 +365,23 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 	];
 	const actualCandidates = new Map([
 		["c", ["才", "从"]],
-		["ck", ["从", "葱"]],
-		["gNxl", ["钢箱梁", "刚醒来", "刚下来"]],
+		["cr", ["从", "葱"]],
+		["gYxe", ["钢箱梁", "刚醒来", "刚下来"]],
 	]);
 	const from = rankBenchmarkCodes(
-		"overall17-first-shape",
+		"d3v1-shape",
 		[entries[0]],
 		[entries[0]],
 		new Map([["c", { word: "才" }]]),
 		(code) => actualCandidates.get(code) ?? [],
 	);
-	assert.equal(from.find(({ code }) => code === "ck")?.rank, 1);
+	assert.equal(from.find(({ code }) => code === "cr")?.rank, 1);
 	const waking = rankBenchmarkCodes(
-		"u357-first-tone",
+		"qz-tone",
 		[entries[1]],
 		[entries[1]],
 		new Map(),
 		(code) => actualCandidates.get(code) ?? [],
 	);
-	assert.equal(waking.find(({ code }) => code === "gNxl")?.rank, 2);
+	assert.equal(waking.find(({ code }) => code === "gYxe")?.rank, 2);
 });

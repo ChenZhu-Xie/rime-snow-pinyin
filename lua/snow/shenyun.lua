@@ -4,7 +4,7 @@
 -- 两个活动方案共用 SNOW-SHENYUN-21X26-D3V1-BALANCED 声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
--- 活动方案二／三／四字最优辅序分别为形 12/12/24、调 12/21/13；初代形辅保留 12/21/42。
+-- 活动方案二／三／四字最优辅序分别为形 12/12/24、调 12/21/13。
 
 local snow = require "snow.snow"
 local bihua = require "snow.bihua"

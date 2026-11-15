@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -11,131 +10,12 @@ import { makeMiraDefaultCustomization } from "../../lib/mira-default-custom";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 
-const firstGenerationSchemes = [
-	[
-		"snow_jiandao",
-		"冰雪健道·初代",
-		"cbbc1691ccbef0e02f6d408fd288051ea70f96d6be9ff2eadb70f81a97028bb9",
-	],
-	[
-		"snow_sanpin",
-		"冰雪弎拼·初代",
-		"20b01fef6ab389ccb9601f8b445a54337bdf8f1a9364b53ec6e586e5c893f92f",
-	],
-	[
-		"snow_shenyun_shape",
-		"冰雪简道·初代",
-		"29d201dfeb529fbff22cbcb5d761b32ec5b886cf695ec0fc5dd8c91c44e5cb2d",
-	],
-	[
-		"snow_shenyun_tone",
-		"冰雪散拼·初代",
-		"a5b9d46296a4cfb59f0c85a98c054d8b858a23658837530200be502a7369ff51",
-	],
-] as const;
-
-test("first-generation U357 and Overall-17 schemes are complete frozen copies", () => {
-	const menu = read("lua/snow/schema_menu.lua");
-	const release = read(".github/workflows/release.yml");
-	const miraDefault = read("spec/fixtures/default.yaml");
-	for (const [base, name, expectedFixedHash] of firstGenerationSchemes) {
-		const id = `${base}_first`;
-		const schema = load(read(`${id}.schema.yaml`)) as {
-			schema: { schema_id: string; name: string };
-			keymap: { image: string };
-		};
-		assert.equal(schema.schema.schema_id, id);
-		assert.equal(schema.schema.name, name);
-		assert.equal(schema.keymap.image, `${id}.svg`);
-		assert.equal(
-			createHash("sha256")
-				.update(readFileSync(join(root, `${id}.fixed.txt`)))
-				.digest("hex"),
-			expectedFixedHash,
-			`${id}.fixed.txt`,
-		);
-		assert.match(
-			menu,
-			new RegExp(`schema_id = "${id}"[\\s\\S]+name = "${name}"`, "u"),
-		);
-		assert.ok(release.includes(`schema: ${id}`), id);
-		assert.ok(miraDefault.includes(`schema: ${id}`), id);
-	}
-	assert.ok(
-		read("snow_jiandao_first.schema.yaml").includes(
-			"snow_sanpin_first.schema.yaml:/sanpin_algebra",
-		),
-	);
-	assert.ok(
-		read("snow_jiandao_jianpin_first.schema.yaml").includes(
-			"snow_sanpin_first.schema.yaml:/sanpin_algebra",
-		),
-	);
-	assert.ok(
-		read("snow_shenyun_shape_first.schema.yaml").includes(
-			"snow_shenyun_first_common.yaml:/",
-		),
-	);
-	assert.ok(
-		read("snow_shenyun_tone_first.schema.yaml").includes(
-			"snow_shenyun_first_common.yaml:/",
-		),
-	);
-	assert.doesNotMatch(
-		read("snow_shenyun_first_common.yaml"),
-		/prism: snow_shenyun$/mu,
-	);
-	assert.match(
-		read("snow_shenyun_first_common.yaml"),
-		/learned_priority:\s+memory_namespace: shenyun\s/mu,
-	);
-});
-
-test("next-generation mappings preserve complete first-generation snapshots", () => {
-	const firstSnapshots = [
-		[
-			"config/shenyun-21x21-first-mapping.json",
-			"c09f4bf08573c5e1261c75839f6a53fd09a132b8ba9ae99e1f6da5e881fc83b1",
-		],
-		[
-			"config/shenyun-21x26-first-mapping.json",
-			"53209e90c08d67e145b998e59cfbf93227d0a34cb76641c5ec487577629d1429",
-		],
-		[
-			"lua/snow/radical_jiandao_first.txt",
-			"86434ea69c623aa24d6c67f83a6c8139037eb8f3b6757744133d74e62994041d",
-		],
-		[
-			"lua/snow/radical_sanpin_first.txt",
-			"26fce5fa28f7a67863c3f56f7d3b3c514bef063c97485d7ec3bc1fc5c6086535",
-		],
-		[
-			"snow_shenyun_first_common.yaml",
-			"f378f0d577837ef4c96e430096b506bd834fce31ca411611eab4816ee0310898",
-		],
-	] as const;
-	for (const [file, expected] of firstSnapshots) {
-		assert.equal(existsSync(join(root, file)), true, `${file} must exist`);
-		assert.equal(
-			createHash("sha256")
-				.update(readFileSync(join(root, file)))
-				.digest("hex"),
-			expected,
-			file,
-		);
-	}
-});
-
 test("double-pinyin schemes isolate fixed-code databases while sharing snow_pinyin learning", () => {
 	const fixedDatabases = new Map([
 		["snow_jiandao.schema.yaml", "snow_jiandao_qz_e8f37a"],
 		["snow_sanpin.schema.yaml", "snow_sanpin_qz_e8f37a"],
 		["snow_shenyun_shape.schema.yaml", "snow_shenyun_shape_d3v1"],
 		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_d3v1"],
-		["snow_jiandao_first.schema.yaml", "snow_jiandao"],
-		["snow_sanpin_first.schema.yaml", "snow_sanpin"],
-		["snow_shenyun_shape_first.schema.yaml", "snow_shenyun_shape"],
-		["snow_shenyun_tone_first.schema.yaml", "snow_shenyun_tone"],
 		["snow_jiandao_classic.schema.yaml", "snow_jiandao_classic"],
 		["snow_sanpin_classic.schema.yaml", "snow_sanpin_classic"],
 		["snow_jiandao_toned.schema.yaml", "snow_jiandao_toned_mars10_d1"],
@@ -151,18 +31,13 @@ test("double-pinyin schemes isolate fixed-code databases while sharing snow_piny
 	for (const file of [
 		"snow_jiandao.schema.yaml",
 		"snow_sanpin.schema.yaml",
-		"snow_jiandao_first.schema.yaml",
-		"snow_sanpin_first.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
 		"snow_sanpin_classic.schema.yaml",
 		"snow_jiandao_toned.schema.yaml",
 	]) {
 		assert.match(read(file), /dictionary: snow_pinyin/u, file);
 	}
-	for (const file of [
-		"snow_shenyun_common.yaml",
-		"snow_shenyun_first_common.yaml",
-	]) {
+	for (const file of ["snow_shenyun_common.yaml"]) {
 		assert.match(read(file), /__include: snow_pinyin\.schema\.yaml:\//u, file);
 	}
 });
@@ -471,11 +346,9 @@ test("all released schemes with Unicode components expose the shared toggle", ()
 	for (const schema of [
 		"snow_sipin.schema.yaml",
 		"snow_sanpin.schema.yaml",
-		"snow_sanpin_first.schema.yaml",
 		"snow_sanpin_classic.schema.yaml",
 		"snow_yipin.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_jiandao_first.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
 		"snow_qingyun.schema.yaml",
 	]) {
@@ -490,7 +363,6 @@ test("all released schemes with Unicode components expose the shared toggle", ()
 	}
 	for (const schema of [
 		"snow_jiandao.schema.yaml",
-		"snow_jiandao_first.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
 		"snow_qingyun.schema.yaml",
 	])
