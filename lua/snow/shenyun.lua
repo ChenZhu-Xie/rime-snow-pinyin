@@ -300,6 +300,12 @@ local function advance(stream, env)
     end
     if consumed_length == stream.route.main_length
         and candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
+      -- 单键只提示声韵码，不需要为每个单字查询形辅、声调或笔画。
+      if stream.route.family == "A" then
+        stream.candidate = candidate
+        stream.auxiliary = ""
+        return true
+      end
       local matches, auxiliary = auxiliary_match(candidate, stream.route.suffix, env)
       if matches then
         stream.candidate = candidate
@@ -435,7 +441,13 @@ function this.func(input, segment, env)
         order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
       end
       local label = (env.auxiliary_mode == "tone" and "调" or "形") .. order
-      if stream.auxiliary ~= "" then
+      if stream.route.family == "A" then
+        local spellings = actual_spellings(candidate, env)
+        if spellings and spellings[1] then
+          local code = env.vacancy_projection:apply(spellings[1])
+          snow.comment(candidate, ("〔声韵 %s〕"):format(code))
+        end
+      elseif stream.auxiliary ~= "" then
         snow.comment(candidate, ("〔%s %s〕"):format(label, stream.auxiliary))
       end
       yield(candidate)

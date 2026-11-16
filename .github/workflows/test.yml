@@ -25,6 +25,8 @@ on:
       - 'scripts/workflows.test.ts'
       - 'scripts/research/calculate_shenyun_21x26_letter_buckets.ts'
       - 'scripts/generate-shenyun-letters.ts'
+      - 'scripts/generate-shenyun-hints.ts'
+      - 'scripts/data/latency-cases.ts'
       - 'scripts/generate-keymaps.ts'
       - 'scripts/generate-skins.ts'
       - 'scripts/skin/**'

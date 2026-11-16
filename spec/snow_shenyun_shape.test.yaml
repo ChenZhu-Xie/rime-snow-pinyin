@@ -13,6 +13,14 @@ script: |
   function page(text)
     return rank(text) <= 6
   end
+  function hint_codes()
+    local codes = {}
+    for index = 2, #cand do
+      if not cand[index].comment:match("^[a-z][a-z]$") then break end
+      codes[#codes + 1] = cand[index].comment
+    end
+    return table.concat(codes, " ")
+  end
   function all_have_length(length)
     if #cand == 0 then return false end
     for _, candidate in ipairs(cand) do
@@ -46,12 +54,17 @@ deploy:
         assert: commit == nil and preedit == nil
   popping:
     tests:
-      # 单声母提示按横竖撇点折 eiuoa 排列；se 无固顶项，跳过空位，sv 不得混入。
+      # 每个声声空桶只取首选词；六个桶按词频排列，第二页先显示最后一桶，再按字频接单字。
       - send: s
-        assert: cand[1].text == "这" and cand[2].comment == "si" and cand[3].comment == "su" and cand[4].comment == "so" and cand[5].comment == "sa" and cand[6].comment ~= "sv"
-      # v 是 21×26 的声母；五个有效提示完整覆盖 e 辅键和候选顺序。
+        assert: cand[1].text == "这" and hint_codes() == "sx sw sz sv sr sb" and cand[2].text == "支持" and cand[7].text == "这边" and cand[8].text == "中" and cand[9].text == "着" and cand[10].text == "真" and cand[11].text == "只" and cand[12].text == "找" and cand[8].comment:find("〔声韵 sm〕", 1, true)
+      # v 是声母；普通声韵桶 ve/vi 不得混入空桶提示。
       - send: v
-        assert: cand[1].text == "是" and cand[2].comment == "ve" and cand[3].comment == "vi" and cand[4].comment == "vu" and cand[5].comment == "vo" and cand[6].comment == "va"
+        assert: cand[1].text == "是" and hint_codes() == "vv vw vr vm vz vx vb"
+      # sr 未设固顶项，提示须与声声桶本身的首选一致；sm 有单字，不显示空桶提示。
+      - send: sr
+        assert: cand[1].text == "转让"
+      - send: sm
+        assert: cand[1].text == "中" and all_have_length(1)
       # 输入统计沿用公共 lua 前缀 o。
       - send: otj
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
@@ -123,3 +136,10 @@ deploy:
         assert: commit and commit:find("，", 1, true)
       - send: "bq."
         assert: commit and commit:find("。", 1, true)
+  initial_hint_selection:
+    tests:
+      - send: "s2"
+        assert: commit == "支持"
+      # 六个空桶只在种类上顺延；第二页第一项为第六个桶 sb，不是同桶内的下一个词。
+      - send: "s{Page_Down} "
+        assert: commit == "这边"

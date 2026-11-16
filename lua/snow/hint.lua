@@ -1,5 +1,5 @@
 -- 提示过滤器
--- 按方案的五辅语义提示简词，并为长简拼候选标注 630 编码。
+-- 按 21×21 方案的五辅语义提示简词，并为长简拼候选标注 630 编码。
 
 local snow = require "snow.snow"
 local auxiliary_semantics = require "snow.auxiliary_semantics"
@@ -16,12 +16,10 @@ local filter = {}
 ---@param env HintEnv
 function filter.init(env)
   local id = env.engine.schema.schema_id
-  local config = env.engine.schema.config
-  local mode = config:get_string("shenyun_options/auxiliary")
-  local semantics = auxiliary_semantics[mode and "21x26" or "21x21"]
-  local uses_tone = mode == "tone" or id == "snow_sanpin" or id == "snow_sanpin_classic"
+  local semantics = auxiliary_semantics["21x21"]
+  local uses_tone = id == "snow_sanpin" or id == "snow_sanpin_classic"
   env.shortcut_keys = uses_tone and semantics.tone_keys_by_tone or semantics.stroke_keys_by_stroke
-  local initials = config:get_string("translator/shenyun_initial_keys") or "bpmfdtnlgkhjqxzcsrywe"
+  local initials = "bpmfdtnlgkhjqxzcsrywe"
   local initial_pattern = "[" .. initials .. "]"
   local shortcut_key_pattern = "[" .. env.shortcut_keys .. "]"
   env.shortcut_pattern = initial_pattern .. shortcut_key_pattern .. "?"

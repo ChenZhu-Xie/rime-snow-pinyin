@@ -82,6 +82,7 @@ bun run --cwd scripts check:format    # 检查格式
 | `export-word-codes.ts [输出目录]` | 离线模拟冰雪四拼动态码长，导出评测与大竹查询码表 | `output/word-codes/` 下的 `simulated.txt`、`dazhu.txt` |
 | `generate-yipin-tests.ts [输出文件]` | 从 `data/yipin-syllables.tsv` 每组固定取首条生成音节测试 | `output/yipin-tests.yaml.snippet`；审阅后合入 spec，不覆盖功能测试 |
 | `align-fixed-with-sipin.ts [--check]` | 按冰雪四拼的单字与二字词优先级，将语义读音重映射到四个 21×21 和两个 21×26 方案，并保留各方案的五辅语义 | 更新六份 `snow_*.fixed.txt`；`--check` 只校验，不写文件 |
+| `generate-shenyun-hints.ts [--check]` | 按当前词典、声韵映射与固顶首选生成冰雪鹤道、冰雪鹤拼的单键声声空桶提示；词典或固顶表更新后重跑 | `lua/snow/shenyun_hints.lua`；`--check` 只校验，不写文件 |
 
 词典和辅助码生成默认更新仓库产物，审阅时可指定临时输出路径，如 `bun scripts/generate-word-dicts.ts base --output-dir /tmp/snow-word-dicts`；指定 `--output-dir` 后诊断文件也放在该目录的 `diff/`。注音逻辑集中在 `lib/word-pinyin.ts`，按需初始化且不写文件；`data/word-pinyin-overrides.tsv` 配置词语读音修正，`data/complete-pinyin-overrides.tsv` 修正 pinyin-pro 的完整词库。
 
@@ -163,12 +164,12 @@ patch:
 `bun scripts/benchmark-latency.ts [方案]` 使用带 librime-lua 的 `rime_api_console` 逐键测量，默认每场景 30 轮；依赖 Bun、`scripts/` 依赖、已初始化的部件子模块，以及含 `opencc/` 的共享数据目录。控制台从 PATH 查找，可用 `--console` 指定；共享数据自动尝试常见系统目录，也可用 `--shared-data` 指定。方案参数可省略 `snow_` 前缀，`--case` 接受场景名正则，`--output-dir` 指定输出目录，`--ref` 使用历史版本的方案、Lua、词典和对应子模块提交。
 
 ```sh
-bun scripts/benchmark-latency.ts --ci  # 五方案全部场景，至少 200 轮，统一预算
+bun scripts/benchmark-latency.ts --ci  # 七方案全部场景，至少 200 轮，统一预算
 bun scripts/benchmark-latency.ts jiandao --case '^dense-prefix$' --rounds 200 --max-p99-ms 50
 bun scripts/check-latency.ts output/latency/report.json  # 复查已保存报告
 ```
 
-- **环境与口径**：冻结源码，五方案串行，各场景使用独立临时目录、编译数据副本和空用户词典，不使用本机补丁或缓存；同一场景各轮共享学习结果。性能测量不能与 mira、其他基准或网站构建并行。常驻控制台每次只发一个按键事件，计时到完整候选页和只读 `print schema list` 屏障返回，包含 IPC、候选惰性生成、控制台序列化和解析，不含界面绘制、硬件、部署、断言与日志落盘；每方案另测 100 次空请求作通信开销参考，不从样本中扣除。
+- **环境与口径**：冻结源码，七方案串行，各场景使用独立临时目录、编译数据副本和空用户词典，不使用本机补丁或缓存；同一场景各轮共享学习结果。性能测量不能与 mira、其他基准或网站构建并行。常驻控制台每次只发一个按键事件，计时到完整候选页和只读 `print schema list` 屏障返回，包含 IPC、候选惰性生成、控制台序列化和解析，不含界面绘制、硬件、部署、断言与日志落盘；每方案另测 100 次空请求作通信开销参考，不从样本中扣除。
 - **采样与预算**：首轮 `first` 与后续 `repeat` 分开，首轮不等于清空系统页缓存后的冷启动。分位数使用 nearest rank；`scripts/lib/latency-budget.ts` 的 `LATENCY_BUDGET` 要求有效反馈 P50 < 15 ms、P95 < 25 ms、P99 < 50 ms，至少 200 轮；各场景及按键位置的 P99 也须 < 50 ms，首次最大反馈 < 100 ms。不得按方案放宽、删除离群值、重跑择优，或用低耗时的并击按下、松开事件稀释分布。
 - **输出与 CI**：仅写输出目录中的 `samples.jsonl`、`report.json` 和控制台日志，不回写仓库文档。按方案、场景、事件位置、按键类型、首轮／重复轮统计分位数、最大值和超过 16／50／100 ms 的次数。超时、部署或控制台失败、按键处理或 Lua 错误、首轮结果不符、预算超限均失败；超限前先保存报告。`.github/workflows/latency.yml` 固定运行环境，在 Actions 摘要展示指标和失败项，并上传原始构件；push、PR 和发布共用，发布必须同时通过功能与性能门禁。
 

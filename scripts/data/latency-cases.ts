@@ -15,6 +15,8 @@ export const SCHEMA_NAMES: Record<string, string> = {
 	snow_yipin: "冰雪一拼",
 	snow_jiandao: "冰雪兰道",
 	snow_qingyun: "冰雪清韵",
+	snow_shenyun_shape: "冰雪鹤道",
+	snow_shenyun_tone: "冰雪鹤拼",
 };
 
 // 一击拆成每键按下、每键松开；最后一次松开才产生完整音节反馈。
@@ -298,6 +300,36 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 	],
 };
+
+// 单键与翻页覆盖空桶提示的首次加载和后续输出；两个 21×26 方案使用同一预算。
+for (const schema of ["snow_shenyun_shape", "snow_shenyun_tone"]) {
+	LATENCY_CASES[schema] = [
+		{
+			id: "single-initial",
+			keys: "s",
+			page: "支持",
+			source: `spec/${schema}.test.yaml`,
+		},
+		{
+			id: "many-vacant-buckets",
+			keys: "b",
+			page: "必须",
+			source: "lua/snow/shenyun_hints.lua",
+		},
+		{
+			id: "vacant-paging",
+			keys: "s{Page_Down}{Page_Up}",
+			page: "支持",
+			source: `spec/${schema}.test.yaml`,
+		},
+		{
+			id: "double",
+			keys: "cv",
+			page: "测试",
+			source: `spec/${schema}.test.yaml`,
+		},
+	];
+}
 
 // 同一句教程示例按各方案的实际打法输入；下划线在教程中表示空格，
 // 冰雪一拼的下划线则表示该击同时带空格。

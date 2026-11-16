@@ -55,7 +55,7 @@ engine:
     - lua_filter@*snow.simplified
     - simplifier
     - uniquifier
-    - lua_filter@*snow.hint
+    - lua_filter@*snow.shenyun_hint
 
 shenyun_algebra:
   # RC26-39a5bfdc045342cd；由 scripts/generate-layout-algebra.ts 生成。
