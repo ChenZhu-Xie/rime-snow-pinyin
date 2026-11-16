@@ -15,6 +15,8 @@ local initial_pair_aux = require "snow.initial_pair_aux"
 ---@field shape_mapping table<string, string>
 ---@field jiandao_shape_cache table<string, string>
 ---@field pair_standard_order string
+---@field pair_aux_cache table<string, string[]>
+---@field pair_aux_cache_size integer
 
 --- 反查库加载失败时为 nil，当作查不到
 ---@param db ReverseLookup|nil
@@ -273,6 +275,16 @@ local function initial_pair_match(text, suffix, env, candidate)
   if utf8.len(text) ~= 2 then return false, nil, nil end
   local id = env.engine.schema.schema_id
   local tone_mode = id == "snow_sanpin" or id == "snow_sanpin_classic"
+  local cache_key = text
+  if tone_mode and candidate then
+    local phrase = candidate:get_genuine():to_phrase()
+    if phrase then cache_key = cache_key .. "\t" .. phrase.entry.code:print() end
+  end
+  local order = env.pair_standard_order or "12"
+  local cached = env.pair_aux_cache[cache_key]
+  if cached then
+    return initial_pair_aux.match(cached, suffix, tone_mode and "tone" or "shape", order)
+  end
   local options = {}
   local spellings = tone_mode and sanpin_spellings(candidate, env) or nil
   for position = 1, 2 do
@@ -293,9 +305,14 @@ local function initial_pair_match(text, suffix, env, candidate)
         env.shape_mapping, env.jiandao_shape_cache, id) }
     end
   end
-  local order = env.pair_standard_order or "12"
-  return initial_pair_aux.match(initial_pair_aux.codes(options, order), suffix,
-    tone_mode and "tone" or "shape", order)
+  local codes = initial_pair_aux.codes(options, order)
+  if env.pair_aux_cache_size >= 4096 then
+    env.pair_aux_cache = {}
+    env.pair_aux_cache_size = 0
+  end
+  env.pair_aux_cache[cache_key] = codes
+  env.pair_aux_cache_size = env.pair_aux_cache_size + 1
+  return initial_pair_aux.match(codes, suffix, tone_mode and "tone" or "shape", order)
 end
 
 local filter = {}
@@ -361,6 +378,8 @@ function filter.init(env)
   local id = env.engine.schema.schema_id
   env.oc21 = id == "snow_sanpin"
   env.pair_standard_order = config:get_string("translator/word_auxiliary_order") or "12"
+  env.pair_aux_cache = {}
+  env.pair_aux_cache_size = 0
   if id == "snow_sipin" or id == "snow_sanpin"
       or id == "snow_sanpin_classic" then
     bihua.load_strokes(env)
@@ -498,6 +517,7 @@ function filter.fini(env)
   env.pinyin = nil
   env.memory = nil
   env.shape_mapping = nil
+  env.pair_aux_cache = nil
   bihua.release_strokes(env)
   collectgarbage()
 end

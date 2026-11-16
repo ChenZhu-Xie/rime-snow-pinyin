@@ -18,6 +18,7 @@ local initial_pair_aux = require "snow.initial_pair_aux"
 ---@field vacancy_projection Projection
 ---@field vacancy_cache table<string, boolean>
 ---@field pair_standard_order string
+---@field pair_translator Translator
 
 ---@param candidate Candidate
 ---@param proxy string
@@ -47,9 +48,10 @@ end
 ---@param preserve_proxy_quality boolean
 ---@param accept? fun(candidate: Candidate): boolean
 ---@param complete_only? boolean
-local function translate(proxy, segment, env, preserve_proxy_quality, accept, complete_only)
+---@param translator? Translator
+local function translate(proxy, segment, env, preserve_proxy_quality, accept, complete_only, translator)
   -- 代理码不是合法拼写时 query 返回 nil，这一路当作没有候选
-  local translation = env.translator:query(proxy, segment)
+  local translation = (translator or env.translator):query(proxy, segment)
   if not translation then
     return
   end
@@ -92,6 +94,7 @@ end
 function t12.init(env)
   -- 翻译器持有 engine，不能跨会话共享，否则原会话销毁后会访问失效的引擎
   env.translator = Component.Translator(env.engine, "translator", "script_translator")
+  env.pair_translator = Component.Translator(env.engine, "jianpin", "script_translator")
   env.pair_standard_order = env.engine.schema.config:get_string("translator/word_auxiliary_order") or "12"
   env.pattern = env.engine.schema.config:get_string("translator/t1_pattern") or "^.+$"
   env.pattern2 = env.engine.schema.config:get_string("translator/t2_pattern") or "^.+$"
@@ -131,19 +134,29 @@ function t12.func(input, segment, env)
     local initial_pair_vacant = input:len() == 2
         and vacancy.is_empty(input, segment, env.vacancy_translator,
           env.vacancy_memory, env.vacancy_projection, env.vacancy_cache)
-    translate(input, segment, env, env.preserve_t12_proxy_quality, function(candidate)
-      if initial_pair_vacant and utf8.len(candidate.text) == 2 then
-        candidate.type = "initial_pair"
-      end
-      return true
-    end)
+    -- 空桶只查一条完整双音节路径，避免原码和代理码重复遍历全部二字词及单字前缀。
+    if not initial_pair_vacant then
+      translate(input, segment, env, env.preserve_t12_proxy_quality)
+    end
     if initial_pair_vacant then
-      local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2))
+      local groups = { input:sub(1, 1), input:sub(2) }
+      local suffix = env.engine.context:get_property("shape_input") or ""
+      local positions = initial_pair_aux.positions(env.pair_standard_order)
+      for index = 1, 2 do
+        local tone = suffix:sub((index - 1) * 2 + 1, (index - 1) * 2 + 1)
+        if tone ~= "" then
+          local position = positions[3 - index]
+          groups[position] = groups[position] .. "?" .. tone
+        end
+      end
+      local proxy = table.concat(groups, " ")
       translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
         if utf8.len(candidate.text) ~= 2 then return false end
         candidate.type = "initial_pair"
+        candidate._end = segment._end
+        candidate.preedit = input:sub(1, 1) .. " " .. input:sub(2)
         return true
-      end)
+      end, true, env.pair_translator)
     end
   end
   -- 二字词
@@ -174,6 +187,7 @@ end
 ---@param env TableLikeEnv
 function t12.fini(env)
   env.translator = nil
+  env.pair_translator = nil
   env.vacancy_translator = nil
   env.vacancy_memory = nil
   env.vacancy_projection = nil
@@ -266,7 +280,7 @@ function initial_pair.func(input, segment, env)
     end
     candidate.type = "initial_pair"
     return true
-  end)
+  end, true)
 end
 
 ---@param env TableLikeEnv
