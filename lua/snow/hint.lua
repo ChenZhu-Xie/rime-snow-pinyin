@@ -1,22 +1,36 @@
 -- 提示过滤器
--- 目前仅用于提示冰雪兰道和冰雪四拼的 630 简词
+-- 按方案的五辅语义提示简词，并为长简拼候选标注 630 编码。
 
 local snow = require "snow.snow"
+local auxiliary_semantics = require "snow.auxiliary_semantics"
 
 local filter = {}
 
 ---@class HintEnv: Env
 ---@field fixed table<string, string>
 ---@field reverse_630 table<string, string>
+---@field shortcut_keys string
+---@field shortcut_pattern string
+---@field phrase_pattern string
 
 ---@param env HintEnv
 function filter.init(env)
   local id = env.engine.schema.schema_id
+  local config = env.engine.schema.config
+  local mode = config:get_string("shenyun_options/auxiliary")
+  local semantics = auxiliary_semantics[mode and "21x26" or "21x21"]
+  local uses_tone = mode == "tone" or id == "snow_sanpin" or id == "snow_sanpin_classic"
+  env.shortcut_keys = uses_tone and semantics.tone_keys_by_tone or semantics.stroke_keys_by_stroke
+  local initials = config:get_string("translator/shenyun_initial_keys") or "bpmfdtnlgkhjqxzcsrywe"
+  local initial_pattern = "[" .. initials .. "]"
+  local shortcut_key_pattern = "[" .. env.shortcut_keys .. "]"
+  env.shortcut_pattern = initial_pattern .. shortcut_key_pattern .. "?"
+  env.phrase_pattern = initial_pattern .. "{3,}" .. shortcut_key_pattern .. "*"
   env.fixed = snow.table_from_tsv(rime_api.get_user_data_dir() .. ("/%s.fixed.txt"):format(id))
   ---@type table<string, string>
   env.reverse_630 = {}
   for key, value in pairs(env.fixed) do
-    if rime_api.regex_match(key, "[bpmfdtnlgkhjqxzcsrywe][viuoa]{1,2}") then
+    if rime_api.regex_match(key, initial_pattern .. shortcut_key_pattern .. "{1,2}") then
       env.reverse_630[value] = key
     end
   end
@@ -31,21 +45,17 @@ function filter.func(translation, env)
   if shape_input then
     full_input = full_input .. shape_input
   end
-  local id = env.engine.schema.schema_id
-  local affix = (id == "snow_sanpin" or id == "snow_sanpin_classic")
-      and { "i", "v", "u", "a", "o" }
-      or { "v", "i", "u", "o", "a" }
   local first = true
-  if rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe][viuoa]?") then
+  if rime_api.regex_match(full_input, env.shortcut_pattern) then
     -- 一码，提示 sb 简词
     for candidate in translation:iter() do
       if first then
         yield(candidate)
-        for _, letter in ipairs(affix) do
+        for letter in env.shortcut_keys:gmatch(".") do
           local code = full_input .. letter
           local word = env.fixed[code]
           if word then
-            local hint_candidate = Candidate("hint", candidate.start, candidate._end, word, code)
+            local hint_candidate = Candidate("hint", candidate._start, candidate._end, word, code)
             hint_candidate.preedit = full_input
             yield(hint_candidate)
           end
@@ -55,7 +65,7 @@ function filter.func(translation, env)
       end
       first = false
     end
-  elseif rime_api.regex_match(full_input, "[bpmfdtnlgkhjqxzcsrywe]{3,}[vioua]*") then
+  elseif rime_api.regex_match(full_input, env.phrase_pattern) then
     -- 四码，提示所有简词
     for candidate in translation:iter() do
       if env.reverse_630[candidate.text] then
