@@ -184,6 +184,6 @@ deploy:
       - send: cvo
         assert: (cand[1].text ~= "财神") or error(pair_probe())
       - send: cvoaao
-        assert: (cand[1].text == "财神") or error(pair_probe())
-      - send: "cvoaao cvo"
+        assert: (cand[2].text == "财神") or error(pair_probe())
+      - send: "cvoaao2cvo"
         assert: (cand[1].text == "财神") or error(pair_probe())
