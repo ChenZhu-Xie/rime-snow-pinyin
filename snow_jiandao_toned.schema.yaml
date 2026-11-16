@@ -1,7 +1,7 @@
 # Rime schema
 # encoding: utf-8
 
-# 复用冰雪健道的顶功、纯形笔辅、反查和候选处理，只替换带调双拼音码。
+# 复用冰雪兰道的顶功、纯形笔辅、反查和候选处理，只替换带调双拼音码。
 __include: snow_jiandao.schema.yaml:/
 
 schema:

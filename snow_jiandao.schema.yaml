@@ -5,7 +5,7 @@ __include: snow_pinyin.schema.yaml:/
 
 schema:
   schema_id: snow_jiandao
-  name: 冰雪健道
+  name: 冰雪兰道
   version: "0.3.14"
   author:
     - 吅吅大山
@@ -13,7 +13,7 @@ schema:
   description: |
     单字三码起顶、词组四码起顶的双拼词顶功方案
     双拼编码：OC21-e1f155973380 21×21（M=42、D=2、V=5，QZ/ZQ 空桶）
-    “健”取健步、矫健之意，突出击键效率与人体工学
+    冰雪兰道与冰雪兰拼共用 21×21 声韵布局，本方案使用形辅
   dependencies:
     - snow_pinyin
     - radical_pinyin

@@ -101,7 +101,7 @@ local function sanpin_initial_pair_match(text, shape_input, env, candidate)
   return false, prompt, nil
 end
 
---- 冰雪四拼和冰雪弎拼的笔画匹配函数
+--- 冰雪四拼和冰雪兰拼的笔画匹配函数
 --- @param text string
 --- @param partial_code string
 --- @param env ShapeFilterEnv
@@ -175,7 +175,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
     -- 如果只有一个字符，直接返回对应的编码
     return codes[1] or "??"
   end
-  -- 普通词组取每个字的形码首码；活动冰雪健道采用 OC21-e1f155973380 的
+  -- 普通词组取每个字的形码首码；活动冰雪兰道采用 OC21-e1f155973380 的
   -- 12/213/24，经典冰雪键道继续使用 12/231/24。
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
@@ -392,7 +392,7 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
       return stroke_match(text, shape_input, env, sipin_reverse_stroke_map, sipin_direct_stroke_map)
     end
   elseif state.id == "snow_sanpin"
-      or state.id == "snow_sanpin_classic" then -- 冰雪弎拼／冰雪三拼
+      or state.id == "snow_sanpin_classic" then -- 冰雪兰拼／冰雪三拼
     if state.sanpin_initial_pair then
       return sanpin_initial_pair_match(text, shape_input, env, candidate)
     end
@@ -409,7 +409,7 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
       return stroke_match(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map)
     end
   elseif state.id == "snow_jiandao"
-      or state.id == "snow_jiandao_classic" then -- 冰雪健道／冰雪键道
+      or state.id == "snow_jiandao_classic" then -- 冰雪兰道／冰雪键道
     if state.is_pinyin or state.jiandao_active then
       local code = jiandao_encode(
         text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache, state.id)

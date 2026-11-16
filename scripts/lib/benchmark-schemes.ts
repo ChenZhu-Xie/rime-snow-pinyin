@@ -50,8 +50,8 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "oc21-shape",
 		schemaId: "snow_jiandao",
-		name: "冰雪健道（OC21-e1f155973380 21×21）",
-		shortName: "冰雪健道",
+		name: "冰雪兰道（OC21-e1f155973380 21×21）",
+		shortName: "冰雪兰道",
 		capacity: "21x21",
 		soundLayout: "oc21",
 		auxiliaryMode: "shape",
@@ -61,8 +61,8 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "oc21-tone",
 		schemaId: "snow_sanpin",
-		name: "冰雪弎拼（OC21-e1f155973380 21×21）",
-		shortName: "冰雪弎拼",
+		name: "冰雪兰拼（OC21-e1f155973380 21×21）",
+		shortName: "冰雪兰拼",
 		capacity: "21x21",
 		soundLayout: "oc21",
 		auxiliaryMode: "tone",
@@ -83,8 +83,8 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "rc26-shape",
 		schemaId: "snow_shenyun_shape",
-		name: "冰雪简道（RC26-39a5bfdc045342cd 21×26）",
-		shortName: "冰雪简道",
+		name: "冰雪鹤道（RC26-39a5bfdc045342cd 21×26）",
+		shortName: "冰雪鹤道",
 		capacity: "21x26",
 		soundLayout: "rc26",
 		auxiliaryMode: "shape",
@@ -94,8 +94,8 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "rc26-tone",
 		schemaId: "snow_shenyun_tone",
-		name: "冰雪散拼（RC26-39a5bfdc045342cd 21×26）",
-		shortName: "冰雪散拼",
+		name: "冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）",
+		shortName: "冰雪鹤拼",
 		capacity: "21x26",
 		soundLayout: "rc26",
 		auxiliaryMode: "tone",

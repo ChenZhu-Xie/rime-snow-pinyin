@@ -960,8 +960,8 @@ function assertNoReplaceableFixed(name: string, sections: FixedSections) {
 	}
 }
 
-assertNoReplaceableFixed("冰雪弎拼", sanpin);
-assertNoReplaceableFixed("冰雪健道", jiandao);
+assertNoReplaceableFixed("冰雪兰拼", sanpin);
+assertNoReplaceableFixed("冰雪兰道", jiandao);
 
 const outputs = new Map([
 	[

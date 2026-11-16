@@ -5,14 +5,14 @@ __include: snow_pinyin.schema.yaml:/
 
 schema:
   schema_id: snow_sanpin
-  name: 冰雪弎拼
+  name: 冰雪兰拼
   version: "0.3.14"
   author:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     带调拼音词顶功输入方案
     双拼编码：OC21-e1f155973380 21×21（M=42、D=2、V=5，QZ/ZQ 空桶）
-    “弎”兼具三声与繁体形意，表示可简繁通打
+    冰雪兰拼与冰雪兰道共用 21×21 声韵布局，本方案使用调辅
   dependencies:
     - snow_pinyin
     - radical_pinyin

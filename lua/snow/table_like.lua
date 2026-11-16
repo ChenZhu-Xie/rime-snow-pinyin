@@ -1,5 +1,5 @@
 -- 模拟码表翻译器
--- 适用于：冰雪弎拼、冰雪健道、冰雪三拼、冰雪键道
+-- 适用于：冰雪兰拼、冰雪兰道、冰雪三拼、冰雪键道
 
 local snow = require "snow.snow"
 local vacancy = require "snow.vacancy"
@@ -197,7 +197,7 @@ function jianpin.func(input, segment, env)
     table.insert(groups, group)
   end
   local initial_count = #groups
-  -- 冰雪弎拼采用 12/213/21，冰雪三拼采用 12/213/23；四字词止于两辅。
+  -- 冰雪兰拼采用 12/213/21，冰雪三拼采用 12/213/23；四字词止于两辅。
   local positions = sanpin_auxiliary_positions(initial_count, env.oc21)
   for tone_index, position in ipairs(positions) do
     local tone = tones:sub(tone_index, tone_index)

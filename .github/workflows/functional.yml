@@ -108,17 +108,17 @@ jobs:
         scheme:
           - name: 冰雪四拼
             schema: snow_sipin
-          - name: 冰雪弎拼
+          - name: 冰雪兰拼
             schema: snow_sanpin
           - name: 冰雪一拼
             schema: snow_yipin
-          - name: 冰雪健道
+          - name: 冰雪兰道
             schema: snow_jiandao
           - name: 冰雪清韵
             schema: snow_qingyun
-          - name: 冰雪简道
+          - name: 冰雪鹤道
             schema: snow_shenyun_shape
-          - name: 冰雪散拼
+          - name: 冰雪鹤拼
             schema: snow_shenyun_tone
           - name: 冰雪键道
             schema: snow_jiandao_classic

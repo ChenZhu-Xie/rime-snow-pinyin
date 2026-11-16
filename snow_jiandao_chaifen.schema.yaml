@@ -3,7 +3,7 @@
 
 schema:
   schema_id: snow_jiandao_chaifen
-  name: 冰雪健道拆分
+  name: 冰雪兰道拆分
   version: "0.3.14"
   author:
     - 谭淞宸 <i@tansongchen.com>

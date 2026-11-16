@@ -51,10 +51,10 @@ end
 local expected = {
   { "snow_jiandao_classic", "冰雪键道", "21²5⁴ 经典键道 二字词低重" },
   { "snow_sanpin_classic", "冰雪三拼", "21²5ⁿ 经典三拼 单字简繁通打" },
-  { "snow_jiandao", "冰雪健道", "21²5⁴ 零飞键道 三四字词低重" },
-  { "snow_sanpin", "冰雪弎拼", "21²5ⁿ 零飞三拼 人体工学" },
-  { "snow_shenyun_shape", "冰雪简道", "21¹26¹5⁴ 无重键道 没有 630" },
-  { "snow_shenyun_tone", "冰雪散拼", "21¹26¹5ⁿ 无重三拼 顶功版廿六" },
+  { "snow_jiandao", "冰雪兰道", "21²5⁴ 零飞键道 三四字词低重" },
+  { "snow_sanpin", "冰雪兰拼", "21²5ⁿ 零飞三拼 人体工学" },
+  { "snow_shenyun_shape", "冰雪鹤道", "21¹26¹5⁴ 无重键道 没有 630" },
+  { "snow_shenyun_tone", "冰雪鹤拼", "21¹26¹5ⁿ 无重三拼 顶功版廿六" },
   { "snow_sipin", "冰雪四拼", "21¹5ⁿ 动态调频 多音节词王" },
   { "snow_yipin", "冰雪一拼", "1200ⁿ95ᵐ 顶功并击 带调音节/击" },
   { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
@@ -70,10 +70,18 @@ for index, item in ipairs(expected) do
 end
 
 assert(names(menu.filter_entries("")) == names(menu.entries), "空查询必须返回全部方案")
-assert(names(menu.filter_entries("jd")) == "冰雪键道|冰雪健道|冰雪简道", "jd 必须保留三个道方案")
+assert(names(menu.filter_entries("jd")) == "冰雪键道", "jd 必须定位冰雪键道")
+assert(names(menu.filter_entries("ld")) == "冰雪兰道", "ld 必须定位冰雪兰道")
+assert(names(menu.filter_entries("lp")) == "冰雪兰拼", "lp 必须定位冰雪兰拼")
+assert(names(menu.filter_entries("hd")) == "冰雪鹤道", "hd 必须定位冰雪鹤道")
+assert(names(menu.filter_entries("hp")) == "冰雪鹤拼", "hp 必须定位冰雪鹤拼")
+assert(names(menu.filter_entries("bxld")) == "冰雪兰道", "全称声母必须定位冰雪兰道")
+assert(names(menu.filter_entries("bxlp")) == "冰雪兰拼", "全称声母必须定位冰雪兰拼")
+assert(names(menu.filter_entries("bxhd")) == "冰雪鹤道", "全称声母必须定位冰雪鹤道")
+assert(names(menu.filter_entries("bxhp")) == "冰雪鹤拼", "全称声母必须定位冰雪鹤拼")
 assert(names(menu.filter_entries("jdjd")) == "冰雪键道", "jdjd 必须定位经典键道")
-assert(names(menu.filter_entries("lfjd")) == "冰雪健道", "lfjd 必须定位零飞键道")
-assert(names(menu.filter_entries("wzjd")) == "冰雪简道", "wzjd 必须定位无重键道")
+assert(names(menu.filter_entries("lfjd")) == "冰雪兰道", "lfjd 必须定位零飞键道")
+assert(names(menu.filter_entries("wzjd")) == "冰雪鹤道", "wzjd 必须定位无重键道")
 assert(names(menu.filter_entries("yp")) == "冰雪一拼", "yp 必须定位冰雪一拼")
 assert(names(menu.filter_entries("dgbj")) == "冰雪一拼", "描述声母必须定位顶功并击")
 assert(names(menu.filter_entries("dtyjj")) == "冰雪一拼", "描述声母必须定位带调音节每击")
@@ -150,10 +158,10 @@ local segment = {
   has_tag = function(_, tag) return tag == "schema_menu" end,
 }
 yielded = {}
-menu.translator.func("jd", segment, translator_env)
-assert(#yielded == 3 and yielded[1].text == "冰雪键道" and yielded[3].text == "冰雪简道",
-  "翻译器必须按固定顺序筛选三个道方案")
-assert(yielded[1].preedit == "jd", "候选预编辑只能显示筛选字母")
+menu.translator.func("hd", segment, translator_env)
+assert(#yielded == 1 and yielded[1].text == "冰雪鹤道",
+  "翻译器必须按新名称声母筛选方案")
+assert(yielded[1].preedit == "hd", "候选预编辑只能显示筛选字母")
 yielded = {}
 menu.translator.func("qqqq", segment, translator_env)
 assert(#yielded == 0, "无匹配时不得回落普通候选")
@@ -171,7 +179,7 @@ assert(selected_schema == "snow_qingyun" and context.input == "",
   "选择候选必须清空菜单并切换方案")
 
 selected_schema = nil
-selected_candidate = Candidate("schema_menu", 0, 3, "冰雪健道", "")
+selected_candidate = Candidate("schema_menu", 0, 3, "冰雪兰道", "")
 context.input = "~~'lfjd"
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)

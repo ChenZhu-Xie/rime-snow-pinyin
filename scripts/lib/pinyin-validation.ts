@@ -14,7 +14,7 @@ export const SYLLABLE_PATTERNS = [
 	},
 	{
 		schema: "snow_sanpin",
-		name: "冰雪弎拼",
+		name: "冰雪兰拼",
 		key: "sanpin_algebra",
 		// snow3/spelling.md：键道的声韵两码 + 调码；声韵均不用 viuoa 五键。
 		pattern: /^[bpmfdtnlgkhjqxzcsrywe]{2}[viuoa]$/,
@@ -30,7 +30,7 @@ export const SYLLABLE_PATTERNS = [
 	},
 	{
 		schema: "snow_jiandao",
-		name: "冰雪健道",
+		name: "冰雪兰道",
 		key: "speller/algebra",
 		// snow-jiandao/index.md、snow3/spelling.md：与三拼共用声韵，无调码。
 		pattern: /^[bpmfdtnlgkhjqxzcsrywe]{2}$/,
@@ -51,13 +51,13 @@ export const SYLLABLE_PATTERNS = [
 	},
 	{
 		schema: "snow_shenyun_shape",
-		name: "冰雪简道",
+		name: "冰雪鹤道",
 		key: "shenyun_algebra",
 		pattern: /^[a-z]{2}$/,
 	},
 	{
 		schema: "snow_shenyun_tone",
-		name: "冰雪散拼",
+		name: "冰雪鹤拼",
 		key: "shenyun_algebra",
 		pattern: /^[a-z]{2}$/,
 	},

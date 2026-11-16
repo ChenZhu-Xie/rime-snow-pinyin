@@ -394,7 +394,7 @@ test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健�
 		0,
 	);
 	assert.deepEqual(result.comparisonToCkt5Robust["21x26-keytao"], {
-		name: "冰雪简道",
+		name: "冰雪简道", // 冻结的旧 benchmark 报告保留原名。
 		ckt5RobustPolicy: "12/21/14",
 		ckt51RobustPolicy: "12/21/14",
 		change: "unchanged",
@@ -632,7 +632,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 			"两个 21×26 方案已经启用同一套占用桶字母方案",
 		);
 		const u357EntryPosition = readme.indexOf(
-			"本节同时列出采用 U357 的冰雪健道、冰雪弎拼",
+			"本节同时列出采用 U357 的冰雪兰道、冰雪兰拼",
 		);
 		assert.ok(overallPosition < overallEntryPosition);
 		assert.ok(overallEntryPosition < u357Position);
@@ -664,11 +664,11 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "research-notes/2026-11-02-ckt-v5.1-six-code.md");
 		includes(
 			readme,
-			"冰雪简道二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`",
+			"冰雪鹤道二／三／四字词当前运行的前两辅字位顺序为 `12/21/42`",
 		);
 		assert.match(
 			readme,
-			/### \[神韵\(Overall-17\) 21×26 双拼\]\([^)]+\)\r?\n\r?\n冰雪简道二／三／四字词当前运行的前两辅字位顺序/u,
+			/### \[神韵\(Overall-17\) 21×26 双拼\]\([^)]+\)\r?\n\r?\n冰雪鹤道二／三／四字词当前运行的前两辅字位顺序/u,
 		);
 		includes(
 			readme,
@@ -683,7 +683,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 		includes(readme, "运行时三字词按剩余字位补第三辅，四字词最多两辅");
 		includes(
 			readme,
-			"CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪健道 `12/231/24`、冰雪弎拼 `12/213/21`",
+			"CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪兰道 `12/231/24`、冰雪兰拼 `12/213/21`",
 		);
 		includes(
 			readme,

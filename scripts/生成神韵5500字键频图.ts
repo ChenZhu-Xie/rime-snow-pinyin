@@ -64,28 +64,28 @@ const layouts: readonly Layout[] = [
 	{
 		id: "d3v1-shape",
 		displayName: "D3/V1 21×26",
-		benchmarkName: "冰雪简道（D3/V1 21×26）",
+		benchmarkName: "冰雪鹤道（D3/V1 21×26）",
 		filename: "shenyun-d3v1-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AEUIO"],
 	},
 	{
 		id: "qz-shape",
 		displayName: "QZ-e8f37a 21×21",
-		benchmarkName: "冰雪健道（QZ-e8f37a 21×21）",
+		benchmarkName: "冰雪兰道（QZ-e8f37a 21×21）",
 		filename: "shenyun-qz-e8f37a-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AVUIO"],
 	},
 	{
 		id: "overall17-first-shape",
 		displayName: "Overall-17·初代 21×26",
-		benchmarkName: "冰雪简道·初代（Overall-17 21×26）",
+		benchmarkName: "冰雪鹤道·初代（Overall-17 21×26）",
 		filename: "shenyun-overall17-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AEUIO"],
 	},
 	{
 		id: "u357-first-shape",
 		displayName: "U357·初代 21×21",
-		benchmarkName: "冰雪健道·初代（U357 21×21）",
+		benchmarkName: "冰雪兰道·初代（U357 21×21）",
 		filename: "shenyun-u357-5500-keyboard-heat.svg",
 		auxiliaryKeys: [..."AVUIO"],
 	},
@@ -184,7 +184,8 @@ function countDisplayCode(displayCode: string, result: KeyCounts): void {
 
 function collectFiles(layout: Layout, filenames: readonly string[]): KeyCounts {
 	const result = emptyCounts();
-	const prefix = `${layout.benchmarkName} `;
+	// 旧 benchmark 回放保留原名，只在读取时还原历史名称。
+	const prefix = `${layout.benchmarkName.replaceAll("冰雪鹤道", "冰雪简道").replaceAll("冰雪兰道", "冰雪健道")} `;
 	for (const filename of filenames) {
 		const lines = readFileSync(join(replayDirectory, filename), "utf8")
 			.split(/\r?\n/u)

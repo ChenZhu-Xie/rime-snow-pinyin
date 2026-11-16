@@ -119,7 +119,7 @@ function expectedCode(syllable: string): string {
 	return `${layout.initialMap[initial]}${layout.finalMap[final]}`.toLowerCase();
 }
 
-test("冰雪简道/调共用 RC26-39a5bfdc045342cd 的 21×26 映射", () => {
+test("冰雪鹤道/调共用 RC26-39a5bfdc045342cd 的 21×26 映射", () => {
 	assert.equal(activeLayout.id, "RC26-39a5bfdc045342cd");
 	assert.equal(activeLayout.label, "RC26-39a5bfdc045342cd");
 	assert.equal(activeLayout.sourceBranch, "research/cr-frontier-gpu-anneal");
@@ -657,8 +657,8 @@ test("21×26 四码桶先柔性补齐词长，学习权重在后置之后最终�
 
 test("两个飞花原型都随部署带上共用配置", () => {
 	for (const [file, name] of [
-		["snow_shenyun_shape.schema.yaml", "冰雪简道"],
-		["snow_shenyun_tone.schema.yaml", "冰雪散拼"],
+		["snow_shenyun_shape.schema.yaml", "冰雪鹤道"],
+		["snow_shenyun_tone.schema.yaml", "冰雪鹤拼"],
 	] as const) {
 		const schema = load(read(file)) as { schema: { name: string } };
 		assert.equal(schema.schema.name, name);
@@ -666,7 +666,7 @@ test("两个飞花原型都随部署带上共用配置", () => {
 	assert.match(read("scripts/link.ts"), /"snow_shenyun_common\.yaml"/u);
 });
 
-test("冰雪简道/散拼接入共用 u 入口的部件全拼反查", () => {
+test("冰雪鹤道/鹤拼接入共用 u 入口的部件全拼反查", () => {
 	for (const file of ["snow_shenyun_common.yaml"]) {
 		const common = load(read(file)) as {
 			engine: { translators: string[] };
@@ -688,7 +688,7 @@ test("冰雪简道/散拼接入共用 u 入口的部件全拼反查", () => {
 	}
 });
 
-test("冰雪简道/调接入输入统计组件", () => {
+test("冰雪鹤道/调接入输入统计组件", () => {
 	const common = read("snow_shenyun_common.yaml");
 	const processor = common.indexOf("lua_processor@*snow.statistics*processor");
 	const asciiComposer = common.indexOf("    - ascii_composer");
@@ -701,7 +701,7 @@ test("冰雪简道/调接入输入统计组件", () => {
 	assert.ok(datetime >= 0 && datetime < translator && translator < number);
 });
 
-test("冰雪简道/调用 ;/ 顶屏并追加的/了", () => {
+test("冰雪鹤道/调用 ;/ 顶屏并追加的/了", () => {
 	const common = load(commonSource) as {
 		punctuator: { half_shape: Record<string, string> };
 	};
@@ -709,7 +709,7 @@ test("冰雪简道/调用 ;/ 顶屏并追加的/了", () => {
 	assert.equal(common.punctuator.half_shape["/"], "了");
 });
 
-test("冰雪简道/调 21×26 一级简码与单字候选列表完备性", () => {
+test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () => {
 	const initialKeys = "bpmfdtnlgkhjqwvxrzcsy";
 	const auxiliaryKeys = "aeuio";
 	const expectedFirst = {

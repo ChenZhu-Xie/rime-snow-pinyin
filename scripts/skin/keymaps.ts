@@ -2,15 +2,15 @@ import type { KeyboardCollection } from "./types";
 
 const jiandaoKeys = [
 	["snow_jiandao_classic", "键道"],
-	["snow_jiandao", "健道"],
+	["snow_jiandao", "兰道"],
 	["snow_jiandao_toned", "剑道"],
-	["snow_shenyun_shape", "简道"],
+	["snow_shenyun_shape", "鹤道"],
 ] as const;
 
 const sanpinKeys = [
 	["snow_sanpin_classic", "三拼"],
-	["snow_sanpin", "弎拼"],
-	["snow_shenyun_tone", "散拼"],
+	["snow_sanpin", "兰拼"],
+	["snow_shenyun_tone", "鹤拼"],
 ] as const;
 
 export const keymapSchemes = [

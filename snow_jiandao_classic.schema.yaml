@@ -12,7 +12,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     单字三码起顶、词组四码起顶的双拼词顶功方案
-    双拼迁移前最后完整版本 3658e22；与冰雪健道共享用户词典
+    双拼迁移前最后完整版本 3658e22；与冰雪兰道共享用户词典
   dependencies:
     - snow_pinyin
     - radical_pinyin

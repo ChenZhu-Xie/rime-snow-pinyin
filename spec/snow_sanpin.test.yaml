@@ -416,7 +416,7 @@ deploy:
       # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
       - send: "fpx{Control+period}fpxqS Vw 50{Control+period}fpx"
         assert: cand[1].text == "疯狂星期四V我50"
-      # OC21 弎拼 xov 固顶“行叭”：新词不得挤掉已有的首选。
+      # OC21 兰拼 xov 固顶“行叭”：新词不得挤掉已有的首选。
       - send: "xov{Control+period}fpxqS {Control+period}xov"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四"
       # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。

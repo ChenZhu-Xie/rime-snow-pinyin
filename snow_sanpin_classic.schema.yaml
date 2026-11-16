@@ -12,7 +12,7 @@ schema:
   description: |
     带调拼音词顶功输入方案
     基于键道双拼改编
-    双拼迁移前最后完整版本 3658e22；与冰雪弎拼共享用户词典
+    双拼迁移前最后完整版本 3658e22；与冰雪兰拼共享用户词典
   dependencies:
     - snow_pinyin
     - radical_pinyin

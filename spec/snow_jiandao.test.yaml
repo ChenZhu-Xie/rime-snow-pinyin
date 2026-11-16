@@ -25,11 +25,19 @@ deploy:
   schema_menu:
     tests:
       - send: "{F4}"
-        assert: page("冰雪键道") and page("冰雪三拼") and page("冰雪健道") and page("冰雪弎拼")
+        assert: page("冰雪键道") and page("冰雪三拼") and page("冰雪兰道") and page("冰雪兰拼")
       - send: "{Escape}"
         assert: cand[1] == nil
       - send: "{F4}jd"
-        assert: cand[1].text == "冰雪键道" and cand[2].text == "冰雪健道" and cand[3].text == "冰雪简道" and cand[4] == nil
+        assert: cand[1].text == "冰雪键道" and cand[2] == nil
+      - send: "{F4}ld"
+        assert: cand[1].text == "冰雪兰道" and cand[2] == nil
+      - send: "{F4}lp"
+        assert: cand[1].text == "冰雪兰拼" and cand[2] == nil
+      - send: "{F4}hd"
+        assert: cand[1].text == "冰雪鹤道" and cand[2] == nil
+      - send: "{F4}hp"
+        assert: cand[1].text == "冰雪鹤拼" and cand[2] == nil
       - send: "{Control+grave}lfjd{Escape}"
         assert: preedit == nil
       - send: "{Control+grave}lfjd{space}"
@@ -194,10 +202,10 @@ deploy:
         assert: cand[1].text == "长猫"
       - send: "o bkxdlrf  bxlrF"
         assert: cand[1].text == "冰雪输入法"
-      # 本地 OC21 健道使用 wmv/gc/tl/xr；数字和字母按实际候选位选取。
+      # 本地 OC21 兰道使用 wmv/gc/tl/xr；数字和字母按实际候选位选取。
       - send: "o wmv2gc2tlxr  wgtx"
         assert: cand[1].text == "5G通信"
-      # 健道和弎拼的元音字母简拼都使用共享载体 x。
+      # 兰道和兰拼的元音字母简拼都使用共享载体 x。
       - send: "o dkou epoi{Down}{Down}{space}xw mtv{Down}{Down}{space} dexm"
         assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
@@ -292,7 +300,7 @@ deploy:
       # 无编码时的大写字母、数字由应用直接插入，不经 Rime 上屏，也要记进新词
       - send: "fpx{Control+period}fpxqS Vw 50{Control+period}fpx"
         assert: cand[1].text == "疯狂星期四V我50"
-      # OC21 健道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
+      # OC21 兰道 xou 固顶“行叭”且没有下级固顶前缀：新词不得挤掉已有首选。
       - send: "xou{Control+period}fpxqS Vw 50{Control+period}xou"
         assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四V我50"
       - send: "jjdz{Control+slash}{Down}{Control+slash}{Up}"

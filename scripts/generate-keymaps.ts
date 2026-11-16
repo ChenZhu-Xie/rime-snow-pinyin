@@ -351,14 +351,14 @@ const diagrams: Diagram[] = [
 	},
 	{
 		filename: "snow_sanpin",
-		title: "冰雪弎拼 · OC21-e1f155973380",
+		title: "冰雪兰拼 · OC21-e1f155973380",
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: toneNotes(u357),
 	},
 	{
 		filename: "snow_jiandao",
-		title: "冰雪健道 · OC21-e1f155973380",
+		title: "冰雪兰道 · OC21-e1f155973380",
 		subtitle: "21×21 声韵与形笔字根映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: shapeNotes(u357.shapeKeysByMeaning),
@@ -387,14 +387,14 @@ const diagrams: Diagram[] = [
 	},
 	{
 		filename: "snow_shenyun_tone",
-		title: "冰雪散拼 · RC26-39a5bfdc045342cd",
+		title: "冰雪鹤拼 · RC26-39a5bfdc045342cd",
 		subtitle: "21×26 声韵与声调映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: toneNotes(overall17),
 	},
 	{
 		filename: "snow_shenyun_shape",
-		title: "冰雪简道 · RC26-39a5bfdc045342cd",
+		title: "冰雪鹤道 · RC26-39a5bfdc045342cd",
 		subtitle: "21×26 声韵与形笔字根映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: shapeNotes(overall17.shapeKeysByMeaning),

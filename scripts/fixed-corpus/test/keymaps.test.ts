@@ -216,12 +216,24 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.equal(trime.preset_keys[sipinSelector].label, "四拼");
 	const lastKey = trime.preset_keyboards.keymaps.keys.at(-1);
 	assert.ok(lastKey);
-	assert.equal(trime.preset_keys[lastKey.click].label, "散拼");
+	assert.equal(trime.preset_keys[lastKey.click].label, "鹤拼");
 	assert.equal(lastKey.swipe_up, undefined);
 	assert.equal(lastKey.swipe_down, undefined);
 });
 
 test("active diagrams identify OC21-e1f155973380 and RC26-39a5bfdc045342cd", () => {
+	for (const [id, name] of [
+		["snow_jiandao", "冰雪兰道"],
+		["snow_sanpin", "冰雪兰拼"],
+		["snow_shenyun_shape", "冰雪鹤道"],
+		["snow_shenyun_tone", "冰雪鹤拼"],
+	]) {
+		const schema = load(read(`${id}.schema.yaml`)) as {
+			schema: { name: string };
+		};
+		assert.equal(schema.schema.name, name);
+		assert.ok(read(`lua/snow/keymaps/${id}.svg`).includes(`${name} · `));
+	}
 	for (const image of ["snow_jiandao.svg", "snow_sanpin.svg"]) {
 		assert.match(read(`lua/snow/keymaps/${image}`), /OC21-e1f155973380/u);
 	}
