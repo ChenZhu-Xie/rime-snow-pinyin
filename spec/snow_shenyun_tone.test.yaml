@@ -220,6 +220,6 @@ deploy:
       - send: cva
         assert: (cand[1].text ~= "才是") or error(pair_probe())
       - send: cvaiee
-        assert: (cand[1].text == "才是") or error(pair_probe())
-      - send: "cvaiee cva"
+        assert: (cand[2].text == "才是") or error(pair_probe())
+      - send: "cvaiee2cva"
         assert: (cand[1].text == "才是") or error(pair_probe())

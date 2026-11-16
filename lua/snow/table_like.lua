@@ -108,13 +108,15 @@ end
 ---@param segment Segment
 ---@param env TableLikeEnv
 function t12.func(input, segment, env)
-  -- 六码二字词选完首字后，原始输入剩下「声₂韵₂调₁调₂」。调₁已记在首字读音里，
-  -- 查第二字时跳过它并使用「声₂韵₂调₂」；原始输入不变，退格仍可撤销首字选择。
+  -- 六码二字词选完首字后，原始输入剩下第二字声韵与两个调码。
+  -- 按本方案标准辅序找到第二字调码；原始输入不变，退格仍可撤销首字选择。
   local previous = env.engine.context.composition:toSegmentation():get_at(-2)
   local selected = previous and previous:get_selected_candidate()
   if previous and previous._end == segment.start and selected
       and selected:get_genuine().type == "sanpin_partial" and input:len() == 4 then
-    local proxy = input:sub(1, 2) .. input:sub(4, 4)
+    local positions = initial_pair_aux.positions(env.pair_standard_order)
+    local tone_index = positions[1] == 2 and 3 or 4
+    local proxy = input:sub(1, 2) .. input:sub(tone_index, tone_index)
     translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
       if candidate._end ~= segment._end - 1 then
         return false

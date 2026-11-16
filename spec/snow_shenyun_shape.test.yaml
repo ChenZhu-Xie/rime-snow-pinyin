@@ -182,8 +182,8 @@ deploy:
     tests:
       # 先证明确实需要学习，再从四辅全码上屏，确认下一次短辅码首选前移。
       - send: cvo
-        assert: (cand[1].text ~= "措施") or error(pair_probe())
-      - send: cvoeiu
-        assert: (cand[1].text == "措施") or error(pair_probe())
-      - send: "cvoeiu cvo"
-        assert: (cand[1].text == "措施") or error(pair_probe())
+        assert: (cand[1].text ~= "财神") or error(pair_probe())
+      - send: cvoaao
+        assert: (cand[1].text == "财神") or error(pair_probe())
+      - send: "cvoaao cvo"
+        assert: (cand[1].text == "财神") or error(pair_probe())
