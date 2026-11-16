@@ -30,13 +30,13 @@ deploy:
         assert: cand[1] == nil
       - send: "{F4}jd"
         assert: cand[1].text == "冰雪键道" and cand[2] == nil
-      - send: "{F4}ld"
+      - send: "{Escape}{F4}ld"
         assert: cand[1].text == "冰雪兰道" and cand[2] == nil
-      - send: "{F4}lp"
+      - send: "{Escape}{F4}lp"
         assert: cand[1].text == "冰雪兰拼" and cand[2] == nil
-      - send: "{F4}hd"
+      - send: "{Escape}{F4}hd"
         assert: cand[1].text == "冰雪鹤道" and cand[2] == nil
-      - send: "{F4}hp"
+      - send: "{Escape}{F4}hp"
         assert: cand[1].text == "冰雪鹤拼" and cand[2] == nil
       - send: "{Control+grave}lfjd{Escape}"
         assert: preedit == nil
