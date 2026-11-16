@@ -32,6 +32,7 @@ __patch:
   - snow_shenyun_tone.custom:/patch?
 
 patch:
+  translator/word_auxiliary_order: "12"
   translator/user_dict_name: snow_shenyun_tone_rc26
   translator/shape_elements: snow_bushou
   translator/shape_mapping: "radical_sanpin.txt"

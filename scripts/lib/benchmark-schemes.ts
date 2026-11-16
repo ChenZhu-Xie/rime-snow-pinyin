@@ -352,14 +352,7 @@ function standardWordOrder(scheme: BenchmarkScheme): string {
 	const cached = wordOrders.get(scheme.id);
 	if (cached) return cached;
 	const source = load(
-		readFileSync(
-			rootPath(
-				scheme.capacity === "21x26"
-					? "snow_shenyun_common.yaml"
-					: `${scheme.schemaId}.schema.yaml`,
-			),
-			"utf8",
-		),
+		readFileSync(rootPath(`${scheme.schemaId}.schema.yaml`), "utf8"),
 	) as {
 		translator?: { word_auxiliary_order: string };
 		patch?: Record<string, unknown>;

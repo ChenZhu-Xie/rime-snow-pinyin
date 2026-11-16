@@ -126,10 +126,16 @@ function t12.func(input, segment, env)
   end
   -- 一字词与整句模式
   if rime_api.regex_match(input, env.pattern) or not env.engine.context:get_option("popping") then
-    translate(input, segment, env, env.preserve_t12_proxy_quality)
-    if input:len() == 2
+    local initial_pair_vacant = input:len() == 2
         and vacancy.is_empty(input, segment, env.vacancy_translator,
-          env.vacancy_memory, env.vacancy_projection, env.vacancy_cache) then
+          env.vacancy_memory, env.vacancy_projection, env.vacancy_cache)
+    translate(input, segment, env, env.preserve_t12_proxy_quality, function(candidate)
+      if initial_pair_vacant and utf8.len(candidate.text) == 2 then
+        candidate.type = "initial_pair"
+      end
+      return true
+    end)
+    if initial_pair_vacant then
       local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2))
       translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
         if utf8.len(candidate.text) ~= 2 then return false end

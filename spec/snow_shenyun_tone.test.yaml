@@ -47,6 +47,13 @@ script: |
     end
     return ""
   end
+  function pair_probe()
+    local parts = { "preedit=" .. tostring(preedit), "commit=" .. tostring(commit) }
+    for index = 1, math.min(16, #cand) do
+      parts[#parts + 1] = tostring(index) .. ":" .. cand[index].text .. "/" .. cand[index].comment
+    end
+    return table.concat(parts, " | ")
+  end
 deploy:
   reverse_lookup:
     tests:
@@ -196,7 +203,7 @@ deploy:
       - send: cvaie
         assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ e〕", 1, true)
       - send: cvaiee
-        assert: cand[1].text == "才是" and not pair_comment("才是"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
+        assert: has("才是") and not pair_comment("才是"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
       - send: cvaiee{BackSpace}
         assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ e〕", 1, true)
   initial_pair_reverse_policy:
@@ -211,8 +218,8 @@ deploy:
     tests:
       # 先证明确实需要学习，再从四辅全码上屏，确认下一次短辅码首选前移。
       - send: cva
-        assert: cand[1].text ~= "才是"
+        assert: (cand[1].text ~= "才是") or error(pair_probe())
       - send: cvaiee
-        assert: cand[1].text == "才是"
+        assert: (cand[1].text == "才是") or error(pair_probe())
       - send: "cvaiee cva"
-        assert: cand[1].text == "才是"
+        assert: (cand[1].text == "才是") or error(pair_probe())

@@ -32,4 +32,5 @@ __patch:
   - snow_shenyun_shape.custom:/patch?
 
 patch:
+  translator/word_auxiliary_order: "12"
   translator/user_dict_name: snow_shenyun_shape_rc26

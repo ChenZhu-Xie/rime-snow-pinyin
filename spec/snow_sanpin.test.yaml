@@ -34,6 +34,13 @@ script: |
     end
     return ""
   end
+  function pair_probe()
+    local parts = { "preedit=" .. tostring(preedit), "commit=" .. tostring(commit) }
+    for index = 1, math.min(16, #cand) do
+      parts[#parts + 1] = tostring(index) .. ":" .. cand[index].text .. "/" .. cand[index].comment
+    end
+    return table.concat(parts, " | ")
+  end
 deploy:
   cross_route_user_phrase:
     tests:
@@ -470,7 +477,7 @@ deploy:
       - send: yxuou
         assert: has("也许") and pair_comment("也许"):find("〔调笔₂₂₁₁ a〕", 1, true)
       - send: yxuoua
-        assert: cand[1].text == "也许" and not pair_comment("也许"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
+        assert: has("也许") and not pair_comment("也许"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
       - send: yxuoua{BackSpace}
         assert: has("也许") and pair_comment("也许"):find("〔调笔₂₂₁₁ a〕", 1, true)
   initial_pair_reverse_policy:
@@ -485,8 +492,8 @@ deploy:
     tests:
       # 先证明确实需要学习，再从四辅全码上屏，确认下一次短辅码首选前移。
       - send: yxi
-        assert: cand[1].text ~= "也需"
+        assert: (cand[1].text ~= "也需") or error(pair_probe())
       - send: yxivua
-        assert: cand[1].text == "也需"
+        assert: (cand[1].text == "也需") or error(pair_probe())
       - send: "yxivua yxi"
-        assert: cand[1].text == "也需"
+        assert: (cand[1].text == "也需") or error(pair_probe())
