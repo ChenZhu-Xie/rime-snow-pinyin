@@ -41,6 +41,12 @@ script: |
     end
     return count
   end
+  function pair_comment(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return candidate.comment end
+    end
+    return ""
+  end
 deploy:
   reverse_lookup:
     tests:
@@ -123,7 +129,7 @@ deploy:
         assert: has("测试") and preedit == "cha vi"
       - send: chviaa
         assert: has("测试") and preedit == "cha via"
-      # AU 空桶回退为声声二字词；第三码按第一字声调筛选。
+      # AU 空桶回退为声声二字词；按标准二字词辅序反向，先用第二字声调、首笔画筛选。
       - send: cv
         assert: all_have_length(2) and has("测试")
       # gi 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
@@ -132,9 +138,9 @@ deploy:
       - send: gia
         assert: "#cand == 0 and commit == nil"
       - send: cva
-        assert: has("测试") and has("措施") and not has("财神")
+        assert: has("测试") and not has("措施") and not has("财神")
       - send: cve
-        assert: has("财神") and has("才是") and not has("测试")
+        assert: has("财神") and not has("才是") and not has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: bqyv
         assert: has("冰雪")
@@ -179,3 +185,34 @@ deploy:
         assert: commit == "支持"
       - send: "s{Page_Down} "
         assert: commit == "这边"
+  initial_pair_four_aux:
+    tests:
+      - send: cv
+        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ ai〕", 1, true)
+      - send: cva
+        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ ie〕", 1, true)
+      - send: cvai
+        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ ee〕", 1, true)
+      - send: cvaie
+        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ e〕", 1, true)
+      - send: cvaiee
+        assert: cand[1].text == "才是" and not pair_comment("才是"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
+      - send: cvaiee{BackSpace}
+        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ e〕", 1, true)
+  initial_pair_reverse_policy:
+    patch:
+      translator/word_auxiliary_order: "21"
+    tests:
+      - send: cv
+        assert: has("才是") and pair_comment("才是"):find("〔调笔₁₁₂₂ ee〕", 1, true)
+      - send: cveeai
+        assert: has("才是") and commit == nil
+  initial_pair_learning:
+    tests:
+      # 先证明确实需要学习，再从四辅全码上屏，确认下一次短辅码首选前移。
+      - send: cva
+        assert: cand[1].text ~= "才是"
+      - send: cvaiee
+        assert: cand[1].text == "才是"
+      - send: "cvaiee cva"
+        assert: cand[1].text == "才是"

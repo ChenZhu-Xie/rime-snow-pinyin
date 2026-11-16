@@ -111,8 +111,7 @@ function filter.func(translation, env)
   end
   local full_input = input
   local shape_input = context:get_property("shape_input")
-  local shape_status = context:get_property("shape_status")
-  if shape_input and shape_status ~= "initial_pair" then
+  if shape_input then
     full_input = input .. shape_input
   end
   local fixed_phrases = filter.get_customized_list(env, full_input)

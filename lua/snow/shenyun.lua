@@ -12,6 +12,7 @@ local vacancy = require "snow.vacancy"
 local auxiliary_semantics = require "snow.auxiliary_semantics"
 local auxiliary_hint = require "snow.auxiliary_hint"
 local candidate_priority = require "snow.candidate_priority"
+local initial_pair_aux = require "snow.initial_pair_aux"
 
 local jiandao_semantics = auxiliary_semantics["21x21"]
 local shenyun_semantics = auxiliary_semantics["21x26"]
@@ -34,6 +35,7 @@ local this = {}
 ---@field first_generation boolean
 ---@field auxiliary_cache table<string, string[]>
 ---@field vacancy_cache table<string, boolean>
+---@field pair_standard_order string
 
 local function contains(keys, character)
   return keys:find(character, 1, true) ~= nil
@@ -84,8 +86,8 @@ end
 ---@param mode string
 ---@param first_generation boolean
 ---@return integer[]
-local function auxiliary_positions(length, mode, first_generation)
-  if length == 2 then return { 1, 2 } end
+local function auxiliary_positions(length, mode, first_generation, pair_standard_order)
+  if length == 2 then return initial_pair_aux.positions(pair_standard_order or "12") end
   if length == 3 then
     return mode == "shape" and not first_generation and { 1, 2 } or { 2, 1 }
   end
@@ -116,7 +118,7 @@ local function shape_codes(text, env)
   if #codes == 1 then
     return { codes[1] }
   elseif #codes >= 2 then
-    return { ordered_initials(codes, auxiliary_positions(#codes, "shape", env.first_generation)) }
+    return { ordered_initials(codes, auxiliary_positions(#codes, "shape", env.first_generation, env.pair_standard_order)) }
   end
   return { "" }
 end
@@ -182,7 +184,7 @@ local function tone_codes(text, env, spellings)
       end
     end
   else
-    local positions = auxiliary_positions(#chars, "tone", env.first_generation)
+    local positions = auxiliary_positions(#chars, "tone", env.first_generation, env.pair_standard_order)
     for _, first in ipairs(tones[positions[1]]) do
       for _, second in ipairs(tones[positions[2]]) do
         table.insert(result, first .. second)
@@ -200,14 +202,33 @@ local function actual_spellings(candidate, env)
 end
 
 ---@param candidate Candidate
-local function auxiliary_codes(candidate, env)
+local function auxiliary_codes(candidate, env, initial_pair)
   local text = candidate.text
   local spellings = env.auxiliary_mode == "tone" and actual_spellings(candidate, env) or nil
-  local cache_key = text .. "\t" .. (spellings and table.concat(spellings, " ") or "")
+  local cache_key = text .. "\t" .. (initial_pair and "AA\t" or "")
+      .. (spellings and table.concat(spellings, " ") or "")
   local cached = env.auxiliary_cache[cache_key]
   if cached then return cached end
   local codes
-  if env.auxiliary_mode == "tone" then
+  if initial_pair then
+    local options = {}
+    for index, character in ipairs(characters(text)) do
+      if env.auxiliary_mode == "tone" then
+        local reading = spellings and spellings[index] and spellings[index]:match("([1-5])$")
+        local tones = reading and { tone_keys[reading] } or tone_options(character, env)
+        local strokes = stroke_options(character, env)
+        local values = {}
+        for _, tone in ipairs(tones) do
+          if #strokes == 0 then table.insert(values, tone) end
+          for _, stroke in ipairs(strokes) do table.insert(values, tone .. stroke:sub(1, 1)) end
+        end
+        options[index] = #values > 0 and values or { "" }
+      else
+        options[index] = { encode_radical(character, env) }
+      end
+    end
+    codes = initial_pair_aux.codes(options, env.pair_standard_order)
+  elseif env.auxiliary_mode == "tone" then
     codes = tone_codes(text, env, spellings)
   else
     codes = shape_codes(text, env)
@@ -219,14 +240,18 @@ end
 ---@param route ShenyunRoute
 ---@param mode string
 ---@return string
-local function format_preedit(route, mode, first_generation)
+local function format_preedit(route, mode, first_generation, pair_standard_order)
+  if route.family == "AA" then
+    return route.proxy .. (route.suffix ~= "" and
+      (mode == "tone" and " 调笔[" or " 形[") .. route.suffix .. "]" or "")
+  end
   local positions = route.length == 1 and { 1 }
-      or auxiliary_positions(route.length, mode, first_generation)
+      or auxiliary_positions(route.length, mode, first_generation, pair_standard_order)
   return auxiliary_hint.format_preedit(route.proxy, route.suffix, mode, positions)
 end
 
 ---@param candidate Candidate
-local function auxiliary_match(candidate, suffix, env)
+local function auxiliary_match(candidate, suffix, env, initial_pair)
   local text = candidate.text
   local radical_input = env.engine.context:get_property("shape_input") or ""
   if radical_input ~= "" then
@@ -240,7 +265,7 @@ local function auxiliary_match(candidate, suffix, env)
       return false, radical_code
     end
   end
-  local codes = auxiliary_codes(candidate, env)
+  local codes = auxiliary_codes(candidate, env, initial_pair)
   if suffix == "" then return true, auxiliary_hint.next_codes(codes, suffix) end
   for _, code in ipairs(codes) do
     if code:sub(1, suffix:len()) == suffix then
@@ -306,7 +331,7 @@ local function advance(stream, env)
         stream.auxiliary = ""
         return true
       end
-      local matches, auxiliary = auxiliary_match(candidate, stream.route.suffix, env)
+      local matches, auxiliary = auxiliary_match(candidate, stream.route.suffix, env, stream.route.family == "AA")
       if matches then
         stream.candidate = candidate
         stream.auxiliary = auxiliary
@@ -341,8 +366,8 @@ local function routes_for(input, segment, env)
       and not first_vacant and all_in(input, 3, B) then
     add_route(routes, "AU", input:sub(1, 2), input:sub(3), 1)
   end
-  if first_vacant and all_in(input, 3, B) then
-    -- AA 只在同码 AU 没有完整单字候选时启用；B 沿用二字词的 B1、B2 顺序。
+  if first_vacant and n <= 6 and all_in(input, 3, B) then
+    -- AA 只在 AU 空桶启用；标准二字词辅序反向，每字连续两辅，最多四辅。
     add_route(routes, "AA", input:sub(1, 1) .. " " .. input:sub(2, 2), input:sub(3), 2)
   end
   if n >= 4 and contains(A, input:sub(1, 1)) and contains(U, input:sub(2, 2))
@@ -385,6 +410,7 @@ function this.init(env)
   env.final_keys = config:get_string("translator/shenyun_final_keys") or "abcdefghijklmnopqrstuvwxyz"
   env.auxiliary_keys = config:get_string("translator/shenyun_auxiliary_keys") or "aeuio"
   env.auxiliary_mode = config:get_string("shenyun_options/auxiliary") or "shape"
+  env.pair_standard_order = config:get_string("translator/word_auxiliary_order") or "12"
   env.first_generation = env.engine.schema.schema_id:match("_first$") ~= nil
   env.auxiliary_cache = {}
   env.vacancy_cache = {}
@@ -432,16 +458,22 @@ function this.func(input, segment, env)
     if not seen[candidate.text] then
       seen[candidate.text] = true
       candidate._end = segment._end
-      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode, env.first_generation)
+      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode, env.first_generation, env.pair_standard_order)
       local length = utf8.len(candidate.text)
       local order = ""
       if length and length >= 2 then
-        local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation)
+        local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation, env.pair_standard_order)
         local raw_order = ("%d%d"):format(positions[1], positions[2])
         order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
       end
       local label = (env.auxiliary_mode == "tone" and "调" or "形") .. order
-      if stream.route.family == "A" then
+      if stream.route.family == "AA" then
+        candidate.type = "initial_pair"
+        local codes = auxiliary_codes(candidate, env, true)
+        local _, _, comment = initial_pair_aux.match(codes, stream.route.suffix,
+          env.auxiliary_mode, env.pair_standard_order)
+        if comment ~= "" then snow.comment(candidate, comment) end
+      elseif stream.route.family == "A" then
         local spellings = actual_spellings(candidate, env)
         if spellings and spellings[1] then
           local code = env.vacancy_projection:apply(spellings[1])

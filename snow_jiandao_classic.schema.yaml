@@ -92,12 +92,12 @@ speller:
     # 运行时空音码的 AA 是声声二字词；AAB 取第一字首形辅码。
     - vacant: true
       match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
-      match_shape: "^$"
+      match_shape: "^.{0,3}$"
       accept: "[viuoa]"
       status: initial_pair
     - vacant: true
       match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
-      match_shape: ".+"
+      match_shape: "^.{4,}$"
       accept: "[viuoa]"
       block: true
     # 三字及以上简拼的前三字可用大写补韵；形辅序仍为 12/231/24。
@@ -217,6 +217,7 @@ patch:
   translator/user_dict_name: snow_jiandao_classic
   translator/shape_elements: snow_jiandao_chaifen
   translator/shape_mapping: "radical_jiandao.txt"
+  translator/word_auxiliary_order: "12"
   translator/reserved_initial_pair_pattern: "^(?:fc|gc|kc|hc|zc|cc|sc|rc|yc|wc|ec)$"
   translator/jianpin_pattern: "^(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}$"
   punctuator/half_shape/+:

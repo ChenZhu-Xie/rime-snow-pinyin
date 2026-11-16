@@ -283,7 +283,7 @@ async function main() {
 			casePattern.source !== "."
 		)
 			throw new Error(
-				`--ci 必须测当前七方案全部场景，至少 ${LATENCY_BUDGET.minimumRounds} 轮`,
+				`--ci 必须测当前九方案全部场景，至少 ${LATENCY_BUDGET.minimumRounds} 轮`,
 			);
 	}
 	if (!Number.isInteger(rounds) || rounds < 1 || !(maxP99 > 0))
@@ -557,7 +557,7 @@ async function main() {
 			throw new Error(`统一性能预算不通过：\n${budgetFailures.join("\n")}`);
 		if (ci)
 			console.log(
-				`✓ 七方案 p50 < ${LATENCY_BUDGET.p50}、p95 < ${LATENCY_BUDGET.p95}、p99 < ${LATENCY_BUDGET.p99} ms`,
+				`✓ 九方案 p50 < ${LATENCY_BUDGET.p50}、p95 < ${LATENCY_BUDGET.p95}、p99 < ${LATENCY_BUDGET.p99} ms`,
 			);
 		// 按场景和事件类型检查，避免大量便宜事件掩盖少量昂贵事件。
 		const failed = Object.entries(summary).filter(

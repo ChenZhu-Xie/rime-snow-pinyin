@@ -349,11 +349,11 @@ test("固定候选覆盖首位时不后置底层翻译器候选", () => {
 		new Map([["sl", { word: "产生" }]]),
 	);
 	assert.equal(
-		ranked.find(({ word, code }) => word === "城市" && code === "slv")?.rank,
+		ranked.find(({ word, code }) => word === "城市" && code === "slo")?.rank,
 		1,
 	);
 	assert.equal(
-		ranked.find(({ word, code }) => word === "超时" && code === "slv")?.rank,
+		ranked.find(({ word, code }) => word === "超时" && code === "slo")?.rank,
 		2,
 	);
 });

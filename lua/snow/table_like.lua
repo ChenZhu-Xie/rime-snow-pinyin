@@ -4,6 +4,7 @@
 local snow = require "snow.snow"
 local vacancy = require "snow.vacancy"
 local candidate_priority = require "snow.candidate_priority"
+local initial_pair_aux = require "snow.initial_pair_aux"
 
 ---@class TableLikeEnv: Env
 ---@field translator Translator
@@ -16,6 +17,7 @@ local candidate_priority = require "snow.candidate_priority"
 ---@field vacancy_memory Memory
 ---@field vacancy_projection Projection
 ---@field vacancy_cache table<string, boolean>
+---@field pair_standard_order string
 
 ---@param candidate Candidate
 ---@param proxy string
@@ -90,6 +92,7 @@ end
 function t12.init(env)
   -- 翻译器持有 engine，不能跨会话共享，否则原会话销毁后会访问失效的引擎
   env.translator = Component.Translator(env.engine, "translator", "script_translator")
+  env.pair_standard_order = env.engine.schema.config:get_string("translator/word_auxiliary_order") or "12"
   env.pattern = env.engine.schema.config:get_string("translator/t1_pattern") or "^.+$"
   env.pattern2 = env.engine.schema.config:get_string("translator/t2_pattern") or "^.+$"
   env.preserve_t12_proxy_quality =
@@ -128,16 +131,24 @@ function t12.func(input, segment, env)
         and vacancy.is_empty(input, segment, env.vacancy_translator,
           env.vacancy_memory, env.vacancy_projection, env.vacancy_cache) then
       local proxy = ("%s %s"):format(input:sub(1, 1), input:sub(2))
-      translate(proxy, segment, env, env.preserve_t12_proxy_quality)
+      translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
+        if utf8.len(candidate.text) ~= 2 then return false end
+        candidate.type = "initial_pair"
+        return true
+      end)
     end
   end
   -- 二字词
   if rime_api.regex_match(input, env.pattern2) then
     local proxy = ("%s %s"):format(input:sub(1, 2), input:sub(3))
     if input:len() >= 5 then
-      -- 后置调码按第一、第二字分配；五码已有第一字调，六码再补第二字调。
+      -- 后置调码按本方案标准二字词辅序分配；声声词在过滤器里反转同一配置。
+      local positions = initial_pair_aux.positions(env.pair_standard_order)
+      local tones = { "", "" }
+      tones[positions[1]] = input:sub(5, 5)
+      tones[positions[2]] = input:sub(6, 6)
       proxy = ("%s%s %s%s"):format(
-        input:sub(1, 2), input:sub(5, 5), input:sub(3, 4), input:sub(6, 6))
+        input:sub(1, 2), tones[1], input:sub(3, 4), tones[2])
     end
     translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
       local length = utf8.len(candidate.text)

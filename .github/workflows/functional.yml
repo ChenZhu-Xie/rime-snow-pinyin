@@ -48,6 +48,11 @@ jobs:
         run: bun test scripts/benchmark-latency.test.ts scripts/version.test.ts scripts/workflows.test.ts
       - name: 检查九个方案的全部拼音音节编码
         run: bun scripts/check-pinyin-dict.ts
+      - name: 检查声声二字词辅序与提示
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes lua5.4
+          lua5.4 spec/initial_pair_aux.test.lua
 
   validate-shenyun:
     name: 核验神韵双拼映射

@@ -28,6 +28,12 @@ script: |
     end
     return true
   end
+  function pair_comment(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return candidate.comment end
+    end
+    return ""
+  end
 deploy:
   reverse_lookup:
     tests:
@@ -95,7 +101,7 @@ deploy:
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；chvi 为「测试」。
       - send: chvi
         assert: commit == nil and has("测试") and preedit == "ch vi"
-      # AU 空桶回退为声声二字词；第三码按第一字首形辅筛选。
+      # AU 空桶回退为声声二字词；按标准二字词辅序反向，先用第二字前两辅筛选。
       - send: cv
         assert: all_have_length(2) and has("测试")
       # gi 是空 AB，不能解释为声声二字词；继续输入辅键形成的 AUB 也暂时保留为空。
@@ -103,9 +109,9 @@ deploy:
         assert: "#cand == 0 and commit == nil"
       - send: gia
         assert: "#cand == 0 and commit == nil"
-      - send: cva
+      - send: cvoa
         assert: has("测试") and not has("才是")
-      - send: cve
+      - send: cvoi
         assert: has("才是") and not has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: bqyv
@@ -143,3 +149,34 @@ deploy:
       # 六个空桶只在种类上顺延；第二页第一项为第六个桶 sb，不是同桶内的下一个词。
       - send: "s{Page_Down} "
         assert: commit == "这边"
+  initial_pair_four_aux:
+    tests:
+      - send: cv
+        assert: has("测试") and pair_comment("测试"):find("〔形₂₂₁₁ oa〕", 1, true)
+      - send: cvo
+        assert: has("测试") and pair_comment("测试"):find("〔形₂₂₁₁ aa〕", 1, true)
+      - send: cvoa
+        assert: has("测试") and pair_comment("测试"):find("〔形₂₂₁₁ aa〕", 1, true)
+      - send: cvoaa
+        assert: has("测试") and pair_comment("测试"):find("〔形₂₂₁₁ a〕", 1, true)
+      - send: cvoaaa
+        assert: cand[1].text == "测试" and not pair_comment("测试"):find("〔形₂₂₁₁", 1, true) and commit == nil
+      - send: cvoaaa{BackSpace}
+        assert: has("测试") and pair_comment("测试"):find("〔形₂₂₁₁ a〕", 1, true)
+  initial_pair_reverse_policy:
+    patch:
+      translator/word_auxiliary_order: "21"
+    tests:
+      - send: cv
+        assert: has("测试") and pair_comment("测试"):find("〔形₁₁₂₂ aa〕", 1, true)
+      - send: cvaaoa
+        assert: has("测试") and commit == nil
+  initial_pair_learning:
+    tests:
+      # 先证明确实需要学习，再从四辅全码上屏，确认下一次短辅码首选前移。
+      - send: cvo
+        assert: cand[1].text ~= "措施"
+      - send: cvoeiu
+        assert: cand[1].text == "措施"
+      - send: "cvoeiu cvo"
+        assert: cand[1].text == "措施"

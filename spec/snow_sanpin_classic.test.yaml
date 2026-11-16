@@ -15,6 +15,12 @@ script: |
     end
     return ""
   end
+  function pair_comment(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return candidate.comment end
+    end
+    return ""
+  end
 deploy:
   cross_route_user_phrase:
     tests:
@@ -112,3 +118,34 @@ deploy:
       # 缓冲造词
       - send: "{Control+b}jp mz  jpmz"
         assert: cand[1].text == "长猫"
+  initial_pair_four_aux:
+    tests:
+      - send: yx
+        assert: has("也许") and pair_comment("也许"):find("〔调笔₂₂₁₁ uo〕", 1, true)
+      - send: yxu
+        assert: has("也许") and pair_comment("也许"):find("〔调笔₂₂₁₁ ou〕", 1, true)
+      - send: yxuo
+        assert: has("也许") and pair_comment("也许"):find("〔调笔₂₂₁₁ ua〕", 1, true)
+      - send: yxuou
+        assert: has("也许") and pair_comment("也许"):find("〔调笔₂₂₁₁ a〕", 1, true)
+      - send: yxuoua
+        assert: cand[1].text == "也许" and not pair_comment("也许"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
+      - send: yxuoua{BackSpace}
+        assert: has("也许") and pair_comment("也许"):find("〔调笔₂₂₁₁ a〕", 1, true)
+  initial_pair_reverse_policy:
+    patch:
+      translator/word_auxiliary_order: "21"
+    tests:
+      - send: yx
+        assert: has("也许") and pair_comment("也许"):find("〔调笔₁₁₂₂ ua〕", 1, true)
+      - send: yxuauo
+        assert: has("也许") and commit == nil
+  initial_pair_learning:
+    tests:
+      # 先证明确实需要学习，再从四辅全码上屏，确认下一次短辅码首选前移。
+      - send: yxi
+        assert: cand[1].text ~= "也需"
+      - send: yxivua
+        assert: cand[1].text == "也需"
+      - send: "yxivua yxi"
+        assert: cand[1].text == "也需"

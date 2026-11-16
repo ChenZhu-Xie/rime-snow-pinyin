@@ -161,16 +161,16 @@ speller:
   initials: bpmfdtnlgkhjqxzcsrwye
   delimiter: " "
   shape:
-    # 运行时空音码的 AA 是声声二字词；AAB 取第二字声调。
+    # 运行时空音码的 AA 是声声二字词；标准二字词辅序反向，每字取声调和首笔画，最多四辅。
     - vacant: true
       match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
-      match_shape: "^$"
+      match_shape: "^.{0,3}$"
       reject_combined_config: "translator/reserved_letter_pattern"
       accept: "[viuoa]"
       status: initial_pair
     - vacant: true
       match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
-      match_shape: ".+"
+      match_shape: "^.{4,}$"
       accept: "[viuoa]"
       block: true
     - match: "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]?"
@@ -252,6 +252,7 @@ patch:
   translator/shape_mapping: "radical_sanpin.txt"
   translator/reserved_letter_pattern: "^(?:fca|gca|kca|hca|zca|cca|sca|rca|yca|wca|eca)$"
   translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywe][a-z]?[viuoa]?"
+  translator/word_auxiliary_order: "12"
   translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywe]{4}[viuoa]{0,2}"
   translator/jianpin_pattern: "^(?:(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3}[viuoa]{0,3}|(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){4,}[viuoa]{0,2})$"
   translator/t12_preserve_proxy_quality: true

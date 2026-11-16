@@ -17,6 +17,8 @@ export const SCHEMA_NAMES: Record<string, string> = {
 	snow_qingyun: "冰雪清韵",
 	snow_shenyun_shape: "冰雪鹤道",
 	snow_shenyun_tone: "冰雪鹤拼",
+	snow_jiandao_classic: "冰雪键道",
+	snow_sanpin_classic: "冰雪三拼",
 };
 
 // 一击拆成每键按下、每键松开；最后一次松开才产生完整音节反馈。
@@ -329,6 +331,24 @@ for (const schema of ["snow_shenyun_shape", "snow_shenyun_tone"]) {
 			source: `spec/${schema}.test.yaml`,
 		},
 	];
+}
+
+// 声声二字词从两声母逐键追加到四辅，覆盖六方案的形辅和调笔语义。
+for (const [schema, keys, page] of [
+	["snow_jiandao", "yxoaai", "也许"],
+	["snow_sanpin", "yxuoua", "也许"],
+	["snow_jiandao_classic", "yxoaai", "也许"],
+	["snow_sanpin_classic", "yxuoua", "也许"],
+	["snow_shenyun_shape", "cvoaaa", "测试"],
+	["snow_shenyun_tone", "cvaiee", "才是"],
+]) {
+	LATENCY_CASES[schema] ??= [];
+	LATENCY_CASES[schema].push({
+		id: "initial-pair-four-aux",
+		keys,
+		page,
+		source: `spec/${schema}.test.yaml`,
+	});
 }
 
 // 同一句教程示例按各方案的实际打法输入；下划线在教程中表示空格，

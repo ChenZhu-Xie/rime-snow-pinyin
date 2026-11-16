@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { load } from "js-yaml";
 import { plainSyllable, readShapeCodes, toneOf } from "../固顶编译器";
 import { SpellingAlgebra } from "./algebra";
 import { loadAuxiliarySemantics } from "./auxiliary-semantics";
@@ -339,8 +340,37 @@ function sipinStrokeCodes(character: string): string[] {
 function auxiliaryPositions(scheme: BenchmarkScheme, length: number): number[] {
 	if (!isDoublePinyinCapacity(scheme.capacity)) return [];
 	if (length < 2 || length > 4) return [];
-	const policy = scheme.auxiliaryOrder.split("/")[length - 2];
+	const policy =
+		length === 2
+			? standardWordOrder(scheme)
+			: scheme.auxiliaryOrder.split("/")[length - 2];
 	return policy ? [...policy].map(Number) : [];
+}
+
+const wordOrders = new Map<string, string>();
+function standardWordOrder(scheme: BenchmarkScheme): string {
+	const cached = wordOrders.get(scheme.id);
+	if (cached) return cached;
+	const source = load(
+		readFileSync(
+			rootPath(
+				scheme.capacity === "21x26"
+					? "snow_shenyun_common.yaml"
+					: `${scheme.schemaId}.schema.yaml`,
+			),
+			"utf8",
+		),
+	) as {
+		translator?: { word_auxiliary_order: string };
+		patch?: Record<string, unknown>;
+	};
+	const order =
+		source.translator?.word_auxiliary_order ??
+		source.patch?.["translator/word_auxiliary_order"];
+	if (order !== "12" && order !== "21")
+		throw new Error(`${scheme.schemaId} 缺少标准二字词辅序`);
+	wordOrders.set(scheme.id, order);
+	return order;
 }
 
 function sipinCodes(word: string, sounds: string[]): BenchmarkCode[] {
@@ -484,6 +514,77 @@ function auxiliarySequences(
 			return semantics[capacity].toneKeysByTone[Number(tone) - 1] ?? "";
 		}),
 	];
+}
+
+// 声声空桶使用各方案标准二字词辅序的反序，每字连续取两辅。
+// 仅生成实际空桶；字母保留码仍由方案 recognizer/processor 决定，不能当作可用筛选码。
+const initialPairOccupied = new Map<string, Set<string>>();
+export function initialPairCodes(
+	id: BenchmarkSchemeId,
+	word: string,
+	syllables: string[],
+	standardOrder?: string,
+	occupiedOverride?: ReadonlySet<string>,
+): BenchmarkCode[] {
+	const scheme = schemeById(id);
+	if (
+		!isDoublePinyinCapacity(scheme.capacity) ||
+		syllables.length !== 2 ||
+		[...word].length !== 2
+	)
+		return [];
+	let occupied = occupiedOverride ?? initialPairOccupied.get(id);
+	if (!occupied) {
+		const generatedOccupied = new Set<string>();
+		for (const line of readFileSync(
+			rootPath("snow_pinyin.dict.yaml"),
+			"utf8",
+		).split(/\r?\n/u)) {
+			const [character, spelling, rawWeight] = line.split("\t");
+			if (!spelling || [...character].length !== 1 || Number(rawWeight) <= 1)
+				continue;
+			for (const code of soundCodes(scheme, spelling))
+				generatedOccupied.add(code);
+		}
+		initialPairOccupied.set(id, generatedOccupied);
+		occupied = generatedOccupied;
+	}
+	const sounds = syllables.map((spelling) => soundCodes(scheme, spelling)[0]);
+	if (sounds.some((code) => !code)) return [];
+	const main = sounds.map((code) => code[0]).join("");
+	const initialKeys =
+		scheme.capacity === "21x26"
+			? "bpmfdtnlgkhjqwvxrzcsy"
+			: "bpmfdtnlgkhjqxzcsrwye";
+	if (
+		![...main].every((key) => initialKeys.includes(key)) ||
+		occupied.has(main)
+	)
+		return [];
+	const order = standardOrder ?? standardWordOrder(scheme);
+	if (order !== "12" && order !== "21")
+		throw new Error(`无效二字词辅序：${order}`);
+	const options = [...word].map((character, index) =>
+		auxiliarySequences(scheme, character, [syllables[index]]).map((sequence) =>
+			sequence.slice(0, 2).join(""),
+		),
+	);
+	let codes = [""];
+	for (const [index, position] of [...order].reverse().map(Number).entries()) {
+		codes = codes.flatMap((prefix) =>
+			prefix.length < index * 2
+				? [prefix]
+				: options[position - 1].map((suffix) => prefix + suffix),
+		);
+	}
+	const result = new Map<string, BenchmarkCode>();
+	for (const suffix of codes) {
+		for (let length = 0; length <= suffix.length; length += 1) {
+			const code = main + suffix.slice(0, length);
+			result.set(code, { code, mainLength: 2, auxiliaryLength: length });
+		}
+	}
+	return [...result.values()];
 }
 
 export function pronunciationCodes(

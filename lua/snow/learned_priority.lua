@@ -88,7 +88,8 @@ function filter.init(env)
     local segment = ctx.composition:toSegmentation():back()
     local candidate = ctx:get_selected_candidate()
     if not ctx:get_option("buffered")
-        and input and input:len() >= env.minimum_input_length
+        and input and (input:len() >= env.minimum_input_length
+          or candidate and candidate.type == "initial_pair")
         and rime_api.regex_match(input, "^[a-z]+$")
         and segment and segment:has_tag("abc") and candidate
         and candidate_priority.consumes_input(candidate, input:len())

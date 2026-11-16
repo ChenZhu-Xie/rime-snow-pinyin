@@ -227,6 +227,7 @@ translator:
   shenyun_initial_keys: bpmfdtnlgkhjqwvxrzcsy
   shenyun_final_keys: abcdefghijklmnopqrstuvwxyz
   shenyun_auxiliary_keys: aeuio
+  word_auxiliary_order: "12"
 
 # 与 21×21 方案一致：编码完成时 ;/ 先顶出当前候选，再追加高频尾字“的/了”。
 punctuator:

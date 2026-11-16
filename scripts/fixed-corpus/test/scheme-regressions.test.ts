@@ -408,7 +408,7 @@ test("Shenyun merges translator routes lazily with their iterator state", () => 
 	assert.match(translator, /add_route\(routes, "AA"/u);
 	assert.match(translator, /vacancy\.is_empty\(first_pair/u);
 	assert.match(translator, /not first_vacant and all_in\(input, 3, B\)/u);
-	assert.match(translator, /if first_vacant and all_in/u);
+	assert.match(translator, /if first_vacant and n <= 6 and all_in/u);
 	assert.match(translator, /add_route\(routes, "AAA\+B"/u);
 	assert.match(
 		translator,
@@ -895,7 +895,7 @@ test("OC21 KeyTao and Three-Code keep their processors in a compatible order", (
 	}
 });
 
-test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
+test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliaries", () => {
 	const fixture = JSON.parse(
 		read("docs/shenyun-oc21-e1f155973380-mapping.json"),
 	) as {
@@ -936,7 +936,7 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		assert.doesNotMatch(read(file), /vacant_initial_pattern/u);
 		assert.match(
 			read(file),
-			/vacant: true[\s\S]+match_shape: "\^\$"[\s\S]+block: true/u,
+			/vacant: true[\s\S]+match_shape: "\^\.\{0,3\}\$"[\s\S]+block: true/u,
 		);
 		assert.match(read(file), /status: initial_pair/u);
 	}
@@ -973,7 +973,10 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 		),
 		["fco", "zco", "cco", "rco", "wco", "yco", "xwo"],
 	);
-	assert.match(read("lua/snow/fix.lua"), /shape_status ~= "initial_pair"/u);
+	assert.doesNotMatch(
+		read("lua/snow/fix.lua"),
+		/shape_status ~= "initial_pair"/u,
+	);
 	assert.match(
 		read("snow_jiandao.schema.yaml"),
 		/lua_translator@\*snow\.table_like\*initial_pair/u,
@@ -1007,8 +1010,8 @@ test("vacant AA codes receive exactly one scheme-specific auxiliary", () => {
 	);
 	assert.doesNotMatch(enforce, /vacant_initial_pattern/u);
 	const shapeFilter = read("lua/snow/shape_filter.lua");
-	assert.match(shapeFilter, /sanpin_initial_pair_match/u);
-	assert.match(shapeFilter, /snow\.sub\(text, 2, 2\)/u);
+	assert.match(shapeFilter, /initial_pair_match/u);
+	assert.match(shapeFilter, /initial_pair_aux\.codes\(options, order\)/u);
 });
 
 test("Three-Code and KeyTao reserve uppercase finals for three-or-more-character jianpin", () => {

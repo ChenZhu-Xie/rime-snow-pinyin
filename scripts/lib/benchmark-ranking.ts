@@ -1,6 +1,7 @@
 import {
 	type BenchmarkCode,
 	type BenchmarkSchemeId,
+	initialPairCodes,
 	isPoppableCode,
 	pronunciationCodes,
 } from "./benchmark-schemes";
@@ -118,38 +119,14 @@ function wordCodes(
 			});
 		}
 		if (vacant) {
-			const regularMainLength = 4;
-			if (overall) {
-				for (const generated of regular) {
-					if (
-						generated.mainLength === regularMainLength &&
-						generated.auxiliaryLength > 0
-					) {
-						const suffix = generated.code.slice(regularMainLength);
-						const code = shortMain + suffix;
-						result.set(code, {
-							code,
-							mainLength: shortMain.length,
-							auxiliaryLength: suffix.length,
-						});
-					}
-				}
-			} else {
-				const auxiliaryLength = scheme.endsWith("-tone") ? 2 : 1;
-				const source = regular.find(
-					(generated) =>
-						generated.mainLength === regularMainLength &&
-						generated.auxiliaryLength === auxiliaryLength,
-				);
-				const auxiliary = source?.code.at(-1);
-				if (auxiliary) {
-					const code = shortMain + auxiliary;
-					result.set(code, {
-						code,
-						mainLength: shortMain.length,
-						auxiliaryLength: 1,
-					});
-				}
+			for (const generated of initialPairCodes(
+				scheme,
+				entry.word,
+				entry.syllables,
+				undefined,
+				occupied,
+			)) {
+				result.set(generated.code, generated);
 			}
 		}
 	}
