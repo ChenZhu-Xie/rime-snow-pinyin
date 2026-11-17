@@ -49,12 +49,15 @@ function initial_pair_aux.match(codes, suffix, mode, standard_order)
       break
     end
   end
+  local label = mode == "tone" and "调笔" or "形"
+  local prompt = suffix ~= "" and (" %s[%s]"):format(label, suffix) or ""
+  -- 稀疏四辅筛选会排除整桶中的多数词；它们无需生成后续提示和字位下标。
+  if not matched then return false, prompt, "" end
   local next_codes = auxiliary_hint.next_codes(codes, suffix)
   local order = standard_order:reverse():gsub("(.)", "%1%1")
       :gsub("1", "₁"):gsub("2", "₂")
-  local label = mode == "tone" and "调笔" or "形"
   local comment = next_codes ~= "" and ("〔%s%s %s〕"):format(label, order, next_codes) or ""
-  return matched, suffix ~= "" and (" %s[%s]"):format(label, suffix) or "", comment
+  return matched, prompt, comment
 end
 
 return initial_pair_aux

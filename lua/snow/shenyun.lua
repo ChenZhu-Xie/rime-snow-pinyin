@@ -310,12 +310,9 @@ local function advance(stream, env)
       stream.candidate = nil
       return false
     end
-    -- 代理码中的分隔符会同时虚增 _end 和 quality，合流前必须统一还原。
-    candidate = snow.prepare(candidate, stream.route.proxy)
-    local consumed_length = candidate._end - candidate._start
-    -- 普通主码进入前缀区后不会再出现完整候选，直接结束可避免为空音码扫描整批词。
-    -- AA 使用两个简拼音节，某些桶会先返回只消费首音节的高频候选，必须继续查找。
-    if consumed_length < stream.route.main_length then
+    -- 先按原生代理码长度排除前缀；被排除的候选无需改写 C++ 字段或 quality。
+    -- AA 仍继续查找，保留高频前缀前后都可能出现完整二字词的行为。
+    if candidate._end - candidate._start < stream.route.proxy:len() then
       if stream.route.family == "AA" then
         goto continue
       else
@@ -323,17 +320,18 @@ local function advance(stream, env)
         return false
       end
     end
-    if consumed_length == stream.route.main_length
-        and candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
+    -- 已消费完整 proxy 的候选经 prepare 后恰好消费 main_length。
+    -- 先筛字数和辅码；只给真正进入合流的候选修正 _end / quality。
+    if candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
       -- 单键只提示声韵码，不需要为每个单字查询形辅、声调或笔画。
       if stream.route.family == "A" then
-        stream.candidate = candidate
+        stream.candidate = snow.prepare(candidate, stream.route.proxy)
         stream.auxiliary = ""
         return true
       end
       local matches, auxiliary = auxiliary_match(candidate, stream.route.suffix, env, stream.route.family == "AA")
       if matches then
-        stream.candidate = candidate
+        stream.candidate = snow.prepare(candidate, stream.route.proxy)
         stream.auxiliary = auxiliary
         return true
       end
