@@ -66,9 +66,10 @@ local expected = {
   { "snow_yipin", "冰雪一拼", "1200ⁿ95ᵐ 顶功并击 带调音节/击" },
   { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
   { "snow_zhudao", "冰雪竹道", "21¹26¹5⁴ 带调双拼 键道形辅" },
+  { "snow_jiandao_toned", "冰雪剑道", "21²5⁴ 带调键道 主码含调" },
 }
 
-assert(#menu.entries == #expected, "方案数必须为 10")
+assert(#menu.entries == #expected, "方案数必须为 11")
 for index, item in ipairs(expected) do
   local entry = menu.entries[index]
   assert(entry.schema_id == item[1], "schema_id 顺序错误：" .. index)
@@ -80,7 +81,10 @@ end
 assert(names(menu.filter_entries("")) == names(menu.entries), "空查询必须返回全部方案")
 assert(names(menu.filter_entries("zd")) == "冰雪竹道", "zd 必须定位冰雪竹道")
 assert(names(menu.filter_entries("bxzd")) == "冰雪竹道", "全称声母必须定位冰雪竹道")
-assert(names(menu.filter_entries("jd")) == "冰雪键道", "jd 必须定位冰雪键道")
+assert(names(menu.filter_entries("jd")) == "冰雪键道|冰雪剑道", "jd 必须同时显示键道和剑道")
+assert(names(menu.filter_entries("bxjd")) == "冰雪键道|冰雪剑道", "全称声母必须同时显示键道和剑道")
+assert(names(menu.filter_entries("dtjd")) == "冰雪剑道", "dtjd 必须定位带调剑道")
+assert(names(menu.filter_entries("ddjd")) == "冰雪剑道", "带调读作 dai diao 时也能定位剑道")
 assert(names(menu.filter_entries("ld")) == "冰雪兰道", "ld 必须定位冰雪兰道")
 assert(names(menu.filter_entries("lp")) == "冰雪兰拼", "lp 必须定位冰雪兰拼")
 assert(names(menu.filter_entries("hd")) == "冰雪鹤道", "hd 必须定位冰雪鹤道")
@@ -187,6 +191,18 @@ context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == "snow_qingyun" and context.input == "",
   "选择候选必须清空菜单并切换方案")
+
+yielded = {}
+menu.translator.func("dtjd", segment, translator_env)
+assert(#yielded == 1 and yielded[1].text == "冰雪剑道", "带调剑道必须可被筛选")
+assert(yielded[1].comment == "21²5⁴ 带调键道 主码含调", "已部署剑道必须显示方案说明")
+selected_schema = nil
+selected_candidate = yielded[1]
+context.input = "~~'dtjd"
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(selected_schema == "snow_jiandao_toned" and context.input == "",
+  "选择冰雪剑道必须切换到实际带调方案")
 
 selected_schema = nil
 selected_candidate = Candidate("schema_menu", 0, 3, "冰雪兰道", "")

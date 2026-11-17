@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { load } from "js-yaml";
 import { applyAlgebra, parseAlgebraRules } from "../algebra";
 import { makeMiraDefaultCustomization } from "../../lib/mira-default-custom";
+import { SYLLABLE_PATTERNS } from "../../lib/pinyin-validation";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
@@ -157,6 +158,28 @@ test("active 21x21 mapping is OC21-e1f155973380 with QZ and ZQ vacant", () => {
 		ve: "D",
 		vn: "G",
 	});
+});
+
+test("可筛选方案菜单覆盖全部发布方案及其实际名称", () => {
+	const entries = [
+		...read("lua/snow/schema_menu.lua").matchAll(
+			/schema_id = "(snow_[a-z_]+)",\s+name = "([^"]+)"/gu,
+		),
+	].map(([, schema, name]) => ({ schema, name }));
+	assert.equal(
+		new Set(entries.map((entry) => entry.schema)).size,
+		entries.length,
+	);
+	assert.deepEqual(
+		entries.map((entry) => entry.schema).sort(),
+		SYLLABLE_PATTERNS.map((entry) => entry.schema).sort(),
+	);
+	for (const entry of entries) {
+		const schema = load(read(`${entry.schema}.schema.yaml`)) as {
+			schema: { name: string };
+		};
+		assert.equal(entry.name, schema.schema.name, entry.schema);
+	}
 });
 
 test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme", () => {

@@ -42,7 +42,9 @@ deploy:
       - send: "{Escape}"
         assert: cand[1] == nil
       - send: "{F4}jd"
-        assert: cand[1].text == "冰雪键道" and cand[2] == nil
+        assert: cand[1].text == "冰雪键道" and cand[2].text == "冰雪剑道" and cand[3] == nil
+      - send: "{Escape}{Control+grave}dtjd"
+        assert: cand[1].text == "冰雪剑道" and cand[2] == nil
       - send: "{Escape}{F4}ld"
         assert: cand[1].text == "冰雪兰道" and cand[2] == nil
       - send: "{Escape}{F4}lp"

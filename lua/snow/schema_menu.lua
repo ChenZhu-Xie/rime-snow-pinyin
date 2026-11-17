@@ -94,6 +94,12 @@ menu.entries = {
     comment = "21¹26¹5⁴ 带调双拼 键道形辅",
     aliases = { "bxzd", "zd", "dtdp", "jdxf", "bxzddtdpjdxf" },
   },
+  {
+    schema_id = "snow_jiandao_toned",
+    name = "冰雪剑道",
+    comment = "21²5⁴ 带调键道 主码含调",
+    aliases = { "bxjd", "jd", "dtjd", "ddjd", "zmhd", "bxjddtjdzmhd" },
+  },
 }
 
 ---@param query string

@@ -46,6 +46,8 @@ jobs:
         run: bun scripts/version.ts --check
       - name: 检查发布脚本
         run: bun test scripts/benchmark-latency.test.ts scripts/version.test.ts scripts/workflows.test.ts
+      - name: 检查方案菜单覆盖与快捷键
+        run: bun test scripts/fixed-corpus/test/scheme-regressions.test.ts
       - name: 检查九个方案的全部拼音音节编码
         run: bun scripts/check-pinyin-dict.ts
       - name: 检查声声二字词辅序与提示

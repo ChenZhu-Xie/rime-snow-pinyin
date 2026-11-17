@@ -26,6 +26,8 @@ deploy:
         assert: cand[1] == nil
       - send: "{F4}h{Release+h}d{Release+d}"
         assert: cand[1].text == "冰雪鹤道" and cand[2] == nil
+      - send: "{Escape}{F4}d{Release+d}t{Release+t}j{Release+j}d{Release+d}"
+        assert: cand[1].text == "冰雪剑道" and cand[2] == nil
       - send: "{Control+grave}l{Release+l}f{Release+f}j{Release+j}d{Release+d}{Escape}"
         assert: preedit == nil
       - send: "{Control+grave}l{Release+l}f{Release+f}j{Release+j}d{Release+d}{space}{Release+space}"
