@@ -185,6 +185,36 @@ function escapeXml(value: string) {
 		.replaceAll('"', "&quot;");
 }
 
+const zhudaoSource = JSON.parse(
+	readFileSync(join(root, "config", "snow-zhudao-mapping.json"), "utf8"),
+) as {
+	initialMap: Record<string, string>;
+	shapeKeysByMeaning: string;
+	toneKeysByTone: string;
+	rhymeGroups: Array<{ roots: string[]; keys: string[] }>;
+};
+const zhudao: Mapping = { ...zhudaoSource, finalMap: {} };
+const zhudaoFinalLabels: Record<string, string[]> = {};
+for (const rhyme of zhudaoSource.rhymeGroups) {
+	for (const key of rhyme.keys) {
+		const labels = zhudaoFinalLabels[key] ?? [];
+		labels.push(
+			rhyme.roots
+				.map((root) =>
+					root === "ng"
+						? "ing"
+						: root === "n"
+							? "in/ün"
+							: root === "v"
+								? "ü"
+								: root,
+				)
+				.join("/"),
+		);
+		zhudaoFinalLabels[key] = labels;
+	}
+}
+
 function invert(mapping: Record<string, string>) {
 	const result = new Map<string, string[]>();
 	for (const [value, key] of Object.entries(mapping)) {
@@ -343,6 +373,15 @@ const sipinInitials: Record<string, string[]> = {
 };
 
 const diagrams: Diagram[] = [
+	{
+		filename: "snow_zhudao",
+		title: "冰雪竹道 · T2126-POLISHED-8832091",
+		subtitle:
+			"带调 21×26：二三声上排 · 四声中排 · 一轻声下排 · 键道形辅 12/12/24",
+		mapping: zhudao,
+		finalLabels: zhudaoFinalLabels,
+		auxiliary: shapeNotes(zhudao.shapeKeysByMeaning),
+	},
 	{
 		filename: "snow_sipin",
 		title: "冰雪四拼",
@@ -996,6 +1035,6 @@ for (const diagram of diagrams) {
 
 console.log(
 	check
-		? "八份活动／经典键位图均为最新。"
-		: `已生成八份活动／经典键位图：${outputDirectory}`,
+		? "九份活动／经典键位图均为最新。"
+		: `已生成九份活动／经典键位图：${outputDirectory}`,
 );

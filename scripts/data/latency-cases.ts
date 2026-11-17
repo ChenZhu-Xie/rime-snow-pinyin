@@ -10,6 +10,7 @@ export interface LatencyCase {
 }
 
 export const SCHEMA_NAMES: Record<string, string> = {
+	snow_zhudao: "冰雪竹道",
 	snow_sipin: "冰雪四拼",
 	snow_sanpin: "冰雪兰拼",
 	snow_yipin: "冰雪一拼",
@@ -36,6 +37,37 @@ export function chord(keys: string): string {
 }
 
 export const LATENCY_CASES: Record<string, LatencyCase[]> = {
+	snow_zhudao: [
+		{
+			id: "initial-pair-four-aux",
+			keys: "bdeaeu",
+			page: "不到",
+			source: "docs/zhudao.md",
+		},
+		{ id: "single", keys: "bno", page: "冰", source: "docs/zhudao.md" },
+		{ id: "double", keys: "bnyroe", page: "冰雪", source: "docs/zhudao.md" },
+		{ id: "triple", keys: "vrfyeu", page: "输入法", source: "docs/zhudao.md" },
+		{ id: "four", keys: "rgsnea", page: "人工智能", source: "docs/zhudao.md" },
+		{
+			id: "single-initial",
+			keys: "r",
+			page: "如果",
+			source: "lua/snow/shenyun_hints.lua",
+		},
+		{
+			id: "vacant-paging",
+			keys: "r{Page_Down}{Page_Up}",
+			page: "如果",
+			source: "lua/snow/shenyun_hints.lua",
+		},
+		{ id: "radical", keys: "uwangyan", page: "琰", source: "docs/zhudao.md" },
+		{
+			id: "editing",
+			keys: "bnyroe{BackSpace}",
+			page: "冰雪",
+			source: "docs/zhudao.md",
+		},
+	],
 	snow_sipin: [
 		{ id: "radical", keys: "uwangyan", page: "琰", source: "README.md" },
 		{ id: "single", keys: "biu", page: "笔", source: "snow4/spelling.md" },

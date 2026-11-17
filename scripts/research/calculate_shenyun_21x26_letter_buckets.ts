@@ -27,8 +27,9 @@ const dictionaryFiles = [
 const consonants = [..."bcdfghjklmnpqrstvwxyz"];
 const vowels = [..."aeiou"];
 const valuableWeight = 10_000;
+const zhudao = process.argv.includes("--zhudao");
 const algebra = new SpellingAlgebra(
-	rootPath("snow_shenyun_common.yaml"),
+	rootPath(zhudao ? "snow_zhudao.schema.yaml" : "snow_shenyun_common.yaml"),
 	"shenyun_algebra",
 	{ derive: false },
 );
@@ -209,9 +210,13 @@ if (entries.some(({ displacedAtLeast10000 }) => displacedAtLeast10000 > 0)) {
 }
 
 const output = {
-	id: "SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
+	id: zhudao
+		? "SNOW-ZHUDAO-OCCUPIED-LETTER-BUCKETS-V1"
+		: "SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
 	status: "enabled",
-	schemes: ["snow_shenyun_shape", "snow_shenyun_tone"],
+	schemes: zhudao
+		? ["snow_zhudao"]
+		: ["snow_shenyun_shape", "snow_shenyun_tone"],
 	contract: {
 		candidateOrder: ["existing-han", "uppercase-letter", "lowercase-letter"],
 		vacantBucketsUsed: 0,
@@ -226,7 +231,9 @@ const output = {
 		},
 	},
 	source: {
-		algebra: "snow_shenyun_common.yaml:/shenyun_algebra",
+		algebra: zhudao
+			? "snow_zhudao.schema.yaml:/shenyun_algebra"
+			: "snow_shenyun_common.yaml:/shenyun_algebra",
 		dictionaries: dictionaryFiles,
 		occupiedDefinition: "single-character non-pseudo entry with weight > 1",
 	},
@@ -252,7 +259,12 @@ const output = {
 	},
 };
 const rendered = `${JSON.stringify(output, null, 2)}\n`;
-const outputPath = rootPath("config", "shenyun-21x26-letter-buckets.json");
+const outputPath = rootPath(
+	"config",
+	zhudao
+		? "snow-zhudao-letter-buckets.json"
+		: "shenyun-21x26-letter-buckets.json",
+);
 if (process.argv.includes("--check")) {
 	if (readFileSync(outputPath, "utf8").replace(/\r\n/gu, "\n") !== rendered) {
 		throw new Error(

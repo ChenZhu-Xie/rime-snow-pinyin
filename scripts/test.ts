@@ -36,6 +36,7 @@ const SCHEMAS = [
 	"snow_jiandao_classic",
 	"snow_sanpin_classic",
 	"snow_jiandao_toned",
+	"snow_zhudao",
 ];
 
 // 写时复制（APFS 上几乎不花时间），不支持时退化为普通复制

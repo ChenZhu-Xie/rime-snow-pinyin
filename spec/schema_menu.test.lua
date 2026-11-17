@@ -58,9 +58,10 @@ local expected = {
   { "snow_sipin", "冰雪四拼", "21¹5ⁿ 动态调频 多音节词王" },
   { "snow_yipin", "冰雪一拼", "1200ⁿ95ᵐ 顶功并击 带调音节/击" },
   { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
+  { "snow_zhudao", "冰雪竹道", "21¹26¹5⁴ 带调双拼 键道形辅" },
 }
 
-assert(#menu.entries == #expected, "方案数必须为 9")
+assert(#menu.entries == #expected, "方案数必须为 10")
 for index, item in ipairs(expected) do
   local entry = menu.entries[index]
   assert(entry.schema_id == item[1], "schema_id 顺序错误：" .. index)
@@ -70,6 +71,8 @@ for index, item in ipairs(expected) do
 end
 
 assert(names(menu.filter_entries("")) == names(menu.entries), "空查询必须返回全部方案")
+assert(names(menu.filter_entries("zd")) == "冰雪竹道", "zd 必须定位冰雪竹道")
+assert(names(menu.filter_entries("bxzd")) == "冰雪竹道", "全称声母必须定位冰雪竹道")
 assert(names(menu.filter_entries("jd")) == "冰雪键道", "jd 必须定位冰雪键道")
 assert(names(menu.filter_entries("ld")) == "冰雪兰道", "ld 必须定位冰雪兰道")
 assert(names(menu.filter_entries("lp")) == "冰雪兰拼", "lp 必须定位冰雪兰拼")

@@ -175,7 +175,12 @@ test("只有冰雪四拼、冰雪鹤道和冰雪鹤拼启用结构略码", () =>
 	] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), false, scheme);
 	}
-	for (const scheme of ["sipin", "rc26-shape", "rc26-tone"] as const) {
+	for (const scheme of [
+		"sipin",
+		"rc26-shape",
+		"rc26-tone",
+		"zhudao",
+	] as const) {
 		assert.equal(supportsStructuralAbbreviations(scheme), true, scheme);
 	}
 });

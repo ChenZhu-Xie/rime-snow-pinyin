@@ -349,6 +349,7 @@ end
 local function routes_for(input, segment, env)
   local routes = {}
   local n = input:len()
+  if n > 6 then return routes end
   local A, U, B = env.initial_keys, env.final_keys, env.auxiliary_keys
   local first_pair = n >= 2 and input:sub(1, 2) or ""
   local first_vacant = first_pair ~= "" and all_in(first_pair, 1, A)

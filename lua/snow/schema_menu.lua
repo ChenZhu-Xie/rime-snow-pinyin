@@ -87,6 +87,12 @@ menu.entries = {
     comment = "21ᵐ9¹ 四码前缀 多字根字王",
     aliases = { "bxqy", "qy", "smqz", "dzgzw", "bxqysmqzdzgzw" },
   },
+  {
+    schema_id = "snow_zhudao",
+    name = "冰雪竹道",
+    comment = "21¹26¹5⁴ 带调双拼 键道形辅",
+    aliases = { "bxzd", "zd", "dtdp", "jdxf", "bxzddtdpjdxf" },
+  },
 }
 
 ---@param query string

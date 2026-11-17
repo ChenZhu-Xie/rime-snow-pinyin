@@ -35,6 +35,7 @@ test("分支与 PR 复用十方案功能门禁并监听门禁实现", () => {
 		"snow_jiandao_classic",
 		"snow_sanpin_classic",
 		"snow_jiandao_toned",
+		"snow_zhudao",
 	])
 		expect(functional).toContain(`schema: ${schema}`);
 	expect(functional).toContain("asset: mira-rime1.13.1");

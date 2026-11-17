@@ -354,6 +354,49 @@ local hints = {
       { code = "zb", text = "坐标", weight = 114930 },
     },
   },
+  snow_zhudao = {
+    b = {
+      { code = "bd", text = "不到", weight = 500390 },
+    },
+    c = {
+      { code = "cw", text = "采用", weight = 501740 },
+    },
+    g = {
+      { code = "gw", text = "关于", weight = 501823 },
+      { code = "gh", text = "更好", weight = 339395 },
+    },
+    h = {
+      { code = "hw", text = "还有", weight = 501908 },
+      { code = "hh", text = "还会", weight = 470450 },
+    },
+    k = {
+      { code = "kw", text = "可以", weight = 505814 },
+      { code = "kh", text = "开会", weight = 121320 },
+    },
+    q = {
+      { code = "qw", text = "所以", weight = 502905 },
+      { code = "qr", text = "虽然", weight = 501774 },
+    },
+    r = {
+      { code = "rg", text = "如果", weight = 505388 },
+      { code = "rw", text = "人员", weight = 501851 },
+      { code = "ry", text = "然而", weight = 500724 },
+      { code = "rx", text = "日常", weight = 435275 },
+      { code = "rb", text = "日本", weight = 9999 },
+    },
+    s = {
+      { code = "sw", text = "这样", weight = 503115 },
+    },
+    v = {
+      { code = "vw", text = "使用", weight = 504528 },
+    },
+    x = {
+      { code = "xw", text = "处于", weight = 500532 },
+    },
+    z = {
+      { code = "zw", text = "怎样", weight = 500608 },
+    },
+  },
 }
 
 return hints

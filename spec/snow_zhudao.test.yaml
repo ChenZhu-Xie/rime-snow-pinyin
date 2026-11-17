@@ -1,0 +1,102 @@
+schema: snow_zhudao
+source_dir: ..
+script: |
+  function rank(text)
+    for index, candidate in ipairs(cand) do
+      if candidate.text == text then return index end
+    end
+    return math.huge
+  end
+  function has(text) return rank(text) < math.huge end
+  function page(text) return rank(text) <= 6 end
+  function comment(text) return has(text) and cand[rank(text)].comment or "" end
+deploy:
+  popping:
+    tests:
+      # 固顶只检查一例；字母入口按竹道的实际占用桶重新选择。
+      - send: j
+        assert: cand[1].text == "我"
+      - send: bq
+        assert: cand[2].text == "B" and cand[3].text == "b"
+      # 同一韵组由声调决定第二码；后置形辅不再输入声调。
+      - send: bn
+        assert: has("冰") and preedit == "bn"
+      - send: bno
+        assert: has("冰") and preedit == "bn 形[o]"
+      - send: bw
+        assert: has("饼")
+      - send: bl
+        assert: has("病")
+      # 词语主码仍为 AUAU / AAA / AAAU / AAAA。
+      - send: clvh
+        assert: has("测试") and commit == nil and preedit == "cl vh"
+      - send: bnyroe
+        assert: has("冰雪") and commit == nil
+      - send: vrf
+        assert: has("输入法")
+      - send: vrfy
+        assert: has("输入法") and commit == nil
+      - send: vrfyeu
+        assert: has("输入法") and preedit == "v r fy 形[eu]" and commit == nil
+      # ri 是空桶，三字词第四码 i 直接进入 AAA+B 的形辅回收路由。
+      - send: sgrii
+        assert: has("中国人") and commit == nil
+      - send: rgsnea
+        assert: has("人工智能") and commit == nil
+      # 原有单字桶不得被声声回收；gi 不是声声码，不能回收成二字词。
+      - send: cv
+        assert: has("粗") and not has("测试")
+      - send: gi
+        assert: "#cand == 0 and commit == nil"
+      # 空桶提示与当前声声桶首选保持一致。
+      - send: r
+        assert: cand[1].text == "人" and cand[2].text == "如果" and cand[2].comment == "rg"
+      - send: "clvh;"
+        assert: commit == "测试的"
+      - send: "clvh/"
+        assert: commit == "测试了"
+  initial_pair_four_aux:
+    tests:
+      # bd 空桶：「到」的前两辅 ea，然后「不」的前两辅 eu，逐字逐字追加。
+      - send: bd
+        assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ ea〕", 1, true) ~= nil
+      - send: bde
+        assert: has("不到") and commit == nil
+      - send: bdea
+        assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ eu〕", 1, true) ~= nil
+      - send: bdeae
+        assert: has("不到") and commit == nil
+      - send: bdeaeu
+        assert: has("不到") and not comment("不到"):find("〔形₂₂₁₁", 1, true) and commit == nil
+      - send: bdeaeu{BackSpace}
+        assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ u〕", 1, true) ~= nil
+      - send: bdeaeub
+        assert: commit == "不到" and preedit == "b"
+  initial_pair_reverse_policy:
+    patch:
+      translator/word_auxiliary_order: "21"
+    tests:
+      - send: bd
+        assert: has("不到") and comment("不到"):find("〔形₁₁₂₂ eu〕", 1, true) ~= nil
+      - send: bdeuea
+        assert: has("不到") and commit == nil
+  initial_pair_learning:
+    tests:
+      - send: rbei
+        assert: has("日本") and cand[1].text ~= "日本"
+      - send: rbeioi
+        assert: cand[1].text == "日本"
+      - send: "rbeioi rbei"
+        assert: cand[1].text == "日本"
+  reverse_lookup:
+    tests:
+      - send: uwangyan
+        assert: page("琰") and comment("琰"):find("yan3", 1, true) ~= nil
+      - send: ueiuoa
+        assert: cand[1].text == "札"
+  buffered_command:
+    tests:
+      - send: o
+        assert: cand[1].text == "📝 开启缓冲"
+      - send: otj
+        assert: cand[1].text == "📖 统计功能说明"

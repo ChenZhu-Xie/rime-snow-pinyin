@@ -13,7 +13,8 @@ export type BenchmarkSchemeId =
 	| "oc21-tone"
 	| "oc21-shape"
 	| "rc26-tone"
-	| "rc26-shape";
+	| "rc26-shape"
+	| "zhudao";
 
 export type BenchmarkCapacity = "四拼" | "21x9" | "21x21" | "21x26";
 export type BenchmarkAuxiliaryMode = "tone" | "shape";
@@ -24,7 +25,7 @@ export interface BenchmarkScheme {
 	name: string;
 	shortName: string;
 	capacity: BenchmarkCapacity;
-	soundLayout: "sipin" | "qingyun" | "classic" | "oc21" | "rc26";
+	soundLayout: "sipin" | "qingyun" | "classic" | "oc21" | "rc26" | "zhudao";
 	auxiliaryMode: BenchmarkAuxiliaryMode;
 	fixedFile: string;
 	auxiliaryOrder: string;
@@ -103,6 +104,17 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 		fixedFile: "snow_shenyun_tone.fixed.txt",
 		auxiliaryOrder: "12/21/13",
 	},
+	{
+		id: "zhudao",
+		schemaId: "snow_zhudao",
+		name: "冰雪竹道（T2126-POLISHED-8832091 21×26 带调）",
+		shortName: "冰雪竹道",
+		capacity: "21x26",
+		soundLayout: "zhudao",
+		auxiliaryMode: "shape",
+		fixedFile: "snow_zhudao.fixed.txt",
+		auxiliaryOrder: "12/12/24",
+	},
 ] as const;
 
 export const LEGACY_BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
@@ -150,6 +162,11 @@ const qzMapping = JSON.parse(
 ) as { codes: Record<string, string | null> };
 const rc26Algebra = new SpellingAlgebra(
 	rootPath("snow_shenyun_common.yaml"),
+	"shenyun_algebra",
+	{ derive: false },
+);
+const zhudaoAlgebra = new SpellingAlgebra(
+	rootPath("snow_zhudao.schema.yaml"),
 	"shenyun_algebra",
 	{ derive: false },
 );
@@ -235,7 +252,12 @@ function schemeById(id: BenchmarkSchemeId): BenchmarkScheme {
 export function supportsStructuralAbbreviations(
 	id: BenchmarkSchemeId,
 ): boolean {
-	return id === "sipin" || id === "rc26-shape" || id === "rc26-tone";
+	return (
+		id === "sipin" ||
+		id === "rc26-shape" ||
+		id === "rc26-tone" ||
+		id === "zhudao"
+	);
 }
 
 export function directOutputCodes(
@@ -270,6 +292,10 @@ export function suffixOutputCodes(
 }
 
 function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
+	if (scheme.soundLayout === "zhudao") {
+		const code = zhudaoAlgebra.apply(syllable.replace(/0$/u, "5"));
+		return /^[a-z]{2}$/u.test(code) ? [code] : [];
+	}
 	if (scheme.soundLayout === "sipin") {
 		return sipinAlgebra
 			.applyAll(syllable)

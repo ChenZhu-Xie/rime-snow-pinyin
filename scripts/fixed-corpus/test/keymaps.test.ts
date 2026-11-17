@@ -83,6 +83,7 @@ const schemes = [
 	["snow_jiandao_toned.schema.yaml", "v", "snow_jiandao_toned.svg"],
 	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.svg"],
 	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.svg"],
+	["snow_zhudao.schema.yaml", "e", "snow_zhudao.svg"],
 ] as const;
 
 test("eight released diagrams bind only their vacant standalone key to a keymap", () => {
@@ -160,8 +161,8 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 			keyInfos: [[{ action: "e" }, { action: "v" }]],
 		},
 	});
-	assert.equal(Object.keys(keyboards).length, 10);
-	assert.equal(keyboards.keymaps.keyInfos.flat().length, 9);
+	assert.equal(Object.keys(keyboards).length, 11);
+	assert.equal(keyboards.keymaps.keyInfos.flat().length, 10);
 	const mobileImageKey = keyboards.keymap_snow_sipin.keyInfos[0][0] as {
 		action: string;
 		up?: string;
@@ -509,6 +510,7 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 		"snow_jiandao_classic.svg": "",
 		"snow_shenyun_shape.svg": "QWSYX",
 		"snow_shenyun_tone.svg": "QWSYX",
+		"snow_zhudao.svg": "QWSYX",
 	};
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);

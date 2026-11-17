@@ -29,6 +29,12 @@ interface Target {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const targets: Target[] = [
 	{
+		schema: "snow_zhudao.schema.yaml",
+		fixed: "snow_zhudao.fixed.txt",
+		kind: "21x26",
+		auxiliary: "shape",
+	},
+	{
 		schema: "snow_jiandao.schema.yaml",
 		fixed: "snow_jiandao.fixed.txt",
 		kind: "21x21",
@@ -125,9 +131,6 @@ const shenyunLetters = JSON.parse(
 		naturalTop3: Array<{ text: string }>;
 	}>;
 };
-const shenyunLetterByCode = new Map(
-	shenyunLetters.letters.map((entry) => [entry.code, entry]),
-);
 const keytaoLetterByCode = new Map(
 	[
 		...[..."bpmfdtnlgkhjqxzcsrwye"].map((letter) => ({
@@ -621,7 +624,11 @@ function render21x26(
 	bases: Map<string, string>,
 	phrases: Map<string, string>,
 	targetAlgebra: SpellingAlgebra,
+	letters = shenyunLetters,
 ): string {
+	const letterByCode = new Map(
+		letters.letters.map((entry) => [entry.code, entry]),
+	);
 	const original = new Map<string, string>();
 	for (const line of source.split("\n")) {
 		if (!line.startsWith("#") && line.includes("\t")) {
@@ -629,7 +636,7 @@ function render21x26(
 			original.set(code, candidates);
 		}
 	}
-	const letterCodes = new Set(shenyunLetterByCode.keys());
+	const letterCodes = new Set(letterByCode.keys());
 	const mergeOriginal = (code: string, word: string): string =>
 		original.has(code) ? mergeFirst(original.get(code) ?? "", word) : word;
 	const sanKey = targetAlgebra.apply("san1").slice(0, 1);
@@ -650,8 +657,8 @@ function render21x26(
 		"# 二简词",
 		...[...phrases].sort().map(([code, word]) => `${code}\t${word}`),
 		"# 字母",
-		...shenyunLetters.letters.map(({ code }) => {
-			const entry = shenyunLetterByCode.get(code);
+		...letters.letters.map(({ code }) => {
+			const entry = letterByCode.get(code);
 			const word = bases.get(code) ?? entry?.naturalTop3[0]?.text ?? "";
 			return `${code}\t${word} ${entry?.letter.toUpperCase()} ${entry?.letter}`;
 		}),
@@ -693,7 +700,16 @@ function alignFixedContentOnce(fixed: string, source: string): string {
 					phrases,
 					target.fixed.includes("jiandao"),
 				)
-			: render21x26(source, ones, bases, phrases, algebra);
+			: render21x26(
+					source,
+					ones,
+					bases,
+					phrases,
+					algebra,
+					target.fixed === "snow_zhudao.fixed.txt"
+						? JSON.parse(read("config/snow-zhudao-letter-buckets.json"))
+						: shenyunLetters,
+				);
 	return replaceDirectlyComposableRows(rendered, target, algebra);
 }
 

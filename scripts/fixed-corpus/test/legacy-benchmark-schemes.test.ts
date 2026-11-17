@@ -108,7 +108,7 @@ test("经典 schema 保留迁移前名称并以独立 ID 进入发布方案", ()
 	assert.equal(sanpin.schema.schema_id, "snow_sanpin");
 	assert.equal(sanpin.schema.name, "冰雪三拼");
 	assert.equal(LEGACY_BENCHMARK_SCHEMES.length, 2);
-	assert.equal(ALL_BENCHMARK_SCHEMES.length, 8);
+	assert.equal(ALL_BENCHMARK_SCHEMES.length, 9);
 	assert.deepEqual(
 		ALL_BENCHMARK_SCHEMES.map(({ id }) => id),
 		[
@@ -118,6 +118,7 @@ test("经典 schema 保留迁移前名称并以独立 ID 进入发布方案", ()
 			"qingyun",
 			"rc26-shape",
 			"rc26-tone",
+			"zhudao",
 			"classic-shape",
 			"classic-tone",
 		],

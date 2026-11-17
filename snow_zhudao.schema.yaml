@@ -1,0 +1,299 @@
+# Rime schema
+# encoding: utf-8
+
+# 沿用冰雪鹤道的飞码、形辅、空桶回收与候选处理；声调已经合入第二码。
+__include: snow_shenyun_common.yaml:/
+
+schema:
+  schema_id: snow_zhudao
+  name: 冰雪竹道
+  version: "0.3.14"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    带调双拼＋键道形辅的 21×26 飞码式四码顶方案
+    T2126-POLISHED-8832091：十韵组，上排二三声、中排四声、下排一轻声
+    单字 AU 后最多四形辅；二／三／四字词稳健形辅字位顺序为 12/12/24，最多六码
+  dependencies:
+    - snow_pinyin
+    - radical_pinyin
+    - snow_bihua
+    - snow_jiandao_chaifen
+
+shenyun_options:
+  auxiliary: shape
+
+keymap:
+  key: e
+  image: snow_zhudao.svg
+
+shenyun_algebra:
+  # T2126-POLISHED-8832091；由 scripts/generate-zhudao.ts 生成。
+  - erase/^(hm|hng|m|n|ng|ê)\d$/
+  - xform/(^| )r5(?= |$)/$1er5/
+  - xform/(^| )wang(?=\d)/$1Juang/
+  - xform/(^| )weng(?=\d)/$1Jueng/
+  - xform/(^| )yang(?=\d)/$1Wiang/
+  - xform/(^| )ying(?=\d)/$1Wing/
+  - xform/(^| )yong(?=\d)/$1Wiong/
+  - xform/(^| )yuan(?=\d)/$1Wvan/
+  - xform/(^| )wai(?=\d)/$1Juai/
+  - xform/(^| )wan(?=\d)/$1Juan/
+  - xform/(^| )wei(?=\d)/$1Juei/
+  - xform/(^| )wen(?=\d)/$1Juen/
+  - xform/(^| )yan(?=\d)/$1Wian/
+  - xform/(^| )yao(?=\d)/$1Wiao/
+  - xform/(^| )yin(?=\d)/$1Win/
+  - xform/(^| )you(?=\d)/$1Wiou/
+  - xform/(^| )yue(?=\d)/$1Wve/
+  - xform/(^| )yun(?=\d)/$1Wvn/
+  - xform/(^| )wa(?=\d)/$1Jua/
+  - xform/(^| )wo(?=\d)/$1Juo/
+  - xform/(^| )wu(?=\d)/$1Ju/
+  - xform/(^| )ya(?=\d)/$1Wia/
+  - xform/(^| )ye(?=\d)/$1Wie/
+  - xform/(^| )yi(?=\d)/$1Wi/
+  - xform/(^| )yo(?=\d)/$1Wio/
+  - xform/(^| )yu(?=\d)/$1Wv/
+  - xform/([jqx])u/$1v/
+  - xform/ue(?=\d)/ve/
+  - xform/ui(?=\d)/uei/
+  - xform/iu(?=\d)/iou/
+  - xform/un(?=\d)/uen/
+  - xform/(^| )(?=a)/$1Y/
+  - xform/(^| )(?=e)/$1Y/
+  - xform/(^| )(?=o)/$1Y/
+  - xform/(^| )ch/$1X/
+  - xform/(^| )sh/$1V/
+  - xform/(^| )zh/$1S/
+  - xform/(^| )b/$1B/
+  - xform/(^| )c/$1C/
+  - xform/(^| )d/$1D/
+  - xform/(^| )f/$1F/
+  - xform/(^| )g/$1G/
+  - xform/(^| )h/$1H/
+  - xform/(^| )j/$1J/
+  - xform/(^| )k/$1K/
+  - xform/(^| )l/$1L/
+  - xform/(^| )m/$1M/
+  - xform/(^| )n/$1N/
+  - xform/(^| )p/$1P/
+  - xform/(^| )q/$1F/
+  - xform/(^| )r/$1R/
+  - xform/(^| )s/$1Q/
+  - xform/(^| )t/$1T/
+  - xform/(^| )x/$1Y/
+  - xform/(^| )z/$1Z/
+  - xform/iang1(?= |$)/Z/
+  - xform/iang2(?= |$)/E/
+  - xform/iang3(?= |$)/E/
+  - xform/iang4(?= |$)/S/
+  - xform/iang5(?= |$)/Z/
+  - xform/iong1(?= |$)/M/
+  - xform/iong2(?= |$)/T/
+  - xform/iong3(?= |$)/T/
+  - xform/iong4(?= |$)/J/
+  - xform/iong5(?= |$)/M/
+  - xform/uang1(?= |$)/Z/
+  - xform/uang2(?= |$)/E/
+  - xform/uang3(?= |$)/E/
+  - xform/uang4(?= |$)/S/
+  - xform/uang5(?= |$)/Z/
+  - xform/ueng1(?= |$)/N/
+  - xform/ueng2(?= |$)/R/
+  - xform/ueng3(?= |$)/R/
+  - xform/ueng4(?= |$)/L/
+  - xform/ueng5(?= |$)/N/
+  - xform/ang1(?= |$)/Z/
+  - xform/ang2(?= |$)/E/
+  - xform/ang3(?= |$)/E/
+  - xform/ang4(?= |$)/S/
+  - xform/ang5(?= |$)/Z/
+  - xform/eng1(?= |$)/N/
+  - xform/eng2(?= |$)/R/
+  - xform/eng3(?= |$)/R/
+  - xform/eng4(?= |$)/L/
+  - xform/eng5(?= |$)/N/
+  - xform/ian1(?= |$)/C/
+  - xform/ian2(?= |$)/O/
+  - xform/ian3(?= |$)/O/
+  - xform/ian4(?= |$)/A/
+  - xform/ian5(?= |$)/C/
+  - xform/iao1(?= |$)/B/
+  - xform/iao2(?= |$)/Q/
+  - xform/iao3(?= |$)/Q/
+  - xform/iao4(?= |$)/F/
+  - xform/iao5(?= |$)/B/
+  - xform/ing1(?= |$)/N/
+  - xform/ing2(?= |$)/W/
+  - xform/ing3(?= |$)/W/
+  - xform/ing4(?= |$)/L/
+  - xform/ing5(?= |$)/N/
+  - xform/iou1(?= |$)/V/
+  - xform/iou2(?= |$)/U/
+  - xform/iou3(?= |$)/U/
+  - xform/iou4(?= |$)/D/
+  - xform/iou5(?= |$)/V/
+  - xform/ong1(?= |$)/M/
+  - xform/ong2(?= |$)/T/
+  - xform/ong3(?= |$)/T/
+  - xform/ong4(?= |$)/J/
+  - xform/ong5(?= |$)/M/
+  - xform/uai1(?= |$)/V/
+  - xform/uai2(?= |$)/P/
+  - xform/uai3(?= |$)/P/
+  - xform/uai4(?= |$)/K/
+  - xform/uai5(?= |$)/V/
+  - xform/uan1(?= |$)/C/
+  - xform/uan2(?= |$)/O/
+  - xform/uan3(?= |$)/O/
+  - xform/uan4(?= |$)/A/
+  - xform/uan5(?= |$)/C/
+  - xform/uei1(?= |$)/Z/
+  - xform/uei2(?= |$)/E/
+  - xform/uei3(?= |$)/E/
+  - xform/uei4(?= |$)/S/
+  - xform/uei5(?= |$)/Z/
+  - xform/uen1(?= |$)/C/
+  - xform/uen2(?= |$)/O/
+  - xform/uen3(?= |$)/O/
+  - xform/uen4(?= |$)/A/
+  - xform/uen5(?= |$)/C/
+  - xform/van1(?= |$)/C/
+  - xform/van2(?= |$)/O/
+  - xform/van3(?= |$)/O/
+  - xform/van4(?= |$)/A/
+  - xform/van5(?= |$)/C/
+  - xform/ai1(?= |$)/V/
+  - xform/ai2(?= |$)/P/
+  - xform/ai3(?= |$)/P/
+  - xform/ai4(?= |$)/K/
+  - xform/ai5(?= |$)/V/
+  - xform/an1(?= |$)/C/
+  - xform/an2(?= |$)/O/
+  - xform/an3(?= |$)/O/
+  - xform/an4(?= |$)/A/
+  - xform/an5(?= |$)/C/
+  - xform/ao1(?= |$)/B/
+  - xform/ao2(?= |$)/Q/
+  - xform/ao3(?= |$)/Q/
+  - xform/ao4(?= |$)/F/
+  - xform/ao5(?= |$)/B/
+  - xform/ei1(?= |$)/Z/
+  - xform/ei2(?= |$)/E/
+  - xform/ei3(?= |$)/E/
+  - xform/ei4(?= |$)/S/
+  - xform/ei5(?= |$)/Z/
+  - xform/en1(?= |$)/C/
+  - xform/en2(?= |$)/O/
+  - xform/en3(?= |$)/O/
+  - xform/en4(?= |$)/A/
+  - xform/en5(?= |$)/C/
+  - xform/er1(?= |$)/V/
+  - xform/er2(?= |$)/P/
+  - xform/er3(?= |$)/P/
+  - xform/er4(?= |$)/K/
+  - xform/er5(?= |$)/V/
+  - xform/ia1(?= |$)/X/
+  - xform/ia2(?= |$)/Y/
+  - xform/ia3(?= |$)/Y/
+  - xform/ia4(?= |$)/G/
+  - xform/ia5(?= |$)/X/
+  - xform/ie1(?= |$)/N/
+  - xform/ie2(?= |$)/R/
+  - xform/ie3(?= |$)/R/
+  - xform/ie4(?= |$)/L/
+  - xform/ie5(?= |$)/N/
+  - xform/in1(?= |$)/B/
+  - xform/in2(?= |$)/Q/
+  - xform/in3(?= |$)/Q/
+  - xform/in4(?= |$)/F/
+  - xform/in5(?= |$)/B/
+  - xform/io1(?= |$)/M/
+  - xform/io2(?= |$)/T/
+  - xform/io3(?= |$)/T/
+  - xform/io4(?= |$)/J/
+  - xform/io5(?= |$)/M/
+  - xform/ou1(?= |$)/V/
+  - xform/ou2(?= |$)/U/
+  - xform/ou3(?= |$)/U/
+  - xform/ou4(?= |$)/D/
+  - xform/ou5(?= |$)/V/
+  - xform/ua1(?= |$)/X/
+  - xform/ua2(?= |$)/Y/
+  - xform/ua3(?= |$)/Y/
+  - xform/ua4(?= |$)/G/
+  - xform/ua5(?= |$)/X/
+  - xform/uo1(?= |$)/M/
+  - xform/uo2(?= |$)/T/
+  - xform/uo3(?= |$)/T/
+  - xform/uo4(?= |$)/J/
+  - xform/uo5(?= |$)/M/
+  - xform/ve1(?= |$)/N/
+  - xform/ve2(?= |$)/R/
+  - xform/ve3(?= |$)/R/
+  - xform/ve4(?= |$)/L/
+  - xform/ve5(?= |$)/N/
+  - xform/vn1(?= |$)/B/
+  - xform/vn2(?= |$)/Q/
+  - xform/vn3(?= |$)/Q/
+  - xform/vn4(?= |$)/F/
+  - xform/vn5(?= |$)/B/
+  - xform/a1(?= |$)/X/
+  - xform/a2(?= |$)/Y/
+  - xform/a3(?= |$)/Y/
+  - xform/a4(?= |$)/G/
+  - xform/a5(?= |$)/X/
+  - xform/e1(?= |$)/N/
+  - xform/e2(?= |$)/R/
+  - xform/e3(?= |$)/R/
+  - xform/e4(?= |$)/L/
+  - xform/e5(?= |$)/N/
+  - xform/i1(?= |$)/M/
+  - xform/i2(?= |$)/I/
+  - xform/i3(?= |$)/I/
+  - xform/i4(?= |$)/H/
+  - xform/i5(?= |$)/M/
+  - xform/o1(?= |$)/M/
+  - xform/o2(?= |$)/T/
+  - xform/o3(?= |$)/T/
+  - xform/o4(?= |$)/J/
+  - xform/o5(?= |$)/M/
+  - xform/u1(?= |$)/V/
+  - xform/u2(?= |$)/P/
+  - xform/u3(?= |$)/P/
+  - xform/u4(?= |$)/K/
+  - xform/u5(?= |$)/V/
+  - xform/v1(?= |$)/V/
+  - xform/v2(?= |$)/P/
+  - xform/v3(?= |$)/P/
+  - xform/v4(?= |$)/K/
+  - xform/v5(?= |$)/V/
+  - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
+
+speller:
+  algebra:
+    __include: /shenyun_algebra
+    __append:
+      - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/$1/
+
+shenyun:
+  prism: snow_zhudao
+
+vacancy:
+  prism: snow_zhudao
+  canonical_format:
+    __include: /shenyun_algebra
+
+lookup_shenyun:
+  comment_format:
+    __include: /shenyun_algebra
+
+__patch:
+  - patch
+  - snow_zhudao.custom:/patch?
+
+patch:
+  translator/prism: snow_zhudao
+  translator/user_dict_name: snow_zhudao_polished_8832091
+  translator/word_auxiliary_order: "12"

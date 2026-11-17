@@ -101,7 +101,7 @@ function wordCodes(
 	);
 	const characters = [...entry.word];
 	if (characters.length !== entry.syllables.length) return [...result.values()];
-	const overall = scheme.startsWith("rc26-");
+	const overall = scheme.startsWith("rc26-") || scheme === "zhudao";
 	if (characters.length === 2) {
 		const regularMain = regular.find(
 			({ mainLength, auxiliaryLength }) =>

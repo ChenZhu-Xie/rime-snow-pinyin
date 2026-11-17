@@ -23,7 +23,7 @@ function compareText(left: string, right: string): number {
 	return left < right ? -1 : left > right ? 1 : 0;
 }
 
-export function readShenyunHints() {
+export function readShenyunHints(zhudao = false) {
 	const common = load(
 		readFileSync(rootPath("snow_shenyun_common.yaml"), "utf8"),
 	) as {
@@ -32,7 +32,7 @@ export function readShenyunHints() {
 	const initialKeys = common.translator.shenyun_initial_keys;
 	const finalKeys = common.translator.shenyun_final_keys;
 	const algebra = new SpellingAlgebra(
-		rootPath("snow_shenyun_common.yaml"),
+		rootPath(zhudao ? "snow_zhudao.schema.yaml" : "snow_shenyun_common.yaml"),
 		"shenyun_algebra",
 		{ derive: false },
 	);
@@ -85,7 +85,7 @@ export function readShenyunHints() {
 		.filter((code) => !occupied.has(code));
 	const vacantAA = vacant.filter((code) => initialKeys.includes(code[1]));
 	const hints: Record<string, ShenyunHint[]> = {};
-	for (const schema of schemes) {
+	for (const schema of zhudao ? ["snow_zhudao"] : schemes) {
 		const fixed = new Map(
 			readFileSync(rootPath(`${schema}.fixed.txt`), "utf8")
 				.split(/\r?\n/u)

@@ -3,6 +3,7 @@ import { rootPath } from "./lib/paths";
 import { readShenyunHints } from "./lib/shenyun-hints";
 
 const { hints, vacant, vacantAA } = readShenyunHints();
+Object.assign(hints, readShenyunHints(true).hints);
 const lines = [
 	"-- 由 scripts/generate-shenyun-hints.ts 生成，请勿手改。",
 	"-- 单键后每个声声空桶只提示一个首选词，按该词的系统词频降序排列。",

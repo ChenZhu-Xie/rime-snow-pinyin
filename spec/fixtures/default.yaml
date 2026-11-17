@@ -1,6 +1,7 @@
 # Mira 在隔离目录部署方案时需要一份基础配置。
 # 仓库根目录故意不提供 default.yaml，以免安装时覆盖用户的全局配置。
 schema_list:
+  - schema: snow_zhudao
   - schema: snow_sipin
   - schema: snow_sanpin
   - schema: snow_yipin

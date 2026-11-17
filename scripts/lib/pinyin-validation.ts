@@ -6,6 +6,12 @@ import { rootPath } from "./paths";
 // derive 在这里保留全部完整音节分支，例如三拼、键道的声母飞键和 uang 双编码。
 export const SYLLABLE_PATTERNS = [
 	{
+		schema: "snow_zhudao",
+		name: "冰雪竹道",
+		key: "shenyun_algebra",
+		pattern: /^[bpmfdtnlgkhjqwvxrzcsy][a-z]$/,
+	},
+	{
 		schema: "snow_sipin",
 		name: "冰雪四拼",
 		key: "sipin_algebra",
