@@ -893,7 +893,8 @@ cwi	偶
 cwo	凑
 cwu	腠
 cwv	欧
-cy	沧
+cy	藏
+cya	沧
 cyi	仓
 cyu	舱
 cyv	臧
@@ -1377,7 +1378,7 @@ hxi	获
 hxo	怀
 hxu	徊
 hxv	槐
-hy	巷
+hy	行
 hya	绗
 hyo	吭
 hyu	航
@@ -2458,7 +2459,7 @@ xji	县
 xjo	显
 xju	先
 xjv	现
-xk	行
+xk	性
 xka	姓
 xki	擤
 xko	星
@@ -2661,10 +2662,9 @@ zwi	揍
 zwo	诹
 zwu	邹
 zwv	奏
-zy	藏
+zy	脏
 zya	赃
 zyi	葬
-zyu	脏
 zz	早
 zza	澡
 zzi	藻
