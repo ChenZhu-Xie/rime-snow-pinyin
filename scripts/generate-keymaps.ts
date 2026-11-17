@@ -50,6 +50,8 @@ type Diagram = {
 	subtitle: string;
 	mapping?: Mapping;
 	finalLabels?: Record<string, string[]>;
+	finalColors?: Record<string, string>;
+	keyTones?: Record<string, string>;
 	auxiliary?: Record<string, KeyNote>;
 };
 
@@ -65,6 +67,44 @@ const keyWidth = 92;
 const keyHeight = 130;
 const keyStep = 100;
 const rowY = [78, 218, 358];
+
+// 与 benchmark 的带调主码键位图一致；五辅兼作韵键时保持色相并加深。
+const embeddedToneFills: Record<string, string> = {
+	4: "#d8e9f3",
+	23: "#dcefdc",
+	"01": "#f5e8bd",
+};
+const embeddedRhymeColors = [
+	"#a84944",
+	"#78602a",
+	"#556d9b",
+	"#825699",
+	"#397f69",
+	"#ad632d",
+	"#438098",
+	"#a54f7a",
+	"#778132",
+	"#6853a0",
+];
+
+function embeddedToneFill(tones: string, sharedShape: boolean) {
+	const region = Object.keys(embeddedToneFills).find((group) =>
+		[...tones].every((tone) => group.includes(tone)),
+	);
+	if (!region) throw new Error(`未知的带调键位色区：${tones}`);
+	const fill = embeddedToneFills[region];
+	return sharedShape
+		? `#${fill
+				.slice(1)
+				.match(/../gu)!
+				.map((channel) =>
+					Math.round(Number.parseInt(channel, 16) * 0.88)
+						.toString(16)
+						.padStart(2, "0"),
+				)
+				.join("")}`
+		: fill;
+}
 
 const semanticPatterns = `<defs><pattern id="nf4-both" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#fbfaf7"/></pattern><pattern id="nf4-ionly" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#e3eef4"/><path d="M2 0V9M7 0V9" stroke="#7399ad" stroke-opacity=".18"/></pattern><pattern id="nf4-ronly" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#f6ebd6"/><circle cx="3" cy="3" r="1.15" fill="#b39253" fill-opacity=".3"/></pattern><pattern id="nf4-none" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#eeece8"/><path d="M0 10L10 0" stroke="#aaa6a4" stroke-opacity=".14"/></pattern><pattern id="nf4-multi" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#f8efe2"/><path d="M-2 2L2-2M0 9L9 0M7 11L11 7" stroke="#9a784e" stroke-width="1.6" stroke-opacity=".27"/></pattern><pattern id="nf4-anchor" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M-3 3L3-3M0 12L12 0M9 15L15 9" stroke="#a05b37" stroke-width="2.5" stroke-opacity=".48"/></pattern></defs>`;
 
@@ -151,6 +191,7 @@ const tonedMarsSource = JSON.parse(
 ) as {
 	shapeKeysByMeaning: string;
 	toneKeysByTone: string;
+	toneRegions: Record<string, "upper" | "home" | "lower">;
 	firstKeys: Record<string, string>;
 	rhymeGroups: Array<{
 		label: string;
@@ -169,11 +210,20 @@ const tonedMars: Mapping = {
 	finalMap: {},
 };
 const tonedMarsFinalLabels: Record<string, string[]> = {};
+const tonedMarsFinalColors: Record<string, string> = {};
+const tonedMarsKeyTones: Record<string, string> = {};
 for (const rhyme of tonedMarsSource.rhymeGroups) {
-	for (const key of Object.values(rhyme.keys)) {
+	tonedMarsFinalColors[rhyme.label] =
+		embeddedRhymeColors[tonedMarsSource.rhymeGroups.indexOf(rhyme)];
+	for (const [region, key] of Object.entries(rhyme.keys)) {
 		const labels = tonedMarsFinalLabels[key] ?? [];
 		if (!labels.includes(rhyme.label)) labels.push(rhyme.label);
 		tonedMarsFinalLabels[key] = labels;
+		tonedMarsKeyTones[key] = Object.entries(tonedMarsSource.toneRegions)
+			.filter(([, toneRegion]) => toneRegion === region)
+			.map(([tone]) => (tone === "5" ? "0" : tone))
+			.sort()
+			.join("");
 	}
 }
 
@@ -192,10 +242,23 @@ const zhudaoSource = JSON.parse(
 	shapeKeysByMeaning: string;
 	toneKeysByTone: string;
 	rhymeGroups: Array<{ roots: string[]; keys: string[] }>;
+	referenceTonedCodes: Record<string, string>;
 };
 const zhudao: Mapping = { ...zhudaoSource, finalMap: {} };
 const zhudaoFinalLabels: Record<string, string[]> = {};
+const zhudaoFinalColors: Record<string, string> = {};
+const zhudaoKeyTones: Record<string, string> = {};
+for (const [syllable, code] of Object.entries(
+	zhudaoSource.referenceTonedCodes,
+)) {
+	const key = code[1].toUpperCase();
+	const tone = syllable.endsWith("5") ? "0" : syllable.slice(-1);
+	zhudaoKeyTones[key] = [...new Set((zhudaoKeyTones[key] ?? "") + tone)]
+		.sort()
+		.join("");
+}
 for (const rhyme of zhudaoSource.rhymeGroups) {
+	const color = embeddedRhymeColors[zhudaoSource.rhymeGroups.indexOf(rhyme)];
 	for (const key of rhyme.keys) {
 		const labels = zhudaoFinalLabels[key] ?? [];
 		labels.push(
@@ -212,6 +275,7 @@ for (const rhyme of zhudaoSource.rhymeGroups) {
 				.join("/"),
 		);
 		zhudaoFinalLabels[key] = labels;
+		zhudaoFinalColors[labels[labels.length - 1]] = color;
 	}
 }
 
@@ -380,6 +444,8 @@ const diagrams: Diagram[] = [
 			"带调 21×26：二三声上排 · 四声中排 · 一轻声下排 · 键道形辅 12/12/24",
 		mapping: zhudao,
 		finalLabels: zhudaoFinalLabels,
+		finalColors: zhudaoFinalColors,
+		keyTones: zhudaoKeyTones,
 		auxiliary: shapeNotes(zhudao.shapeKeysByMeaning),
 	},
 	{
@@ -408,6 +474,8 @@ const diagrams: Diagram[] = [
 		subtitle: "带调 21×21：四声上排 · 二三声中排 · 一轻声下排 · 纯形笔辅",
 		mapping: tonedMars,
 		finalLabels: tonedMarsFinalLabels,
+		finalColors: tonedMarsFinalColors,
+		keyTones: tonedMarsKeyTones,
 		auxiliary: shapeNotes(tonedMars.shapeKeysByMeaning),
 	},
 	{
@@ -701,8 +769,9 @@ function render(diagram: Diagram) {
 	const hasToneAuxiliary = Object.values(diagram.auxiliary ?? {}).some(
 		isToneKeyNote,
 	);
-	const semanticLegend =
-		diagram.filename === "snow_sipin"
+	const semanticLegend = diagram.keyTones
+		? "声调底色：二三声绿 · 四声蓝 · 一轻声黄；兼作韵键的五辅同色加深，纯形辅淡紫。"
+		: diagram.filename === "snow_sipin"
 			? "四拼前景：韵腹蓝 · 韵尾紫 · 声调棕 · 笔画绿框；背景、纹理和边框表示声韵占用。"
 			: hasShapeAuxiliary
 				? "形辅前景：笔画绿框 · 单辅键码根棕 · 双辅键码根紫；背景、纹理和边框表示声韵占用。"
@@ -735,6 +804,7 @@ function render(diagram: Diagram) {
 			const initial = initials.get(key) ?? [];
 			const final = finals.get(key) ?? [];
 			const auxiliary = diagram.auxiliary?.[key];
+			const tones = diagram.keyTones?.[key];
 			const hasInitial = initialRoles.length > 0;
 			const hasRhyme =
 				final.length > 0 ||
@@ -762,14 +832,18 @@ function render(diagram: Diagram) {
 						? "auxiliary-only"
 						: "unused";
 			const multi = final.length > 1;
-			const stroke = multi
-				? "#9a784e"
-				: {
-						both: "#b8b7af",
-						ionly: "#7399ad",
-						ronly: "#b39253",
-						none: auxiliary ? "#77a08c" : "#aaa6a4",
-					}[occupancy];
+			const shapeOnly =
+				diagram.keyTones && auxiliary && !hasInitial && !hasRhyme;
+			const stroke = shapeOnly
+				? "#a080b7"
+				: multi
+					? "#9a784e"
+					: {
+							both: "#b8b7af",
+							ionly: "#7399ad",
+							ronly: "#b39253",
+							none: auxiliary ? "#77a08c" : "#aaa6a4",
+						}[occupancy];
 			const dash = {
 				both: "",
 				ionly: "8 4",
@@ -777,18 +851,21 @@ function render(diagram: Diagram) {
 				none: "7 5",
 			}[occupancy];
 			const strokeWidth = multi ? 3.2 : occupancy === "both" ? 2.2 : 1.8;
-			const fill =
-				occupancy === "both"
-					? "#fbfaf7"
-					: occupancy === "none" && auxiliary
-						? "#e4f1e9"
-						: `url(#nf4-${occupancy})`;
+			const fill = tones
+				? embeddedToneFill(tones, !!auxiliary)
+				: shapeOnly
+					? "#e8d8f5"
+					: occupancy === "both"
+						? "#fbfaf7"
+						: occupancy === "none" && auxiliary
+							? "#e4f1e9"
+							: `url(#nf4-${occupancy})`;
 			const clip = `${diagram.filename}-clip-${row}-${column}`;
 			const titleInitials = initialRoles.join(" / ") || "—";
 			const titleFinals = final.join(" / ") || "—";
 			const items = [
-				`<g data-key="${key}" data-role="${role}"${multi ? ' data-multi="true"' : ""}>`,
-				`<title>${key}｜声码 ${escapeXml(titleInitials)}｜韵码 ${escapeXml(titleFinals)}${auxiliary ? `｜辅键 ${escapeXml(auxiliaryLabels(auxiliary).join(" / "))}` : ""}</title>`,
+				`<g data-key="${key}" data-role="${role}"${multi ? ' data-multi="true"' : ""}${tones ? ` data-tone-region="${tones}"` : ""}>`,
+				`<title>${key}｜声码 ${escapeXml(titleInitials)}｜韵码 ${escapeXml(titleFinals)}${tones ? `｜声调 ${tones === "01" ? "1/0" : [...tones].join("/")}` : ""}${auxiliary ? `｜辅键 ${escapeXml(auxiliaryLabels(auxiliary).join(" / "))}` : ""}</title>`,
 				`<clipPath id="${clip}"><rect x="${x + 3}" y="${y + 3}" width="${keyWidth - 6}" height="${keyHeight - 6}" rx="7"/></clipPath>`,
 				`<rect x="${x}" y="${y}" width="${keyWidth}" height="${keyHeight}" rx="9" fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}"${dash ? ` stroke-dasharray="${dash}"` : ""}/>`,
 				...(multi
@@ -847,6 +924,11 @@ function render(diagram: Diagram) {
 					items.push(...renderSipinAuxiliary(auxiliary, x, y));
 				}
 			}
+			if (tones) {
+				items.push(
+					`<text x="${x + 84}" y="${y + (auxiliary ? 37 : 20)}" text-anchor="end" font-family="Microsoft YaHei UI, Noto Sans CJK SC, sans-serif" font-size="11" fill="#516068" data-tones="${tones}">${tones === "01" ? "1/0" : [...tones].join("/")}</text>`,
+				);
+			}
 
 			if (final.length > 0) {
 				const layers =
@@ -903,7 +985,7 @@ function render(diagram: Diagram) {
 					items.push(
 						text(x + keyWidth / 2, y + first + index * step, label, {
 							size,
-							fill: semanticColor(value),
+							fill: diagram.finalColors?.[value] ?? semanticColor(value),
 							anchor: "middle",
 							weight,
 							final: value,
@@ -925,7 +1007,10 @@ function render(diagram: Diagram) {
 			groups.push(items.join(""));
 		}
 	}
-	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, semanticLegend, { size: 14, fill: "#5f5862" })}${text(24, 559, "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组", { size: 12, fill: "#74717a" })}</svg>\n`;
+	const foregroundLegend = diagram.keyTones
+		? "同韵组跨排同色 · 0＝轻声；笔画绿框、单辅键码根棕、双辅键码根紫。"
+		: "Morandi semantic map · 韵母前景色按 i/u/ü/a/e/o/*n/*ng 音系族分组";
+	return `<svg xmlns="http://www.w3.org/2000/svg" class="keysvg nf4-keysvg" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title desc">${semanticPatterns}<title id="title">${escapeXml(diagram.title)}键位映射图</title><desc id="desc">${escapeXml(diagram.subtitle)}</desc><rect width="${width}" height="${height}" rx="14" fill="#f5f2ec"/>${text(24, 34, diagram.title, { size: 23, fill: "#445650", weight: 760 })}${text(24, 58, diagram.subtitle, { size: 13, fill: "#767a73" })}${groups.join("")}${text(24, 535, semanticLegend, { size: 14, fill: "#5f5862" })}${text(24, 559, foregroundLegend, { size: 12, fill: "#74717a" })}</svg>\n`;
 }
 
 function styleInitialLinks(svg: string, mapping?: Mapping) {

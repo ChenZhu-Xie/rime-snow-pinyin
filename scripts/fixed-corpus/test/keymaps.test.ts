@@ -796,6 +796,76 @@ test("semantic key roles drive fills, borders, and auxiliary treatment", () => {
 	assert.match(shenyun, />Ø Y\/YU<\/text>/u);
 });
 
+test("冰雪竹道按实际带调音节显示声调区，并加深兼作韵键的五辅底色", () => {
+	const svg = read("lua/snow/keymaps/snow_zhudao.svg");
+	const mapping = JSON.parse(read("config/snow-zhudao-mapping.json")) as {
+		referenceTonedCodes: Record<string, string>;
+		shapeKeysByMeaning: string;
+	};
+	const tonesByKey = new Map<string, Set<string>>();
+	for (const [syllable, code] of Object.entries(mapping.referenceTonedCodes)) {
+		const key = code[1].toUpperCase();
+		const tones = tonesByKey.get(key) ?? new Set<string>();
+		tones.add(syllable.endsWith("5") ? "0" : syllable.slice(-1));
+		tonesByKey.set(key, tones);
+	}
+	for (const [keys, tones, light, dark] of [
+		["QWERTYUIOP", "23", "#dcefdc", "#c2d2c2"],
+		["ASDFGHJKL", "4", "#d8e9f3", "#becdd6"],
+		["ZXCVBNM", "01", "#f5e8bd", "#d8cca6"],
+	]) {
+		for (const key of keys) {
+			const group = keyGroup(svg, key);
+			const fill = mapping.shapeKeysByMeaning.includes(key) ? dark : light;
+			const base = group.match(/<rect\b[^>]*width="92"[^>]*>/u)?.[0];
+			assert.ok(base?.includes(`fill="${fill}"`), `竹道 ${key} 的声调底色`);
+			const actual = [...(tonesByKey.get(key) ?? [])].sort().join("");
+			assert.ok(
+				[...actual].every((tone) => tones.includes(tone)),
+				key,
+			);
+			assert.ok(
+				group.includes(`data-tones="${actual}"`),
+				`${key} 的实际合法调值`,
+			);
+		}
+	}
+	assert.match(keyGroup(svg, "B"), /data-tones="1">1<\/text>/u);
+	assert.doesNotMatch(svg, /undefined|NaN/u);
+	assert.match(svg, /兼作韵键的五辅同色加深/u);
+});
+
+test("带调主码图保持跨排韵组颜色，纯形辅与无调主码图保留各自语义", () => {
+	for (const name of ["snow_zhudao", "snow_jiandao_toned"]) {
+		const svg = read(`lua/snow/keymaps/${name}.svg`);
+		const colors = new Map<string, string>();
+		for (const key of letterKeys) {
+			for (const tag of textTags(keyGroup(svg, key))) {
+				const final = tag.match(/data-final="([^"]+)"/u)?.[1];
+				if (!final) continue;
+				const color = tag.match(/fill="([^"]+)"/u)?.[1];
+				assert.ok(color);
+				if (colors.has(final)) assert.equal(color, colors.get(final), final);
+				colors.set(final, color);
+			}
+		}
+		assert.equal(colors.size, 10);
+		assert.equal(new Set(colors.values()).size, 10);
+	}
+	const sword = read("lua/snow/keymaps/snow_jiandao_toned.svg");
+	for (const key of "AVUIO") {
+		assert.match(keyGroup(sword, key), /width="92"[^>]*fill="#e8d8f5"/u);
+		assert.doesNotMatch(keyGroup(sword, key), /data-tone-region=/u);
+	}
+	for (const [, , image] of schemes) {
+		if (["snow_zhudao.svg", "snow_jiandao_toned.svg"].includes(image)) continue;
+		assert.doesNotMatch(
+			read(`lua/snow/keymaps/${image}`),
+			/data-tone-region=/u,
+		);
+	}
+});
+
 test("ice KeyTao is generated as searchable native SVG", () => {
 	const jiandao = read("lua/snow/keymaps/snow_jiandao_classic.svg");
 	assert.match(jiandao, /<title id="title">冰雪键道键位映射图<\/title>/u);
