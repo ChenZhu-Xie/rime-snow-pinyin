@@ -24,6 +24,7 @@ local snow = require "snow.snow"
 ---@field sentinel string
 ---@field tag string
 ---@field selected_schema_id string|nil
+---@field available_schemas table<string, boolean>
 ---@field prepare_connection Connection
 ---@field select_connection Connection
 
@@ -218,6 +219,13 @@ function translator.init(env)
   env.sentinel = config:get_string("schema_menu/sentinel") or "'"
   env.tag = config:get_string("schema_menu/tag") or "schema_menu"
   env.selected_schema_id = nil
+  env.available_schemas = {}
+  for _, entry in ipairs(menu.entries) do
+    -- Schema 读取已编译配置；源文件存在不代表已被 schema_list 纳入部署。
+    local schema = Schema(entry.schema_id)
+    env.available_schemas[entry.schema_id] =
+        schema.config:get_string("schema/schema_id") == entry.schema_id
+  end
   local context = env.engine.context
   env.prepare_connection = context.select_notifier:connect(function(ctx)
     env.selected_schema_id = nil
@@ -233,8 +241,13 @@ function translator.init(env)
     if not schema_id then return end
     env.selected_schema_id = nil
     ctx:clear()
+    if not env.available_schemas[schema_id] then return end
     if schema_id ~= env.engine.schema.schema_id then
-      env.engine:apply_schema(Schema(schema_id))
+      -- 部署产物可能在菜单打开后变化，切换前再核对实际配置。
+      local schema = Schema(schema_id)
+      if schema.config:get_string("schema/schema_id") == schema_id then
+        env.engine:apply_schema(schema)
+      end
     end
   end)
 end
@@ -248,7 +261,9 @@ function translator.func(input, segment, env)
   if is_active(query, env.prefix) then query = query:sub(#env.prefix + 1) end
   if query:sub(1, #env.sentinel) == env.sentinel then query = query:sub(#env.sentinel + 1) end
   for _, entry in ipairs(menu.filter_entries(query)) do
-    local candidate = Candidate(env.tag, segment.start, segment._end, entry.name, entry.comment)
+    local comment = env.available_schemas[entry.schema_id] and entry.comment
+        or "未部署：请加入方案列表后重新部署"
+    local candidate = Candidate(env.tag, segment.start, segment._end, entry.name, comment)
     candidate.preedit = query
     yield(candidate)
   end

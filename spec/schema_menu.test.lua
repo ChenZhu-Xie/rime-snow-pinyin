@@ -17,8 +17,15 @@ function KeyEvent(repr)
   }
 end
 
+local unavailable_schemas = {}
 function Schema(schema_id)
-  return { schema_id = schema_id }
+  return {
+    schema_id = schema_id,
+    config = { get_string = function(_, path)
+      if path == "schema/schema_id" and not unavailable_schemas[schema_id] then return schema_id end
+      return nil
+    end },
+  }
 end
 
 function Candidate(candidate_type, start, finish, text, comment)
@@ -188,5 +195,34 @@ context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == nil and context.input == "", "选择当前方案只能关闭选单")
 menu.translator.fini(translator_env)
+
+-- 源方案在菜单中可见但尚未部署：保留提示，不得切换空 Schema 或上屏方案名。
+unavailable_schemas.snow_zhudao = true
+local missing_env = { engine = engine }
+menu.translator.init(missing_env)
+yielded = {}
+menu.translator.func("zd", segment, missing_env)
+assert(#yielded == 1 and yielded[1].text == "冰雪竹道")
+assert(yielded[1].comment == "未部署：请加入方案列表后重新部署")
+selected_schema = nil
+selected_candidate = yielded[1]
+context.input = "~~'zd"
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(selected_schema == nil and context.input == "", "未部署方案不得替换当前有效引擎")
+menu.translator.fini(missing_env)
+
+-- 初始化时存在的部署产物若随后失效，选择时仍不能切到空方案。
+unavailable_schemas.snow_zhudao = nil
+local stale_env = { engine = engine }
+menu.translator.init(stale_env)
+unavailable_schemas.snow_zhudao = true
+selected_schema = nil
+selected_candidate = Candidate("schema_menu", 0, 3, "冰雪竹道", "")
+context.input = "~~'zd"
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(selected_schema == nil and context.input == "", "切换前必须再次检查已编译方案")
+menu.translator.fini(stale_env)
 
 print("schema_menu.test.lua: ok")
