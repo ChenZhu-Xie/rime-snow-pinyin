@@ -754,7 +754,7 @@ cr	催
 cs	测
 ct	曾
 cw	凑
-cy	仓
+cy	藏
 cz	操
 d	都
 db	丢
@@ -774,7 +774,7 @@ dq	掉
 dr	对
 ds	得
 dt	等
-dw	读
+dw	痘
 dy	当
 dz	到
 e	来
@@ -783,7 +783,7 @@ ec	咧
 ed	乱
 ee	率
 ef	里
-eg	咯
+eg	论
 eh	赖
 ej	连
 ek	落
@@ -791,7 +791,7 @@ el	类
 em	路
 en	蓝
 ep	啦
-eq	了
+eq	聊
 er	林
 es	乐
 et	冷
@@ -845,7 +845,7 @@ hs	鹤
 ht	哼
 hw	后
 hx	坏
-hy	巷
+hy	杭
 hz	好
 j	就
 jb	久
@@ -1091,7 +1091,7 @@ zr	最
 zs	则
 zt	增
 zw	走
-zy	藏
+zy	脏
 zz	早
 # 字母
 bco	B b

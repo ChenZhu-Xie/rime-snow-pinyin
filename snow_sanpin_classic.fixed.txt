@@ -734,7 +734,7 @@ cj	粗
 ck	次
 cl	错
 cn	岑
-cp	仓
+cp	藏
 cr	曾
 cs	擦
 ct	窜
@@ -831,7 +831,7 @@ hj	互
 hl	或
 hm	黄
 hn	很
-hp	巷
+hp	杭
 hq	话
 hr	哼
 hs	哈
@@ -884,7 +884,7 @@ ky	空
 kz	靠
 l	来
 lb	林
-lc	了
+lc	聊
 ld	咧
 le	乐
 lf	蓝
@@ -1057,7 +1057,7 @@ x	想
 xb	新
 xc	小
 xd	写
-xe	阿
+xe	额
 xf	按
 xg	行
 xh	学
@@ -1099,7 +1099,7 @@ zj	足
 zk	字
 zl	做
 zn	怎
-zp	藏
+zp	脏
 zr	增
 zs	杂
 zw	贼

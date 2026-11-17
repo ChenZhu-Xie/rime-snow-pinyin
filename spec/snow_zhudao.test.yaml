@@ -22,6 +22,9 @@ deploy:
         assert: cand[1].text == "我"
       - send: bq
         assert: cand[2].text == "B" and cand[3].text == "b"
+      # 固顶兜底按实际读音权重；尿的 niào 高频不能抬高其 suī 异读。
+      - send: qz
+        assert: cand[1].text == "虽" and has("尿")
       # 同一韵组由声调决定第二码；后置形辅不再输入声调。
       - send: bn
         assert: has("冰") and preedit == "bn"

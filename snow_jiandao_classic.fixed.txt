@@ -1582,7 +1582,7 @@ lbi	临
 lbo	麟
 lbu	鳞
 lbv	琳
-lc	了 L l
+lc	聊 L l
 lca	辽
 lci	僚
 lco	料
@@ -2398,7 +2398,7 @@ xda	泄
 xdi	斜
 xdu	协
 xdv	欧
-xe	阿
+xe	额
 xei	俄
 xeo	呃
 xeu	饿

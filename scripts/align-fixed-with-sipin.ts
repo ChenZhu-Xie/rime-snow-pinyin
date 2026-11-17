@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SpellingAlgebra } from "./lib/algebra";
 import { loadAuxiliarySemantics } from "./lib/auxiliary-semantics";
+import { characterReadingPriorities } from "./lib/character-reading-priorities";
 import {
 	mergeDictionaries,
 	readDictionary,
@@ -77,7 +78,10 @@ function read(path: string): string {
 }
 
 const readings = new Map<string, string[]>();
-for (const line of read("scripts/data/tygf-pinyin.tsv").trim().split("\n")) {
+const readingSource = read("scripts/data/tygf-pinyin.tsv");
+const readingPriorities = characterReadingPriorities(readingSource);
+// 原始读音顺序仍用于解释四拼的显式固顶，权重排序只作用于兜底候选。
+for (const line of readingSource.trim().split("\n")) {
 	const [word, reading] = line.split("\t");
 	const values = readings.get(word) ?? [];
 	values.push(reading);
@@ -205,6 +209,8 @@ function oneKeyReferences(
 	// p 槽不机械照搬四拼的“跑”：形辅方案取较高频且完整码仍需选重的“配”，
 	// 调辅方案保留历史上更熟悉、完整码候选更深的“平”。
 	result.set("p", target.auxiliary === "shape" ? "配" : "平");
+	// 冰雪兰道已有 d→的 的一级固顶合同；不要因二级兜底重排而迁成四拼的 d→都。
+	if (target.schema === "snow_jiandao.schema.yaml") result.set("d", "的");
 	return result;
 }
 
@@ -393,16 +399,16 @@ function baseReferences(
 		const code = targetAlgebra.apply(priority.reading).slice(0, 2);
 		add(code, priority);
 	}
-	for (const [word, wordReadings] of readings) {
+	// 四拼显式固顶仍优先；兜底按每条实际读音的权重排列。
+	// 例如尿 niao4 的高权重不能提升尿 sui1 在 qz 桶中的位置。
+	for (const { word, reading } of readingPriorities) {
 		if (!/^\p{Script=Han}$/u.test(word)) continue;
-		for (const reading of wordReadings) {
-			add(targetAlgebra.apply(reading).slice(0, 2), {
-				word,
-				reading,
-				level: 100,
-				order: fallbackOrder++,
-			});
-		}
+		add(targetAlgebra.apply(reading).slice(0, 2), {
+			word,
+			reading,
+			level: 100,
+			order: fallbackOrder++,
+		});
 	}
 	const codeByWord = new Map<string, string>();
 	for (const word of reservedWords) codeByWord.set(word, "");

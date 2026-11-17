@@ -74,7 +74,7 @@ dt	段
 du	度
 dw	丢
 dx	掉
-dy	读
+dy	痘
 dz	跌
 fa	发
 fb	恰
@@ -195,7 +195,7 @@ lt	乱
 lu	路
 lv	略
 lw	留
-lx	了
+lx	聊
 ly	楼 L l
 lz	咧
 ma	吗
@@ -370,12 +370,12 @@ yd	恩
 ye	而
 yf	爱
 yg	寻
-yh	哦
+yh	额
 yi	系
 yk	凹
 yl	按
 ym	胸
-yo	噢
+yo	哦
 yp	需
 yq	行
 yr	新
@@ -514,12 +514,12 @@ zz	坐在
 # 字母
 xq	踹 A a
 bn	帮 B b
-cn	仓 C c
+cn	藏 C c
 db	嗲 D d
 xp	吹 E e
 fn	放 F f
 gn	刚 G g
-hn	巷 H h
+hn	杭 H h
 xf	拆 I i
 jm	炅 J j
 kn	扛 K k
@@ -537,4 +537,4 @@ vn	上 V v
 wn	养 W w
 xo	啜 X x
 yn	昂 Y y
-zn	藏 Z z
+zn	脏 Z z

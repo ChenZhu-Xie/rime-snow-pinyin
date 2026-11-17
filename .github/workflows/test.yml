@@ -20,6 +20,8 @@ on:
       - 'scripts/生成三拼简词.ts'
       - 'scripts/验证神韵双拼.ts'
       - 'scripts/固顶*.ts'
+      - 'scripts/align-fixed-with-sipin.ts'
+      - 'scripts/data/tygf-pinyin.tsv'
       - 'scripts/lib/**'
       - 'scripts/benchmark-latency*.ts'
       - 'scripts/summarize-latency.ts'

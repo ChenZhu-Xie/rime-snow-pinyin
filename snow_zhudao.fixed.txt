@@ -96,7 +96,7 @@ fa	饭
 fb	亲
 fc	分
 fe	强
-ff	壳
+ff	翘
 fg	发
 fh	气
 fi	其
@@ -115,12 +115,12 @@ fw	请
 fx	掐
 fy	法
 fz	非
-ga	观
+ga	惯
 gb	高
 gc	干
 gd	够
 ge	给
-gf	膏
+gf	告
 gg	尬
 gj	共
 gk	故
@@ -134,7 +134,7 @@ gs	逛
 gt	国
 gu	狗
 gv	该
-gx	夹
+gx	刮
 gy	寡
 gz	光
 ha	恨
@@ -157,7 +157,7 @@ ht	活
 hu	吼
 hv	嗨
 hx	花
-hy	哈
+hy	滑
 hz	黑
 ja	卷
 jb	均
@@ -210,11 +210,11 @@ la	乱
 lb	捞
 ld	露 6
 le	累
-lf	落
+lf	料
 lg	辣
 lh	力
 li	里
-lj	咯
+lj	落
 lk	率
 ll	乐
 lm	哩
@@ -227,7 +227,7 @@ ls	类
 lt	龙
 lu	留
 lv	撸
-lw	令 0
+lw	领 0
 lx	啦
 ly	俩
 lz	嘞
@@ -278,9 +278,9 @@ nt	浓
 nu	牛
 nv	妞
 nw	拧
-nx	哪
+nx	南
 ny	拿
-nz	囊
+nz	囔
 pa	骗
 pb	拼
 pc	喷
@@ -327,7 +327,7 @@ qu	叟
 qv	搜
 qx	仨
 qy	撒
-qz	尿
+qz	虽
 ra	润
 rd	肉
 re	蕊
@@ -388,7 +388,7 @@ tr	疼
 ts	退
 tt	同
 tu	头
-tv	台
+tv	偷
 tw	挺
 tx	她
 ty	塔
@@ -421,8 +421,8 @@ wb	要
 wc	烟
 wd	又
 we	养
-wf	晕
-wg	压
+wf	药
+wg	亚
 wh	易
 wi	以
 wj	用
@@ -438,7 +438,7 @@ wt	永
 wu	由
 wv	呦
 ww	赢
-wx	呀
+wx	压
 wy	牙
 wz	央
 xa	趁

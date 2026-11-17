@@ -78,6 +78,7 @@ jobs:
           bun scripts/generate-layout-algebra.ts --check
           bun scripts/generate-zhudao.ts --check
           bun test --cwd scripts fixed-corpus/test/zhudao.test.ts
+          bun test --cwd scripts fixed-corpus/test/character-reading-priorities.test.ts
           bun scripts/research/calculate_shenyun_21x26_letter_buckets.ts --zhudao --check
           bun scripts/align-fixed-with-sipin.ts --check
           bun scripts/生成神韵映射.ts --check
