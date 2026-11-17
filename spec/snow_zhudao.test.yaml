@@ -10,6 +10,10 @@ script: |
   function has(text) return rank(text) < math.huge end
   function page(text) return rank(text) <= 6 end
   function comment(text) return has(text) and cand[rank(text)].comment or "" end
+  function remember_top()
+    six_code_top = cand[1].text
+    return true
+  end
 deploy:
   popping:
     tests:
@@ -70,8 +74,13 @@ deploy:
         assert: has("不到") and not comment("不到"):find("〔形₂₂₁₁", 1, true) and commit == nil
       - send: bdeaeu{BackSpace}
         assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ u〕", 1, true) ~= nil
+  six_code_popping:
+    tests:
+      # 四辅全码可能仍有重码；应顶出这个码的实际首选，而非固定某个词。
+      - send: bdeaeu
+        assert: has("不到") and remember_top()
       - send: bdeaeub
-        assert: commit == "不到" and preedit == "b"
+        assert: (commit == six_code_top and preedit == "b") or error("top=" .. tostring(six_code_top) .. ", commit=" .. tostring(commit) .. ", preedit=" .. tostring(preedit))
   initial_pair_reverse_policy:
     patch:
       translator/word_auxiliary_order: "21"

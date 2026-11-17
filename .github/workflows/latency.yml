@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   latency:
-    name: 九方案统一延迟预算
+    name: 按键反馈统一延迟预算
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -49,7 +49,7 @@ jobs:
         run: |
           mkdir -p output/latency-runtime/librime/data/minimal/opencc
           cp -a /usr/share/opencc/. output/latency-runtime/librime/data/minimal/opencc/
-      - name: 检查九个方案的统一性能预算
+      - name: 检查统一性能预算
         run: bun scripts/benchmark-latency.ts --ci --console output/latency-runtime/build/bin/rime_api_console --shared-data output/latency-runtime/librime/data/minimal --output-dir output/latency-ci
       - name: 展示性能结果
         if: always()
