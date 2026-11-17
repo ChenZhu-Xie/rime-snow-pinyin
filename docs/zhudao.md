@@ -53,6 +53,8 @@
 
 单字固顶先保留冰雪四拼显式固顶的优先级，兜底候选按「字＋当前读音」的权重分配，不按同字其他读音的频率排序。例如 `qz` 对应的「虽／sui1」权重为 2532，应优先于「尿／sui1」的 199；「尿／niao4」的 9771 不参与 `qz` 桶的比较。「尿」的 `suī` 异读仍然保留为合法候选。
 
+重建通用固顶表时使用与 CI 一致的 Bun 1.3.14：在仓库根目录运行 `bun run --cwd scripts fixed:generate`，随后运行 `bun scripts/align-fixed-with-sipin.ts` 和 `bun scripts/generate-shenyun-hints.ts`；检查时用 `bun run --cwd scripts fixed:check`。通用编译器的生成与检查入口统一使用 Bun，避免混用 Node 后造成产物差异。
+
 ## 安装与验证
 
 先在输入法的方案设置中启用冰雪竹道，或在用户 `default.custom.yaml` 现有的 `patch/schema_list` 中追加 `- {schema: snow_zhudao}`，保留其他方案，然后重新部署。仅复制方案文件或在自带菜单中看到名称，不会让部署器编译它。部署后应生成 `build/snow_zhudao.schema.yaml` 和 `build/snow_zhudao.prism.bin`；缺少已编译方案时，自带菜单显示「未部署：请加入方案列表后重新部署」，选择它不会切换到空方案。

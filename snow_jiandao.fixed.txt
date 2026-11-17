@@ -893,8 +893,7 @@ cwi	偶
 cwo	凑
 cwu	腠
 cwv	欧
-cy	藏
-cya	沧
+cy	沧
 cyi	仓
 cyu	舱
 cyv	臧
@@ -2662,9 +2661,10 @@ zwi	揍
 zwo	诹
 zwu	邹
 zwv	奏
-zy	脏
+zy	藏
 zya	赃
 zyi	葬
+zyu	脏
 zz	早
 zza	澡
 zzi	藻

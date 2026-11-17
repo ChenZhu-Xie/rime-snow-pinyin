@@ -980,8 +980,23 @@ for (const [file, output] of outputs) {
 	const path = join(root, file);
 	if (reportSanpinCodes.length > 0) continue;
 	if (checkOnly) {
-		if (readFileSync(path, "utf8").replace(/\r\n/g, "\n") !== output)
-			throw new Error(`${file} 不是通用固顶编译器的最新产物。`);
+		const current = readFileSync(path, "utf8").replace(/\r\n/g, "\n");
+		if (current !== output) {
+			const actualLines = current.split("\n");
+			const expectedLines = output.split("\n");
+			const differences = expectedLines
+				.flatMap((line, index) =>
+					line === actualLines[index]
+						? []
+						: [
+								`第 ${index + 1} 行：当前 ${actualLines[index] ?? "<缺行>"}；预期 ${line}`,
+							],
+				)
+				.slice(0, 8);
+			throw new Error(
+				`${file} 不是通用固顶编译器的最新产物。\n${differences.join("\n")}`,
+			);
+		}
 	} else {
 		writeFileSync(path, output, "utf8");
 	}
