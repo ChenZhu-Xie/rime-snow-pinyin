@@ -90,9 +90,9 @@ menu.entries = {
   },
   {
     schema_id = "snow_zhudao",
-    name = "冰雪蝉道",
+    name = "冰雪鹮道",
     comment = "21¹26¹5⁴ 带调双拼 键道形辅",
-    aliases = { "bxcd", "cd", "dtdp", "jdxf", "bxcddtdpjdxf" },
+    aliases = { "bxhd", "hd", "dthd", "ddhd", "dtdp", "jdxf", "bxhddtdpjdxf" },
   },
   {
     schema_id = "snow_jiandao_toned",

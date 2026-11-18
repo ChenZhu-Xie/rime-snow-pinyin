@@ -796,7 +796,7 @@ test("semantic key roles drive fills, borders, and auxiliary treatment", () => {
 	assert.match(shenyun, />Ø Y\/YU<\/text>/u);
 });
 
-test("冰雪蝉道按实际带调音节显示声调区，并加深兼作韵键的五辅底色", () => {
+test("冰雪鹮道按实际带调音节显示声调区，并加深兼作韵键的五辅底色", () => {
 	const svg = read("lua/snow/keymaps/snow_zhudao.svg");
 	const mapping = JSON.parse(read("config/snow-zhudao-mapping.json")) as {
 		referenceTonedCodes: Record<string, string>;
@@ -818,7 +818,7 @@ test("冰雪蝉道按实际带调音节显示声调区，并加深兼作韵键�
 			const group = keyGroup(svg, key);
 			const fill = mapping.shapeKeysByMeaning.includes(key) ? dark : light;
 			const base = group.match(/<rect\b[^>]*width="92"[^>]*>/u)?.[0];
-			assert.ok(base?.includes(`fill="${fill}"`), `蝉道 ${key} 的声调底色`);
+			assert.ok(base?.includes(`fill="${fill}"`), `鹮道 ${key} 的声调底色`);
 			const actual = [...(tonesByKey.get(key) ?? [])].sort().join("");
 			assert.ok(
 				[...actual].every((tone) => tones.includes(tone)),

@@ -10,7 +10,7 @@
 - Upstream tests provide scenarios and target characters, words, or sentences, not ready-made local input strings or candidate expectations. Re-derive every migrated test from this repository's current schema, auxiliary order, physical key mapping, vacant slots, and candidate behavior.
 - Candidate tests must express the actual contract: use `cand[1]` for a required first choice, and test continued presence separately only when upstream promises it. A passing broad `page()` assertion does not prove ranking alignment.
 
-## 冰雪蝉道
+## 冰雪鹮道
 
 - `snow_zhudao` 使用冻结的 `T2126-POLISHED-8832091` 带调 21×26 布局，声调合入第二码；其他规则复用冰雪鹤道。来源、十韵组、空桶口径与生成验证命令见 [docs/zhudao.md](docs/zhudao.md)。
 - 形辅序为 `12/12/24`；声声空桶按标准二字词辅序的反序逐字取两辅至六码。更改映射时同步代数、字母桶、固顶、空桶提示、键位图和候选测试。
@@ -53,7 +53,7 @@
 | 冰雪键道 | 键道 | `snow_jiandao_classic` |
 | 冰雪三拼 | 三拼 | `snow_sanpin_classic` |
 | 冰雪莲道 | 莲道 | `snow_jiandao_toned` |
-| 冰雪蝉道 | 蝉道 | `snow_zhudao` |
+| 冰雪鹮道 | 鹮道 | `snow_zhudao` |
 
 对话和报告里称呼方案时，优先用全称（冰雪四拼），其次用简称（四拼），再次用完整的 schema_id（`snow_sipin`）。不要用不带 `snow_` 前缀的 `sipin` 之类，除非是在引用代码或命令参数。
 
@@ -88,7 +88,7 @@ bun run --cwd scripts check:format    # 检查格式
 | `export-word-codes.ts [输出目录]` | 离线模拟冰雪四拼动态码长，导出评测与大竹查询码表 | `output/word-codes/` 下的 `simulated.txt`、`dazhu.txt` |
 | `generate-yipin-tests.ts [输出文件]` | 从 `data/yipin-syllables.tsv` 每组固定取首条生成音节测试 | `output/yipin-tests.yaml.snippet`；审阅后合入 spec，不覆盖功能测试 |
 | `align-fixed-with-sipin.ts [--check]` | 按冰雪四拼的单字与二字词优先级，将语义读音重映射到四个 21×21 和三个 21×26 方案，并保留各方案的五辅语义 | 更新七份 `snow_*.fixed.txt`；`--check` 只校验，不写文件 |
-| `generate-shenyun-hints.ts [--check]` | 按当前词典、声韵映射与固顶首选生成冰雪鹤道、冰雪鹤拼、冰雪蝉道的单键声声空桶提示；词典或固顶表更新后重跑 | `lua/snow/shenyun_hints.lua`；`--check` 只校验，不写文件 |
+| `generate-shenyun-hints.ts [--check]` | 按当前词典、声韵映射与固顶首选生成冰雪鹤道、冰雪鹤拼、冰雪鹮道的单键声声空桶提示；词典或固顶表更新后重跑 | `lua/snow/shenyun_hints.lua`；`--check` 只校验，不写文件 |
 
 词典和辅助码生成默认更新仓库产物，审阅时可指定临时输出路径，如 `bun scripts/generate-word-dicts.ts base --output-dir /tmp/snow-word-dicts`；指定 `--output-dir` 后诊断文件也放在该目录的 `diff/`。注音逻辑集中在 `lib/word-pinyin.ts`，按需初始化且不写文件；`data/word-pinyin-overrides.tsv` 配置词语读音修正，`data/complete-pinyin-overrides.tsv` 修正 pinyin-pro 的完整词库。
 
@@ -114,7 +114,7 @@ bun run --cwd scripts check:format    # 检查格式
 
 外部 Rime 方案子模块统一放在 `deps/`：雾凇拼音为 `deps/rime-ice`，英文词库为 `deps/rime-easy-en`，部件全拼为 `deps/rime-radical-pinyin`。
 
-部件全拼反查依赖子模块 `deps/rime-radical-pinyin`，首次克隆或更新依赖后运行 `git submodule update --init deps/rime-radical-pinyin`。发布、功能测试和性能测试会把其中的 `radical_pinyin.schema.yaml`、`radical_pinyin.dict.yaml` 复制到独立方案目录的根目录；不要手改或提交根目录里的副本。冰雪四拼、冰雪兰拼、冰雪兰道、冰雪键道、冰雪三拼、冰雪鹤道、冰雪鹤拼、冰雪蝉道与笔画反查共用 `u` 和 `stroke` 标签；冰雪清韵与拼音、笔画反查共用反引号和 `pinyin` 标签。`lookup_pinyin` 为这些候选显示拼音，冰雪一拼不接入反查。
+部件全拼反查依赖子模块 `deps/rime-radical-pinyin`，首次克隆或更新依赖后运行 `git submodule update --init deps/rime-radical-pinyin`。发布、功能测试和性能测试会把其中的 `radical_pinyin.schema.yaml`、`radical_pinyin.dict.yaml` 复制到独立方案目录的根目录；不要手改或提交根目录里的副本。冰雪四拼、冰雪兰拼、冰雪兰道、冰雪键道、冰雪三拼、冰雪鹤道、冰雪鹤拼、冰雪鹮道与笔画反查共用 `u` 和 `stroke` 标签；冰雪清韵与拼音、笔画反查共用反引号和 `pinyin` 标签。`lookup_pinyin` 为这些候选显示拼音，冰雪一拼不接入反查。
 
 `link.ts` 在 Linux 使用 `~/.local/share/fcitx5/rime`，在 Windows 优先读取 `HKCU\\Software\\Rime\\Weasel` 的 `RimeUserDir`（也可用 `RIME_USER_DIR` 覆盖）；其中的 `snow_*.schema.yaml`、`snow_*.dict.yaml`、`snow_*.fixed.txt`、`lua/snow` 都是指回本仓库的软链。若 Windows 已把仓库本身设为小狼毫用户目录，脚本跳过同源文件，只补齐子模块依赖。软链模式**没有「同步」这一步**：改哪边都是改同一份文件，`git pull` 后重新部署即可。
 

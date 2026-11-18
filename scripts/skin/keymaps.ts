@@ -5,7 +5,7 @@ const jiandaoKeys = [
 	["snow_jiandao", "兰道"],
 	["snow_jiandao_toned", "莲道"],
 	["snow_shenyun_shape", "鹤道"],
-	["snow_zhudao", "蝉道"],
+	["snow_zhudao", "鹮道"],
 ] as const;
 
 const sanpinKeys = [

@@ -65,7 +65,7 @@ local expected = {
   { "snow_sipin", "冰雪四拼", "21¹5ⁿ 动态调频 多音节词王" },
   { "snow_yipin", "冰雪一拼", "1200ⁿ95ᵐ 顶功并击 带调音节/击" },
   { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
-  { "snow_zhudao", "冰雪蝉道", "21¹26¹5⁴ 带调双拼 键道形辅" },
+  { "snow_zhudao", "冰雪鹮道", "21¹26¹5⁴ 带调双拼 键道形辅" },
   { "snow_jiandao_toned", "冰雪莲道", "21²5⁴ 带调键道 主码含调" },
 }
 
@@ -79,8 +79,8 @@ for index, item in ipairs(expected) do
 end
 
 assert(names(menu.filter_entries("")) == names(menu.entries), "空查询必须返回全部方案")
-assert(names(menu.filter_entries("cd")) == "冰雪蝉道", "cd 必须定位冰雪蝉道")
-assert(names(menu.filter_entries("bxcd")) == "冰雪蝉道", "全称声母必须定位冰雪蝉道")
+assert(names(menu.filter_entries("dthd")) == "冰雪鹮道", "dthd 必须定位冰雪鹮道")
+assert(names(menu.filter_entries("ddhd")) == "冰雪鹮道", "带调读作 dai diao 时也能定位鹮道")
 assert(names(menu.filter_entries("jd")) == "冰雪键道", "jd 必须定位冰雪键道")
 assert(names(menu.filter_entries("bxjd")) == "冰雪键道", "全称声母必须定位冰雪键道")
 assert(names(menu.filter_entries("dtld")) == "冰雪莲道", "dtld 必须定位带调莲道")
@@ -89,11 +89,11 @@ assert(names(menu.filter_entries("dtjd")) == "冰雪莲道", "dtjd 必须定位�
 assert(names(menu.filter_entries("ddjd")) == "冰雪莲道", "带调读作 dai diao 时也能定位莲道")
 assert(names(menu.filter_entries("ld")) == "冰雪兰道|冰雪莲道", "ld 必须同时显示兰道和莲道")
 assert(names(menu.filter_entries("lp")) == "冰雪兰拼", "lp 必须定位冰雪兰拼")
-assert(names(menu.filter_entries("hd")) == "冰雪鹤道", "hd 必须定位冰雪鹤道")
+assert(names(menu.filter_entries("hd")) == "冰雪鹤道|冰雪鹮道", "hd 必须同时显示鹤道和鹮道")
 assert(names(menu.filter_entries("hp")) == "冰雪鹤拼", "hp 必须定位冰雪鹤拼")
 assert(names(menu.filter_entries("bxld")) == "冰雪兰道|冰雪莲道", "全称声母必须同时显示兰道和莲道")
 assert(names(menu.filter_entries("bxlp")) == "冰雪兰拼", "全称声母必须定位冰雪兰拼")
-assert(names(menu.filter_entries("bxhd")) == "冰雪鹤道", "全称声母必须定位冰雪鹤道")
+assert(names(menu.filter_entries("bxhd")) == "冰雪鹤道|冰雪鹮道", "全称声母必须同时显示鹤道和鹮道")
 assert(names(menu.filter_entries("bxhp")) == "冰雪鹤拼", "全称声母必须定位冰雪鹤拼")
 assert(names(menu.filter_entries("jdjd")) == "冰雪键道", "jdjd 必须定位经典键道")
 assert(names(menu.filter_entries("lfjd")) == "冰雪兰道", "lfjd 必须定位零飞键道")
@@ -175,7 +175,7 @@ local segment = {
 }
 yielded = {}
 menu.translator.func("hd", segment, translator_env)
-assert(#yielded == 1 and yielded[1].text == "冰雪鹤道",
+assert(#yielded == 2 and yielded[1].text == "冰雪鹤道" and yielded[2].text == "冰雪鹮道",
   "翻译器必须按新名称声母筛选方案")
 assert(yielded[1].preedit == "hd", "候选预编辑只能显示筛选字母")
 yielded = {}
@@ -219,12 +219,12 @@ unavailable_schemas.snow_zhudao = true
 local missing_env = { engine = engine }
 menu.translator.init(missing_env)
 yielded = {}
-menu.translator.func("cd", segment, missing_env)
-assert(#yielded == 1 and yielded[1].text == "冰雪蝉道")
+menu.translator.func("dthd", segment, missing_env)
+assert(#yielded == 1 and yielded[1].text == "冰雪鹮道")
 assert(yielded[1].comment == "未部署：请加入方案列表后重新部署")
 selected_schema = nil
 selected_candidate = yielded[1]
-context.input = "~~'cd"
+context.input = "~~'dthd"
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == nil and context.input == "", "未部署方案不得替换当前有效引擎")
@@ -236,8 +236,8 @@ local stale_env = { engine = engine }
 menu.translator.init(stale_env)
 unavailable_schemas.snow_zhudao = true
 selected_schema = nil
-selected_candidate = Candidate("schema_menu", 0, 3, "冰雪蝉道", "")
-context.input = "~~'cd"
+selected_candidate = Candidate("schema_menu", 0, 3, "冰雪鹮道", "")
+context.input = "~~'dthd"
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == nil and context.input == "", "切换前必须再次检查已编译方案")

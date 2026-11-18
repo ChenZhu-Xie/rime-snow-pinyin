@@ -7,7 +7,7 @@ import { rootPath } from "./paths";
 export const SYLLABLE_PATTERNS = [
 	{
 		schema: "snow_zhudao",
-		name: "冰雪蝉道",
+		name: "冰雪鹮道",
 		key: "shenyun_algebra",
 		pattern: /^[bpmfdtnlgkhjqwvxrzcsy][a-z]$/,
 	},

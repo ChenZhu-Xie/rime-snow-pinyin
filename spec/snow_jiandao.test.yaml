@@ -47,12 +47,12 @@ deploy:
         assert: cand[1].text == "冰雪莲道" and cand[2] == nil
       - send: "{Escape}{F4}ld"
         assert: cand[1].text == "冰雪兰道" and cand[2].text == "冰雪莲道" and cand[3] == nil
-      - send: "{Escape}{F4}cd"
-        assert: cand[1].text == "冰雪蝉道" and cand[2] == nil
+      - send: "{Escape}{F4}dthd"
+        assert: cand[1].text == "冰雪鹮道" and cand[2] == nil
       - send: "{Escape}{F4}lp"
         assert: cand[1].text == "冰雪兰拼" and cand[2] == nil
       - send: "{Escape}{F4}hd"
-        assert: cand[1].text == "冰雪鹤道" and cand[2] == nil
+        assert: cand[1].text == "冰雪鹤道" and cand[2].text == "冰雪鹮道" and cand[3] == nil
       - send: "{Escape}{F4}hp"
         assert: cand[1].text == "冰雪鹤拼" and cand[2] == nil
       - send: "{Control+grave}lfjd{Escape}"
