@@ -12,9 +12,9 @@ local navigator = require "snow.code_navigator"
 local env = {
   shape_mapping = {},
   jiandao_shape_cache = {
-    ["冰"] = "ovui", ["雪"] = "vuio", ["输"] = "iv",
-    ["入"] = "uo", ["法"] = "aov", ["人"] = "iu",
-    ["工"] = "vv", ["智"] = "oi", ["能"] = "ao",
+    ["冰"] = "ova", ["雪"] = "voav", ["输"] = "vaiv",
+    ["入"] = "uo", ["法"] = "avoa", ["人"] = "i",
+    ["工"] = "viv", ["智"] = "uvoi", ["能"] = "aoua",
   },
   pair_standard_order = "21", three_word_order = "213", four_word_order = "14",
   pair_aux_cache = {}, pair_aux_cache_size = 0,
@@ -29,19 +29,22 @@ local function match(text, input, suffix, expected)
   local accepted = filter.handle_candidate(text, suffix, env, state)
   assert(accepted == expected, text .. " " .. input .. " " .. suffix)
 end
-match("冰", "bm", "ovui", true)
-match("冰", "bm", "ovuiu", false)
+match("雪", "xd", "voav", true)
+match("雪", "xd", "voava", false)
 match("冰雪", "bmxd", "vo", true)
 match("冰雪", "bmxd", "ov", false)
-match("输入法", "lrf", "uia", true)
+match("输入法", "lrf", "uva", true)
 match("输入法", "lrf", "uai", false)
 match("人工智能", "rgkn", "ia", true)
 match("人工智能", "rgkn", "va", false)
 state.initial_pair = true
 state.current = "rb"
 local accepted, _, comment = filter.handle_candidate("冰雪", "ovv", env, state)
-assert(accepted and comment == "〔形₁₁₂₂ u〕")
+assert(accepted and comment == "〔形₁₁₂₂ o〕")
 assert(not filter.handle_candidate("冰雪", "vu", env, state))
+-- 「人」仅有一辅，缺少第二辅时不能挪用「工」的形码补齐该字边界。
+assert(filter.handle_candidate("人工", "i", env, state))
+assert(not filter.handle_candidate("人工", "iv", env, state))
 local function positions(input, length, expected)
   local actual = navigator.logical_positions(input, length, "snow_jiandao_toned")
   assert(#actual == #expected, input)
@@ -53,4 +56,6 @@ positions("rbov", 2, { 4, 2 })
 positions("rbovvu", 2, { 4, 6 })
 positions("lrfuia", 3, { 5, 4, 6 })
 positions("rgknia", 4, { 5, 2, 3, 6 })
+-- 大写补韵沿用兰道，输入长度不能被误当成第三个四字词形辅而写入 nil 下标。
+positions("rSgMkRn", 4, { 5, 2, 3, 6 })
 print("冰雪莲道：真实形辅过滤路径、21/213/14、声声反序逐字两辅和字位导航通过")

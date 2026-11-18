@@ -10,6 +10,7 @@ export interface LatencyCase {
 }
 
 export const SCHEMA_NAMES: Record<string, string> = {
+	snow_jiandao_toned: "冰雪莲道",
 	snow_zhudao: "冰雪鹮道",
 	snow_sipin: "冰雪四拼",
 	snow_sanpin: "冰雪兰拼",
@@ -37,6 +38,25 @@ export function chord(keys: string): string {
 }
 
 export const LATENCY_CASES: Record<string, LatencyCase[]> = {
+	snow_jiandao_toned: [
+		{
+			id: "initial-pair-four-aux",
+			keys: "rfvaua",
+			page: "软饭",
+			source: "docs/liandao.md",
+		},
+		{ id: "single", keys: "xdv", page: "雪", source: "docs/liandao.md" },
+		{ id: "double", keys: "bmxdvo", page: "冰雪", source: "docs/liandao.md" },
+		{ id: "triple", keys: "lrfuva", page: "输入法", source: "docs/liandao.md" },
+		{ id: "four", keys: "rgknia", page: "人工智能", source: "docs/liandao.md" },
+		{
+			id: "editing",
+			keys: "bmxdvo{BackSpace}",
+			page: "冰雪",
+			source: "docs/liandao.md",
+		},
+		{ id: "radical", keys: "uwangyan", page: "琰", source: "docs/liandao.md" },
+	],
 	snow_zhudao: [
 		{
 			id: "initial-pair-four-aux",

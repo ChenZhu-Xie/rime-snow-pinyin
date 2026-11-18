@@ -140,7 +140,7 @@ function navigator.logical_positions(input, word_length, schema_id)
   else
     auxiliary_positions = { word_length, 1, 2 }
   end
-  for index = 1, auxiliary_count do
+  for index = 1, math.min(auxiliary_count, #auxiliary_positions) do
     positions[auxiliary_positions[index]] = word_length + index
   end
   return positions
@@ -305,7 +305,7 @@ function navigator.func(key, env)
   end
 
   local positions = env.positions or {}
-  if is_direct then
+  if is_direct and digit then
     if digit == "7" then
       move_to(context, env, end_pos)
       return snow.kAccepted

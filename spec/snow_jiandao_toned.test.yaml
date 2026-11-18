@@ -16,6 +16,13 @@ script: |
     end
     return ""
   end
+  function probe()
+    local parts = { "preedit=" .. tostring(preedit), "commit=" .. tostring(commit) }
+    for index = 1, math.min(12, #cand) do
+      parts[#parts + 1] = index .. ":" .. cand[index].text .. "/" .. cand[index].comment
+    end
+    return table.concat(parts, " | ")
+  end
 deploy:
   popping:
     tests:
@@ -36,9 +43,9 @@ deploy:
         assert: has("冰雪")
       # 二字 21：雪首辅 v、冰首辅 o，六字母后不能再追加形辅。
       - send: bmxdvo
-        assert: cand[1].text == "冰雪"
+        assert: cand[1].text == "冰雪" or error(probe())
       - send: bmxdvoa
-        assert: cand[1].text == "冰雪" and not preedit:find("voa", 1, true)
+        assert: (cand[1].text == "冰雪" and not preedit:find("voa", 1, true)) or error(probe())
       # 三字 213：入 u、输 v、法 a；四字 14：人 i、能 a。
       - send: lrfuva
         assert: cand[1].text == "输入法"
@@ -67,12 +74,12 @@ deploy:
       - send: rfvau
         assert: has("软饭")
       - send: rfvaua
-        assert: cand[1].text == "软饭"
+        assert: cand[1].text == "软饭" or error(probe())
       - send: rfvauao
-        assert: cand[1].text == "软饭" and not preedit:find("vauao", 1, true)
+        assert: (cand[1].text == "软饭" and not preedit:find("vauao", 1, true)) or error(probe())
       # 固顶二简词也走同一形辅；日本是 rb，日 oi、本 vv。
       - send: rboivv
-        assert: cand[1].text == "日本"
+        assert: cand[1].text == "日本" or error(probe())
       # hf 空桶同时容纳回复和合法，按第一字的形辅区分。
       - send: hfi
         assert: has("合法")
@@ -101,7 +108,9 @@ deploy:
   buffered:
     tests:
       - send: "o bmxdvolrfuva  bxlrF"
-        assert: cand[1].text == "冰雪输入法"
+        assert: (cand[1] ~= nil and cand[1].text == "冰雪输入法") or error(probe())
+      - send: "o bmxdlrf  bxlrF"
+        assert: (cand[1] ~= nil and cand[1].text == "冰雪输入法") or error(probe())
   advanced:
     tests:
       - send: ashi

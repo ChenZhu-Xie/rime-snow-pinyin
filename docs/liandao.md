@@ -57,4 +57,4 @@ bun scripts/check-pinyin-dict.ts
 bun test scripts/fixed-corpus/test/jiandao-toned.test.ts scripts/fixed-corpus/test/keymaps.test.ts
 ```
 
-纯 Lua 回归为 `spec/jiandao-toned-shape.test.lua`，检查真实形辅过滤函数、三个辅序、声声反序和编码导航。真实 Rime 候选测试为 `spec/snow_jiandao_toned.test.yaml`，推送后由 GitHub Actions 在 librime 1.13.1 和 1.17 上验证；不在本机运行 Mira。
+纯 Lua 回归为 `spec/jiandao-toned-shape.test.lua`，检查真实形辅过滤函数、三个辅序、声声反序和编码导航。真实 Rime 候选测试为 `spec/snow_jiandao_toned.test.yaml`，推送后由 GitHub Actions 在 librime 1.13.1 和 1.17 上验证；性能门禁另测单字、二三四字词、声声四辅、退格和反查，统一使用至少 200 轮的延迟预算。不在本机运行 Mira。
