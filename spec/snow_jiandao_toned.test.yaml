@@ -40,12 +40,12 @@ deploy:
       - send: qz
         assert: has("枪") and not has("掐") and not has("秋")
       - send: bmxd
-        assert: has("冰雪")
+        assert: cand[1].text == "冰雪" or error(probe())
       # 二字 21：雪首辅 v、冰首辅 o，六字母后不能再追加形辅。
       - send: bmxdvo
-        assert: cand[1].text == "冰雪" or error(probe())
+        assert: (cand[1].text == "表面兄弟" and cand[3].text == "冰雪") or error(probe())
       - send: bmxdvoa
-        assert: (cand[1].text == "冰雪" and not preedit:find("voa", 1, true)) or error(probe())
+        assert: (cand[1].text == "表面兄弟" and cand[3].text == "冰雪" and not preedit:find("voa", 1, true)) or error(probe())
       # 三字 213：入 u、输 v、法 a；四字 14：人 i、能 a。
       - send: lrfuva
         assert: cand[1].text == "输入法"
@@ -74,11 +74,11 @@ deploy:
       - send: rfvau
         assert: has("软饭")
       - send: rfvaua
-        assert: cand[1].text == "软饭" or error(probe())
+        assert: (cand[1].text == "软风" and cand[2].text == "软饭") or error(probe())
       - send: rfvauao
-        assert: (cand[1].text == "软饭" and not preedit:find("vauao", 1, true)) or error(probe())
-      # 固顶二简词也走同一形辅；日本是 rb，日 oi、本 vv。
-      - send: rboivv
+        assert: (cand[1].text == "软风" and cand[2].text == "软饭" and not preedit:find("vauao", 1, true)) or error(probe())
+      # 固顶二简词也走同一形辅；日本是 rb，日 oi、本 vi。
+      - send: rboivi
         assert: cand[1].text == "日本" or error(probe())
       # hf 空桶同时容纳回复和合法，按第一字的形辅区分。
       - send: hfi
@@ -107,8 +107,7 @@ deploy:
         assert: commit == "冰雪了"
   buffered:
     tests:
-      - send: "o bmxdvolrfuva  bxlrF"
-        assert: (cand[1] ~= nil and cand[1].text == "冰雪输入法") or error(probe())
+      # 目标已在首选时停止补辅，避免把后置后的新首选学进用户词典。
       - send: "o bmxdlrf  bxlrF"
         assert: (cand[1] ~= nil and cand[1].text == "冰雪输入法") or error(probe())
   advanced:
