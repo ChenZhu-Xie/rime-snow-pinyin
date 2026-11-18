@@ -82,7 +82,7 @@ const rendered = source.replace(
 	`shenyun_algebra:\n${rules.join("\n")}\n`,
 );
 if (process.argv.includes("--check")) {
-	if (source !== rendered) throw new Error("冰雪竹道带调代数需要重新生成。");
+	if (source !== rendered) throw new Error("冰雪蝉道带调代数需要重新生成。");
 } else writeFileSync(path, rendered);
 console.log(
 	`${mapping.id}：带调声韵代数${process.argv.includes("--check") ? "校验" : "生成"}完成。`,

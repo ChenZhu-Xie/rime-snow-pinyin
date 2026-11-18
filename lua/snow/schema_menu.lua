@@ -90,15 +90,15 @@ menu.entries = {
   },
   {
     schema_id = "snow_zhudao",
-    name = "冰雪竹道",
+    name = "冰雪蝉道",
     comment = "21¹26¹5⁴ 带调双拼 键道形辅",
-    aliases = { "bxzd", "zd", "dtdp", "jdxf", "bxzddtdpjdxf" },
+    aliases = { "bxcd", "cd", "dtdp", "jdxf", "bxcddtdpjdxf" },
   },
   {
     schema_id = "snow_jiandao_toned",
-    name = "冰雪剑道",
+    name = "冰雪莲道",
     comment = "21²5⁴ 带调键道 主码含调",
-    aliases = { "bxjd", "jd", "dtjd", "ddjd", "zmhd", "bxjddtjdzmhd" },
+    aliases = { "bxld", "ld", "dtld", "ddld", "dtjd", "ddjd", "zmhd", "bxlddtjdzmhd" },
   },
 }
 

@@ -141,9 +141,9 @@ jobs:
             schema: snow_jiandao_classic
           - name: 冰雪三拼
             schema: snow_sanpin_classic
-          - name: 冰雪剑道
+          - name: 冰雪莲道
             schema: snow_jiandao_toned
-          - name: 冰雪竹道
+          - name: 冰雪蝉道
             schema: snow_zhudao
     steps:
       - name: 获取代码

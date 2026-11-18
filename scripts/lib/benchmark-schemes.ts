@@ -107,8 +107,8 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "zhudao",
 		schemaId: "snow_zhudao",
-		name: "冰雪竹道（T2126-POLISHED-8832091 21×26 带调）",
-		shortName: "冰雪竹道",
+		name: "冰雪蝉道（T2126-POLISHED-8832091 21×26 带调）",
+		shortName: "冰雪蝉道",
 		capacity: "21x26",
 		soundLayout: "zhudao",
 		auxiliaryMode: "shape",

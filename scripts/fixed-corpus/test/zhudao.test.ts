@@ -26,7 +26,7 @@ const algebra = new SpellingAlgebra(
 const zhudaoHints = readShenyunHints(true);
 const hedaoHints = readShenyunHints();
 
-test("冰雪竹道逐条复现冠军页面的 1407 个带调音节，保留 516 个占用桶及 30 个空桶", () => {
+test("冰雪蝉道逐条复现冠军页面的 1407 个带调音节，保留 516 个占用桶及 30 个空桶", () => {
 	assert.equal(mapping.id, "T2126-POLISHED-8832091");
 	assert.equal(Object.keys(mapping.referenceTonedCodes).length, 1407);
 	for (const [reading, expected] of Object.entries(mapping.referenceTonedCodes))
@@ -38,7 +38,7 @@ test("冰雪竹道逐条复现冠军页面的 1407 个带调音节，保留 516 
 	);
 });
 
-test("冰雪竹道与鹤道使用同一五辅语义，声调已进入第二码", () => {
+test("冰雪蝉道与鹤道使用同一五辅语义，声调已进入第二码", () => {
 	const semantics = loadAuxiliarySemantics("21x26");
 	assert.equal(
 		mapping.shapeKeysByMeaning.toLowerCase(),
@@ -69,7 +69,7 @@ test("冰雪竹道与鹤道使用同一五辅语义，声调已进入第二码",
 	);
 });
 
-test("竹道声声空桶反序逐字取两辅至六码，非空音节和辅键第二码不回收", () => {
+test("蝉道声声空桶反序逐字取两辅至六码，非空音节和辅键第二码不回收", () => {
 	const { vacant, vacantAA } = zhudaoHints;
 	assert.equal(vacant.length, 24);
 	assert.equal(vacantAA.length, 19);
@@ -88,7 +88,7 @@ test("竹道声声空桶反序逐字取两辅至六码，非空音节和辅键�
 	assert.deepEqual(initialPairCodes("zhudao", "测试", ["ce4", "shi4"]), []);
 });
 
-test("竹道字母占用桶保留汉字首选及大写第二小写第三，未挤占声声空桶", () => {
+test("蝉道字母占用桶保留汉字首选及大写第二小写第三，未挤占声声空桶", () => {
 	const letters = JSON.parse(
 		read("config/snow-zhudao-letter-buckets.json"),
 	) as { letters: Array<{ letter: string; code: string }> };
@@ -109,7 +109,7 @@ test("竹道字母占用桶保留汉字首选及大写第二小写第三，未�
 	}
 });
 
-test("竹道复用鹤道形辅路由并独立隔离棱镜、用户词典与键位图", () => {
+test("蝉道复用鹤道形辅路由并独立隔离棱镜、用户词典与键位图", () => {
 	const schema = load(read("snow_zhudao.schema.yaml")) as Record<string, any>;
 	assert.equal(schema.__include, "snow_shenyun_common.yaml:/");
 	assert.equal(schema.shenyun_options.auxiliary, "shape");

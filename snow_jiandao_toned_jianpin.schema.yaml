@@ -5,10 +5,10 @@ __include: snow_jiandao_jianpin.schema.yaml:/
 
 schema:
   schema_id: snow_jiandao_toned_jianpin
-  name: 冰雪剑道简拼
+  name: 冰雪莲道简拼
   version: "0.3.14"
   description: |
-    用于辅助冰雪剑道实现，非常规方案
+    用于辅助冰雪莲道实现，非常规方案
   dependencies:
     - snow_pinyin
 

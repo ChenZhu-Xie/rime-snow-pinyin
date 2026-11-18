@@ -24,7 +24,7 @@ const algebra = new SpellingAlgebra(
 	"speller/algebra",
 );
 
-test("冰雪剑道冻结 MARS10-D1 的容量、记忆与五辅语义", () => {
+test("冰雪莲道冻结 MARS10-D1 的容量、记忆与五辅语义", () => {
 	assert.equal(mapping.id, "MARS10-AVUIO786-D1-final-9.203609845305");
 	assert.deepEqual(mapping.capacity, [21, 21]);
 	assert.equal(mapping.tonedSyllableInventory, 1407);
@@ -37,7 +37,7 @@ test("冰雪剑道冻结 MARS10-D1 的容量、记忆与五辅语义", () => {
 	assert.equal(mapping.soundKeys, "QWERTYPSDFGHJKLZXCBNM");
 });
 
-test("冰雪剑道三个调区和十韵组生成指定第二码", () => {
+test("冰雪莲道三个调区和十韵组生成指定第二码", () => {
 	assert.deepEqual(
 		["a1", "en1", "e1", "ai1", "an1", "ang1", "wu1", "yi1", "o1", "ao1"].map(
 			(value) => algebra.apply(value),
@@ -58,7 +58,7 @@ test("冰雪剑道三个调区和十韵组生成指定第二码", () => {
 	);
 });
 
-test("冰雪剑道保持 p 的唯一普通声母位移并允许 QZ 实际音节", () => {
+test("冰雪莲道保持 p 的唯一普通声母位移并允许 QZ 实际音节", () => {
 	assert.equal(algebra.apply("pin1"), "kn");
 	assert.equal(algebra.apply("lin1"), "ln");
 	assert.equal(algebra.apply("qia1"), "qz");
@@ -68,7 +68,7 @@ test("冰雪剑道保持 p 的唯一普通声母位移并允许 QZ 实际音节"
 	assert.equal(algebra.apply("shi4"), "pr");
 });
 
-test("冰雪剑道完整音节只使用二个非形辅音码键", () => {
+test("冰雪莲道完整音节只使用二个非形辅音码键", () => {
 	const soundKeys = new Set(mapping.soundKeys.toLowerCase());
 	for (const reading of [
 		"bing1",

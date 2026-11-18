@@ -7,7 +7,7 @@ import { rootPath } from "./paths";
 export const SYLLABLE_PATTERNS = [
 	{
 		schema: "snow_zhudao",
-		name: "冰雪竹道",
+		name: "冰雪蝉道",
 		key: "shenyun_algebra",
 		pattern: /^[bpmfdtnlgkhjqwvxrzcsy][a-z]$/,
 	},
@@ -43,7 +43,7 @@ export const SYLLABLE_PATTERNS = [
 	},
 	{
 		schema: "snow_jiandao_toned",
-		name: "冰雪剑道",
+		name: "冰雪莲道",
 		key: "speller/algebra",
 		// 声调已经合入第二码；前两码均只使用 AVUIO 之外的 21 个音码键。
 		pattern: /^[bpmfdtnlgkhjqxzcsrwye]{2}$/,

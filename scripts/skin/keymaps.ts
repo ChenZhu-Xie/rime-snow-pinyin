@@ -3,9 +3,9 @@ import type { KeyboardCollection } from "./types";
 const jiandaoKeys = [
 	["snow_jiandao_classic", "键道"],
 	["snow_jiandao", "兰道"],
-	["snow_jiandao_toned", "剑道"],
+	["snow_jiandao_toned", "莲道"],
 	["snow_shenyun_shape", "鹤道"],
-	["snow_zhudao", "竹道"],
+	["snow_zhudao", "蝉道"],
 ] as const;
 
 const sanpinKeys = [

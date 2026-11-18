@@ -17,7 +17,7 @@ script: |
 deploy:
   popping:
     tests:
-      # 固顶只检查一例；字母入口按竹道的实际占用桶重新选择。
+      # 固顶只检查一例；字母入口按蝉道的实际占用桶重新选择。
       - send: j
         assert: cand[1].text == "我"
       - send: bq

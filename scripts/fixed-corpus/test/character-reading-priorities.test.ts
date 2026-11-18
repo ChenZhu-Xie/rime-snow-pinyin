@@ -32,7 +32,7 @@ test("多音字的兜底优先级使用实际读音权重，不借用同字高�
 	}
 });
 
-test("竹道 qz 的兜底读音和已生成固顶均首选虽，同时保留尿的合法异读", () => {
+test("蝉道 qz 的兜底读音和已生成固顶均首选虽，同时保留尿的合法异读", () => {
 	const algebra = new SpellingAlgebra(
 		rootPath("snow_zhudao.schema.yaml"),
 		"speller/algebra",
