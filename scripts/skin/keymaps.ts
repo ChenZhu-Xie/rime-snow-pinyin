@@ -1,24 +1,24 @@
 import type { KeyboardCollection } from "./types";
 
-const jiandaoKeys = [
-	["snow_jiandao_classic", "键道"],
-	["snow_jiandao", "兰道"],
-	["snow_jiandao_toned", "莲道"],
-	["snow_shenyun_shape", "鹤道"],
-	["snow_zhudao", "鹮道"],
+const keymapRows = [
+	[
+		["snow_sipin", "四拼"],
+		["snow_jiandao_toned", "莲道"],
+		["snow_zhudao", "鹮道"],
+	],
+	[
+		["snow_jiandao_classic", "键道"],
+		["snow_jiandao", "兰道"],
+		["snow_shenyun_shape", "鹤道"],
+	],
+	[
+		["snow_sanpin_classic", "三拼"],
+		["snow_sanpin", "兰拼"],
+		["snow_shenyun_tone", "鹤拼"],
+	],
 ] as const;
 
-const sanpinKeys = [
-	["snow_sanpin_classic", "三拼"],
-	["snow_sanpin", "兰拼"],
-	["snow_shenyun_tone", "鹤拼"],
-] as const;
-
-export const keymapSchemes = [
-	["snow_sipin", "四拼"],
-	...jiandaoKeys,
-	...sanpinKeys,
-] as const;
+export const keymapSchemes = keymapRows.flat();
 
 export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 	return {
@@ -26,24 +26,13 @@ export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 		keymaps: {
 			colorful: false,
 			label: true,
-			keyInfos: [
-				[
-					{ action: "!keymap_snow_sipin", label: "四拼" },
-					{ action: "!pinyin", label: "返回" },
-				],
-				[
-					...jiandaoKeys.map(([id, name]) => ({
-						action: `!keymap_${id}`,
-						label: name,
-					})),
-				],
-				[
-					...sanpinKeys.map(([id, name]) => ({
-						action: `!keymap_${id}`,
-						label: name,
-					})),
-				],
-			],
+			keyInfos: keymapRows.map((row) =>
+				row.map(([id, name]) => ({
+					action: `!keymap_${id}`,
+					label: name,
+					width: "1/4",
+				})),
+			),
 		},
 		...Object.fromEntries(
 			keymapSchemes.map(([id]) => [

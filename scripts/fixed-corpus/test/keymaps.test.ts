@@ -162,7 +162,14 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 		},
 	});
 	assert.equal(Object.keys(keyboards).length, 11);
-	assert.equal(keyboards.keymaps.keyInfos.flat().length, 10);
+	assert.deepEqual(
+		keyboards.keymaps.keyInfos.map((row) => row.map((key) => key.label)),
+		[
+			["四拼", "莲道", "鹮道"],
+			["键道", "兰道", "鹤道"],
+			["三拼", "兰拼", "鹤拼"],
+		],
+	);
 	const mobileImageKey = keyboards.keymap_snow_sipin.keyInfos[0][0] as {
 		action: string;
 		up?: string;
@@ -196,8 +203,26 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 		(hamster.pinyin as { swipeUpAction: unknown }).swipeUpAction,
 		{ keyboardType: "keymaps" },
 	);
+	const hamsterMenu = makeHamsterSkin({
+		...keyboards.keymaps,
+		dark: false,
+	});
+	for (const key of keyboards.keymaps.keyInfos.flat()) {
+		assert.equal(
+			(hamsterMenu[key.action] as { size: { width: string } }).size.width,
+			"1/4",
+		);
+	}
 
 	const trime = makeTrimeSkin("test", keyboards);
+	assert.equal(trime.preset_keyboards.keymaps.columns, 3);
+	assert.deepEqual(
+		trime.preset_keyboards.keymaps.keys.map((key) => [
+			trime.preset_keys[key.click].label,
+			key.width,
+		]),
+		keyboards.keymaps.keyInfos.flat().map((key) => [key.label, 25]),
+	);
 	assert.equal(
 		trime.tool_bar.buttons.find(
 			(button) => button.action === "Snow_keyboard_pinyin",
