@@ -815,6 +815,8 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		"5": "o",
 	};
 	const occupiedFullCodes = new Set<string>();
+	// 全量词库重复出现相同音节，按音节去重后仍覆盖全部读音与字母碰撞。
+	const checkedSyllables = new Set<string>();
 	for (const dictionary of [
 		"snow_pinyin.dict.yaml",
 		"snow_pinyin.base.dict.yaml",
@@ -822,9 +824,12 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		"snow_pinyin.tencent.dict.yaml",
 		"snow_pinyin.user.dict.yaml",
 	]) {
-		for (const line of read(dictionary).split(/\r?\n/u)) {
-			if (line.startsWith("#") || !line.includes("\t")) continue;
-			for (const syllable of (line.split("\t")[1] ?? "").split(" ")) {
+		for (const row of read(dictionary).matchAll(
+			/^(?!#)[^\t\r\n]*\t([^\t\r\n]*)/gmu,
+		)) {
+			for (const syllable of row[1].split(" ")) {
+				if (checkedSyllables.has(syllable)) continue;
+				checkedSyllables.add(syllable);
 				const matched = syllable.match(/^([a-z]+)([1-5])$/u);
 				if (!matched) continue;
 				const base = mapping.codes[matched[1]];
