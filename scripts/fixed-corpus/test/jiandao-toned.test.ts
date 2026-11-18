@@ -99,6 +99,8 @@ test("莲道按运行时频率口径回收十个声声空桶，字母占用码�
 		any
 	>;
 	assert.equal(schema.__include, "snow_jiandao.schema.yaml:/");
+	assert.equal(schema.jianpin.prism, "snow_jiandao_toned_jianpin");
+	assert.equal(schema.initial_pair.prism, "snow_jiandao_toned_jianpin");
 	assert.equal(schema.patch["translator/word_auxiliary_order"], "21");
 	assert.equal(schema.patch["translator/three_word_auxiliary_order"], "213");
 	assert.equal(schema.patch["translator/four_word_auxiliary_order"], "14");

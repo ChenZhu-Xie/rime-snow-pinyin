@@ -79,6 +79,11 @@ jianpin:
     - snow_pinyin.tencent
     - snow_pinyin.user
 
+# 父方案的 /jianpin 已在其自身展开，须显式替换声声查询棱镜。
+# 否则独立部署会请求未声明依赖的 snow_jiandao_jianpin.prism.bin。
+initial_pair:
+  prism: snow_jiandao_toned_jianpin
+
 vacancy:
   dictionary: snow_pinyin
   prism: snow_jiandao_toned
