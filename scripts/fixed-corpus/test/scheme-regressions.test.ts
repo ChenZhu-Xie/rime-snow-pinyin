@@ -19,7 +19,7 @@ test("double-pinyin schemes isolate fixed-code databases while sharing snow_piny
 		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_rc26"],
 		["snow_jiandao_classic.schema.yaml", "snow_jiandao_classic"],
 		["snow_sanpin_classic.schema.yaml", "snow_sanpin_classic"],
-		["snow_jiandao_toned.schema.yaml", "snow_jiandao_toned_mars10_d1"],
+		["snow_jiandao_toned.schema.yaml", "snow_jiandao_toned_cr_lan_f19a0ad1dc"],
 	]);
 	assert.equal(new Set(fixedDatabases.values()).size, fixedDatabases.size);
 	for (const [file, database] of fixedDatabases) {
@@ -1071,7 +1071,7 @@ test("OC21 three-character words allow a third auxiliary but four-character word
 	assert.match(keytao, /\{4,\}"\r?\n\s+match_shape: "\^\.\{0,1\}\$"/u);
 	assert.match(
 		read("lua/snow/shape_filter.lua"),
-		/schema_id == "snow_jiandao" and \{ 2, 1, 3 \} or \{ 2, 3, 1 \}/u,
+		/three_word_order or \(schema_id == "snow_jiandao" and "213" or "231"\)/u,
 	);
 
 	const sanpin = read("snow_sanpin.schema.yaml");

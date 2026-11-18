@@ -23,7 +23,7 @@
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通话拼音为基础的中文输入方案。它们充分利用汉字的字音信息来实现自然优雅的编码；它们使用先进的离散优化技术和顶功技术来设计，使得编码十分高效；它们配备了智能算法，通过学习用户的语言习惯来个性化输入体验。
 
-[冰雪拼音](https://input.tansongchen.com)的发布列表包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪兰拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)、[冰雪鹤道](snow_shenyun_shape.schema.yaml)、[冰雪鹤拼](snow_shenyun_tone.schema.yaml)，以及[冰雪鹮道](docs/zhudao.md)、[冰雪莲道](snow_jiandao_toned.schema.yaml)和经典的[冰雪键道](snow_jiandao_classic.schema.yaml)和[冰雪三拼](snow_sanpin_classic.schema.yaml)。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
+[冰雪拼音](https://input.tansongchen.com)的发布列表包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪兰拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)、[冰雪鹤道](snow_shenyun_shape.schema.yaml)、[冰雪鹤拼](snow_shenyun_tone.schema.yaml)，以及[冰雪鹮道](docs/zhudao.md)、[冰雪莲道](docs/liandao.md)和经典的[冰雪键道](snow_jiandao_classic.schema.yaml)和[冰雪三拼](snow_sanpin_classic.schema.yaml)。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
 
 四套双拼顶功方案分为两组：21×21 的冰雪兰道与冰雪兰拼共用声韵布局，分别使用形辅与调辅；21×26 的冰雪鹤道与冰雪鹤拼共用声韵布局（M=40、无飞键、无音节重码、无 630），分别使用形辅与调辅。schema_id 为兼容既有用户配置保持不变。
 

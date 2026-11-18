@@ -1,34 +1,107 @@
 schema: snow_jiandao_toned
 source_dir: ..
 script: |
-  function rank(something)
-    for i, v in ipairs(cand) do
-      if v.text == something then return i end
+  function rank(text)
+    for index, candidate in ipairs(cand) do
+      if candidate.text == text then return index end
     end
     return math.huge
   end
-  function has(something)
-    return rank(something) < math.huge
+  function has(text)
+    return rank(text) < math.huge
+  end
+  function comment(text)
+    for _, candidate in ipairs(cand) do
+      if candidate.text == text then return candidate.comment end
+    end
+    return ""
   end
 deploy:
   popping:
     tests:
-      # 声调已经进入第二码：冰 bing1→bc，雪 xue3→xd。
-      - send: bc
+      # CR-LAN 的音节和纯形辅：冰 bm、雪 xd、拼 pb；QZ 已改为 qiang1。
+      - send: bm
         assert: has("冰")
       - send: xd
-        assert: has("雪")
-      - send: bcxd
-        assert: has("冰雪")
-      # 原方案不强制 QZ 空桶；qia1、qiu1 都合法落在 qz。
+        assert: cand[1].text == "写" and cand[2].text == "O" and cand[3].text == "o"
+      - send: pb
+        assert: cand[1].text == "拼"
+      - send: qx
+        assert: cand[1].text == "掐"
+      - send: qn
+        assert: has("秋")
       - send: qz
-        assert: has("掐") and has("秋")
-      # 形笔辅仍为纯形辅，不再承担声调信息。
-      - send: bco
-        assert: has("冰")
-      # p 是唯一普通声母位移：pin1→kn。
-      - send: kn
-        assert: has("拼")
+        assert: has("枪") and not has("掐") and not has("秋")
+      - send: bmxd
+        assert: has("冰雪")
+      # 二字 21：雪首辅 v、冰首辅 o，六字母后不能再追加形辅。
+      - send: bmxdvo
+        assert: cand[1].text == "冰雪"
+      - send: bmxdvoa
+        assert: cand[1].text == "冰雪" and not preedit:find("voa", 1, true)
+      # 三字 213：入 u、输 v、法 a；四字 14：人 i、能 a。
+      - send: lrfuva
+        assert: cand[1].text == "输入法"
+      - send: rgknia
+        assert: cand[1].text == "人工智能"
+      # 单字最多追加四辅，雪的实际形码为 voav。
+      - send: xdvoav
+        assert: has("雪")
+      - send: xdvoava
+        assert: has("雪") and not preedit:find("voava", 1, true)
+      # 630 仍逐字沿用兰道；每类固顶仅选一例。
+      - send: ba
+        assert: cand[1].text == "不能"
+      - send: d
+        assert: cand[1].text == "的"
+  initial_pair:
+    tests:
+      # rf 在当前系统词典的运行时口径中为空，标准 21 的反序是 12。
+      # 软 va、饭 ua；热 i、敷 v，第一辅即可排除另一条路径。
+      - send: rf
+        assert: has("软饭") and has("热敷")
+      - send: rfv
+        assert: has("软饭") and not has("热敷") and comment("软饭"):find("形₁₁₂₂", 1, true) ~= nil
+      - send: rfva
+        assert: has("软饭")
+      - send: rfvau
+        assert: has("软饭")
+      - send: rfvaua
+        assert: cand[1].text == "软饭"
+      - send: rfvauao
+        assert: cand[1].text == "软饭" and not preedit:find("vauao", 1, true)
+      # 固顶二简词也走同一形辅；日本是 rb，日 oi、本 vv。
+      - send: rboivv
+        assert: cand[1].text == "日本"
+      # hf 空桶同时容纳回复和合法，按第一字的形辅区分。
+      - send: hfi
+        assert: has("合法")
+      - send: hfo
+        assert: not has("合法")
+  mixed_spelling:
+    tests:
+      # 大写第二码补韵继续沿用兰道；三字简拼留在 abc 段。
+      - send: lMrPfS
+        assert: has("输入法")
+  top:
+    tests:
+      # 二字词四码顶、三字词加辅后顶、单字加辅后顶。
+      - send: bmxdpm
+        assert: commit == "冰雪" and has("扑")
+      - send: bmxdvobmxdvo
+        assert: commit == "冰雪" and cand[1].text == "冰雪"
+      - send: lrfuvabmxdvo
+        assert: commit == "输入法" and cand[1].text == "冰雪"
+      - send: xdvpb
+        assert: commit == "雪" and cand[1].text == "拼"
+      - send: bmxdvo;
+        assert: commit == "冰雪的"
+      - send: bmxdvo/
+        assert: commit == "冰雪了"
+  buffered:
+    tests:
+      - send: "o bmxdvolrfuva  bxlrF"
+        assert: cand[1].text == "冰雪输入法"
   advanced:
     tests:
       - send: ashi

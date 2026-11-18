@@ -15,6 +15,8 @@ local initial_pair_aux = require "snow.initial_pair_aux"
 ---@field shape_mapping table<string, string>
 ---@field jiandao_shape_cache table<string, string>
 ---@field pair_standard_order string
+---@field three_word_order string
+---@field four_word_order string
 ---@field pair_aux_cache table<string, string[]>
 ---@field pair_aux_cache_size integer
 
@@ -119,7 +121,11 @@ end
 ---@param radicals_map ReverseLookup|nil
 ---@param map table<string, string>
 ---@param cache table<string, string>
-local function jiandao_encode(text, current, radicals_map, map, cache, schema_id, pair_standard_order)
+---@param schema_id string
+---@param pair_standard_order? string
+---@param three_word_order? string
+---@param four_word_order? string
+local function jiandao_encode(text, current, radicals_map, map, cache, schema_id, pair_standard_order, three_word_order, four_word_order)
   -- 把 UTF-8 编码的词语拆成单个字符的列表
   ---@type string[]
   local codes = {}
@@ -142,7 +148,8 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
     return (codes[2] or "??"):sub(1, 2)
   elseif #codes == 1 then
     -- 如果只有一个字符，直接返回对应的编码
-    return codes[1] or "??"
+    local code = codes[1] or "??"
+    return schema_id == "snow_jiandao_toned" and code:sub(1, 4) or code
   end
   -- 普通词组取每个字的形码首码；活动冰雪兰道采用 OC21-e1f155973380 的
   -- 12/213/24，经典冰雪键道继续使用 12/231/24。
@@ -153,9 +160,11 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
   if #codes == 2 then
     positions = initial_pair_aux.positions(pair_standard_order or "12")
   elseif #codes == 3 then
-    positions = schema_id == "snow_jiandao" and { 2, 1, 3 } or { 2, 3, 1 }
+    local order = three_word_order or (schema_id == "snow_jiandao" and "213" or "231")
+    positions = { order:byte(1) - 48, order:byte(2) - 48, order:byte(3) - 48 }
   elseif #codes == 4 then
-    positions = { 2, 4 }
+    local order = four_word_order or "24"
+    positions = { order:byte(1) - 48, order:byte(2) - 48 }
   else
     return table.concat(codes)
   end
@@ -348,7 +357,7 @@ local function current_state(env)
         and context:get_property("shape_status") == "initial_pair"
     sanpin_passthrough = shape_input:len() == 0
         and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z][viuoa]")
-  elseif id == "snow_jiandao" or id == "snow_jiandao_classic" then
+  elseif id == "snow_jiandao" or id == "snow_jiandao_classic" or id == "snow_jiandao_toned" then
     if id == "snow_jiandao_classic" then
       jiandao_active = shape_input:len() > 0
           or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?")
@@ -378,6 +387,9 @@ function filter.init(env)
   local id = env.engine.schema.schema_id
   env.oc21 = id == "snow_sanpin"
   env.pair_standard_order = config:get_string("translator/word_auxiliary_order") or "12"
+  env.three_word_order = config:get_string("translator/three_word_auxiliary_order")
+      or (id == "snow_jiandao" and "213" or "231")
+  env.four_word_order = config:get_string("translator/four_word_auxiliary_order") or "24"
   env.pair_aux_cache = {}
   env.pair_aux_cache_size = 0
   if id == "snow_sipin" or id == "snow_sanpin"
@@ -402,7 +414,7 @@ end
 ---@param candidate? Candidate
 function filter.handle_candidate(text, shape_input, env, state, candidate)
   state = state or current_state(env)
-  if (state.id == "snow_jiandao" or state.id == "snow_jiandao_classic"
+  if (state.id == "snow_jiandao" or state.id == "snow_jiandao_classic" or state.id == "snow_jiandao_toned"
       or state.id == "snow_sanpin" or state.id == "snow_sanpin_classic")
       and ((candidate and candidate.type == "initial_pair") or state.initial_pair
         or state.sanpin_initial_pair) then
@@ -433,11 +445,11 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
       return stroke_match(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map)
     end
   elseif state.id == "snow_jiandao"
-      or state.id == "snow_jiandao_classic" then -- 冰雪兰道／冰雪键道
+      or state.id == "snow_jiandao_classic" or state.id == "snow_jiandao_toned" then -- 冰雪兰道／冰雪键道／冰雪莲道
     if state.is_pinyin or state.jiandao_active then
       local code = jiandao_encode(
         text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache,
-        state.id, env.pair_standard_order)
+        state.id, env.pair_standard_order, env.three_word_order, env.four_word_order)
       local prompt = shape_input:len() > 0
           and (state.initial_pair and " 形[" .. shape_input .. "]" or " 形 [" .. shape_input .. "]") or nil
       local match = code == "" or code:sub(1, #shape_input) == shape_input

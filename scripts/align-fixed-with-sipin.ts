@@ -30,6 +30,12 @@ interface Target {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const targets: Target[] = [
 	{
+		schema: "snow_jiandao_toned.schema.yaml",
+		fixed: "snow_jiandao_toned.fixed.txt",
+		kind: "21x21",
+		auxiliary: "shape",
+	},
+	{
 		schema: "snow_zhudao.schema.yaml",
 		fixed: "snow_zhudao.fixed.txt",
 		kind: "21x26",
@@ -210,7 +216,12 @@ function oneKeyReferences(
 	// 调辅方案保留历史上更熟悉、完整码候选更深的“平”。
 	result.set("p", target.auxiliary === "shape" ? "配" : "平");
 	// 冰雪兰道已有 d→的 的一级固顶合同；不要因二级兜底重排而迁成四拼的 d→都。
-	if (target.schema === "snow_jiandao.schema.yaml") result.set("d", "的");
+	if (
+		["snow_jiandao.schema.yaml", "snow_jiandao_toned.schema.yaml"].includes(
+			target.schema,
+		)
+	)
+		result.set("d", "的");
 	return result;
 }
 
@@ -727,6 +738,8 @@ export function alignFixedContent(fixed: string, source: string): string {
 		"speller/algebra",
 		{ derive: false },
 	);
+	if (fixed === "snow_jiandao_toned.fixed.txt")
+		return renderTonedFixed(target, algebra);
 	const numberReadings = [
 		"ling2",
 		"yi1",
@@ -783,6 +796,97 @@ export function alignFixedContent(fixed: string, source: string): string {
 	throw new Error(`${fixed} 的固顶优先级对齐未能在 10 轮内收敛`);
 }
 
+// 莲道与兰道声母相同，630 保持原合同；单字、数字和空桶必须按带调音码重算。
+function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
+	const parent = read("snow_jiandao.fixed.txt");
+	const parentAlgebra = new SpellingAlgebra(
+		resolve(root, "snow_jiandao.schema.yaml"),
+		"speller/algebra",
+		{ derive: false },
+	);
+	const ones = oneKeyReferences(target, algebra);
+	const bases = baseReferences(algebra, ones.values());
+	const phrases = phraseReferences(algebra);
+	const sections = new Map<string, string[]>();
+	let section = "";
+	for (const line of parent.split("\n")) {
+		if (line.startsWith("#")) {
+			section = line.slice(1).trim();
+			continue;
+		}
+		if (!line.includes("\t")) continue;
+		const rows = sections.get(section) ?? [];
+		rows.push(line);
+		sections.set(section, rows);
+	}
+	const numberReadings = [
+		"ling2",
+		"yi1",
+		"er4",
+		"san1",
+		"si4",
+		"wu3",
+		"liu4",
+		"qi1",
+		"ba1",
+		"jiu3",
+		"shi2",
+	];
+	const singles = new Map(bases);
+	const usedWords = new Set([...ones.values(), ...bases.values()]);
+	for (const line of sections.get("单字") ?? []) {
+		const [code, candidates] = line.split("\t");
+		const values = candidates.split(" ");
+		const digit = values.find((value) => numberWordByDigits.has(value));
+		if (digit) {
+			const word = numberWordByDigits.get(digit)!;
+			const sound = algebra.apply(numberReadings[Number(digit)]);
+			const nextCode = code.length === 1 ? sound[0] : sound + code.slice(2);
+			(code.length === 1 ? ones : singles).set(nextCode, `${word} ${digit}`);
+			continue;
+		}
+		if (code.length <= 2) continue;
+		for (const word of values.filter((value) =>
+			/^\p{Script=Han}$/u.test(value),
+		)) {
+			if (usedWords.has(word)) continue;
+			const reading = (readings.get(word) ?? []).find(
+				(value) => parentAlgebra.apply(value) === code.slice(0, 2),
+			);
+			if (!reading) continue;
+			const nextCode = algebra.apply(reading) + code.slice(2);
+			if (nextCode.length > 6 || singles.has(nextCode)) continue;
+			singles.set(nextCode, word);
+			usedWords.add(word);
+		}
+	}
+	const letterCodes = new Set(keytaoLetterByCode.keys());
+	return [
+		"# 冰雪莲道 CR-LAN-f19a0ad1dc；由 scripts/align-fixed-with-sipin.ts 生成。",
+		"# 声母与 630 沿用冰雪兰道；单字、数字及二简词按带调音码重算，字母大写第二、小写第三。",
+		"# 一级简码",
+		...[...ones].sort().map(([code, word]) => `${code}\t${word}`),
+		"# 单字",
+		...[...singles]
+			.filter(([code]) => !letterCodes.has(code))
+			.sort()
+			.map(([code, word]) => `${code}\t${word}`),
+		"# 二简词",
+		...[...phrases]
+			.filter(([code]) => !letterCodes.has(code))
+			.sort()
+			.map(([code, word]) => `${code}\t${word}`),
+		"# 630",
+		...(sections.get("630") ?? []),
+		"# 字母",
+		...[...keytaoLetterByCode].map(
+			([code, letter]) =>
+				`${code}\t${singles.get(code) ?? "∅"} ${letter.toUpperCase()} ${letter}`,
+		),
+		"",
+	].join("\n");
+}
+
 function main() {
 	let stale = false;
 	for (const target of targets) {
@@ -802,4 +906,8 @@ function main() {
 	if (stale) process.exitCode = 1;
 }
 
-if (import.meta.main) main();
+if (
+	process.argv[1] &&
+	resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+)
+	main();

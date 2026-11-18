@@ -34,6 +34,11 @@ function navigator.logical_positions(input, word_length, schema_id)
   end
 
   if word_length == 2 then
+    if schema_id == "snow_jiandao_toned" and input_length >= 3
+        and ("aviuo"):find(input:sub(3, 3), 1, true) then
+      -- 莲道声声空桶反序为 B₁B₁B₂B₂。
+      return { math.min(input_length, 4), input_length >= 5 and input_length or 2 }
+    end
     if schema_id == "snow_zhudao" and input_length >= 3
         and ("aeuio"):find(input:sub(3, 3), 1, true) then
       -- 声声空桶的四辅为 B₂B₂B₁B₁；不能按 AUAU 的双拼边界导航。
@@ -102,10 +107,12 @@ function navigator.logical_positions(input, word_length, schema_id)
   end
   local auxiliary_count = math.min(input_length - word_length, 3)
   local auxiliary_positions
-  if schema_id == "snow_jiandao" and word_length == 3 then
+  if (schema_id == "snow_jiandao" or schema_id == "snow_jiandao_toned") and word_length == 3 then
     auxiliary_positions = { 2, 1, 3 }
   elseif schema_id == "snow_jiandao" and word_length == 4 then
     auxiliary_positions = { 2, 4, 1 }
+  elseif schema_id == "snow_jiandao_toned" and word_length == 4 then
+    auxiliary_positions = { 1, 4 }
   elseif schema_id == "snow_sanpin" and word_length == 3 then
     auxiliary_positions = { 2, 1, 3 }
   elseif schema_id == "snow_sanpin" and word_length == 4 then

@@ -13,8 +13,9 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     声调进入前两码、后续只补形笔辅的 21×21 双拼词顶功方案
-    双拼编码：MARS10-AVUIO786-D1（M=21、D=1，1,407 带调音节占用 427 桶）
+    双拼编码：CR-LAN-f19a0ad1dc（固定兰道声母，1,407 带调音节占用 432 桶）
     四声／二三声／一轻声依次使用上／中／下排第二码
+    纯形辅序 21/213/14；一至四字词最多六码，声声空桶反序逐字取两辅
   dependencies:
     - snow_pinyin
     - radical_pinyin
@@ -27,6 +28,37 @@ keymap:
   image: snow_jiandao_toned.svg
 
 speller:
+  shape:
+    # 声声空桶：标准 21 反序为 12，每字连续两辅，最多六码。
+    - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
+      match_shape: "^.{0,3}$"
+      accept: "[viuoa]"
+      status: initial_pair
+    - vacant: true
+      match: "^[bpmfdtnlgkhjqxzcsrwye]{2}$"
+      match_shape: "^.{4,}$"
+      accept: "[viuoa]"
+      block: true
+    # 单字四辅、二字两辅、三字三辅、四字两辅；继承兰道的四码顶和大写补韵。
+    - match: "(?:[bpmfdtnlgkhjqxzcsrwye][A-Z]?){3}"
+      match_shape: "^.{0,2}$"
+      accept: "[viuoa]"
+    - match: "(?:[bpmfdtnlgkhjqxzcsrwye][A-Z]?){4,}"
+      match_shape: "^.{0,1}$"
+      accept: "[viuoa]"
+    - match: "[bpmfdtnlgkhjqxzcsrwye][a-z][bpmfdtnlgkhjqxzcsrwye][a-z]"
+      match_shape: "^.{0,1}$"
+      accept: "[viuoa]"
+    - match: "[bpmfdtnlgkhjqxzcsrwye][a-z]"
+      match_shape: "^.{0,3}$"
+      accept: "[viuoa]"
+    - match: "[bpmfdtnlgkhjqxzcsrwye]"
+      match_shape: "^.{0,1}$"
+      accept: "[viuoa]"
+    - match: ".*"
+      accept: "[viuoa]"
+      block: true
   algebra:
     __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
     __append:
@@ -75,7 +107,10 @@ __patch:
 
 patch:
   translator/prism: snow_jiandao_toned
-  translator/user_dict_name: snow_jiandao_toned_mars10_d1
+  translator/user_dict_name: snow_jiandao_toned_cr_lan_f19a0ad1dc
+  translator/word_auxiliary_order: "21"
+  translator/three_word_auxiliary_order: "213"
+  translator/four_word_auxiliary_order: "14"
   translator/reserved_initial_pair_pattern: "^(?:bc|pc|mc|fc|dc|tc|nc|lc|gc|kc|hc|jc|qc|xc|zc|cc|sc|rc|wc|yc|ec|xg|xl|xh|xd|xw)$"
   # 独立 U 笔画反查继续使用键道的折横撇竖点语义。
   stroke/preedit_format: [xlit/viuoa/一丨丿丶乙/]
