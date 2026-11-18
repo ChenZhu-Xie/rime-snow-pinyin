@@ -30,7 +30,7 @@ export function withKeymaps(keyboards: KeyboardCollection): KeyboardCollection {
 				row.map(([id, name]) => ({
 					action: `!keymap_${id}`,
 					label: name,
-					width: "1/4",
+					width: "1/3",
 				})),
 			),
 		},

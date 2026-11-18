@@ -210,7 +210,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	for (const key of keyboards.keymaps.keyInfos.flat()) {
 		assert.equal(
 			(hamsterMenu[key.action] as { size: { width: string } }).size.width,
-			"1/4",
+			"1/3",
 		);
 	}
 
@@ -221,7 +221,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 			trime.preset_keys[key.click].label,
 			key.width,
 		]),
-		keyboards.keymaps.keyInfos.flat().map((key) => [key.label, 25]),
+		keyboards.keymaps.keyInfos.flat().map((key) => [key.label, 100 / 3]),
 	);
 	assert.equal(
 		trime.tool_bar.buttons.find(
