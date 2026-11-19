@@ -92,7 +92,7 @@ deploy:
       - send: sgvuv
         assert: has("成功") or error(probe())
       - send: sgvuvi
-        assert: cand[1].text == "成功" or error(probe())
+        assert: (cand[1].text == "厨工" and cand[2].text == "成功") or error(probe())
       # hf 空桶同时容纳回复和合法，按第一字的形辅区分。
       - send: hfi
         assert: has("合法")
