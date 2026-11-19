@@ -439,9 +439,9 @@ const sipinInitials: Record<string, string[]> = {
 const diagrams: Diagram[] = [
 	{
 		filename: "snow_zhudao",
-		title: "冰雪鹮道 · T2126-POLISHED-8832091",
+		title: "冰雪鹮道 · T2126-V52-M4-ec60a3637a99",
 		subtitle:
-			"带调 21×26：二三声上排 · 四声中排 · 一轻声下排 · 键道形辅 12/12/24",
+			"带调 21×26：二三声上排 · 四声中排 · 一轻声下排 · 键道形辅 21/12/23",
 		mapping: zhudao,
 		finalLabels: zhudaoFinalLabels,
 		finalColors: zhudaoFinalColors,

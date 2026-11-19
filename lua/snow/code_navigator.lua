@@ -24,6 +24,7 @@ local auxiliary_keys = {
 ---@return integer[]
 function navigator.logical_positions(input, word_length, schema_id)
   local input_length = #input
+  ---@type integer[]
   local positions = {}
   if input_length == 0 or word_length < 1 then
     return positions
@@ -41,11 +42,8 @@ function navigator.logical_positions(input, word_length, schema_id)
     end
     if schema_id == "snow_zhudao" and input_length >= 3
         and ("aeuio"):find(input:sub(3, 3), 1, true) then
-      -- 声声空桶的四辅为 B₂B₂B₁B₁；不能按 AUAU 的双拼边界导航。
-      return {
-        input_length >= 5 and input_length or 1,
-        math.min(input_length, 4),
-      }
+      -- 鹮道标准辅序 21，声声空桶反序为 B₁B₁B₂B₂。
+      return { math.min(input_length, 4), input_length >= 5 and input_length or 2 }
     end
     if input_length >= 4 then
       positions[1] = 2
@@ -55,7 +53,6 @@ function navigator.logical_positions(input, word_length, schema_id)
           or schema_id == "snow_jiandao_classic"
           or schema_id == "snow_shenyun_shape"
           or schema_id == "snow_shenyun_tone"
-          or schema_id == "snow_zhudao"
       if first_then_second then
         -- 当前双拼方案的二字全码：A1A1 A2A2 [B1 [B2]]。
         if input_length >= 5 then positions[1] = 5 end
@@ -106,6 +103,7 @@ function navigator.logical_positions(input, word_length, schema_id)
     positions[index] = index
   end
   local auxiliary_count = math.min(input_length - word_length, 3)
+  ---@type integer[]
   local auxiliary_positions
   if schema_id == "snow_jiandao_toned" and word_length == 3 then
     auxiliary_positions = { 2, 3, 1 }
@@ -132,7 +130,7 @@ function navigator.logical_positions(input, word_length, schema_id)
   elseif schema_id == "snow_shenyun_shape" and word_length == 4 then
     auxiliary_positions = { 2, 4, 1 }
   elseif schema_id == "snow_zhudao" and word_length == 4 then
-    auxiliary_positions = { 2, 4, 1 }
+    auxiliary_positions = { 2, 3 }
   elseif schema_id == "snow_shenyun_tone"
       and word_length == 3 then
     auxiliary_positions = { 2, 1, 3 }

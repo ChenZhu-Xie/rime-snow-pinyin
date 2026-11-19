@@ -535,7 +535,7 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 		"snow_jiandao_classic.svg": "",
 		"snow_shenyun_shape.svg": "QWSYX",
 		"snow_shenyun_tone.svg": "QWSYX",
-		"snow_zhudao.svg": "QWSYX",
+		"snow_zhudao.svg": "WYLX",
 	};
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
@@ -855,7 +855,7 @@ test("冰雪鹮道按实际带调音节显示声调区，并加深兼作韵键�
 			);
 		}
 	}
-	assert.match(keyGroup(svg, "B"), /data-tones="1">1<\/text>/u);
+	assert.match(keyGroup(svg, "B"), /data-tones="01">1\/0<\/text>/u);
 	assert.doesNotMatch(svg, /undefined|NaN/u);
 	assert.match(svg, /兼作韵键的五辅同色加深/u);
 });

@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { rootPath } from "./lib/paths";
 
-// 冻结冠军的规则分解；referenceTonedCodes 独立保存页面的 1,407 条实际带调音节。
+// 冻结布局的规则分解；referenceTonedCodes 独立保存页面的 1,407 条实际带调音节。
 const mapping = JSON.parse(
 	readFileSync(rootPath("config/snow-zhudao-mapping.json"), "utf8"),
 ) as {

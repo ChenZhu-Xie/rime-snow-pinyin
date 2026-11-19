@@ -11,13 +11,9 @@
       "lowercase-letter"
     ],
     "vacantBucketsUsed": 0,
-    "commonConsonantSuffix": "q",
+    "commonConsonantSuffix": "m",
     "valuableCandidateWeight": 10000,
-    "consonantExceptions": {
-      "l": "lc",
-      "m": "mv",
-      "n": "nb"
-    },
+    "consonantExceptions": {},
     "vowelCarrier": "x",
     "preservedNamespaces": {
       "ABA": 2205,
@@ -38,461 +34,195 @@
   },
   "commonSuffixAudit": [
     {
-      "suffix": "q",
-      "valuable10000": 3,
-      "valuable1000": 43,
-      "secondThirdWeight": 140140,
-      "displacedWeight": 189783,
-      "candidateCount": 424
-    },
-    {
-      "suffix": "z",
-      "valuable10000": 5,
-      "valuable1000": 31,
-      "secondThirdWeight": 176804,
-      "displacedWeight": 220091,
-      "candidateCount": 265
-    },
-    {
-      "suffix": "s",
-      "valuable10000": 6,
-      "valuable1000": 37,
-      "secondThirdWeight": 257391,
-      "displacedWeight": 322117,
-      "candidateCount": 315
+      "suffix": "m",
+      "valuable10000": 0,
+      "valuable1000": 51,
+      "secondThirdWeight": 111336,
+      "displacedWeight": 188130,
+      "candidateCount": 433
     },
     {
       "suffix": "l",
-      "valuable10000": 6,
-      "valuable1000": 49,
-      "secondThirdWeight": 296534,
-      "displacedWeight": 373129,
-      "candidateCount": 365
+      "valuable10000": 1,
+      "valuable1000": 29,
+      "secondThirdWeight": 83494,
+      "displacedWeight": 112782,
+      "candidateCount": 202
+    },
+    {
+      "suffix": "x",
+      "valuable10000": 4,
+      "valuable1000": 31,
+      "secondThirdWeight": 161335,
+      "displacedWeight": 199402,
+      "candidateCount": 265
     },
     {
       "suffix": "p",
+      "valuable10000": 6,
+      "valuable1000": 57,
+      "secondThirdWeight": 224205,
+      "displacedWeight": 292947,
+      "candidateCount": 489
+    },
+    {
+      "suffix": "u",
       "valuable10000": 7,
-      "valuable1000": 64,
-      "secondThirdWeight": 226854,
-      "displacedWeight": 332549,
-      "candidateCount": 566
+      "valuable1000": 60,
+      "secondThirdWeight": 229483,
+      "displacedWeight": 334534,
+      "candidateCount": 553
+    },
+    {
+      "suffix": "h",
+      "valuable10000": 7,
+      "valuable1000": 63,
+      "secondThirdWeight": 400310,
+      "displacedWeight": 475264,
+      "candidateCount": 468
+    },
+    {
+      "suffix": "s",
+      "valuable10000": 8,
+      "valuable1000": 38,
+      "secondThirdWeight": 278443,
+      "displacedWeight": 362048,
+      "candidateCount": 315
+    },
+    {
+      "suffix": "a",
+      "valuable10000": 8,
+      "valuable1000": 44,
+      "secondThirdWeight": 181241,
+      "displacedWeight": 255382,
+      "candidateCount": 370
     },
     {
       "suffix": "n",
       "valuable10000": 8,
       "valuable1000": 50,
-      "secondThirdWeight": 463905,
-      "displacedWeight": 546168,
+      "secondThirdWeight": 470147,
+      "displacedWeight": 542909,
       "candidateCount": 278
     },
     {
-      "suffix": "k",
-      "valuable10000": 8,
-      "valuable1000": 64,
-      "secondThirdWeight": 415679,
-      "displacedWeight": 504074,
-      "candidateCount": 472
+      "suffix": "i",
+      "valuable10000": 9,
+      "valuable1000": 72,
+      "secondThirdWeight": 370246,
+      "displacedWeight": 502555,
+      "candidateCount": 533
     },
     {
       "suffix": "e",
       "valuable10000": 10,
-      "valuable1000": 55,
-      "secondThirdWeight": 247011,
-      "displacedWeight": 351673,
+      "valuable1000": 54,
+      "secondThirdWeight": 254166,
+      "displacedWeight": 348730,
       "candidateCount": 417
     },
     {
-      "suffix": "a",
-      "valuable10000": 10,
-      "valuable1000": 64,
-      "secondThirdWeight": 234210,
-      "displacedWeight": 385818,
-      "candidateCount": 462
-    },
-    {
-      "suffix": "o",
-      "valuable10000": 15,
-      "valuable1000": 101,
-      "secondThirdWeight": 435166,
-      "displacedWeight": 671798,
-      "candidateCount": 671
+      "suffix": "c",
+      "valuable10000": 14,
+      "valuable1000": 67,
+      "secondThirdWeight": 806647,
+      "displacedWeight": 917700,
+      "candidateCount": 374
     }
   ],
   "letters": [
     {
       "letter": "a",
-      "code": "xd",
+      "code": "xr",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
-          "text": "臭",
-          "weight": 6503
-        }
-      ],
-      "candidateCount": 1,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 0
-    },
-    {
-      "letter": "b",
-      "code": "bq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "表",
-          "weight": 6920
+          "text": "整",
+          "weight": 4294
         },
         {
-          "text": "宝",
-          "weight": 3597
-        },
-        {
-          "text": "薄",
-          "weight": 3254
-        }
-      ],
-      "candidateCount": 13,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 5,
-      "displacedWeight": 12007
-    },
-    {
-      "letter": "c",
-      "code": "cq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "槽",
-          "weight": 6889
-        },
-        {
-          "text": "草",
-          "weight": 6565
-        },
-        {
-          "text": "曹",
-          "weight": 1075
-        }
-      ],
-      "candidateCount": 8,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 2,
-      "displacedWeight": 7820
-    },
-    {
-      "letter": "d",
-      "code": "dq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "倒",
-          "weight": 10331
-        },
-        {
-          "text": "岛",
-          "weight": 3631
-        },
-        {
-          "text": "捣",
-          "weight": 270
-        }
-      ],
-      "candidateCount": 8,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 1,
-      "displacedWeight": 4213
-    },
-    {
-      "letter": "e",
-      "code": "xf",
-      "reason": "x 载体行最低影响的五个占用桶之一",
-      "naturalTop3": [
-        {
-          "text": "耖",
-          "weight": 2
-        }
-      ],
-      "candidateCount": 1,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 0
-    },
-    {
-      "letter": "f",
-      "code": "fq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "瞧",
-          "weight": 5251
-        },
-        {
-          "text": "群",
-          "weight": 5216
-        },
-        {
-          "text": "桥",
-          "weight": 4843
-        }
-      ],
-      "candidateCount": 35,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 5,
-      "displacedWeight": 16324
-    },
-    {
-      "letter": "g",
-      "code": "gq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "搞",
-          "weight": 162816
-        },
-        {
-          "text": "稿",
-          "weight": 796
-        },
-        {
-          "text": "镐",
-          "weight": 558
-        }
-      ],
-      "candidateCount": 7,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 1365
-    },
-    {
-      "letter": "h",
-      "code": "hq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "好",
-          "weight": 911224
-        },
-        {
-          "text": "郝",
-          "weight": 787
-        },
-        {
-          "text": "蚝",
-          "weight": 511
-        }
-      ],
-      "candidateCount": 11,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 1995
-    },
-    {
-      "letter": "i",
-      "code": "xj",
-      "reason": "x 载体行最低影响的五个占用桶之一",
-      "naturalTop3": [
-        {
-          "text": "龊",
-          "weight": 34
-        },
-        {
-          "text": "啜",
-          "weight": 22
-        },
-        {
-          "text": "铳",
-          "weight": 16
-        }
-      ],
-      "candidateCount": 7,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 65
-    },
-    {
-      "letter": "j",
-      "code": "jq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "脚",
-          "weight": 10509
-        },
-        {
-          "text": "仅",
-          "weight": 3338
-        },
-        {
-          "text": "紧",
-          "weight": 3041
-        }
-      ],
-      "candidateCount": 30,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 4,
-      "displacedWeight": 11892
-    },
-    {
-      "letter": "k",
-      "code": "kq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "考",
-          "weight": 15405
-        },
-        {
-          "text": "烤",
-          "weight": 5305
-        },
-        {
-          "text": "拷",
-          "weight": 306
-        }
-      ],
-      "candidateCount": 5,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 1,
-      "displacedWeight": 5615
-    },
-    {
-      "letter": "l",
-      "code": "lc",
-      "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
-      "naturalTop3": [
-        {
-          "text": "抡",
-          "weight": 314
-        }
-      ],
-      "candidateCount": 1,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 0
-    },
-    {
-      "letter": "m",
-      "code": "mv",
-      "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
-      "naturalTop3": [
-        {
-          "text": "哞",
-          "weight": 62
-        }
-      ],
-      "candidateCount": 1,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 0
-    },
-    {
-      "letter": "n",
-      "code": "nb",
-      "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
-      "naturalTop3": [
-        {
-          "text": "孬",
-          "weight": 165
-        }
-      ],
-      "candidateCount": 1,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 0
-    },
-    {
-      "letter": "o",
-      "code": "xg",
-      "reason": "x 载体行最低影响的五个占用桶之一",
-      "naturalTop3": [
-        {
-          "text": "差",
-          "weight": 19741
-        },
-        {
-          "text": "岔",
-          "weight": 115
-        },
-        {
-          "text": "刹",
-          "weight": 12
-        }
-      ],
-      "candidateCount": 10,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 142
-    },
-    {
-      "letter": "p",
-      "code": "pq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "跑",
-          "weight": 38177
-        },
-        {
-          "text": "品",
-          "weight": 1395
-        },
-        {
-          "text": "嫖",
-          "weight": 564
-        }
-      ],
-      "candidateCount": 22,
-      "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 1,
-      "displacedWeight": 3360
-    },
-    {
-      "letter": "q",
-      "code": "qq",
-      "reason": "共同尾键 q",
-      "naturalTop3": [
-        {
-          "text": "扫",
-          "weight": 2619
-        },
-        {
-          "text": "嫂",
-          "weight": 233
+          "text": "拯",
+          "weight": 5
         }
       ],
       "candidateCount": 2,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 0,
-      "displacedWeight": 233
+      "displacedWeight": 5
     },
     {
-      "letter": "r",
-      "code": "rq",
-      "reason": "共同尾键 q",
+      "letter": "b",
+      "code": "bm",
+      "reason": "共同尾键 m",
       "naturalTop3": [
         {
-          "text": "饶",
-          "weight": 832
+          "text": "边",
+          "weight": 10065
         },
         {
-          "text": "扰",
-          "weight": 188
+          "text": "班",
+          "weight": 8034
         },
         {
-          "text": "娆",
-          "weight": 19
+          "text": "奔",
+          "weight": 6248
         }
       ],
-      "candidateCount": 5,
+      "candidateCount": 24,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 0,
-      "displacedWeight": 213
+      "displacedAtLeast1000": 5,
+      "displacedWeight": 26053
     },
     {
-      "letter": "s",
-      "code": "sq",
-      "reason": "共同尾键 q",
+      "letter": "c",
+      "code": "cm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "村",
+          "weight": 2757
+        },
+        {
+          "text": "餐",
+          "weight": 1378
+        },
+        {
+          "text": "参",
+          "weight": 233
+        }
+      ],
+      "candidateCount": 10,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 1,
+      "displacedWeight": 1763
+    },
+    {
+      "letter": "d",
+      "code": "dm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "蹲",
+          "weight": 4289
+        },
+        {
+          "text": "单",
+          "weight": 3260
+        },
+        {
+          "text": "端",
+          "weight": 1788
+        }
+      ],
+      "candidateCount": 26,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 3,
+      "displacedWeight": 8345
+    },
+    {
+      "letter": "e",
+      "code": "xq",
+      "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
           "text": "找",
@@ -513,171 +243,485 @@
       "displacedWeight": 12
     },
     {
-      "letter": "t",
-      "code": "tq",
-      "reason": "共同尾键 q",
+      "letter": "f",
+      "code": "fm",
+      "reason": "共同尾键 m",
       "naturalTop3": [
         {
-          "text": "条",
-          "weight": 11184
+          "text": "分",
+          "weight": 35970
         },
         {
-          "text": "淘",
-          "weight": 2708
+          "text": "翻",
+          "weight": 9900
         },
         {
-          "text": "调",
-          "weight": 2139
+          "text": "番",
+          "weight": 428
         }
       ],
-      "candidateCount": 24,
+      "candidateCount": 14,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 3,
-      "displacedWeight": 8647
+      "displacedAtLeast1000": 1,
+      "displacedWeight": 10486
     },
     {
-      "letter": "u",
-      "code": "xh",
+      "letter": "g",
+      "code": "gm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "跟",
+          "weight": 65291
+        },
+        {
+          "text": "关",
+          "weight": 6572
+        },
+        {
+          "text": "官",
+          "weight": 2782
+        }
+      ],
+      "candidateCount": 26,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 6,
+      "displacedWeight": 18083
+    },
+    {
+      "letter": "h",
+      "code": "hm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "婚",
+          "weight": 1367
+        },
+        {
+          "text": "憨",
+          "weight": 567
+        },
+        {
+          "text": "昏",
+          "weight": 415
+        }
+      ],
+      "candidateCount": 14,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 1961
+    },
+    {
+      "letter": "i",
+      "code": "xj",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
-          "text": "翅",
-          "weight": 504
+          "text": "这",
+          "weight": 662267
         },
         {
-          "text": "饬",
-          "weight": 162
+          "text": "浙",
+          "weight": 127
         },
         {
-          "text": "赤",
-          "weight": 134
+          "text": "鹧",
+          "weight": 7
+        }
+      ],
+      "candidateCount": 6,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 140
+    },
+    {
+      "letter": "j",
+      "code": "jm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "间",
+          "weight": 7218
+        },
+        {
+          "text": "煎",
+          "weight": 2600
+        },
+        {
+          "text": "捐",
+          "weight": 1615
+        }
+      ],
+      "candidateCount": 33,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 4,
+      "displacedWeight": 9267
+    },
+    {
+      "letter": "k",
+      "code": "km",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "看",
+          "weight": 25945
+        },
+        {
+          "text": "宽",
+          "weight": 2689
+        },
+        {
+          "text": "坤",
+          "weight": 519
+        }
+      ],
+      "candidateCount": 21,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 1,
+      "displacedWeight": 3856
+    },
+    {
+      "letter": "l",
+      "code": "lm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "烟",
+          "weight": 4415
+        },
+        {
+          "text": "冤",
+          "weight": 469
+        },
+        {
+          "text": "阉",
+          "weight": 391
+        }
+      ],
+      "candidateCount": 25,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 2154
+    },
+    {
+      "letter": "m",
+      "code": "mm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "们",
+          "weight": 34407
+        },
+        {
+          "text": "闷",
+          "weight": 110
+        },
+        {
+          "text": "嫚",
+          "weight": 2
+        }
+      ],
+      "candidateCount": 4,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 114
+    },
+    {
+      "letter": "n",
+      "code": "nm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "蔫",
+          "weight": 208
+        },
+        {
+          "text": "拈",
+          "weight": 168
+        },
+        {
+          "text": "囡",
+          "weight": 125
+        }
+      ],
+      "candidateCount": 3,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 293
+    },
+    {
+      "letter": "o",
+      "code": "xt",
+      "reason": "x 载体行最低影响的五个占用桶之一",
+      "naturalTop3": [
+        {
+          "text": "轴",
+          "weight": 460
+        },
+        {
+          "text": "肘",
+          "weight": 158
+        },
+        {
+          "text": "帚",
+          "weight": 3
+        }
+      ],
+      "candidateCount": 5,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 165
+    },
+    {
+      "letter": "p",
+      "code": "pm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "喷",
+          "weight": 12364
+        },
+        {
+          "text": "篇",
+          "weight": 4895
+        },
+        {
+          "text": "偏",
+          "weight": 4187
+        }
+      ],
+      "candidateCount": 23,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 4,
+      "displacedWeight": 16883
+    },
+    {
+      "letter": "q",
+      "code": "qm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "签",
+          "weight": 4723
+        },
+        {
+          "text": "圈",
+          "weight": 4634
+        },
+        {
+          "text": "牵",
+          "weight": 2326
+        }
+      ],
+      "candidateCount": 27,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 3,
+      "displacedWeight": 10333
+    },
+    {
+      "letter": "r",
+      "code": "rm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "恩",
+          "weight": 33119
+        },
+        {
+          "text": "安",
+          "weight": 6272
+        },
+        {
+          "text": "垵",
+          "weight": 471
         }
       ],
       "candidateCount": 12,
       "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 1,
+      "displacedWeight": 7277
+    },
+    {
+      "letter": "s",
+      "code": "sm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "三",
+          "weight": 22239
+        },
+        {
+          "text": "穿",
+          "weight": 6232
+        },
+        {
+          "text": "酸",
+          "weight": 3848
+        }
+      ],
+      "candidateCount": 33,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 6,
+      "displacedWeight": 18451
+    },
+    {
+      "letter": "t",
+      "code": "tm",
+      "reason": "共同尾键 m",
+      "naturalTop3": [
+        {
+          "text": "天",
+          "weight": 53718
+        },
+        {
+          "text": "贪",
+          "weight": 1671
+        },
+        {
+          "text": "摊",
+          "weight": 1366
+        }
+      ],
+      "candidateCount": 14,
+      "displacedAtLeast10000": 0,
+      "displacedAtLeast1000": 3,
+      "displacedWeight": 6042
+    },
+    {
+      "letter": "u",
+      "code": "xd",
+      "reason": "x 载体行最低影响的五个占用桶之一",
+      "naturalTop3": [
+        {
+          "text": "皱",
+          "weight": 1033
+        },
+        {
+          "text": "咒",
+          "weight": 539
+        },
+        {
+          "text": "轴",
+          "weight": 24
+        }
+      ],
+      "candidateCount": 14,
+      "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 0,
-      "displacedWeight": 410
+      "displacedWeight": 621
     },
     {
       "letter": "v",
-      "code": "vq",
-      "reason": "共同尾键 q",
+      "code": "vm",
+      "reason": "共同尾键 m",
       "naturalTop3": [
         {
-          "text": "少",
-          "weight": 31860
+          "text": "删",
+          "weight": 11208
         },
         {
-          "text": "勺",
-          "weight": 1109
+          "text": "深",
+          "weight": 8497
         },
         {
-          "text": "苕",
-          "weight": 42
+          "text": "山",
+          "weight": 5651
         }
       ],
-      "candidateCount": 7,
+      "candidateCount": 41,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 1,
-      "displacedWeight": 1171
+      "displacedAtLeast1000": 5,
+      "displacedWeight": 24508
     },
     {
       "letter": "w",
-      "code": "wq",
-      "reason": "共同尾键 q",
+      "code": "wm",
+      "reason": "共同尾键 m",
       "naturalTop3": [
         {
-          "text": "咬",
-          "weight": 11323
-        },
-        {
-          "text": "云",
-          "weight": 7175
-        },
-        {
-          "text": "银",
-          "weight": 3729
+          "text": "抡",
+          "weight": 314
         }
       ],
-      "candidateCount": 65,
+      "candidateCount": 1,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 5,
-      "displacedWeight": 20510
+      "displacedAtLeast1000": 0,
+      "displacedWeight": 0
     },
     {
       "letter": "x",
-      "code": "xq",
-      "reason": "共同尾键 q",
+      "code": "xm",
+      "reason": "共同尾键 m",
       "naturalTop3": [
         {
-          "text": "吵",
-          "weight": 5556
+          "text": "真",
+          "weight": 145560
         },
         {
-          "text": "炒",
-          "weight": 4964
+          "text": "粘",
+          "weight": 3322
         },
         {
-          "text": "朝",
-          "weight": 3699
+          "text": "甄",
+          "weight": 2332
         }
       ],
-      "candidateCount": 7,
+      "candidateCount": 40,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 3,
-      "displacedWeight": 11033
+      "displacedAtLeast1000": 5,
+      "displacedWeight": 14223
     },
     {
       "letter": "y",
-      "code": "yq",
-      "reason": "共同尾键 q",
+      "code": "ym",
+      "reason": "共同尾键 m",
       "naturalTop3": [
         {
-          "text": "小",
-          "weight": 54014
+          "text": "先",
+          "weight": 102602
         },
         {
-          "text": "熬",
-          "weight": 3754
+          "text": "嬛",
+          "weight": 2645
         },
         {
-          "text": "嗷",
-          "weight": 3617
+          "text": "仙",
+          "weight": 1089
         }
       ],
-      "candidateCount": 43,
+      "candidateCount": 32,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 3,
-      "displacedWeight": 10612
+      "displacedAtLeast1000": 2,
+      "displacedWeight": 6290
     },
     {
       "letter": "z",
-      "code": "zq",
-      "reason": "共同尾键 q",
+      "code": "zm",
+      "reason": "共同尾键 m",
       "naturalTop3": [
         {
-          "text": "早",
-          "weight": 37343
+          "text": "钻",
+          "weight": 2959
         },
         {
-          "text": "澡",
-          "weight": 2233
+          "text": "尊",
+          "weight": 1406
         },
         {
-          "text": "枣",
-          "weight": 459
+          "text": "遵",
+          "weight": 199
         }
       ],
-      "candidateCount": 7,
+      "candidateCount": 10,
       "displacedAtLeast10000": 0,
       "displacedAtLeast1000": 1,
-      "displacedWeight": 2850
+      "displacedWeight": 1748
     }
   ],
   "totals": {
-    "candidateCount": 337,
+    "candidateCount": 464,
     "displacedAtLeast10000": 0,
-    "displacedAtLeast1000": 35,
-    "displacedWeight": 120489
+    "displacedAtLeast1000": 51,
+    "displacedWeight": 189073
   }
 }

@@ -107,13 +107,13 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "zhudao",
 		schemaId: "snow_zhudao",
-		name: "冰雪鹮道（T2126-POLISHED-8832091 21×26 带调）",
+		name: "冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）",
 		shortName: "冰雪鹮道",
 		capacity: "21x26",
 		soundLayout: "zhudao",
 		auxiliaryMode: "shape",
 		fixedFile: "snow_zhudao.fixed.txt",
-		auxiliaryOrder: "12/12/24",
+		auxiliaryOrder: "21/12/23",
 	},
 ] as const;
 

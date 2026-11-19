@@ -356,45 +356,34 @@ local hints = {
   },
   snow_zhudao = {
     b = {
+      { code = "bt", text = "不同", weight = 501387 },
       { code = "bd", text = "不到", weight = 500390 },
     },
     c = {
-      { code = "cw", text = "采用", weight = 501740 },
+      { code = "cw", text = "从来", weight = 135260 },
     },
-    g = {
-      { code = "gw", text = "关于", weight = 501823 },
-      { code = "gh", text = "更好", weight = 339395 },
+    f = {
+      { code = "fz", text = "负责", weight = 501709 },
+      { code = "fw", text = "法律", weight = 501086 },
+      { code = "fg", text = "风格", weight = 500903 },
+      { code = "fq", text = "父亲", weight = 500518 },
+      { code = "fj", text = "附件", weight = 500480 },
+      { code = "fk", text = "罚款", weight = 500380 },
     },
-    h = {
-      { code = "hw", text = "还有", weight = 501908 },
-      { code = "hh", text = "还会", weight = 470450 },
+    j = {
+      { code = "jy", text = "继续", weight = 501276 },
     },
     k = {
-      { code = "kw", text = "可以", weight = 505814 },
-      { code = "kh", text = "开会", weight = 121320 },
+      { code = "kz", text = "看作", weight = 134245 },
+    },
+    l = {
+      { code = "ly", text = "一些", weight = 503265 },
     },
     q = {
-      { code = "qw", text = "所以", weight = 502905 },
-      { code = "qr", text = "虽然", weight = 501774 },
+      { code = "qy", text = "取消", weight = 500327 },
     },
-    r = {
-      { code = "rg", text = "如果", weight = 505388 },
-      { code = "rw", text = "人员", weight = 501851 },
-      { code = "ry", text = "然而", weight = 500724 },
-      { code = "rx", text = "日常", weight = 435275 },
-      { code = "rb", text = "日本", weight = 9999 },
-    },
-    s = {
-      { code = "sw", text = "这样", weight = 503115 },
-    },
-    v = {
-      { code = "vw", text = "使用", weight = 504528 },
-    },
-    x = {
-      { code = "xw", text = "处于", weight = 500532 },
-    },
-    z = {
-      { code = "zw", text = "怎样", weight = 500608 },
+    y = {
+      { code = "yy", text = "学习", weight = 502296 },
     },
   },
 }

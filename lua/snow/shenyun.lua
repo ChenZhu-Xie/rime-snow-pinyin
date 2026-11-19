@@ -5,6 +5,7 @@
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
 -- 活动方案二／三／四字最优辅序分别为形 12/12/24、调 12/21/13。
+-- 冰雪鹮道复用路由，通过配置使用带调布局与形辅 21/12/23。
 
 local snow = require "snow.snow"
 local bihua = require "snow.bihua"
@@ -25,8 +26,8 @@ local this = {}
 ---@field vacancy_memory Memory
 ---@field vacancy_projection Projection
 ---@field memory Memory
----@field pinyin ReverseLookup
----@field shape_elements ReverseLookup
+---@field pinyin ReverseLookup|nil
+---@field shape_elements ReverseLookup|nil
 ---@field shape_mapping table<string, string>
 ---@field initial_keys string
 ---@field final_keys string
@@ -36,6 +37,8 @@ local this = {}
 ---@field auxiliary_cache table<string, string[]>
 ---@field vacancy_cache table<string, boolean>
 ---@field pair_standard_order string
+---@field three_word_order string?
+---@field four_word_order string?
 
 local function contains(keys, character)
   return keys:find(character, 1, true) ~= nil
@@ -50,7 +53,10 @@ local function all_in(input, first, keys)
   return true
 end
 
+---@param text string
+---@return string[]
 local function characters(text)
+  ---@type string[]
   local result = {}
   for _, codepoint in utf8.codes(text) do
     table.insert(result, utf8.char(codepoint))
@@ -58,8 +64,11 @@ local function characters(text)
   return result
 end
 
+---@param character string
+---@param env ShenyunEnv
+---@return string
 local function encode_elements(character, env)
-  local radicals = env.shape_elements:lookup(character) or ""
+  local radicals = env.shape_elements and env.shape_elements:lookup(character) or ""
   local result = ""
   for _, codepoint in utf8.codes(radicals) do
     local radical = utf8.char(codepoint)
@@ -68,6 +77,9 @@ local function encode_elements(character, env)
   return result
 end
 
+---@param character string
+---@param env ShenyunEnv
+---@return string
 local function encode_radical(character, env)
   -- radical_jiandao.txt 使用 21×21 形义键；逐义迁移到 21×26，不能把调序当成形序。
   local source = jiandao_semantics.shape_keys_by_meaning
@@ -78,6 +90,8 @@ local function encode_radical(character, env)
   end))
 end
 
+---@param value string
+---@return string
 local function first_or_empty(value)
   return value:sub(1, 1)
 end
@@ -86,8 +100,13 @@ end
 ---@param mode string
 ---@param first_generation boolean
 ---@return integer[]
-local function auxiliary_positions(length, mode, first_generation, pair_standard_order)
+---@param pair_standard_order? string
+---@param three_word_order? string
+---@param four_word_order? string
+local function auxiliary_positions(length, mode, first_generation, pair_standard_order, three_word_order, four_word_order)
   if length == 2 then return initial_pair_aux.positions(pair_standard_order or "12") end
+  local order = length == 3 and three_word_order or length == 4 and four_word_order
+  if order then return { order:byte(1) - 48, order:byte(2) - 48 } end
   if length == 3 then
     return mode == "shape" and not first_generation and { 1, 2 } or { 2, 1 }
   end
@@ -109,8 +128,12 @@ local function ordered_initials(codes, positions)
   return result
 end
 
+---@param text string
+---@param env ShenyunEnv
+---@return string[]
 local function shape_codes(text, env)
   local chars = characters(text)
+  ---@type string[]
   local codes = {}
   for _, character in ipairs(chars) do
     table.insert(codes, encode_radical(character, env))
@@ -118,7 +141,7 @@ local function shape_codes(text, env)
   if #codes == 1 then
     return { codes[1] }
   elseif #codes >= 2 then
-    return { ordered_initials(codes, auxiliary_positions(#codes, "shape", env.first_generation, env.pair_standard_order)) }
+    return { ordered_initials(codes, auxiliary_positions(#codes, "shape", env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)) }
   end
   return { "" }
 end
@@ -128,8 +151,12 @@ local tone_keys = shenyun_semantics.tone_keys_by_digit
 ---@type table<string, string>
 local stroke_keys = shenyun_semantics.stroke_keys_by_digit
 
+---@param values string[]
+---@return string[]
 local function unique(values)
+  ---@type table<string, boolean>
   local seen = {}
+  ---@type string[]
   local result = {}
   for _, value in ipairs(values) do
     if value ~= "" and not seen[value] then
@@ -140,9 +167,12 @@ local function unique(values)
   return result
 end
 
+---@param character string
+---@param env ShenyunEnv
+---@return string[]
 local function tone_options(character, env)
   local result = {}
-  for spelling in (env.pinyin:lookup(character) or ""):gmatch("[^ ]+") do
+  for spelling in (env.pinyin and env.pinyin:lookup(character) or ""):gmatch("[^ ]+") do
     local tone = spelling:match("([1-5])$")
     if tone and tone_keys[tone] then
       table.insert(result, tone_keys[tone])
@@ -151,6 +181,9 @@ local function tone_options(character, env)
   return unique(result)
 end
 
+---@param character string
+---@param env ShenyunEnv
+---@return string[]
 local function stroke_options(character, env)
   local result = {}
   for _, stroke in ipairs(bihua.codes(character, env)) do
@@ -163,10 +196,14 @@ local function stroke_options(character, env)
   return unique(result)
 end
 
+---@param text string
+---@param env ShenyunEnv
 ---@param spellings? string[]
+---@return string[]
 local function tone_codes(text, env, spellings)
   local chars = characters(text)
   if #chars == 0 then return { "" } end
+  ---@type string[][]
   local tones = {}
   for index, character in ipairs(chars) do
     local actual_tone = spellings and spellings[index] and spellings[index]:match("([1-5])$") or nil
@@ -184,7 +221,7 @@ local function tone_codes(text, env, spellings)
       end
     end
   else
-    local positions = auxiliary_positions(#chars, "tone", env.first_generation, env.pair_standard_order)
+    local positions = auxiliary_positions(#chars, "tone", env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
     for _, first in ipairs(tones[positions[1]]) do
       for _, second in ipairs(tones[positions[2]]) do
         table.insert(result, first .. second)
@@ -195,6 +232,7 @@ local function tone_codes(text, env, spellings)
 end
 
 ---@param candidate Candidate
+---@param env ShenyunEnv
 ---@return string[]?
 local function actual_spellings(candidate, env)
   local phrase = candidate:get_genuine():to_phrase()
@@ -202,6 +240,9 @@ local function actual_spellings(candidate, env)
 end
 
 ---@param candidate Candidate
+---@param env ShenyunEnv
+---@param initial_pair? boolean
+---@return string[]
 local function auxiliary_codes(candidate, env, initial_pair)
   local text = candidate.text
   local spellings = env.auxiliary_mode == "tone" and actual_spellings(candidate, env) or nil
@@ -209,8 +250,10 @@ local function auxiliary_codes(candidate, env, initial_pair)
       .. (spellings and table.concat(spellings, " ") or "")
   local cached = env.auxiliary_cache[cache_key]
   if cached then return cached end
+  ---@type string[]
   local codes
   if initial_pair then
+    ---@type string[][]
     local options = {}
     for index, character in ipairs(characters(text)) do
       if env.auxiliary_mode == "tone" then
@@ -240,17 +283,21 @@ end
 ---@param route ShenyunRoute
 ---@param mode string
 ---@return string
-local function format_preedit(route, mode, first_generation, pair_standard_order)
+local function format_preedit(route, mode, first_generation, pair_standard_order, three_word_order, four_word_order)
   if route.family == "AA" then
     return route.proxy .. (route.suffix ~= "" and
       (mode == "tone" and " 调笔[" or " 形[") .. route.suffix .. "]" or "")
   end
   local positions = route.length == 1 and { 1 }
-      or auxiliary_positions(route.length, mode, first_generation, pair_standard_order)
+      or auxiliary_positions(route.length, mode, first_generation, pair_standard_order, three_word_order, four_word_order)
   return auxiliary_hint.format_preedit(route.proxy, route.suffix, mode, positions)
 end
 
 ---@param candidate Candidate
+---@param suffix string
+---@param env ShenyunEnv
+---@param initial_pair boolean
+---@return boolean, string
 local function auxiliary_match(candidate, suffix, env, initial_pair)
   local text = candidate.text
   local radical_input = env.engine.context:get_property("shape_input") or ""
@@ -275,6 +322,11 @@ local function auxiliary_match(candidate, suffix, env, initial_pair)
   return false, ""
 end
 
+---@param routes ShenyunRoute[]
+---@param family string
+---@param proxy string
+---@param suffix string
+---@param length integer
 local function add_route(routes, family, proxy, suffix, length)
   local main_length = proxy:gsub("[ ?~]", ""):len()
   table.insert(routes, {
@@ -393,6 +445,7 @@ local function routes_for(input, segment, env)
   return routes
 end
 
+---@param env ShenyunEnv
 function this.init(env)
   local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
@@ -410,12 +463,17 @@ function this.init(env)
   env.auxiliary_keys = config:get_string("translator/shenyun_auxiliary_keys") or "aeuio"
   env.auxiliary_mode = config:get_string("shenyun_options/auxiliary") or "shape"
   env.pair_standard_order = config:get_string("translator/word_auxiliary_order") or "12"
+  env.three_word_order = config:get_string("translator/three_word_auxiliary_order")
+  env.four_word_order = config:get_string("translator/four_word_auxiliary_order")
   env.first_generation = env.engine.schema.schema_id:match("_first$") ~= nil
   env.auxiliary_cache = {}
   env.vacancy_cache = {}
   if env.auxiliary_mode == "tone" then bihua.load_strokes(env) end
 end
 
+---@param input string
+---@param segment Segment
+---@param env ShenyunEnv
 function this.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
@@ -436,6 +494,7 @@ function this.func(input, segment, env)
       end
     end
   end
+  ---@type table<string, boolean>
   local seen = {}
   while #streams > 0 do
     local best_index = 1
@@ -457,11 +516,11 @@ function this.func(input, segment, env)
     if not seen[candidate.text] then
       seen[candidate.text] = true
       candidate._end = segment._end
-      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode, env.first_generation, env.pair_standard_order)
+      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
       local length = utf8.len(candidate.text)
       local order = ""
       if length and length >= 2 then
-        local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation, env.pair_standard_order)
+        local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
         local raw_order = ("%d%d"):format(positions[1], positions[2])
         order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
       end
@@ -490,6 +549,7 @@ function this.func(input, segment, env)
   end
 end
 
+---@param env ShenyunEnv
 function this.fini(env)
   env.translator = nil
   env.vacancy_translator = nil

@@ -19,87 +19,87 @@ deploy:
     tests:
       # 固顶只检查一例；字母入口按鹮道的实际占用桶重新选择。
       - send: j
-        assert: cand[1].text == "我"
-      - send: bq
+        assert: cand[1].text == "就"
+      - send: bm
         assert: cand[2].text == "B" and cand[3].text == "b"
       # 固顶兜底按实际读音权重；尿的 niào 高频不能抬高其 suī 异读。
-      - send: qz
-        assert: cand[1].text == "虽" and has("尿")
+      - send: sx
+        assert: cand[1].text == "吹" and has("虽") and has("尿")
       # 同一韵组由声调决定第二码；后置形辅不再输入声调。
       - send: bn
         assert: has("冰") and preedit == "bn"
       - send: bno
         assert: has("冰") and preedit == "bn 形[o]"
-      - send: bw
+      - send: br
         assert: has("饼")
       - send: bl
         assert: has("病")
       # 词语主码仍为 AUAU / AAA / AAAU / AAAA。
-      - send: clvh
-        assert: has("测试") and commit == nil and preedit == "cl vh"
-      - send: bnyroe
+      - send: cjvk
+        assert: has("测试") and commit == nil and preedit == "cj vk"
+      - send: bnyweo
         assert: has("冰雪") and commit == nil
       - send: vrf
         assert: has("输入法")
-      - send: vrfy
+      - send: vrfp
         assert: has("输入法") and commit == nil
-      - send: vrfyeu
-        assert: has("输入法") and preedit == "v r fy 形[eu]" and commit == nil
-      # ri 是空桶，三字词第四码 i 直接进入 AAA+B 的形辅回收路由。
-      - send: sgrii
-        assert: has("中国人") and commit == nil
-      - send: rgsnea
+      - send: vrfpeu
+        assert: has("输入法") and preedit == "v r fp 形[eu]" and commit == nil
+      # ko 是空桶，三字词第四码 o 直接进入 AAA+B 的形辅回收路由。
+      - send: vjkoi
+        assert: has("数据库") and commit == nil
+      - send: rgxneu
         assert: has("人工智能") and commit == nil
-      # 原有单字桶不得被声声回收；gi 不是声声码，不能回收成二字词。
+      # 原有单字桶不得被声声回收；ko 的第二码是辅键，不能回收成二字词。
       - send: cv
         assert: has("粗") and not has("测试")
-      - send: gi
+      - send: ko
         assert: "#cand == 0 and commit == nil"
       # 空桶提示与当前声声桶首选保持一致。
-      - send: r
-        assert: cand[1].text == "人" and cand[2].text == "如果" and cand[2].comment == "rg"
-      - send: "clvh;"
+      - send: f
+        assert: cand[1].text == "发" and cand[2].text == "负责" and cand[2].comment == "fz"
+      - send: "cjvk;"
         assert: commit == "测试的"
-      - send: "clvh/"
+      - send: "cjvk/"
         assert: commit == "测试了"
   initial_pair_four_aux:
     tests:
-      # bd 空桶：「到」的前两辅 ea，然后「不」的前两辅 eu，逐字逐字追加。
+      # bd 空桶：「不」的前两辅 eu，然后「到」的前两辅 ea，逐字逐字追加。
       - send: bd
-        assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ ea〕", 1, true) ~= nil
+        assert: has("不到") and comment("不到"):find("〔形₁₁₂₂ eu〕", 1, true) ~= nil
       - send: bde
         assert: has("不到") and commit == nil
-      - send: bdea
-        assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ eu〕", 1, true) ~= nil
-      - send: bdeae
+      - send: bdeu
+        assert: has("不到") and comment("不到"):find("〔形₁₁₂₂ ea〕", 1, true) ~= nil
+      - send: bdeue
         assert: has("不到") and commit == nil
-      - send: bdeaeu
-        assert: has("不到") and not comment("不到"):find("〔形₂₂₁₁", 1, true) and commit == nil
-      - send: bdeaeu{BackSpace}
-        assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ u〕", 1, true) ~= nil
+      - send: bdeuea
+        assert: has("不到") and not comment("不到"):find("〔形₁₁₂₂", 1, true) and commit == nil
+      - send: bdeuea{BackSpace}
+        assert: has("不到") and comment("不到"):find("〔形₁₁₂₂ a〕", 1, true) ~= nil
   six_code_popping:
     tests:
       # 四辅全码可能仍有重码；应顶出这个码的实际首选，而非固定某个词。
-      - send: bdeaeu
+      - send: bdeuea
         assert: has("不到") and remember_top()
-      - send: bdeaeub
+      - send: bdeueab
         assert: (commit == six_code_top and preedit == "b") or error("top=" .. tostring(six_code_top) .. ", commit=" .. tostring(commit) .. ", preedit=" .. tostring(preedit))
   initial_pair_reverse_policy:
     patch:
-      translator/word_auxiliary_order: "21"
+      translator/word_auxiliary_order: "12"
     tests:
       - send: bd
-        assert: has("不到") and comment("不到"):find("〔形₁₁₂₂ eu〕", 1, true) ~= nil
-      - send: bdeuea
+        assert: has("不到") and comment("不到"):find("〔形₂₂₁₁ ea〕", 1, true) ~= nil
+      - send: bdeaeu
         assert: has("不到") and commit == nil
   initial_pair_learning:
     tests:
-      - send: rbei
-        assert: has("日本") and cand[1].text ~= "日本"
-      - send: rbeioi
-        assert: cand[1].text == "日本"
-      - send: "rbeioi rbei"
-        assert: cand[1].text == "日本"
+      - send: bdeu
+        assert: has("不对") and cand[1].text ~= "不对"
+      - send: bdeuao
+        assert: cand[1].text == "不对"
+      - send: "bdeuao bdeu"
+        assert: cand[1].text == "不对"
   reverse_lookup:
     tests:
       - send: uwangyan

@@ -26,16 +26,34 @@ const algebra = new SpellingAlgebra(
 const zhudaoHints = readShenyunHints(true);
 const hedaoHints = readShenyunHints();
 
-test("冰雪鹮道逐条复现冠军页面的 1407 个带调音节，保留 516 个占用桶及 30 个空桶", () => {
-	assert.equal(mapping.id, "T2126-POLISHED-8832091");
+test("冰雪鹮道逐条复现 R2 加倍成本精修页面的 1407 个带调音节，保留 526 个占用桶及 20 个空桶", () => {
+	assert.equal(mapping.id, "T2126-V52-M4-ec60a3637a99");
 	assert.equal(Object.keys(mapping.referenceTonedCodes).length, 1407);
 	for (const [reading, expected] of Object.entries(mapping.referenceTonedCodes))
 		assert.equal(algebra.apply(reading), expected, reading);
-	assert.equal(new Set(Object.values(mapping.referenceTonedCodes)).size, 516);
+	assert.equal(new Set(Object.values(mapping.referenceTonedCodes)).size, 526);
 	assert.equal(
 		21 * 26 - new Set(Object.values(mapping.referenceTonedCodes)).size,
-		30,
+		20,
 	);
+});
+
+test("鹮道 R2 的零声母载体与声母迁移独立于旧精修布局", () => {
+	for (const [reading, code] of Object.entries({
+		a1: "rc",
+		e2: "rw",
+		o1: "rz",
+		er2: "rp",
+		wu4: "ph",
+		yi1: "lz",
+		yu3: "lu",
+		li4: "wk",
+		qi1: "qz",
+		si4: "sk",
+		chi4: "sk",
+		zhi4: "xk",
+	}))
+		assert.equal(algebra.apply(reading), code, reading);
 });
 
 test("冰雪鹮道与鹤道使用同一五辅语义，声调已进入第二码", () => {
@@ -48,15 +66,15 @@ test("冰雪鹮道与鹤道使用同一五辅语义，声调已进入第二码",
 	assert.equal(mapping.toneDigitsByShapeMeaning, "42310");
 	assert.deepEqual(
 		[1, 2, 3, 4, 5].map((tone) => algebra.apply(`bing${tone}`)),
-		["bn", "bw", "bw", "bl", "bn"],
+		["bn", "br", "br", "bl", "bn"],
 	);
 	assert.deepEqual(
 		pronunciationCodes("zhudao", "冰雪", ["bing1", "xue3"]).map((c) => c.code),
-		["bnyr", "bnyro", "bnyroe"],
+		["bnyw", "bnywe", "bnyweo"],
 	);
 	assert.ok(
 		pronunciationCodes("zhudao", "输入法", ["shu1", "ru4", "fa3"]).some(
-			(c) => c.code === "vrfyeu",
+			(c) => c.code === "vrfpeu",
 		),
 	);
 	assert.ok(
@@ -65,25 +83,25 @@ test("冰雪鹮道与鹤道使用同一五辅语义，声调已进入第二码",
 			"gong1",
 			"zhi4",
 			"neng2",
-		]).some((c) => c.code === "rgsnea"),
+		]).some((c) => c.code === "rgxneu"),
 	);
 });
 
 test("鹮道声声空桶反序逐字取两辅至六码，非空音节和辅键第二码不回收", () => {
 	const { vacant, vacantAA } = zhudaoHints;
-	assert.equal(vacant.length, 24);
-	assert.equal(vacantAA.length, 19);
+	assert.equal(vacant.length, 15);
+	assert.equal(vacantAA.length, 14);
 	assert.equal(hedaoHints.vacant.length, 142);
 	assert.equal(hedaoHints.vacantAA.length, 129);
 	assert.deepEqual(
 		initialPairCodes("zhudao", "不到", ["bu4", "dao4"]).map((c) => c.code),
-		["bd", "bde", "bdea", "bdeae", "bdeaeu"],
+		["bd", "bde", "bdeu", "bdeue", "bdeuea"],
 	);
 	assert.deepEqual(
-		initialPairCodes("zhudao", "不到", ["bu4", "dao4"], "21").map(
+		initialPairCodes("zhudao", "不到", ["bu4", "dao4"], "12").map(
 			(c) => c.code,
 		),
-		["bd", "bde", "bdeu", "bdeue", "bdeuea"],
+		["bd", "bde", "bdea", "bdeae", "bdeaeu"],
 	);
 	assert.deepEqual(initialPairCodes("zhudao", "测试", ["ce4", "shi4"]), []);
 });
@@ -117,8 +135,11 @@ test("鹮道复用鹤道形辅路由并独立隔离棱镜、用户词典与键�
 	assert.equal(schema.vacancy.prism, "snow_zhudao");
 	assert.equal(
 		schema.patch["translator/user_dict_name"],
-		"snow_zhudao_polished_8832091",
+		"snow_zhudao_r2_ec60a3637a99",
 	);
 	assert.equal(schema.keymap.image, "snow_zhudao.svg");
+	assert.equal(schema.patch["translator/word_auxiliary_order"], "21");
+	assert.equal(schema.patch["translator/three_word_auxiliary_order"], "12");
+	assert.equal(schema.patch["translator/four_word_auxiliary_order"], "23");
 	assert.ok(read("lua/snow/keymaps/snow_zhudao.svg").includes(mapping.id));
 });

@@ -32,7 +32,7 @@ test("多音字的兜底优先级使用实际读音权重，不借用同字高�
 	}
 });
 
-test("鹮道 qz 的兜底读音和已生成固顶均首选虽，同时保留尿的合法异读", () => {
+test("鹮道 sx 的读音兜底保留虽和尿的权重，固顶尊重四拼的吹", () => {
 	const algebra = new SpellingAlgebra(
 		rootPath("snow_zhudao.schema.yaml"),
 		"speller/algebra",
@@ -42,9 +42,12 @@ test("鹮道 qz 的兜底读音和已生成固顶均首选虽，同时保留尿�
 		readFileSync(rootPath("scripts/data/tygf-pinyin.tsv"), "utf8"),
 	);
 	const bucket = readings.filter(
-		({ reading }) => algebra.apply(reading) === "qz",
+		({ reading }) => algebra.apply(reading) === "sx",
 	);
-	assert.equal(bucket[0].word, "虽");
+	assert.ok(
+		bucket.findIndex((row) => row.word === "虽") <
+			bucket.findIndex((row) => row.word === "尿"),
+	);
 	assert.equal(bucket.find((row) => row.word === "尿")?.weight, 199);
 	const fixed = new Map(
 		readFileSync(rootPath("snow_zhudao.fixed.txt"), "utf8")
@@ -52,9 +55,9 @@ test("鹮道 qz 的兜底读音和已生成固顶均首选虽，同时保留尿�
 			.filter((l) => l.includes("\t") && !l.startsWith("#"))
 			.map((l) => l.split("\t") as [string, string]),
 	);
-	assert.equal(fixed.get("qz"), "虽");
-	assert.equal(algebra.apply("niao4"), "nf");
-	assert.equal(algebra.apply("sui1"), "qz");
+	assert.equal(fixed.get("sx"), "吹");
+	assert.equal(algebra.apply("niao4"), "ng");
+	assert.equal(algebra.apply("sui1"), "sx");
 });
 
 test("读音兜底重排保留冰雪兰道已约定的一级固顶 d→的", () => {
