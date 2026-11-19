@@ -79,7 +79,7 @@ deploy:
         assert: (cand[1].text == "软风" and cand[2].text == "软饭" and not preedit:find("vauao", 1, true)) or error(probe())
       # 固顶二简词也走反序两辅；说 oa、过 vi。
       - send: kg
-        assert: cand[1].text == "说过" or error(probe())
+        assert: (print(probe()) or true) and (cand[1].text == "说过" or error(probe()))
       - send: kgo
         assert: has("说过") or error(probe())
       - send: kgoa
@@ -93,6 +93,16 @@ deploy:
         assert: has("合法")
       - send: hfo
         assert: not has("合法")
+  initial_pair_prism:
+    patch:
+      initial_pair/prism: snow_jiandao_toned_jianpin
+    tests:
+      - send: kg
+        assert: (print(probe()) or true) and (cand[1].text == "说过" or error(probe()))
+      - send: kgo
+        assert: has("说过") or error(probe())
+      - send: kgoavi
+        assert: cand[1].text == "说过" or error(probe())
   mixed_spelling:
     tests:
       # 大写第二码补韵继续沿用兰道；三字简拼留在 abc 段。
