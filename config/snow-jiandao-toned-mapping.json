@@ -1631,13 +1631,19 @@
 			"ff",
 			"gf",
 			"hf",
-			"lg",
 			"rb",
 			"rf",
-			"rg",
-			"rm",
 			"wf"
 		]
 	},
-	"cktV52ShapeOnly": 9.132009149242153
+	"cktV52ShapeOnly": 9.132009149242153,
+	"runtimeVacantCodes": [
+		"fb",
+		"ff",
+		"gf",
+		"hf",
+		"rf",
+		"sg",
+		"wf"
+	]
 }

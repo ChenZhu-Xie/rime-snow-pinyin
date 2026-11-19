@@ -77,32 +77,27 @@ deploy:
         assert: (cand[1].text == "软风" and cand[2].text == "软饭") or error(probe())
       - send: rfvauao
         assert: (cand[1].text == "软风" and cand[2].text == "软饭" and not preedit:find("vauao", 1, true)) or error(probe())
-      # 固顶二简词也走反序两辅；说 oa、过 vi。
+      # kg 有本地大字集异读「杓 shuo2」，不可作为声声空桶。
       - send: kg
-        assert: (print(probe()) or true) and (cand[1].text == "说过" or error(probe()))
-      - send: kgo
-        assert: has("说过") or error(probe())
-      - send: kgoa
-        assert: has("说过") or error(probe())
-      - send: kgoav
-        assert: has("说过") or error(probe())
-      - send: kgoavi
-        assert: cand[1].text == "说过" or error(probe())
+        assert: cand[1].text == "杓" and not has("说过") or error(probe())
+      - send: kgv
+        assert: has("杓") and not has("说过") or error(probe())
+      # 固顶二简词也走反序两辅；成 vu、功 vi。
+      - send: sg
+        assert: cand[1].text == "成功" or error(probe())
+      - send: sgv
+        assert: has("成功") or error(probe())
+      - send: sgvu
+        assert: has("成功") or error(probe())
+      - send: sgvuv
+        assert: has("成功") or error(probe())
+      - send: sgvuvi
+        assert: cand[1].text == "成功" or error(probe())
       # hf 空桶同时容纳回复和合法，按第一字的形辅区分。
       - send: hfi
         assert: has("合法")
       - send: hfo
         assert: not has("合法")
-  initial_pair_prism:
-    patch:
-      initial_pair/prism: snow_jiandao_toned_jianpin
-    tests:
-      - send: kg
-        assert: (print(probe()) or true) and (cand[1].text == "说过" or error(probe()))
-      - send: kgo
-        assert: has("说过") or error(probe())
-      - send: kgoavi
-        assert: cand[1].text == "说过" or error(probe())
   mixed_spelling:
     tests:
       # 大写第二码补韵继续沿用兰道；三字简拼留在 abc 段。

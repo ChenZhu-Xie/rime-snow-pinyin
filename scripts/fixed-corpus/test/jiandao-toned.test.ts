@@ -6,6 +6,7 @@ import { alignFixedContent } from "../../align-fixed-with-sipin";
 import { SpellingAlgebra } from "../../lib/algebra";
 import { loadAuxiliarySemantics } from "../../lib/auxiliary-semantics";
 import { rootPath } from "../../lib/paths";
+import { loadVacancyFallbackSyllables } from "../../lib/runtime-vacancy";
 
 const read = (path: string) => readFileSync(rootPath(path), "utf8");
 const mapping = JSON.parse(read("config/snow-jiandao-toned-mapping.json")) as {
@@ -21,6 +22,7 @@ const mapping = JSON.parse(read("config/snow-jiandao-toned-mapping.json")) as {
 	toneDigitsByShapeMeaning: string;
 	wordAuxiliaryPolicy: Record<string, string>;
 	referenceTonedCodes: Record<string, string>;
+	runtimeVacantCodes: string[];
 	previousLayoutAudit: { occupiedBuckets: number; vacantBuckets: number };
 };
 const algebra = new SpellingAlgebra(
@@ -46,6 +48,7 @@ test("冰雪莲道逐条复现 CR-REF-7e650f7a4c 的 1407 个音节，测量新�
 		assert.equal(algebra.apply(reading), code, reading);
 	assert.equal(new Set(Object.values(mapping.referenceTonedCodes)).size, 433);
 	assert.equal(mapping.occupiedBuckets, 433);
+	assert.ok(!Object.values(mapping.referenceTonedCodes).includes("kg"));
 	assert.equal(mapping.previousLayoutAudit.occupiedBuckets, 432);
 	assert.equal(mapping.previousLayoutAudit.vacantBuckets, 9);
 });
@@ -78,21 +81,41 @@ test("莲道使用目标声母并保持五辅语义，三个声调区合入第�
 	});
 });
 
-test("莲道按运行时频率口径回收八个声声空桶，字母占用码始终保留", () => {
+test("莲道按运行时兜底音节口径回收七个声声空桶，杓 shuo2 与字母占用码保留", () => {
 	const occupied = new Set<string>();
+	const fallbackSyllables = loadVacancyFallbackSyllables();
+	const spellings = new Set<string>();
 	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
-		const [character, spelling, weight] = line.split("\t");
-		if (spelling && [...character].length === 1 && Number(weight) > 1)
-			occupied.add(algebra.apply(spelling));
+		const [character, spelling] = line.split("\t");
+		if (
+			spelling &&
+			[...character].length === 1 &&
+			!spelling.startsWith("~") &&
+			!fallbackSyllables.has(spelling.replace(/[0-9]$/u, ""))
+		)
+			spellings.add(spelling);
 	}
+	for (const spelling of spellings) occupied.add(algebra.apply(spelling));
 	const keys = "bpmfdtnlgkhjqxzcsrwye";
 	assert.deepEqual(
 		[...keys]
 			.flatMap((a) => [...keys].map((b) => a + b))
 			.filter((c) => !occupied.has(c))
 			.sort(),
-		["fb", "ff", "gf", "hf", "kg", "rf", "sg", "wf"],
+		mapping.runtimeVacantCodes,
 	);
+	assert.deepEqual(mapping.runtimeVacantCodes, [
+		"fb",
+		"ff",
+		"gf",
+		"hf",
+		"rf",
+		"sg",
+		"wf",
+	]);
+	assert.equal(algebra.apply("shuo2"), "kg");
+	assert.ok(occupied.has("kg"));
+	assert.notEqual(fixed.get("kg"), "说过");
 	const schema = load(read("snow_jiandao_toned.schema.yaml")) as Record<
 		string,
 		any

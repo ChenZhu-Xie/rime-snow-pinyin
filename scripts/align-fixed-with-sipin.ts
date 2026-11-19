@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { SpellingAlgebra } from "./lib/algebra";
 import { loadAuxiliarySemantics } from "./lib/auxiliary-semantics";
 import { characterReadingPriorities } from "./lib/character-reading-priorities";
+import { loadVacancyFallbackSyllables } from "./lib/runtime-vacancy";
 import {
 	mergeDictionaries,
 	readDictionary,
@@ -448,8 +449,12 @@ function baseReferences(
 	return preferred;
 }
 
-function occupiedBases(targetAlgebra: SpellingAlgebra): Set<string> {
+function occupiedBases(
+	targetAlgebra: SpellingAlgebra,
+	fallbackSyllables?: ReadonlySet<string>,
+): Set<string> {
 	const result = new Set<string>();
+	const spellings = new Set<string>();
 	for (const filename of [
 		"snow_pinyin.dict.yaml",
 		"snow_pinyin.base.dict.yaml",
@@ -464,19 +469,27 @@ function occupiedBases(targetAlgebra: SpellingAlgebra): Set<string> {
 				[...text].length !== 1 ||
 				!spelling ||
 				spelling.startsWith("~") ||
-				Number(rawWeight) <= 1
+				(fallbackSyllables
+					? fallbackSyllables.has(spelling.replace(/[0-9]$/u, ""))
+					: Number(rawWeight) <= 1)
 			) {
 				continue;
 			}
-			const code = targetAlgebra.apply(spelling).slice(0, 2);
-			if (code.length === 2) result.add(code);
+			spellings.add(spelling);
 		}
+	}
+	for (const spelling of spellings) {
+		const code = targetAlgebra.apply(spelling).slice(0, 2);
+		if (code.length === 2) result.add(code);
 	}
 	return result;
 }
 
-function phraseReferences(targetAlgebra: SpellingAlgebra): Map<string, string> {
-	const occupied = occupiedBases(targetAlgebra);
+function phraseReferences(
+	targetAlgebra: SpellingAlgebra,
+	fallbackSyllables?: ReadonlySet<string>,
+): Map<string, string> {
+	const occupied = occupiedBases(targetAlgebra, fallbackSyllables);
 	const result = new Map<string, string>();
 	let phraseSection = false;
 	for (const line of sipinLines) {
@@ -806,7 +819,7 @@ function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
 	);
 	const ones = oneKeyReferences(target, algebra);
 	const bases = baseReferences(algebra, ones.values());
-	const phrases = phraseReferences(algebra);
+	const phrases = phraseReferences(algebra, loadVacancyFallbackSyllables());
 	const sections = new Map<string, string[]>();
 	let section = "";
 	for (const line of parent.split("\n")) {
