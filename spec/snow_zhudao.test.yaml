@@ -94,12 +94,13 @@ deploy:
         assert: has("不到") and commit == nil
   initial_pair_learning:
     tests:
-      - send: bdeu
-        assert: has("不对") and cand[1].text ~= "不对"
-      - send: bdeuao
-        assert: cand[1].text == "不对"
-      - send: "bdeuao bdeu"
-        assert: cand[1].text == "不对"
+      # 「报答」在 bdiu 桶不是首选，六码 bdiuue 在当前词库中唯一。
+      - send: bdiu
+        assert: has("报答") and cand[1].text ~= "报答"
+      - send: bdiuue
+        assert: cand[1].text == "报答"
+      - send: "bdiuue bdiu"
+        assert: cand[1].text == "报答"
   reverse_lookup:
     tests:
       - send: uwangyan

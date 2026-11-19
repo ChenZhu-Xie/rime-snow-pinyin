@@ -104,6 +104,10 @@ test("鹮道声声空桶反序逐字取两辅至六码，非空音节和辅键�
 		["bd", "bde", "bdea", "bdeae", "bdeaeu"],
 	);
 	assert.deepEqual(initialPairCodes("zhudao", "测试", ["ce4", "shi4"]), []);
+	assert.deepEqual(
+		initialPairCodes("zhudao", "报答", ["bao4", "da2"]).map((c) => c.code),
+		["bd", "bdi", "bdiu", "bdiuu", "bdiuue"],
+	);
 });
 
 test("鹮道字母占用桶保留汉字首选及大写第二小写第三，未挤占声声空桶", () => {
