@@ -13,9 +13,9 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     声调进入前两码、后续只补形笔辅的 21×21 双拼词顶功方案
-    双拼编码：CR-LAN-f19a0ad1dc（固定兰道声母，1,407 带调音节占用 432 桶）
+    双拼编码：CR-REF-7e650f7a4c（M21 默认/加倍综合改良，1,407 带调音节占用 433 桶）
     四声／二三声／一轻声依次使用上／中／下排第二码
-    纯形辅序 21/213/14；一至四字词最多六码，声声空桶反序逐字取两辅
+    纯形辅序 21/231/14；一至四字词最多六码，声声空桶反序逐字取两辅
   dependencies:
     - snow_pinyin
     - radical_pinyin
@@ -112,9 +112,9 @@ __patch:
 
 patch:
   translator/prism: snow_jiandao_toned
-  translator/user_dict_name: snow_jiandao_toned_cr_lan_f19a0ad1dc
+  translator/user_dict_name: snow_jiandao_toned_cr_ref_7e650f7a4c
   translator/word_auxiliary_order: "21"
-  translator/three_word_auxiliary_order: "213"
+  translator/three_word_auxiliary_order: "231"
   translator/four_word_auxiliary_order: "14"
   translator/reserved_initial_pair_pattern: "^(?:bc|pc|mc|fc|dc|tc|nc|lc|gc|kc|hc|jc|qc|xc|zc|cc|sc|rc|wc|yc|ec|xg|xl|xh|xd|xw)$"
   # 独立 U 笔画反查继续使用键道的折横撇竖点语义。

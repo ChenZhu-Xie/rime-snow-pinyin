@@ -796,7 +796,7 @@ export function alignFixedContent(fixed: string, source: string): string {
 	throw new Error(`${fixed} 的固顶优先级对齐未能在 10 轮内收敛`);
 }
 
-// 莲道与兰道声母相同，630 保持原合同；单字、数字和空桶必须按带调音码重算。
+// 莲道按现行声母重映射兰道的 630；单字、数字和空桶按带调音码重算。
 function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
 	const parent = read("snow_jiandao.fixed.txt");
 	const parentAlgebra = new SpellingAlgebra(
@@ -861,9 +861,23 @@ function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
 		}
 	}
 	const letterCodes = new Set(keytaoLetterByCode.keys());
+	const shortcuts = new Map<string, string[]>();
+	for (const line of sections.get("630") ?? []) {
+		const [code, candidates] = line.split("\t");
+		for (const word of candidates.split(" ")) {
+			const reading = (readings.get([...word][0]) ?? []).find((value) =>
+				parentAlgebra.apply(value).startsWith(code[0]),
+			);
+			if (!reading) throw new Error(`630 无法还原声母：${code} ${word}`);
+			const nextCode = algebra.apply(reading)[0] + code.slice(1);
+			const values = shortcuts.get(nextCode) ?? [];
+			if (!values.includes(word)) values.push(word);
+			shortcuts.set(nextCode, values);
+		}
+	}
 	return [
-		"# 冰雪莲道 CR-LAN-f19a0ad1dc；由 scripts/align-fixed-with-sipin.ts 生成。",
-		"# 声母与 630 沿用冰雪兰道；单字、数字及二简词按带调音码重算，字母大写第二、小写第三。",
+		"# 冰雪莲道 CR-REF-7e650f7a4c；由 scripts/align-fixed-with-sipin.ts 生成。",
+		"# 按现行声母重映射冰雪兰道 630；单字、数字及二简词按带调音码重算，字母大写第二、小写第三。",
 		"# 一级简码",
 		...[...ones].sort().map(([code, word]) => `${code}\t${word}`),
 		"# 单字",
@@ -877,7 +891,9 @@ function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
 			.sort()
 			.map(([code, word]) => `${code}\t${word}`),
 		"# 630",
-		...(sections.get("630") ?? []),
+		...[...shortcuts]
+			.sort()
+			.map(([code, words]) => `${code}\t${words.join(" ")}`),
 		"# 字母",
 		...[...keytaoLetterByCode].map(
 			([code, letter]) =>

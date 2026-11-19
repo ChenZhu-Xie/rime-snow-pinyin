@@ -3,7 +3,7 @@
 
 # 声调合入第二码；后续仅使用冰雪兰道的形笔辅。
 jiandao_toned_algebra:
-  # CR-LAN-f19a0ad1dc；由 scripts/generate-jiandao-toned.ts 生成。
+  # CR-REF-7e650f7a4c；由 scripts/generate-jiandao-toned.ts 生成。
   - erase/^(hm|hng|m|n|ng|ê)\d$/
   - xform/(^| )r5(?= |$)/$1er5/
   - xform/(^| )wang(?=\d)/$1Wuang/
@@ -36,11 +36,11 @@ jiandao_toned_algebra:
   - xform/iu(?=\d)/iou/
   - xform/un(?=\d)/uen/
   - xform/(^| )(?=a)/$1R/
-  - xform/(^| )(?=e)/$1C/
-  - xform/(^| )(?=o)/$1C/
+  - xform/(^| )(?=e)/$1R/
+  - xform/(^| )(?=o)/$1R/
   - xform/(^| )ch/$1S/
-  - xform/(^| )sh/$1L/
-  - xform/(^| )zh/$1K/
+  - xform/(^| )sh/$1K/
+  - xform/(^| )zh/$1E/
   - xform/(^| )b/$1B/
   - xform/(^| )c/$1C/
   - xform/(^| )d/$1D/
@@ -49,13 +49,13 @@ jiandao_toned_algebra:
   - xform/(^| )h/$1H/
   - xform/(^| )j/$1J/
   - xform/(^| )k/$1P/
-  - xform/(^| )l/$1E/
+  - xform/(^| )l/$1L/
   - xform/(^| )m/$1M/
   - xform/(^| )n/$1N/
   - xform/(^| )p/$1P/
   - xform/(^| )q/$1Q/
   - xform/(^| )r/$1R/
-  - xform/(^| )s/$1S/
+  - xform/(^| )s/$1C/
   - xform/(^| )t/$1T/
   - xform/(^| )x/$1X/
   - xform/(^| )z/$1Z/
@@ -64,19 +64,19 @@ jiandao_toned_algebra:
   - xform/iang3(?= |$)/H/
   - xform/iang4(?= |$)/Y/
   - xform/iang5(?= |$)/Z/
-  - xform/iong1(?= |$)/M/
+  - xform/iong1(?= |$)/N/
   - xform/iong2(?= |$)/J/
   - xform/iong3(?= |$)/J/
   - xform/iong4(?= |$)/P/
-  - xform/iong5(?= |$)/M/
+  - xform/iong5(?= |$)/N/
   - xform/uang1(?= |$)/Z/
   - xform/uang2(?= |$)/H/
   - xform/uang3(?= |$)/H/
   - xform/uang4(?= |$)/Y/
   - xform/uang5(?= |$)/Z/
   - xform/ueng1(?= |$)/C/
-  - xform/ueng2(?= |$)/K/
-  - xform/ueng3(?= |$)/K/
+  - xform/ueng2(?= |$)/L/
+  - xform/ueng3(?= |$)/L/
   - xform/ueng4(?= |$)/T/
   - xform/ueng5(?= |$)/C/
   - xform/ang1(?= |$)/Z/
@@ -85,115 +85,115 @@ jiandao_toned_algebra:
   - xform/ang4(?= |$)/Y/
   - xform/ang5(?= |$)/Z/
   - xform/eng1(?= |$)/C/
-  - xform/eng2(?= |$)/K/
-  - xform/eng3(?= |$)/K/
+  - xform/eng2(?= |$)/L/
+  - xform/eng3(?= |$)/L/
   - xform/eng4(?= |$)/T/
   - xform/eng5(?= |$)/C/
-  - xform/ian1(?= |$)/N/
-  - xform/ian2(?= |$)/L/
-  - xform/ian3(?= |$)/L/
+  - xform/ian1(?= |$)/M/
+  - xform/ian2(?= |$)/K/
+  - xform/ian3(?= |$)/K/
   - xform/ian4(?= |$)/Q/
-  - xform/ian5(?= |$)/N/
+  - xform/ian5(?= |$)/M/
   - xform/iao1(?= |$)/C/
-  - xform/iao2(?= |$)/K/
-  - xform/iao3(?= |$)/K/
+  - xform/iao2(?= |$)/L/
+  - xform/iao3(?= |$)/L/
   - xform/iao4(?= |$)/T/
   - xform/iao5(?= |$)/C/
-  - xform/ing1(?= |$)/M/
+  - xform/ing1(?= |$)/Z/
   - xform/ing2(?= |$)/G/
   - xform/ing3(?= |$)/G/
   - xform/ing4(?= |$)/E/
-  - xform/ing5(?= |$)/M/
-  - xform/iou1(?= |$)/N/
+  - xform/ing5(?= |$)/Z/
+  - xform/iou1(?= |$)/M/
   - xform/iou2(?= |$)/S/
   - xform/iou3(?= |$)/S/
   - xform/iou4(?= |$)/E/
-  - xform/iou5(?= |$)/N/
-  - xform/ong1(?= |$)/M/
+  - xform/iou5(?= |$)/M/
+  - xform/ong1(?= |$)/N/
   - xform/ong2(?= |$)/J/
   - xform/ong3(?= |$)/J/
   - xform/ong4(?= |$)/P/
-  - xform/ong5(?= |$)/M/
+  - xform/ong5(?= |$)/N/
   - xform/uai1(?= |$)/Z/
   - xform/uai2(?= |$)/H/
   - xform/uai3(?= |$)/H/
   - xform/uai4(?= |$)/Y/
   - xform/uai5(?= |$)/Z/
-  - xform/uan1(?= |$)/N/
-  - xform/uan2(?= |$)/L/
-  - xform/uan3(?= |$)/L/
+  - xform/uan1(?= |$)/M/
+  - xform/uan2(?= |$)/K/
+  - xform/uan3(?= |$)/K/
   - xform/uan4(?= |$)/Q/
-  - xform/uan5(?= |$)/N/
-  - xform/uei1(?= |$)/M/
+  - xform/uan5(?= |$)/M/
+  - xform/uei1(?= |$)/N/
   - xform/uei2(?= |$)/D/
   - xform/uei3(?= |$)/D/
   - xform/uei4(?= |$)/W/
-  - xform/uei5(?= |$)/M/
-  - xform/uen1(?= |$)/N/
+  - xform/uei5(?= |$)/N/
+  - xform/uen1(?= |$)/M/
   - xform/uen2(?= |$)/S/
   - xform/uen3(?= |$)/S/
   - xform/uen4(?= |$)/E/
-  - xform/uen5(?= |$)/N/
-  - xform/van1(?= |$)/N/
-  - xform/van2(?= |$)/L/
-  - xform/van3(?= |$)/L/
+  - xform/uen5(?= |$)/M/
+  - xform/van1(?= |$)/M/
+  - xform/van2(?= |$)/K/
+  - xform/van3(?= |$)/K/
   - xform/van4(?= |$)/Q/
-  - xform/van5(?= |$)/N/
+  - xform/van5(?= |$)/M/
   - xform/ai1(?= |$)/Z/
   - xform/ai2(?= |$)/H/
   - xform/ai3(?= |$)/H/
   - xform/ai4(?= |$)/Y/
   - xform/ai5(?= |$)/Z/
-  - xform/an1(?= |$)/N/
-  - xform/an2(?= |$)/L/
-  - xform/an3(?= |$)/L/
+  - xform/an1(?= |$)/M/
+  - xform/an2(?= |$)/K/
+  - xform/an3(?= |$)/K/
   - xform/an4(?= |$)/Q/
-  - xform/an5(?= |$)/N/
+  - xform/an5(?= |$)/M/
   - xform/ao1(?= |$)/C/
-  - xform/ao2(?= |$)/K/
-  - xform/ao3(?= |$)/K/
+  - xform/ao2(?= |$)/L/
+  - xform/ao3(?= |$)/L/
   - xform/ao4(?= |$)/T/
   - xform/ao5(?= |$)/C/
-  - xform/ei1(?= |$)/M/
+  - xform/ei1(?= |$)/N/
   - xform/ei2(?= |$)/D/
   - xform/ei3(?= |$)/D/
   - xform/ei4(?= |$)/W/
-  - xform/ei5(?= |$)/M/
-  - xform/en1(?= |$)/N/
+  - xform/ei5(?= |$)/N/
+  - xform/en1(?= |$)/M/
   - xform/en2(?= |$)/S/
   - xform/en3(?= |$)/S/
   - xform/en4(?= |$)/E/
-  - xform/en5(?= |$)/N/
-  - xform/er1(?= |$)/N/
+  - xform/en5(?= |$)/M/
+  - xform/er1(?= |$)/C/
   - xform/er2(?= |$)/L/
   - xform/er3(?= |$)/L/
-  - xform/er4(?= |$)/Q/
-  - xform/er5(?= |$)/N/
+  - xform/er4(?= |$)/T/
+  - xform/er5(?= |$)/C/
   - xform/ia1(?= |$)/X/
   - xform/ia2(?= |$)/S/
   - xform/ia3(?= |$)/S/
   - xform/ia4(?= |$)/R/
   - xform/ia5(?= |$)/X/
-  - xform/ie1(?= |$)/M/
+  - xform/ie1(?= |$)/N/
   - xform/ie2(?= |$)/D/
   - xform/ie3(?= |$)/D/
   - xform/ie4(?= |$)/W/
-  - xform/ie5(?= |$)/M/
-  - xform/in1(?= |$)/B/
-  - xform/in2(?= |$)/G/
-  - xform/in3(?= |$)/G/
+  - xform/ie5(?= |$)/N/
+  - xform/in1(?= |$)/N/
+  - xform/in2(?= |$)/J/
+  - xform/in3(?= |$)/J/
   - xform/in4(?= |$)/P/
-  - xform/in5(?= |$)/B/
+  - xform/in5(?= |$)/N/
   - xform/io1(?= |$)/B/
   - xform/io2(?= |$)/G/
   - xform/io3(?= |$)/G/
   - xform/io4(?= |$)/P/
   - xform/io5(?= |$)/B/
-  - xform/ou1(?= |$)/N/
+  - xform/ou1(?= |$)/M/
   - xform/ou2(?= |$)/S/
   - xform/ou3(?= |$)/S/
   - xform/ou4(?= |$)/E/
-  - xform/ou5(?= |$)/N/
+  - xform/ou5(?= |$)/M/
   - xform/ua1(?= |$)/X/
   - xform/ua2(?= |$)/S/
   - xform/ua3(?= |$)/S/
@@ -204,26 +204,26 @@ jiandao_toned_algebra:
   - xform/uo3(?= |$)/G/
   - xform/uo4(?= |$)/P/
   - xform/uo5(?= |$)/B/
-  - xform/ve1(?= |$)/M/
+  - xform/ve1(?= |$)/N/
   - xform/ve2(?= |$)/D/
   - xform/ve3(?= |$)/D/
   - xform/ve4(?= |$)/W/
-  - xform/ve5(?= |$)/M/
-  - xform/vn1(?= |$)/B/
-  - xform/vn2(?= |$)/G/
-  - xform/vn3(?= |$)/G/
+  - xform/ve5(?= |$)/N/
+  - xform/vn1(?= |$)/N/
+  - xform/vn2(?= |$)/J/
+  - xform/vn3(?= |$)/J/
   - xform/vn4(?= |$)/P/
-  - xform/vn5(?= |$)/B/
+  - xform/vn5(?= |$)/N/
   - xform/a1(?= |$)/X/
   - xform/a2(?= |$)/S/
   - xform/a3(?= |$)/S/
   - xform/a4(?= |$)/R/
   - xform/a5(?= |$)/X/
-  - xform/e1(?= |$)/M/
+  - xform/e1(?= |$)/N/
   - xform/e2(?= |$)/D/
   - xform/e3(?= |$)/D/
   - xform/e4(?= |$)/W/
-  - xform/e5(?= |$)/M/
+  - xform/e5(?= |$)/N/
   - xform/i1(?= |$)/B/
   - xform/i2(?= |$)/F/
   - xform/i3(?= |$)/F/
@@ -234,14 +234,14 @@ jiandao_toned_algebra:
   - xform/o3(?= |$)/G/
   - xform/o4(?= |$)/P/
   - xform/o5(?= |$)/B/
-  - xform/u1(?= |$)/M/
+  - xform/u1(?= |$)/N/
   - xform/u2(?= |$)/J/
   - xform/u3(?= |$)/J/
   - xform/u4(?= |$)/P/
-  - xform/u5(?= |$)/M/
+  - xform/u5(?= |$)/N/
   - xform/v1(?= |$)/C/
-  - xform/v2(?= |$)/K/
-  - xform/v3(?= |$)/K/
+  - xform/v2(?= |$)/L/
+  - xform/v3(?= |$)/L/
   - xform/v4(?= |$)/T/
   - xform/v5(?= |$)/C/
   - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/

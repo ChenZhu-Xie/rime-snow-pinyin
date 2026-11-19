@@ -19,7 +19,7 @@ test("double-pinyin schemes isolate fixed-code databases while sharing snow_piny
 		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_rc26"],
 		["snow_jiandao_classic.schema.yaml", "snow_jiandao_classic"],
 		["snow_sanpin_classic.schema.yaml", "snow_sanpin_classic"],
-		["snow_jiandao_toned.schema.yaml", "snow_jiandao_toned_cr_lan_f19a0ad1dc"],
+		["snow_jiandao_toned.schema.yaml", "snow_jiandao_toned_cr_ref_7e650f7a4c"],
 	]);
 	assert.equal(new Set(fixedDatabases.values()).size, fixedDatabases.size);
 	for (const [file, database] of fixedDatabases) {

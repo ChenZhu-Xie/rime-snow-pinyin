@@ -16,12 +16,12 @@ local env = {
     ["入"] = "uo", ["法"] = "avoa", ["人"] = "i",
     ["工"] = "viv", ["智"] = "uvoi", ["能"] = "aoua",
   },
-  pair_standard_order = "21", three_word_order = "213", four_word_order = "14",
+  pair_standard_order = "21", three_word_order = "231", four_word_order = "14",
   pair_aux_cache = {}, pair_aux_cache_size = 0,
   engine = { schema = { schema_id = "snow_jiandao_toned" } },
 }
 local state = {
-  id = "snow_jiandao_toned", current = "bmxd", is_pinyin = false,
+  id = "snow_jiandao_toned", current = "bzxd", is_pinyin = false,
   jiandao_active = true, show_chaifen = false,
 }
 local function match(text, input, suffix, expected)
@@ -31,14 +31,14 @@ local function match(text, input, suffix, expected)
 end
 match("雪", "xd", "voav", true)
 match("雪", "xd", "voava", false)
-match("冰雪", "bmxd", "vo", true)
-match("冰雪", "bmxd", "ov", false)
-match("输入法", "lrf", "uva", true)
-match("输入法", "lrf", "uai", false)
-match("人工智能", "rgkn", "ia", true)
-match("人工智能", "rgkn", "va", false)
+match("冰雪", "bzxd", "vo", true)
+match("冰雪", "bzxd", "ov", false)
+match("输入法", "krf", "uav", true)
+match("输入法", "krf", "uai", false)
+match("人工智能", "rgen", "ia", true)
+match("人工智能", "rgen", "va", false)
 state.initial_pair = true
-state.current = "rb"
+state.current = "rf"
 local accepted, _, comment = filter.handle_candidate("冰雪", "ovv", env, state)
 assert(accepted and comment == "〔形₁₁₂₂ o〕")
 assert(not filter.handle_candidate("冰雪", "vu", env, state))
@@ -50,12 +50,12 @@ local function positions(input, length, expected)
   assert(#actual == #expected, input)
   for index, value in ipairs(expected) do assert(actual[index] == value, input .. " " .. index) end
 end
-positions("bmxdv", 2, { 2, 5 })
-positions("bmxdvo", 2, { 6, 5 })
-positions("rbov", 2, { 4, 2 })
-positions("rbovvu", 2, { 4, 6 })
-positions("lrfuia", 3, { 5, 4, 6 })
-positions("rgknia", 4, { 5, 2, 3, 6 })
+positions("bzxdv", 2, { 2, 5 })
+positions("bzxdvo", 2, { 6, 5 })
+positions("rfov", 2, { 4, 2 })
+positions("rfovvu", 2, { 4, 6 })
+positions("krfuav", 3, { 6, 4, 5 })
+positions("rgenia", 4, { 5, 2, 3, 6 })
 -- 大写补韵沿用兰道，输入长度不能被误当成第三个四字词形辅而写入 nil 下标。
-positions("rSgMkRn", 4, { 5, 2, 3, 6 })
-print("冰雪莲道：真实形辅过滤路径、21/213/14、声声反序逐字两辅和字位导航通过")
+positions("rSgNeRn", 4, { 5, 2, 3, 6 })
+print("冰雪莲道：真实形辅过滤路径、21/231/14、声声反序逐字两辅和字位导航通过")

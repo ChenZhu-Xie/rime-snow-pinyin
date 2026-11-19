@@ -34,30 +34,27 @@ const fixed = new Map(
 		.map((l) => l.split("\t") as [string, string]),
 );
 
-test("冰雪莲道逐条复现 CR-LAN-f19a0ad1dc 的 1407 个音节，测量新旧占桶", () => {
-	assert.equal(mapping.id, "CR-LAN-f19a0ad1dc");
+test("冰雪莲道逐条复现 CR-REF-7e650f7a4c 的 1407 个音节，测量新旧占桶", () => {
+	assert.equal(mapping.id, "CR-REF-7e650f7a4c");
 	assert.deepEqual(mapping.capacity, [21, 21]);
-	assert.equal(mapping.memoryLower, 24);
+	assert.equal(mapping.memoryLower, 21);
 	assert.equal(mapping.ordinaryInitialDisplacements, 2);
 	assert.equal(Object.keys(mapping.referenceTonedCodes).length, 1407);
 	for (const [reading, code] of Object.entries(mapping.referenceTonedCodes))
 		assert.equal(algebra.apply(reading), code, reading);
-	assert.equal(new Set(Object.values(mapping.referenceTonedCodes)).size, 432);
-	assert.equal(mapping.occupiedBuckets, 432);
-	assert.equal(mapping.previousLayoutAudit.occupiedBuckets, 427);
-	assert.equal(mapping.previousLayoutAudit.vacantBuckets, 14);
+	assert.equal(new Set(Object.values(mapping.referenceTonedCodes)).size, 433);
+	assert.equal(mapping.occupiedBuckets, 433);
+	assert.equal(mapping.previousLayoutAudit.occupiedBuckets, 432);
+	assert.equal(mapping.previousLayoutAudit.vacantBuckets, 9);
 });
 
-test("莲道保持兰道声母和五辅语义，三个声调区合入第二码", () => {
-	const parent = JSON.parse(read("config/shenyun-21x21-mapping.json")) as {
-		initialMap: Record<string, string>;
-	};
-	for (const [head, key] of Object.entries(mapping.firstKeys))
-		assert.equal(
-			key,
-			parent.initialMap[head.startsWith("zero-") ? head.slice(5) : head],
-			head,
-		);
+test("莲道使用目标声母并保持五辅语义，三个声调区合入第二码", () => {
+	assert.deepEqual(
+		["zh", "ch", "sh", "s", "l", "k", "zero-A", "zero-E", "zero-O"].map(
+			(head) => mapping.firstKeys[head],
+		),
+		["E", "S", "K", "C", "L", "P", "R", "R", "R"],
+	);
 	const semantics = loadAuxiliarySemantics("21x21");
 	assert.equal(
 		mapping.shapeKeysByMeaning.toLowerCase(),
@@ -67,19 +64,19 @@ test("莲道保持兰道声母和五辅语义，三个声调区合入第二码",
 	assert.equal(mapping.toneDigitsByShapeMeaning, "42310");
 	assert.deepEqual(
 		[1, 2, 3, 4, 5].map((t) => algebra.apply(`bing${t}`)),
-		["bm", "bg", "bg", "be", "bm"],
+		["bz", "bg", "bg", "be", "bz"],
 	);
-	assert.equal(algebra.apply("pin1"), "pb");
+	assert.equal(algebra.apply("pin1"), "pn");
 	assert.equal(algebra.apply("qia1"), "qx");
-	assert.equal(algebra.apply("qiu1"), "qn");
+	assert.equal(algebra.apply("qiu1"), "qm");
 	assert.deepEqual(mapping.wordAuxiliaryPolicy, {
 		word2: "21",
-		word3: "213",
+		word3: "231",
 		word4: "14",
 	});
 });
 
-test("莲道按运行时频率口径回收十个声声空桶，字母占用码始终保留", () => {
+test("莲道按运行时频率口径回收八个声声空桶，字母占用码始终保留", () => {
 	const occupied = new Set<string>();
 	for (const line of read("snow_pinyin.dict.yaml").split(/\r?\n/u)) {
 		const [character, spelling, weight] = line.split("\t");
@@ -92,7 +89,7 @@ test("莲道按运行时频率口径回收十个声声空桶，字母占用码�
 			.flatMap((a) => [...keys].map((b) => a + b))
 			.filter((c) => !occupied.has(c))
 			.sort(),
-		["fb", "ff", "gf", "hf", "lg", "rb", "rf", "rg", "rm", "wf"],
+		["fb", "ff", "gf", "hf", "kg", "rf", "sg", "wf"],
 	);
 	const schema = load(read("snow_jiandao_toned.schema.yaml")) as Record<
 		string,
@@ -102,12 +99,12 @@ test("莲道按运行时频率口径回收十个声声空桶，字母占用码�
 	assert.equal(schema.jianpin.prism, "snow_jiandao_toned_jianpin");
 	assert.equal(schema.initial_pair.prism, "snow_jiandao_toned_jianpin");
 	assert.equal(schema.patch["translator/word_auxiliary_order"], "21");
-	assert.equal(schema.patch["translator/three_word_auxiliary_order"], "213");
+	assert.equal(schema.patch["translator/three_word_auxiliary_order"], "231");
 	assert.equal(schema.patch["translator/four_word_auxiliary_order"], "14");
 	assert.equal(schema.patch["translator/shape_mapping"], undefined);
 	assert.equal(
 		schema.patch["translator/user_dict_name"],
-		"snow_jiandao_toned_cr_lan_f19a0ad1dc",
+		"snow_jiandao_toned_cr_ref_7e650f7a4c",
 	);
 	assert.ok(
 		read("lua/snow/keymaps/snow_jiandao_toned.svg").includes(mapping.id),
@@ -131,7 +128,7 @@ test("莲道按运行时频率口径回收十个声声空桶，字母占用码�
 	}
 });
 
-test("莲道重算固顶音码、保留兰道全部 630，生成结果可重复", () => {
+test("莲道重算固顶音码、按声母重映射兰道全部 630，生成结果可重复", () => {
 	assert.equal(
 		alignFixedContent("snow_jiandao_toned.fixed.txt", fixedSource),
 		fixedSource,
@@ -141,10 +138,43 @@ test("莲道重算固顶音码、保留兰道全部 630，生成结果可重复"
 		.split("# 单字")[0]
 		.trim();
 	const current630 = fixedSource.split("# 630")[1].split("# 字母")[0].trim();
-	assert.equal(current630, parent630);
+	const shortcuts = new Map(
+		current630.split("\n").map((line) => line.split("\t") as [string, string]),
+	);
+	const parentAlgebra = new SpellingAlgebra(
+		rootPath("snow_jiandao.schema.yaml"),
+		"speller/algebra",
+	);
+	const readings = new Map<string, string[]>();
+	for (const line of read("scripts/data/tygf-pinyin.tsv").trim().split("\n")) {
+		const [character, reading] = line.split("\t");
+		const values = readings.get(character) ?? [];
+		values.push(reading);
+		readings.set(character, values);
+	}
+	for (const line of parent630.split("\n")) {
+		const [code, candidates] = line.split("\t");
+		for (const word of candidates.split(" ")) {
+			const reading = readings
+				.get([...word][0])
+				?.find((reading) => parentAlgebra.apply(reading).startsWith(code[0]));
+			assert.ok(reading, word);
+			const nextCode = algebra.apply(reading)[0] + code.slice(1);
+			assert.ok(
+				shortcuts.get(nextCode)?.split(" ").includes(word),
+				`${word}: ${code} → ${nextCode}`,
+			);
+		}
+	}
+	assert.equal(
+		new Set([...shortcuts.values()].flatMap((words) => words.split(" "))).size,
+		new Set(
+			parent630.split("\n").flatMap((line) => line.split("\t")[1].split(" ")),
+		).size,
+	);
 	assert.equal(fixed.get("d"), "的");
-	assert.equal(fixed.get("pb"), "拼");
+	assert.equal(fixed.get("pn"), "哭");
 	assert.equal(fixed.get("xdv"), "雪");
-	assert.equal(fixed.get("rb"), "日本");
+	assert.equal(fixed.get("sg"), "成功");
 	assert.deepEqual(fixed.get("xd")?.split(" "), ["写", "O", "o"]);
 });

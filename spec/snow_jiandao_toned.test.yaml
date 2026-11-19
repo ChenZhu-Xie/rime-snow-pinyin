@@ -26,37 +26,37 @@ script: |
 deploy:
   popping:
     tests:
-      # CR-LAN 的音节和纯形辅：冰 bm、雪 xd、拼 pb；QZ 已改为 qiang1。
-      - send: bm
+      # CR-REF 的音节和纯形辅：冰 bz、雪 xd、拼 pn；QZ 已改为 qiang1。
+      - send: bz
         assert: has("冰")
       - send: xd
         assert: cand[1].text == "写" and cand[2].text == "O" and cand[3].text == "o"
-      - send: pb
-        assert: cand[1].text == "拼"
+      - send: pn
+        assert: cand[1].text == "哭" and has("拼")
       - send: qx
         assert: cand[1].text == "掐"
-      - send: qn
+      - send: qm
         assert: has("秋")
       - send: qz
         assert: has("枪") and not has("掐") and not has("秋")
-      - send: bmxd
+      - send: bzxd
         assert: cand[1].text == "冰雪" or error(probe())
       # 二字 21：雪首辅 v、冰首辅 o，六字母后不能再追加形辅。
-      - send: bmxdvo
-        assert: (cand[1].text == "表面兄弟" and cand[3].text == "冰雪") or error(probe())
-      - send: bmxdvoa
-        assert: (cand[1].text == "表面兄弟" and cand[3].text == "冰雪" and not preedit:find("voa", 1, true)) or error(probe())
-      # 三字 213：入 u、输 v、法 a；四字 14：人 i、能 a。
-      - send: lrfuva
+      - send: bzxdvo
+        assert: (cand[1].text == "冰雪") or error(probe())
+      - send: bzxdvoa
+        assert: (cand[1].text == "冰雪" and not preedit:find("voa", 1, true)) or error(probe())
+      # 三字 231：入 u、法 a、输 v；四字 14：人 i、能 a。
+      - send: krfuav
         assert: cand[1].text == "输入法"
-      - send: rgknia
+      - send: rgenia
         assert: cand[1].text == "人工智能"
       # 单字最多追加四辅，雪的实际形码为 voav。
       - send: xdvoav
         assert: has("雪")
       - send: xdvoava
         assert: has("雪") and not preedit:find("voava", 1, true)
-      # 630 仍逐字沿用兰道；每类固顶仅选一例。
+      # 630 按新声母重映射兰道；每类固顶仅选一例。
       - send: ba
         assert: cand[1].text == "不能"
       - send: d
@@ -77,9 +77,9 @@ deploy:
         assert: (cand[1].text == "软风" and cand[2].text == "软饭") or error(probe())
       - send: rfvauao
         assert: (cand[1].text == "软风" and cand[2].text == "软饭" and not preedit:find("vauao", 1, true)) or error(probe())
-      # 固顶二简词也走同一形辅；日本是 rb，日 oi、本 vi。
-      - send: rboivi
-        assert: cand[1].text == "日本" or error(probe())
+      # 固顶二简词也走反序两辅；说 oa、过 vi。
+      - send: kgoavi
+        assert: cand[1].text == "说过" or error(probe())
       # hf 空桶同时容纳回复和合法，按第一字的形辅区分。
       - send: hfi
         assert: has("合法")
@@ -88,27 +88,27 @@ deploy:
   mixed_spelling:
     tests:
       # 大写第二码补韵继续沿用兰道；三字简拼留在 abc 段。
-      - send: lMrPfS
+      - send: kNrPfS
         assert: has("输入法")
   top:
     tests:
       # 二字词四码顶、三字词加辅后顶、单字加辅后顶。
-      - send: bmxdpm
+      - send: bzxdpn
         assert: commit == "冰雪" and has("扑")
-      - send: bmxdvobmxdvo
+      - send: bzxdvobzxdvo
         assert: commit == "冰雪" and cand[1].text == "冰雪"
-      - send: lrfuvabmxdvo
+      - send: krfuavbzxdvo
         assert: commit == "输入法" and cand[1].text == "冰雪"
-      - send: xdvpb
-        assert: commit == "雪" and cand[1].text == "拼"
-      - send: bmxdvo;
+      - send: xdvpn
+        assert: commit == "雪" and cand[1].text == "哭"
+      - send: bzxdvo;
         assert: commit == "冰雪的"
-      - send: bmxdvo/
+      - send: bzxdvo/
         assert: commit == "冰雪了"
   buffered:
     tests:
       # 目标已在首选时停止补辅，避免把后置后的新首选学进用户词典。
-      - send: "o bmxdlrf  bxlrF"
+      - send: "o bzxdkrf  bxkrF"
         assert: (cand[1] ~= nil and cand[1].text == "冰雪输入法") or error(probe())
   advanced:
     tests:

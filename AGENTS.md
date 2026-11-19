@@ -17,7 +17,7 @@
 
 ## 冰雪莲道
 
-- `snow_jiandao_toned` 使用冻结的 `CR-LAN-f19a0ad1dc` 带调 21×21 布局和纯形辅序 `21/213/14`；其余逻辑沿用冰雪兰道。声声空桶按反序 `12` 逐字取两辅至六码。来源、空桶口径和验证命令见 [docs/liandao.md](docs/liandao.md)。
+- `snow_jiandao_toned` 使用冻结的 `CR-REF-7e650f7a4c` 带调 21×21 布局和纯形辅序 `21/231/14`；其余逻辑沿用冰雪兰道。声声空桶按反序 `12` 逐字取两辅至六码。来源、空桶口径和验证命令见 [docs/liandao.md](docs/liandao.md)。
 
 ## 五辅键语义
 

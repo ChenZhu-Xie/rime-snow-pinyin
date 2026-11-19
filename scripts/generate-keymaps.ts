@@ -470,8 +470,8 @@ const diagrams: Diagram[] = [
 	},
 	{
 		filename: "snow_jiandao_toned",
-		title: "冰雪莲道 · CR-LAN-f19a0ad1dc",
-		subtitle: "带调 21×21：四声上排 · 二三声中排 · 一轻声下排 · 形辅 21/213/14",
+		title: "冰雪莲道 · CR-REF-7e650f7a4c",
+		subtitle: "带调 21×21：四声上排 · 二三声中排 · 一轻声下排 · 形辅 21/231/14",
 		mapping: tonedMars,
 		finalLabels: tonedMarsFinalLabels,
 		finalColors: tonedMarsFinalColors,

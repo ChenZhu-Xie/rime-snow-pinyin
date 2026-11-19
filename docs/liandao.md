@@ -1,12 +1,12 @@
 # 冰雪莲道
 
-冰雪莲道（`snow_jiandao_toned`）使用 benchmark 的「CR-LAN-f19a0ad1dc · 带调键道 · 固定兰道声母 · 稳健第一辅序」布局，覆盖旧 MARS10 布局。声调合入双拼第二码，后续只补形笔辅；形辅映射、630、飞花／飞码式四码顶、缓冲造词、大写补韵、反查、候选处理和快捷键沿用冰雪兰道。
+冰雪莲道（`snow_jiandao_toned`）使用 benchmark 的「CR-REF-7e650f7a4c · 带调键道 · M21 · 默认/加倍综合改良」布局，替换此前的 CR-LAN-f19a0ad1dc 生产布局。声调合入双拼第二码，后续只补形笔辅；形辅映射、630、飞花／飞码式四码顶、缓冲造词、大写补韵、反查、候选处理和快捷键沿用冰雪兰道。
 
 ## 冻结来源
 
-来源为 `more-14-different/shuangpin-layout-benchmark` 的提交 `82dbcb9b9558f78142615aa5efd6a0b3715c3cd1`。研究布局见 `research/notes/2026-11-17-cr-lan-f19-stability-finalists.json`，页面码表见 `a7_CKT_R11_integrated_materials/cr_lan_f19/CR-LAN-f19a0ad1dc.fixture.json`，发布辅序审计见 `research/notes/2026-11-17-cr-lan-f19-r11-columns.json`。本仓库的冻结映射、来源文件 SHA-256 和独立的 1,407 条带调音节码表保存在 [snow-jiandao-toned-mapping.json](../config/snow-jiandao-toned-mapping.json)，生成与 CI 不依赖外部仓库。
+来源为 `more-14-different/shuangpin-layout-benchmark` 的提交 `10f8aa35dc57bb1c53495645f4945037ad45f3e0`。以用户指定的 `a7_CKT_R11.html` 内嵌发布记录为准，交叉核对 `a7_CKT_R11_integrated_materials/recent_cr_v52/CR-REF-7e650f7a4c.fixture.json` 和同目录的 `.native.json`。冻结映射、来源文件 SHA-256 和独立的 1,407 条带调音节码表保存在 [snow-jiandao-toned-mapping.json](../config/snow-jiandao-toned-mapping.json)，生成与 CI 不依赖外部仓库。
 
-普通声母与冰雪兰道完全一致，包括 `l→E`、`k→P`，`zh/ch/sh→K/S/L`，A 零声母用 R，E/O 零声母用 C，W/Y 载体保持原键。研究记忆口径 lower/guard 为 `24/25`、普通声母位移 D 为 `2`、纯形辅 CKT v5.1 为 `9.107001929844568`。
+普通声母除 `k→P`、`s→C` 外保留原键，`zh/ch/sh→E/S/K`；A/E/O 零声母统一用 R，W/Y 载体保持原键。研究记忆口径 lower/guard 为 `21/24`、普通声母位移 D 为 `2`；纯形辅 CKT v5.1 为 `9.127012207314616`，v5.2 为 `9.132009149242153`。页面最终发布辅序为 `21/231/14`；fixture 顶层的 `policy` 是研究基线，生产采用 `publication.wordAuxiliaryPolicy` 和 native 合同中一致的发布辅序。
 
 ## 带调布局
 
@@ -15,17 +15,17 @@
 | 韵组 | 所含韵母 | 四声 | 二、三声 | 一声、轻声 |
 | --- | --- | --- | --- | --- |
 | a | a、ia、ua | R | S | X |
-| en/ou | en、uen、ou、iou | E | S | N |
-| ing | ing | E | G | M |
-| ao/eng/ü | ao、iao、eng、ueng、ü | T | K | C |
-| e/ei | e、ie、üe、ei、uei | W | D | M |
-| ong/u | ong、iong、u | P | J | M |
-| in/ün/o | in、ün、o、io、uo | P | G | B |
+| en/ou | en、uen、ou、iou | E | S | M |
+| ing | ing | E | G | Z |
+| ao/eng/er/ü | ao、iao、eng、ueng、er、ü | T | L | C |
+| e/ei | e、ie、üe、ei、uei | W | D | N |
+| in/ün/ong/u | in、ün、ong、iong、u | P | J | N |
+| o | o、io、uo | P | G | B |
 | i | i | R | F | B |
 | ai/ang | ai、uai、ang、iang、uang | Y | H | Z |
-| an/er | an、ian、uan、üan、er | Q | L | N |
+| an | an、ian、uan、üan | Q | K | M |
 
-例如「冰」`bing1→bm`、「雪」`xue3→xd`、「拼」`pin1→pb`。研究音节表占用 `432/441` 桶，余 9 桶；旧 MARS10 占用 `427/441` 桶，余 14 桶。研究空桶是 `wf/rf/rb/rm/ff/fb/gf/hf/lg`；本仓库运行时忽略频率 0/1 的大字集兜底读音，另可回收 `rg`，共 10 个声声桶。两种口径分别回归，不能把研究空桶数直接当成实际可用桶数。
+例如「冰」`bing1→bz`、「雪」`xue3→xd`、「拼」`pin1→pn`。研究音节表占用 `433/441` 桶，余 8 桶；此前 CR-LAN 占用 `432/441` 桶，余 9 桶。新布局的研究空桶与本仓库运行时口径一致，为 `fb/ff/gf/hf/kg/rf/sg/wf`；旧布局在忽略频率 0/1 的大字集兜底读音后另可回收 `rg`，共 10 桶。两种口径分别回归。
 
 ## 形辅和码长
 
@@ -35,16 +35,16 @@
 | --- | --- | --- | --- |
 | 单字 | 声韵两码（已含调） | 本字前四辅 | 6 |
 | 二字 | 两字各取声韵 | `21`，各取首辅 | 6 |
-| 三字 | 三字各取声母 | `213`，各取首辅 | 6 |
+| 三字 | 三字各取声母 | `231`，各取首辅 | 6 |
 | 四字 | 四字各取声母 | `14`，各取首辅 | 6 |
 
-三字及以上的大写补韵沿用冰雪兰道，前三字可以用大写第二码明确音节。例如「输入法」标准码 `lrfuva`（入 u、输 v、法 a），补韵路径为 `lMrPfS`；「人工智能」为 `rgknia`（人 i、能 a）。「冰雪」为 `bmxdvo`（雪 v、冰 o）。单字、二字和声声桶的形辅上限分别为四辅、两辅、四辅；达到上限后继续按形辅不会继续增加编码。
+三字及以上的大写补韵沿用冰雪兰道，前三字可以用大写第二码明确音节。例如「输入法」标准码 `krfuav`（入 u、法 a、输 v），补韵路径为 `kNrPfS`；「人工智能」为 `rgenia`（人 i、能 a）。「冰雪」为 `bzxdvo`（雪 v、冰 o）。单字、二字和声声桶的形辅上限分别为四辅、两辅、四辅；达到上限后继续按形辅不会继续增加编码。
 
 声声空桶的二字词取标准辅序 `21` 的反序 `12`，先连续取第一字两辅，再连续取第二字两辅，总码长最多 6。比如「软饭」逐级为 `rf → rfv → rfva → rfvau → rfvaua`；这条路径不会把辅码当作第二字的带调音节。实际占用的音节和全部 26 个字母入口仍保留原用途。
 
-固顶表按带调音码重算单字、数字和空桶二简词，并完整保留冰雪兰道的 630 表；字母仍为大写第二、小写第三。固定词典数据库改为独立的 `snow_jiandao_toned_cr_lan_f19a0ad1dc`，避免旧 MARS10 的学习编码影响新布局。键位图在空输入中文模式下按 `v` 打开，桌面 SVG 和移动皮肤 PNG 同源生成。
+固顶表按带调音码重算单字、数字和空桶二简词，并按新声母重映射冰雪兰道全部 630 简词；合并声母造成的同码候选按原表顺序保留；字母仍为大写第二、小写第三。固定词典数据库改为独立的 `snow_jiandao_toned_cr_ref_7e650f7a4c`，避免旧布局的学习编码影响新布局。键位图在空输入中文模式下按 `v` 打开，桌面 SVG 和移动皮肤 PNG 同源生成。
 
-候选处理保留冰雪兰道的首选后置：目标已在较短码的首选时应直接上屏，继续补辅可能把新候选提到前面；完整六码不保证目标仍是首选。干净部署中「冰雪」在 `bmxd` 首选，而 `bmxdvo` 的首选为「表面兄弟」，「冰雪」后置到第三；`rfvaua` 的首选为「软风」，「软饭」位于第二。两条路径都用精确位次回归，缓冲造词使用已首选的短码。
+候选处理保留冰雪兰道的首选后置：目标已在较短码的首选时应直接上屏，继续补辅可能把新候选提到前面。「拼」与「哭」现在同为 `pn`，固顶依照冰雪四拼的优先级保留「哭」首选；字母 O/o 仍占 `xd` 第二、三位。「软饭」的声声路径仍为 `rfvaua`；真实候选次序由隔离部署的 Actions 回归验证。
 
 ## 生成和验证
 
