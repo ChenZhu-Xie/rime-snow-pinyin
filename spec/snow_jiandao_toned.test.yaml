@@ -43,9 +43,9 @@ deploy:
         assert: cand[1].text == "冰雪" or error(probe())
       # 二字 21：雪首辅 v、冰首辅 o，六字母后不能再追加形辅。
       - send: bzxdvo
-        assert: (cand[1].text == "冰雪") or error(probe())
+        assert: (cand[1].text == "冰鞋" and cand[2].text == "冰雪") or error(probe())
       - send: bzxdvoa
-        assert: (cand[1].text == "冰雪" and not preedit:find("voa", 1, true)) or error(probe())
+        assert: (cand[1].text == "冰鞋" and cand[2].text == "冰雪" and not preedit:find("voa", 1, true)) or error(probe())
       # 三字 231：入 u、法 a、输 v；四字 14：人 i、能 a。
       - send: krfuav
         assert: cand[1].text == "输入法"
@@ -78,6 +78,14 @@ deploy:
       - send: rfvauao
         assert: (cand[1].text == "软风" and cand[2].text == "软饭" and not preedit:find("vauao", 1, true)) or error(probe())
       # 固顶二简词也走反序两辅；说 oa、过 vi。
+      - send: kg
+        assert: cand[1].text == "说过" or error(probe())
+      - send: kgo
+        assert: has("说过") or error(probe())
+      - send: kgoa
+        assert: has("说过") or error(probe())
+      - send: kgoav
+        assert: has("说过") or error(probe())
       - send: kgoavi
         assert: cand[1].text == "说过" or error(probe())
       # hf 空桶同时容纳回复和合法，按第一字的形辅区分。

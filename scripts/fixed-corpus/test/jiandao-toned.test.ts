@@ -10,6 +10,7 @@ import { rootPath } from "../../lib/paths";
 const read = (path: string) => readFileSync(rootPath(path), "utf8");
 const mapping = JSON.parse(read("config/snow-jiandao-toned-mapping.json")) as {
 	id: string;
+	name: string;
 	capacity: number[];
 	occupiedBuckets: number;
 	memoryLower: number;
@@ -36,6 +37,7 @@ const fixed = new Map(
 
 test("冰雪莲道逐条复现 CR-REF-7e650f7a4c 的 1407 个音节，测量新旧占桶", () => {
 	assert.equal(mapping.id, "CR-REF-7e650f7a4c");
+	assert.equal(mapping.name, "冰雪莲道");
 	assert.deepEqual(mapping.capacity, [21, 21]);
 	assert.equal(mapping.memoryLower, 21);
 	assert.equal(mapping.ordinaryInitialDisplacements, 2);
