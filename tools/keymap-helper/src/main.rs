@@ -30,8 +30,10 @@ use windows_sys::Win32::Graphics::Gdi::{CreateRoundRectRgn, DeleteObject, SetWin
 use windows_sys::Win32::UI::Shell::{DefSubclassProc, RemoveWindowSubclass, SetWindowSubclass};
 #[cfg(target_os = "windows")]
 use windows_sys::Win32::UI::WindowsAndMessaging::{
-    GWL_EXSTYLE, GetWindowLongPtrW, STYLESTRUCT, SetWindowLongPtrW, WM_NCDESTROY, WM_STYLECHANGING,
-    WS_EX_APPWINDOW, WS_EX_TOOLWINDOW,
+    GWL_EXSTYLE, GWL_STYLE, GetWindowLongPtrW, STYLESTRUCT, SWP_FRAMECHANGED, SWP_NOACTIVATE,
+    SWP_NOMOVE, SWP_NOSIZE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WM_NCACTIVATE,
+    WM_NCCALCSIZE, WM_NCDESTROY, WM_NCPAINT, WM_STYLECHANGING, WS_CAPTION, WS_EX_APPWINDOW,
+    WS_EX_TOOLWINDOW, WS_MAXIMIZEBOX, WS_MINIMIZEBOX, WS_SYSMENU, WS_THICKFRAME,
 };
 #[cfg(target_os = "windows")]
 use winit::platform::windows::WindowAttributesExtWindows;
@@ -52,6 +54,11 @@ fn tool_window_style(extended_style: isize) -> isize {
 }
 
 #[cfg(target_os = "windows")]
+fn borderless_window_style(style: isize) -> isize {
+    style & !((WS_CAPTION | WS_THICKFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX) as isize)
+}
+
+#[cfg(target_os = "windows")]
 unsafe extern "system" fn tool_window_subclass(
     hwnd: HWND,
     message: u32,
@@ -61,14 +68,34 @@ unsafe extern "system" fn tool_window_subclass(
     _reference_data: usize,
 ) -> LRESULT {
     // winit rebuilds the extended style when visibility and other window flags change.
-    // Keep the tool-window contract in WM_STYLECHANGING, before the new style is applied;
+    // Keep the borderless tool-window contract in WM_STYLECHANGING, before it is applied;
     // setting it again afterwards leaves a window for tiling managers to misclassify us.
     // SAFETY: Windows supplies a writable STYLESTRUCT for WM_STYLECHANGING. This callback
     // is installed and invoked on the owning event-loop thread and holds no Rust state.
     unsafe {
-        if message == WM_STYLECHANGING && wparam as i32 == GWL_EXSTYLE {
+        if message == WM_NCCALCSIZE || message == WM_NCPAINT {
+            // winit only overrides the TRUE/NCCALCSIZE_PARAMS form. The FALSE/RECT form
+            // otherwise reaches DefWindowProc and can reserve a caption during a native
+            // move. In both forms the proposed window rect is already our client rect.
+            return 0;
+        }
+        if message == WM_NCACTIVATE {
+            // Let winit update focus/activation, while -1 asks DefWindowProc to skip
+            // non-client painting. Otherwise activating a native move can draw a caption
+            // over our pixels even though no space was reserved for it.
+            return DefSubclassProc(hwnd, message, wparam, -1);
+        }
+        if message == WM_STYLECHANGING {
             let styles = &mut *(lparam as *mut STYLESTRUCT);
-            styles.styleNew = tool_window_style(styles.styleNew as isize) as u32;
+            match wparam as i32 {
+                GWL_EXSTYLE => {
+                    styles.styleNew = tool_window_style(styles.styleNew as isize) as u32;
+                }
+                GWL_STYLE => {
+                    styles.styleNew = borderless_window_style(styles.styleNew as isize) as u32;
+                }
+                _ => {}
+            }
         } else if message == WM_NCDESTROY {
             RemoveWindowSubclass(hwnd, Some(tool_window_subclass), subclass_id);
         }
@@ -104,6 +131,34 @@ fn mark_as_tool_window(window: &Window) -> Result<(), String> {
         let error = GetLastError();
         if previous == 0 && error != ERROR_SUCCESS {
             return Err(format!("无法将键位图声明为工具窗口：系统错误 {error}"));
+        }
+
+        SetLastError(ERROR_SUCCESS);
+        let style = GetWindowLongPtrW(hwnd, GWL_STYLE);
+        let error = GetLastError();
+        if style == 0 && error != ERROR_SUCCESS {
+            return Err(format!("无法读取键位图边框样式：系统错误 {error}"));
+        }
+        SetLastError(ERROR_SUCCESS);
+        let previous = SetWindowLongPtrW(hwnd, GWL_STYLE, borderless_window_style(style));
+        let error = GetLastError();
+        if previous == 0 && error != ERROR_SUCCESS {
+            return Err(format!("无法移除键位图原生标题栏：系统错误 {error}"));
+        }
+        if SetWindowPos(
+            hwnd,
+            std::ptr::null_mut(),
+            0,
+            0,
+            0,
+            0,
+            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
+        ) == 0
+        {
+            return Err(format!(
+                "无法刷新键位图无边框窗口：系统错误 {}",
+                GetLastError()
+            ));
         }
     }
     Ok(())
@@ -1067,8 +1122,26 @@ mod tests {
 
     #[cfg(target_os = "windows")]
     #[test]
+    fn borderless_style_removes_caption_and_controls_but_preserves_visibility_and_clipping() {
+        use windows_sys::Win32::UI::WindowsAndMessaging::{WS_CLIPSIBLINGS, WS_VISIBLE};
+
+        let preserved = (WS_VISIBLE | WS_CLIPSIBLINGS) as isize;
+        let decorated = preserved
+            | (WS_CAPTION | WS_THICKFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX) as isize;
+        assert_eq!(borderless_window_style(decorated), preserved);
+        assert_eq!(borderless_window_style(preserved), preserved);
+    }
+
+    #[cfg(target_os = "windows")]
+    #[test]
     #[allow(deprecated)]
-    fn tool_window_survives_winit_style_rewrites_and_restores_cached_image_size() {
+    fn borderless_tool_window_survives_native_moves_style_rewrites_and_cached_reopen() {
+        use windows_sys::Win32::Foundation::{POINT, RECT};
+        use windows_sys::Win32::Graphics::Gdi::{ClientToScreen, GetDC, GetPixel, ReleaseDC};
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            GetClientRect, GetWindowRect, NCCALCSIZE_PARAMS, SendMessageW, WINDOWPOS,
+            WM_ENTERSIZEMOVE, WM_EXITSIZEMOVE,
+        };
         use winit::event::Event;
         use winit::platform::pump_events::EventLoopExtPumpEvents;
         use winit::platform::windows::EventLoopBuilderExtWindows;
@@ -1098,12 +1171,71 @@ mod tests {
             let style = unsafe { GetWindowLongPtrW(hwnd, GWL_EXSTYLE) };
             assert_ne!(style & WS_EX_TOOLWINDOW as isize, 0);
             assert_eq!(style & WS_EX_APPWINDOW as isize, 0);
+            let style = unsafe { GetWindowLongPtrW(hwnd, GWL_STYLE) };
+            assert_eq!(style, borderless_window_style(style));
+        };
+        let check_client_area = || {
+            let proposed = RECT {
+                left: 200,
+                top: 250,
+                right: 1240,
+                bottom: 840,
+            };
+            let coordinates = |rect: RECT| (rect.left, rect.top, rect.right, rect.bottom);
+            // SAFETY: hwnd is live on this thread; both NCCALCSIZE forms receive their
+            // documented writable structures, with a live WINDOWPOS for the TRUE form.
+            unsafe {
+                let mut rect = proposed;
+                SendMessageW(hwnd, WM_NCCALCSIZE, 0, &mut rect as *mut RECT as LPARAM);
+                assert_eq!(coordinates(rect), coordinates(proposed));
+                let mut position = WINDOWPOS {
+                    hwnd,
+                    ..Default::default()
+                };
+                let mut params = NCCALCSIZE_PARAMS {
+                    rgrc: [proposed; 3],
+                    lppos: &mut position,
+                };
+                SendMessageW(
+                    hwnd,
+                    WM_NCCALCSIZE,
+                    1,
+                    &mut params as *mut NCCALCSIZE_PARAMS as LPARAM,
+                );
+                assert_eq!(coordinates(params.rgrc[0]), coordinates(proposed));
+
+                let mut outer = RECT::default();
+                let mut client = RECT::default();
+                let mut origin = POINT::default();
+                assert_ne!(GetWindowRect(hwnd, &mut outer), 0);
+                assert_ne!(GetClientRect(hwnd, &mut client), 0);
+                assert_ne!(ClientToScreen(hwnd, &mut origin), 0);
+                assert_eq!((origin.x, origin.y), (outer.left, outer.top));
+                assert_eq!(
+                    (client.right, client.bottom),
+                    (outer.right - outer.left, outer.bottom - outer.top)
+                );
+            }
         };
         for _ in 0..3 {
             window.set_visible(true);
             check_style();
+            check_client_area();
             window.set_window_level(WindowLevel::AlwaysOnTop);
             check_style();
+            // These messages bracket the same native size/move path used by drag_window.
+            // SAFETY: hwnd remains live and these messages have no pointer parameters.
+            unsafe { SendMessageW(hwnd, WM_ENTERSIZEMOVE, 0, 0) };
+            for position in [
+                PhysicalPosition::new(120, 150),
+                PhysicalPosition::new(160, 180),
+            ] {
+                window.set_outer_position(position);
+                check_style();
+                check_client_area();
+            }
+            unsafe { SendMessageW(hwnd, WM_EXITSIZEMOVE, 0, 0) };
+            check_client_area();
             window.set_visible(false);
             check_style();
             window.set_window_level(WindowLevel::Normal);
@@ -1114,6 +1246,8 @@ mod tests {
             Path::new(env!("CARGO_MANIFEST_DIR")).join("../../lua/snow/keymaps/snow_sipin.svg");
         let mut app = App::new();
         app.window = Some(window.clone());
+        let context = Context::new(window.clone()).unwrap();
+        app.surface = Some(Surface::new(&context, window.clone()).unwrap());
         let command = |token: &str| Command {
             action: CommandAction::Toggle,
             token: token.to_owned(),
@@ -1134,6 +1268,26 @@ mod tests {
             assert_eq!(window.inner_size(), expected);
             assert_eq!(app.image.as_ref().unwrap().pixels.as_ptr(), cached_image);
             check_style();
+            check_client_area();
+            app.redraw();
+            let image = app.image.as_ref().unwrap();
+            let x = image.width / 2;
+            let y = 10;
+            let rgb = image.pixels[(y * image.width + x) as usize];
+            let expected = ((rgb & 0xff) << 16) | (rgb & 0xff00) | ((rgb >> 16) & 0xff);
+            // Check the rendered pixels too: native activation used to draw a caption
+            // inside the client area even when styles and geometry looked borderless.
+            // SAFETY: valid window/DC on the owning thread; no pointer message arguments.
+            unsafe {
+                SendMessageW(hwnd, WM_NCACTIVATE, 0, 0);
+                SendMessageW(hwnd, WM_NCACTIVATE, 1, 0);
+                SendMessageW(hwnd, WM_NCPAINT, 1, 0);
+                let dc = GetDC(hwnd);
+                assert!(!dc.is_null());
+                let actual = GetPixel(dc, x as i32, y as i32);
+                ReleaseDC(hwnd, dc);
+                assert_eq!(actual, expected, "native caption painted over the image");
+            }
             app.hide();
             checked = true;
         });
