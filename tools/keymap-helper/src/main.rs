@@ -21,12 +21,17 @@ use winit::keyboard::{Key, NamedKey};
 use winit::window::{Window, WindowAttributes, WindowId, WindowLevel};
 
 #[cfg(target_os = "windows")]
-use windows_sys::Win32::Foundation::{ERROR_SUCCESS, GetLastError, SetLastError};
+use windows_sys::Win32::Foundation::{
+    ERROR_SUCCESS, GetLastError, HWND, LPARAM, LRESULT, SetLastError, WPARAM,
+};
 #[cfg(target_os = "windows")]
 use windows_sys::Win32::Graphics::Gdi::{CreateRoundRectRgn, DeleteObject, SetWindowRgn};
 #[cfg(target_os = "windows")]
+use windows_sys::Win32::UI::Shell::{DefSubclassProc, RemoveWindowSubclass, SetWindowSubclass};
+#[cfg(target_os = "windows")]
 use windows_sys::Win32::UI::WindowsAndMessaging::{
-    GWL_EXSTYLE, GetWindowLongPtrW, SetWindowLongPtrW, WS_EX_TOOLWINDOW,
+    GWL_EXSTYLE, GetWindowLongPtrW, STYLESTRUCT, SetWindowLongPtrW, WM_NCDESTROY, WM_STYLECHANGING,
+    WS_EX_APPWINDOW, WS_EX_TOOLWINDOW,
 };
 #[cfg(target_os = "windows")]
 use winit::platform::windows::WindowAttributesExtWindows;
@@ -43,7 +48,32 @@ const KEYMAP_CORNER_RADIUS: f64 = 14.0;
 
 #[cfg(target_os = "windows")]
 fn tool_window_style(extended_style: isize) -> isize {
-    extended_style | WS_EX_TOOLWINDOW as isize
+    (extended_style | WS_EX_TOOLWINDOW as isize) & !(WS_EX_APPWINDOW as isize)
+}
+
+#[cfg(target_os = "windows")]
+unsafe extern "system" fn tool_window_subclass(
+    hwnd: HWND,
+    message: u32,
+    wparam: WPARAM,
+    lparam: LPARAM,
+    subclass_id: usize,
+    _reference_data: usize,
+) -> LRESULT {
+    // winit rebuilds the extended style when visibility and other window flags change.
+    // Keep the tool-window contract in WM_STYLECHANGING, before the new style is applied;
+    // setting it again afterwards leaves a window for tiling managers to misclassify us.
+    // SAFETY: Windows supplies a writable STYLESTRUCT for WM_STYLECHANGING. This callback
+    // is installed and invoked on the owning event-loop thread and holds no Rust state.
+    unsafe {
+        if message == WM_STYLECHANGING && wparam as i32 == GWL_EXSTYLE {
+            let styles = &mut *(lparam as *mut STYLESTRUCT);
+            styles.styleNew = tool_window_style(styles.styleNew as isize) as u32;
+        } else if message == WM_NCDESTROY {
+            RemoveWindowSubclass(hwnd, Some(tool_window_subclass), subclass_id);
+        }
+        DefSubclassProc(hwnd, message, wparam, lparam)
+    }
 }
 
 #[cfg(target_os = "windows")]
@@ -59,6 +89,9 @@ fn mark_as_tool_window(window: &Window) -> Result<(), String> {
     // SAFETY: hwnd belongs to this event-loop thread and remains valid for the duration of the
     // calls. Clearing LastError distinguishes a legitimate zero style/result from API failure.
     unsafe {
+        if SetWindowSubclass(hwnd, Some(tool_window_subclass), 1, 0) == 0 {
+            return Err("无法保护键位图工具窗口样式".to_owned());
+        }
         SetLastError(ERROR_SUCCESS);
         let extended_style = GetWindowLongPtrW(hwnd, GWL_EXSTYLE);
         let error = GetLastError();
@@ -630,6 +663,18 @@ impl App {
         }
 
         let focused_area = first_show.then(focused_window_area).flatten();
+        // A window manager may have resized the hidden window. A cached SVG/image does
+        // not imply that the native window still has the matching dimensions.
+        if let Some(image) = self.image.as_ref() {
+            let size = PhysicalSize::new(image.width, image.height);
+            if window.inner_size() != size {
+                let _ = window.request_inner_size(size);
+                if let Err(error) = round_window_corners(&window, image) {
+                    eprintln!("{error}");
+                    return;
+                }
+            }
+        }
         window.set_visible(true);
         window.request_redraw();
         self.visible = true;
@@ -1017,5 +1062,81 @@ mod tests {
     fn tool_window_style_preserves_existing_flags() {
         assert_eq!(tool_window_style(0x0000_0008), 0x0000_0088);
         assert_eq!(tool_window_style(0x0000_0088), 0x0000_0088);
+        assert_eq!(tool_window_style(0x0004_0108), 0x0000_0188);
+    }
+
+    #[cfg(target_os = "windows")]
+    #[test]
+    #[allow(deprecated)]
+    fn tool_window_survives_winit_style_rewrites_and_restores_cached_image_size() {
+        use winit::event::Event;
+        use winit::platform::pump_events::EventLoopExtPumpEvents;
+        use winit::platform::windows::EventLoopBuilderExtWindows;
+
+        let mut event_loop = EventLoop::<UserEvent>::with_user_event()
+            .with_any_thread(true)
+            .build()
+            .unwrap();
+        let window = Arc::new(
+            event_loop
+                .create_window(
+                    WindowAttributes::default()
+                        .with_visible(false)
+                        .with_active(false)
+                        .with_decorations(false)
+                        .with_skip_taskbar(true),
+                )
+                .unwrap(),
+        );
+        mark_as_tool_window(&window).unwrap();
+        let RawWindowHandle::Win32(handle) = window.window_handle().unwrap().as_raw() else {
+            panic!("expected a Win32 window");
+        };
+        let hwnd = handle.hwnd.get() as HWND;
+        let check_style = || {
+            // SAFETY: this test owns the window and runs on its event-loop thread.
+            let style = unsafe { GetWindowLongPtrW(hwnd, GWL_EXSTYLE) };
+            assert_ne!(style & WS_EX_TOOLWINDOW as isize, 0);
+            assert_eq!(style & WS_EX_APPWINDOW as isize, 0);
+        };
+        for _ in 0..3 {
+            window.set_visible(true);
+            check_style();
+            window.set_window_level(WindowLevel::AlwaysOnTop);
+            check_style();
+            window.set_visible(false);
+            check_style();
+            window.set_window_level(WindowLevel::Normal);
+            check_style();
+        }
+
+        let path =
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../lua/snow/keymaps/snow_sipin.svg");
+        let mut app = App::new();
+        app.window = Some(window.clone());
+        let command = |token: &str| Command {
+            action: CommandAction::Toggle,
+            token: token.to_owned(),
+            image_path: path.clone(),
+        };
+        let mut checked = false;
+        event_loop.pump_events(Some(Duration::ZERO), |event, active| {
+            if !matches!(event, Event::AboutToWait) || checked {
+                return;
+            }
+            app.show_command(active, command("open"));
+            let expected = window.inner_size();
+            app.hide();
+            let cached_image = app.image.as_ref().unwrap().pixels.as_ptr();
+            let _ = window.request_inner_size(PhysicalSize::new(1704, 52));
+            assert_ne!(window.inner_size(), expected);
+            app.show_command(active, command("reopen"));
+            assert_eq!(window.inner_size(), expected);
+            assert_eq!(app.image.as_ref().unwrap().pixels.as_ptr(), cached_image);
+            check_style();
+            app.hide();
+            checked = true;
+        });
+        assert!(checked);
     }
 }
