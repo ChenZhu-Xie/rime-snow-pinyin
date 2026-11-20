@@ -235,11 +235,11 @@ test("次世代追加报告以新旧四布局、S005 和首道组成六方案完
 	includes(report, "上面的历史四方案报告原样保留");
 	includes(
 		report,
-		"| 指标 | RC26-39a5bfdc045342cd 21×26 | OC21-e1f155973380 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | 原键道 [S005]",
+		"| 指标 | UM40-ac9707a932d1 21×26 | OC21-e1f155973380 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | 原键道 [S005]",
 	);
 	includes(
 		report,
-		"| 综合补全 CKT v5.1 | **9.082777** ★★ 🥇 | 9.538996 | **9.204752** ★ | 9.717167 | 9.999357 | 9.202834 |",
+		"| 综合补全 CKT v5.1 | **9.071819** ★★ 🥇 | 9.538996 | **9.204752** ★ | 9.717167 | 9.999357 | 9.202834 |",
 	);
 	includes(report, "不参与五方案名次");
 	includes(report, "🥇 独立比较全部六方案");
@@ -252,7 +252,7 @@ test("次世代追加报告以新旧四布局、S005 和首道组成六方案完
 		includes(report, heading);
 	includes(
 		report,
-		"| 编码轨 | 词长 | RC26-39a5bfdc045342cd 21×26 | OC21-e1f155973380 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | 原键道 [S005]",
+		"| 编码轨 | 词长 | UM40-ac9707a932d1 21×26 | OC21-e1f155973380 21×21 | Overall-17·初代 21×26 | U357·初代 21×21 | 原键道 [S005]",
 	);
 	includes(report, "| [首道 B04]");
 	const nextSection = report.split("## 次世代布局追加对比")[1] ?? "";
@@ -309,7 +309,7 @@ test("次世代追加报告以新旧四布局、S005 和首道组成六方案完
 	assert.ok(comparison.nextGenerationComparison.cktV4Explanation);
 	assert.equal(
 		comparison.nextGenerationComparison.metrics.cktV51.RC26,
-		9.082777229838413,
+		9.071818587850963,
 	);
 	assert.equal(
 		comparison.nextGenerationComparison.metrics.cktV51.Overall17First,
@@ -412,7 +412,7 @@ test("CKT v5.1 保留原生路由、统一最长六码并保存八模式稳健�
 
 test("现行与初代纯双拼热力图使用相同裁剪、背景和短标题", () => {
 	for (const path of [
-		"docs/shenyun-rc26-keyboard-heat.svg",
+		"docs/shenyun-um40-keyboard-heat.svg",
 		"docs/shenyun-oc21-e1f155973380-keyboard-heat.svg",
 		"docs/shenyun-overall17-keyboard-heat.svg",
 		"docs/shenyun-u357-keyboard-heat.svg",
@@ -722,13 +722,13 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 });
 */
 
-test("两份 README 只以 RC26-39a5bfdc045342cd 与 OC21-e1f155973380 为现行双拼并链接全量报告", () => {
+test("两份 README 只以 UM40-ac9707a932d1 与 OC21-e1f155973380 为现行双拼并链接全量报告", () => {
 	for (const filename of ["README.md", "README_CN.md"]) {
 		const readme = read(filename);
 		for (const heading of [
-			"### RC26-39a5bfdc045342cd 21×26 双拼",
-			"### RC26-39a5bfdc045342cd 21×26 double pinyin",
-			"### RC26-39a5bfdc045342cd 21×26 雙拼",
+			"### UM40-ac9707a932d1 21×26 双拼",
+			"### UM40-ac9707a932d1 21×26 double pinyin",
+			"### UM40-ac9707a932d1 21×26 雙拼",
 			"### OC21-e1f155973380 21×21 双拼",
 			"### OC21-e1f155973380 21×21 double pinyin",
 			"### OC21-e1f155973380 21×21 雙拼",
@@ -736,26 +736,26 @@ test("两份 README 只以 RC26-39a5bfdc045342cd 与 OC21-e1f155973380 为现行
 			includes(readme, heading);
 		assert.ok(!readme.includes("### [神韵(Overall-17) 21×26 双拼]"));
 		assert.ok(!readme.includes("### [无飞键道(U357) 21×21 双拼]"));
-		includes(readme, "`RC26-39a5bfdc045342cd`");
+		includes(readme, "`UM40-ac9707a932d1`");
 		includes(readme, "`OC21-e1f155973380`");
 		includes(readme, "M-R2 `40`");
 		includes(readme, "A/I/D/V `8/5/3/1`");
 		includes(readme, "M-R2 `42`");
 		includes(readme, "A/I/D/V `5/2/2/5`");
-		includes(readme, "CKT v5.1 `9.082777229838413`");
+		includes(readme, "CKT v5.1 `9.071818587850963`");
 		includes(readme, "CKT v5.1 `9.53899646295756`");
 		includes(readme, "`12/12/24`");
 		includes(readme, "`12/21/13`");
 		includes(readme, "`12/213/24`");
 		includes(readme, "`12/213/21`");
-		includes(readme, "docs/shenyun-rc26-keyboard.svg");
+		includes(readme, "docs/shenyun-um40-keyboard.svg");
 		includes(readme, "docs/shenyun-oc21-e1f155973380-keyboard.svg");
-		includes(readme, "docs/shenyun-rc26-keyboard-heat.svg");
+		includes(readme, "docs/shenyun-um40-keyboard-heat.svg");
 		includes(readme, "docs/shenyun-oc21-e1f155973380-keyboard-heat.svg");
 		for (const header of [
-			/\| 指标 \| RC26-39a5bfdc045342cd 21×26 \| OC21-e1f155973380 21×21 \| 原键道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何为好 \|/u,
-			/\| Metric \| RC26-39a5bfdc045342cd 21×26 \| OC21-e1f155973380 21×21 \| KeyTao (?:S005|\[S005\]\([^)]+\)) \| Shoudao (?:B04|\[B04\]\([^)]+\)) \| Better \|/u,
-			/\| 指標 \| RC26-39a5bfdc045342cd 21×26 \| OC21-e1f155973380 21×21 \| 原鍵道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何者為佳 \|/u,
+			/\| 指标 \| UM40-ac9707a932d1 21×26 \| OC21-e1f155973380 21×21 \| 原键道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何为好 \|/u,
+			/\| Metric \| UM40-ac9707a932d1 21×26 \| OC21-e1f155973380 21×21 \| KeyTao (?:S005|\[S005\]\([^)]+\)) \| Shoudao (?:B04|\[B04\]\([^)]+\)) \| Better \|/u,
+			/\| 指標 \| UM40-ac9707a932d1 21×26 \| OC21-e1f155973380 21×21 \| 原鍵道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何者為佳 \|/u,
 		])
 			assert.match(readme, header);
 		assert.match(
@@ -765,20 +765,20 @@ test("两份 README 只以 RC26-39a5bfdc045342cd 与 OC21-e1f155973380 为现行
 		includes(readme, "🥇 独立比较全部四方案");
 		includes(
 			readme,
-			"| 综合补全 CKT v5.1 | **9.082777** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | 越低越好 |",
+			"| 综合补全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | 越低越好 |",
 		);
 		includes(
 			readme,
-			"| CKT v5.1 completion | **9.082777** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | Lower |",
+			"| CKT v5.1 completion | **9.071819** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | Lower |",
 		);
 		includes(
 			readme,
-			"| 綜合補全 CKT v5.1 | **9.082777** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | 越低越好 |",
+			"| 綜合補全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | 越低越好 |",
 		);
 		const tableLines = readme.split("\n");
 		const currentTableStarts = tableLines
 			.map((line, index) =>
-				/^\| (?:指标|Metric|指標) \| RC26-39a5bfdc045342cd 21×26/u.test(line)
+				/^\| (?:指标|Metric|指標) \| UM40-ac9707a932d1 21×26/u.test(line)
 					? index
 					: -1,
 			)
@@ -821,7 +821,7 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 			letters,
 		] of [
 			[
-				"### RC26-39a5bfdc045342cd 21×26 双拼",
+				"### UM40-ac9707a932d1 21×26 双拼",
 				"### OC21-e1f155973380 21×21 双拼",
 				"**声母—韵母映射**",
 				"**日常八场景文稿纯双拼键频图（含标点）**",
@@ -839,7 +839,7 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				"#### 英数入口",
 			],
 			[
-				"### RC26-39a5bfdc045342cd 21×26 double pinyin",
+				"### UM40-ac9707a932d1 21×26 double pinyin",
 				"### OC21-e1f155973380 21×21 double pinyin",
 				"**Initial–final mapping**",
 				"**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**",
@@ -857,7 +857,7 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 				"#### Letter and number entry",
 			],
 			[
-				"### RC26-39a5bfdc045342cd 21×26 雙拼",
+				"### UM40-ac9707a932d1 21×26 雙拼",
 				"### OC21-e1f155973380 21×21 雙拼",
 				"**聲母—韻母映射**",
 				"**日常八場景文稿純雙拼鍵頻圖（含標點）**",
@@ -889,8 +889,8 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 
 		includes(readme, "M=40、无飞键、无音节重码、无 630");
 		assert.ok(!readme.includes("M=36、无飞键、无音节重码、无 630"));
-		includes(readme, "`D/J/X` 分别使用 `db/jm/xo`");
-		includes(readme, "| D | `db` | 嗲 | Q | `qn` | 桑 |");
+		includes(readme, "`D/J/X` 分别使用 `dq/jv/xo`");
+		includes(readme, "| D | `dq` | 扽 | Q | `qn` | 桑 |");
 		includes(readme, "配置状态仍为 `calculated-not-enabled`");
 		includes(readme, "| 四／4 | `qii` | `qia` |");
 		includes(readme, "| 四／4 | `sfi` | `sfa` |");
@@ -898,9 +898,9 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 		assert.ok(!readme.includes("| D | `dj`"));
 		assert.ok(!readme.includes("| 四／4 | `sii` | `sia` |"));
 
-		includes(readme, "| `q` | `F` | `x` | `Y` | `zh` | `S` |");
+		includes(readme, "| `q` | `F` | `x` | `Y` | `zh` | `W` |");
 		includes(readme, "| `A` | `R` | `E` | `C` | `O` | `C` |");
-		includes(readme, "142 个 `AU` 空码，其中 129 个为 `AA`、13 个为 `AB`");
+		includes(readme, "144 个 `AU` 空码，其中 134 个为 `AA`、10 个为 `AB`");
 		includes(readme, "94 个 `AA` 空码，包含保留码 `qz`、`zq`");
 		includes(readme, "两个方案的 630 固顶区都完整覆盖 630 个码位且词项不重复");
 		includes(readme, "### 固顶、空桶与逐级简码");
@@ -911,7 +911,7 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 		includes(readme, "### 固頂、空桶與逐級簡碼");
 		includes(
 			readme,
-			"各含 21 个一级简码、378 个二码单字、108 个二简词和 26 个字母入口",
+			"各含 21 个一级简码、376 个二码单字、117 个二简词和 26 个字母入口",
 		);
 		includes(
 			readme,

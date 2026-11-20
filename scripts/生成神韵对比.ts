@@ -55,7 +55,7 @@ const benchmark = JSON.parse(
 ) as any;
 
 const overallId = "SNOW-SHENYUN-21X26-PRODUCTION";
-const d3Id = "RC26-39a5bfdc045342cd";
+const d3Id = "UM40-ac9707a932d1";
 const qzId = "OC21-e1f155973380";
 const overallKey = "Overall17";
 const benchmarkIds = {
@@ -749,7 +749,7 @@ const nextSchemes = [
 ] as const;
 type NextScheme = (typeof nextSchemes)[number];
 const nextLabels: Record<NextScheme, string> = {
-	RC26: "RC26-39a5bfdc045342cd 21×26",
+	RC26: "UM40-ac9707a932d1 21×26",
 	OC21: "OC21-e1f155973380 21×21",
 	Overall17First: "Overall-17·初代 21×26",
 	U357First: "U357·初代 21×21",
@@ -764,9 +764,7 @@ const requiredNumber = (value: unknown, label: string) => {
 const d3Production = d3Entry.productionCandidateMetrics;
 const qzReadme = qzEntry.readmeBenchmarkMetrics;
 if (!d3Production || !qzReadme)
-	throw new Error(
-		"Benchmark HTML 缺少 RC26-39a5bfdc045342cd 或 OC21 的定稿指标。",
-	);
+	throw new Error("Benchmark HTML 缺少 UM40-ac9707a932d1 或 OC21 的定稿指标。");
 const nextEntries = { RC26: d3Entry, OC21: qzEntry } as const;
 const nextIds = { RC26: d3Id, OC21: qzId } as const;
 const nextCompletions = {
@@ -1304,8 +1302,7 @@ data.nextGenerationComparison = {
 	sources: {
 		RC26: {
 			benchmarkId: d3Id,
-			report:
-				"research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md",
+			report: "research/notes/2026-11-20-um40-fixed-initial-rhymes.json",
 		},
 		OC21: {
 			benchmarkId: qzId,
@@ -1318,7 +1315,7 @@ data.nextGenerationComparison = {
 		B04: { benchmarkId: benchmarkIds.B04 },
 	},
 	auxiliaryOrders: {
-		RC26: d3Production.cktV51AuxOrderRobustness?.selectedPolicies,
+		RC26: d3Production.cktV51Policies?.candidate,
 		OC21: qzEntry.productionCandidateMetrics?.cktV51Policies?.candidate,
 		Overall17First: data.comparisonPolicy.cktV51.auxiliaryOrders.Overall17,
 		U357First: data.comparisonPolicy.cktV51.auxiliaryOrders.U357,
@@ -1337,9 +1334,8 @@ cktV51.nextGeneration = {
 	schemes: {
 		RC26: {
 			benchmarkId: d3Id,
-			report:
-				"research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md",
-			selectedPolicies: d3Production.cktV51AuxOrderRobustness?.selectedPolicies,
+			report: "research/notes/2026-11-20-um40-fixed-initial-rhymes.json",
+			selectedPolicies: d3Production.cktV51Policies?.candidate,
 			robustness: d3Production.cktV51AuxOrderRobustness,
 		},
 		OC21: {
@@ -1665,11 +1661,11 @@ ${table(["编码轨", "词长", ...schemes.map((scheme) => labels[scheme])], buc
 const report = `${historicalReport}
 ## 次世代布局追加对比
 
-上面的历史四方案报告原样保留。本节追加当前 RC26-39a5bfdc045342cd 21×26 与 OC21-e1f155973380 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。以下所有表格统一比较 RC26-39a5bfdc045342cd、OC21-e1f155973380、Overall-17·初代、U357·初代、原键道 S005 与首道 B04 六个方案；S005 同时继续充当 CKT 归一化锚点。
+上面的历史四方案报告原样保留。本节追加当前 UM40-ac9707a932d1 21×26 与 OC21-e1f155973380 21×21，并把已经冻结的 Overall-17 与 U357 明确标为“·初代”。以下所有表格统一比较 UM40-ac9707a932d1、OC21-e1f155973380、Overall-17·初代、U357·初代、原键道 S005 与首道 B04 六个方案；S005 同时继续充当 CKT 归一化锚点。
 
-表中在 RC26-39a5bfdc045342cd、OC21-e1f155973380、Overall-17·初代、U357·初代与原键道 S005 五个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，其余名次不加粗、不标星；首道 B04 不参与五方案名次。🥇 独立比较全部六方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
+表中在 UM40-ac9707a932d1、OC21-e1f155973380、Overall-17·初代、U357·初代与原键道 S005 五个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，其余名次不加粗、不标星；首道 B04 不参与五方案名次。🥇 独立比较全部六方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
 
-RC26-39a5bfdc045342cd 的定稿与稳健辅序见 [\`2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，OC21-e1f155973380 的定稿与稳健辅序见 [\`2026-11-15-untoned-2121-candidates-aux-robustness.json\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json)。RC26-39a5bfdc045342cd 的冰雪鹤道／冰雪鹤拼辅序为 \`12/12/24\`、\`12/21/13\`；OC21-e1f155973380 的冰雪兰道／冰雪兰拼辅序为 \`12/213/24\`、\`12/213/23\`。初代方案继续使用历史报告中冻结的映射与辅序。
+UM40-ac9707a932d1 的定稿与稳健辅序见 [\`2026-11-20-um40-fixed-initial-rhymes.json\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-20-um40-fixed-initial-rhymes.json)，OC21-e1f155973380 的定稿与稳健辅序见 [\`2026-11-15-untoned-2121-candidates-aux-robustness.json\`](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json)。UM40-ac9707a932d1 的冰雪鹤道／冰雪鹤拼辅序为 \`12/12/24\`、\`12/21/13\`；OC21-e1f155973380 的冰雪兰道／冰雪兰拼辅序为 \`12/213/24\`、\`12/213/23\`。初代方案继续使用历史报告中冻结的映射与辅序。
 
 ${nextMetricTable}
 

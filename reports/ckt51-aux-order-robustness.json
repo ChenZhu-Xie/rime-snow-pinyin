@@ -2348,8 +2348,8 @@
     "preservedHistoricalCases": true,
     "schemes": {
       "RC26": {
-        "benchmarkId": "RC26-39a5bfdc045342cd",
-        "report": "research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md",
+        "benchmarkId": "UM40-ac9707a932d1",
+        "report": "research/notes/2026-11-20-um40-fixed-initial-rhymes.json",
         "selectedPolicies": {
           "keytao": {
             "word2": "12",
@@ -2361,88 +2361,6 @@
             "word3": "21",
             "word4": "13"
           }
-        },
-        "robustness": {
-          "version": "untoned-2126-six-delay-robust-v1",
-          "report": "research/notes/2026-11-15-untoned-2126-aux-robust-comparison.json",
-          "reportSha256": "c2f449dc9aa523234c5271d3bee5fa4cb1d4d3d0f0bab7ebf7773b58dc97b3c6",
-          "selectedPolicies": {
-            "keytao": {
-              "word2": "12",
-              "word3": "12",
-              "word4": "24"
-            },
-            "sanpin": {
-              "word2": "12",
-              "word3": "21",
-              "word4": "13"
-            }
-          },
-          "grid": {
-            "rangePercent": [
-              0,
-              500
-            ],
-            "stepPercent": 50,
-            "coefficients": [
-              "firstAuxMs",
-              "secondAuxMs",
-              "thirdAuxMs",
-              "selectionDecisionMs",
-              "scanPerCandidateMs",
-              "pageActionMs"
-            ],
-            "points": 1771561,
-            "positiveSubsetPoints": 1000000
-          },
-          "cases": {
-            "keytao": {
-              "winner": {
-                "policy": "12/12/24",
-                "top1Rate": 0.9925845059808835,
-                "top3Rate": 0.9995614037563482,
-                "meanRank": 1.0092398737610502,
-                "worstRank": 10
-              },
-              "runnerUp": {
-                "policy": "12/12/23",
-                "top1Rate": 0,
-                "top3Rate": 0.9890362228565655,
-                "meanRank": 2.063964492331904,
-                "worstRank": 16
-              },
-              "meanRankDistance": 1.0547246185708539,
-              "defaultOptimal": {
-                "policy": "12/12/24",
-                "score": 9.099115513960598
-              }
-            },
-            "sanpin": {
-              "winner": {
-                "policy": "12/21/13",
-                "top1Rate": 0.7694592509092264,
-                "top3Rate": 0.9304240723294315,
-                "meanRank": 1.564260558908217,
-                "worstRank": 13
-              },
-              "runnerUp": {
-                "policy": "21/21/13",
-                "top1Rate": 0.17809886309305747,
-                "top3Rate": 0.41248085727784706,
-                "meanRank": 3.583929088527011,
-                "worstRank": 11
-              },
-              "meanRankDistance": 2.019668529618794,
-              "defaultOptimal": {
-                "policy": "12/21/13",
-                "score": 9.066350297939533
-              }
-            }
-          },
-          "normalized": {
-            "selectedPairScore": 9.082777229838413
-          },
-          "scope": "Fixed AEUIO shape / IEUAO tone mapping; word auxiliary position order only. Historical benchmark columns keep their named contracts."
         }
       },
       "OC21": {

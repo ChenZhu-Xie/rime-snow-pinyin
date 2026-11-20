@@ -6,19 +6,19 @@ import { readShenyunHints } from "../../lib/shenyun-hints";
 
 const data = readShenyunHints();
 
-test("21×26 单键提示覆盖全部 129 个声声空桶，每桶只保留首选代表词", () => {
-	assert.equal(data.vacant.length, 142);
-	assert.equal(data.vacantAA.length, 129);
+test("21×26 单键提示覆盖全部 134 个声声空桶，每桶只保留首选代表词", () => {
+	assert.equal(data.vacant.length, 144);
+	assert.equal(data.vacantAA.length, 134);
 	for (const entries of Object.values(data.hints)) {
-		assert.equal(entries.length, 129);
+		assert.equal(entries.length, 134);
 		assert.deepEqual(
 			entries.map(({ code }) => code).sort(),
 			[...data.vacantAA].sort(),
 		);
-		assert.equal(new Set(entries.map(({ code }) => code)).size, 129);
+		assert.equal(new Set(entries.map(({ code }) => code)).size, 134);
 		assert.ok(entries.every(({ text }) => [...text].length === 2));
 		assert.ok(
-			!entries.some(({ code }) => ["sm", "ve", "se", "gi"].includes(code)),
+			!entries.some(({ code }) => ["wr", "ve", "se", "gi"].includes(code)),
 		);
 		for (const initial of data.initialKeys) {
 			const weights = entries
@@ -32,34 +32,35 @@ test("21×26 单键提示覆盖全部 129 个声声空桶，每桶只保留首�
 	}
 });
 
-test("有固顶的桶沿用实际首选，无固顶的桶补入系统高频首选，超过五桶继续顺延", () => {
+test("有固顶的桶沿用实际首选，无固顶的桶补入系统高频首选，超过六桶继续顺延", () => {
 	for (const entries of Object.values(data.hints)) {
 		assert.deepEqual(
 			entries
-				.filter(({ code }) => code[0] === "s")
+				.filter(({ code }) => code[0] === "w")
 				.map(({ code, text }) => [code, text]),
 			[
-				["sx", "支持"],
-				["sw", "这样"],
-				["sz", "正在"],
-				["sv", "这时"],
-				["sr", "转让"],
-				["sb", "这边"],
+				["wx", "支持"],
+				["ws", "这样"],
+				["wd", "知道"],
+				["wf", "之前"],
+				["wc", "这次"],
+				["wv", "这时"],
+				["wb", "这边"],
 			],
 		);
-		assert.equal(entries.find(({ code }) => code === "cw")?.text, "采用");
+		assert.equal(entries.find(({ code }) => code === "cs")?.text, "采用");
 	}
 });
 
-test("s 单字的系统字频基线与真实候选回归的先后顺序一致", () => {
+test("w 单字的系统字频基线与真实候选回归的先后顺序一致", () => {
 	const singles = data.characters
-		.filter(({ code }) => code[0] === "s")
+		.filter(({ code }) => code[0] === "w")
 		.sort((left, right) => right.weight - left.weight);
 	assert.deepEqual(
 		singles.slice(0, 6).map(({ text }) => text),
 		["这", "中", "着", "真", "只", "找"],
 	);
-	assert.equal(singles.find(({ text }) => text === "中")?.code, "sm");
+	assert.equal(singles.find(({ text }) => text === "中")?.code, "wr");
 });
 
 test("两个 21×26 方案使用独立空桶提示，原有 21×21 方案继续使用 630 提示", () => {

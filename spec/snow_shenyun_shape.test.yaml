@@ -67,21 +67,26 @@ deploy:
         assert: commit == nil and preedit == nil
   popping:
     tests:
-      # 每个声声空桶只取首选词；六个桶按词频排列，第二页先显示最后一桶，再按字频接单字。
-      - send: s
-        assert: cand[1].text == "这" and hint_codes() == "sx sw sz sv sr sb" and cand[2].text == "支持" and cand[7].text == "这边" and cand[8].text == "中" and cand[9].text == "着" and cand[10].text == "真" and cand[11].text == "只" and cand[12].text == "找" and cand[8].comment:find("〔声韵 sm〕", 1, true)
+      # UM40：qz 为空桶，zq 编码 zen，不得错误回收为声声词。
+      - send: qz
+        assert: all_have_length(2)
+      - send: zq
+        assert: cand[1].text == "怎" and all_have_length(1)
+      # 每个声声空桶只取首选词；七个桶按词频排列，随后按字频接单字。
+      - send: w
+        assert: cand[1].text == "这" and hint_codes() == "wx ws wd wf wc wv wb" and cand[2].text == "支持" and cand[8].text == "这边" and cand[9].text == "中" and cand[10].text == "着" and cand[11].text == "真" and cand[12].text == "只" and cand[13].text == "找" and cand[9].comment:find("〔声韵 wr〕", 1, true)
       # v 是声母；普通声韵桶 ve/vi 不得混入空桶提示。
       - send: v
-        assert: cand[1].text == "是" and hint_codes() == "vv vw vr vm vz vx vb"
-      # sr 未设固顶项，提示须与声声桶本身的首选一致；sm 有单字，不显示空桶提示。
-      - send: sr
-        assert: cand[1].text == "转让"
-      - send: sm
+        assert: cand[1].text == "是" and hint_codes() == "vv vs vr vd vx vb vf"
+      # wf 的提示须与声声桶本身的首选一致；wr 有单字，不显示空桶提示。
+      - send: wf
+        assert: cand[1].text == "之前"
+      - send: wr
         assert: cand[1].text == "中" and all_have_length(1)
       # 输入统计沿用公共 lua 前缀 o。
       - send: otj
         assert: cand[1].text == "📖 统计功能说明" and cand[2].text:match("^📊 ") ~= nil
-      # RC26-39a5bfdc045342cd 换位后的一级固顶字。
+      # UM40-ac9707a932d1 换位后的一级固顶字。
       - send: d
         assert: cand[1].text == "都" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: p
@@ -100,11 +105,11 @@ deploy:
         assert: cand[1].text == "人"
       - send: z
         assert: cand[1].text == "在"
-      # bing 的 RC26-39a5bfdc045342cd 声韵码为 bq，键道式首形码为 o（丶）。
-      - send: bq
-        assert: all_have_length(1) and has("冰") and preedit == "bq"
-      - send: bqo
-        assert: has("冰") and preedit == "bq 形[o]"
+      # bing 的 UM40-ac9707a932d1 声韵码为 be，键道式首形码为 o（丶）。
+      - send: be
+        assert: all_have_length(1) and has("冰") and preedit == "be"
+      - send: beo
+        assert: has("冰") and preedit == "be 形[o]"
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；chvi 为「测试」。
       - send: chvi
         assert: commit == nil and has("测试") and preedit == "ch vi"
@@ -121,41 +126,41 @@ deploy:
       - send: cvoi
         assert: has("才是") and not has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
-      - send: bqyv
+      - send: beyb
         assert: has("冰雪")
       - send: vrf
         assert: has("输入法")
       - send: vrfa
         assert: has("输入法")
-      - send: rgsn
+      - send: rgwn
         assert: has("人工智能")
-      # cv、wy 都不是合法音节；cvwy 只能走 AAAA，不能混入二、三字前缀候选。
-      - send: cvwy
+      # cvsy 可走 AAAA 得到「测试一下」，不得误入「测试仪」的三字词入口。
+      - send: cvsy
         assert: has("测试一下") and not has("测试仪")
-      # wi 是合法完整音节，cvwi 仍应走 AAAU 得到三字词。
-      - send: cvwi
+      # si 是 yi 的合法完整音节，cvsi 应走 AAAU 得到三字词。
+      - send: cvsi
         assert: all_have_length(3) and has("测试仪")
-      - send: dwybu
+      - send: dsyru
         assert: has("等一下")
       # ;/ 与 21×21 方案一致：顶出当前候选后追加“的/了”。
       - send: chvi;
         assert: commit == "测试的"
       - send: chvi/
         assert: commit == "测试了"
-      # 「管理员」第二字形辅为 e；ye 是占用码，使用标准 AAAU+B 路由。
-      - send: glwtu
+      # 「员」的 sm 是占用码；glsmu 使用标准 AAAU+B，取第 1 字「管」的首形辅 u。
+      - send: glsmu
         assert: has("管理员")
-      - send: "bq,"
+      - send: "be,"
         assert: commit and commit:find("，", 1, true)
-      - send: "bq."
+      - send: "be."
         assert: commit and commit:find("。", 1, true)
   initial_hint_selection:
     tests:
-      - send: "s2"
+      - send: "w2"
         assert: commit == "支持"
-      # 六个空桶只在种类上顺延；第二页第一项为第六个桶 sb，不是同桶内的下一个词。
-      - send: "s{Page_Down} "
-        assert: commit == "这边"
+      # 七个空桶只在种类上顺延；第二页第一项为第六个桶 wv，不是同桶内的下一个词。
+      - send: "w{Page_Down} "
+        assert: commit == "这时"
   initial_pair_four_aux:
     tests:
       - send: cv

@@ -494,14 +494,14 @@ const diagrams: Diagram[] = [
 	},
 	{
 		filename: "snow_shenyun_tone",
-		title: "冰雪鹤拼 · RC26-39a5bfdc045342cd",
+		title: "冰雪鹤拼 · UM40-ac9707a932d1",
 		subtitle: "21×26 声韵与声调映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: toneNotes(overall17),
 	},
 	{
 		filename: "snow_shenyun_shape",
-		title: "冰雪鹤道 · RC26-39a5bfdc045342cd",
+		title: "冰雪鹤道 · UM40-ac9707a932d1",
 		subtitle: "21×26 声韵与形笔字根映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: shapeNotes(overall17.shapeKeysByMeaning),
@@ -1109,7 +1109,7 @@ for (const diagram of diagrams) {
 		diagram.filename === "snow_jiandao"
 			? "shenyun-oc21-e1f155973380-keyboard.svg"
 			: diagram.filename === "snow_shenyun_shape"
-				? "shenyun-rc26-keyboard.svg"
+				? "shenyun-um40-keyboard.svg"
 				: undefined;
 	if (readmeName) update(join(root, "docs", readmeName), svg);
 	const png = new Resvg(svg, { fitTo: { mode: "width", value: 1100 } })

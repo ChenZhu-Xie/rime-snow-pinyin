@@ -91,8 +91,8 @@ test("鹮道声声空桶反序逐字取两辅至六码，非空音节和辅键�
 	const { vacant, vacantAA } = zhudaoHints;
 	assert.equal(vacant.length, 15);
 	assert.equal(vacantAA.length, 14);
-	assert.equal(hedaoHints.vacant.length, 142);
-	assert.equal(hedaoHints.vacantAA.length, 129);
+	assert.equal(hedaoHints.vacant.length, 144);
+	assert.equal(hedaoHints.vacantAA.length, 134);
 	assert.deepEqual(
 		initialPairCodes("zhudao", "不到", ["bu4", "dao4"]).map((c) => c.code),
 		["bd", "bde", "bdeu", "bdeue", "bdeuea"],

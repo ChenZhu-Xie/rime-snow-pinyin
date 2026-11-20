@@ -247,7 +247,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.equal(lastKey.swipe_down, undefined);
 });
 
-test("active diagrams identify OC21-e1f155973380 and RC26-39a5bfdc045342cd", () => {
+test("active diagrams identify OC21-e1f155973380 and UM40-ac9707a932d1", () => {
 	for (const [id, name] of [
 		["snow_jiandao", "冰雪兰道"],
 		["snow_sanpin", "冰雪兰拼"],
@@ -264,11 +264,11 @@ test("active diagrams identify OC21-e1f155973380 and RC26-39a5bfdc045342cd", () 
 		assert.match(read(`lua/snow/keymaps/${image}`), /OC21-e1f155973380/u);
 	}
 	for (const image of ["snow_shenyun_shape.svg", "snow_shenyun_tone.svg"]) {
-		assert.match(read(`lua/snow/keymaps/${image}`), /RC26-39a5bfdc045342cd/u);
+		assert.match(read(`lua/snow/keymaps/${image}`), /UM40-ac9707a932d1/u);
 	}
 	for (const [image, label] of [
 		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "OC21-e1f155973380"],
-		["docs/shenyun-rc26-keyboard.svg", "RC26-39a5bfdc045342cd"],
+		["docs/shenyun-um40-keyboard.svg", "UM40-ac9707a932d1"],
 	] as const) {
 		const svg = read(image);
 		assert.match(svg, new RegExp(label.replace("/", "\\/"), "u"));
@@ -278,9 +278,9 @@ test("active diagrams identify OC21-e1f155973380 and RC26-39a5bfdc045342cd", () 
 
 test("README diagrams preserve source-to-target link colors from benchmark", () => {
 	for (const [image, source, target, initial, color] of [
-		["docs/shenyun-rc26-keyboard.svg", "Q", "F", "q", "#e83e8c"],
-		["docs/shenyun-rc26-keyboard.svg", "S", "Q", "s", "#00a651"],
-		["docs/shenyun-rc26-keyboard.svg", "X", "Y", "x", "#005bd8"],
+		["docs/shenyun-um40-keyboard.svg", "Q", "F", "q", "#e83e8c"],
+		["docs/shenyun-um40-keyboard.svg", "S", "Q", "s", "#00a651"],
+		["docs/shenyun-um40-keyboard.svg", "X", "Y", "x", "#005bd8"],
 		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "K", "P", "k", "#00acc1"],
 		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "L", "E", "l", "#fb8c00"],
 	] as const) {
@@ -300,13 +300,13 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 			),
 		);
 	}
-	const d3 = read("docs/shenyun-rc26-keyboard.svg");
+	const d3 = read("docs/shenyun-um40-keyboard.svg");
 	assert.match(
 		keyGroup(d3, "J"),
 		/fill="#deedf1" stroke="#6e9eaa"[^>]*stroke-dasharray="4 2"/u,
 	);
 	assert.match(
-		keyGroup(d3, "W"),
+		keyGroup(d3, "S"),
 		/fill="#f2e5da" stroke="#b88a68"[^>]*stroke-dasharray="4 2"/u,
 	);
 	assert.match(
@@ -317,7 +317,7 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 
 test("README and popup diagrams link every moved source with one distinct color", () => {
 	for (const image of [
-		"docs/shenyun-rc26-keyboard.svg",
+		"docs/shenyun-um40-keyboard.svg",
 		"docs/shenyun-oc21-e1f155973380-keyboard.svg",
 		...schemes.map(([, , image]) => `lua/snow/keymaps/${image}`),
 	]) {
@@ -627,7 +627,7 @@ test("moved W/Y zero initials use separate Morandi foregrounds and cards", () =>
 	const svg = read("lua/snow/keymaps/snow_shenyun_shape.svg");
 	for (const [source, target, label, foreground, background, border] of [
 		["W", "J", "Ø W", "#3e98b0", "#deedf1", "#6e9eaa"],
-		["Y", "W", "Ø Y/YU", "#b67747", "#f2e5da", "#b88a68"],
+		["Y", "S", "Ø Y/YU", "#b67747", "#f2e5da", "#b88a68"],
 	] as const) {
 		const sourceKeycap = keyGroup(svg, source).match(
 			/<text\b[^>]*data-key-label="true"[^>]*>/u,

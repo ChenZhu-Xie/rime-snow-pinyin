@@ -121,6 +121,28 @@ for (const domain of ["21x21", "21x26"]) {
 	}
 
 	const commonSummary = summarize(Object.values(payloadCodes));
+	if (domain === "21x26") {
+		const frozen = JSON.parse(
+			readFileSync(join(root, "docs", "shenyun-um40-source.json"), "utf8"),
+		) as {
+			id: string;
+			pinyin: string[];
+			codeList: Array<string | null>;
+			codeListSha256: string;
+		};
+		if (
+			source.id !== frozen.id ||
+			createHash("sha256")
+				.update(JSON.stringify(frozen.codeList))
+				.digest("hex") !== frozen.codeListSha256
+		)
+			throw new Error("UM40 来源方案或原始码表摘要不匹配。");
+		for (const [index, syllable] of frozen.pinyin.entries()) {
+			const expected = frozen.codeList[index];
+			if (expected !== null && deriveCode(syllable)?.toUpperCase() !== expected)
+				throw new Error(`UM40 来源码表不匹配：${syllable} 应为 ${expected}`);
+		}
+	}
 	if (
 		commonSummary.encoded !== source.commonSyllables ||
 		commonSummary.unique !== source.uniqueCommonCodes ||
@@ -154,14 +176,12 @@ for (const domain of ["21x21", "21x26"]) {
 		"docs",
 		domain === "21x21"
 			? "shenyun-oc21-e1f155973380-mapping.json"
-			: "shenyun-rc26-mapping.json",
+			: "shenyun-um40-mapping.json",
 	);
 	const rendered = `${JSON.stringify(output, null, 2)}\n`;
 	if (process.argv.includes("--check")) {
 		if (readFileSync(outputPath, "utf8").replace(/\r\n/gu, "\n") !== rendered) {
-			throw new Error(
-				"神韵 OC21-e1f155973380 映射快照不是当前源配置的生成结果。",
-			);
+			throw new Error(`${source.id} 映射快照不是当前源配置的生成结果。`);
 		}
 	} else {
 		writeFileSync(outputPath, rendered, "utf8");

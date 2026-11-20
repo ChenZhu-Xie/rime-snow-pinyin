@@ -366,7 +366,7 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 	];
 	const actualCandidates = new Map([
 		["c", ["才", "从"]],
-		["cm", ["从", "葱"]],
+		["cr", ["从", "葱"]],
 		["gYxe", ["钢箱梁", "刚醒来", "刚下来"]],
 	]);
 	const from = rankBenchmarkCodes(
@@ -376,7 +376,7 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 		new Map([["c", { word: "才" }]]),
 		(code) => actualCandidates.get(code) ?? [],
 	);
-	assert.equal(from.find(({ code }) => code === "cm")?.rank, 1);
+	assert.equal(from.find(({ code }) => code === "cr")?.rank, 1);
 	const waking = rankBenchmarkCodes(
 		"oc21-tone",
 		[entries[1]],

@@ -85,7 +85,7 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "rc26-shape",
 		schemaId: "snow_shenyun_shape",
-		name: "冰雪鹤道（RC26-39a5bfdc045342cd 21×26）",
+		name: "冰雪鹤道（UM40-ac9707a932d1 21×26）",
 		shortName: "冰雪鹤道",
 		capacity: "21x26",
 		soundLayout: "rc26",
@@ -96,7 +96,7 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "rc26-tone",
 		schemaId: "snow_shenyun_tone",
-		name: "冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）",
+		name: "冰雪鹤拼（UM40-ac9707a932d1 21×26）",
 		shortName: "冰雪鹤拼",
 		capacity: "21x26",
 		soundLayout: "rc26",

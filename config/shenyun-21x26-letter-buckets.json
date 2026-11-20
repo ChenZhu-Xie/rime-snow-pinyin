@@ -15,8 +15,8 @@
     "commonConsonantSuffix": "n",
     "valuableCandidateWeight": 10000,
     "consonantExceptions": {
-      "d": "db",
-      "j": "jm",
+      "d": "dq",
+      "j": "jv",
       "x": "xo"
     },
     "vowelCarrier": "x",
@@ -66,7 +66,7 @@
   "letters": [
     {
       "letter": "a",
-      "code": "xq",
+      "code": "xz",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
@@ -135,12 +135,12 @@
     },
     {
       "letter": "d",
-      "code": "db",
+      "code": "dq",
       "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
       "naturalTop3": [
         {
-          "text": "嗲",
-          "weight": 1738
+          "text": "扽",
+          "weight": 10
         }
       ],
       "candidateCount": 1,
@@ -242,7 +242,7 @@
     },
     {
       "letter": "i",
-      "code": "xf",
+      "code": "xt",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
@@ -265,7 +265,7 @@
     },
     {
       "letter": "j",
-      "code": "jm",
+      "code": "jv",
       "reason": "y 桶含权重不低于 10000 的后续候选，改用本行最低影响占用桶",
       "naturalTop3": [
         {
@@ -476,22 +476,22 @@
       "reason": "共同尾键 n",
       "naturalTop3": [
         {
-          "text": "张",
-          "weight": 16065
+          "text": "养",
+          "weight": 13935
         },
         {
-          "text": "涨",
-          "weight": 5784
+          "text": "样",
+          "weight": 5166
         },
         {
-          "text": "长",
-          "weight": 2149
+          "text": "羊",
+          "weight": 5038
         }
       ],
-      "candidateCount": 25,
+      "candidateCount": 32,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 3,
-      "displacedWeight": 12557
+      "displacedAtLeast1000": 4,
+      "displacedWeight": 19194
     },
     {
       "letter": "t",
@@ -518,7 +518,7 @@
     },
     {
       "letter": "u",
-      "code": "xc",
+      "code": "xe",
       "reason": "x 载体行最低影响的五个占用桶之一",
       "naturalTop3": [
         {
@@ -568,22 +568,22 @@
       "reason": "共同尾键 n",
       "naturalTop3": [
         {
-          "text": "养",
-          "weight": 13935
+          "text": "张",
+          "weight": 16065
         },
         {
-          "text": "样",
-          "weight": 5166
+          "text": "涨",
+          "weight": 5784
         },
         {
-          "text": "羊",
-          "weight": 5038
+          "text": "长",
+          "weight": 2149
         }
       ],
-      "candidateCount": 32,
+      "candidateCount": 25,
       "displacedAtLeast10000": 0,
-      "displacedAtLeast1000": 4,
-      "displacedWeight": 19194
+      "displacedAtLeast1000": 3,
+      "displacedWeight": 12557
     },
     {
       "letter": "x",
