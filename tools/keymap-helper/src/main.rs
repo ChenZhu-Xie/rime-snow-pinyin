@@ -23,6 +23,8 @@ use winit::window::{Window, WindowAttributes, WindowId, WindowLevel};
 #[cfg(target_os = "windows")]
 use windows_sys::Win32::Foundation::{ERROR_SUCCESS, GetLastError, SetLastError};
 #[cfg(target_os = "windows")]
+use windows_sys::Win32::Graphics::Gdi::{CreateRoundRectRgn, DeleteObject, SetWindowRgn};
+#[cfg(target_os = "windows")]
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     GWL_EXSTYLE, GetWindowLongPtrW, SetWindowLongPtrW, WS_EX_TOOLWINDOW,
 };
@@ -35,6 +37,9 @@ const POLL_INTERVAL: Duration = Duration::from_millis(30);
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 const MIN_ZOOM: f64 = 0.55;
 const MAX_ZOOM: f64 = 2.5;
+// Match the outer background rect in the generated keymap SVGs.
+#[cfg(target_os = "windows")]
+const KEYMAP_CORNER_RADIUS: f64 = 14.0;
 
 #[cfg(target_os = "windows")]
 fn tool_window_style(extended_style: isize) -> isize {
@@ -73,6 +78,53 @@ fn mark_as_tool_window(window: &Window) -> Result<(), String> {
 
 #[cfg(not(target_os = "windows"))]
 fn mark_as_tool_window(_window: &Window) -> Result<(), String> {
+    Ok(())
+}
+
+#[cfg(target_os = "windows")]
+fn round_window_corners(window: &Window, image: &RenderedImage) -> Result<(), String> {
+    let handle = window
+        .window_handle()
+        .map_err(|error| format!("无法读取键位图窗口句柄：{error}"))?;
+    let RawWindowHandle::Win32(handle) = handle.as_raw() else {
+        return Err("键位图窗口没有 Win32 句柄".to_owned());
+    };
+
+    let region = create_window_region(image)?;
+    // SAFETY: the window belongs to this event-loop thread. Windows takes ownership of the
+    // region only on success; on failure we must delete it ourselves.
+    unsafe {
+        if SetWindowRgn(handle.hwnd.get() as _, region, 1) == 0 {
+            DeleteObject(region);
+            return Err("无法设置键位图圆角窗口".to_owned());
+        }
+    }
+    Ok(())
+}
+
+#[cfg(target_os = "windows")]
+fn create_window_region(
+    image: &RenderedImage,
+) -> Result<windows_sys::Win32::Graphics::Gdi::HRGN, String> {
+    // SAFETY: dimensions are bounded by the current monitor. The caller owns the new region.
+    let region = unsafe {
+        CreateRoundRectRgn(
+            0,
+            0,
+            image.width as i32 + 1,
+            image.height as i32 + 1,
+            image.corner_diameter,
+            image.corner_diameter,
+        )
+    };
+    if region.is_null() {
+        return Err("无法创建键位图圆角区域".to_owned());
+    }
+    Ok(region)
+}
+
+#[cfg(not(target_os = "windows"))]
+fn round_window_corners(_window: &Window, _image: &RenderedImage) -> Result<(), String> {
     Ok(())
 }
 
@@ -304,6 +356,8 @@ fn start_command_watcher(
 struct RenderedImage {
     width: u32,
     height: u32,
+    #[cfg(target_os = "windows")]
+    corner_diameter: i32,
     pixels: Vec<u32>,
 }
 
@@ -340,7 +394,8 @@ fn render_svg(
     let height = (source.height() as f64 * scale).round().max(1.0) as u32;
     let mut pixmap = tiny_skia::Pixmap::new(width, height)
         .ok_or_else(|| format!("无法为键位图分配 {width}×{height} 画布"))?;
-    pixmap.fill(tiny_skia::Color::from_rgba8(0xff, 0xfd, 0xf9, 0xff));
+    // Composite antialiased SVG edges against the same background as the diagram.
+    pixmap.fill(tiny_skia::Color::from_rgba8(0xf5, 0xf2, 0xec, 0xff));
     let transform = tiny_skia::Transform::from_scale(scale as f32, scale as f32);
     resvg::render(tree, transform, &mut pixmap.as_mut());
     let (rgba_pixels, remainder) = pixmap.data().as_chunks::<4>();
@@ -352,6 +407,8 @@ fn render_svg(
     Ok(RenderedImage {
         width,
         height,
+        #[cfg(target_os = "windows")]
+        corner_diameter: (KEYMAP_CORNER_RADIUS * 2.0 * scale).round().max(2.0) as i32,
         pixels,
     })
 }
@@ -475,6 +532,10 @@ impl App {
         };
         let previous_position = window.outer_position().ok();
         let _ = window.request_inner_size(PhysicalSize::new(image.width, image.height));
+        if let Err(error) = round_window_corners(&window, &image) {
+            eprintln!("{error}");
+            return false;
+        }
         if keep_center && let Some(position) = previous_position {
             window.set_outer_position(recentered_position(
                 position,
@@ -857,6 +918,54 @@ mod tests {
         let zoomed = render_svg(&svg, maximum, 0.75).unwrap();
         assert!(zoomed.width > normal.width);
         assert!(zoomed.height > normal.height);
+    }
+
+    #[cfg(target_os = "windows")]
+    #[test]
+    fn all_keymap_windows_clip_their_corners_at_every_zoom() {
+        use windows_sys::Win32::Graphics::Gdi::PtInRegion;
+
+        let directory = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../lua/snow/keymaps");
+        let options = svg_options();
+        let mut count = 0;
+        for entry in std::fs::read_dir(directory).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().is_none_or(|extension| extension != "svg") {
+                continue;
+            }
+            count += 1;
+            let source = std::fs::read_to_string(&path).unwrap();
+            assert!(source.contains(&format!(
+                "<rect width=\"1040\" height=\"590\" rx=\"{KEYMAP_CORNER_RADIUS}\""
+            )));
+            let svg = load_svg(&path, &options).unwrap();
+            for zoom in [MIN_ZOOM, 1.0, MAX_ZOOM] {
+                let image = render_svg(&svg, PhysicalSize::new(1200, 900), zoom).unwrap();
+                assert_eq!(
+                    image.corner_diameter,
+                    (KEYMAP_CORNER_RADIUS * 2.0 * zoom.min(1200.0 / 1040.0)).round() as i32
+                );
+                let region = create_window_region(&image).unwrap();
+                let right = image.width as i32 - 1;
+                let bottom = image.height as i32 - 1;
+                // SAFETY: region is owned by this test and deleted after all queries.
+                unsafe {
+                    let corners = [(0, 0), (right, 0), (0, bottom), (right, bottom)]
+                        .map(|(x, y)| PtInRegion(region, x, y));
+                    let edges = [
+                        (right / 2, 0),
+                        (0, bottom / 2),
+                        (right, bottom / 2),
+                        (right / 2, bottom),
+                    ]
+                    .map(|(x, y)| PtInRegion(region, x, y));
+                    DeleteObject(region);
+                    assert_eq!(corners, [0; 4], "{} at zoom {zoom}", path.display());
+                    assert!(edges.iter().all(|&inside| inside != 0));
+                }
+            }
+        }
+        assert_eq!(count, 9);
     }
 
     #[test]
