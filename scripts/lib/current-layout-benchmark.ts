@@ -1,5 +1,10 @@
 import { createHash } from "node:crypto";
-import { appendFileSync, readFileSync, writeFileSync } from "node:fs";
+import {
+	appendFileSync,
+	existsSync,
+	readFileSync,
+	writeFileSync,
+} from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { rootPath } from "./paths";
 
@@ -449,6 +454,16 @@ export function buildCurrentBenchmark(
 		const macro = (toned ? tone.macro : payload.macroxue.values[id])[
 			"daily|native-punctuation"
 		];
+		if (toned)
+			native[scheme].dailyHeat = {
+				hits: macro.hits,
+				heat_map: macro.heat_map,
+				toneSource: macro.toneSource,
+				strokeSha256: macro.strokeSha256,
+				shapeIncluded: macro.shapeIncluded,
+				spaceIncluded: macro.spaceIncluded,
+				selectionIncluded: macro.selectionIncluded,
+			};
 		if (
 			macro.hits !== 2149 ||
 			Object.values(macro.heat_map).reduce((a: number, b: any) => a + b, 0) !==
@@ -516,7 +531,7 @@ export function buildCurrentBenchmark(
 			alternation: "terminalAlternation",
 		}))
 			put(key, scheme, ergonomic?.[field]);
-		const collision = toned ? columns.collision : entry?.terminalBucketAudit;
+		const collision = toned ? columns.collision : entry?.fourCodeCollision;
 		details[scheme].fourCodeCollision = collision ?? null;
 		put(
 			"fourCodeCrossAffected",
@@ -872,6 +887,78 @@ export function latestCurrentBenchmark(): BenchmarkSnapshot | undefined {
 	return report.currentLayoutComparisons?.at(-1);
 }
 
+function supplementReplay(snapshot: BenchmarkSnapshot) {
+	const path = rootPath("reports/current-layout-replay.json");
+	if (!existsSync(path)) return;
+	const replay = JSON.parse(readFileSync(path, "utf8"));
+	if (replay.sourceSha256 !== snapshot.sourceSha256)
+		throw new Error(
+			"补充复算与 HTML 来源摘要不一致，请重新运行 replay-current-layout-benchmark.ts",
+		);
+	for (const [scheme, result] of Object.entries(replay.schemes) as [
+		string,
+		any,
+	][]) {
+		const modes = result.v52.modes;
+		snapshot.details[scheme].v52 = modes;
+		snapshot.details[scheme].v52Scores = result.v52.trackScores;
+		snapshot.details[scheme].terminalErgonomics = result.ergonomics;
+		snapshot.contracts[scheme].policies = { candidate: result.policies };
+		snapshot.contracts[scheme].routes = result.routes;
+		for (const [multiplier, key] of [
+			[1, "cktV52"],
+			[2, "cktV52CostDoubled"],
+			[3, "cktV52CostTripled"],
+			[5, "cktV52CostQuintupled"],
+		] as const)
+			snapshot.metrics[key][scheme] = normalizedCostScore(
+				modes,
+				snapshot.references.v52,
+				multiplier,
+			);
+		if (scheme === "S005")
+			for (const key of [
+				"cktV52",
+				"cktV52CostDoubled",
+				"cktV52CostTripled",
+				"cktV52CostQuintupled",
+			]) {
+				if (Math.abs(snapshot.metrics[key][scheme] - 10) > 1e-9)
+					throw new Error("S005 补充复算与参考不一致");
+				snapshot.metrics[key][scheme] = 10;
+			}
+		for (const [field, value] of Object.entries(result.v52.aggregate))
+			snapshot.metrics[`v52${field[0].toUpperCase()}${field.slice(1)}`][
+				scheme
+			] = value;
+		for (const [field, key] of Object.entries({
+			home: "terminalHome",
+			upper: "terminalUpper",
+			lower: "terminalLower",
+			leftPinky: "terminalLeftPinky",
+			rightPinky: "terminalRightPinky",
+			maxFinger: "terminalMaxFinger",
+			leftShare: "terminalLeftShare",
+			differentKeySameFinger: "terminalDifferentKeySameFinger",
+			sameFinger: "terminalSameFinger",
+			sameHand: "terminalSameHand",
+			alternation: "terminalAlternation",
+		}))
+			snapshot.metrics[key][scheme] = result.ergonomics[field];
+	}
+	snapshot.version = "current-layout-benchmark-v2-complete-replay";
+	snapshot.supplement = {
+		file: "current-layout-replay.json",
+		sha256: hash(readFileSync(path)),
+		sourceHashes: replay.sourceHashes,
+		scope: replay.scope,
+	};
+}
+
+export function currentBenchmarkAnchor(snapshot: BenchmarkSnapshot) {
+	return `current-layout-${hash(JSON.stringify(snapshot)).slice(0, 12)}`;
+}
+
 export function formatCurrentMetric(
 	snapshot: BenchmarkSnapshot,
 	key: string,
@@ -880,8 +967,18 @@ export function formatCurrentMetric(
 	language: BenchmarkLanguage = "zh",
 ): string {
 	const value = snapshot.metrics[key]?.[scheme];
-	if (value === null || value === undefined)
-		return `—[^${language}-benchmark-missing]`;
+	if (value === null || value === undefined) {
+		let label = "—";
+		if (key.startsWith("native") && scheme !== "Liandao" && scheme !== "Zhudao")
+			label = { zh: "不适用", en: "N/A", zht: "不適用" }[language];
+		else if (key.startsWith("v52PointOptimal"))
+			label = {
+				zh: "未重选辅序",
+				en: "Policy search not repeated",
+				zht: "未重選輔序",
+			}[language];
+		return `${label}[^${language}-benchmark-missing]`;
+	}
 	const toned = scheme === "Liandao" || scheme === "Zhudao";
 	let text: string;
 	if (typeof value === "string") text = value;
@@ -899,6 +996,105 @@ export function formatCurrentMetric(
 		);
 	if (toned) text += `[^${language}-benchmark-toned]`;
 	return text;
+}
+
+export function decorateCurrentValues(
+	values: { scheme: string; display: string; score: number | null }[],
+) {
+	const valid = values.filter(
+		(value) => value.score !== null && Number.isFinite(value.score),
+	);
+	const toned = (scheme: string) => scheme === "Liandao" || scheme === "Zhudao";
+	const best = Math.min(...valid.map((value) => value.score!));
+	return values.map((value) => {
+		if (value.score === null || !Number.isFinite(value.score))
+			return value.display;
+		const pool = valid.filter((other) =>
+			toned(value.scheme)
+				? toned(other.scheme)
+				: !toned(other.scheme) && other.scheme !== "B04",
+		);
+		const rank =
+			1 + pool.filter((other) => other.score! < value.score! - 1e-12).length;
+		let display = value.display;
+		if (pool.some((other) => other.scheme === value.scheme) && rank <= 2) {
+			const at = display.indexOf("[^");
+			display =
+				at >= 0
+					? `**${display.slice(0, at)}**${display.slice(at)}`
+					: `**${display}**`;
+			display += toned(value.scheme)
+				? rank === 1
+					? " 🔷"
+					: " 🔹"
+				: rank === 1
+					? " ★★"
+					: " ★";
+		}
+		if (Math.abs(value.score! - best) <= 1e-12) display += " 🥇";
+		return display;
+	});
+}
+
+export function benchmarkRankingLegend(language: BenchmarkLanguage) {
+	return {
+		zh: "★★／★：仅在本表全部无调方案中评价，首道 B04 除外，分别标记第一／第二名；🔷／🔹：仅在两套带调方案中评价，分别标记第一／第二名；🥇：比较本表所有有有效数值的方案（含首道与带调）。三个范围独立，可同时标记；并列采用竞赛排名，缺测／不适用不参评，分布说明项不判优。跨合同的金牌是所列模型值的比较，边界见脚注。",
+		en: "★★/★ rank all untoned layouts shown except Shoudao B04; 🔷/🔹 independently rank the two toned layouts, marking first/second place. 🥇 compares every valid value, including B04 and toned layouts. Groups are independent, ties use competition ranking, and missing/inapplicable values and distribution-only rows do not compete. Cross-contract medals compare the stated model values; see footnotes.",
+		zht: "★★／★：僅評本表全部無調方案，首道 B04 除外，分別標第一／第二名；🔷／🔹：僅評兩套帶調方案，分別標第一／第二名；🥇：比較所有有效數值，包含首道與帶調。三組獨立，可同時標記；並列採競賽排名，缺測／不適用不參評，分布說明項不判優。跨合同金牌的邊界見腳註。",
+	}[language];
+}
+
+function rankedMetricCells(
+	snapshot: BenchmarkSnapshot,
+	key: string,
+	format: string,
+	schemes: string[],
+	language: BenchmarkLanguage,
+	better: string,
+) {
+	return decorateCurrentValues(
+		schemes.map((scheme) => {
+			const value = snapshot.metrics[key]?.[scheme];
+			let score: number | null =
+				value === null || value === undefined || better === "Distribution only"
+					? null
+					: typeof value === "number"
+						? value
+						: Array.isArray(value)
+							? (key === "initialDisorderAIDV" ? value.slice(2) : value).reduce(
+									(a, b) => a + b,
+									0,
+								)
+							: typeof value === "string"
+								? key === "initialDisorderAIDV"
+									? [...value.matchAll(/\d+/g)].reduce(
+											(n, x) => n + Number(x[0]),
+											0,
+										)
+									: Number.parseFloat(value)
+								: Math.abs(value.leftShare - 0.5);
+			if (
+				score !== null &&
+				(better === "Higher" ||
+					[
+						"logicAuditFA1",
+						"logicUniformityLUv1r",
+						"common399UniqueCodes",
+						"dailyEightScenarioMovingHand",
+						"homeShareS2",
+						"homeFloor20Contracts",
+					].includes(key))
+			)
+				score = -score;
+			if (score !== null && key === "terminalLeftShare")
+				score = Math.abs(score - 0.5);
+			return {
+				scheme,
+				display: formatCurrentMetric(snapshot, key, scheme, format, language),
+				score,
+			};
+		}),
+	);
 }
 
 export function renderCurrentOverview(
@@ -923,12 +1119,18 @@ export function renderCurrentOverview(
 			allRows.map(([key, labels, better, format]) => [
 				labels[language] +
 					(key === "cktV52" ? `[^${language}-benchmark-v52]` : ""),
-				...schemes.map((scheme) =>
-					formatCurrentMetric(snapshot, key, scheme, format, language),
+				...rankedMetricCells(
+					snapshot,
+					key,
+					format,
+					schemes,
+					language,
+					better.en,
 				),
 				better[language],
 			]),
 		),
+		benchmarkRankingLegend(language),
 		currentBenchmarkNotes(language),
 	];
 	return lines.join("\n\n");
@@ -938,17 +1140,17 @@ export function currentBenchmarkNotes(language: BenchmarkLanguage) {
 	const notes = {
 		zh: [
 			"带调列为页面原列公式的带调适配：声调在双拼主码内贡献，后置只有纯形笔辅；无调列是形辅／调辅两个成员的八轨系综，带调 v5～v5.2 是形辅四轨，词长权重均为 1:3:1:1。数值可以观察任务成本与取舍，不能作为相同编码合同下的布局或辅码消融排名。记忆项为 M-T1 下限／守门，与 M-R2 定义不同；D 可对照，带调 V 统计任一声调的普通元音偏移，A/I 未定义。Common399 对应列在带调方案中改用实际 1407 带调音节，『唯一码』指占用码位而非无碰撞音节数，分母与碰撞数不能直接横比。FA/LU、S2、A7E 与 20 合同负载均使用页面的带调适配；主码已包含的声调不重复击键，S2 补全使用各自五键枚举后缀，时间列的带调值为页面 sound.upperMs。CKT v3/v4 使用页面 τ=600、首辅=300、次辅=300 ms 的适配八轨，v5 以后使用原生纯形四轨；20 合同负载与原生四轨终局负载分别列示。",
-			"『—』表示这份冻结页面没有该合同／版本的测值或未定义该属性，不等于 0；不以 v5.1 冒充 v5.2，也不把适配调轨冒充新增的生产方案。",
+			"当前 v5.2 默认、×2／×3／×5、分轨耗时、前三辅率、选重及终局负载已覆盖全部八列：六个无调布局使用同一冻结语料和错误模型复算，两套带调布局使用其原生形辅四轨。S005 的 v5.2 行是页面参考辅序（形 12/213/24、调 12/213/23），旧版行保留各自历史辅序。『不适用』表示不存在该生产合同（例如无调方案的带调原生四轨属性）；『未重选辅序』表示未另外搜索该方案的成本点最优值，不能用生产稳健辅序分数代填；其余『—』为来源未发布的审计量。以上均不等于 0，不参评。",
 			"CKT v5.2 保留 v5.1 的主码、辅序、候选池及词长权重，对长码采用分块成功／错误成本；认知成本 ×2／×3／×5 时同时缩放候选与同模式 S005 参考的全部认知项，保留运动项及生产辅序，再逐轨取四次幂均值。S005 v5.2 归一化为 10；不是实际用户输入速度或 5000 字实测码长。",
 		],
 		en: [
 			"Toned columns adapt the page's original formulas: tone contributes inside the two-key main code, followed only by shape auxiliaries. Untoned layouts use eight shape/tone ensemble tracks; toned v5–v5.2 use four shape-only tracks, with 1:3:1:1 length weights. Values describe task costs across contracts, not a controlled layout/auxiliary ablation ranking. M-T1 lower/guard differs from M-R2; D is comparable, toned V counts a vowel displaced in any tone, and A/I are undefined. The Common399 cells use 1407 legal toned syllables for toned layouts; distinct codes mean occupied buckets, so denominators and collision counts differ. FA/LU, S2, A7E and 20-contract loads use the page's tone-aware adaptations without repeating embedded tone strokes. S2 completion uses each five-key enumeration suffix; toned time is sound.upperMs. CKT v3/v4 use the page's adapted eight tracks with τ=600 and first/second auxiliary costs of 300 ms; v5 onwards use native four-track shape-only contracts. Twenty-contract and native terminal loads are reported separately.",
-			"A dash means no measurement or undefined property in this frozen source, not zero. Older versions and adapted tone tracks do not substitute for missing production measurements.",
+			"All eight columns now participate in v5.2 default/scaled costs, timing, auxiliary/selection rates and terminal loads. Six untoned layouts are replayed against the same frozen corpus and error model; toned layouts retain four native shape tracks. S005 v5.2 uses the frozen reference policies; earlier rows retain historical policies. N/A denotes a different/inapplicable contract. Policy search not repeated means no separate point-optimal policy search; production robust-policy scores are not substituted. Remaining dashes denote unpublished audit counts, not zero, and do not compete.",
 			"CKT v5.2 preserves v5.1 routing, policies, pools and length weights while applying block success/error costs to long codes. Cost multipliers scale all cognitive terms for both candidate and same-mode S005 reference, keeping motor costs and production policies fixed, before trackwise fourth-power normalization. S005 v5.2 is 10. These are model costs, not human speed or 5000-character measured code lengths.",
 		],
 		zht: [
 			"帶調欄為頁面原欄公式的帶調適配：聲調在雙拼主碼內貢獻，後置只有純形筆輔；無調欄為形輔／調輔八軌系綜，帶調 v5～v5.2 為形輔四軌，詞長權重均為 1:3:1:1。可觀察任務成本及取捨，不可視為相同編碼合同的消融排名。M-T1 下限／守門與 M-R2 定義不同；D 可對照，帶調 V 計任一聲調的普通元音偏移，A/I 未定義。Common399 對應欄在帶調方案使用 1407 個實際帶調音節，『唯一碼』指占用碼位，分母及碰撞數不能直接橫比。FA/LU、S2、A7E 與 20 合同負載依頁面帶調適配，主碼已含聲調不重複擊鍵；S2 補全使用各自五鍵枚舉後綴，帶調時間為 sound.upperMs。CKT v3/v4 採 τ=600、首輔=300、次輔=300 ms 的適配八軌，v5 以後使用原生純形四軌；20 合同與原生四軌終局負載分列。",
-			"『—』表示凍結頁面沒有該合同／版本測值或屬性未定義，不等於 0；不用舊版本或適配調軌代替生產測值。",
+			"目前 v5.2 預設、×2／×3／×5、分軌耗時、前三輔率、選重與終局負載已涵蓋全部八欄：六個無調布局以同一凍結語料與錯誤模型複算，兩套帶調布局使用原生形輔四軌。S005 的 v5.2 行採頁面參考輔序（形 12/213/24、調 12/213/23），舊版行保留各自歷史輔序。『不適用』表示不存在該生產合同；『未重選輔序』表示未另行搜尋成本點最優輔序，不以生產穩健輔序分數代填；其餘『—』表示來源未發布的審計量。以上均不等於 0，不參評。",
 			"CKT v5.2 保留 v5.1 主碼、輔序、候選池及詞長權重，對長碼採分塊成功／錯誤成本。成本 ×2／×3／×5 同時縮放候選與同模式 S005 參考的全部認知項，保留運動項與生產輔序，再逐軌取四次冪均值；S005 v5.2 歸一化為 10。這些是模型成本，不是實際輸入速度或 5000 字實測碼長。",
 		],
 	}[language];
@@ -983,6 +1185,7 @@ export function appendCurrentBenchmark(
 	const jsonSource = readFileSync(jsonPath, "utf8");
 	const historical = JSON.parse(jsonSource);
 	const snapshot = buildCurrentBenchmark(payload, hash(source), historical);
+	supplementReplay(snapshot);
 	validateProductionContracts(snapshot);
 	const previous: BenchmarkSnapshot[] =
 		historical.currentLayoutComparisons ?? [];
@@ -1011,8 +1214,16 @@ export function appendCurrentBenchmark(
 			`${jsonSource.slice(0, end).trimEnd()},\n  "currentLayoutComparisons": ${JSON.stringify([snapshot], null, 2)}\n}\n`,
 		);
 	} else {
-		historical.currentLayoutComparisons.push(snapshot);
-		writeFileSync(jsonPath, `${JSON.stringify(historical, null, 2)}\n`);
+		const arrayEnd = /\]\s*}\s*$/.exec(jsonSource)?.index;
+		if (
+			arrayEnd === undefined ||
+			Object.keys(historical).at(-1) !== "currentLayoutComparisons"
+		)
+			throw new Error("当前布局快照数组应为 JSON 最后一项，拒绝重写旧报告");
+		writeFileSync(
+			jsonPath,
+			`${jsonSource.slice(0, arrayEnd).trimEnd()},\n${JSON.stringify(snapshot, null, 2)}\n${jsonSource.slice(arrayEnd)}`,
+		);
 	}
 	appendFileSync(reportPath, `\n${section}\n`);
 	console.log(
@@ -1051,9 +1262,9 @@ function renderCurrentReport(
 ) {
 	const sections = [
 		`<!-- current-layout-benchmark:${identity} -->`,
-		`<a id="current-layout-${snapshot.sourceSha256.slice(0, 12)}"></a>`,
+		`<a id="${currentBenchmarkAnchor(snapshot)}"></a>`,
 		`## ${snapshot.date} 当前四布局／六生产方案追加比较（含 CKT v5.2）`,
-		"以上各代报告及数值保留原样；本节重新读取当前页面，不把历史 QZ、D3/V1、Overall-17 或 U357 的分数改名后充当当前布局。当前四个无调方案归为 RC26、UED 两列，新增冰雪莲道、冰雪鹮道两列，另保留初代与外部参考。混合合同表列出实值和方向，不统一授予星标或奖牌。",
+		"以上各代报告及数值保留原样；本节使用同一冻结语料和 v5.2 模型补齐全部无调布局的逐轨成本及终局按键负载。当前四个无调生产方案归为 RC26、UED 两列，带调方案为冰雪莲道、冰雪鹮道，另保留初代与外部参考；历史布局使用其冻结辅序，S005 在 v5.2 使用页面归一化参考辅序。复算来源见 current-layout-replay.json。",
 		`来源为用户指定的 a7_CKT_R11.html，SHA-256：\`${snapshot.sourceSha256}\`。机器可读记录追加在 [shenyun-comparison.json](shenyun-comparison.json) 的 \`currentLayoutComparisons\`，包括输入摘要、定义、参考轨、辅序与各轨原始测值。`,
 		"### 布局与生产合同",
 		table(
@@ -1248,5 +1459,52 @@ function renderCurrentReport(
 			]),
 		),
 	);
-	return sections.join("\n\n");
+	return decorateReportPercentTables(sections.join("\n\n"), schemes).replace(
+		/\[\^zh-benchmark-(toned|missing|v52)\]/g,
+		`[^zh-benchmark-$1-${identity.slice(0, 12)}]`,
+	);
+}
+
+function decorateReportPercentTables(markdown: string, schemes: string[]) {
+	return markdown.replace(
+		/\|[^\n]+\n\|[\s:|-]+\n(?:\|[^\n]+\n?)+/g,
+		(block) => {
+			const lines = block.trimEnd().split("\n");
+			const headers = lines[0].split("|").map((cell) => cell.trim());
+			const indices = schemes.map((scheme) =>
+				headers.indexOf(currentLayoutLabels[scheme]),
+			);
+			if (indices.some((index) => index < 0)) return block;
+			for (let i = 2; i < lines.length; i++) {
+				if (/[★🔷🔹🥇]/u.test(lines[i])) continue;
+				const cells = lines[i].split("|").map((cell) => cell.trim());
+				const values = schemes.map((scheme, index) => {
+					const display = cells[indices[index]];
+					const plain = display.replace(/\[\^[^\]]+\]/g, "");
+					return {
+						scheme,
+						display,
+						score: /^\d+(?:\.\d+)?%$/.test(plain)
+							? Number.parseFloat(plain)
+							: null,
+					};
+				});
+				if (!values.some((value) => value.score !== null)) continue;
+				if (
+					values.some(
+						(value) =>
+							value.score === null &&
+							!value.display.includes("benchmark-missing"),
+					)
+				)
+					continue;
+				const decorated = decorateCurrentValues(values);
+				indices.forEach((index, j) => {
+					cells[index] = decorated[j];
+				});
+				lines[i] = `| ${cells.slice(1, -1).join(" | ")} |`;
+			}
+			return lines.join("\n") + (block.endsWith("\n") ? "\n" : "");
+		},
+	);
 }

@@ -16,15 +16,46 @@ const payload = JSON.parse(
 			Record<string, { hits: number; heat_map: Record<string, number> }>
 		>;
 	};
+	tonedContractBenchmark: {
+		schemes: {
+			research: Record<
+				string,
+				{
+					macro: Record<
+						string,
+						{ hits: number; heat_map: Record<string, number> }
+					>;
+				}
+			>;
+		};
+	};
 };
 const is21x26 = process.argv.includes("--21x26");
+const tonedSchema = process.argv.includes("--liandao")
+	? "snow-jiandao-toned"
+	: process.argv.includes("--zhudao")
+		? "snow-zhudao"
+		: undefined;
+if (
+	["--21x26", "--liandao", "--zhudao"].filter((flag) =>
+		process.argv.includes(flag),
+	).length > 1
+)
+	throw new Error("每次只选择一份布局");
 const mapping = JSON.parse(
 	readFileSync(
-		rootPath("config", `shenyun-${is21x26 ? "21x26" : "21x21"}-mapping.json`),
+		rootPath(
+			"config",
+			`${tonedSchema ?? `shenyun-${is21x26 ? "21x26" : "21x21"}`}-mapping.json`,
+		),
 		"utf8",
 	),
 ) as { id: string };
-const stat = payload.macroxue.values[mapping.id]?.["daily|native-punctuation"];
+const stat = (
+	tonedSchema
+		? payload.tonedContractBenchmark.schemes.research[mapping.id]?.macro
+		: payload.macroxue.values[mapping.id]
+)?.["daily|native-punctuation"];
 if (
 	!stat ||
 	Object.values(stat.heat_map).reduce((sum, value) => sum + value, 0) !==
@@ -53,9 +84,11 @@ parts.push("</svg>");
 const svg = `${parts.join("")}\n`;
 const output = rootPath(
 	"docs",
-	is21x26
-		? "shenyun-rc26-keyboard-heat.svg"
-		: "shenyun-ued-3158ce08b5bc-keyboard-heat.svg",
+	tonedSchema
+		? `${tonedSchema === "snow-jiandao-toned" ? "liandao" : "zhudao"}-keyboard-heat.svg`
+		: is21x26
+			? "shenyun-rc26-keyboard-heat.svg"
+			: "shenyun-ued-3158ce08b5bc-keyboard-heat.svg",
 );
 if (process.argv.includes("--check")) {
 	if (readFileSync(output, "utf8") !== svg)

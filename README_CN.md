@@ -228,6 +228,12 @@
 
 ![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
 
+**日常八场景连续双拼键频图（含标点）**
+
+![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+
+直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。
+
 #### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
 声母／零声母、输入示例、字母占用桶、固顶同码和运行时空桶规则见[冰雪鹮道](docs/zhudao.md)。研究音节域的静态空码与运行时声声空桶使用不同词典和口径，不能互相替代。配置是生成来源。
@@ -247,6 +253,12 @@
 
 ![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
 
+**日常八场景连续双拼键频图（含标点）**
+
+![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
+
+直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。
+
 ### 固顶、空桶与逐级简码
 
 - 冰雪鹤道、冰雪鹤拼的现行 fixed 表各含 21 个一级简码、378 个二码单字、108 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
@@ -258,83 +270,85 @@
 
 下表用当前 RC26-39a5bfdc045342cd 与 UED-3158ce08b5bc 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作参照。
 
-各列列出原始测值和优劣方向；跨合同不统一标星或授奖，带调列的可比性见脚注。CKT v5.2 与当前生产辅序一致。
+恢复三组独立评价：无调除首道外评星；全部方案比较金牌；带调方案另评蓝色菱形。并列及可比性见表后图例和脚注。
 
 | 指标 | RC26-39a5bfdc045342cd 21×26 | UED-3158ce08b5bc 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | 冰雪莲道 CR-REF-7e650f7a4c 21×21 | 冰雪鹮道 T2126-V52-M4-ec60a3637a99 21×26 | 何为好 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| M-R2 记忆项 | 40 | 41 | 44 | 51 | 21 / 24 (M-T1)[^zh-benchmark-toned] | 18 / 21 (M-T1)[^zh-benchmark-toned] | 越低越好 |
-| 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | 8 / 5 / 3 / 1 | 5 / 2 / 2 / 5 | 3 / 0 / 0 / 4 | 1 / 0 / 0 / 0 | D=2 / V=5[^zh-benchmark-toned] | D=2 / V=5[^zh-benchmark-toned] | A、I 为诊断；仍按 D+V 越低越好 |
-| 飞键成分（声母／零声母组／韵母） | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 0 / 1 | 0 / 1 / 7 | 0 / 0 / 0[^zh-benchmark-toned] | 0 / 0 / 0[^zh-benchmark-toned] | 越少越好 |
-| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 逻辑审计 | 98.999608 | 98.298315 | 97.708694 | 99.763391 | 100.000000[^zh-benchmark-toned] | 100.000000[^zh-benchmark-toned] | 越高越一致 |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 逻辑均匀度 | 83.470667 | 74.087239 | 78.897555 | 83.107434 | 73.671261[^zh-benchmark-toned] | 76.196066[^zh-benchmark-toned] | 越高越统一 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 唯一码／唯一率 | 399 / 100.000% | 351 / 87.970% | 372 / 93.233% | 399 / 100.000% | 433 / 30.775%[^zh-benchmark-toned] | 526 / 37.385%[^zh-benchmark-toned] | 越高越好 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 重码桶 | 0 | 48 | 27 | 0 | 392[^zh-benchmark-toned] | 420[^zh-benchmark-toned] | 越低越好 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 受影响音节／占比 | 0 / 0.000% | 96 / 24.060% | 54 / 13.534% | 0 / 0.000% | 1366 / 97.086%[^zh-benchmark-toned] | 1301 / 92.466%[^zh-benchmark-toned] | 越低越好 |
-| 频率加权 S2 miss | 0.000% | 1.894% | 0.929% | 0.000% | 17.994%[^zh-benchmark-toned] | 15.596%[^zh-benchmark-toned] | 越低越好 |
-| S2 补全平均码长 | 2.000000 | 2.096813 | 2.072546 | 2.000000 | 3.126652[^zh-benchmark-toned] | 2.944921[^zh-benchmark-toned] | 越低越好 |
-| S2 补全中心时间（ms） | 69.031 | 84.118 | 90.257 | 79.890 | 218.245[^zh-benchmark-toned] | 191.629[^zh-benchmark-toned] | 越低越好 |
-| S2 异键同指率 | 4.845% | 4.021% | 11.638% | 11.343% | 4.736%[^zh-benchmark-toned] | 7.459%[^zh-benchmark-toned] | 越低越好 |
-| 综合补全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | 9.570690 | 9.668465 | 10.000000 | 9.461105 | 8.874945[^zh-benchmark-toned] | 8.602473[^zh-benchmark-toned] | 越低越好 |
-| 综合补全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | 9.062885 | 9.564204 | 10.000000 | 9.184607 | 9.158204[^zh-benchmark-toned] | 8.679715[^zh-benchmark-toned] | 越低越好 |
-| 综合补全 CKT v5 | 9.072789 | 9.562144 | 10.000000 | 9.195422 | 9.127910[^zh-benchmark-toned] | 8.619628[^zh-benchmark-toned] | 越低越好 |
-| 综合补全 CKT v5.1 | 9.082777 | 9.565504 | 9.999357 | 9.202834 | 9.127012[^zh-benchmark-toned] | 8.628673[^zh-benchmark-toned] | 越低越好 |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | 10.587565 | 10.730903 | 10.740028 | 10.519452 | 10.884939[^zh-benchmark-toned] | 10.777219[^zh-benchmark-toned] | 越低越好 |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | 10.651302 | 10.795932 | 10.805830 | 10.583290 | 10.944558[^zh-benchmark-toned] | 10.823787[^zh-benchmark-toned] | 越低越好 |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | 10.203925 | 10.607833 | 11.478960 | 11.091225 | 10.143940[^zh-benchmark-toned] | 10.163691[^zh-benchmark-toned] | 越低越好 |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | 9.252817 | 9.647440 | 10.000000 | 9.589632 | 8.646306[^zh-benchmark-toned] | 8.447277[^zh-benchmark-toned] | 越低越好 |
-| 八轨综合选重率 | 0.622% | 1.227% | 1.532% | 0.572% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
-| 八轨第一辅键率 | 20.962% | 24.772% | 26.413% | 19.746% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
-| 八轨第二辅键率 | 4.489% | 6.303% | 7.201% | 4.158% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
-| 日常左右手负载／左手占比 | 997:1152 / 46.394% | 1200:949 / 55.840% | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 1199:950 / 55.793%[^zh-benchmark-toned] | 1095:1054 / 50.954%[^zh-benchmark-toned] | 越接近 50% 越平衡 |
-| 日常同手率 | 39.739% | 47.278% | 45.882% | 45.416% | 46.719%[^zh-benchmark-toned] | 42.531%[^zh-benchmark-toned] | 越低越好；非独立速度结论 |
-| 日常平均有效距离 | 0.649234 | 0.693857 | 0.679555 | 0.701172 | 0.758448[^zh-benchmark-toned] | 0.667001[^zh-benchmark-toned] | 越低越好 |
-| 20 合同 QAZ 左小指组峰值 | 16.967% | 16.717% | 17.160% | 16.661% | 10.923%[^zh-benchmark-toned] | 11.808%[^zh-benchmark-toned] | 越低越好 |
-| 20 合同 P 区右小指组峰值 | 3.150% | 4.841% | 2.774% | 1.888% | 5.524%[^zh-benchmark-toned] | 7.125%[^zh-benchmark-toned] | 越低越好 |
-| 20 合同最大单指峰值 | 35.359% | 26.952% | 29.531% | 29.271% | 27.929%[^zh-benchmark-toned] | 26.581%[^zh-benchmark-toned] | 越低越好 |
-| 日常纯双拼移动手分数（含标点） | 145.320 | 134.318 | 138.672 | 135.310 | 121.658[^zh-benchmark-toned] | 138.089[^zh-benchmark-toned] | 越高越好 |
-| S2 主键区占比 | 44.118% | 51.279% | 49.001% | 36.600% | 41.069%[^zh-benchmark-toned] | 40.048%[^zh-benchmark-toned] | 越高越好 |
-| 20 合同 TYB 双食指组峰值 | 12.012% | 14.281% | 14.733% | 12.358% | 15.484%[^zh-benchmark-toned] | 10.828%[^zh-benchmark-toned] | 越低越好 |
-| 20 合同主键区下限 | 32.563% | 36.536% | 30.815% | 24.243% | 28.399%[^zh-benchmark-toned] | 24.699%[^zh-benchmark-toned] | 越高越好 |
+| M-R2 记忆项 | **40** ★★ | **41** ★ | 44 | 51 | **21 / 24 (M-T1)**[^zh-benchmark-toned] 🔹 | **18 / 21 (M-T1)**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | **D=2 / V=5**[^zh-benchmark-toned] 🔷 | **D=2 / V=5**[^zh-benchmark-toned] 🔷 | A、I 为诊断；仍按 D+V 越低越好 |
+| 飞键成分（声母／零声母组／韵母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | **0 / 0 / 0**[^zh-benchmark-toned] 🔷 🥇 | **0 / 0 / 0**[^zh-benchmark-toned] 🔷 🥇 | 越少越好 |
+| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 逻辑审计 | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 | **100.000000**[^zh-benchmark-toned] 🔷 🥇 | **100.000000**[^zh-benchmark-toned] 🔷 🥇 | 越高越一致 |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 逻辑均匀度 | **83.470667** ★★ 🥇 | 74.087239 | **78.897555** ★ | 83.107434 | **73.671261**[^zh-benchmark-toned] 🔹 | **76.196066**[^zh-benchmark-toned] 🔷 | 越高越统一 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 唯一码／唯一率 | **399 / 100.000%** ★★ | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% | **433 / 30.775%**[^zh-benchmark-toned] 🔹 | **526 / 37.385%**[^zh-benchmark-toned] 🔷 🥇 | 越高越好 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 重码桶 | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | **392**[^zh-benchmark-toned] 🔷 | **420**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 受影响音节／占比 | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | **1366 / 97.086%**[^zh-benchmark-toned] 🔹 | **1301 / 92.466%**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| 频率加权 S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | **17.994%**[^zh-benchmark-toned] 🔹 | **15.596%**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| S2 补全平均码长 | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | **3.126652**[^zh-benchmark-toned] 🔹 | **2.944921**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| S2 补全中心时间（ms） | **69.031** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | **218.245**[^zh-benchmark-toned] 🔹 | **191.629**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| S2 异键同指率 | **4.845%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | **4.736%**[^zh-benchmark-toned] 🔷 | **7.459%**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| 综合补全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.570690** ★★ | **9.668465** ★ | 10.000000 | 9.461105 | **8.874945**[^zh-benchmark-toned] 🔹 | **8.602473**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 综合补全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.062885** ★★ | **9.564204** ★ | 10.000000 | 9.184607 | **9.158204**[^zh-benchmark-toned] 🔹 | **8.679715**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 综合补全 CKT v5 | **9.072789** ★★ | **9.562144** ★ | 10.000000 | 9.195422 | **9.127910**[^zh-benchmark-toned] 🔹 | **8.619628**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 综合补全 CKT v5.1 | **9.082777** ★★ | **9.565504** ★ | 9.999357 | 9.202834 | **9.127012**[^zh-benchmark-toned] 🔹 | **8.628673**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.587565** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | **10.884939**[^zh-benchmark-toned] 🔹 | **10.777219**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.651302** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | **10.944558**[^zh-benchmark-toned] 🔹 | **10.823787**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.203925** ★★ | **10.607833** ★ | 11.478960 | 11.091225 | **10.143940**[^zh-benchmark-toned] 🔷 🥇 | **10.163691**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.252817** ★★ | **9.647440** ★ | 10.000000 | 9.589632 | **8.646306**[^zh-benchmark-toned] 🔹 | **8.447277**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 八轨综合选重率 | **0.622%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
+| 八轨第一辅键率 | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
+| 八轨第二辅键率 | **4.489%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
+| 日常左右手负载／左手占比 | **997:1152 / 46.394%** ★ | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ | 1004:1145 / 46.719% | **1199:950 / 55.793%**[^zh-benchmark-toned] 🔹 | **1095:1054 / 50.954%**[^zh-benchmark-toned] 🔷 🥇 | 越接近 50% 越平衡 |
+| 日常同手率 | **39.739%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | **46.719%**[^zh-benchmark-toned] 🔹 | **42.531%**[^zh-benchmark-toned] 🔷 | 越低越好；非独立速度结论 |
+| 日常平均有效距离 | **0.649234** ★★ 🥇 | 0.693857 | **0.679555** ★ | 0.701172 | **0.758448**[^zh-benchmark-toned] 🔹 | **0.667001**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| 20 合同 QAZ 左小指组峰值 | **16.967%** ★ | **16.717%** ★★ | 17.160% | 16.661% | **10.923%**[^zh-benchmark-toned] 🔷 🥇 | **11.808%**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| 20 合同 P 区右小指组峰值 | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | **5.524%**[^zh-benchmark-toned] 🔷 | **7.125%**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| 20 合同最大单指峰值 | 35.359% | **26.952%** ★★ | **29.531%** ★ | 29.271% | **27.929%**[^zh-benchmark-toned] 🔹 | **26.581%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 日常纯双拼移动手分数（含标点） | **145.320** ★★ 🥇 | 134.318 | **138.672** ★ | 135.310 | **121.658**[^zh-benchmark-toned] 🔹 | **138.089**[^zh-benchmark-toned] 🔷 | 越高越好 |
+| S2 主键区占比 | 44.118% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | **41.069%**[^zh-benchmark-toned] 🔷 | **40.048%**[^zh-benchmark-toned] 🔹 | 越高越好 |
+| 20 合同 TYB 双食指组峰值 | **12.012%** ★★ | **14.281%** ★ | 14.733% | 12.358% | **15.484%**[^zh-benchmark-toned] 🔹 | **10.828%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 20 合同主键区下限 | **32.563%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | **28.399%**[^zh-benchmark-toned] 🔷 | **24.699%**[^zh-benchmark-toned] 🔹 | 越高越好 |
 | 音节域大小（无调／带调） | 399 | 399 | 399 | 399 | 1407[^zh-benchmark-toned] | 1407[^zh-benchmark-toned] | 观察分布，不单独判优 |
-| 静态空码（399／1407 音节域） | 147 | 90 | 69 | 277 | 8[^zh-benchmark-toned] | 20[^zh-benchmark-toned] | 越高越好 |
-| 综合补全 CKT v5.2[^zh-benchmark-v52] | 9.086538 | 9.566359 | 10.000000 | —[^zh-benchmark-missing] | 9.132009[^zh-benchmark-toned] | 8.640932[^zh-benchmark-toned] | 越低越好 |
-| CKT v5.2 认知成本 ×2 | 9.043952 | 9.543307 | 10.000000 | —[^zh-benchmark-missing] | 8.861456[^zh-benchmark-toned] | 8.234489[^zh-benchmark-toned] | 越低越好 |
-| CKT v5.2 认知成本 ×3 | 9.039404 | 9.529308 | 10.000000 | —[^zh-benchmark-missing] | 8.666715[^zh-benchmark-toned] | 7.961052[^zh-benchmark-toned] | 越低越好 |
-| CKT v5.2 认知成本 ×5 | 9.051557 | 9.513962 | 10.000000 | —[^zh-benchmark-missing] | 8.402959[^zh-benchmark-toned] | 7.598958[^zh-benchmark-toned] | 越低越好 |
-| v5.2 加权运动耗时（ms） | 338.392 | 347.023 | 358.648 | —[^zh-benchmark-missing] | 343.661[^zh-benchmark-toned] | 340.196[^zh-benchmark-toned] | 越低越好 |
-| v5.2 加权认知耗时（ms） | 80.377 | 98.621 | 107.694 | —[^zh-benchmark-missing] | 81.230[^zh-benchmark-toned] | 54.935[^zh-benchmark-toned] | 越低越好 |
-| v5.2 加权有效耗时（ms） | 418.768 | 445.644 | 466.343 | —[^zh-benchmark-missing] | 424.891[^zh-benchmark-toned] | 395.130[^zh-benchmark-toned] | 越低越好 |
-| v5.2 第一辅键率 | 20.962% | 24.772% | 26.413% | —[^zh-benchmark-missing] | 21.376%[^zh-benchmark-toned] | 15.652%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 第二辅键率 | 4.484% | 6.191% | 7.087% | —[^zh-benchmark-missing] | 4.608%[^zh-benchmark-toned] | 2.272%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 第三辅键率 | 0.000% | 0.806% | 1.060% | —[^zh-benchmark-missing] | 0.666%[^zh-benchmark-toned] | 0.000%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 终局选重率 | 0.607% | 0.500% | 0.604% | —[^zh-benchmark-missing] | 0.193%[^zh-benchmark-toned] | 0.176%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 平均扫描排除候选数 | 0.007806 | 0.006292 | 0.007673 | —[^zh-benchmark-missing] | 0.002364[^zh-benchmark-toned] | 0.002036[^zh-benchmark-toned] | 越低越好 |
-| v5.2 平均翻页次数 | 0.000019 | 0.000007 | 0.000011 | —[^zh-benchmark-missing] | 0.000007[^zh-benchmark-toned] | 0.000000[^zh-benchmark-toned] | 越低越好 |
-| v5.2 平均编码按键数 | 3.841567 | 3.817685 | 3.845605 | —[^zh-benchmark-missing] | 3.766503[^zh-benchmark-toned] | 3.761028[^zh-benchmark-toned] | 越低越好 |
-| v5.2 单倍成本点最优（非生产辅序） | —[^zh-benchmark-missing] | 9.566342 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
-| v5.2 加倍成本点最优（非生产辅序） | —[^zh-benchmark-missing] | 9.543307 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 越低越好 |
-| v5.2 终局主键区占比 | —[^zh-benchmark-missing] | 44.534% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 40.747%[^zh-benchmark-toned] | 39.923%[^zh-benchmark-toned] | 越高越好 |
-| v5.2 终局上排占比 | —[^zh-benchmark-missing] | 33.333% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 35.711%[^zh-benchmark-toned] | 33.792%[^zh-benchmark-toned] | 观察分布，不单独判优 |
-| v5.2 终局下排占比 | —[^zh-benchmark-missing] | 22.133% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 23.542%[^zh-benchmark-toned] | 26.285%[^zh-benchmark-toned] | 观察分布，不单独判优 |
-| v5.2 终局左小指负载 | —[^zh-benchmark-missing] | 8.484% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 7.670%[^zh-benchmark-toned] | 8.758%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 终局右小指负载 | —[^zh-benchmark-missing] | 3.897% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 4.302%[^zh-benchmark-toned] | 4.485%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 终局最大单指负载 | —[^zh-benchmark-missing] | 25.783% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 25.575%[^zh-benchmark-toned] | 24.081%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 终局左手占比 | —[^zh-benchmark-missing] | 56.630% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 55.914%[^zh-benchmark-toned] | 54.962%[^zh-benchmark-toned] | 越接近 50% 越平衡 |
-| v5.2 终局异键同指率 | —[^zh-benchmark-missing] | 8.796% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 9.305%[^zh-benchmark-toned] | 9.439%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 终局同指率 | —[^zh-benchmark-missing] | 12.914% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 13.643%[^zh-benchmark-toned] | 13.159%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 终局同手率 | —[^zh-benchmark-missing] | 47.893% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 48.524%[^zh-benchmark-toned] | 47.242%[^zh-benchmark-toned] | 越低越好 |
-| v5.2 终局交替率 | —[^zh-benchmark-missing] | 52.107% | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 51.476%[^zh-benchmark-toned] | 52.758%[^zh-benchmark-toned] | 越高越好 |
-| 带调原生四轨主键区下限 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 38.229%[^zh-benchmark-toned] | 35.185%[^zh-benchmark-toned] | 越高越好 |
-| 带调原生四轨左小指峰值 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 9.032%[^zh-benchmark-toned] | 10.080%[^zh-benchmark-toned] | 越低越好 |
-| 带调原生四轨右小指峰值 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 5.331%[^zh-benchmark-toned] | 5.095%[^zh-benchmark-toned] | 越低越好 |
-| 带调原生四轨最大单指峰值 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 27.830%[^zh-benchmark-toned] | 26.946%[^zh-benchmark-toned] | 越低越好 |
-| 带调原生四轨 TYB 峰值 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 15.468%[^zh-benchmark-toned] | 13.414%[^zh-benchmark-toned] | 越低越好 |
-| 四码五截面平均跨词长受影响率 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 6.399%[^zh-benchmark-toned] | 4.066%[^zh-benchmark-toned] | 越低越好 |
-| 四码五截面平均跨词长首选损失率 | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | 2.002%[^zh-benchmark-toned] | 1.244%[^zh-benchmark-toned] | 越低越好 |
+| 静态空码（399／1407 音节域） | **147** ★★ | **90** ★ | 69 | 277 🥇 | **8**[^zh-benchmark-toned] 🔹 | **20**[^zh-benchmark-toned] 🔷 | 越高越好 |
+| 综合补全 CKT v5.2[^zh-benchmark-v52] | **9.086538** ★★ | **9.566359** ★ | 10.000000 | 9.208870 | **9.132009**[^zh-benchmark-toned] 🔹 | **8.640932**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| CKT v5.2 认知成本 ×2 | **9.043952** ★★ | **9.543307** ★ | 10.000000 | 9.120877 | **8.861456**[^zh-benchmark-toned] 🔹 | **8.234489**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| CKT v5.2 认知成本 ×3 | **9.039404** ★★ | **9.529308** ★ | 10.000000 | 9.082275 | **8.666715**[^zh-benchmark-toned] 🔹 | **7.961052**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| CKT v5.2 认知成本 ×5 | **9.051557** ★★ | **9.513962** ★ | 10.000000 | 9.048291 | **8.402959**[^zh-benchmark-toned] 🔹 | **7.598958**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 加权运动耗时（ms） | **338.392** ★★ 🥇 | **347.023** ★ | 358.648 | 344.268 | **343.661**[^zh-benchmark-toned] 🔹 | **340.196**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| v5.2 加权认知耗时（ms） | **80.377** ★★ | **98.621** ★ | 107.694 | 75.256 | **81.230**[^zh-benchmark-toned] 🔹 | **54.935**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 加权有效耗时（ms） | **418.768** ★★ | **445.644** ★ | 466.343 | 419.524 | **424.891**[^zh-benchmark-toned] 🔹 | **395.130**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 第一辅键率 | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% | **21.376%**[^zh-benchmark-toned] 🔹 | **15.652%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 第二辅键率 | **4.484%** ★★ | **6.191%** ★ | 7.087% | 4.116% | **4.608%**[^zh-benchmark-toned] 🔹 | **2.272%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 第三辅键率 | **0.000%** ★★ 🥇 | **0.806%** ★ | 1.060% | 0.000% 🥇 | **0.666%**[^zh-benchmark-toned] 🔹 | **0.000%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 终局选重率 | 0.607% | **0.500%** ★★ | **0.604%** ★ | 0.553% | **0.193%**[^zh-benchmark-toned] 🔹 | **0.176%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 平均扫描排除候选数 | 0.007806 | **0.006292** ★★ | **0.007673** ★ | 0.007006 | **0.002364**[^zh-benchmark-toned] 🔹 | **0.002036**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 平均翻页次数 | 0.000019 | **0.000007** ★★ | **0.000011** ★ | 0.000009 | **0.000007**[^zh-benchmark-toned] 🔹 | **0.000000**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 平均编码按键数 | **3.841567** ★ | **3.817685** ★★ | 3.845605 | 3.816075 | **3.766503**[^zh-benchmark-toned] 🔹 | **3.761028**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 单倍成本点最优（非生产辅序） | 未重选辅序[^zh-benchmark-missing] | **9.566342** ★★ 🥇 | 未重选辅序[^zh-benchmark-missing] | 未重选辅序[^zh-benchmark-missing] | 未重选辅序[^zh-benchmark-missing] | 未重选辅序[^zh-benchmark-missing] | 越低越好 |
+| v5.2 加倍成本点最优（非生产辅序） | 未重选辅序[^zh-benchmark-missing] | **9.543307** ★★ 🥇 | 未重选辅序[^zh-benchmark-missing] | 未重选辅序[^zh-benchmark-missing] | 未重选辅序[^zh-benchmark-missing] | 未重选辅序[^zh-benchmark-missing] | 越低越好 |
+| v5.2 终局主键区占比 | 42.817% | **44.534%** ★ | **44.760%** ★★ 🥇 | 36.394% | **40.747%**[^zh-benchmark-toned] 🔷 | **39.923%**[^zh-benchmark-toned] 🔹 | 越高越好 |
+| v5.2 终局上排占比 | 36.063% | 33.333% | 32.858% | 40.950% | 35.711%[^zh-benchmark-toned] | 33.792%[^zh-benchmark-toned] | 观察分布，不单独判优 |
+| v5.2 终局下排占比 | 21.120% | 22.133% | 22.382% | 22.656% | 23.542%[^zh-benchmark-toned] | 26.285%[^zh-benchmark-toned] | 观察分布，不单独判优 |
+| v5.2 终局左小指负载 | **7.968%** ★★ | **8.484%** ★ | 9.785% | 8.520% | **7.670%**[^zh-benchmark-toned] 🔷 🥇 | **8.758%**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| v5.2 终局右小指负载 | **2.507%** ★ | 3.897% | **2.004%** ★★ | 1.539% 🥇 | **4.302%**[^zh-benchmark-toned] 🔷 | **4.485%**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| v5.2 终局最大单指负载 | 27.997% | **25.783%** ★★ | **26.453%** ★ | 27.032% | **25.575%**[^zh-benchmark-toned] 🔹 | **24.081%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 终局左手占比 | **53.711%** ★★ 🥇 | **56.630%** ★ | 57.638% | 53.750% | **55.914%**[^zh-benchmark-toned] 🔹 | **54.962%**[^zh-benchmark-toned] 🔷 | 越接近 50% 越平衡 |
+| v5.2 终局异键同指率 | **9.326%** ★ | **8.796%** ★★ 🥇 | 10.536% | 10.581% | **9.305%**[^zh-benchmark-toned] 🔷 | **9.439%**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| v5.2 终局同指率 | **13.003%** ★ | **12.914%** ★★ 🥇 | 16.442% | 15.933% | **13.643%**[^zh-benchmark-toned] 🔹 | **13.159%**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| v5.2 终局同手率 | **43.199%** ★★ 🥇 | **47.893%** ★ | 49.134% | 47.045% | **48.524%**[^zh-benchmark-toned] 🔹 | **47.242%**[^zh-benchmark-toned] 🔷 | 越低越好 |
+| v5.2 终局交替率 | **56.801%** ★★ 🥇 | **52.107%** ★ | 50.866% | 52.955% | **51.476%**[^zh-benchmark-toned] 🔹 | **52.758%**[^zh-benchmark-toned] 🔷 | 越高越好 |
+| 带调原生四轨主键区下限 | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | **38.229%**[^zh-benchmark-toned] 🔷 🥇 | **35.185%**[^zh-benchmark-toned] 🔹 | 越高越好 |
+| 带调原生四轨左小指峰值 | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | **9.032%**[^zh-benchmark-toned] 🔷 🥇 | **10.080%**[^zh-benchmark-toned] 🔹 | 越低越好 |
+| 带调原生四轨右小指峰值 | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | **5.331%**[^zh-benchmark-toned] 🔹 | **5.095%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 带调原生四轨最大单指峰值 | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | **27.830%**[^zh-benchmark-toned] 🔹 | **26.946%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 带调原生四轨 TYB 峰值 | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | 不适用[^zh-benchmark-missing] | **15.468%**[^zh-benchmark-toned] 🔹 | **13.414%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 四码五截面平均跨词长受影响率 | **5.428%** ★★ | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | **6.399%**[^zh-benchmark-toned] 🔹 | **4.066%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 四码五截面平均跨词长首选损失率 | **1.884%** ★★ | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | —[^zh-benchmark-missing] | **2.002%**[^zh-benchmark-toned] 🔹 | **1.244%**[^zh-benchmark-toned] 🔷 🥇 | 越低越好 |
+
+★★／★：仅在本表全部无调方案中评价，[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 除外，分别标记第一／第二名；🔷／🔹：仅在两套带调方案中评价，分别标记第一／第二名；🥇：比较本表所有有有效数值的方案（含首道与带调）。三个范围独立，可同时标记；并列采用竞赛排名，缺测／不适用不参评，分布说明项不判优。跨合同的金牌是所列模型值的比较，边界见脚注。
 
 [^zh-benchmark-toned]: 带调列为页面原列公式的带调适配：声调在双拼主码内贡献，后置只有纯形笔辅；无调列是形辅／调辅两个成员的八轨系综，带调 v5～v5.2 是形辅四轨，词长权重均为 1:3:1:1。数值可以观察任务成本与取舍，不能作为相同编码合同下的布局或辅码消融排名。记忆项为 M-T1 下限／守门，与 M-R2 定义不同；D 可对照，带调 V 统计任一声调的普通元音偏移，A/I 未定义。[Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 对应列在带调方案中改用实际 1407 带调音节，『唯一码』指占用码位而非无碰撞音节数，分母与碰撞数不能直接横比。FA/LU、S2、A7E 与 20 合同负载均使用页面的带调适配；主码已包含的声调不重复击键，S2 补全使用各自五键枚举后缀，时间列的带调值为页面 sound.upperMs。[CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md)/v4 使用页面 τ=600、首辅=300、次辅=300 ms 的适配八轨，v5 以后使用原生纯形四轨；20 合同负载与原生四轨终局负载分别列示。
 
-[^zh-benchmark-missing]: 『—』表示这份冻结页面没有该合同／版本的测值或未定义该属性，不等于 0；不以 v5.1 冒充 v5.2，也不把适配调轨冒充新增的生产方案。
+[^zh-benchmark-missing]: 当前 v5.2 默认、×2／×3／×5、分轨耗时、前三辅率、选重及终局负载已覆盖全部八列：六个无调布局使用同一冻结语料和错误模型复算，两套带调布局使用其原生形辅四轨。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 的 v5.2 行是页面参考辅序（形 12/213/24、调 12/213/23），旧版行保留各自历史辅序。『不适用』表示不存在该生产合同（例如无调方案的带调原生四轨属性）；『未重选辅序』表示未另外搜索该方案的成本点最优值，不能用生产稳健辅序分数代填；其余『—』为来源未发布的审计量。以上均不等于 0，不参评。
 
 [^zh-benchmark-v52]: CKT v5.2 保留 v5.1 的主码、辅序、候选池及词长权重，对长码采用分块成功／错误成本；认知成本 ×2／×3／×5 时同时缩放候选与同模式 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 参考的全部认知项，保留运动项及生产辅序，再逐轨取四次幂均值。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) v5.2 归一化为 10；不是实际用户输入速度或 5000 字实测码长。
 
@@ -650,6 +664,12 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 
 ![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
 
+**Continuous double-pinyin key frequencies (daily corpus, punctuation included)**
+
+![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+
+The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded.
+
 #### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
 Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions and runtime vacancy rules: [冰雪鹮道](docs/zhudao.md). Research inventory vacancies and runtime initial-pair vacancies use different dictionaries and scopes. The configuration is the generation source.
@@ -669,6 +689,12 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 
 ![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
 
+**Continuous double-pinyin key frequencies (daily corpus, punctuation included)**
+
+![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
+
+The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded.
+
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
 - Each current 冰雪鹤道/冰雪鹤拼 fixed table contains 21 one-key abbreviations, 378 two-key characters, 108 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
@@ -680,83 +706,85 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 
 This table directly replaces Overall-17 and U357 in the historical README comparison with the current RC26-39a5bfdc045342cd and UED-3158ce08b5bc results, using the same frozen payload and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) references.
 
-Raw values and preferred directions are shown without a combined cross-contract ranking. See the toned-column footnotes. CKT v5.2 uses current production policies.
+Independent groups use stars for untoned layouts except [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段), gold medals for all layouts, and blue diamonds for toned layouts. See the legend and comparability footnotes.
 
 | Metric | RC26-39a5bfdc045342cd 21×26 | UED-3158ce08b5bc 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | 冰雪莲道 CR-REF-7e650f7a4c 21×21 | 冰雪鹮道 T2126-V52-M4-ec60a3637a99 21×26 | Better |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| M-R2 memory items | 40 | 41 | 44 | 51 | 21 / 24 (M-T1)[^en-benchmark-toned] | 18 / 21 (M-T1)[^en-benchmark-toned] | Lower |
-| All/written/traditional-initial/final disorder A/I/D/V | 8 / 5 / 3 / 1 | 5 / 2 / 2 / 5 | 3 / 0 / 0 / 4 | 1 / 0 / 0 / 0 | D=2 / V=5[^en-benchmark-toned] | D=2 / V=5[^en-benchmark-toned] | A/I diagnostic; ranking remains lower D+V |
-| Flying-key components (initials/zero-initial groups/finals) | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 0 / 1 | 0 / 1 / 7 | 0 / 0 / 0[^en-benchmark-toned] | 0 / 0 / 0[^en-benchmark-toned] | Lower |
-| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) logic audit | 98.999608 | 98.298315 | 97.708694 | 99.763391 | 100.000000[^en-benchmark-toned] | 100.000000[^en-benchmark-toned] | Higher |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) logic uniformity | 83.470667 | 74.087239 | 78.897555 | 83.107434 | 73.671261[^en-benchmark-toned] | 76.196066[^en-benchmark-toned] | Higher |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) unique codes/rate | 399 / 100.000% | 351 / 87.970% | 372 / 93.233% | 399 / 100.000% | 433 / 30.775%[^en-benchmark-toned] | 526 / 37.385%[^en-benchmark-toned] | Higher |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) collision buckets | 0 | 48 | 27 | 0 | 392[^en-benchmark-toned] | 420[^en-benchmark-toned] | Lower |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) affected syllables/rate | 0 / 0.000% | 96 / 24.060% | 54 / 13.534% | 0 / 0.000% | 1366 / 97.086%[^en-benchmark-toned] | 1301 / 92.466%[^en-benchmark-toned] | Lower |
-| Frequency-weighted S2 miss | 0.000% | 1.894% | 0.929% | 0.000% | 17.994%[^en-benchmark-toned] | 15.596%[^en-benchmark-toned] | Lower |
-| S2 completion mean code length | 2.000000 | 2.096813 | 2.072546 | 2.000000 | 3.126652[^en-benchmark-toned] | 2.944921[^en-benchmark-toned] | Lower |
-| S2 completion center time (ms) | 69.031 | 84.118 | 90.257 | 79.890 | 218.245[^en-benchmark-toned] | 191.629[^en-benchmark-toned] | Lower |
-| S2 different-key same-finger rate | 4.845% | 4.021% | 11.638% | 11.343% | 4.736%[^en-benchmark-toned] | 7.459%[^en-benchmark-toned] | Lower |
-| [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) completion | 9.570690 | 9.668465 | 10.000000 | 9.461105 | 8.874945[^en-benchmark-toned] | 8.602473[^en-benchmark-toned] | Lower |
-| [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) completion | 9.062885 | 9.564204 | 10.000000 | 9.184607 | 9.158204[^en-benchmark-toned] | 8.679715[^en-benchmark-toned] | Lower |
-| CKT v5 completion | 9.072789 | 9.562144 | 10.000000 | 9.195422 | 9.127910[^en-benchmark-toned] | 8.619628[^en-benchmark-toned] | Lower |
-| CKT v5.1 completion | 9.082777 | 9.565504 | 9.999357 | 9.202834 | 9.127012[^en-benchmark-toned] | 8.628673[^en-benchmark-toned] | Lower |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | 10.587565 | 10.730903 | 10.740028 | 10.519452 | 10.884939[^en-benchmark-toned] | 10.777219[^en-benchmark-toned] | Lower |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | 10.651302 | 10.795932 | 10.805830 | 10.583290 | 10.944558[^en-benchmark-toned] | 10.823787[^en-benchmark-toned] | Lower |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | 10.203925 | 10.607833 | 11.478960 | 11.091225 | 10.143940[^en-benchmark-toned] | 10.163691[^en-benchmark-toned] | Lower |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | 9.252817 | 9.647440 | 10.000000 | 9.589632 | 8.646306[^en-benchmark-toned] | 8.447277[^en-benchmark-toned] | Lower |
-| Eight-track aggregate selection rate | 0.622% | 1.227% | 1.532% | 0.572% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
-| Eight-track first-auxiliary rate | 20.962% | 24.772% | 26.413% | 19.746% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
-| Eight-track second-auxiliary rate | 4.489% | 6.303% | 7.201% | 4.158% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
-| Daily left/right load and left share | 997:1152 / 46.394% | 1200:949 / 55.840% | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 1199:950 / 55.793%[^en-benchmark-toned] | 1095:1054 / 50.954%[^en-benchmark-toned] | Closer to 50% |
-| Daily same-hand rate | 39.739% | 47.278% | 45.882% | 45.416% | 46.719%[^en-benchmark-toned] | 42.531%[^en-benchmark-toned] | Lower; not a standalone speed claim |
-| Daily mean effective distance | 0.649234 | 0.693857 | 0.679555 | 0.701172 | 0.758448[^en-benchmark-toned] | 0.667001[^en-benchmark-toned] | Lower |
-| 20-contract QAZ left-pinky peak | 16.967% | 16.717% | 17.160% | 16.661% | 10.923%[^en-benchmark-toned] | 11.808%[^en-benchmark-toned] | Lower |
-| 20-contract P-area right-pinky peak | 3.150% | 4.841% | 2.774% | 1.888% | 5.524%[^en-benchmark-toned] | 7.125%[^en-benchmark-toned] | Lower |
-| 20-contract maximum single-finger peak | 35.359% | 26.952% | 29.531% | 29.271% | 27.929%[^en-benchmark-toned] | 26.581%[^en-benchmark-toned] | Lower |
-| Daily pure-double-pinyin moving-hand score (punctuation included) | 145.320 | 134.318 | 138.672 | 135.310 | 121.658[^en-benchmark-toned] | 138.089[^en-benchmark-toned] | Higher |
-| S2 home-zone share | 44.118% | 51.279% | 49.001% | 36.600% | 41.069%[^en-benchmark-toned] | 40.048%[^en-benchmark-toned] | Higher |
-| 20-contract TYB index-finger peak | 12.012% | 14.281% | 14.733% | 12.358% | 15.484%[^en-benchmark-toned] | 10.828%[^en-benchmark-toned] | Lower |
-| 20-contract home-zone floor | 32.563% | 36.536% | 30.815% | 24.243% | 28.399%[^en-benchmark-toned] | 24.699%[^en-benchmark-toned] | Higher |
+| M-R2 memory items | **40** ★★ | **41** ★ | 44 | 51 | **21 / 24 (M-T1)**[^en-benchmark-toned] 🔹 | **18 / 21 (M-T1)**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| All/written/traditional-initial/final disorder A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | **D=2 / V=5**[^en-benchmark-toned] 🔷 | **D=2 / V=5**[^en-benchmark-toned] 🔷 | A/I diagnostic; ranking remains lower D+V |
+| Flying-key components (initials/zero-initial groups/finals) | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | **0 / 0 / 0**[^en-benchmark-toned] 🔷 🥇 | **0 / 0 / 0**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) logic audit | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 | **100.000000**[^en-benchmark-toned] 🔷 🥇 | **100.000000**[^en-benchmark-toned] 🔷 🥇 | Higher |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) logic uniformity | **83.470667** ★★ 🥇 | 74.087239 | **78.897555** ★ | 83.107434 | **73.671261**[^en-benchmark-toned] 🔹 | **76.196066**[^en-benchmark-toned] 🔷 | Higher |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) unique codes/rate | **399 / 100.000%** ★★ | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% | **433 / 30.775%**[^en-benchmark-toned] 🔹 | **526 / 37.385%**[^en-benchmark-toned] 🔷 🥇 | Higher |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) collision buckets | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | **392**[^en-benchmark-toned] 🔷 | **420**[^en-benchmark-toned] 🔹 | Lower |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) affected syllables/rate | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | **1366 / 97.086%**[^en-benchmark-toned] 🔹 | **1301 / 92.466%**[^en-benchmark-toned] 🔷 | Lower |
+| Frequency-weighted S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | **17.994%**[^en-benchmark-toned] 🔹 | **15.596%**[^en-benchmark-toned] 🔷 | Lower |
+| S2 completion mean code length | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | **3.126652**[^en-benchmark-toned] 🔹 | **2.944921**[^en-benchmark-toned] 🔷 | Lower |
+| S2 completion center time (ms) | **69.031** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | **218.245**[^en-benchmark-toned] 🔹 | **191.629**[^en-benchmark-toned] 🔷 | Lower |
+| S2 different-key same-finger rate | **4.845%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | **4.736%**[^en-benchmark-toned] 🔷 | **7.459%**[^en-benchmark-toned] 🔹 | Lower |
+| [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) completion | **9.570690** ★★ | **9.668465** ★ | 10.000000 | 9.461105 | **8.874945**[^en-benchmark-toned] 🔹 | **8.602473**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) completion | **9.062885** ★★ | **9.564204** ★ | 10.000000 | 9.184607 | **9.158204**[^en-benchmark-toned] 🔹 | **8.679715**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| CKT v5 completion | **9.072789** ★★ | **9.562144** ★ | 10.000000 | 9.195422 | **9.127910**[^en-benchmark-toned] 🔹 | **8.619628**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| CKT v5.1 completion | **9.082777** ★★ | **9.565504** ★ | 9.999357 | 9.202834 | **9.127012**[^en-benchmark-toned] 🔹 | **8.628673**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.587565** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | **10.884939**[^en-benchmark-toned] 🔹 | **10.777219**[^en-benchmark-toned] 🔷 | Lower |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.651302** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | **10.944558**[^en-benchmark-toned] 🔹 | **10.823787**[^en-benchmark-toned] 🔷 | Lower |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.203925** ★★ | **10.607833** ★ | 11.478960 | 11.091225 | **10.143940**[^en-benchmark-toned] 🔷 🥇 | **10.163691**[^en-benchmark-toned] 🔹 | Lower |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.252817** ★★ | **9.647440** ★ | 10.000000 | 9.589632 | **8.646306**[^en-benchmark-toned] 🔹 | **8.447277**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| Eight-track aggregate selection rate | **0.622%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
+| Eight-track first-auxiliary rate | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
+| Eight-track second-auxiliary rate | **4.489%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
+| Daily left/right load and left share | **997:1152 / 46.394%** ★ | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ | 1004:1145 / 46.719% | **1199:950 / 55.793%**[^en-benchmark-toned] 🔹 | **1095:1054 / 50.954%**[^en-benchmark-toned] 🔷 🥇 | Closer to 50% |
+| Daily same-hand rate | **39.739%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | **46.719%**[^en-benchmark-toned] 🔹 | **42.531%**[^en-benchmark-toned] 🔷 | Lower; not a standalone speed claim |
+| Daily mean effective distance | **0.649234** ★★ 🥇 | 0.693857 | **0.679555** ★ | 0.701172 | **0.758448**[^en-benchmark-toned] 🔹 | **0.667001**[^en-benchmark-toned] 🔷 | Lower |
+| 20-contract QAZ left-pinky peak | **16.967%** ★ | **16.717%** ★★ | 17.160% | 16.661% | **10.923%**[^en-benchmark-toned] 🔷 🥇 | **11.808%**[^en-benchmark-toned] 🔹 | Lower |
+| 20-contract P-area right-pinky peak | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | **5.524%**[^en-benchmark-toned] 🔷 | **7.125%**[^en-benchmark-toned] 🔹 | Lower |
+| 20-contract maximum single-finger peak | 35.359% | **26.952%** ★★ | **29.531%** ★ | 29.271% | **27.929%**[^en-benchmark-toned] 🔹 | **26.581%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| Daily pure-double-pinyin moving-hand score (punctuation included) | **145.320** ★★ 🥇 | 134.318 | **138.672** ★ | 135.310 | **121.658**[^en-benchmark-toned] 🔹 | **138.089**[^en-benchmark-toned] 🔷 | Higher |
+| S2 home-zone share | 44.118% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | **41.069%**[^en-benchmark-toned] 🔷 | **40.048%**[^en-benchmark-toned] 🔹 | Higher |
+| 20-contract TYB index-finger peak | **12.012%** ★★ | **14.281%** ★ | 14.733% | 12.358% | **15.484%**[^en-benchmark-toned] 🔹 | **10.828%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| 20-contract home-zone floor | **32.563%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | **28.399%**[^en-benchmark-toned] 🔷 | **24.699%**[^en-benchmark-toned] 🔹 | Higher |
 | Inventory size (untoned / toned) | 399 | 399 | 399 | 399 | 1407[^en-benchmark-toned] | 1407[^en-benchmark-toned] | Distribution only |
-| Static vacancies (399 / 1407 inventory) | 147 | 90 | 69 | 277 | 8[^en-benchmark-toned] | 20[^en-benchmark-toned] | Higher |
-| CKT v5.2 completion[^en-benchmark-v52] | 9.086538 | 9.566359 | 10.000000 | —[^en-benchmark-missing] | 9.132009[^en-benchmark-toned] | 8.640932[^en-benchmark-toned] | Lower |
-| CKT v5.2 cognitive costs ×2 | 9.043952 | 9.543307 | 10.000000 | —[^en-benchmark-missing] | 8.861456[^en-benchmark-toned] | 8.234489[^en-benchmark-toned] | Lower |
-| CKT v5.2 cognitive costs ×3 | 9.039404 | 9.529308 | 10.000000 | —[^en-benchmark-missing] | 8.666715[^en-benchmark-toned] | 7.961052[^en-benchmark-toned] | Lower |
-| CKT v5.2 cognitive costs ×5 | 9.051557 | 9.513962 | 10.000000 | —[^en-benchmark-missing] | 8.402959[^en-benchmark-toned] | 7.598958[^en-benchmark-toned] | Lower |
-| v5.2 weighted motor time (ms) | 338.392 | 347.023 | 358.648 | —[^en-benchmark-missing] | 343.661[^en-benchmark-toned] | 340.196[^en-benchmark-toned] | Lower |
-| v5.2 weighted cognitive time (ms) | 80.377 | 98.621 | 107.694 | —[^en-benchmark-missing] | 81.230[^en-benchmark-toned] | 54.935[^en-benchmark-toned] | Lower |
-| v5.2 weighted effective time (ms) | 418.768 | 445.644 | 466.343 | —[^en-benchmark-missing] | 424.891[^en-benchmark-toned] | 395.130[^en-benchmark-toned] | Lower |
-| v5.2 first auxiliary rate | 20.962% | 24.772% | 26.413% | —[^en-benchmark-missing] | 21.376%[^en-benchmark-toned] | 15.652%[^en-benchmark-toned] | Lower |
-| v5.2 second auxiliary rate | 4.484% | 6.191% | 7.087% | —[^en-benchmark-missing] | 4.608%[^en-benchmark-toned] | 2.272%[^en-benchmark-toned] | Lower |
-| v5.2 third auxiliary rate | 0.000% | 0.806% | 1.060% | —[^en-benchmark-missing] | 0.666%[^en-benchmark-toned] | 0.000%[^en-benchmark-toned] | Lower |
-| v5.2 terminal selection rate | 0.607% | 0.500% | 0.604% | —[^en-benchmark-missing] | 0.193%[^en-benchmark-toned] | 0.176%[^en-benchmark-toned] | Lower |
-| v5.2 mean rejected candidates | 0.007806 | 0.006292 | 0.007673 | —[^en-benchmark-missing] | 0.002364[^en-benchmark-toned] | 0.002036[^en-benchmark-toned] | Lower |
-| v5.2 mean page actions | 0.000019 | 0.000007 | 0.000011 | —[^en-benchmark-missing] | 0.000007[^en-benchmark-toned] | 0.000000[^en-benchmark-toned] | Lower |
-| v5.2 mean code keys | 3.841567 | 3.817685 | 3.845605 | —[^en-benchmark-missing] | 3.766503[^en-benchmark-toned] | 3.761028[^en-benchmark-toned] | Lower |
-| v5.2 point optimum ×1 (not production) | —[^en-benchmark-missing] | 9.566342 | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
-| v5.2 point optimum ×2 (not production) | —[^en-benchmark-missing] | 9.543307 | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | Lower |
-| v5.2 terminal home-row share | —[^en-benchmark-missing] | 44.534% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 40.747%[^en-benchmark-toned] | 39.923%[^en-benchmark-toned] | Higher |
-| v5.2 terminal upper-row share | —[^en-benchmark-missing] | 33.333% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 35.711%[^en-benchmark-toned] | 33.792%[^en-benchmark-toned] | Distribution only |
-| v5.2 terminal lower-row share | —[^en-benchmark-missing] | 22.133% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 23.542%[^en-benchmark-toned] | 26.285%[^en-benchmark-toned] | Distribution only |
-| v5.2 terminal left-pinky load | —[^en-benchmark-missing] | 8.484% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 7.670%[^en-benchmark-toned] | 8.758%[^en-benchmark-toned] | Lower |
-| v5.2 terminal right-pinky load | —[^en-benchmark-missing] | 3.897% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 4.302%[^en-benchmark-toned] | 4.485%[^en-benchmark-toned] | Lower |
-| v5.2 terminal maximum finger load | —[^en-benchmark-missing] | 25.783% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 25.575%[^en-benchmark-toned] | 24.081%[^en-benchmark-toned] | Lower |
-| v5.2 terminal left-hand share | —[^en-benchmark-missing] | 56.630% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 55.914%[^en-benchmark-toned] | 54.962%[^en-benchmark-toned] | Closer to 50% |
-| v5.2 terminal different-key same-finger rate | —[^en-benchmark-missing] | 8.796% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 9.305%[^en-benchmark-toned] | 9.439%[^en-benchmark-toned] | Lower |
-| v5.2 terminal same-finger rate | —[^en-benchmark-missing] | 12.914% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 13.643%[^en-benchmark-toned] | 13.159%[^en-benchmark-toned] | Lower |
-| v5.2 terminal same-hand rate | —[^en-benchmark-missing] | 47.893% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 48.524%[^en-benchmark-toned] | 47.242%[^en-benchmark-toned] | Lower |
-| v5.2 terminal hand alternation | —[^en-benchmark-missing] | 52.107% | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 51.476%[^en-benchmark-toned] | 52.758%[^en-benchmark-toned] | Higher |
-| Toned native four-track home-row floor | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 38.229%[^en-benchmark-toned] | 35.185%[^en-benchmark-toned] | Higher |
-| Toned native four-track left-pinky peak | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 9.032%[^en-benchmark-toned] | 10.080%[^en-benchmark-toned] | Lower |
-| Toned native four-track right-pinky peak | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 5.331%[^en-benchmark-toned] | 5.095%[^en-benchmark-toned] | Lower |
-| Toned native four-track maximum finger peak | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 27.830%[^en-benchmark-toned] | 26.946%[^en-benchmark-toned] | Lower |
-| Toned native four-track TYB peak | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 15.468%[^en-benchmark-toned] | 13.414%[^en-benchmark-toned] | Lower |
-| Four-code five-cut mean cross-length affected rate | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 6.399%[^en-benchmark-toned] | 4.066%[^en-benchmark-toned] | Lower |
-| Four-code five-cut mean cross-length first-choice loss | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | 2.002%[^en-benchmark-toned] | 1.244%[^en-benchmark-toned] | Lower |
+| Static vacancies (399 / 1407 inventory) | **147** ★★ | **90** ★ | 69 | 277 🥇 | **8**[^en-benchmark-toned] 🔹 | **20**[^en-benchmark-toned] 🔷 | Higher |
+| CKT v5.2 completion[^en-benchmark-v52] | **9.086538** ★★ | **9.566359** ★ | 10.000000 | 9.208870 | **9.132009**[^en-benchmark-toned] 🔹 | **8.640932**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| CKT v5.2 cognitive costs ×2 | **9.043952** ★★ | **9.543307** ★ | 10.000000 | 9.120877 | **8.861456**[^en-benchmark-toned] 🔹 | **8.234489**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| CKT v5.2 cognitive costs ×3 | **9.039404** ★★ | **9.529308** ★ | 10.000000 | 9.082275 | **8.666715**[^en-benchmark-toned] 🔹 | **7.961052**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| CKT v5.2 cognitive costs ×5 | **9.051557** ★★ | **9.513962** ★ | 10.000000 | 9.048291 | **8.402959**[^en-benchmark-toned] 🔹 | **7.598958**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 weighted motor time (ms) | **338.392** ★★ 🥇 | **347.023** ★ | 358.648 | 344.268 | **343.661**[^en-benchmark-toned] 🔹 | **340.196**[^en-benchmark-toned] 🔷 | Lower |
+| v5.2 weighted cognitive time (ms) | **80.377** ★★ | **98.621** ★ | 107.694 | 75.256 | **81.230**[^en-benchmark-toned] 🔹 | **54.935**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 weighted effective time (ms) | **418.768** ★★ | **445.644** ★ | 466.343 | 419.524 | **424.891**[^en-benchmark-toned] 🔹 | **395.130**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 first auxiliary rate | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% | **21.376%**[^en-benchmark-toned] 🔹 | **15.652%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 second auxiliary rate | **4.484%** ★★ | **6.191%** ★ | 7.087% | 4.116% | **4.608%**[^en-benchmark-toned] 🔹 | **2.272%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 third auxiliary rate | **0.000%** ★★ 🥇 | **0.806%** ★ | 1.060% | 0.000% 🥇 | **0.666%**[^en-benchmark-toned] 🔹 | **0.000%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 terminal selection rate | 0.607% | **0.500%** ★★ | **0.604%** ★ | 0.553% | **0.193%**[^en-benchmark-toned] 🔹 | **0.176%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 mean rejected candidates | 0.007806 | **0.006292** ★★ | **0.007673** ★ | 0.007006 | **0.002364**[^en-benchmark-toned] 🔹 | **0.002036**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 mean page actions | 0.000019 | **0.000007** ★★ | **0.000011** ★ | 0.000009 | **0.000007**[^en-benchmark-toned] 🔹 | **0.000000**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 mean code keys | **3.841567** ★ | **3.817685** ★★ | 3.845605 | 3.816075 | **3.766503**[^en-benchmark-toned] 🔹 | **3.761028**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 point optimum ×1 (not production) | Policy search not repeated[^en-benchmark-missing] | **9.566342** ★★ 🥇 | Policy search not repeated[^en-benchmark-missing] | Policy search not repeated[^en-benchmark-missing] | Policy search not repeated[^en-benchmark-missing] | Policy search not repeated[^en-benchmark-missing] | Lower |
+| v5.2 point optimum ×2 (not production) | Policy search not repeated[^en-benchmark-missing] | **9.543307** ★★ 🥇 | Policy search not repeated[^en-benchmark-missing] | Policy search not repeated[^en-benchmark-missing] | Policy search not repeated[^en-benchmark-missing] | Policy search not repeated[^en-benchmark-missing] | Lower |
+| v5.2 terminal home-row share | 42.817% | **44.534%** ★ | **44.760%** ★★ 🥇 | 36.394% | **40.747%**[^en-benchmark-toned] 🔷 | **39.923%**[^en-benchmark-toned] 🔹 | Higher |
+| v5.2 terminal upper-row share | 36.063% | 33.333% | 32.858% | 40.950% | 35.711%[^en-benchmark-toned] | 33.792%[^en-benchmark-toned] | Distribution only |
+| v5.2 terminal lower-row share | 21.120% | 22.133% | 22.382% | 22.656% | 23.542%[^en-benchmark-toned] | 26.285%[^en-benchmark-toned] | Distribution only |
+| v5.2 terminal left-pinky load | **7.968%** ★★ | **8.484%** ★ | 9.785% | 8.520% | **7.670%**[^en-benchmark-toned] 🔷 🥇 | **8.758%**[^en-benchmark-toned] 🔹 | Lower |
+| v5.2 terminal right-pinky load | **2.507%** ★ | 3.897% | **2.004%** ★★ | 1.539% 🥇 | **4.302%**[^en-benchmark-toned] 🔷 | **4.485%**[^en-benchmark-toned] 🔹 | Lower |
+| v5.2 terminal maximum finger load | 27.997% | **25.783%** ★★ | **26.453%** ★ | 27.032% | **25.575%**[^en-benchmark-toned] 🔹 | **24.081%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| v5.2 terminal left-hand share | **53.711%** ★★ 🥇 | **56.630%** ★ | 57.638% | 53.750% | **55.914%**[^en-benchmark-toned] 🔹 | **54.962%**[^en-benchmark-toned] 🔷 | Closer to 50% |
+| v5.2 terminal different-key same-finger rate | **9.326%** ★ | **8.796%** ★★ 🥇 | 10.536% | 10.581% | **9.305%**[^en-benchmark-toned] 🔷 | **9.439%**[^en-benchmark-toned] 🔹 | Lower |
+| v5.2 terminal same-finger rate | **13.003%** ★ | **12.914%** ★★ 🥇 | 16.442% | 15.933% | **13.643%**[^en-benchmark-toned] 🔹 | **13.159%**[^en-benchmark-toned] 🔷 | Lower |
+| v5.2 terminal same-hand rate | **43.199%** ★★ 🥇 | **47.893%** ★ | 49.134% | 47.045% | **48.524%**[^en-benchmark-toned] 🔹 | **47.242%**[^en-benchmark-toned] 🔷 | Lower |
+| v5.2 terminal hand alternation | **56.801%** ★★ 🥇 | **52.107%** ★ | 50.866% | 52.955% | **51.476%**[^en-benchmark-toned] 🔹 | **52.758%**[^en-benchmark-toned] 🔷 | Higher |
+| Toned native four-track home-row floor | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | **38.229%**[^en-benchmark-toned] 🔷 🥇 | **35.185%**[^en-benchmark-toned] 🔹 | Higher |
+| Toned native four-track left-pinky peak | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | **9.032%**[^en-benchmark-toned] 🔷 🥇 | **10.080%**[^en-benchmark-toned] 🔹 | Lower |
+| Toned native four-track right-pinky peak | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | **5.331%**[^en-benchmark-toned] 🔹 | **5.095%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| Toned native four-track maximum finger peak | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | **27.830%**[^en-benchmark-toned] 🔹 | **26.946%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| Toned native four-track TYB peak | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | N/A[^en-benchmark-missing] | **15.468%**[^en-benchmark-toned] 🔹 | **13.414%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| Four-code five-cut mean cross-length affected rate | **5.428%** ★★ | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | **6.399%**[^en-benchmark-toned] 🔹 | **4.066%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+| Four-code five-cut mean cross-length first-choice loss | **1.884%** ★★ | —[^en-benchmark-missing] | —[^en-benchmark-missing] | —[^en-benchmark-missing] | **2.002%**[^en-benchmark-toned] 🔹 | **1.244%**[^en-benchmark-toned] 🔷 🥇 | Lower |
+
+★★/★ rank all untoned layouts shown except Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段); 🔷/🔹 independently rank the two toned layouts, marking first/second place. 🥇 compares every valid value, including [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) and toned layouts. Groups are independent, ties use competition ranking, and missing/inapplicable values and distribution-only rows do not compete. Cross-contract medals compare the stated model values; see footnotes.
 
 [^en-benchmark-toned]: Toned columns adapt the page's original formulas: tone contributes inside the two-key main code, followed only by shape auxiliaries. Untoned layouts use eight shape/tone ensemble tracks; toned v5–v5.2 use four shape-only tracks, with 1:3:1:1 length weights. Values describe task costs across contracts, not a controlled layout/auxiliary ablation ranking. M-T1 lower/guard differs from M-R2; D is comparable, toned V counts a vowel displaced in any tone, and A/I are undefined. The [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) cells use 1407 legal toned syllables for toned layouts; distinct codes mean occupied buckets, so denominators and collision counts differ. FA/LU, S2, A7E and 20-contract loads use the page's tone-aware adaptations without repeating embedded tone strokes. S2 completion uses each five-key enumeration suffix; toned time is sound.upperMs. [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md)/v4 use the page's adapted eight tracks with τ=600 and first/second auxiliary costs of 300 ms; v5 onwards use native four-track shape-only contracts. Twenty-contract and native terminal loads are reported separately.
 
-[^en-benchmark-missing]: A dash means no measurement or undefined property in this frozen source, not zero. Older versions and adapted tone tracks do not substitute for missing production measurements.
+[^en-benchmark-missing]: All eight columns now participate in v5.2 default/scaled costs, timing, auxiliary/selection rates and terminal loads. Six untoned layouts are replayed against the same frozen corpus and error model; toned layouts retain four native shape tracks. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) v5.2 uses the frozen reference policies; earlier rows retain historical policies. N/A denotes a different/inapplicable contract. Policy search not repeated means no separate point-optimal policy search; production robust-policy scores are not substituted. Remaining dashes denote unpublished audit counts, not zero, and do not compete.
 
 [^en-benchmark-v52]: CKT v5.2 preserves v5.1 routing, policies, pools and length weights while applying block success/error costs to long codes. Cost multipliers scale all cognitive terms for both candidate and same-mode [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) reference, keeping motor costs and production policies fixed, before trackwise fourth-power normalization. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) v5.2 is 10. These are model costs, not human speed or 5000-character measured code lengths.
 
@@ -1000,6 +1028,12 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 ![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
 
+**日常八場景連續雙拼鍵頻圖（含標點）**
+
+![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+
+直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。
+
 #### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
 聲母／零聲母、範例、字母占用桶、固頂同碼與執行時空桶規則見[冰雪鹮道](docs/zhudao.md)。研究音節域空碼與執行時聲聲空桶的詞典和口徑不同，不能互相替代。配置是生成來源。
@@ -1019,6 +1053,12 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 ![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
 
+**日常八場景連續雙拼鍵頻圖（含標點）**
+
+![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
+
+直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。
+
 ### 固頂、空桶與逐級簡碼
 
 - 冰雪鶴道、冰雪鹤拼的現行 fixed 表各含 21 個一級簡碼、378 個二碼單字、108 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
@@ -1028,85 +1068,87 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 ### 現行雙拼與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) benchmark
 
-下表對照目前四份布局／六套生產方案與兩個參考，新增兩個帶調欄、CKT v5.2、成本敏感性、第三輔、耗時及終局負載；[最新追加報告](reports/shenyun-comparison.md#current-layout-d0d15d9969b5)保留逐軌來源與定義。
+下表對照目前四份布局／六套生產方案與兩個參考，新增兩個帶調欄、CKT v5.2、成本敏感性、第三輔、耗時及終局負載；[最新追加報告](reports/shenyun-comparison.md#current-layout-eedb0a038491)保留逐軌來源與定義。
 
-各欄列出原始測值與優劣方向；跨合同不統一標星或授獎，帶調欄可比性見腳註。CKT v5.2 與目前生產輔序一致。
+無調除首道外評星，全部方案比較金牌，帶調另評藍色菱形；並列與可比性見圖例及腳註。
 
 | 指標 | RC26-39a5bfdc045342cd 21×26 | UED-3158ce08b5bc 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | 冰雪莲道 CR-REF-7e650f7a4c 21×21 | 冰雪鹮道 T2126-V52-M4-ec60a3637a99 21×26 | 何者為佳 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| M-R2 記憶項 | 40 | 41 | 44 | 51 | 21 / 24 (M-T1)[^zht-benchmark-toned] | 18 / 21 (M-T1)[^zht-benchmark-toned] | 越低越好 |
-| 全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V | 8 / 5 / 3 / 1 | 5 / 2 / 2 / 5 | 3 / 0 / 0 / 4 | 1 / 0 / 0 / 0 | D=2 / V=5[^zht-benchmark-toned] | D=2 / V=5[^zht-benchmark-toned] | A、I 為診斷；仍按 D+V 越低越好 |
-| 飛鍵成分（聲母／零聲母組／韻母） | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 0 / 1 | 0 / 1 / 7 | 0 / 0 / 0[^zht-benchmark-toned] | 0 / 0 / 0[^zht-benchmark-toned] | 越少越好 |
-| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 邏輯稽核 | 98.999608 | 98.298315 | 97.708694 | 99.763391 | 100.000000[^zht-benchmark-toned] | 100.000000[^zht-benchmark-toned] | 越高越一致 |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 邏輯均勻度 | 83.470667 | 74.087239 | 78.897555 | 83.107434 | 73.671261[^zht-benchmark-toned] | 76.196066[^zht-benchmark-toned] | 越高越統一 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 唯一碼／唯一率 | 399 / 100.000% | 351 / 87.970% | 372 / 93.233% | 399 / 100.000% | 433 / 30.775%[^zht-benchmark-toned] | 526 / 37.385%[^zht-benchmark-toned] | 越高越好 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 重碼桶 | 0 | 48 | 27 | 0 | 392[^zht-benchmark-toned] | 420[^zht-benchmark-toned] | 越低越好 |
-| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 受影響音節／占比 | 0 / 0.000% | 96 / 24.060% | 54 / 13.534% | 0 / 0.000% | 1366 / 97.086%[^zht-benchmark-toned] | 1301 / 92.466%[^zht-benchmark-toned] | 越低越好 |
-| 頻率加權 S2 miss | 0.000% | 1.894% | 0.929% | 0.000% | 17.994%[^zht-benchmark-toned] | 15.596%[^zht-benchmark-toned] | 越低越好 |
-| S2 補全平均碼長 | 2.000000 | 2.096813 | 2.072546 | 2.000000 | 3.126652[^zht-benchmark-toned] | 2.944921[^zht-benchmark-toned] | 越低越好 |
-| S2 補全中心時間（ms） | 69.031 | 84.118 | 90.257 | 79.890 | 218.245[^zht-benchmark-toned] | 191.629[^zht-benchmark-toned] | 越低越好 |
-| S2 異鍵同指率 | 4.845% | 4.021% | 11.638% | 11.343% | 4.736%[^zht-benchmark-toned] | 7.459%[^zht-benchmark-toned] | 越低越好 |
-| 綜合補全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | 9.570690 | 9.668465 | 10.000000 | 9.461105 | 8.874945[^zht-benchmark-toned] | 8.602473[^zht-benchmark-toned] | 越低越好 |
-| 綜合補全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | 9.062885 | 9.564204 | 10.000000 | 9.184607 | 9.158204[^zht-benchmark-toned] | 8.679715[^zht-benchmark-toned] | 越低越好 |
-| 綜合補全 CKT v5 | 9.072789 | 9.562144 | 10.000000 | 9.195422 | 9.127910[^zht-benchmark-toned] | 8.619628[^zht-benchmark-toned] | 越低越好 |
-| 綜合補全 CKT v5.1 | 9.082777 | 9.565504 | 9.999357 | 9.202834 | 9.127012[^zht-benchmark-toned] | 8.628673[^zht-benchmark-toned] | 越低越好 |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | 10.587565 | 10.730903 | 10.740028 | 10.519452 | 10.884939[^zht-benchmark-toned] | 10.777219[^zht-benchmark-toned] | 越低越好 |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | 10.651302 | 10.795932 | 10.805830 | 10.583290 | 10.944558[^zht-benchmark-toned] | 10.823787[^zht-benchmark-toned] | 越低越好 |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | 10.203925 | 10.607833 | 11.478960 | 11.091225 | 10.143940[^zht-benchmark-toned] | 10.163691[^zht-benchmark-toned] | 越低越好 |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | 9.252817 | 9.647440 | 10.000000 | 9.589632 | 8.646306[^zht-benchmark-toned] | 8.447277[^zht-benchmark-toned] | 越低越好 |
-| 八軌綜合選重率 | 0.622% | 1.227% | 1.532% | 0.572% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
-| 八軌第一輔鍵率 | 20.962% | 24.772% | 26.413% | 19.746% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
-| 八軌第二輔鍵率 | 4.489% | 6.303% | 7.201% | 4.158% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
-| 日常左右手負載／左手占比 | 997:1152 / 46.394% | 1200:949 / 55.840% | 1121:1028 / 52.164% | 1004:1145 / 46.719% | 1199:950 / 55.793%[^zht-benchmark-toned] | 1095:1054 / 50.954%[^zht-benchmark-toned] | 越接近 50% 越平衡 |
-| 日常同手率 | 39.739% | 47.278% | 45.882% | 45.416% | 46.719%[^zht-benchmark-toned] | 42.531%[^zht-benchmark-toned] | 越低越好；非獨立速度結論 |
-| 日常平均有效距離 | 0.649234 | 0.693857 | 0.679555 | 0.701172 | 0.758448[^zht-benchmark-toned] | 0.667001[^zht-benchmark-toned] | 越低越好 |
-| 20 合同 QAZ 左小指組峰值 | 16.967% | 16.717% | 17.160% | 16.661% | 10.923%[^zht-benchmark-toned] | 11.808%[^zht-benchmark-toned] | 越低越好 |
-| 20 合同 P 區右小指組峰值 | 3.150% | 4.841% | 2.774% | 1.888% | 5.524%[^zht-benchmark-toned] | 7.125%[^zht-benchmark-toned] | 越低越好 |
-| 20 合同最大單指峰值 | 35.359% | 26.952% | 29.531% | 29.271% | 27.929%[^zht-benchmark-toned] | 26.581%[^zht-benchmark-toned] | 越低越好 |
-| 日常純雙拼移動手分數（含標點） | 145.320 | 134.318 | 138.672 | 135.310 | 121.658[^zht-benchmark-toned] | 138.089[^zht-benchmark-toned] | 越高越好 |
-| S2 主鍵區占比 | 44.118% | 51.279% | 49.001% | 36.600% | 41.069%[^zht-benchmark-toned] | 40.048%[^zht-benchmark-toned] | 越高越好 |
-| 20 合同 TYB 雙食指組峰值 | 12.012% | 14.281% | 14.733% | 12.358% | 15.484%[^zht-benchmark-toned] | 10.828%[^zht-benchmark-toned] | 越低越好 |
-| 20 合同主鍵區下限 | 32.563% | 36.536% | 30.815% | 24.243% | 28.399%[^zht-benchmark-toned] | 24.699%[^zht-benchmark-toned] | 越高越好 |
+| M-R2 記憶項 | **40** ★★ | **41** ★ | 44 | 51 | **21 / 24 (M-T1)**[^zht-benchmark-toned] 🔹 | **18 / 21 (M-T1)**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | **D=2 / V=5**[^zht-benchmark-toned] 🔷 | **D=2 / V=5**[^zht-benchmark-toned] 🔷 | A、I 為診斷；仍按 D+V 越低越好 |
+| 飛鍵成分（聲母／零聲母組／韻母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | **0 / 0 / 0**[^zht-benchmark-toned] 🔷 🥇 | **0 / 0 / 0**[^zht-benchmark-toned] 🔷 🥇 | 越少越好 |
+| [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 邏輯稽核 | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 | **100.000000**[^zht-benchmark-toned] 🔷 🥇 | **100.000000**[^zht-benchmark-toned] 🔷 🥇 | 越高越一致 |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 邏輯均勻度 | **83.470667** ★★ 🥇 | 74.087239 | **78.897555** ★ | 83.107434 | **73.671261**[^zht-benchmark-toned] 🔹 | **76.196066**[^zht-benchmark-toned] 🔷 | 越高越統一 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 唯一碼／唯一率 | **399 / 100.000%** ★★ | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% | **433 / 30.775%**[^zht-benchmark-toned] 🔹 | **526 / 37.385%**[^zht-benchmark-toned] 🔷 🥇 | 越高越好 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 重碼桶 | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | **392**[^zht-benchmark-toned] 🔷 | **420**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 受影響音節／占比 | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | **1366 / 97.086%**[^zht-benchmark-toned] 🔹 | **1301 / 92.466%**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| 頻率加權 S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | **17.994%**[^zht-benchmark-toned] 🔹 | **15.596%**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| S2 補全平均碼長 | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | **3.126652**[^zht-benchmark-toned] 🔹 | **2.944921**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| S2 補全中心時間（ms） | **69.031** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | **218.245**[^zht-benchmark-toned] 🔹 | **191.629**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| S2 異鍵同指率 | **4.845%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | **4.736%**[^zht-benchmark-toned] 🔷 | **7.459%**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| 綜合補全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.570690** ★★ | **9.668465** ★ | 10.000000 | 9.461105 | **8.874945**[^zht-benchmark-toned] 🔹 | **8.602473**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 綜合補全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.062885** ★★ | **9.564204** ★ | 10.000000 | 9.184607 | **9.158204**[^zht-benchmark-toned] 🔹 | **8.679715**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 綜合補全 CKT v5 | **9.072789** ★★ | **9.562144** ★ | 10.000000 | 9.195422 | **9.127910**[^zht-benchmark-toned] 🔹 | **8.619628**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 綜合補全 CKT v5.1 | **9.082777** ★★ | **9.565504** ★ | 9.999357 | 9.202834 | **9.127012**[^zht-benchmark-toned] 🔹 | **8.628673**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.587565** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | **10.884939**[^zht-benchmark-toned] 🔹 | **10.777219**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.651302** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | **10.944558**[^zht-benchmark-toned] 🔹 | **10.823787**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.203925** ★★ | **10.607833** ★ | 11.478960 | 11.091225 | **10.143940**[^zht-benchmark-toned] 🔷 🥇 | **10.163691**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.252817** ★★ | **9.647440** ★ | 10.000000 | 9.589632 | **8.646306**[^zht-benchmark-toned] 🔹 | **8.447277**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 八軌綜合選重率 | **0.622%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
+| 八軌第一輔鍵率 | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
+| 八軌第二輔鍵率 | **4.489%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
+| 日常左右手負載／左手占比 | **997:1152 / 46.394%** ★ | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ | 1004:1145 / 46.719% | **1199:950 / 55.793%**[^zht-benchmark-toned] 🔹 | **1095:1054 / 50.954%**[^zht-benchmark-toned] 🔷 🥇 | 越接近 50% 越平衡 |
+| 日常同手率 | **39.739%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | **46.719%**[^zht-benchmark-toned] 🔹 | **42.531%**[^zht-benchmark-toned] 🔷 | 越低越好；非獨立速度結論 |
+| 日常平均有效距離 | **0.649234** ★★ 🥇 | 0.693857 | **0.679555** ★ | 0.701172 | **0.758448**[^zht-benchmark-toned] 🔹 | **0.667001**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| 20 合同 QAZ 左小指組峰值 | **16.967%** ★ | **16.717%** ★★ | 17.160% | 16.661% | **10.923%**[^zht-benchmark-toned] 🔷 🥇 | **11.808%**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| 20 合同 P 區右小指組峰值 | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | **5.524%**[^zht-benchmark-toned] 🔷 | **7.125%**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| 20 合同最大單指峰值 | 35.359% | **26.952%** ★★ | **29.531%** ★ | 29.271% | **27.929%**[^zht-benchmark-toned] 🔹 | **26.581%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 日常純雙拼移動手分數（含標點） | **145.320** ★★ 🥇 | 134.318 | **138.672** ★ | 135.310 | **121.658**[^zht-benchmark-toned] 🔹 | **138.089**[^zht-benchmark-toned] 🔷 | 越高越好 |
+| S2 主鍵區占比 | 44.118% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | **41.069%**[^zht-benchmark-toned] 🔷 | **40.048%**[^zht-benchmark-toned] 🔹 | 越高越好 |
+| 20 合同 TYB 雙食指組峰值 | **12.012%** ★★ | **14.281%** ★ | 14.733% | 12.358% | **15.484%**[^zht-benchmark-toned] 🔹 | **10.828%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 20 合同主鍵區下限 | **32.563%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | **28.399%**[^zht-benchmark-toned] 🔷 | **24.699%**[^zht-benchmark-toned] 🔹 | 越高越好 |
 | 音節域大小（無調／帶調） | 399 | 399 | 399 | 399 | 1407[^zht-benchmark-toned] | 1407[^zht-benchmark-toned] | 觀察分布，不單獨判優 |
-| 靜態空碼（399／1407 音節域） | 147 | 90 | 69 | 277 | 8[^zht-benchmark-toned] | 20[^zht-benchmark-toned] | 越高越好 |
-| 綜合補全 CKT v5.2[^zht-benchmark-v52] | 9.086538 | 9.566359 | 10.000000 | —[^zht-benchmark-missing] | 9.132009[^zht-benchmark-toned] | 8.640932[^zht-benchmark-toned] | 越低越好 |
-| CKT v5.2 認知成本 ×2 | 9.043952 | 9.543307 | 10.000000 | —[^zht-benchmark-missing] | 8.861456[^zht-benchmark-toned] | 8.234489[^zht-benchmark-toned] | 越低越好 |
-| CKT v5.2 認知成本 ×3 | 9.039404 | 9.529308 | 10.000000 | —[^zht-benchmark-missing] | 8.666715[^zht-benchmark-toned] | 7.961052[^zht-benchmark-toned] | 越低越好 |
-| CKT v5.2 認知成本 ×5 | 9.051557 | 9.513962 | 10.000000 | —[^zht-benchmark-missing] | 8.402959[^zht-benchmark-toned] | 7.598958[^zht-benchmark-toned] | 越低越好 |
-| v5.2 加權運動耗時（ms） | 338.392 | 347.023 | 358.648 | —[^zht-benchmark-missing] | 343.661[^zht-benchmark-toned] | 340.196[^zht-benchmark-toned] | 越低越好 |
-| v5.2 加權認知耗時（ms） | 80.377 | 98.621 | 107.694 | —[^zht-benchmark-missing] | 81.230[^zht-benchmark-toned] | 54.935[^zht-benchmark-toned] | 越低越好 |
-| v5.2 加權有效耗時（ms） | 418.768 | 445.644 | 466.343 | —[^zht-benchmark-missing] | 424.891[^zht-benchmark-toned] | 395.130[^zht-benchmark-toned] | 越低越好 |
-| v5.2 第一輔鍵率 | 20.962% | 24.772% | 26.413% | —[^zht-benchmark-missing] | 21.376%[^zht-benchmark-toned] | 15.652%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 第二輔鍵率 | 4.484% | 6.191% | 7.087% | —[^zht-benchmark-missing] | 4.608%[^zht-benchmark-toned] | 2.272%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 第三輔鍵率 | 0.000% | 0.806% | 1.060% | —[^zht-benchmark-missing] | 0.666%[^zht-benchmark-toned] | 0.000%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 終局選重率 | 0.607% | 0.500% | 0.604% | —[^zht-benchmark-missing] | 0.193%[^zht-benchmark-toned] | 0.176%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 平均掃描排除候選數 | 0.007806 | 0.006292 | 0.007673 | —[^zht-benchmark-missing] | 0.002364[^zht-benchmark-toned] | 0.002036[^zht-benchmark-toned] | 越低越好 |
-| v5.2 平均翻頁次數 | 0.000019 | 0.000007 | 0.000011 | —[^zht-benchmark-missing] | 0.000007[^zht-benchmark-toned] | 0.000000[^zht-benchmark-toned] | 越低越好 |
-| v5.2 平均編碼按鍵數 | 3.841567 | 3.817685 | 3.845605 | —[^zht-benchmark-missing] | 3.766503[^zht-benchmark-toned] | 3.761028[^zht-benchmark-toned] | 越低越好 |
-| v5.2 單倍成本點最優（非生產輔序） | —[^zht-benchmark-missing] | 9.566342 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
-| v5.2 加倍成本點最優（非生產輔序） | —[^zht-benchmark-missing] | 9.543307 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 越低越好 |
-| v5.2 終局主鍵區占比 | —[^zht-benchmark-missing] | 44.534% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 40.747%[^zht-benchmark-toned] | 39.923%[^zht-benchmark-toned] | 越高越好 |
-| v5.2 終局上排占比 | —[^zht-benchmark-missing] | 33.333% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 35.711%[^zht-benchmark-toned] | 33.792%[^zht-benchmark-toned] | 觀察分布，不單獨判優 |
-| v5.2 終局下排占比 | —[^zht-benchmark-missing] | 22.133% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 23.542%[^zht-benchmark-toned] | 26.285%[^zht-benchmark-toned] | 觀察分布，不單獨判優 |
-| v5.2 終局左小指負載 | —[^zht-benchmark-missing] | 8.484% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 7.670%[^zht-benchmark-toned] | 8.758%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 終局右小指負載 | —[^zht-benchmark-missing] | 3.897% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 4.302%[^zht-benchmark-toned] | 4.485%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 終局最大單指負載 | —[^zht-benchmark-missing] | 25.783% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 25.575%[^zht-benchmark-toned] | 24.081%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 終局左手占比 | —[^zht-benchmark-missing] | 56.630% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 55.914%[^zht-benchmark-toned] | 54.962%[^zht-benchmark-toned] | 越接近 50% 越平衡 |
-| v5.2 終局異鍵同指率 | —[^zht-benchmark-missing] | 8.796% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 9.305%[^zht-benchmark-toned] | 9.439%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 終局同指率 | —[^zht-benchmark-missing] | 12.914% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 13.643%[^zht-benchmark-toned] | 13.159%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 終局同手率 | —[^zht-benchmark-missing] | 47.893% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 48.524%[^zht-benchmark-toned] | 47.242%[^zht-benchmark-toned] | 越低越好 |
-| v5.2 終局交替率 | —[^zht-benchmark-missing] | 52.107% | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 51.476%[^zht-benchmark-toned] | 52.758%[^zht-benchmark-toned] | 越高越好 |
-| 帶調原生四軌主鍵區下限 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 38.229%[^zht-benchmark-toned] | 35.185%[^zht-benchmark-toned] | 越高越好 |
-| 帶調原生四軌左小指峰值 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 9.032%[^zht-benchmark-toned] | 10.080%[^zht-benchmark-toned] | 越低越好 |
-| 帶調原生四軌右小指峰值 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 5.331%[^zht-benchmark-toned] | 5.095%[^zht-benchmark-toned] | 越低越好 |
-| 帶調原生四軌最大單指峰值 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 27.830%[^zht-benchmark-toned] | 26.946%[^zht-benchmark-toned] | 越低越好 |
-| 帶調原生四軌 TYB 峰值 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 15.468%[^zht-benchmark-toned] | 13.414%[^zht-benchmark-toned] | 越低越好 |
-| 四碼五截面平均跨詞長受影響率 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 6.399%[^zht-benchmark-toned] | 4.066%[^zht-benchmark-toned] | 越低越好 |
-| 四碼五截面平均跨詞長首選損失率 | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | 2.002%[^zht-benchmark-toned] | 1.244%[^zht-benchmark-toned] | 越低越好 |
+| 靜態空碼（399／1407 音節域） | **147** ★★ | **90** ★ | 69 | 277 🥇 | **8**[^zht-benchmark-toned] 🔹 | **20**[^zht-benchmark-toned] 🔷 | 越高越好 |
+| 綜合補全 CKT v5.2[^zht-benchmark-v52] | **9.086538** ★★ | **9.566359** ★ | 10.000000 | 9.208870 | **9.132009**[^zht-benchmark-toned] 🔹 | **8.640932**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| CKT v5.2 認知成本 ×2 | **9.043952** ★★ | **9.543307** ★ | 10.000000 | 9.120877 | **8.861456**[^zht-benchmark-toned] 🔹 | **8.234489**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| CKT v5.2 認知成本 ×3 | **9.039404** ★★ | **9.529308** ★ | 10.000000 | 9.082275 | **8.666715**[^zht-benchmark-toned] 🔹 | **7.961052**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| CKT v5.2 認知成本 ×5 | **9.051557** ★★ | **9.513962** ★ | 10.000000 | 9.048291 | **8.402959**[^zht-benchmark-toned] 🔹 | **7.598958**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 加權運動耗時（ms） | **338.392** ★★ 🥇 | **347.023** ★ | 358.648 | 344.268 | **343.661**[^zht-benchmark-toned] 🔹 | **340.196**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| v5.2 加權認知耗時（ms） | **80.377** ★★ | **98.621** ★ | 107.694 | 75.256 | **81.230**[^zht-benchmark-toned] 🔹 | **54.935**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 加權有效耗時（ms） | **418.768** ★★ | **445.644** ★ | 466.343 | 419.524 | **424.891**[^zht-benchmark-toned] 🔹 | **395.130**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 第一輔鍵率 | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% | **21.376%**[^zht-benchmark-toned] 🔹 | **15.652%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 第二輔鍵率 | **4.484%** ★★ | **6.191%** ★ | 7.087% | 4.116% | **4.608%**[^zht-benchmark-toned] 🔹 | **2.272%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 第三輔鍵率 | **0.000%** ★★ 🥇 | **0.806%** ★ | 1.060% | 0.000% 🥇 | **0.666%**[^zht-benchmark-toned] 🔹 | **0.000%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 終局選重率 | 0.607% | **0.500%** ★★ | **0.604%** ★ | 0.553% | **0.193%**[^zht-benchmark-toned] 🔹 | **0.176%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 平均掃描排除候選數 | 0.007806 | **0.006292** ★★ | **0.007673** ★ | 0.007006 | **0.002364**[^zht-benchmark-toned] 🔹 | **0.002036**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 平均翻頁次數 | 0.000019 | **0.000007** ★★ | **0.000011** ★ | 0.000009 | **0.000007**[^zht-benchmark-toned] 🔹 | **0.000000**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 平均編碼按鍵數 | **3.841567** ★ | **3.817685** ★★ | 3.845605 | 3.816075 | **3.766503**[^zht-benchmark-toned] 🔹 | **3.761028**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 單倍成本點最優（非生產輔序） | 未重選輔序[^zht-benchmark-missing] | **9.566342** ★★ 🥇 | 未重選輔序[^zht-benchmark-missing] | 未重選輔序[^zht-benchmark-missing] | 未重選輔序[^zht-benchmark-missing] | 未重選輔序[^zht-benchmark-missing] | 越低越好 |
+| v5.2 加倍成本點最優（非生產輔序） | 未重選輔序[^zht-benchmark-missing] | **9.543307** ★★ 🥇 | 未重選輔序[^zht-benchmark-missing] | 未重選輔序[^zht-benchmark-missing] | 未重選輔序[^zht-benchmark-missing] | 未重選輔序[^zht-benchmark-missing] | 越低越好 |
+| v5.2 終局主鍵區占比 | 42.817% | **44.534%** ★ | **44.760%** ★★ 🥇 | 36.394% | **40.747%**[^zht-benchmark-toned] 🔷 | **39.923%**[^zht-benchmark-toned] 🔹 | 越高越好 |
+| v5.2 終局上排占比 | 36.063% | 33.333% | 32.858% | 40.950% | 35.711%[^zht-benchmark-toned] | 33.792%[^zht-benchmark-toned] | 觀察分布，不單獨判優 |
+| v5.2 終局下排占比 | 21.120% | 22.133% | 22.382% | 22.656% | 23.542%[^zht-benchmark-toned] | 26.285%[^zht-benchmark-toned] | 觀察分布，不單獨判優 |
+| v5.2 終局左小指負載 | **7.968%** ★★ | **8.484%** ★ | 9.785% | 8.520% | **7.670%**[^zht-benchmark-toned] 🔷 🥇 | **8.758%**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| v5.2 終局右小指負載 | **2.507%** ★ | 3.897% | **2.004%** ★★ | 1.539% 🥇 | **4.302%**[^zht-benchmark-toned] 🔷 | **4.485%**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| v5.2 終局最大單指負載 | 27.997% | **25.783%** ★★ | **26.453%** ★ | 27.032% | **25.575%**[^zht-benchmark-toned] 🔹 | **24.081%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| v5.2 終局左手占比 | **53.711%** ★★ 🥇 | **56.630%** ★ | 57.638% | 53.750% | **55.914%**[^zht-benchmark-toned] 🔹 | **54.962%**[^zht-benchmark-toned] 🔷 | 越接近 50% 越平衡 |
+| v5.2 終局異鍵同指率 | **9.326%** ★ | **8.796%** ★★ 🥇 | 10.536% | 10.581% | **9.305%**[^zht-benchmark-toned] 🔷 | **9.439%**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| v5.2 終局同指率 | **13.003%** ★ | **12.914%** ★★ 🥇 | 16.442% | 15.933% | **13.643%**[^zht-benchmark-toned] 🔹 | **13.159%**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| v5.2 終局同手率 | **43.199%** ★★ 🥇 | **47.893%** ★ | 49.134% | 47.045% | **48.524%**[^zht-benchmark-toned] 🔹 | **47.242%**[^zht-benchmark-toned] 🔷 | 越低越好 |
+| v5.2 終局交替率 | **56.801%** ★★ 🥇 | **52.107%** ★ | 50.866% | 52.955% | **51.476%**[^zht-benchmark-toned] 🔹 | **52.758%**[^zht-benchmark-toned] 🔷 | 越高越好 |
+| 帶調原生四軌主鍵區下限 | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | **38.229%**[^zht-benchmark-toned] 🔷 🥇 | **35.185%**[^zht-benchmark-toned] 🔹 | 越高越好 |
+| 帶調原生四軌左小指峰值 | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | **9.032%**[^zht-benchmark-toned] 🔷 🥇 | **10.080%**[^zht-benchmark-toned] 🔹 | 越低越好 |
+| 帶調原生四軌右小指峰值 | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | **5.331%**[^zht-benchmark-toned] 🔹 | **5.095%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 帶調原生四軌最大單指峰值 | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | **27.830%**[^zht-benchmark-toned] 🔹 | **26.946%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 帶調原生四軌 TYB 峰值 | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | 不適用[^zht-benchmark-missing] | **15.468%**[^zht-benchmark-toned] 🔹 | **13.414%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 四碼五截面平均跨詞長受影響率 | **5.428%** ★★ | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | **6.399%**[^zht-benchmark-toned] 🔹 | **4.066%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+| 四碼五截面平均跨詞長首選損失率 | **1.884%** ★★ | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | —[^zht-benchmark-missing] | **2.002%**[^zht-benchmark-toned] 🔹 | **1.244%**[^zht-benchmark-toned] 🔷 🥇 | 越低越好 |
+
+★★／★：僅評本表全部無調方案，[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 除外，分別標第一／第二名；🔷／🔹：僅評兩套帶調方案，分別標第一／第二名；🥇：比較所有有效數值，包含首道與帶調。三組獨立，可同時標記；並列採競賽排名，缺測／不適用不參評，分布說明項不判優。跨合同金牌的邊界見腳註。
 
 [^zht-benchmark-toned]: 帶調欄為頁面原欄公式的帶調適配：聲調在雙拼主碼內貢獻，後置只有純形筆輔；無調欄為形輔／調輔八軌系綜，帶調 v5～v5.2 為形輔四軌，詞長權重均為 1:3:1:1。可觀察任務成本及取捨，不可視為相同編碼合同的消融排名。M-T1 下限／守門與 M-R2 定義不同；D 可對照，帶調 V 計任一聲調的普通元音偏移，A/I 未定義。[Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 對應欄在帶調方案使用 1407 個實際帶調音節，『唯一碼』指占用碼位，分母及碰撞數不能直接橫比。FA/LU、S2、A7E 與 20 合同負載依頁面帶調適配，主碼已含聲調不重複擊鍵；S2 補全使用各自五鍵枚舉後綴，帶調時間為 sound.upperMs。[CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md)/v4 採 τ=600、首輔=300、次輔=300 ms 的適配八軌，v5 以後使用原生純形四軌；20 合同與原生四軌終局負載分列。
 
-[^zht-benchmark-missing]: 『—』表示凍結頁面沒有該合同／版本測值或屬性未定義，不等於 0；不用舊版本或適配調軌代替生產測值。
+[^zht-benchmark-missing]: 目前 v5.2 預設、×2／×3／×5、分軌耗時、前三輔率、選重與終局負載已涵蓋全部八欄：六個無調布局以同一凍結語料與錯誤模型複算，兩套帶調布局使用原生形輔四軌。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 的 v5.2 行採頁面參考輔序（形 12/213/24、調 12/213/23），舊版行保留各自歷史輔序。『不適用』表示不存在該生產合同；『未重選輔序』表示未另行搜尋成本點最優輔序，不以生產穩健輔序分數代填；其餘『—』表示來源未發布的審計量。以上均不等於 0，不參評。
 
 [^zht-benchmark-v52]: CKT v5.2 保留 v5.1 主碼、輔序、候選池及詞長權重，對長碼採分塊成功／錯誤成本。成本 ×2／×3／×5 同時縮放候選與同模式 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 參考的全部認知項，保留運動項與生產輔序，再逐軌取四次冪均值；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) v5.2 歸一化為 10。這些是模型成本，不是實際輸入速度或 5000 字實測碼長。
 

@@ -1322,13 +1322,13 @@ function replaceCurrentLayoutDocumentation(
 	const enBenchmark = currentReadmeBenchmarkTable("en");
 	const zhtBenchmark = currentReadmeBenchmarkTable("zht");
 	const zhBenchmarkLegend = latestCurrentBenchmark()
-		? "各列列出原始测值和优劣方向；跨合同不统一标星或授奖，带调列的可比性见脚注。CKT v5.2 与当前生产辅序一致。"
+		? "恢复三组独立评价：无调除首道外评星；全部方案比较金牌；带调方案另评蓝色菱形。并列及可比性见表后图例和脚注。"
 		: readmeBenchmarkLegends.zh;
 	const enBenchmarkLegend = latestCurrentBenchmark()
-		? "Raw values and preferred directions are shown without a combined cross-contract ranking. See the toned-column footnotes. CKT v5.2 uses current production policies."
+		? "Independent groups use stars for untoned layouts except B04, gold medals for all layouts, and blue diamonds for toned layouts. See the legend and comparability footnotes."
 		: readmeBenchmarkLegends.en;
 	const zhtBenchmarkLegend = latestCurrentBenchmark()
-		? "各欄列出原始測值與優劣方向；跨合同不統一標星或授獎，帶調欄可比性見腳註。CKT v5.2 與目前生產輔序一致。"
+		? "無調除首道外評星，全部方案比較金牌，帶調另評藍色菱形；並列與可比性見圖例及腳註。"
 		: readmeBenchmarkLegends.zht;
 	const zh = `### RC26-39a5bfdc045342cd 21×26 双拼
 

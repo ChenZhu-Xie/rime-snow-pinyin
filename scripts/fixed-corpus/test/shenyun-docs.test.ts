@@ -752,7 +752,7 @@ test("两份 README 记录现行四份布局、带调对比与全量报告", () 
 		includes(readme, "docs/shenyun-ued-3158ce08b5bc-keyboard.svg");
 		includes(readme, "docs/shenyun-rc26-keyboard-heat.svg");
 		includes(readme, "docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg");
-		includes(readme, "跨合同不统一标星或授奖");
+		includes(readme, "全部方案比较金牌");
 		includes(readme, "CKT v5.2");
 		includes(readme, "冰雪莲道 CR-REF-7e650f7a4c 21×21");
 		includes(readme, "冰雪鹮道 T2126-V52-M4-ec60a3637a99 21×26");

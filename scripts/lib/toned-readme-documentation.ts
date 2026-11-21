@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { rootPath } from "./paths";
 import {
 	latestCurrentBenchmark,
+	currentBenchmarkAnchor,
 	table,
 	type BenchmarkLanguage,
 } from "./current-layout-benchmark";
@@ -135,6 +136,17 @@ function tonedSections(language: BenchmarkLanguage) {
 			prose,
 			rows.length > 0 ? table(label, rows) : "",
 			`![${name}](lua/snow/keymaps/${scheme === "Liandao" ? "snow_jiandao_toned" : "snow_zhudao"}.svg)`,
+			language === "en"
+				? "**Continuous double-pinyin key frequencies (daily corpus, punctuation included)**"
+				: language === "zht"
+					? "**日常八場景連續雙拼鍵頻圖（含標點）**"
+					: "**日常八场景连续双拼键频图（含标点）**",
+			`![${name} · 2149](docs/${link}-keyboard-heat.svg)`,
+			language === "en"
+				? "The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded."
+				: language === "zht"
+					? "直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。"
+					: "直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。",
 		);
 	}
 	return (
@@ -200,7 +212,11 @@ export function updateTonedReadmeDocumentation(markdown: string) {
 		/五布局／六布局追加报告/g,
 		"当前四布局／六生产方案与历史布局追加报告",
 	);
-	const latestLink = `reports/shenyun-comparison.md#current-layout-${snapshot.sourceSha256.slice(0, 12)}`;
+	const latestLink = `reports/shenyun-comparison.md#${currentBenchmarkAnchor(snapshot)}`;
+	markdown = markdown.replace(
+		/reports\/shenyun-comparison\.md#current-layout-[a-f0-9]+/g,
+		latestLink,
+	);
 	markdown = markdown.replace(
 		/下表以当前 RC26[^\n]*直接替代 README 历史表[^\n]*/gu,
 		`下表对照当前四份布局：RC26 与 UED 各代表形辅／调辅两个生产方案，另增冰雪莲道、冰雪鹮道两列，并保留 S005 与 B04 参考。新增 CKT v5.2、成本敏感性、第三辅、耗时、选重与终局负载等维度；[当前完整追加报告](${latestLink})保留逐轨来源及定义。`,
