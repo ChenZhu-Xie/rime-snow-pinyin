@@ -206,6 +206,8 @@ const report = {
 		selectionRateDenominator: "对应行的汉字输出段数；合计行为全方案",
 		averageCodeLength:
 			"对应行编码键数总和／汉字输出段数；不同于含全部按键的总按键／5500 汉字",
+		totalAverageLength:
+			"全方案总按键／5500 汉字；包含编码、Space、Shift、选重与标点",
 	},
 	schemes,
 };
@@ -221,9 +223,17 @@ const wordStatisticsTable = renderBenchmarkWordStatistics(
 		name: scheme.name.startsWith("小鹤音形")
 			? "小鹤音形（清风版）"
 			: scheme.name.replace(/（.*$/u, ""),
+		totalKeys: scheme.total.keys,
 		statistics: scheme.wordStatistics,
 	})),
 );
+const comparisonSchemes = [schemes.qingyun, schemes.flypy];
+const comparison = comparisonSchemes.map((scheme) => ({
+	tokens: scheme.wordStatistics.total.tokens,
+	mean: scheme.wordStatistics.total.averageCodeLength.toFixed(3),
+	codeKeys: scheme.wordStatistics.total.codeKeys,
+	breakdown: `${scheme.wordStatistics.total.codeKeys}＋${scheme.total.spaces}＋${scheme.total.shifts}＋${scheme.total.selections}＋${corpus.punctuationCharacters}＝${scheme.total.keys}`,
+}));
 const markdown = [
 	"# 十一场景 5500 字：当前十二方案最优切分对比",
 	"",
@@ -233,7 +243,7 @@ const markdown = [
 	"",
 	`语料：${corpus.note} 共 5500 汉字、392 标点。5000 字部分另见[十篇完整报告](./十篇五百字_当前十二方案最优切分及字词比率报告.md)。`,
 	"",
-	"| 排名 | 方案 | 总按键 | 平均码长 | Space | Shift | 选重 |",
+	"| 排名 | 方案 | 总按键 | 总平均码长（键／字） | Space | Shift | 选重 |",
 	"| ---: | --- | ---: | ---: | ---: | ---: | ---: |",
 	...ranking.map(
 		([, scheme], i) =>
@@ -244,9 +254,13 @@ const markdown = [
 	"",
 	"按十一场景最优路径的实际汉字输出段统计，重复出现重复计数，标点不计词次。输出段包括结构略码及追加「的／了」，不再按另一套词典重新分词；五字及以上合并为多字词。第十一场景的额外 500 字同样计入。",
 	"",
-	"「词次／占比」的分母为本方案全部汉字输出段数；「码长分布」写为「码长→次数／该词长类别占比」，省略次数为零的码长；「选重率」为对应行选重次数除以词次，粗体合计行为全方案选重个数及比率。百分比保留两位小数，四舍五入后之和可能略偏离 100%。",
+	"下表按总按键从少到多排列，每个方案的五行词长与各码长列组成码长分布矩阵；每格为「次数／该词长类别占比」，空格表示零次，合计行不重复展开分布。存在短码长词等规则，矩阵不强制为严格三角形。",
 	"",
-	"此表编码长度计入音码、辅码、定位及略码键，大写字母计一码，不含额外 Shift、Space、选重键和排版标记。平均码长为编码键数／词次，保留三位小数；与上表包含全部按键的总按键／5500 汉字不同。没有词次的类别以「—」表示均码。",
+	"「输出段数／占比」统计的是字词输出段的出现次数，分母为本方案全部汉字输出段数，不是汉字数；所有方案输入的汉字均为 5500 字。「选重率」为对应行选重次数除以输出段数，粗体合计行为全方案选重个数及比率。百分比保留两位小数，四舍五入后之和可能略偏离 100%。",
+	"",
+	"「总均码／字」为各方案的总平均码长＝总按键／5500 汉字，包含 Space、Shift、选重及标点，保留四位小数。「编码均码／段」为编码键数／输出段数，保留三位小数；编码长度计入音码、辅码、定位及略码键，大写字母计一码，不含额外 Shift、Space、选重键和排版标记。没有输出段的类别以「—」表示编码均码。",
+	"",
+	`例如，冰雪清韵将 5500 字切为 ${comparison[0].tokens} 个输出段，小鹤音形（清风版）切为 ${comparison[1].tokens} 段；平均每段编码分别为 ${comparison[0].mean} 和 ${comparison[1].mean} 码，编码键合计 ${comparison[0].codeKeys} 对 ${comparison[1].codeKeys}。加上 Space、Shift、选重和标点后，分别为 ${comparison[0].breakdown} 键、${comparison[1].breakdown} 键，故按总按键排序与按输出段数排序可以不同。`,
 	"",
 	wordStatisticsTable,
 	"",

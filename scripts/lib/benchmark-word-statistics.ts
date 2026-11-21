@@ -87,27 +87,37 @@ export function benchmarkWordStatistics(
 const percent = (rate: number) => `${(rate * 100).toFixed(2)}%`;
 
 export function renderBenchmarkWordStatistics(
-	schemes: ReadonlyArray<{ name: string; statistics: BenchmarkWordStatistics }>,
+	schemes: ReadonlyArray<{
+		name: string;
+		totalKeys: number;
+		statistics: BenchmarkWordStatistics;
+	}>,
 ): string {
+	const maxCodeLength = Math.max(
+		0,
+		...schemes.flatMap(({ statistics }) =>
+			Object.keys(statistics.total.codeLengths).map(Number),
+		),
+	);
+	const codeLengths = Array.from({ length: maxCodeLength }, (_, i) => i + 1);
 	const lines = [
-		"| 方案 | 词长 | 词次／占比 | 码长分布：码→次数／类内占比 | 平均码长／词 | 选重次数／率 |",
-		"| --- | --- | ---: | --- | ---: | ---: |",
+		`| 方案 | 总按键 | 总均码／字 | 词长 | 输出段数／占比 | ${codeLengths.map((n) => `${n}码`).join(" | ")} | 编码均码／段 | 选重次数／率 |`,
+		`| --- | ---: | ---: | --- | ---: | ${codeLengths.map(() => "---:").join(" | ")} | ---: | ---: |`,
 	];
-	for (const { name, statistics } of schemes) {
+	for (const { name, totalKeys, statistics } of [...schemes].sort(
+		(a, b) => a.totalKeys - b.totalKeys,
+	)) {
 		const total = statistics.total;
 		lines.push(
-			`| **${name}** | **合计** | **${total.tokens}／${percent(total.tokenRate)}** | — | **${total.averageCodeLength.toFixed(3)}** | **${total.selections}／${percent(total.selectionRate)}** |`,
+			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **合计** | **${total.tokens}／${percent(total.tokenRate)}** | ${codeLengths.map(() => "").join(" | ")} | **${total.averageCodeLength.toFixed(3)}** | **${total.selections}／${percent(total.selectionRate)}** |`,
 		);
 		for (const group of statistics.groups) {
-			const distribution = Object.entries(group.codeLengths)
-				.sort(([left], [right]) => Number(left) - Number(right))
-				.map(
-					([length, bucket]) =>
-						`${length}→${bucket.count}／${percent(bucket.rate)}`,
-				)
-				.join("；");
+			const distribution = codeLengths.map((length) => {
+				const bucket = group.codeLengths[length];
+				return bucket ? `${bucket.count}／${percent(bucket.rate)}` : "";
+			});
 			lines.push(
-				`| | ${group.label} | ${group.tokens}／${percent(group.tokenRate)} | ${distribution || "—"} | ${group.tokens ? group.averageCodeLength.toFixed(3) : "—"} | ${group.selections}／${percent(group.selectionRate)} |`,
+				`| | | | ${group.label} | ${group.tokens}／${percent(group.tokenRate)} | ${distribution.join(" | ")} | ${group.tokens ? group.averageCodeLength.toFixed(3) : "—"} | ${group.selections}／${percent(group.selectionRate)} |`,
 			);
 		}
 	}

@@ -13,7 +13,8 @@
     "tokenRateDenominator": "各方案全部汉字输出段数",
     "codeLengthRateDenominator": "本词长类别的汉字输出段数",
     "selectionRateDenominator": "对应行的汉字输出段数；合计行为全方案",
-    "averageCodeLength": "对应行编码键数总和／汉字输出段数；不同于含全部按键的总按键／5500 汉字"
+    "averageCodeLength": "对应行编码键数总和／汉字输出段数；不同于含全部按键的总按键／5500 汉字",
+    "totalAverageLength": "全方案总按键／5500 汉字；包含编码、Space、Shift、选重与标点"
   },
   "schemes": {
     "sipin": {
