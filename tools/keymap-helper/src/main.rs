@@ -182,6 +182,14 @@ fn mark_as_tool_window(window: &Window) -> Result<(), String> {
 
 #[cfg(target_os = "linux")]
 fn mark_as_tool_window(window: &Window) -> Result<(), String> {
+    configure_x11_window(window, None)
+}
+
+#[cfg(target_os = "linux")]
+fn configure_x11_window(
+    window: &Window,
+    position: Option<PhysicalPosition<i32>>,
+) -> Result<(), String> {
     use winit::raw_window_handle::{HasDisplayHandle, RawDisplayHandle};
     use x11_dl::xlib;
 
@@ -211,6 +219,17 @@ fn mark_as_tool_window(window: &Window) -> Result<(), String> {
             (&timestamp as *const std::ffi::c_ulong).cast(),
             1,
         );
+        if let Some(position) = position {
+            let mut hints: xlib::XSizeHints = std::mem::zeroed();
+            let mut supplied = 0;
+            (xlib.XGetWMNormalHints)(display, handle.window, &mut hints, &mut supplied);
+            // Preserve size constraints while telling the WM that the pre-map
+            // position is deliberate, rather than an invitation to smart-place.
+            hints.flags |= xlib::USPosition;
+            hints.x = position.x;
+            hints.y = position.y;
+            (xlib.XSetWMNormalHints)(display, handle.window, &mut hints);
+        }
         (xlib.XFlush)(display);
     }
     Ok(())
@@ -736,11 +755,16 @@ impl App {
                 size: monitor.size(),
             }
         };
-        window.set_outer_position(centered_position(
+        let position = centered_position(
             area.position,
             area.size,
             PhysicalSize::new(image.width, image.height),
-        ));
+        );
+        window.set_outer_position(position);
+        #[cfg(target_os = "linux")]
+        if let Err(error) = configure_x11_window(window, Some(position)) {
+            eprintln!("无法设置 X11 键位图初始位置：{error}");
+        }
     }
 
     fn change_zoom(&mut self, event_loop: &ActiveEventLoop, delta: f64) {

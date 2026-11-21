@@ -109,7 +109,10 @@ deploy:
       - send: bq
         assert: all_have_length(1) and has("冰") and preedit == "bq"
       - send: bqo
-        assert: has("冰") and preedit == "bq 形[o]"
+        assert: cand[1].text == "病" and cand[1].comment:find("📌", 1, true) and has("冰") and preedit == "bq 形[o]"
+      # 继续补辅时，三级固顶不延伸到四码；「冰」升首选，「病」按短码首选后置。
+      - send: bqoe
+        assert: cand[1].text == "冰" and rank("病") == 2 and not cand[rank("病")].comment:find("📌", 1, true)
       # 四码顶的 AU→AUA 中间态不得把「测」顶屏；chvi 为「测试」。
       - send: chvi
         assert: commit == nil and has("测试") and preedit == "ch vi"

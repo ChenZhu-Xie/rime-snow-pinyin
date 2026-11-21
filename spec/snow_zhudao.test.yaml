@@ -38,7 +38,10 @@ deploy:
       - send: bn
         assert: has("冰") and preedit == "bn"
       - send: bno
-        assert: has("冰") and preedit == "bn 形[o]"
+        assert: cand[1].text == "冰" and cand[1].comment:find("📌", 1, true) and preedit == "bn 形[o]"
+      # 第二码已包含声调；继续补形辅仍可找到「冰」，三级固顶标记不沿用到四码。
+      - send: bnoe
+        assert: has("冰") and not comment("冰"):find("📌", 1, true) and preedit == "bn 形[oe]" and commit == nil
       - send: br
         assert: has("饼")
       - send: bl

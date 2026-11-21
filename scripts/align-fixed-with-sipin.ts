@@ -6,6 +6,10 @@ import { loadAuxiliarySemantics } from "./lib/auxiliary-semantics";
 import { characterReadingPriorities } from "./lib/character-reading-priorities";
 import { loadVacancyFallbackSyllables } from "./lib/runtime-vacancy";
 import {
+	selectThreeKeyFixed,
+	type ThreeKeyFixedCandidate,
+} from "./lib/three-key-fixed";
+import {
 	mergeDictionaries,
 	readDictionary,
 	readShapeCodes,
@@ -642,12 +646,53 @@ function render21x21(
 	return `${output.filter((_, index) => !removed.has(index)).join("\n")}\n`;
 }
 
+function threeKeyShapeReferences(
+	algebra: SpellingAlgebra,
+	reservedWords: Iterable<string>,
+): Map<string, string> {
+	const sourceSemantics = loadAuxiliarySemantics("21x21");
+	const targetSemantics = loadAuxiliarySemantics("21x26");
+	const shapeKeyMap = new Map(
+		[...sourceSemantics.shapeKeysByMeaning].map((key, index) => [
+			key,
+			targetSemantics.shapeKeysByMeaning[index],
+		]),
+	);
+	const sipinLevels = new Map<string, number>();
+	for (const { word, reading, level } of singlePriorities()) {
+		const key = `${word}\t${reading}`;
+		sipinLevels.set(key, Math.min(level, sipinLevels.get(key) ?? Infinity));
+	}
+	const shapes = replacementShapeCodes();
+	const candidates: ThreeKeyFixedCandidate[] = [];
+	const soundByReading = new Map<string, string>();
+	for (const { word, reading, weight } of readingPriorities) {
+		let sound = soundByReading.get(reading);
+		if (sound === undefined) {
+			sound = algebra.apply(reading);
+			soundByReading.set(reading, sound);
+		}
+		const shape = shapes.get(word);
+		const firstShape = shape && shapeKeyMap.get(shape[0]);
+		if (sound.length !== 2 || !firstShape) continue;
+		candidates.push({
+			code: sound + firstShape,
+			word,
+			reading,
+			weight,
+			sipinLevel: sipinLevels.get(`${word}\t${reading}`),
+		});
+	}
+	return selectThreeKeyFixed(candidates, reservedWords);
+}
+
 function render21x26(
 	source: string,
 	ones: Map<string, string>,
 	bases: Map<string, string>,
 	phrases: Map<string, string>,
 	targetAlgebra: SpellingAlgebra,
+	auxiliary: Target["auxiliary"],
 	letters = shenyunLetters,
 ): string {
 	const letterByCode = new Map(
@@ -665,16 +710,29 @@ function render21x26(
 		original.has(code) ? mergeFirst(original.get(code) ?? "", word) : word;
 	const sanKey = targetAlgebra.apply("san1").slice(0, 1);
 	if (sanKey && !ones.has(sanKey)) ones.set(sanKey, "三");
+	const reservedWords = new Set([...ones.values(), ...bases.values()]);
+	for (const { code, naturalTop3 } of letters.letters) {
+		reservedWords.add(bases.get(code) ?? naturalTop3[0]?.text ?? "");
+	}
+	const threeKeySingles =
+		auxiliary === "shape"
+			? threeKeyShapeReferences(targetAlgebra, reservedWords)
+			: new Map<string, string>();
 	const output = [
 		"# 冰雪神韵 21×26 固顶候选；单字与二简词优先级参考冰雪四拼并按本方案物理码重映射。",
 		"# 一级简码只固定首选；二简词只占用无单字音节的空槽；字母保持大写第 2、小写第 3。",
 		"# 五辅扩展位继续由冰雪鹤道、冰雪鹤拼各自的形辅／声调语义决定。",
+		...(auxiliary === "shape"
+			? [
+					"# 三级单字取两码主码＋第一形辅；参考四拼单字偏好，读音权重仅作兜底，详见 docs/fixed-candidates.md。",
+				]
+			: []),
 		"# 一级简码",
 		...[...ones]
 			.sort()
 			.map(([code, word]) => `${code}\t${mergeOriginal(code, word)}`),
 		"# 单字",
-		...[...bases]
+		...[...bases, ...threeKeySingles]
 			.filter(([code]) => !letterCodes.has(code))
 			.sort()
 			.map(([code, word]) => `${code}\t${mergeOriginal(code, word)}`),
@@ -730,6 +788,7 @@ function alignFixedContentOnce(fixed: string, source: string): string {
 					bases,
 					phrases,
 					algebra,
+					target.auxiliary,
 					target.fixed === "snow_zhudao.fixed.txt"
 						? JSON.parse(read("config/snow-zhudao-letter-buckets.json"))
 						: shenyunLetters,

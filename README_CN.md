@@ -262,6 +262,7 @@
 ### 固顶、空桶与逐级简码
 
 - 冰雪鹤道、冰雪鹤拼的现行 fixed 表各含 21 个一级简码、378 个二码单字、108 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
+- 冰雪鹤道另有 1,648 个三级单字固顶，冰雪鹮道另有 2,022 个，均为两码主码加第一形辅，与短码固定单字不重复；参考四拼单字偏好，现有读音权重只作兜底，见[选字原则](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 360 个二码单字和 81 个二简词完整覆盖 441 个 `AA` 位置。两方案的 630 区均由 105 个二码位与 525 个三码位组成，每码固定一个不重复词项。
 - 冰雪兰道、冰雪兰拼及对应经典方案的大写字母用于三字及以上简拼补韵：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
 - [二字词逐级排序研究](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音及 1,372 个二简／630 槽位。它作为候选常用度证据保留，不把“完整码已是首选”的词重复塞入短码。
@@ -700,6 +701,7 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
 - Each current 冰雪鹤道/冰雪鹤拼 fixed table contains 21 one-key abbreviations, 378 two-key characters, 108 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
+- 冰雪鹤道 additionally fixes 1,648 characters at three keys, and 冰雪鹮道 fixes 2,022. Each uses the two-key main code plus the first shape auxiliary, without repeating shorter fixed characters. Selection follows 四拼 character preferences with reading weights as fallback; see the [selection policy](docs/fixed-candidates.md).
 - 冰雪兰道 and 冰雪兰拼 cover all 441 `AA` positions with 360 two-key characters and 81 two-key word abbreviations. Each 630 section comprises 105 two-key and 525 three-key slots, with one non-repeated word fixed per code.
 - In 冰雪兰道, 冰雪兰拼, and their classic counterparts, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials.
 - The [staged bigram-ranking study](reports/sipin-bigram-ranking-research.md) covers 133,205 encodable readings and 1,372 two-key/630 slots. It remains frequency evidence without duplicating words that are already first at full code into shorter fixed slots.
@@ -1064,6 +1066,7 @@ Reproducible current and historical layout comparisons are in the [appended five
 ### 固頂、空桶與逐級簡碼
 
 - 冰雪鶴道、冰雪鹤拼的現行 fixed 表各含 21 個一級簡碼、378 個二碼單字、108 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
+- 冰雪鶴道另有 1,648 個三級單字固頂，冰雪鹮道另有 2,022 個，均為兩碼主碼加第一形輔，與短碼固定單字不重複；參考四拼單字偏好，現有讀音權重只作兜底，見[選字原則](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 360 個二碼單字和 81 個二簡詞完整覆蓋 441 個 `AA` 位置。兩方案的 630 區均由 105 個二碼位與 525 個三碼位組成，每碼固定一個不重複詞項。
 - 冰雪兰道、冰雪兰拼及對應經典方案的大寫字母用於三字及以上簡拼補韻：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
 - [二字詞逐級排序研究](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音及 1,372 個二簡／630 槽位。它作為候選常用度證據保留，不把「完整碼已是首選」的詞重複放入短碼。
