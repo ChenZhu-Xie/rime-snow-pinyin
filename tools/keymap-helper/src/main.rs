@@ -180,7 +180,43 @@ fn mark_as_tool_window(window: &Window) -> Result<(), String> {
     Ok(())
 }
 
-#[cfg(not(target_os = "windows"))]
+#[cfg(target_os = "linux")]
+fn mark_as_tool_window(window: &Window) -> Result<(), String> {
+    use winit::raw_window_handle::{HasDisplayHandle, RawDisplayHandle};
+    use x11_dl::xlib;
+
+    let handle = window.window_handle().map_err(|error| error.to_string())?;
+    let RawWindowHandle::Xlib(handle) = handle.as_raw() else {
+        return Ok(());
+    };
+    let display = window.display_handle().map_err(|error| error.to_string())?;
+    let RawDisplayHandle::Xlib(display) = display.as_raw() else {
+        return Ok(());
+    };
+    let display = display.display.ok_or("X11 显示连接为空")?.as_ptr().cast();
+    let xlib = xlib::Xlib::open().map_err(|error| error.to_string())?;
+    let timestamp: std::ffi::c_ulong = 0;
+    // SAFETY: these handles belong to this live window on the event-loop thread.
+    // EWMH defines timestamp zero as a request not to focus a newly mapped window.
+    // Unlike WM_HINTS.input=false, it still allows focus when the user clicks it.
+    unsafe {
+        let property = (xlib.XInternAtom)(display, c"_NET_WM_USER_TIME".as_ptr(), xlib::False);
+        (xlib.XChangeProperty)(
+            display,
+            handle.window,
+            property,
+            xlib::XA_CARDINAL,
+            32,
+            xlib::PropModeReplace,
+            (&timestamp as *const std::ffi::c_ulong).cast(),
+            1,
+        );
+        (xlib.XFlush)(display);
+    }
+    Ok(())
+}
+
+#[cfg(not(any(target_os = "windows", target_os = "linux")))]
 fn mark_as_tool_window(_window: &Window) -> Result<(), String> {
     Ok(())
 }

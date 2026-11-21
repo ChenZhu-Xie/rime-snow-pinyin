@@ -71,6 +71,6 @@ Windows 发布构建后运行 `./tools/keymap-helper/tests/windows-launch.ps1`�
 
 macOS 与 Linux 发布构建后运行 `python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop`，检查后台 shell 返回、首次提交图像、原生窗口可见性、显示器居中、前台焦点、连续三次缓存显隐及方案跟随。macOS 用 `bash tools/keymap-helper/build-macos.sh` 生成并以临时签名校验双架构产物，测试时把 `--helper` 指向 `tools/keymap-helper/target/universal/snow-keymap`。Actions 在 Intel Mac、Apple 芯片 Mac 与 Xvfb／Openbox 的 X11 桌面运行此检查；另在无 X11 的 headless Weston 中加 `--wayland`，检查真实 Wayland 协议中的 surface 销毁与重开，后者不验证桌面位置或键盘焦点。测量从测试命令写入及 shell 启动开始，窗口可见性由轮询观察，提交图像表示 `softbuffer` 成功提交缓冲区；这些时间不等于实际输入法的硬件按键到屏幕亮起延迟，也不代表清空系统文件缓存后的冷启动。每次结果与日志随 Actions 构件保存。
 
-macOS 显式使用 Accessory 激活策略并关闭启动时强制激活，避免 helper 按普通应用的默认策略抢走前台。原生 Wayland 不支持 winit 的 `set_visible` 与绝对定位：隐藏时释放窗口及显示 surface，后续按键重建窗口，保留字体、已解析 SVG 和栅格图缓存；隐藏期间的方案跟随不建窗口。位置和置顶行为由 Wayland 合成器决定，不能保证显示器或宿主窗口居中。X11、macOS 与 Windows 仍复用原生窗口。
+macOS 显式使用 Accessory 激活策略并关闭启动时强制激活，避免 helper 按普通应用的默认策略抢走前台。X11 在首次映射前设置 EWMH `_NET_WM_USER_TIME=0`，请求窗口管理器保留前台焦点，同时允许用户主动点击浮窗获得焦点；Linux X11 运行环境需提供 `libxkbcommon-x11`（Debian／Ubuntu 包名为 `libxkbcommon-x11-0`）。原生 Wayland 不支持 winit 的 `set_visible` 与绝对定位：隐藏时释放窗口及显示 surface，后续按键重建窗口，保留字体、已解析 SVG 和栅格图缓存；隐藏期间的方案跟随不建窗口。位置和置顶行为由 Wayland 合成器决定，不能保证显示器或宿主窗口居中。X11、macOS 与 Windows 仍复用原生窗口。
 
 可设置 `SNOW_KEYMAP_TRACE` 为日志路径，记录事件循环创建、字体加载、SVG 解析、栅格化、窗口创建、显隐与缓冲区提交的相对时间；默认不创建或写入日志文件。

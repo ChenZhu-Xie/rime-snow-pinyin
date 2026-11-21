@@ -8,6 +8,7 @@ Times include a warm OS file cache and are not hardware key-to-screen latency.
 """
 
 import argparse
+import atexit
 import ctypes as c
 import json
 import os
@@ -77,6 +78,13 @@ class MacDesktop:
 
 
 class X11Desktop:
+    def __init__(self):
+        # A real foreground window makes the no-focus assertion meaningful.
+        reference = subprocess.Popen(["xmessage", "-title", "snow-keymap-focus-reference", "-geometry", "480x240+50+70", "Keymap test input window"])
+        atexit.register(reference.terminate)
+        identifier = output("xdotool", "search", "--sync", "--onlyvisible", "--pid", str(reference.pid), "--name", "snow-keymap-focus-reference").splitlines()[0]
+        output("xdotool", "windowactivate", "--sync", identifier)
+
     def focus(self):
         return output("xdotool", "getwindowfocus")
 
