@@ -10,8 +10,20 @@ rime_api = {
 -- 只模拟命令文件协议，不启动 helper，也不改动本机临时目录里的实际命令。
 local commands = {}
 local launches = 0
+local shell_launches = 0
+local helper_running = true
+local launcher_available = true
+local warnings = {}
 local original_open = io.open
 local original_execute = os.execute
+local original_loadlib = package.loadlib
+log = { warning = function(message) table.insert(warnings, message) end }
+package.loadlib = function(path, symbol)
+  assert(path == "C:/Rime Data/lua/snow/bin/snow_keymap_launcher.dll")
+  assert(symbol == "snow_keymap_launch")
+  if not launcher_available then return nil, "missing test DLL" end
+  return function() launches = launches + 1 end
+end
 io.open = function(path, mode)
   if mode == "wb" then
     return {
@@ -19,12 +31,13 @@ io.open = function(path, mode)
       close = function() end,
     }
   end
+  if path:match("%.alive$") and not helper_running then return nil end
   return {
     read = function() return tostring(os.time()) end,
     close = function() end,
   }
 end
-os.execute = function() launches = launches + 1 end
+os.execute = function() shell_launches = shell_launches + 1 end
 
 local function context()
   local properties = {}
@@ -94,6 +107,33 @@ editor_context.ascii_mode = false
 assert(keymap.func(key_event("v"), switched_env) == snow.kAccepted)
 assert(commands[#commands]:match("^toggle\tsnow_sanpin:"))
 
+-- 首次启动只调用原生 DLL；心跳尚未建立时，重复按键不能再启动一份。
+helper_running = false
+assert(keymap.func(key_event("v"), switched_env) == snow.kAccepted)
+assert(launches == 1 and shell_launches == 0, "Windows 首次打开不能创建命令行进程")
+assert(keymap.func(key_event("v"), switched_env) == snow.kAccepted)
+assert(launches == 1, "心跳建立前应限制重复启动")
+
+-- 打包缺失 DLL 时保留正常字母输入，并给出诊断日志。
+launcher_available = false
+local unavailable = environment(context(), "snow_jiandao", "v")
+keymap.init(unavailable)
+count = #commands
+assert(not unavailable.available)
+assert(keymap.func(key_event("v"), unavailable) == snow.kNoop)
+assert(#commands == count and #warnings == 1 and warnings[1]:find("missing test DLL", 1, true))
+
+-- Unix 仍沿用后台启动，初始化时也不应加载 Windows DLL。
+rime_api.get_user_data_dir = function() return "/home/rime" end
+rime_api.get_distribution_code_name = function() return "ibus" end
+snow.keymap_helper_launch_time = 0
+local linux = environment(context(), "snow_sanpin", "v")
+keymap.init(linux)
+assert(linux.available and linux.launch_helper == nil)
+assert(keymap.func(key_event("v"), linux) == snow.kAccepted)
+assert(launches == 1 and shell_launches == 1)
+
 io.open = original_open
 os.execute = original_execute
+package.loadlib = original_loadlib
 print("keymap.test.lua: ok")
