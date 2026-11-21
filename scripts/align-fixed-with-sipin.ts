@@ -31,12 +31,6 @@ interface Target {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const targets: Target[] = [
 	{
-		schema: "snow_jiandao_toned.schema.yaml",
-		fixed: "snow_jiandao_toned.fixed.txt",
-		kind: "21x21",
-		auxiliary: "shape",
-	},
-	{
 		schema: "snow_zhudao.schema.yaml",
 		fixed: "snow_zhudao.fixed.txt",
 		kind: "21x26",
@@ -77,6 +71,12 @@ const targets: Target[] = [
 		fixed: "snow_shenyun_tone.fixed.txt",
 		kind: "21x26",
 		auxiliary: "tone",
+	},
+	{
+		schema: "snow_jiandao_toned.schema.yaml",
+		fixed: "snow_jiandao_toned.fixed.txt",
+		kind: "21x21",
+		auxiliary: "shape",
 	},
 ];
 

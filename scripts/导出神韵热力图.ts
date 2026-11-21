@@ -55,7 +55,7 @@ const output = rootPath(
 	"docs",
 	is21x26
 		? "shenyun-um40-keyboard-heat.svg"
-		: "shenyun-oc21-e1f155973380-keyboard-heat.svg",
+		: "shenyun-ued-3158ce08b5bc-keyboard-heat.svg",
 );
 if (process.argv.includes("--check")) {
 	if (readFileSync(output, "utf8") !== svg)

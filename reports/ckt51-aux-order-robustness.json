@@ -2364,18 +2364,18 @@
         }
       },
       "OC21": {
-        "benchmarkId": "OC21-e1f155973380",
+        "benchmarkId": "UED-3158ce08b5bc",
         "report": "research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json",
         "selectedPolicies": {
           "keytao": {
             "word2": "12",
-            "word3": "213",
-            "word4": "24"
+            "word3": "231",
+            "word4": "23"
           },
           "sanpin": {
             "word2": "12",
             "word3": "213",
-            "word4": "21"
+            "word4": "23"
           }
         }
       }

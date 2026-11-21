@@ -9,7 +9,6 @@ local initial_pair_aux = require "snow.initial_pair_aux"
 ---@class TableLikeEnv: Env
 ---@field translator Translator
 ---@field pattern string
----@field oc21 boolean
 ---@field pattern2 string
 ---@field reserved_pattern string
 ---@field preserve_t12_proxy_quality boolean
@@ -197,12 +196,11 @@ end
 local jianpin = {}
 
 ---@param length integer
----@param oc21 boolean
 ---@return integer[]
-local function sanpin_auxiliary_positions(length, oc21)
+local function sanpin_auxiliary_positions(length)
   if length == 2 then return { 1, 2 } end
   if length == 3 then return { 2, 1, 3 } end
-  if length == 4 then return oc21 and { 2, 1 } or { 2, 3 } end
+  if length == 4 then return { 2, 3 } end
   local positions = { length, 1, 2 }
   for index = 3, length - 1 do table.insert(positions, index) end
   return positions
@@ -210,7 +208,6 @@ end
 
 ---@param env TableLikeEnv
 function jianpin.init(env)
-  env.oc21 = env.engine.schema.schema_id == "snow_sanpin"
   env.translator = Component.Translator(env.engine, "jianpin", "script_translator")
   env.pattern = env.engine.schema.config:get_string("translator/jianpin_pattern") or "^.+$"
 end
@@ -230,8 +227,8 @@ function jianpin.func(input, segment, env)
     table.insert(groups, group)
   end
   local initial_count = #groups
-  -- 冰雪兰拼采用 12/213/21，冰雪三拼采用 12/213/23；四字词止于两辅。
-  local positions = sanpin_auxiliary_positions(initial_count, env.oc21)
+  -- 冰雪兰拼采用 12/213/23，冰雪三拼采用 12/213/23；四字词止于两辅。
+  local positions = sanpin_auxiliary_positions(initial_count)
   for tone_index, position in ipairs(positions) do
     local tone = tones:sub(tone_index, tone_index)
     if tone ~= "" and groups[position] then

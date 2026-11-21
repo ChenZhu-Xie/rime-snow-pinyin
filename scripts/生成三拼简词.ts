@@ -28,7 +28,7 @@ const dictionaries = [
 ];
 const mapping = JSON.parse(
 	readFileSync(
-		join(root, "docs", "shenyun-oc21-e1f155973380-mapping.json"),
+		join(root, "docs", "shenyun-ued-3158ce08b5bc-mapping.json"),
 		"utf8",
 	),
 ) as { scheme: string; codes: Record<string, string | null> };

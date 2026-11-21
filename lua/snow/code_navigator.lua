@@ -108,9 +108,9 @@ function navigator.logical_positions(input, word_length, schema_id)
   if schema_id == "snow_jiandao_toned" and word_length == 3 then
     auxiliary_positions = { 2, 3, 1 }
   elseif schema_id == "snow_jiandao" and word_length == 3 then
-    auxiliary_positions = { 2, 1, 3 }
+    auxiliary_positions = { 2, 3, 1 }
   elseif schema_id == "snow_jiandao" and word_length == 4 then
-    auxiliary_positions = { 2, 4, 1 }
+    auxiliary_positions = { 2, 3 }
   elseif schema_id == "snow_jiandao_toned" and word_length == 4 then
     auxiliary_positions = { 1, 4 }
   elseif schema_id == "snow_sanpin" and word_length == 3 then

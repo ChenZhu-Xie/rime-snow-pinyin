@@ -1356,7 +1356,7 @@ function currentReadmeBenchmarkTable(language: ReadmeBenchmarkLanguage) {
 	} as const;
 	const [metricHeader, s005Header, b04Header, betterHeader] = headers[language];
 	const lines = [
-		`| ${metricHeader} | UM40-ac9707a932d1 21×26 | OC21-e1f155973380 21×21 | ${s005Header} | ${b04Header} | ${betterHeader} |`,
+		`| ${metricHeader} | UM40-ac9707a932d1 21×26 | UED-3158ce08b5bc 21×21 | ${s005Header} | ${b04Header} | ${betterHeader} |`,
 		"| --- | ---: | ---: | ---: | ---: | --- |",
 	];
 	for (const [key, labels, better, format] of readmeBenchmarkRows) {
@@ -1372,9 +1372,9 @@ function currentReadmeBenchmarkTable(language: ReadmeBenchmarkLanguage) {
 }
 
 const readmeBenchmarkLegends: Record<ReadmeBenchmarkLanguage, string> = {
-	zh: "表中在 UM40-ac9707a932d1、OC21-e1f155973380 与原键道 S005 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；首道 B04 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。",
-	en: "The table ranks UM40-ac9707a932d1, OC21-e1f155973380, and the original KeyTao S005 together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao B04 is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.",
-	zht: "表中在 UM40-ac9707a932d1、OC21-e1f155973380 與原鍵道 S005 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；首道 B04 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。",
+	zh: "表中在 UM40-ac9707a932d1、UED-3158ce08b5bc 与原键道 S005 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；首道 B04 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。",
+	en: "The table ranks UM40-ac9707a932d1, UED-3158ce08b5bc, and the original KeyTao S005 together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao B04 is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.",
+	zht: "表中在 UM40-ac9707a932d1、UED-3158ce08b5bc 與原鍵道 S005 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；首道 B04 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。",
 };
 
 type ActiveLayoutDocumentation = {
@@ -1621,7 +1621,7 @@ function replaceCurrentLayoutDocumentation(
 			? "https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main"
 			: "https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main";
 	const d3Source = `${benchmarkRoot}/research/notes/2026-11-20-um40-fixed-initial-rhymes.json`;
-	const qzSource = `${benchmarkRoot}/research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json`;
+	const qzSource = `${benchmarkRoot}/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json`;
 	const zhBenchmark = currentReadmeBenchmarkTable("zh");
 	const enBenchmark = currentReadmeBenchmarkTable("en");
 	const zhtBenchmark = currentReadmeBenchmarkTable("zht");
@@ -1676,11 +1676,11 @@ ${mappingTable(activeD3Layout.finalMap, ["韵母", "次键"])}
 
 旧布局的 5500 字逐键回放保留在历史 benchmark；当前布局以本节声韵映射和纯双拼键频为准。
 
-### OC21-e1f155973380 21×21 双拼
+### UED-3158ce08b5bc 21×21 双拼
 
-冰雪兰道（\`snow_jiandao\`）与冰雪兰拼（\`snow_sanpin\`）现共用 [OC21-e1f155973380 21×21 布局](${qzSource})，仓库标识为 \`OC21-e1f155973380\`。布局指标为 M-R2 \`42\`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`5/2/2/5\`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 \`9.53899646295756\`。
+冰雪兰道（\`snow_jiandao\`）与冰雪兰拼（\`snow_sanpin\`）现共用 [UED-3158ce08b5bc 21×21 布局](${qzSource})，仓库标识为 \`UED-3158ce08b5bc\`。布局指标为 M-R2 \`41\`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`5/2/2/5\`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 \`9.565504107623386\`。
 
-五辅语义保持“折横撇竖点→\`AVUIO\`、一二三四轻→\`IVUAO\`”，按形义序观察声调同为 \`42310\`。冰雪兰道的二／三／四字词形辅序为 \`12/213/24\`，冰雪兰拼的调辅序为 \`12/213/21\`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
+五辅语义保持“折横撇竖点→\`AVUIO\`、一二三四轻→\`IVUAO\`”，按形义序观察声调同为 \`42310\`。冰雪兰道的二／三／四字词形辅序为 \`12/231/23\`，冰雪兰拼的调辅序为 \`12/213/23\`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
 
 #### 英数入口
 
@@ -1700,17 +1700,17 @@ ${mappingTable(activeQzLayout.initialMap, ["声母／载体", "首键"])}
 
 ${mappingTable(activeQzLayout.finalMap, ["韵母", "次键"])}
 
-- Common399 形成 345 个唯一码和 54 个双音节重码桶，静态键域有 96 个空码；按当前系统词典的实际占用口径运行时有 94 个 \`AA\` 空码，包含保留码 \`qz\`、\`zq\`。
+- Common399 形成 351 个唯一码和 48 个双音节重码桶，静态键域有 90 个空码；按当前系统词典的实际占用口径运行时有 87 个 \`AA\` 空码，包含保留码 \`qz\`、\`zq\`。
 - 冰雪兰道使用形辅键 \`A/V/U/I/O = 折/横/撇/竖/点\`，冰雪兰拼使用调辅键 \`I/V/U/A/O = 一/二/三/四/轻\`；\`j/q/x\` 后的 ü 系按 \`v/van/ve/vn\` 统一编码。
 - 两个方案的 630 固顶区都完整覆盖 630 个码位且词项不重复；大写补韵、动态空桶和多字词辅码按各方案文件中的现行规则运行。
 
 **声母—韵母映射**
 
-![OC21-e1f155973380 21×21 双拼声韵键盘图](docs/shenyun-oc21-e1f155973380-keyboard.svg)
+![UED-3158ce08b5bc 21×21 双拼声韵键盘图](docs/shenyun-ued-3158ce08b5bc-keyboard.svg)
 
 **日常八场景文稿纯双拼键频图（含标点）**
 
-![OC21-e1f155973380 21×21 双拼纯双拼键频图](docs/shenyun-oc21-e1f155973380-keyboard-heat.svg)
+![UED-3158ce08b5bc 21×21 双拼纯双拼键频图](docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg)
 
 键频图由 benchmark 页面内置的 \`r9MacroHeat\` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
 
@@ -1729,7 +1729,7 @@ ${mappingTable(activeQzLayout.finalMap, ["韵母", "次键"])}
 
 ### 现行双拼与原键道 S005、首道 B04 benchmark
 
-下表用当前 UM40-ac9707a932d1 与 OC21-e1f155973380 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 S005、首道 B04 作参照。
+下表用当前 UM40-ac9707a932d1 与 UED-3158ce08b5bc 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 S005、首道 B04 作参照。
 
 ${zhBenchmarkLegend}
 
@@ -1793,11 +1793,11 @@ The map is exported directly from the current layout through the benchmark page'
 
 The 5,500-character replays are historical benchmarks; current mappings and pure-double-pinyin frequencies are shown above.
 
-### OC21-e1f155973380 21×21 double pinyin
+### UED-3158ce08b5bc 21×21 double pinyin
 
-冰雪兰道 (\`snow_jiandao\`) and 冰雪兰拼 (\`snow_sanpin\`) now share the [OC21-e1f155973380 21×21 layout](${qzSource}), identified as \`OC21-e1f155973380\`. Its layout metrics are M-R2 \`42\` and all/written/traditional-initial/final disorder A/I/D/V \`5/2/2/5\`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 \`9.53899646295756\`.
+冰雪兰道 (\`snow_jiandao\`) and 冰雪兰拼 (\`snow_sanpin\`) now share the [UED-3158ce08b5bc 21×21 layout](${qzSource}), identified as \`UED-3158ce08b5bc\`. Its layout metrics are M-R2 \`41\` and all/written/traditional-initial/final disorder A/I/D/V \`5/2/2/5\`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 \`9.565504107623386\`.
 
-The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→\`AVUIO\` and tones 1/2/3/4/neutral→\`IVUAO\`, again yielding \`42310\`. 冰雪兰道 uses shape order \`12/213/24\`, while 冰雪兰拼 uses tone order \`12/213/21\`; three-character words retain the complete three-auxiliary route.
+The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→\`AVUIO\` and tones 1/2/3/4/neutral→\`IVUAO\`, again yielding \`42310\`. 冰雪兰道 uses shape order \`12/231/23\`, while 冰雪兰拼 uses tone order \`12/213/23\`; three-character words retain the complete three-auxiliary route.
 
 #### Letter and number entry
 
@@ -1817,23 +1817,23 @@ Finals use these second keys; \`v/van/ve/vn\` denote the ü series:
 
 ${mappingTable(activeQzLayout.finalMap, ["Final", "Second key"])}
 
-- Common399 forms 345 unique codes and 54 two-syllable collision buckets. The static domain has 96 vacant codes; the current system-dictionary occupancy rule leaves 94 runtime-vacant \`AA\` codes, including reserved \`qz\` and \`zq\`.
+- Common399 forms 351 unique codes and 48 two-syllable collision buckets. The static domain has 90 vacant codes; the current system-dictionary occupancy rule leaves 94 runtime-vacant \`AA\` codes, including reserved \`qz\` and \`zq\`.
 - 冰雪兰道 maps shape auxiliaries as \`A/V/U/I/O = bend/horizontal/left-falling/vertical/dot\`; 冰雪兰拼 maps tone auxiliaries as \`I/V/U/A/O = 1/2/3/4/neutral\`. The ü series after \`j/q/x\` is normalized to \`v/van/ve/vn\`.
 - Both schemes fill all 630 fixed-candidate slots with no repeated entries. Uppercase final completion, dynamic vacant buckets, and multi-character auxiliary routes follow the current rules in each schema.
 
 **Initial–final mapping**
 
-![OC21-e1f155973380 21×21 initial/final keyboard map](docs/shenyun-oc21-e1f155973380-keyboard.svg)
+![UED-3158ce08b5bc 21×21 initial/final keyboard map](docs/shenyun-ued-3158ce08b5bc-keyboard.svg)
 
 **Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
 
-![OC21-e1f155973380 21×21 pure-double-pinyin key-frequency map](docs/shenyun-oc21-e1f155973380-keyboard-heat.svg)
+![UED-3158ce08b5bc 21×21 pure-double-pinyin key-frequency map](docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg)
 
 The map is exported directly from the current layout through the benchmark page's built-in \`r9MacroHeat\`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
 
 **Eleven-scenario optimal-path all-key frequency over 5,500 characters**
 
-![OC21-e1f155973380 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-oc21-e1f155973380-5500-keyboard-heat.svg)
+![UED-3158ce08b5bc 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-ued-3158ce08b5bc-5500-keyboard-heat.svg)
 
 The 5,500-character replays are historical benchmarks; current mappings and pure-double-pinyin frequencies are shown above.
 
@@ -1846,7 +1846,7 @@ The 5,500-character replays are historical benchmarks; current mappings and pure
 
 ### Current double-pinyin layouts versus KeyTao S005 and Shoudao B04
 
-This table directly replaces Overall-17 and U357 in the historical README comparison with the current UM40-ac9707a932d1 and OC21-e1f155973380 results, using the same frozen payload and the original KeyTao S005 and Shoudao B04 references.
+This table directly replaces Overall-17 and U357 in the historical README comparison with the current UM40-ac9707a932d1 and UED-3158ce08b5bc results, using the same frozen payload and the original KeyTao S005 and Shoudao B04 references.
 
 ${enBenchmarkLegend}
 
@@ -1910,11 +1910,11 @@ ${mappingTable(activeD3Layout.finalMap, ["韻母", "次鍵"])}
 
 舊布局的 5500 字逐鍵回放保留在歷史 benchmark；目前布局以本節聲韻映射和純雙拼鍵頻為準。
 
-### OC21-e1f155973380 21×21 雙拼
+### UED-3158ce08b5bc 21×21 雙拼
 
-冰雪兰道（\`snow_jiandao\`）與冰雪兰拼（\`snow_sanpin\`）現共用 [OC21-e1f155973380 21×21 布局](${qzSource})，倉庫標識為 \`OC21-e1f155973380\`。布局指標為 M-R2 \`42\`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`5/2/2/5\`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 \`9.53899646295756\`。
+冰雪兰道（\`snow_jiandao\`）與冰雪兰拼（\`snow_sanpin\`）現共用 [UED-3158ce08b5bc 21×21 布局](${qzSource})，倉庫標識為 \`UED-3158ce08b5bc\`。布局指標為 M-R2 \`41\`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`5/2/2/5\`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 \`9.565504107623386\`。
 
-五輔語義保持「折橫撇豎點→\`AVUIO\`、一二三四輕→\`IVUAO\`」，按形義序觀察聲調同為 \`42310\`。冰雪兰道的二／三／四字詞形輔序為 \`12/213/24\`，冰雪兰拼的調輔序為 \`12/213/21\`；三字詞保留完整三輔鍵路由。
+五輔語義保持「折橫撇豎點→\`AVUIO\`、一二三四輕→\`IVUAO\`」，按形義序觀察聲調同為 \`42310\`。冰雪兰道的二／三／四字詞形輔序為 \`12/231/23\`，冰雪兰拼的調輔序為 \`12/213/23\`；三字詞保留完整三輔鍵路由。
 
 #### 英數入口
 
@@ -1934,17 +1934,17 @@ ${mappingTable(activeQzLayout.initialMap, ["聲母／載體", "首鍵"])}
 
 ${mappingTable(activeQzLayout.finalMap, ["韻母", "次鍵"])}
 
-- Common399 形成 345 個唯一碼和 54 個雙音節重碼桶，靜態鍵域有 96 個空碼；按目前系統詞典的實際占用口徑執行時有 94 個 \`AA\` 空碼，包含保留碼 \`qz\`、\`zq\`。
+- Common399 形成 351 個唯一碼和 48 個雙音節重碼桶，靜態鍵域有 90 個空碼；按目前系統詞典的實際占用口徑執行時有 87 個 \`AA\` 空碼，包含保留碼 \`qz\`、\`zq\`。
 - 冰雪兰道使用形輔鍵 \`A/V/U/I/O = 折/橫/撇/豎/點\`，冰雪兰拼使用調輔鍵 \`I/V/U/A/O = 一/二/三/四/輕\`；\`j/q/x\` 後的 ü 系按 \`v/van/ve/vn\` 統一編碼。
 - 兩個方案的 630 固頂區都完整覆蓋 630 個碼位且詞項不重複；大寫補韻、動態空桶和多字詞輔碼按各方案檔案中的現行規則執行。
 
 **聲母—韻母映射**
 
-![OC21-e1f155973380 21×21 雙拼聲韻鍵盤圖](docs/shenyun-oc21-e1f155973380-keyboard.svg)
+![UED-3158ce08b5bc 21×21 雙拼聲韻鍵盤圖](docs/shenyun-ued-3158ce08b5bc-keyboard.svg)
 
 **日常八場景文稿純雙拼鍵頻圖（含標點）**
 
-![OC21-e1f155973380 21×21 雙拼純雙拼鍵頻圖](docs/shenyun-oc21-e1f155973380-keyboard-heat.svg)
+![UED-3158ce08b5bc 21×21 雙拼純雙拼鍵頻圖](docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg)
 
 鍵頻圖由 benchmark 頁面內建的 \`r9MacroHeat\` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
 
@@ -1963,7 +1963,7 @@ ${mappingTable(activeQzLayout.finalMap, ["韻母", "次鍵"])}
 
 ### 現行雙拼與原鍵道 S005、首道 B04 benchmark
 
-下表以目前 UM40-ac9707a932d1 與 OC21-e1f155973380 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 S005、首道 B04 作參照。
+下表以目前 UM40-ac9707a932d1 與 UED-3158ce08b5bc 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 S005、首道 B04 作參照。
 
 ${zhtBenchmarkLegend}
 
@@ -1995,7 +1995,7 @@ ${zhtBenchmark}
 	for (const [layoutHeading, nextHeading, order] of [
 		[
 			"### UM40-ac9707a932d1 21×26 双拼",
-			"### OC21-e1f155973380 21×21 双拼",
+			"### UED-3158ce08b5bc 21×21 双拼",
 			{
 				letterHeading: "#### 英数入口",
 				rulesHeading: "#### 声韵编码规则",
@@ -2005,7 +2005,7 @@ ${zhtBenchmark}
 			},
 		],
 		[
-			"### OC21-e1f155973380 21×21 双拼",
+			"### UED-3158ce08b5bc 21×21 双拼",
 			"### 固顶、空桶与逐级简码",
 			{
 				letterHeading: "#### 英数入口",
@@ -2017,7 +2017,7 @@ ${zhtBenchmark}
 		],
 		[
 			"### UM40-ac9707a932d1 21×26 double pinyin",
-			"### OC21-e1f155973380 21×21 double pinyin",
+			"### UED-3158ce08b5bc 21×21 double pinyin",
 			{
 				letterHeading: "#### Letter and number entry",
 				rulesHeading: "#### Initial and final coding rules",
@@ -2029,7 +2029,7 @@ ${zhtBenchmark}
 			},
 		],
 		[
-			"### OC21-e1f155973380 21×21 double pinyin",
+			"### UED-3158ce08b5bc 21×21 double pinyin",
 			"### Fixed candidates, vacant buckets, and staged abbreviations",
 			{
 				letterHeading: "#### Letter and number entry",
@@ -2043,7 +2043,7 @@ ${zhtBenchmark}
 		],
 		[
 			"### UM40-ac9707a932d1 21×26 雙拼",
-			"### OC21-e1f155973380 21×21 雙拼",
+			"### UED-3158ce08b5bc 21×21 雙拼",
 			{
 				letterHeading: "#### 英數入口",
 				rulesHeading: "#### 聲韻編碼規則",
@@ -2053,7 +2053,7 @@ ${zhtBenchmark}
 			},
 		],
 		[
-			"### OC21-e1f155973380 21×21 雙拼",
+			"### UED-3158ce08b5bc 21×21 雙拼",
 			"### 固頂、空桶與逐級簡碼",
 			{
 				letterHeading: "#### 英數入口",

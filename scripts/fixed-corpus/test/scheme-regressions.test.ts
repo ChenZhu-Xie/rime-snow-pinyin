@@ -13,8 +13,8 @@ const read = (path: string) => readFileSync(join(root, path), "utf8");
 
 test("double-pinyin schemes isolate fixed-code databases while sharing snow_pinyin learning", () => {
 	const fixedDatabases = new Map([
-		["snow_jiandao.schema.yaml", "snow_jiandao_oc21_e1f155973380"],
-		["snow_sanpin.schema.yaml", "snow_sanpin_oc21_e1f155973380"],
+		["snow_jiandao.schema.yaml", "snow_jiandao_ued_3158ce08b5bc"],
+		["snow_sanpin.schema.yaml", "snow_sanpin_ued_3158ce08b5bc"],
 		["snow_shenyun_shape.schema.yaml", "snow_shenyun_shape_um40_ac9707a932d1"],
 		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_um40_ac9707a932d1"],
 		["snow_jiandao_classic.schema.yaml", "snow_jiandao_classic"],
@@ -43,7 +43,7 @@ test("double-pinyin schemes isolate fixed-code databases while sharing snow_piny
 	}
 });
 
-test("active 21x21 mapping is OC21-e1f155973380 with QZ and ZQ vacant", () => {
+test("active 21x21 mapping is UED-3158ce08b5bc with QZ and ZQ vacant", () => {
 	const mapping = JSON.parse(read("config/shenyun-21x21-mapping.json")) as {
 		id: string;
 		stateKey: string;
@@ -67,31 +67,31 @@ test("active 21x21 mapping is OC21-e1f155973380 with QZ and ZQ vacant", () => {
 		initialMap: Record<string, string>;
 		finalMap: Record<string, string>;
 	};
-	assert.equal(mapping.id, "OC21-e1f155973380");
+	assert.equal(mapping.id, "UED-3158ce08b5bc");
 	assert.equal(
 		mapping.stateKey,
-		"1515010f0c0503130d04060f070910170a120b111902121102021618180f070d1819120b041309050b090f1002110a0d01060b160c1017030211060a04130306081514000e",
+		"1515010f0c0503130d0b060f0709101704120a111902021111111618180b0a0d1819120304110f050b0f09100201060d04090916071002130f17010c13110a03081514000e",
 	);
-	assert.equal(mapping.sourceBranch, "research/untoned-2121-2k-20261115");
+	assert.equal(mapping.sourceBranch, "research/untoned-cr7e-v52-20261119");
 	assert.equal(
 		mapping.sourceCommit,
-		"69e4aefe78875bbbe508343b3783a600e198cec7",
+		"da1441ed4ae37d5c8e0e93d2df33e5514b7af38e",
 	);
 	assert.deepEqual(mapping.capacity, [21, 21]);
 	assert.equal(mapping.commonSyllables, 399);
-	assert.equal(mapping.uniqueCommonCodes, 345);
-	assert.equal(mapping.collisionBuckets, 54);
-	assert.equal(mapping.affectedSyllables, 108);
-	assert.equal(mapping.vacantCodes, 96);
-	assert.equal(mapping.memory, 42);
+	assert.equal(mapping.uniqueCommonCodes, 351);
+	assert.equal(mapping.collisionBuckets, 48);
+	assert.equal(mapping.affectedSyllables, 96);
+	assert.equal(mapping.vacantCodes, 90);
+	assert.equal(mapping.memory, 41);
 	assert.equal(mapping.ordinaryInitialDisplacements, 2);
 	assert.equal(mapping.vowelDisplacements, 5);
 	assert.equal(mapping.shapeKeysByMeaning, "AVUIO");
 	assert.equal(mapping.toneKeysByTone, "IVUAO");
-	assert.equal(mapping.shapeAuxiliaryOrder, "12/213/24");
-	assert.equal(mapping.toneAuxiliaryOrder, "12/213/21");
+	assert.equal(mapping.shapeAuxiliaryOrder, "12/231/23");
+	assert.equal(mapping.toneAuxiliaryOrder, "12/213/23");
 	assert.deepEqual(mapping.requiredVacantCodes, ["qz", "zq"]);
-	assert.equal(mapping.cktV51, 9.53899646295756);
+	assert.equal(mapping.cktV51, 9.565504107623386);
 	assert.deepEqual(mapping.initialMap, {
 		b: "B",
 		p: "P",
@@ -100,63 +100,63 @@ test("active 21x21 mapping is OC21-e1f155973380 with QZ and ZQ vacant", () => {
 		d: "D",
 		t: "T",
 		n: "N",
-		l: "E",
+		l: "L",
 		g: "G",
 		k: "P",
 		h: "H",
 		j: "J",
 		q: "Q",
 		x: "X",
-		zh: "K",
+		zh: "E",
 		ch: "S",
-		sh: "L",
+		sh: "K",
 		r: "R",
 		z: "Z",
 		c: "C",
-		s: "S",
+		s: "C",
 		A: "R",
-		E: "C",
-		O: "C",
+		E: "R",
+		O: "R",
 		W: "W",
 		Y: "Y",
 		YU: "Y",
 	});
 	assert.deepEqual(mapping.finalMap, {
-		a: "P",
-		ai: "H",
+		a: "L",
+		ai: "K",
 		an: "N",
 		ang: "Y",
 		ao: "Z",
 		e: "S",
-		ei: "L",
+		ei: "D",
 		en: "E",
-		eng: "T",
-		er: "J",
+		eng: "R",
+		er: "P",
 		i: "F",
 		ia: "L",
-		ian: "J",
-		iang: "P",
+		ian: "P",
+		iang: "J",
 		iao: "Q",
 		ie: "C",
-		in: "R",
-		ing: "K",
+		in: "B",
+		ing: "G",
 		iong: "N",
-		iu: "B",
-		o: "G",
-		ong: "L",
+		iu: "E",
+		o: "J",
+		ong: "J",
 		ou: "W",
-		u: "M",
+		u: "H",
 		ua: "Q",
-		uai: "X",
-		uan: "D",
-		uang: "C",
-		ui: "R",
-		un: "G",
-		uo: "K",
-		v: "E",
-		van: "T",
-		ve: "D",
-		vn: "G",
+		uai: "C",
+		uan: "T",
+		uang: "P",
+		ui: "X",
+		un: "B",
+		uo: "M",
+		v: "T",
+		van: "R",
+		ve: "K",
+		vn: "D",
 	});
 });
 
@@ -527,26 +527,26 @@ test("default traditional source entries are postponed before conversion and ded
 	}
 });
 
-test("reported phrase codes follow the active OC21-e1f155973380 mapping", () => {
+test("reported phrase codes follow the active UED-3158ce08b5bc mapping", () => {
 	const fixture = JSON.parse(
-		read("docs/shenyun-oc21-e1f155973380-mapping.json"),
+		read("docs/shenyun-ued-3158ce08b5bc-mapping.json"),
 	) as {
 		scheme: string;
 		payloadCodes: Record<string, string | null>;
 		codes: Record<string, string>;
 	};
-	assert.equal(fixture.scheme, "OC21-e1f155973380");
-	assert.equal(fixture.codes.na + fixture.codes.yang, "npyy");
+	assert.equal(fixture.scheme, "UED-3158ce08b5bc");
+	assert.equal(fixture.codes.na + fixture.codes.yang, "nlyy");
 	assert.equal(fixture.codes.ben, "be");
-	assert.equal(fixture.codes.bo, "bg");
-	assert.equal(fixture.codes.duan, "dd");
-	assert.equal(fixture.codes.jun, "jg");
-	assert.equal(fixture.codes.yun, "yg");
-	assert.equal(fixture.codes.yo, "yg");
-	assert.equal(fixture.codes.ju, "je");
-	assert.equal(fixture.codes.jue, "jd");
-	assert.equal(fixture.codes.lv, "ee");
-	assert.equal(fixture.codes.lve, "ed");
+	assert.equal(fixture.codes.bo, "bj");
+	assert.equal(fixture.codes.duan, "dt");
+	assert.equal(fixture.codes.jun, "jd");
+	assert.equal(fixture.codes.yun, "yd");
+	assert.equal(fixture.codes.yo, "yj");
+	assert.equal(fixture.codes.ju, "jt");
+	assert.equal(fixture.codes.jue, "jk");
+	assert.equal(fixture.codes.lv, "lt");
+	assert.equal(fixture.codes.lve, "lk");
 	const rules = parseAlgebraRules(
 		read("snow_sanpin.schema.yaml"),
 		"sanpin_algebra",
@@ -588,8 +588,8 @@ test("reported phrase codes follow the active OC21-e1f155973380 mapping", () => 
 		};
 	};
 	const expectedQzSpace = {
-		common: { encoded: 399, unique: 345, collisionBuckets: 54, vacant: 96 },
-		extended: { encoded: 416, unique: 351, collisionBuckets: 61, vacant: 90 },
+		common: { encoded: 399, unique: 351, collisionBuckets: 48, vacant: 90 },
+		extended: { encoded: 416, unique: 360, collisionBuckets: 55, vacant: 81 },
 	};
 	assert.deepEqual(
 		summarize(Object.values(fixture.payloadCodes)),
@@ -706,24 +706,24 @@ test("OC21 KeyTao letter and number candidates follow the active schema", () => 
 		);
 	}
 	for (const [number, code] of Object.entries({
-		0: "ekv",
+		0: "lgv",
 		1: "y",
-		2: "cj",
-		3: "sn",
-		4: "sfi",
-		5: "wmv",
-		6: "ebo",
+		2: "rp",
+		3: "cn",
+		4: "cfi",
+		5: "whv",
+		6: "leo",
 		7: "qfv",
-		8: "bpu",
-		9: "jbu",
-		10: "lfu",
+		8: "blu",
+		9: "jeu",
+		10: "kfu",
 	})) {
 		assert.ok(
 			lines.get(code)?.split(" ").includes(number),
 			`${number}: ${code}`,
 		);
 	}
-	assert.ok(lines.get("cj")?.split(" ").includes("2"));
+	assert.ok(lines.get("rp")?.split(" ").includes("2"));
 	assert.ok(lines.get("xh")?.split(" ").includes("U"));
 });
 
@@ -798,7 +798,7 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 	assert.equal(new Set(letterBaseCodes).size, 26);
 	assert.equal(new Set(letterFullCodes).size, 26);
 	const mapping = JSON.parse(
-		read("docs/shenyun-oc21-e1f155973380-mapping.json"),
+		read("docs/shenyun-ued-3158ce08b5bc-mapping.json"),
 	) as {
 		codes: Record<string, string>;
 	};
@@ -840,7 +840,7 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 	}
 	assert.deepEqual(
 		letterFullCodes.filter((code) => occupiedFullCodes.has(code)),
-		["pco", "mco", "hco", "jco", "xco", "eco", "xgo", "xlo"],
+		["pco", "mco", "lco", "hco", "jco", "xco", "xgo", "xlo", "xdo"],
 	);
 	const sanpinCore = read("snow_sanpin.fixed.txt").split("# 字母")[0];
 	for (const code of letterFullCodes) {
@@ -870,32 +870,32 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 	}
 	for (const [code, candidates] of [
 		["y", "一 1"],
-		["cj", "二 2"],
-		["sn", "三 3"],
-		["sfi", "四 4"],
-		["wmv", "五 5"],
-		["ebo", "六 6"],
+		["rp", "二 2"],
+		["cn", "三 3"],
+		["cfi", "四 4"],
+		["whv", "五 5"],
+		["leo", "六 6"],
 		["qfv", "七 7"],
-		["bpu", "八 8"],
-		["jbu", "九 9"],
-		["lfu", "十 10"],
-		["ekv", "零 0"],
+		["blu", "八 8"],
+		["jeu", "九 9"],
+		["kfu", "十 10"],
+		["lgv", "零 0"],
 	]) {
 		const number = candidates.split(" ").at(-1);
 		assert.match(jiandaoCore, new RegExp(`^${code}\\t.* ${number}$`, "mu"));
 	}
 	for (const [code, candidates] of [
 		["y", "一 1"],
-		["cj", "二 2"],
-		["sn", "三 3"],
-		["sfa", "四 4"],
-		["wmu", "五 5"],
-		["eba", "六 6"],
+		["rp", "二 2"],
+		["cn", "三 3"],
+		["cfa", "四 4"],
+		["whu", "五 5"],
+		["lea", "六 6"],
 		["qfi", "七 7"],
-		["bpi", "八 8"],
-		["jbu", "九 9"],
-		["lfv", "十 10"],
-		["ekv", "零 0"],
+		["bli", "八 8"],
+		["jeu", "九 9"],
+		["kfv", "十 10"],
+		["lgv", "零 0"],
 	]) {
 		const number = candidates.split(" ").at(-1);
 		assert.match(sanpinFixed, new RegExp(`^${code}\\t.* ${number}$`, "mu"));
@@ -928,7 +928,7 @@ test("OC21 KeyTao and Three-Code keep their processors in a compatible order", (
 
 test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliaries", () => {
 	const fixture = JSON.parse(
-		read("docs/shenyun-oc21-e1f155973380-mapping.json"),
+		read("docs/shenyun-ued-3158ce08b5bc-mapping.json"),
 	) as {
 		codes: Record<string, string | null>;
 	};
@@ -937,7 +937,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 	const vacant = keys
 		.flatMap((first) => keys.map((second) => first + second))
 		.filter((code) => !occupied.has(code));
-	assert.equal(vacant.length, 90);
+	assert.equal(vacant.length, 81);
 	const sanpinRules = parseAlgebraRules(
 		read("snow_sanpin.schema.yaml"),
 		"sanpin_algebra",
@@ -956,7 +956,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 	const runtimeVacant = keys
 		.flatMap((first) => keys.map((second) => first + second))
 		.filter((code) => !runtimeOccupied.has(code));
-	assert.equal(runtimeVacant.length, 94);
+	assert.equal(runtimeVacant.length, 87);
 	assert.equal(runtimeVacant.includes("qz"), true);
 	assert.equal(runtimeVacant.includes("zq"), true);
 	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
@@ -1074,17 +1074,14 @@ test("OC21 three-character words allow a third auxiliary but four-character word
 	const keytao = read("snow_jiandao.schema.yaml");
 	assert.match(keytao, /\{3\}"\r?\n\s+match_shape: "\^\.\{0,2\}\$"/u);
 	assert.match(keytao, /\{4,\}"\r?\n\s+match_shape: "\^\.\{0,1\}\$"/u);
-	assert.match(
-		read("lua/snow/shape_filter.lua"),
-		/three_word_order or \(schema_id == "snow_jiandao" and "213" or "231"\)/u,
-	);
+	assert.match(read("lua/snow/shape_filter.lua"), /three_word_order or "231"/u);
 
 	const sanpin = read("snow_sanpin.schema.yaml");
 	assert.match(sanpin, /\{3\}\[ivuao\]\{0,3\}/u);
 	assert.match(sanpin, /\{4,\}\[ivuao\]\{0,2\}/u);
 	assert.match(
 		read("lua/snow/table_like.lua"),
-		/length == 4 then return oc21 and \{ 2, 1 \} or \{ 2, 3 \}/u,
+		/length == 4 then return \{ 2, 3 \}/u,
 	);
 });
 
@@ -1160,7 +1157,7 @@ test("split translators preserve native user phrase priority across routes", () 
 
 test("latency cases follow the active QZ layout and repository fixture", () => {
 	const cases = read("scripts/data/latency-cases.ts");
-	for (const code of ["bkxdiu", "lrfaiu", "smxwui", "bkov", "pxfkG", "khrmGHG"])
+	for (const code of ["bgxkiu", "krfaiu", "smxwui", "bgov", "pxfeG", "ehrmGHG"])
 		assert.ok(cases.includes(`keys: "${code}"`), `缺少当前 QZ 用例 ${code}`);
 	const qingyun = read("snow_qingyun.schema.yaml");
 	assert.match(qingyun, /"punctuator\/full_shape\/`": null/u);

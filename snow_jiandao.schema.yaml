@@ -12,7 +12,7 @@ schema:
     - 谭淞宸 <i@tansongchen.com>
   description: |
     单字三码起顶、词组四码起顶的双拼词顶功方案
-    双拼编码：OC21-e1f155973380 21×21（M=42、D=2、V=5，QZ/ZQ 空桶）
+    双拼编码：UED-3158ce08b5bc 21×21（M=41、D=2、V=5，QZ/ZQ 空桶）
     冰雪兰道与冰雪兰拼共用 21×21 声韵布局，本方案使用形辅
   dependencies:
     - snow_pinyin
@@ -104,7 +104,7 @@ speller:
       match_shape: "^.{4,}$"
       accept: "[viuoa]"
       block: true
-    # 二／三／四字词的完整形辅字位顺序为 12/213/24；三字词最多三辅，四字词最多两辅。
+    # 二／三／四字词的完整形辅字位顺序为 12/231/23；三字词最多三辅，四字词最多两辅。
     - match: "(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3}"
       match_shape: "^.{0,2}$"
       accept: "[viuoa]"
@@ -192,7 +192,6 @@ lookup_jiandao:
   comment_format:
     __include: snow_sanpin.schema.yaml:/sanpin_algebra
     __append:
-      - xform/q([zhe])/f$1/
       - xform/[viuoa]( |$)/$1/ # 无声调
 
 __patch:
@@ -219,11 +218,13 @@ patch:
   translator/prism: snow_jiandao
   translator/preedit_format: null
   translator/enable_schema_user_dict: true
-  translator/user_dict_name: snow_jiandao_oc21_e1f155973380
+  translator/user_dict_name: snow_jiandao_ued_3158ce08b5bc
   translator/shape_elements: snow_jiandao_chaifen
   translator/shape_mapping: "radical_jiandao.txt"
   # xh/xw 同时是 U/A 的二键入口，不能让声声词候选改变缓冲模式的字母首选。
   translator/word_auxiliary_order: "12"
+  translator/three_word_auxiliary_order: "231"
+  translator/four_word_auxiliary_order: "23"
   translator/reserved_initial_pair_pattern: "^(?:xh|xw)$"
   translator/jianpin_pattern: "^(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}$"
   # 与四拼一致：先顶出当前候选，再直接提交高频尾字。

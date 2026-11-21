@@ -26,7 +26,7 @@ const fixture = JSON.parse(
 			scriptDirectory,
 			"..",
 			"docs",
-			"shenyun-oc21-e1f155973380-mapping.json",
+			"shenyun-ued-3158ce08b5bc-mapping.json",
 		),
 		"utf8",
 	),
@@ -40,7 +40,7 @@ const fixtureHash = createHash("sha256")
 	.update(JSON.stringify(fixture.codes))
 	.digest("hex");
 if (
-	fixture.scheme !== "OC21-e1f155973380" ||
+	fixture.scheme !== "UED-3158ce08b5bc" ||
 	fixtureHash !== fixture.mappingSha256
 ) {
 	throw new Error("神韵映射快照的方案标识或 SHA256 不一致。");
@@ -56,11 +56,11 @@ for (const [syllable, code] of Object.entries(fixture.codes)) {
 }
 if (fixtureFailures.length > 0) {
 	throw new Error(
-		`神韵 OC21-e1f155973380 映射核验失败：\n${fixtureFailures.join("\n")}`,
+		`神韵 UED-3158ce08b5bc 映射核验失败：\n${fixtureFailures.join("\n")}`,
 	);
 }
 console.log(
-	`神韵 OC21-e1f155973380 映射核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
+	`神韵 UED-3158ce08b5bc 映射核验通过：${Object.keys(fixture.codes).length}/421 音节，SHA256 ${fixtureHash}。`,
 );
 
 const pronunciationMap = new Map<string, string[][]>();

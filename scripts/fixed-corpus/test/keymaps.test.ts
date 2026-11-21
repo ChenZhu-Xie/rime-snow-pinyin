@@ -247,7 +247,7 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 	assert.equal(lastKey.swipe_down, undefined);
 });
 
-test("active diagrams identify OC21-e1f155973380 and UM40-ac9707a932d1", () => {
+test("active diagrams identify UED-3158ce08b5bc and UM40-ac9707a932d1", () => {
 	for (const [id, name] of [
 		["snow_jiandao", "冰雪兰道"],
 		["snow_sanpin", "冰雪兰拼"],
@@ -261,13 +261,13 @@ test("active diagrams identify OC21-e1f155973380 and UM40-ac9707a932d1", () => {
 		assert.ok(read(`lua/snow/keymaps/${id}.svg`).includes(`${name} · `));
 	}
 	for (const image of ["snow_jiandao.svg", "snow_sanpin.svg"]) {
-		assert.match(read(`lua/snow/keymaps/${image}`), /OC21-e1f155973380/u);
+		assert.match(read(`lua/snow/keymaps/${image}`), /UED-3158ce08b5bc/u);
 	}
 	for (const image of ["snow_shenyun_shape.svg", "snow_shenyun_tone.svg"]) {
 		assert.match(read(`lua/snow/keymaps/${image}`), /UM40-ac9707a932d1/u);
 	}
 	for (const [image, label] of [
-		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "OC21-e1f155973380"],
+		["docs/shenyun-ued-3158ce08b5bc-keyboard.svg", "UED-3158ce08b5bc"],
 		["docs/shenyun-um40-keyboard.svg", "UM40-ac9707a932d1"],
 	] as const) {
 		const svg = read(image);
@@ -281,8 +281,8 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 		["docs/shenyun-um40-keyboard.svg", "Q", "F", "q", "#e83e8c"],
 		["docs/shenyun-um40-keyboard.svg", "S", "Q", "s", "#00a651"],
 		["docs/shenyun-um40-keyboard.svg", "X", "Y", "x", "#005bd8"],
-		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "K", "P", "k", "#00acc1"],
-		["docs/shenyun-oc21-e1f155973380-keyboard.svg", "L", "E", "l", "#fb8c00"],
+		["docs/shenyun-ued-3158ce08b5bc-keyboard.svg", "K", "P", "k", "#00acc1"],
+		["docs/shenyun-ued-3158ce08b5bc-keyboard.svg", "S", "C", "s", "#00a651"],
 	] as const) {
 		const svg = read(image);
 		assert.match(
@@ -318,7 +318,7 @@ test("README diagrams preserve source-to-target link colors from benchmark", () 
 test("README and popup diagrams link every moved source with one distinct color", () => {
 	for (const image of [
 		"docs/shenyun-um40-keyboard.svg",
-		"docs/shenyun-oc21-e1f155973380-keyboard.svg",
+		"docs/shenyun-ued-3158ce08b5bc-keyboard.svg",
 		...schemes.map(([, , image]) => `lua/snow/keymaps/${image}`),
 	]) {
 		assertEveryMovedKeycapHasOneColorLink(read(image), image);
@@ -528,8 +528,8 @@ test("both Shenyun diagrams keep the crowded er and u finals readable", () => {
 test("moved initials pair source keycaps with target labels by distinct colors", () => {
 	const softenedKeys: Record<string, string> = {
 		"snow_sipin.svg": "",
-		"snow_sanpin.svg": "KL",
-		"snow_jiandao.svg": "KL",
+		"snow_sanpin.svg": "KS",
+		"snow_jiandao.svg": "KS",
 		"snow_jiandao_toned.svg": "KS",
 		"snow_sanpin_classic.svg": "",
 		"snow_jiandao_classic.svg": "",
@@ -559,7 +559,7 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 		["snow_shenyun_shape.svg", "S", "Q", "s", "#00a651"],
 		["snow_shenyun_shape.svg", "X", "Y", "x", "#005bd8"],
 		["snow_jiandao.svg", "K", "P", "k", "#00acc1"],
-		["snow_jiandao.svg", "L", "E", "l", "#fb8c00"],
+		["snow_jiandao.svg", "S", "C", "s", "#00a651"],
 	] as const;
 	for (const [image, source, target, initial, color] of linkCases) {
 		const svg = read(`lua/snow/keymaps/${image}`);

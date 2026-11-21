@@ -11,7 +11,6 @@ local initial_pair_aux = require "snow.initial_pair_aux"
 ---@field shape_elements ReverseLookup|nil
 ---@field pinyin ReverseLookup|nil
 ---@field memory Memory|nil
----@field oc21 boolean
 ---@field shape_mapping table<string, string>
 ---@field jiandao_shape_cache table<string, string>
 ---@field pair_standard_order string
@@ -151,8 +150,8 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
     local code = codes[1] or "??"
     return schema_id == "snow_jiandao_toned" and code:sub(1, 4) or code
   end
-  -- 普通词组取每个字的形码首码；活动冰雪兰道采用 OC21-e1f155973380 的
-  -- 12/213/24，经典冰雪键道继续使用 12/231/24。
+  -- 普通词组取每个字的形码首码；活动冰雪兰道采用 UED-3158ce08b5bc 的
+  -- 12/231/23，经典冰雪键道继续使用 12/231/24。
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
   end
@@ -160,7 +159,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
   if #codes == 2 then
     positions = initial_pair_aux.positions(pair_standard_order or "12")
   elseif #codes == 3 then
-    local order = three_word_order or (schema_id == "snow_jiandao" and "213" or "231")
+    local order = three_word_order or "231"
     positions = { order:byte(1) - 48, order:byte(2) - 48, order:byte(3) - 48 }
   elseif #codes == 4 then
     local order = four_word_order or "24"
@@ -176,13 +175,12 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
 end
 
 ---@param length integer
----@param oc21 boolean
 ---@return integer[]
-local function sanpin_auxiliary_positions(length, oc21)
+local function sanpin_auxiliary_positions(length)
   if length == 1 then return { 1 } end
   if length == 2 then return { 1, 2 } end
   if length == 3 then return { 2, 1, 3 } end
-  if length == 4 then return oc21 and { 2, 1 } or { 2, 3 } end
+  if length == 4 then return { 2, 3 } end
   local positions = { length, 1, 2 }
   for index = 3, length - 1 do table.insert(positions, index) end
   return positions
@@ -225,9 +223,8 @@ end
 
 ---@param current string
 ---@param word_length integer
----@param oc21 boolean
 ---@return integer[]?, string?
-local function sanpin_route(current, word_length, oc21, pair_standard_order)
+local function sanpin_route(current, word_length, pair_standard_order)
   local initial = "[bpmfdtnlgkhjqxzcsrywe]"
   local suffix
   if word_length == 1 then
@@ -242,7 +239,7 @@ local function sanpin_route(current, word_length, oc21, pair_standard_order)
   local groups = {}
   for group in sound:gmatch(initial .. "[A-Z]?") do table.insert(groups, group) end
   if #groups < 3 or table.concat(groups) ~= sound or word_length < #groups then return nil, nil end
-  return sanpin_auxiliary_positions(#groups, oc21), suffix
+  return sanpin_auxiliary_positions(#groups), suffix
 end
 
 ---@param text string
@@ -253,7 +250,7 @@ end
 local function sanpin_auxiliary_hint(text, current, env, candidate)
   local word_length = utf8.len(text)
   if not word_length then return nil end
-  local positions, suffix = sanpin_route(current, word_length, env.oc21, env.pair_standard_order or "12")
+  local positions, suffix = sanpin_route(current, word_length, env.pair_standard_order or "12")
   if not positions or suffix == nil then return nil end
   local spellings = sanpin_spellings(candidate, env)
   local codes = { "" }
@@ -385,10 +382,9 @@ function filter.init(env)
   local config = env.engine.schema.config
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
   local id = env.engine.schema.schema_id
-  env.oc21 = id == "snow_sanpin"
   env.pair_standard_order = config:get_string("translator/word_auxiliary_order") or "12"
   env.three_word_order = config:get_string("translator/three_word_auxiliary_order")
-      or (id == "snow_jiandao" and "213" or "231")
+      or "231"
   env.four_word_order = config:get_string("translator/four_word_auxiliary_order") or "24"
   env.pair_aux_cache = {}
   env.pair_aux_cache_size = 0

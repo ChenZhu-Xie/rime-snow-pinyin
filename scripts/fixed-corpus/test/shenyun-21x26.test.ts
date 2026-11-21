@@ -417,7 +417,7 @@ test("ue 来源拼写统一并入 ve 规范韵母", () => {
 		read("snow_sanpin.schema.yaml"),
 		"sanpin_algebra",
 	);
-	assert.equal(applyAlgebra("gue2", sanpinRules).canonical, "gdv");
+	assert.equal(applyAlgebra("gue2", sanpinRules).canonical, "gkv");
 });
 
 test("Common399 的实际拼写代数逐一等于 UM40-ac9707a932d1 映射，且留 147 个空码", () => {

@@ -456,14 +456,14 @@ const diagrams: Diagram[] = [
 	},
 	{
 		filename: "snow_sanpin",
-		title: "冰雪兰拼 · OC21-e1f155973380",
+		title: "冰雪兰拼 · UED-3158ce08b5bc",
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: toneNotes(u357),
 	},
 	{
 		filename: "snow_jiandao",
-		title: "冰雪兰道 · OC21-e1f155973380",
+		title: "冰雪兰道 · UED-3158ce08b5bc",
 		subtitle: "21×21 声韵与形笔字根映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: shapeNotes(u357.shapeKeysByMeaning),
@@ -1107,7 +1107,7 @@ for (const diagram of diagrams) {
 	update(join(outputDirectory, `${diagram.filename}.svg`), svg);
 	const readmeName =
 		diagram.filename === "snow_jiandao"
-			? "shenyun-oc21-e1f155973380-keyboard.svg"
+			? "shenyun-ued-3158ce08b5bc-keyboard.svg"
 			: diagram.filename === "snow_shenyun_shape"
 				? "shenyun-um40-keyboard.svg"
 				: undefined;

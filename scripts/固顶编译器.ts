@@ -243,16 +243,16 @@ for (const [code, letter] of [
 }
 for (const [code, words] of [
 	["y", "1"],
-	["cj", "二 2"],
-	["sn", "3"],
-	["sfi", "四 4"],
-	["wmv", "五 5"],
-	["ebo", "六 6"],
+	["rp", "二 2"],
+	["cn", "3"],
+	["cfi", "四 4"],
+	["whv", "五 5"],
+	["leo", "六 6"],
 	["qfv", "七 7"],
-	["bpu", "8"],
-	["jbu", "九 9"],
-	["lfu", "十 10"],
-	["ekv", "零 0"],
+	["blu", "8"],
+	["jeu", "九 9"],
+	["kfu", "十 10"],
+	["lgv", "零 0"],
 ] as const) {
 	jiandaoSupplementalCandidates.set(code, [
 		...words.split(" "),
@@ -283,8 +283,8 @@ export function renderJiandaoFixedTable(sections: FixedSections) {
 // 三拼上游表中还保留了数字备选和拉丁字母入口。它们不参与
 // 神韵固顶选优，但必须由同一生成器输出，避免下次生成时被覆盖。
 export const sanpinSingleAliases = new Map([
-	["cj", "2"],
-	["sn", "3"],
+	["rp", "2"],
+	["cn", "3"],
 	["y", "1"],
 ]);
 
@@ -318,16 +318,16 @@ export const sanpinLetterEntries = [
 ] as const;
 
 // 上游统计功能用这些三音节全码同时提供中文数字与阿拉伯数字候选。
-// 码位按当前 OC21-e1f155973380 的声、韵、调键重新编码，均不占用固顶区已有条目。
+// 码位按当前 UED-3158ce08b5bc 的声、韵、调键重新编码，均不占用固顶区已有条目。
 export const sanpinTemporaryNumberEntries = [
-	["sfa", "四 4"],
-	["wmu", "五 5"],
-	["eba", "六 6"],
+	["cfa", "四 4"],
+	["whu", "五 5"],
+	["lea", "六 6"],
 	["qfi", "七 7"],
-	["bpi", "八 8"],
-	["jbu", "九 9"],
-	["lfv", "十 10"],
-	["ekv", "零 0"],
+	["bli", "八 8"],
+	["jeu", "九 9"],
+	["kfv", "十 10"],
+	["lgv", "零 0"],
 ] as const;
 
 export function renderSanpinFixedTable(sections: FixedSections) {

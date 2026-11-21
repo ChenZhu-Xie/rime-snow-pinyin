@@ -10,6 +10,10 @@
 - Upstream tests provide scenarios and target characters, words, or sentences, not ready-made local input strings or candidate expectations. Re-derive every migrated test from this repository's current schema, auxiliary order, physical key mapping, vacant slots, and candidate behavior.
 - Candidate tests must express the actual contract: use `cand[1]` for a required first choice, and test continued presence separately only when upstream promises it. A passing broad `page()` assertion does not prove ranking alignment.
 
+## 冰雪兰道与冰雪兰拼
+
+- 两个生产方案共用冻结的 `UED-3158ce08b5bc` 无调 21×21 布局，形辅序 `12/231/23`、调辅序 `12/213/23`。来源、空桶与验证见 [docs/landao.md](docs/landao.md)；更改映射时同步固顶、部件提示、字位导航、键位图和候选测试。
+
 ## 冰雪鹮道
 
 - `snow_zhudao` 使用冻结的 `T2126-V52-M4-ec60a3637a99` 带调 21×26 布局，声调合入第二码；其他规则复用冰雪鹤道。来源、十韵组、空桶口径与生成验证命令见 [docs/zhudao.md](docs/zhudao.md)。

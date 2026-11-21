@@ -52,24 +52,24 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "oc21-shape",
 		schemaId: "snow_jiandao",
-		name: "冰雪兰道（OC21-e1f155973380 21×21）",
+		name: "冰雪兰道（UED-3158ce08b5bc 21×21）",
 		shortName: "冰雪兰道",
 		capacity: "21x21",
 		soundLayout: "oc21",
 		auxiliaryMode: "shape",
 		fixedFile: "snow_jiandao.fixed.txt",
-		auxiliaryOrder: "12/213/24",
+		auxiliaryOrder: "12/231/23",
 	},
 	{
 		id: "oc21-tone",
 		schemaId: "snow_sanpin",
-		name: "冰雪兰拼（OC21-e1f155973380 21×21）",
+		name: "冰雪兰拼（UED-3158ce08b5bc 21×21）",
 		shortName: "冰雪兰拼",
 		capacity: "21x21",
 		soundLayout: "oc21",
 		auxiliaryMode: "tone",
 		fixedFile: "snow_sanpin.fixed.txt",
-		auxiliaryOrder: "12/213/21",
+		auxiliaryOrder: "12/213/23",
 	},
 	{
 		id: "qingyun",
@@ -156,7 +156,7 @@ const semantics = {
 };
 const qzMapping = JSON.parse(
 	readFileSync(
-		rootPath("docs", "shenyun-oc21-e1f155973380-mapping.json"),
+		rootPath("docs", "shenyun-ued-3158ce08b5bc-mapping.json"),
 		"utf8",
 	),
 ) as { codes: Record<string, string | null> };

@@ -121,9 +121,18 @@ for (const domain of ["21x21", "21x26"]) {
 	}
 
 	const commonSummary = summarize(Object.values(payloadCodes));
-	if (domain === "21x26") {
+	{
 		const frozen = JSON.parse(
-			readFileSync(join(root, "docs", "shenyun-um40-source.json"), "utf8"),
+			readFileSync(
+				join(
+					root,
+					"docs",
+					domain === "21x26"
+						? "shenyun-um40-source.json"
+						: "shenyun-ued-source.json",
+				),
+				"utf8",
+			),
 		) as {
 			id: string;
 			pinyin: string[];
@@ -136,11 +145,11 @@ for (const domain of ["21x21", "21x26"]) {
 				.update(JSON.stringify(frozen.codeList))
 				.digest("hex") !== frozen.codeListSha256
 		)
-			throw new Error("UM40 来源方案或原始码表摘要不匹配。");
+			throw new Error("冻结来源方案或原始码表摘要不匹配。");
 		for (const [index, syllable] of frozen.pinyin.entries()) {
 			const expected = frozen.codeList[index];
 			if (expected !== null && deriveCode(syllable)?.toUpperCase() !== expected)
-				throw new Error(`UM40 来源码表不匹配：${syllable} 应为 ${expected}`);
+				throw new Error(`冻结来源码表不匹配：${syllable} 应为 ${expected}`);
 		}
 	}
 	if (
@@ -175,7 +184,7 @@ for (const domain of ["21x21", "21x26"]) {
 		root,
 		"docs",
 		domain === "21x21"
-			? "shenyun-oc21-e1f155973380-mapping.json"
+			? "shenyun-ued-3158ce08b5bc-mapping.json"
 			: "shenyun-um40-mapping.json",
 	);
 	const rendered = `${JSON.stringify(output, null, 2)}\n`;

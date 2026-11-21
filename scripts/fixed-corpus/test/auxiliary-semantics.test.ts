@@ -193,7 +193,7 @@ test("神韵机器可读配置显式区分形义序与声调序", () => {
 		"config/shenyun-21x21-mapping.json",
 		"config/shenyun-21x26-mapping.json",
 		"config/shenyun-21x28-mapping.json",
-		"docs/shenyun-oc21-e1f155973380-mapping.json",
+		"docs/shenyun-ued-3158ce08b5bc-mapping.json",
 		"docs/shenyun-u357-mapping.json",
 	]) {
 		const mapping = readMapping(path);
@@ -227,8 +227,8 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		BENCHMARK_SCHEMES.map(({ id, auxiliaryOrder }) => [id, auxiliaryOrder]),
 		[
 			["sipin", "单字笔画／部件"],
-			["oc21-shape", "12/213/24"],
-			["oc21-tone", "12/213/21"],
+			["oc21-shape", "12/231/23"],
+			["oc21-tone", "12/213/23"],
 			["qingyun", "词语音码／单字形码"],
 			["rc26-shape", "12/12/24"],
 			["rc26-tone", "12/21/13"],
@@ -270,7 +270,7 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		"ren3",
 		"he2",
 	]);
-	assert.equal(qzFour.at(-1)?.code.slice(-2), "vi");
+	assert.equal(qzFour.at(-1)?.code.slice(-2), "vu");
 	const d3Four = pronunciationCodes("rc26-tone", "天地人和", [
 		"tian1",
 		"di2",
@@ -341,20 +341,20 @@ test("benchmark 逐级模拟首选后置并保留最短合法单字码", () => {
 test("固定候选覆盖首位时不后置底层翻译器候选", () => {
 	const entries = [
 		{ word: "城市", syllables: ["cheng2", "shi4"], weight: 501469 },
-		{ word: "超时", syllables: ["chao1", "shi2"], weight: 48970 },
+		{ word: "城事", syllables: ["cheng2", "shi4"], weight: 48970 },
 	];
 	const ranked = rankBenchmarkCodes(
 		"oc21-shape",
 		entries,
 		entries,
-		new Map([["sl", { word: "产生" }]]),
+		new Map([["srkf", { word: "产生" }]]),
 	);
 	assert.equal(
-		ranked.find(({ word, code }) => word === "城市" && code === "slo")?.rank,
+		ranked.find(({ word, code }) => word === "城市" && code === "srkfv")?.rank,
 		1,
 	);
 	assert.equal(
-		ranked.find(({ word, code }) => word === "超时" && code === "slo")?.rank,
+		ranked.find(({ word, code }) => word === "城事" && code === "srkfv")?.rank,
 		2,
 	);
 });
@@ -367,7 +367,7 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 	const actualCandidates = new Map([
 		["c", ["才", "从"]],
 		["cr", ["从", "葱"]],
-		["gYxe", ["钢箱梁", "刚醒来", "刚下来"]],
+		["gYxl", ["钢箱梁", "刚醒来", "刚下来"]],
 	]);
 	const from = rankBenchmarkCodes(
 		"rc26-shape",
@@ -384,5 +384,5 @@ test("benchmark 可用真实 Rime 候选覆盖静态权重排序", () => {
 		new Map(),
 		(code) => actualCandidates.get(code) ?? [],
 	);
-	assert.equal(waking.find(({ code }) => code === "gYxe")?.rank, 2);
+	assert.equal(waking.find(({ code }) => code === "gYxl")?.rank, 2);
 });

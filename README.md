@@ -143,19 +143,19 @@
 
 字母和待启用数字均不侵占 `ABA` 的 `21×5×21=2205` 个状态，既有 `AAB`、`AAAB` 路由也保持不变。
 
-### OC21-e1f155973380 21×21 双拼
+### UED-3158ce08b5bc 21×21 双拼
 
-冰雪兰道（`snow_jiandao`）与冰雪兰拼（`snow_sanpin`）现共用 [OC21-e1f155973380 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json)，仓库标识为 `OC21-e1f155973380`。布局指标为 M-R2 `42`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `5/2/2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.53899646295756`。
+冰雪兰道（`snow_jiandao`）与冰雪兰拼（`snow_sanpin`）现共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，仓库标识为 `UED-3158ce08b5bc`。布局指标为 M-R2 `41`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `5/2/2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.565504107623386`。
 
-五辅语义保持“折横撇竖点→`AVUIO`、一二三四轻→`IVUAO`”，按形义序观察声调同为 `42310`。冰雪兰道的二／三／四字词形辅序为 `12/213/24`，冰雪兰拼的调辅序为 `12/213/21`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
+五辅语义保持“折横撇竖点→`AVUIO`、一二三四轻→`IVUAO`”，按形义序观察声调同为 `42310`。冰雪兰道的二／三／四字词形辅序为 `12/231/23`，冰雪兰拼的调辅序为 `12/213/23`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
 
 **声母—韵母映射**
 
-![OC21-e1f155973380 21×21 双拼声韵键盘图](docs/shenyun-oc21-e1f155973380-keyboard.svg)
+![UED-3158ce08b5bc 21×21 双拼声韵键盘图](docs/shenyun-ued-3158ce08b5bc-keyboard.svg)
 
 **日常八场景文稿纯双拼键频图（含标点）**
 
-![OC21-e1f155973380 21×21 双拼纯双拼键频图](docs/shenyun-oc21-e1f155973380-keyboard-heat.svg)
+![UED-3158ce08b5bc 21×21 双拼纯双拼键频图](docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg)
 
 键频图由 benchmark 页面内置的 `r9MacroHeat` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
 
@@ -167,32 +167,32 @@
 | --- | :---: | --- | :---: | --- | :---: |
 | `b` | `B` | `p` | `P` | `m` | `M` |
 | `f` | `F` | `d` | `D` | `t` | `T` |
-| `n` | `N` | `l` | `E` | `g` | `G` |
+| `n` | `N` | `l` | `L` | `g` | `G` |
 | `k` | `P` | `h` | `H` | `j` | `J` |
-| `q` | `Q` | `x` | `X` | `zh` | `K` |
-| `ch` | `S` | `sh` | `L` | `r` | `R` |
-| `z` | `Z` | `c` | `C` | `s` | `S` |
-| `A` | `R` | `E` | `C` | `O` | `C` |
+| `q` | `Q` | `x` | `X` | `zh` | `E` |
+| `ch` | `S` | `sh` | `K` | `r` | `R` |
+| `z` | `Z` | `c` | `C` | `s` | `C` |
+| `A` | `R` | `E` | `R` | `O` | `R` |
 | `W` | `W` | `Y` | `Y` | `YU` | `Y` |
 
 韵母使用下列次键；`v/van/ve/vn` 表示 ü 系：
 
 | 韵母 | 次键 | 韵母 | 次键 | 韵母 | 次键 |
 | --- | :---: | --- | :---: | --- | :---: |
-| `a` | `P` | `ai` | `H` | `an` | `N` |
+| `a` | `L` | `ai` | `K` | `an` | `N` |
 | `ang` | `Y` | `ao` | `Z` | `e` | `S` |
-| `ei` | `L` | `en` | `E` | `eng` | `T` |
-| `er` | `J` | `i` | `F` | `ia` | `L` |
-| `ian` | `J` | `iang` | `P` | `iao` | `Q` |
-| `ie` | `C` | `in` | `R` | `ing` | `K` |
-| `iong` | `N` | `iu` | `B` | `o` | `G` |
-| `ong` | `L` | `ou` | `W` | `u` | `M` |
-| `ua` | `Q` | `uai` | `X` | `uan` | `D` |
-| `uang` | `C` | `ui` | `R` | `un` | `G` |
-| `uo` | `K` | `v` | `E` | `van` | `T` |
-| `ve` | `D` | `vn` | `G` |  |  |
+| `ei` | `D` | `en` | `E` | `eng` | `R` |
+| `er` | `P` | `i` | `F` | `ia` | `L` |
+| `ian` | `P` | `iang` | `J` | `iao` | `Q` |
+| `ie` | `C` | `in` | `B` | `ing` | `G` |
+| `iong` | `N` | `iu` | `E` | `o` | `J` |
+| `ong` | `J` | `ou` | `W` | `u` | `H` |
+| `ua` | `Q` | `uai` | `C` | `uan` | `T` |
+| `uang` | `P` | `ui` | `X` | `un` | `B` |
+| `uo` | `M` | `v` | `T` | `van` | `R` |
+| `ve` | `K` | `vn` | `D` |  |  |
 
-- [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 形成 345 个唯一码和 54 个双音节重码桶，静态键域有 96 个空码；按当前系统词典的实际占用口径运行时有 94 个 `AA` 空码，包含保留码 `qz`、`zq`。
+- [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 形成 351 个唯一码和 48 个双音节重码桶，静态键域有 90 个空码；按当前系统词典的实际占用口径运行时有 87 个 `AA` 空码，包含保留码 `qz`、`zq`。
 - 冰雪兰道使用形辅键 `A/V/U/I/O = 折/横/撇/竖/点`，冰雪兰拼使用调辅键 `I/V/U/A/O = 一/二/三/四/轻`；`j/q/x` 后的 ü 系按 `v/van/ve/vn` 统一编码。
 - 两个方案的 630 固顶区都完整覆盖 630 个码位且词项不重复；大写补韵、动态空桶和多字词辅码按各方案文件中的现行规则运行。
 
@@ -204,66 +204,66 @@
 
 | 数字 | 冰雪兰道 | 冰雪兰拼 |
 | --- | :---: | :---: |
-| 零／0 | `ekv` | `ekv` |
+| 零／0 | `lgv` | `lgv` |
 | 一／1 | `y` | `y` |
-| 二／2 | `cj` | `cj` |
-| 三／3 | `sn` | `sn` |
-| 四／4 | `sfi` | `sfa` |
-| 五／5 | `wmv` | `wmu` |
-| 六／6 | `ebo` | `eba` |
+| 二／2 | `rp` | `rp` |
+| 三／3 | `cn` | `cn` |
+| 四／4 | `cfi` | `cfa` |
+| 五／5 | `whv` | `whu` |
+| 六／6 | `leo` | `lea` |
 | 七／7 | `qfv` | `qfi` |
-| 八／8 | `bpu` | `bpi` |
-| 九／9 | `jbu` | `jbu` |
-| 十／10 | `lfu` | `lfv` |
+| 八／8 | `blu` | `bli` |
+| 九／9 | `jeu` | `jeu` |
+| 十／10 | `kfu` | `kfv` |
 
 ### 固顶、空桶与逐级简码
 
 - 冰雪鹤道、冰雪鹤拼的现行 fixed 表各含 21 个一级简码、376 个二码单字、117 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
-- 冰雪兰道、冰雪兰拼以 351 个二码单字和 90 个二简词完整覆盖 441 个 `AA` 位置。两方案的 630 区均由 105 个二码位与 525 个三码位组成，每码固定一个不重复词项。
+- 冰雪兰道、冰雪兰拼以 360 个二码单字和 81 个二简词完整覆盖 441 个 `AA` 位置。两方案的 630 区均由 105 个二码位与 525 个三码位组成，每码固定一个不重复词项。
 - 冰雪兰道、冰雪兰拼及对应经典方案的大写字母用于三字及以上简拼补韵：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
 - [二字词逐级排序研究](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音及 1,372 个二简／630 槽位。它作为候选常用度证据保留，不把“完整码已是首选”的词重复塞入短码。
 
 ### 现行双拼与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) benchmark
 
-下表用当前 UM40-ac9707a932d1 与 OC21-e1f155973380 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 作参照。
+下表用当前 UM40-ac9707a932d1 与 UED-3158ce08b5bc 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 作参照。
 
-表中在 UM40-ac9707a932d1、OC21-e1f155973380 与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
+表中在 UM40-ac9707a932d1、UED-3158ce08b5bc 与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
 
-| 指标 | UM40-ac9707a932d1 21×26 | OC21-e1f155973380 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) | 何为好 |
+| 指标 | UM40-ac9707a932d1 21×26 | UED-3158ce08b5bc 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) | 何为好 |
 | --- | ---: | ---: | ---: | ---: | --- |
-| M-R2 记忆项 | **40** ★★ 🥇 | **42** ★ | 44 | 51 | 越低越好 |
+| M-R2 记忆项 | **40** ★★ 🥇 | **41** ★ | 44 | 51 | 越低越好 |
 | 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | A、I 为诊断；仍按 D+V 越低越好 |
 | 飞键成分（声母／零声母组／韵母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
-| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 逻辑审计 | **98.999608** ★★ | **98.538896** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 逻辑均匀度 | **82.026502** ★★ | 71.258449 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 唯一码／唯一率 | **399 / 100.000%** ★★ 🥇 | 345 / 86.466% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 重码桶 | **0** ★★ 🥇 | 54 | **27** ★ | 0 🥇 | 越低越好 |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 受影响音节／占比 | **0 / 0.000%** ★★ 🥇 | 108 / 27.068% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | 越低越好 |
-| 频率加权 S2 miss | **0.000%** ★★ 🥇 | 2.589% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
-| S2 补全平均码长 | **2.000000** ★★ 🥇 | 2.110426 | **2.072546** ★ | 2.000000 🥇 | 越低越好 |
-| S2 补全中心时间（ms） | **70.181** ★★ 🥇 | **85.609** ★ | 90.257 | 79.890 | 越低越好 |
-| S2 异键同指率 | **5.247%** ★ | **3.422%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
-| 综合补全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.576597** ★★ | **9.632974** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
-| 综合补全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.054283** ★★ 🥇 | **9.531361** ★ | 10.000000 | 9.184607 | 越低越好 |
-| 综合补全 CKT v5 | **9.062157** ★★ 🥇 | **9.535946** ★ | 10.000000 | 9.195422 | 越低越好 |
-| 综合补全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | 越低越好 |
-| [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系综当量 | **10.613752** ★★ | **10.732612** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
-| [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系综当量 | **10.677090** ★★ | **10.799232** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
-| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系综当量 | **10.277442** ★★ 🥇 | **10.523835** ★ | 11.478960 | 11.091225 | 越低越好 |
-| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.540103** ★ | 10.000000 | 9.589632 | 越低越好 |
-| 八轨综合选重率 | **0.618%** ★★ | **1.253%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八轨第一辅键率 | **20.725%** ★★ | **25.071%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
-| 八轨第二辅键率 | **4.445%** ★★ | **6.420%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
-| 日常左右手负载／左手占比 | **1028:1121 / 47.836%** ★★ 🥇 | 1196:953 / 55.654% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率 | **41.508%** ★★ 🥇 | 46.906% | **45.882%** ★ | 45.416% | 越低越好；非独立速度结论 |
-| 日常平均有效距离 | 0.701125 | **0.684850** ★ | **0.679555** ★★ 🥇 | 0.701172 | 越低越好 |
+| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 逻辑审计 | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 逻辑均匀度 | **82.026502** ★★ | 74.087239 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 唯一码／唯一率 | **399 / 100.000%** ★★ 🥇 | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 重码桶 | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | 越低越好 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 受影响音节／占比 | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | 越低越好 |
+| 频率加权 S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
+| S2 补全平均码长 | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | 越低越好 |
+| S2 补全中心时间（ms） | **70.181** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | 越低越好 |
+| S2 异键同指率 | **5.247%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
+| 综合补全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.576597** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
+| 综合补全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.054283** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | 越低越好 |
+| 综合补全 CKT v5 | **9.062157** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | 越低越好 |
+| 综合补全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |
+| [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系综当量 | **10.613752** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
+| [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系综当量 | **10.677090** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
+| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系综当量 | **10.277442** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | 越低越好 |
+| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | 越低越好 |
+| 八轨综合选重率 | **0.618%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八轨第一辅键率 | **20.725%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
+| 八轨第二辅键率 | **4.445%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
+| 日常左右手负载／左手占比 | **1028:1121 / 47.836%** ★★ 🥇 | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率 | **41.508%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | 越低越好；非独立速度结论 |
+| 日常平均有效距离 | 0.701125 | **0.693857** ★ | **0.679555** ★★ 🥇 | 0.701172 | 越低越好 |
 | 20 合同 QAZ 左小指组峰值 | **16.822%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | 越低越好 |
-| 20 合同 P 区右小指组峰值 | **3.150%** ★ | 4.750% | **2.774%** ★★ | 1.888% 🥇 | 越低越好 |
-| 20 合同最大单指峰值 | 34.439% | **26.392%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
-| 日常纯双拼移动手分数（含标点） | 134.743 | **136.831** ★ | **138.672** ★★ 🥇 | 135.310 | 越高越好 |
-| S2 主键区占比 | 42.043% | **51.135%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
-| 20 合同 TYB 双食指组峰值 | **12.340%** ★★ 🥇 | **14.101%** ★ | 14.733% | 12.358% | 越低越好 |
-| 20 合同主键区下限 | **31.211%** ★ | **34.857%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
+| 20 合同 P 区右小指组峰值 | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | 越低越好 |
+| 20 合同最大单指峰值 | 34.439% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
+| 日常纯双拼移动手分数（含标点） | **134.743** ★ | 134.318 | **138.672** ★★ 🥇 | 135.310 | 越高越好 |
+| S2 主键区占比 | 42.043% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
+| 20 合同 TYB 双食指组峰值 | **12.340%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | 越低越好 |
+| 20 合同主键区下限 | **31.211%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
 
 #### 完整测评报告
 
@@ -484,19 +484,19 @@ Number codes have been calculated from each corresponding Han numeral's current 
 
 Neither the letters nor the pending numbers consume the `21×5×21=2205` `ABA` states; the existing `AAB` and `AAAB` routes are also preserved.
 
-### OC21-e1f155973380 21×21 double pinyin
+### UED-3158ce08b5bc 21×21 double pinyin
 
-冰雪兰道 (`snow_jiandao`) and 冰雪兰拼 (`snow_sanpin`) now share the [OC21-e1f155973380 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json), identified as `OC21-e1f155973380`. Its layout metrics are M-R2 `42` and all/written/traditional-initial/final disorder A/I/D/V `5/2/2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.53899646295756`.
+冰雪兰道 (`snow_jiandao`) and 冰雪兰拼 (`snow_sanpin`) now share the [UED-3158ce08b5bc 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json), identified as `UED-3158ce08b5bc`. Its layout metrics are M-R2 `41` and all/written/traditional-initial/final disorder A/I/D/V `5/2/2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.565504107623386`.
 
-The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AVUIO` and tones 1/2/3/4/neutral→`IVUAO`, again yielding `42310`. 冰雪兰道 uses shape order `12/213/24`, while 冰雪兰拼 uses tone order `12/213/21`; three-character words retain the complete three-auxiliary route.
+The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AVUIO` and tones 1/2/3/4/neutral→`IVUAO`, again yielding `42310`. 冰雪兰道 uses shape order `12/231/23`, while 冰雪兰拼 uses tone order `12/213/23`; three-character words retain the complete three-auxiliary route.
 
 **Initial–final mapping**
 
-![OC21-e1f155973380 21×21 initial/final keyboard map](docs/shenyun-oc21-e1f155973380-keyboard.svg)
+![UED-3158ce08b5bc 21×21 initial/final keyboard map](docs/shenyun-ued-3158ce08b5bc-keyboard.svg)
 
 **Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
 
-![OC21-e1f155973380 21×21 pure-double-pinyin key-frequency map](docs/shenyun-oc21-e1f155973380-keyboard-heat.svg)
+![UED-3158ce08b5bc 21×21 pure-double-pinyin key-frequency map](docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg)
 
 The map is exported directly from the current layout through the benchmark page's built-in `r9MacroHeat`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
 
@@ -508,32 +508,32 @@ Initials and zero-initial carriers use these first keys:
 | --- | :---: | --- | :---: | --- | :---: |
 | `b` | `B` | `p` | `P` | `m` | `M` |
 | `f` | `F` | `d` | `D` | `t` | `T` |
-| `n` | `N` | `l` | `E` | `g` | `G` |
+| `n` | `N` | `l` | `L` | `g` | `G` |
 | `k` | `P` | `h` | `H` | `j` | `J` |
-| `q` | `Q` | `x` | `X` | `zh` | `K` |
-| `ch` | `S` | `sh` | `L` | `r` | `R` |
-| `z` | `Z` | `c` | `C` | `s` | `S` |
-| `A` | `R` | `E` | `C` | `O` | `C` |
+| `q` | `Q` | `x` | `X` | `zh` | `E` |
+| `ch` | `S` | `sh` | `K` | `r` | `R` |
+| `z` | `Z` | `c` | `C` | `s` | `C` |
+| `A` | `R` | `E` | `R` | `O` | `R` |
 | `W` | `W` | `Y` | `Y` | `YU` | `Y` |
 
 Finals use these second keys; `v/van/ve/vn` denote the ü series:
 
 | Final | Second key | Final | Second key | Final | Second key |
 | --- | :---: | --- | :---: | --- | :---: |
-| `a` | `P` | `ai` | `H` | `an` | `N` |
+| `a` | `L` | `ai` | `K` | `an` | `N` |
 | `ang` | `Y` | `ao` | `Z` | `e` | `S` |
-| `ei` | `L` | `en` | `E` | `eng` | `T` |
-| `er` | `J` | `i` | `F` | `ia` | `L` |
-| `ian` | `J` | `iang` | `P` | `iao` | `Q` |
-| `ie` | `C` | `in` | `R` | `ing` | `K` |
-| `iong` | `N` | `iu` | `B` | `o` | `G` |
-| `ong` | `L` | `ou` | `W` | `u` | `M` |
-| `ua` | `Q` | `uai` | `X` | `uan` | `D` |
-| `uang` | `C` | `ui` | `R` | `un` | `G` |
-| `uo` | `K` | `v` | `E` | `van` | `T` |
-| `ve` | `D` | `vn` | `G` |  |  |
+| `ei` | `D` | `en` | `E` | `eng` | `R` |
+| `er` | `P` | `i` | `F` | `ia` | `L` |
+| `ian` | `P` | `iang` | `J` | `iao` | `Q` |
+| `ie` | `C` | `in` | `B` | `ing` | `G` |
+| `iong` | `N` | `iu` | `E` | `o` | `J` |
+| `ong` | `J` | `ou` | `W` | `u` | `H` |
+| `ua` | `Q` | `uai` | `C` | `uan` | `T` |
+| `uang` | `P` | `ui` | `X` | `un` | `B` |
+| `uo` | `M` | `v` | `T` | `van` | `R` |
+| `ve` | `K` | `vn` | `D` |  |  |
 
-- [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) forms 345 unique codes and 54 two-syllable collision buckets. The static domain has 96 vacant codes; the current system-dictionary occupancy rule leaves 94 runtime-vacant `AA` codes, including reserved `qz` and `zq`.
+- [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) forms 351 unique codes and 48 two-syllable collision buckets. The static domain has 90 vacant codes; the current system-dictionary occupancy rule leaves 94 runtime-vacant `AA` codes, including reserved `qz` and `zq`.
 - 冰雪兰道 maps shape auxiliaries as `A/V/U/I/O = bend/horizontal/left-falling/vertical/dot`; 冰雪兰拼 maps tone auxiliaries as `I/V/U/A/O = 1/2/3/4/neutral`. The ü series after `j/q/x` is normalized to `v/van/ve/vn`.
 - Both schemes fill all 630 fixed-candidate slots with no repeated entries. Uppercase final completion, dynamic vacant buckets, and multi-character auxiliary routes follow the current rules in each schema.
 
@@ -545,66 +545,66 @@ Numbers share the codes of their corresponding Han numerals. When Han candidates
 
 | Number | 冰雪兰道 | 冰雪兰拼 |
 | --- | :---: | :---: |
-| 零／0 | `ekv` | `ekv` |
+| 零／0 | `lgv` | `lgv` |
 | 一／1 | `y` | `y` |
-| 二／2 | `cj` | `cj` |
-| 三／3 | `sn` | `sn` |
-| 四／4 | `sfi` | `sfa` |
-| 五／5 | `wmv` | `wmu` |
-| 六／6 | `ebo` | `eba` |
+| 二／2 | `rp` | `rp` |
+| 三／3 | `cn` | `cn` |
+| 四／4 | `cfi` | `cfa` |
+| 五／5 | `whv` | `whu` |
+| 六／6 | `leo` | `lea` |
 | 七／7 | `qfv` | `qfi` |
-| 八／8 | `bpu` | `bpi` |
-| 九／9 | `jbu` | `jbu` |
-| 十／10 | `lfu` | `lfv` |
+| 八／8 | `blu` | `bli` |
+| 九／9 | `jeu` | `jeu` |
+| 十／10 | `kfu` | `kfv` |
 
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
 - Each current 冰雪鹤道/冰雪鹤拼 fixed table contains 21 one-key abbreviations, 376 two-key characters, 117 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
-- 冰雪兰道 and 冰雪兰拼 cover all 441 `AA` positions with 351 two-key characters and 90 two-key word abbreviations. Each 630 section comprises 105 two-key and 525 three-key slots, with one non-repeated word fixed per code.
+- 冰雪兰道 and 冰雪兰拼 cover all 441 `AA` positions with 360 two-key characters and 81 two-key word abbreviations. Each 630 section comprises 105 two-key and 525 three-key slots, with one non-repeated word fixed per code.
 - In 冰雪兰道, 冰雪兰拼, and their classic counterparts, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials.
 - The [staged bigram-ranking study](reports/sipin-bigram-ranking-research.md) covers 133,205 encodable readings and 1,372 two-key/630 slots. It remains frequency evidence without duplicating words that are already first at full code into shorter fixed slots.
 
 ### Current double-pinyin layouts versus KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段)
 
-This table directly replaces Overall-17 and U357 in the historical README comparison with the current UM40-ac9707a932d1 and OC21-e1f155973380 results, using the same frozen payload and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) references.
+This table directly replaces Overall-17 and U357 in the historical README comparison with the current UM40-ac9707a932d1 and UED-3158ce08b5bc results, using the same frozen payload and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) references.
 
-The table ranks UM40-ac9707a932d1, OC21-e1f155973380, and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.
+The table ranks UM40-ac9707a932d1, UED-3158ce08b5bc, and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.
 
-| Metric | UM40-ac9707a932d1 21×26 | OC21-e1f155973380 21×21 | KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | Shoudao [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) | Better |
+| Metric | UM40-ac9707a932d1 21×26 | UED-3158ce08b5bc 21×21 | KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | Shoudao [B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) | Better |
 | --- | ---: | ---: | ---: | ---: | --- |
-| M-R2 memory items | **40** ★★ 🥇 | **42** ★ | 44 | 51 | Lower |
+| M-R2 memory items | **40** ★★ 🥇 | **41** ★ | 44 | 51 | Lower |
 | All/written/traditional-initial/final disorder A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | A/I diagnostic; ranking remains lower D+V |
 | Flying-key components (initials/zero-initial groups/finals) | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | Lower |
-| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) logic audit | **98.999608** ★★ | **98.538896** ★ | 97.708694 | 99.763391 🥇 | Higher |
-| [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) logic uniformity | **82.026502** ★★ | 71.258449 | **78.897555** ★ | 83.107434 🥇 | Higher |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) unique codes/rate | **399 / 100.000%** ★★ 🥇 | 345 / 86.466% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | Higher |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) collision buckets | **0** ★★ 🥇 | 54 | **27** ★ | 0 🥇 | Lower |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) affected syllables/rate | **0 / 0.000%** ★★ 🥇 | 108 / 27.068% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | Lower |
-| Frequency-weighted S2 miss | **0.000%** ★★ 🥇 | 2.589% | **0.929%** ★ | 0.000% 🥇 | Lower |
-| S2 completion mean code length | **2.000000** ★★ 🥇 | 2.110426 | **2.072546** ★ | 2.000000 🥇 | Lower |
-| S2 completion center time (ms) | **70.181** ★★ 🥇 | **85.609** ★ | 90.257 | 79.890 | Lower |
-| S2 different-key same-finger rate | **5.247%** ★ | **3.422%** ★★ 🥇 | 11.638% | 11.343% | Lower |
-| [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) completion | **9.576597** ★★ | **9.632974** ★ | 10.000000 | 9.461105 🥇 | Lower |
-| [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) completion | **9.054283** ★★ 🥇 | **9.531361** ★ | 10.000000 | 9.184607 | Lower |
-| CKT v5 completion | **9.062157** ★★ 🥇 | **9.535946** ★ | 10.000000 | 9.195422 | Lower |
-| CKT v5.1 completion | **9.071819** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | Lower |
-| [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) ensemble equivalent | **10.613752** ★★ | **10.732612** ★ | 10.740028 | 10.519452 🥇 | Lower |
-| [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) ensemble equivalent | **10.677090** ★★ | **10.799232** ★ | 10.805830 | 10.583290 🥇 | Lower |
-| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) ensemble equivalent | **10.277442** ★★ 🥇 | **10.523835** ★ | 11.478960 | 11.091225 | Lower |
-| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.540103** ★ | 10.000000 | 9.589632 | Lower |
-| Eight-track aggregate selection rate | **0.618%** ★★ | **1.253%** ★ | 1.532% | 0.572% 🥇 | Lower |
-| Eight-track first-auxiliary rate | **20.725%** ★★ | **25.071%** ★ | 26.413% | 19.746% 🥇 | Lower |
-| Eight-track second-auxiliary rate | **4.445%** ★★ | **6.420%** ★ | 7.201% | 4.158% 🥇 | Lower |
-| Daily left/right load and left share | **1028:1121 / 47.836%** ★★ 🥇 | 1196:953 / 55.654% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | Closer to 50% |
-| Daily same-hand rate | **41.508%** ★★ 🥇 | 46.906% | **45.882%** ★ | 45.416% | Lower; not a standalone speed claim |
-| Daily mean effective distance | 0.701125 | **0.684850** ★ | **0.679555** ★★ 🥇 | 0.701172 | Lower |
+| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) logic audit | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 🥇 | Higher |
+| [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) logic uniformity | **82.026502** ★★ | 74.087239 | **78.897555** ★ | 83.107434 🥇 | Higher |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) unique codes/rate | **399 / 100.000%** ★★ 🥇 | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | Higher |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) collision buckets | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | Lower |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) affected syllables/rate | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | Lower |
+| Frequency-weighted S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | Lower |
+| S2 completion mean code length | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | Lower |
+| S2 completion center time (ms) | **70.181** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | Lower |
+| S2 different-key same-finger rate | **5.247%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | Lower |
+| [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) completion | **9.576597** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | Lower |
+| [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) completion | **9.054283** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | Lower |
+| CKT v5 completion | **9.062157** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | Lower |
+| CKT v5.1 completion | **9.071819** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | Lower |
+| [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) ensemble equivalent | **10.613752** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | Lower |
+| [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) ensemble equivalent | **10.677090** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | Lower |
+| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) ensemble equivalent | **10.277442** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | Lower |
+| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | Lower |
+| Eight-track aggregate selection rate | **0.618%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | Lower |
+| Eight-track first-auxiliary rate | **20.725%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | Lower |
+| Eight-track second-auxiliary rate | **4.445%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | Lower |
+| Daily left/right load and left share | **1028:1121 / 47.836%** ★★ 🥇 | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | Closer to 50% |
+| Daily same-hand rate | **41.508%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | Lower; not a standalone speed claim |
+| Daily mean effective distance | 0.701125 | **0.693857** ★ | **0.679555** ★★ 🥇 | 0.701172 | Lower |
 | 20-contract QAZ left-pinky peak | **16.822%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | Lower |
-| 20-contract P-area right-pinky peak | **3.150%** ★ | 4.750% | **2.774%** ★★ | 1.888% 🥇 | Lower |
-| 20-contract maximum single-finger peak | 34.439% | **26.392%** ★★ 🥇 | **29.531%** ★ | 29.271% | Lower |
-| Daily pure-double-pinyin moving-hand score (punctuation included) | 134.743 | **136.831** ★ | **138.672** ★★ 🥇 | 135.310 | Higher |
-| S2 home-zone share | 42.043% | **51.135%** ★★ 🥇 | **49.001%** ★ | 36.600% | Higher |
-| 20-contract TYB index-finger peak | **12.340%** ★★ 🥇 | **14.101%** ★ | 14.733% | 12.358% | Lower |
-| 20-contract home-zone floor | **31.211%** ★ | **34.857%** ★★ 🥇 | 30.815% | 24.243% | Higher |
+| 20-contract P-area right-pinky peak | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | Lower |
+| 20-contract maximum single-finger peak | 34.439% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | Lower |
+| Daily pure-double-pinyin moving-hand score (punctuation included) | **134.743** ★ | 134.318 | **138.672** ★★ 🥇 | 135.310 | Higher |
+| S2 home-zone share | 42.043% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | Higher |
+| 20-contract TYB index-finger peak | **12.340%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | Lower |
+| 20-contract home-zone floor | **31.211%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | Higher |
 
 #### Complete benchmark reports
 
@@ -736,19 +736,19 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 字母和待啟用數字均不侵占 `ABA` 的 `21×5×21=2205` 個狀態，既有 `AAB`、`AAAB` 路由也保持不變。
 
-### OC21-e1f155973380 21×21 雙拼
+### UED-3158ce08b5bc 21×21 雙拼
 
-冰雪兰道（`snow_jiandao`）與冰雪兰拼（`snow_sanpin`）現共用 [OC21-e1f155973380 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-15-untoned-2121-candidates-aux-robustness.json)，倉庫標識為 `OC21-e1f155973380`。布局指標為 M-R2 `42`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `5/2/2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.53899646295756`。
+冰雪兰道（`snow_jiandao`）與冰雪兰拼（`snow_sanpin`）現共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，倉庫標識為 `UED-3158ce08b5bc`。布局指標為 M-R2 `41`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `5/2/2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.565504107623386`。
 
-五輔語義保持「折橫撇豎點→`AVUIO`、一二三四輕→`IVUAO`」，按形義序觀察聲調同為 `42310`。冰雪兰道的二／三／四字詞形輔序為 `12/213/24`，冰雪兰拼的調輔序為 `12/213/21`；三字詞保留完整三輔鍵路由。
+五輔語義保持「折橫撇豎點→`AVUIO`、一二三四輕→`IVUAO`」，按形義序觀察聲調同為 `42310`。冰雪兰道的二／三／四字詞形輔序為 `12/231/23`，冰雪兰拼的調輔序為 `12/213/23`；三字詞保留完整三輔鍵路由。
 
 **聲母—韻母映射**
 
-![OC21-e1f155973380 21×21 雙拼聲韻鍵盤圖](docs/shenyun-oc21-e1f155973380-keyboard.svg)
+![UED-3158ce08b5bc 21×21 雙拼聲韻鍵盤圖](docs/shenyun-ued-3158ce08b5bc-keyboard.svg)
 
 **日常八場景文稿純雙拼鍵頻圖（含標點）**
 
-![OC21-e1f155973380 21×21 雙拼純雙拼鍵頻圖](docs/shenyun-oc21-e1f155973380-keyboard-heat.svg)
+![UED-3158ce08b5bc 21×21 雙拼純雙拼鍵頻圖](docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg)
 
 鍵頻圖由 benchmark 頁面內建的 `r9MacroHeat` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
 
@@ -760,32 +760,32 @@ Reproducible current and historical layout comparisons are in the [appended five
 | --- | :---: | --- | :---: | --- | :---: |
 | `b` | `B` | `p` | `P` | `m` | `M` |
 | `f` | `F` | `d` | `D` | `t` | `T` |
-| `n` | `N` | `l` | `E` | `g` | `G` |
+| `n` | `N` | `l` | `L` | `g` | `G` |
 | `k` | `P` | `h` | `H` | `j` | `J` |
-| `q` | `Q` | `x` | `X` | `zh` | `K` |
-| `ch` | `S` | `sh` | `L` | `r` | `R` |
-| `z` | `Z` | `c` | `C` | `s` | `S` |
-| `A` | `R` | `E` | `C` | `O` | `C` |
+| `q` | `Q` | `x` | `X` | `zh` | `E` |
+| `ch` | `S` | `sh` | `K` | `r` | `R` |
+| `z` | `Z` | `c` | `C` | `s` | `C` |
+| `A` | `R` | `E` | `R` | `O` | `R` |
 | `W` | `W` | `Y` | `Y` | `YU` | `Y` |
 
 韻母使用下列次鍵；`v/van/ve/vn` 表示 ü 系：
 
 | 韻母 | 次鍵 | 韻母 | 次鍵 | 韻母 | 次鍵 |
 | --- | :---: | --- | :---: | --- | :---: |
-| `a` | `P` | `ai` | `H` | `an` | `N` |
+| `a` | `L` | `ai` | `K` | `an` | `N` |
 | `ang` | `Y` | `ao` | `Z` | `e` | `S` |
-| `ei` | `L` | `en` | `E` | `eng` | `T` |
-| `er` | `J` | `i` | `F` | `ia` | `L` |
-| `ian` | `J` | `iang` | `P` | `iao` | `Q` |
-| `ie` | `C` | `in` | `R` | `ing` | `K` |
-| `iong` | `N` | `iu` | `B` | `o` | `G` |
-| `ong` | `L` | `ou` | `W` | `u` | `M` |
-| `ua` | `Q` | `uai` | `X` | `uan` | `D` |
-| `uang` | `C` | `ui` | `R` | `un` | `G` |
-| `uo` | `K` | `v` | `E` | `van` | `T` |
-| `ve` | `D` | `vn` | `G` |  |  |
+| `ei` | `D` | `en` | `E` | `eng` | `R` |
+| `er` | `P` | `i` | `F` | `ia` | `L` |
+| `ian` | `P` | `iang` | `J` | `iao` | `Q` |
+| `ie` | `C` | `in` | `B` | `ing` | `G` |
+| `iong` | `N` | `iu` | `E` | `o` | `J` |
+| `ong` | `J` | `ou` | `W` | `u` | `H` |
+| `ua` | `Q` | `uai` | `C` | `uan` | `T` |
+| `uang` | `P` | `ui` | `X` | `un` | `B` |
+| `uo` | `M` | `v` | `T` | `van` | `R` |
+| `ve` | `K` | `vn` | `D` |  |  |
 
-- [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 形成 345 個唯一碼和 54 個雙音節重碼桶，靜態鍵域有 96 個空碼；按目前系統詞典的實際占用口徑執行時有 94 個 `AA` 空碼，包含保留碼 `qz`、`zq`。
+- [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 形成 351 個唯一碼和 48 個雙音節重碼桶，靜態鍵域有 90 個空碼；按目前系統詞典的實際占用口徑執行時有 87 個 `AA` 空碼，包含保留碼 `qz`、`zq`。
 - 冰雪兰道使用形輔鍵 `A/V/U/I/O = 折/橫/撇/豎/點`，冰雪兰拼使用調輔鍵 `I/V/U/A/O = 一/二/三/四/輕`；`j/q/x` 後的 ü 系按 `v/van/ve/vn` 統一編碼。
 - 兩個方案的 630 固頂區都完整覆蓋 630 個碼位且詞項不重複；大寫補韻、動態空桶和多字詞輔碼按各方案檔案中的現行規則執行。
 
@@ -797,66 +797,66 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 | 數字 | 冰雪兰道 | 冰雪兰拼 |
 | --- | :---: | :---: |
-| 零／0 | `ekv` | `ekv` |
+| 零／0 | `lgv` | `lgv` |
 | 一／1 | `y` | `y` |
-| 二／2 | `cj` | `cj` |
-| 三／3 | `sn` | `sn` |
-| 四／4 | `sfi` | `sfa` |
-| 五／5 | `wmv` | `wmu` |
-| 六／6 | `ebo` | `eba` |
+| 二／2 | `rp` | `rp` |
+| 三／3 | `cn` | `cn` |
+| 四／4 | `cfi` | `cfa` |
+| 五／5 | `whv` | `whu` |
+| 六／6 | `leo` | `lea` |
 | 七／7 | `qfv` | `qfi` |
-| 八／8 | `bpu` | `bpi` |
-| 九／9 | `jbu` | `jbu` |
-| 十／10 | `lfu` | `lfv` |
+| 八／8 | `blu` | `bli` |
+| 九／9 | `jeu` | `jeu` |
+| 十／10 | `kfu` | `kfv` |
 
 ### 固頂、空桶與逐級簡碼
 
 - 冰雪鶴道、冰雪鹤拼的現行 fixed 表各含 21 個一級簡碼、376 個二碼單字、117 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
-- 冰雪兰道、冰雪兰拼以 351 個二碼單字和 90 個二簡詞完整覆蓋 441 個 `AA` 位置。兩方案的 630 區均由 105 個二碼位與 525 個三碼位組成，每碼固定一個不重複詞項。
+- 冰雪兰道、冰雪兰拼以 360 個二碼單字和 81 個二簡詞完整覆蓋 441 個 `AA` 位置。兩方案的 630 區均由 105 個二碼位與 525 個三碼位組成，每碼固定一個不重複詞項。
 - 冰雪兰道、冰雪兰拼及對應經典方案的大寫字母用於三字及以上簡拼補韻：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
 - [二字詞逐級排序研究](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音及 1,372 個二簡／630 槽位。它作為候選常用度證據保留，不把「完整碼已是首選」的詞重複放入短碼。
 
 ### 現行雙拼與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) benchmark
 
-下表以目前 UM40-ac9707a932d1 與 OC21-e1f155973380 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 作參照。
+下表以目前 UM40-ac9707a932d1 與 UED-3158ce08b5bc 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 作參照。
 
-表中在 UM40-ac9707a932d1、OC21-e1f155973380 與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。
+表中在 UM40-ac9707a932d1、UED-3158ce08b5bc 與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；[首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。
 
-| 指標 | UM40-ac9707a932d1 21×26 | OC21-e1f155973380 21×21 | 原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) | 何者為佳 |
+| 指標 | UM40-ac9707a932d1 21×26 | UED-3158ce08b5bc 21×21 | 原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#探索阶段) | 何者為佳 |
 | --- | ---: | ---: | ---: | ---: | --- |
-| M-R2 記憶項 | **40** ★★ 🥇 | **42** ★ | 44 | 51 | 越低越好 |
+| M-R2 記憶項 | **40** ★★ 🥇 | **41** ★ | 44 | 51 | 越低越好 |
 | 全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | A、I 為診斷；仍按 D+V 越低越好 |
 | 飛鍵成分（聲母／零聲母組／韻母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
-| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 邏輯稽核 | **98.999608** ★★ | **98.538896** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 邏輯均勻度 | **82.026502** ★★ | 71.258449 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 唯一碼／唯一率 | **399 / 100.000%** ★★ 🥇 | 345 / 86.466% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 重碼桶 | **0** ★★ 🥇 | 54 | **27** ★ | 0 🥇 | 越低越好 |
-| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 受影響音節／占比 | **0 / 0.000%** ★★ 🥇 | 108 / 27.068% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | 越低越好 |
-| 頻率加權 S2 miss | **0.000%** ★★ 🥇 | 2.589% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
-| S2 補全平均碼長 | **2.000000** ★★ 🥇 | 2.110426 | **2.072546** ★ | 2.000000 🥇 | 越低越好 |
-| S2 補全中心時間（ms） | **70.181** ★★ 🥇 | **85.609** ★ | 90.257 | 79.890 | 越低越好 |
-| S2 異鍵同指率 | **5.247%** ★ | **3.422%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
-| 綜合補全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.576597** ★★ | **9.632974** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
-| 綜合補全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.054283** ★★ 🥇 | **9.531361** ★ | 10.000000 | 9.184607 | 越低越好 |
-| 綜合補全 CKT v5 | **9.062157** ★★ 🥇 | **9.535946** ★ | 10.000000 | 9.195422 | 越低越好 |
-| 綜合補全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.538996** ★ | 9.999357 | 9.202834 | 越低越好 |
-| [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系綜當量 | **10.613752** ★★ | **10.732612** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
-| [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系綜當量 | **10.677090** ★★ | **10.799232** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
-| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系綜當量 | **10.277442** ★★ 🥇 | **10.523835** ★ | 11.478960 | 11.091225 | 越低越好 |
-| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.540103** ★ | 10.000000 | 9.589632 | 越低越好 |
-| 八軌綜合選重率 | **0.618%** ★★ | **1.253%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八軌第一輔鍵率 | **20.725%** ★★ | **25.071%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
-| 八軌第二輔鍵率 | **4.445%** ★★ | **6.420%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
-| 日常左右手負載／左手占比 | **1028:1121 / 47.836%** ★★ 🥇 | 1196:953 / 55.654% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率 | **41.508%** ★★ 🥇 | 46.906% | **45.882%** ★ | 45.416% | 越低越好；非獨立速度結論 |
-| 日常平均有效距離 | 0.701125 | **0.684850** ★ | **0.679555** ★★ 🥇 | 0.701172 | 越低越好 |
+| [FA-1](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 邏輯稽核 | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
+| [LU-v1r](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 邏輯均勻度 | **82.026502** ★★ | 74.087239 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 唯一碼／唯一率 | **399 / 100.000%** ★★ 🥇 | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 重碼桶 | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | 越低越好 |
+| [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 受影響音節／占比 | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | 越低越好 |
+| 頻率加權 S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
+| S2 補全平均碼長 | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | 越低越好 |
+| S2 補全中心時間（ms） | **70.181** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | 越低越好 |
+| S2 異鍵同指率 | **5.247%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
+| 綜合補全 [CKT v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.576597** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
+| 綜合補全 [CKT v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.054283** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | 越低越好 |
+| 綜合補全 CKT v5 | **9.062157** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | 越低越好 |
+| 綜合補全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |
+| [A7E-v3](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系綜當量 | **10.613752** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
+| [A7E-v4](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系綜當量 | **10.677090** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
+| [A7E-v5](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) 系綜當量 | **10.277442** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | 越低越好 |
+| [A7E-v6-CW150](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | 越低越好 |
+| 八軌綜合選重率 | **0.618%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八軌第一輔鍵率 | **20.725%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
+| 八軌第二輔鍵率 | **4.445%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
+| 日常左右手負載／左手占比 | **1028:1121 / 47.836%** ★★ 🥇 | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率 | **41.508%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | 越低越好；非獨立速度結論 |
+| 日常平均有效距離 | 0.701125 | **0.693857** ★ | **0.679555** ★★ 🥇 | 0.701172 | 越低越好 |
 | 20 合同 QAZ 左小指組峰值 | **16.822%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | 越低越好 |
-| 20 合同 P 區右小指組峰值 | **3.150%** ★ | 4.750% | **2.774%** ★★ | 1.888% 🥇 | 越低越好 |
-| 20 合同最大單指峰值 | 34.439% | **26.392%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
-| 日常純雙拼移動手分數（含標點） | 134.743 | **136.831** ★ | **138.672** ★★ 🥇 | 135.310 | 越高越好 |
-| S2 主鍵區占比 | 42.043% | **51.135%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
-| 20 合同 TYB 雙食指組峰值 | **12.340%** ★★ 🥇 | **14.101%** ★ | 14.733% | 12.358% | 越低越好 |
-| 20 合同主鍵區下限 | **31.211%** ★ | **34.857%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
+| 20 合同 P 區右小指組峰值 | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | 越低越好 |
+| 20 合同最大單指峰值 | 34.439% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
+| 日常純雙拼移動手分數（含標點） | **134.743** ★ | 134.318 | **138.672** ★★ 🥇 | 135.310 | 越高越好 |
+| S2 主鍵區占比 | 42.043% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
+| 20 合同 TYB 雙食指組峰值 | **12.340%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | 越低越好 |
+| 20 合同主鍵區下限 | **31.211%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
 
 #### 完整測評報告
 
