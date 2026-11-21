@@ -153,7 +153,7 @@ test("全部八列参与 v5.2 四档成本、逐轨耗时与终局负载", () =>
 		]);
 });
 
-test("星号排除首道与带调、金牌覆盖所有方案、蓝色菱形仅评带调", () => {
+test("星号排除首道与带调、金牌覆盖所有方案、蓝色菱形只标带调", () => {
 	const schemes = [
 		"RC26",
 		"OC21",
@@ -184,6 +184,25 @@ test("星号排除首道与带调、金牌覆盖所有方案、蓝色菱形仅�
 	]);
 	assert.equal(both[1], "**1**[^zh-benchmark-toned] 🔷 🥇");
 	assert.equal(both[2], "—");
+});
+
+test("带调菱形按除首道外全部方案排名，第二名可在无调之后，第三名不标", () => {
+	const schemes = ["B04", "RC26", "Liandao", "Zhudao"];
+	const result = decorateCurrentValues(
+		schemes.map((scheme, index) => ({
+			scheme,
+			display: String(index),
+			score: index,
+		})),
+	);
+	assert.deepEqual(result, ["0 🥇", "**1** ★★", "**2** 🔹", "3"]);
+	const tied = decorateCurrentValues([
+		{ scheme: "RC26", display: "1", score: 1 },
+		{ scheme: "OC21", display: "1", score: 1 },
+		{ scheme: "Liandao", display: "2", score: 2 },
+	]);
+	assert.equal(tied[2], "2");
+	assert.equal(snapshot.rankingPolicy.diamonds.pool, "all-except-B04");
 });
 
 test("分组使用竞赛排名：并列第一之后没有第二名", () => {

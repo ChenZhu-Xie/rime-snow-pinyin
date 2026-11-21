@@ -1011,7 +1011,7 @@ export function decorateCurrentValues(
 			return value.display;
 		const pool = valid.filter((other) =>
 			toned(value.scheme)
-				? toned(other.scheme)
+				? other.scheme !== "B04"
 				: !toned(other.scheme) && other.scheme !== "B04",
 		);
 		const rank =
@@ -1038,9 +1038,9 @@ export function decorateCurrentValues(
 
 export function benchmarkRankingLegend(language: BenchmarkLanguage) {
 	return {
-		zh: "★★／★：仅在本表全部无调方案中评价，首道 B04 除外，分别标记第一／第二名；🔷／🔹：仅在两套带调方案中评价，分别标记第一／第二名；🥇：比较本表所有有有效数值的方案（含首道与带调）。三个范围独立，可同时标记；并列采用竞赛排名，缺测／不适用不参评，分布说明项不判优。跨合同的金牌是所列模型值的比较，边界见脚注。",
-		en: "★★/★ rank all untoned layouts shown except Shoudao B04; 🔷/🔹 independently rank the two toned layouts, marking first/second place. 🥇 compares every valid value, including B04 and toned layouts. Groups are independent, ties use competition ranking, and missing/inapplicable values and distribution-only rows do not compete. Cross-contract medals compare the stated model values; see footnotes.",
-		zht: "★★／★：僅評本表全部無調方案，首道 B04 除外，分別標第一／第二名；🔷／🔹：僅評兩套帶調方案，分別標第一／第二名；🥇：比較所有有效數值，包含首道與帶調。三組獨立，可同時標記；並列採競賽排名，缺測／不適用不參評，分布說明項不判優。跨合同金牌的邊界見腳註。",
+		zh: "★★／★：仅在本表全部无调方案中评价，首道 B04 除外，分别标记第一／第二名；🔷／🔹：在本表除首道 B04 外的全部方案中排名，仅为排第一／第二名的带调方案标记；🥇：比较本表所有有有效数值的方案（含首道与带调）。三个范围独立，可同时标记；并列采用竞赛排名，缺测／不适用不参评，分布说明项不判优。跨合同的比较是所列模型值的比较，边界见脚注。",
+		en: "★★/★ rank all untoned layouts shown except Shoudao B04. 🔷/🔹 rank every layout shown except B04, and mark only toned layouts placing first/second in that pool. 🥇 compares every valid value, including B04 and toned layouts. Groups are independent, ties use competition ranking, and missing/inapplicable values and distribution-only rows do not compete. Cross-contract rankings compare the stated model values; see footnotes.",
+		zht: "★★／★：僅評本表全部無調方案，首道 B04 除外，分別標第一／第二名；🔷／🔹：在本表除首道 B04 外的全部方案中排名，僅為第一／第二名的帶調方案標記；🥇：比較所有有效數值，包含首道與帶調。三組獨立，可同時標記；並列採競賽排名，缺測／不適用不參評，分布說明項不判優。跨合同排名的邊界見腳註。",
 	}[language];
 }
 
@@ -1186,6 +1186,12 @@ export function appendCurrentBenchmark(
 	const historical = JSON.parse(jsonSource);
 	const snapshot = buildCurrentBenchmark(payload, hash(source), historical);
 	supplementReplay(snapshot);
+	snapshot.rankingPolicy = {
+		stars: { pool: "untoned-except-B04", recipients: "untoned" },
+		diamonds: { pool: "all-except-B04", recipients: "toned" },
+		gold: { pool: "all", recipients: "all" },
+		ties: "competition",
+	};
 	validateProductionContracts(snapshot);
 	const previous: BenchmarkSnapshot[] =
 		historical.currentLayoutComparisons ?? [];
