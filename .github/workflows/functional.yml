@@ -64,6 +64,7 @@ jobs:
           lua5.4 spec/learned_priority.test.lua
           lua5.4 spec/postpone-learning.test.lua
           lua5.4 spec/simplified.test.lua
+          lua5.4 spec/shenyun_hint.test.lua
           lua5.4 spec/schema_menu.test.lua
           lua5.4 spec/keymap.test.lua
 
