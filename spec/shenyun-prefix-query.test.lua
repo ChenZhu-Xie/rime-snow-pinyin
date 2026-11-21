@@ -56,7 +56,7 @@ env.shape_mapping = {
   ["不"] = "vu", ["到"] = "va", ["数"] = "o", ["据"] = "i", ["库"] = "u",
 }
 local phrases = {
-  ["bn yw"] = "冰雪", ["v r fp"] = "输入法", ["rgxn"] = "人工智能",
+  ["bn yw"] = "冰雪", ["v r fp"] = "输入法", ["RGXN"] = "人工智能",
   ["b d"] = "不到", ["v j k"] = "数据库",
 }
 env.translator.query = function(_, proxy)

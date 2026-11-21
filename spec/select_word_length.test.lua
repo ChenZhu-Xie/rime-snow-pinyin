@@ -6,6 +6,12 @@ snow.current = function(context)
   return context.input:sub(segment.start + 1, segment._end)
 end
 package.loaded["snow.snow"] = snow
+package.loaded["snow.vacancy"] = { is_empty = function(input, _, translator)
+  return translator.vacant[input] == true
+end }
+Component = { Translator = function() return { vacant = {} } end }
+Memory = function() return {} end
+Projection = function() return {} end
 local processor = require "snow.select_word_length"
 
 local function key(code, modifier, released)
@@ -25,7 +31,7 @@ local function setup(layout, input, rows, options)
     candidate.type = candidate.type or "phrase"
     candidate._start = candidate._start or start
     candidate._end = candidate._end or segment._end
-    candidate.get_genuine = function(self) return self end
+    candidate.get_genuine = candidate.get_genuine or function(self) return self end
     candidates[#candidates + 1] = candidate
   end
   segment.menu = {
@@ -50,6 +56,7 @@ local function setup(layout, input, rows, options)
   end
   context.commit = function() context.committed = context.chosen.text end
   local env = { engine = { context = context, schema = { config = {
+    get_list = function() return {} end,
     get_string = function(_, path)
       if path == "word_length/layout" then return layout end
       if path == "speller/initials" then
@@ -58,6 +65,7 @@ local function setup(layout, input, rows, options)
     end,
   } } } }
   processor.init(env)
+  if env.vacancy_translator then env.vacancy_translator.vacant = options.vacant or {} end
   return env, context
 end
 
@@ -119,6 +127,28 @@ for _, event in ipairs({ key(60), key(60, 1), key(44, 1), key(0x300A) }) do
 end
 assert(selected("21x26", "bpmf", { "三个字" }, 46, 1) == "三个字")
 assert(selected("21x26", "bpmf", { "三个字" }, 0x300B) == "三个字")
+
+-- AAA+B contains three initials, even though its auxiliary makes four physical keys.
+for _, code in ipairs({ 60, 62 }) do
+  local _, result = selected("21x26", "ysgi", { "新中国" }, code, 0, { vacant = { gi = true } })
+  assert(result == snow.kNoop, "three-main-code vacant-bucket auxiliary must preserve punctuation")
+end
+local _, invalid_pair = selected("21x26", "yafo", { "二字" }, 62, 0, { vacant = { ya = true } })
+assert(invalid_pair == snow.kNoop, "a vacant first AU without four initials cannot be a four-main-code route")
+
+for _, row in ipairs({
+  { text = "🈚️", type = "hint" },
+  { text = "🈚️", type = "simplified", get_genuine = function() return { type = "hint" } end },
+  { text = "功能四字", type = "schema_menu" },
+  { text = "临时生成句子", type = "simplified", get_genuine = function() return { type = "sentence" } end },
+}) do
+  for _, code in ipairs({ 60, 62 }) do
+    local committed, result, context = selected("21x21", "bpmf", { row }, code)
+    assert(committed == nil and context.chosen == nil and result == snow.kAccepted,
+      "hint, function and generated sentence candidates must never be committed by word-length selection")
+  end
+end
+assert(selected("21x21", "bpmf", { { text = "二字", type = "fixed" } }, 62) == "二字")
 
 local committed, result, context = selected("21x21", "bpmf", { "二字" }, 60)
 assert(committed == nil and result == snow.kAccepted and context.input == "bpmf")

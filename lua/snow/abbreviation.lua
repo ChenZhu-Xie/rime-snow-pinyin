@@ -2,7 +2,21 @@
 
 local snow = require "snow.snow"
 
+---@class AbbreviationEnv: Env
+---@field long_word_initials string|nil
+---@field long_word_pattern string|nil
+
 local processor = {}
+
+---@param env AbbreviationEnv
+function processor.init(env)
+  local config = env.engine.schema.config
+  if config:get_string("word_length/layout") == "21x26" then
+    local initials = config:get_string("speller/initials") or ""
+    env.long_word_initials = initials
+    env.long_word_pattern = "^" .. ("[" .. initials .. "]"):rep(4) .. "[" .. initials:upper() .. "]*$"
+  end
+end
 
 local lookup = {
   ["D"] = "的",
@@ -21,7 +35,7 @@ local partial_lookup = {
 }
 
 ---@param key_event KeyEvent
----@param env Env
+---@param env AbbreviationEnv
 function processor.func(key_event, env)
   local context = env.engine.context
   local segment = context.composition:toSegmentation():back()
@@ -41,6 +55,11 @@ function processor.func(key_event, env)
   end
   local incoming = utf8.char(key_event.keycode)
   local input = snow.current(context) or ""
+  -- 21×26 显式长词续写优先于略码，与飞码开关和当前短词首选无关。
+  if env.long_word_initials and env.long_word_pattern and incoming:match("^[A-Z]$")
+      and env.long_word_initials:find(incoming:lower(), 1, true) and input:match(env.long_word_pattern) then
+    return snow.kNoop
+  end
   -- 弹出模式下，四码后的大写字母继续参与编码；短码仍使用略码功能。
   if context:get_option("popping") and input:match("^[a-z][a-z][a-z][a-z]+$") then
     return snow.kNoop
@@ -59,7 +78,7 @@ function processor.func(key_event, env)
     if length == 1 then
       replacement = text .. "个"
     else
-      replacement = snow.sub(text, 1, 1) .. "个" .. snow.sub(text, 2)
+      replacement = snow.sub(text, 1, 1) .. "个" .. snow.sub(text, 2, -1)
     end
     context:clear()
     snow.commit_text(env.engine, replacement)

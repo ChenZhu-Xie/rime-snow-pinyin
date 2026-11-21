@@ -66,16 +66,31 @@ deploy:
       # 不足四主码时沿用原有书名号行为。
       - send: "d{less}"
         assert: commit == "都《"
+      # gi 是空桶；i 是三主码后的调辅，不能把物理四键当四主码。
+      - send: ysgi
+        assert: has("新中国") and commit == nil
+      - send: "ysgi{less}"
+        assert: commit ~= nil and commit:sub(-3) == "《"
+      - send: "ysgi{greater}"
+        assert: commit ~= nil and commit:sub(-3) == "》"
   long_words:
     tests:
       - send: kyfs
-        assert: has("科学发展观") and commit == nil
+        assert: has("科学发展") and has("科学发展观") and commit == nil
       - send: kyfsG
         assert: cand[1].text == "科学发展观" and commit == nil
       - send: shrmGHG
         assert: cand[1].text == "中华人民共和国" and commit == nil
       - send: "kyfsG "
         assert: commit == "科学发展观"
+      - send: kyfsGd
+        assert: commit == "科学发展观" and preedit == "d"
+  long_words_sentence:
+    patch:
+      'switches/@4/reset': 0
+    tests:
+      - send: kyfsG
+        assert: cand[1].text == "科学发展观" and commit == nil
   entry_contract:
     tests:
       # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。

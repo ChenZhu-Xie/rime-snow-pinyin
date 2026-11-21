@@ -276,6 +276,7 @@ speller:
     __include: /shenyun_algebra
     __append:
       - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/$1/
+      - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/\U$1/
 
 shenyun:
   prism: snow_zhudao

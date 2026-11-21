@@ -52,7 +52,7 @@ local function query(input, rows)
   translator.func(input, { start = 2, _end = 2 + #input }, env)
 end
 
-query("bpmf", { bpmf = {
+query("bpmf", { BPMF = {
   { "科学发展" }, { "科学发展观", "completion" },
   { "中华人民共和国", "completion" }, { "临时生成的句子", "sentence" },
 } })
@@ -61,14 +61,14 @@ assert(emitted[1].text == "科学发展" and emitted[2].text == "科学发展观
 assert(emitted[1].preedit == "b p m f" and emitted[2].preedit == "b p m f")
 assert(emitted[2]._start == 2 and emitted[2]._end == 6)
 
-query("bpmfD", { bpmfd = {
+query("bpmfD", { BPMFD = {
   { "科学发展观" }, { "中华人民共和国", "completion" }, { "前缀", "phrase", 4 },
 } })
 assert(#emitted == 2 and emitted[1].text == "科学发展观", "uppercase fifth initial must continue a long word")
 assert(emitted[1].preedit == "b p m f d" and emitted[1]._end == 7)
-assert(#queries == 1 and queries[1] == "bpmfd", "native query must match real input length without filler spaces")
+assert(#queries == 1 and queries[1] == "BPMFD", "native query must use equal-length uppercase initials without competing full-syllable edges")
 
-query("bpmfDTN", { bpmfdtn = {
+query("bpmfDTN", { BPMFDTN = {
   { "中华人民共和国" }, { "中华人民共和国万岁", "completion" },
 } })
 assert(#emitted == 2 and emitted[1].preedit == "b p m f d t n", "seven-character continuation must not inherit the six-key auxiliary ceiling")
@@ -81,7 +81,7 @@ end
 query("bpmf", { ["bp mf"] = { { "科学发展观", "completion" } } })
 assert(#emitted == 0, "two-syllable routes must not turn predictive long words into full two-character matches")
 
-query("bpmfa", { bpmf = { { "科学发展观", "completion" } } })
+query("bpmfa", { BPMF = { { "科学发展观", "completion" } } })
 assert(#emitted == 0, "four-character auxiliaries must not be incorrectly applied to a five-character completion")
 
 vacant = true

@@ -2,18 +2,36 @@
 -- 四主码阶段按指定类别选择最终候选；保留原生学习、缓冲与上屏统计。
 
 local snow = require "snow.snow"
+local vacancy = require "snow.vacancy"
 
 ---@class SelectWordLengthEnv: Env
 ---@field layout string|nil
 ---@field initial_keys string
 ---@field auxiliary_keys string
+---@field vacancy_translator Translator|nil
+---@field vacancy_memory Memory|nil
+---@field vacancy_projection Projection|nil
+---@field vacancy_cache table<string, boolean>
 
 local processor = {}
 
+---@type table<string, boolean>
+local word_types = {
+  phrase = true,
+  user_phrase = true,
+  completion = true,
+  table = true,
+  user_table = true,
+  fixed = true,
+  initial_pair = true,
+  sanpin_partial = true,
+}
+
 ---@param input string
+---@param segment Segment
 ---@param env SelectWordLengthEnv
 ---@return boolean
-local function four_main_codes(input, env)
+local function four_main_codes(input, segment, env)
   if env.layout == "21x26" then
     if input:len() < 4 or not env.initial_keys:find(input:sub(1, 1), 1, true)
         or not input:sub(2, 2):match("^[a-z]$")
@@ -24,7 +42,16 @@ local function four_main_codes(input, env)
     for index = 5, input:len() do
       if not env.auxiliary_keys:find(input:sub(index, index), 1, true) then return false end
     end
-    return true
+    local second_initial = env.initial_keys:find(input:sub(2, 2), 1, true) ~= nil
+    if second_initial and env.initial_keys:find(input:sub(4, 4), 1, true) then return true end
+    local translator, memory, projection = env.vacancy_translator, env.vacancy_memory, env.vacancy_projection
+    if not translator or not memory or not projection then return false end
+    -- 与 shenyun 共用系统词典占桶口径；AAA+B 的第四键仍然是三主码的辅码。
+    if vacancy.is_empty(input:sub(3, 4), segment, translator, memory, projection, env.vacancy_cache) then
+      return false
+    end
+    return second_initial
+        or not vacancy.is_empty(input:sub(1, 2), segment, translator, memory, projection, env.vacancy_cache)
   elseif env.layout ~= "21x21" then
     return false
   end
@@ -61,7 +88,7 @@ local function candidate_index(menu, segment, four, env)
   while menu:prepare(index + 1) > index do
     local candidate = menu:get_candidate_at(index)
     if candidate and candidate._start == segment.start and candidate._end == segment._end
-        and candidate.type ~= "sentence" and candidate:get_genuine().type ~= "sentence" then
+        and candidate.type ~= "sentence" and word_types[candidate:get_genuine().type] then
       local length = utf8.len(candidate.text)
       if four then
         if length == 4 then return index end
@@ -85,6 +112,12 @@ function processor.init(env)
   env.layout = config:get_string("word_length/layout")
   env.initial_keys = config:get_string("speller/initials") or ""
   env.auxiliary_keys = env.layout == "21x26" and "aeuio" or "avuio"
+  env.vacancy_cache = {}
+  if env.layout == "21x26" then
+    env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
+    env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
+    env.vacancy_projection = Projection(config:get_list("vacancy/canonical_format") or {})
+  end
 end
 
 ---@param key_event KeyEvent
@@ -109,7 +142,7 @@ function processor.func(key_event, env)
     return snow.kNoop
   end
   local input = snow.current(context)
-  if not input or not four_main_codes(input, env) then return snow.kNoop end
+  if not input or not four_main_codes(input, segment, env) then return snow.kNoop end
 
   local menu = segment.menu
   local index = menu and candidate_index(menu, segment, four, env) or nil
@@ -123,6 +156,14 @@ function processor.func(key_event, env)
   end
   -- 在有效四主码范围内没有目标词长时，保留输入而不是误选或打出书名号。
   return snow.kAccepted
+end
+
+---@param env SelectWordLengthEnv
+function processor.fini(env)
+  env.vacancy_translator = nil
+  env.vacancy_memory = nil
+  env.vacancy_projection = nil
+  collectgarbage()
 end
 
 return processor

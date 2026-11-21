@@ -208,17 +208,23 @@ speller:
     - match: "^[bpmfdtnlgkhjqwvxrzcsy]{4}[BPMFDTNLGKHJQWVXRZCSY]*$"
       accept: "[BPMFDTNLGKHJQWVXRZCSY]"
       strategy: append_raw
+    # 显式长词结束后，小写字母开始下一个词；不能混入大写续写段。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy]{4}[BPMFDTNLGKHJQWVXRZCSY]+$"
+      accept: "[a-z]"
+      strategy: pop
     # 其余字母先尝试追加；不能形成候选时顶出完整码首选，再重放该键。
     - match: "^[a-z]+$"
       accept: "[a-z]"
       strategy: conditional
     # 标点先顶出候选，再由 punctuator 输出；逗号和句号不参与编码。
-    - match: ".*[a-z0-9]"
+    - match: ".*[a-zA-Z0-9]"
       accept: "[^a-z0-9 ]"
   algebra:
     __include: /shenyun_algebra
     __append:
       - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/$1/
+      # 四声母／长词代理专用等长入口，不与小写 AU 完整音节竞争。
+      - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/\U$1/
 
 lookup_shenyun:
   tags: [pinyin]

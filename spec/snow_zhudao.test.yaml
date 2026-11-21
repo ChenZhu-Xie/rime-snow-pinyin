@@ -37,6 +37,14 @@ deploy:
         assert: cand[1].text == "中华人民共和国" and commit == nil
       - send: "kyfxG "
         assert: commit == "科学发展观"
+      - send: kyfxGd
+        assert: commit == "科学发展观" and preedit == "d"
+  long_words_sentence:
+    patch:
+      'switches/@4/reset': 0
+    tests:
+      - send: kyfxG
+        assert: cand[1].text == "科学发展观" and commit == nil
   entry_contract:
     tests:
       # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。

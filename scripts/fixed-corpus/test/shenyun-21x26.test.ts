@@ -650,12 +650,17 @@ test("A、U、B 键类独立，逗号句号只由标点处理", () => {
 		strategy: "append_raw",
 	});
 	assert.deepEqual(common.speller.popping[9], {
+		match: "^[bpmfdtnlgkhjqwvxrzcsy]{4}[BPMFDTNLGKHJQWVXRZCSY]+$",
+		accept: "[a-z]",
+		strategy: "pop",
+	});
+	assert.deepEqual(common.speller.popping[10], {
 		match: "^[a-z]+$",
 		accept: "[a-z]",
 		strategy: "conditional",
 	});
-	assert.deepEqual(common.speller.popping[10], {
-		match: ".*[a-z0-9]",
+	assert.deepEqual(common.speller.popping[11], {
+		match: ".*[a-zA-Z0-9]",
 		accept: "[^a-z0-9 ]",
 	});
 });
@@ -679,7 +684,37 @@ test("21×26 长词显式续写与词补全不放宽原有音节补全", () => {
 	assert.equal(strategy("bpmfD", "T"), "append_raw");
 	assert.equal(strategy("bpmf", "d"), "conditional");
 	assert.equal(strategy("bpmf", "a"), "append");
-	assert.equal(strategy("bpmfDTN", "t"), undefined);
+	assert.equal(strategy("bpmfDTN", "t"), "pop");
+});
+
+test("21×26 显式长词后的小写新词和标点正常顶屏", () => {
+	const common = load(commonSource) as {
+		speller: {
+			popping: Array<{ match: string; accept: string; strategy?: string }>;
+		};
+	};
+	for (const incoming of ["d", ",", "<", ">", "!"]) {
+		const rule = common.speller.popping.find(
+			(rule) =>
+				new RegExp(`^(?:${rule.match})$`).test("kyfsG") &&
+				new RegExp(`^(?:${rule.accept})$`).test(incoming),
+		);
+		assert.ok(rule, `显式长词后必须处理 ${incoming}`);
+		assert.ok(rule.strategy === undefined || rule.strategy === "pop");
+	}
+	for (const schema of [
+		"snow_shenyun_common.yaml",
+		"snow_zhudao.schema.yaml",
+	]) {
+		const document = load(read(schema)) as {
+			speller: { algebra: { __append: string[] } };
+		};
+		assert.ok(
+			document.speller.algebra.__append.includes(
+				"abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/\\U$1/",
+			),
+		);
+	}
 });
 
 test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
