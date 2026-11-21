@@ -25,6 +25,7 @@ local snow = require "snow.snow"
 ---@field tag string
 ---@field selected_schema_id string|nil
 ---@field available_schemas table<string, boolean>
+---@field enabled_schemas table<string, boolean>
 ---@field prepare_connection Connection
 ---@field select_connection Connection
 
@@ -158,6 +159,31 @@ local function is_active(input, prefix)
   return input:sub(1, #prefix) == prefix
 end
 
+---@return table<string, boolean>
+local function enabled_schemas()
+  -- 和原生选单读取同一份已编译 default，不能把旧 build 产物当作当前启用列表。
+  local config = Schema(".default").config
+  ---@type table<string, boolean>
+  local enabled = {}
+  for index = 0, config:get_list_size("schema_list") - 1 do
+    local path = "schema_list/@" .. index
+    local schema_id = config:get_string(path .. "/schema")
+    local conditions = config:get_list(path .. "/case")
+    local active = true
+    if conditions then
+      for condition_index = 0, conditions.size - 1 do
+        local condition = conditions:get_value_at(condition_index)
+        if condition and condition.value and config:get_bool(condition.value) ~= true then
+          active = false
+          break
+        end
+      end
+    end
+    if schema_id and active then enabled[schema_id] = true end
+  end
+  return enabled
+end
+
 ---@param env SchemaMenuProcessorEnv
 function processor.init(env)
   local config = env.engine.schema.config
@@ -226,11 +252,13 @@ function translator.init(env)
   env.tag = config:get_string("schema_menu/tag") or "schema_menu"
   env.selected_schema_id = nil
   env.available_schemas = {}
+  env.enabled_schemas = enabled_schemas()
   for _, entry in ipairs(menu.entries) do
-    -- Schema 读取已编译配置；源文件存在不代表已被 schema_list 纳入部署。
-    local schema = Schema(entry.schema_id)
-    env.available_schemas[entry.schema_id] =
-        schema.config:get_string("schema/schema_id") == entry.schema_id
+    if env.enabled_schemas[entry.schema_id] then
+      local schema = Schema(entry.schema_id)
+      env.available_schemas[entry.schema_id] =
+          schema.config:get_string("schema/schema_id") == entry.schema_id
+    end
   end
   local context = env.engine.context
   env.prepare_connection = context.select_notifier:connect(function(ctx)
@@ -249,7 +277,8 @@ function translator.init(env)
     ctx:clear()
     if not env.available_schemas[schema_id] then return end
     if schema_id ~= env.engine.schema.schema_id then
-      -- 部署产物可能在菜单打开后变化，切换前再核对实际配置。
+      -- 列表或部署产物可能在菜单打开后变化，切换前再次核对。
+      if not enabled_schemas()[schema_id] then return end
       local schema = Schema(schema_id)
       if schema.config:get_string("schema/schema_id") == schema_id then
         env.engine:apply_schema(schema)
@@ -267,8 +296,14 @@ function translator.func(input, segment, env)
   if is_active(query, env.prefix) then query = query:sub(#env.prefix + 1) end
   if query:sub(1, #env.sentinel) == env.sentinel then query = query:sub(#env.sentinel + 1) end
   for _, entry in ipairs(menu.filter_entries(query)) do
-    local comment = env.available_schemas[entry.schema_id] and entry.comment
-        or "未部署：请加入方案列表后重新部署"
+    local comment
+    if not env.enabled_schemas[entry.schema_id] then
+      comment = "未启用：请加入方案列表后重新部署"
+    elseif not env.available_schemas[entry.schema_id] then
+      comment = "未部署：请加入方案列表后重新部署"
+    else
+      comment = entry.comment
+    end
     local candidate = Candidate(env.tag, segment.start, segment._end, entry.name, comment)
     candidate.preedit = query
     yield(candidate)

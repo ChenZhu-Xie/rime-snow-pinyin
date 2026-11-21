@@ -124,7 +124,13 @@ function processor.init(env)
   env.available = exists(env.helper_path) and exists(env.image_path)
   snow.keymap_keys[env.engine.schema.schema_id] = env.available and env.keycode or nil
   if env.available then
-    write_command(env, "follow")
+    local context = env.engine.context
+    -- 新窗口会创建新会话，并从 schema_list 选择初始方案。它还没有请求键位图，
+    -- 不能用初始方案覆盖其他会话刚打开的图片；同一会话切换方案则继续跟随。
+    if context:get_property("snow_keymap_session") ~= "" then
+      write_command(env, "follow")
+    end
+    context:set_property("snow_keymap_session", env.engine.schema.schema_id)
   end
 end
 

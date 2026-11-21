@@ -18,7 +18,30 @@ function KeyEvent(repr)
 end
 
 local unavailable_schemas = {}
+local schema_list = {}
+local modes = {}
+local default_config = {
+  get_list_size = function(_, path)
+    assert(path == "schema_list")
+    return #schema_list
+  end,
+  get_string = function(_, path)
+    local index = tonumber(path:match("^schema_list/@(%d+)/schema$"))
+    return index and schema_list[index + 1].schema or nil
+  end,
+  get_list = function(_, path)
+    local index = tonumber(path:match("^schema_list/@(%d+)/case$"))
+    local conditions = index and schema_list[index + 1].case
+    if not conditions then return nil end
+    return {
+      size = #conditions,
+      get_value_at = function(_, item) return { value = conditions[item + 1] } end,
+    }
+  end,
+  get_bool = function(_, path) return modes[path] end,
+}
 function Schema(schema_id)
+  if schema_id == ".default" then return { config = default_config } end
   return {
     schema_id = schema_id,
     config = { get_string = function(_, path)
@@ -46,6 +69,9 @@ function yield(candidate)
 end
 
 local menu = require "snow.schema_menu"
+for _, entry in ipairs(menu.entries) do
+  table.insert(schema_list, { schema = entry.schema_id })
+end
 
 local function names(entries)
   local result = {}
@@ -111,7 +137,11 @@ local function notifier()
     callbacks = callbacks,
     connect = function(_, callback)
       table.insert(callbacks, callback)
-      return { disconnect = function() end }
+      return { disconnect = function()
+        for index, connected in ipairs(callbacks) do
+          if connected == callback then table.remove(callbacks, index) break end
+        end
+      end }
     end,
   }
 end
@@ -242,5 +272,58 @@ context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == nil and context.input == "", "切换前必须再次检查已编译方案")
 menu.translator.fini(stale_env)
+
+-- 用户只启用四拼：其他方案即使有历史编译产物，也必须禁用。
+unavailable_schemas.snow_zhudao = nil
+schema_list = { { schema = "snow_sipin" } }
+local single_env = { engine = engine }
+menu.translator.init(single_env)
+yielded = {}
+menu.translator.func("dthd", segment, single_env)
+assert(#yielded == 1 and yielded[1].comment == "未启用：请加入方案列表后重新部署")
+selected_schema = nil
+selected_candidate = yielded[1]
+context.input = "~~'dthd"
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(selected_schema == nil and context.input == "", "旧编译产物不得绕过当前方案列表")
+yielded = {}
+menu.translator.func("dyjcw", segment, single_env)
+assert(#yielded == 1 and yielded[1].text == "冰雪四拼" and yielded[1].comment == expected[7][3])
+selected_candidate = yielded[1]
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(selected_schema == "snow_sipin", "当前启用的四拼仍可正常选择")
+menu.translator.fini(single_env)
+
+-- 菜单打开后移出列表，必须在确认时再次拦截。
+schema_list = { { schema = "snow_zhudao" } }
+local removed_env = { engine = engine }
+menu.translator.init(removed_env)
+schema_list = { { schema = "snow_sipin" } }
+selected_schema = nil
+selected_candidate = Candidate("schema_menu", 0, 3, "冰雪鹮道", "")
+context.input = "~~'dthd"
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(selected_schema == nil and context.input == "", "确认时不得选择已移出列表的方案")
+menu.translator.fini(removed_env)
+
+-- 和原生 switcher 一样尊重 schema_list 的 case 条件。
+schema_list = { { schema = "snow_zhudao", case = { "mode/experimental" } } }
+local conditional_env = { engine = engine }
+menu.translator.init(conditional_env)
+assert(not conditional_env.available_schemas.snow_zhudao, "未满足 case 条件的方案不能启用")
+menu.translator.fini(conditional_env)
+modes["mode/experimental"] = true
+menu.translator.init(conditional_env)
+assert(conditional_env.available_schemas.snow_zhudao, "满足 case 条件的方案必须可选")
+menu.translator.fini(conditional_env)
+
+schema_list = {}
+local empty_env = { engine = engine }
+menu.translator.init(empty_env)
+assert(next(empty_env.available_schemas) == nil, "空列表不能回退到全部旧编译方案")
+menu.translator.fini(empty_env)
 
 print("schema_menu.test.lua: ok")
