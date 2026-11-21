@@ -67,6 +67,7 @@ end
 
 ---@param env KeymapEnv
 local function launch(env)
+  ---@type string
   local command
   if env.platform == "windows" then
     command = table.concat({

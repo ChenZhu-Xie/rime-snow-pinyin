@@ -296,6 +296,7 @@ function translator.func(input, segment, env)
   if is_active(query, env.prefix) then query = query:sub(#env.prefix + 1) end
   if query:sub(1, #env.sentinel) == env.sentinel then query = query:sub(#env.sentinel + 1) end
   for _, entry in ipairs(menu.filter_entries(query)) do
+    ---@type string
     local comment
     if not env.enabled_schemas[entry.schema_id] then
       comment = "未启用：请加入方案列表后重新部署"
