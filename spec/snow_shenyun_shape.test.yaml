@@ -42,6 +42,18 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  word_length_selection:
+    tests:
+      - send: "rgsn{less}"
+        assert: commit == "人工智能"
+      - send: "jqji{greater}"
+        assert: commit == "计算机"
+      # zr 是空桶，不存在 AAAU 三字路由，必须兜底原生长词补全。
+      - send: "wyzr{greater}"
+        assert: commit == "有限责任公司"
+      # 不足四主码时沿用原有书名号行为。
+      - send: "d{less}"
+        assert: commit == "都《"
   long_words:
     tests:
       # 四声母保留原生长词补全；大写第五声母明确继续长词，不得先顶屏。
@@ -51,6 +63,8 @@ deploy:
         assert: cand[1].text == "科学发展观" and commit == nil
       - send: shrmGHG
         assert: cand[1].text == "中华人民共和国" and commit == nil
+      - send: "kyfsG{less}"
+        assert: commit == "科学发展观《"
       - send: "kyfsG "
         assert: commit == "科学发展观"
   entry_contract:

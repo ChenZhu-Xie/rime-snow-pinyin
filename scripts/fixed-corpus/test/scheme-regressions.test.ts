@@ -11,6 +11,53 @@ import { SYLLABLE_PATTERNS } from "../../lib/pinyin-validation";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 
+test("八套双拼方案在顶功前接入四主码词长直选，其他方案保持原有标点", () => {
+	for (const [file, layout] of [
+		["snow_jiandao.schema.yaml", "21x21"],
+		["snow_sanpin.schema.yaml", "21x21"],
+		["snow_jiandao_classic.schema.yaml", "21x21"],
+		["snow_sanpin_classic.schema.yaml", "21x21"],
+		["snow_shenyun_common.yaml", "21x26"],
+	]) {
+		const schema = load(read(file)) as {
+			engine: { processors: string[] };
+			word_length?: { layout: string };
+		};
+		const processors = schema.engine.processors;
+		const selection = processors.indexOf(
+			"lua_processor@*snow.select_word_length",
+		);
+		assert.ok(
+			selection >= 0 &&
+				selection < processors.indexOf("lua_processor@*snow.popping"),
+			file,
+		);
+		assert.ok(selection > processors.indexOf("ascii_composer"), file);
+		assert.equal(schema.word_length?.layout, layout, file);
+	}
+	for (const file of [
+		"snow_sipin.schema.yaml",
+		"snow_yipin.schema.yaml",
+		"snow_qingyun.schema.yaml",
+		"snow_yingpin.schema.yaml",
+		"snow_pinyin.schema.yaml",
+	])
+		assert.doesNotMatch(read(file), /snow\.select_word_length/u, file);
+	assert.match(
+		read("snow_jiandao_toned.schema.yaml"),
+		/__include: snow_jiandao\.schema\.yaml:\//u,
+	);
+	for (const schema of [
+		"snow_shenyun_shape",
+		"snow_shenyun_tone",
+		"snow_zhudao",
+	])
+		assert.match(
+			read(`${schema}.schema.yaml`),
+			/__include: snow_shenyun_common\.yaml:\//u,
+		);
+});
+
 test("double-pinyin schemes isolate fixed-code databases while sharing snow_pinyin learning", () => {
 	const fixedDatabases = new Map([
 		["snow_jiandao.schema.yaml", "snow_jiandao_ued_3158ce08b5bc"],

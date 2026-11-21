@@ -447,3 +447,56 @@ LATENCY_CASES.snow_yipin.push({
 	commit: "充满希望的跋涉比到达目的地更能给人乐趣。",
 	source: "snow1/index.md",
 });
+
+// 四主码词长直选：在真实候选链上验证上屏，同时计入惰性菜单展开的耗时。
+for (const [schema, four, preferred, commit] of [
+	["snow_jiandao", "rgen", "pxfe", "科学发展观"],
+	["snow_sanpin", "rgen", "pxfe", "科学发展观"],
+	["snow_jiandao_classic", "rgfn", "kxfq", "科学发展观"],
+	["snow_sanpin_classic", "rgfn", "kxfq", "科学发展观"],
+	["snow_jiandao_toned", "rgen", "pxfe", "科学发展观"],
+	["snow_shenyun_shape", "rgsn", "jqji", "计算机"],
+	["snow_shenyun_tone", "rgsn", "jqji", "计算机"],
+	["snow_zhudao", "rgxn", "jsjz", "计算机"],
+]) {
+	LATENCY_CASES[schema].push(
+		{
+			id: "select-four",
+			keys: `${four}{less}`,
+			commit: "人工智能",
+			source: "docs/word-length-selection.md",
+		},
+		{
+			id: "select-preferred",
+			keys: `${preferred}{greater}`,
+			commit,
+			source: "docs/word-length-selection.md",
+		},
+	);
+}
+for (const [schema, prefix, continuation, fallback, commit] of [
+	["snow_shenyun_shape", "kyfs", "kyfsG", "wyzr", "有限责任公司"],
+	["snow_shenyun_tone", "kyfs", "kyfsG", "wyzr", "有限责任公司"],
+	["snow_zhudao", "kyfx", "kyfxG", "gfly", "股份有限公司"],
+]) {
+	LATENCY_CASES[schema].push(
+		{
+			id: "native-long-completion",
+			keys: prefix,
+			page: "科学发展",
+			source: "docs/word-length-selection.md",
+		},
+		{
+			id: "explicit-long",
+			keys: continuation,
+			page: "科学发展观",
+			source: "docs/word-length-selection.md",
+		},
+		{
+			id: "select-long-fallback",
+			keys: `${fallback}{greater}`,
+			commit,
+			source: "docs/word-length-selection.md",
+		},
+	);
+}

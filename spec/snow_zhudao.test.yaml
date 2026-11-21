@@ -15,6 +15,18 @@ script: |
     return true
   end
 deploy:
+  word_length_selection:
+    tests:
+      - send: "rgxn{less}"
+        assert: commit == "人工智能"
+      - send: "jsjz{greater}"
+        assert: commit == "计算机"
+      # ly 是空桶，四码时无三字路由，兜底五字及以上补全。
+      - send: "gfly{Shift+period}"
+        assert: commit == "股份有限公司"
+      # 不足四主码时沿用原有书名号行为。
+      - send: "d{less}"
+        assert: commit == "都《"
   long_words:
     tests:
       - send: kyfx

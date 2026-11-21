@@ -663,13 +663,16 @@ test("A、U、B 键类独立，逗号句号只由标点处理", () => {
 test("21×26 长词显式续写与词补全不放宽原有音节补全", () => {
 	const common = load(commonSource) as {
 		shenyun: { enable_completion: boolean; enable_word_completion: boolean };
-		speller: { popping: Array<{ match: string; accept: string; strategy?: string }> };
+		speller: {
+			popping: Array<{ match: string; accept: string; strategy?: string }>;
+		};
 	};
 	assert.equal(common.shenyun.enable_completion, false);
 	assert.equal(common.shenyun.enable_word_completion, true);
 	const strategy = (input: string, incoming: string) =>
 		common.speller.popping.find(
-			(rule) => new RegExp(`^(?:${rule.match})$`).test(input) &&
+			(rule) =>
+				new RegExp(`^(?:${rule.match})$`).test(input) &&
 				new RegExp(`^(?:${rule.accept})$`).test(incoming),
 		)?.strategy;
 	assert.equal(strategy("bpmf", "D"), "append_raw");

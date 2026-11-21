@@ -9,6 +9,7 @@ engine:
     - ascii_composer
     - lua_processor@*snow.abbreviation
     - lua_processor@*snow.select_character
+    - lua_processor@*snow.select_word_length
     - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.schema_menu*processor
@@ -56,6 +57,9 @@ engine:
     - simplifier
     - uniquifier
     - lua_filter@*snow.shenyun_hint
+
+word_length:
+  layout: 21x26
 
 shenyun_algebra:
   # RC26-39a5bfdc045342cd；由 scripts/generate-layout-algebra.ts 生成。

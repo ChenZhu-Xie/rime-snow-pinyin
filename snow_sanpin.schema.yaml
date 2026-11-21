@@ -29,6 +29,7 @@ engine:
     - ascii_composer
     - lua_processor@*snow.shape_processor
     - lua_processor@*snow.select_character
+    - lua_processor@*snow.select_word_length
     - lua_processor@*snow.popping
     - recognizer
     - lua_processor@*snow.schema_menu*processor
@@ -179,6 +180,9 @@ vacancy:
   enable_sentence: false
   enable_completion: false
   enable_user_dict: false
+
+word_length:
+  layout: 21x21
 
 speller:
   alphabet: bpmfdtnlgkhjqxzcsrwyeBPMFDTNLGKHJQXZCSRWYEivuao

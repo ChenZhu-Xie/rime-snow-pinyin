@@ -1,6 +1,6 @@
 # 四主码词长直选实施计划
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** 先修复三套 21×26 的大写续写与原生长词补全，再为八套双拼方案实现四主码词长直选。
 
@@ -34,10 +34,10 @@
 
 **Interfaces:** 保持 translator 的 `init/func/fini`；新增显式长词路由，四声母只在该路由保留长补全，普通一至三字路由继续精确过滤。
 
-- [ ] 写真实翻译器测试：四码长补全、五／七声母续写、短片段拒绝、其他路由隔离、普通四字控制。
-- [ ] 运行 Lua 5.4，确认当前实现因上述行为缺失失败。
-- [ ] 查询四声母和长词时使用不带空格的代理码，开启独立 `enable_word_completion`，加入保留大写续写的拼写与顶功规则。
-- [ ] 运行新旧路由纯 Lua 回归和相关静态测试，添加各活动布局的真实候选用例，提交本任务。
+- [x] 写真实翻译器测试：四码长补全、五／七声母续写、短片段拒绝、其他路由隔离、普通四字控制。
+- [x] 运行 Lua 5.4，确认当前实现因上述行为缺失失败。
+- [x] 查询四声母和长词时使用不带空格的代理码，开启独立 `enable_word_completion`，加入保留大写续写的拼写与顶功规则。
+- [x] 运行新旧路由纯 Lua 回归和相关静态测试，添加各活动布局的真实候选用例，提交本任务。
 
 ### Task 2: 四主码词长直选处理器
 
@@ -45,19 +45,19 @@
 
 **Interfaces:** `processor.init(env)` 从 `word_length/layout` 读取 `21x21|21x26`，`processor.func(key_event, env)` 返回标准处理状态；不要求 translator 改候选类型。
 
-- [ ] 写真实处理器测试：两套优先级、跨页、完整输入、补全、无候选、修饰键、缓冲、补韵、辅助码、五字续写及非 abc／英文／非段末退回。
-- [ ] 运行确认失败，再实现主码识别与正常候选选择／上屏。
-- [ ] 新测试与既有学习／后置测试全部通过后提交本任务。
+- [x] 写真实处理器测试：两套优先级、跨页、完整输入、补全、无候选、修饰键、缓冲、补韵、辅助码、五字续写及非 abc／英文／非段末退回。
+- [x] 运行确认失败，再实现主码识别与正常候选选择／上屏。
+- [x] 新测试与既有学习／后置测试全部通过后提交本任务。
 
 ### Task 3: 接入、文档与性能语料
 
-**Files:** 五个独立 21×21 schema（莲道继承兰道）、21×26 共用 schema、`scripts/fixed-corpus/test/scheme-regressions.test.ts`、八套 Mira spec、`scripts/data/latency-cases.ts`、README 与相关布局文档。
+**Files:** 四个独立 21×21 schema（莲道继承兰道，合计五套）、21×26 共用 schema、`scripts/fixed-corpus/test/scheme-regressions.test.ts`、八套 Mira spec、`scripts/data/latency-cases.ts`、README 与相关布局文档。
 
 **Interfaces:** 八套 schema 在 `popping` 前加载新处理器，配置布局类别；Mira 用例按当前布局推导，性能用例沿用统一预算。
 
-- [ ] 先补静态接入与触发边界测试并观察失败，再接入配置。
-- [ ] 补齐真实候选直选、标点退回、长词续写与补全用例；在性能语料增加对应代表场景。
-- [ ] 更新用户文档，运行格式、Lua 严格检查、拼音与生成／语料检查及相关回归，提交本任务。
+- [x] 先补静态接入与触发边界测试并观察失败，再接入配置。
+- [x] 补齐真实候选直选、标点退回、长词续写与补全用例；在性能语料增加对应代表场景。
+- [x] 更新用户文档，运行格式、Lua 严格检查、拼音与生成／语料检查及相关回归，提交本任务。
 
 ### Task 4: 审查、推送与 Actions
 

@@ -55,6 +55,17 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  word_length_selection:
+    tests:
+      - send: "rgsn{less}"
+        assert: commit == "人工智能"
+      - send: "jqji{greater}"
+        assert: commit == "计算机"
+      - send: "wyzr{greater}"
+        assert: commit == "有限责任公司"
+      # 不足四主码时沿用原有书名号行为。
+      - send: "d{less}"
+        assert: commit == "都《"
   long_words:
     tests:
       - send: kyfs

@@ -1,5 +1,7 @@
 # 冰雪兰道与冰雪兰拼的 UED 布局
 
+两套方案在四主码阶段支持 `<` 选择四字词首选、`>` 优先选五字及以上词并以二字词兜底；补韵大写不计主码，完整规则见[四主码词长直选](word-length-selection.md)。
+
 两个生产方案共用冻结的 `UED-3158ce08b5bc` 无调 21×21 声韵布局，替换原 `OC21-e1f155973380`。声母、韵母和辅序均来自用户指定的 `shuangpin-layout-benchmark/a7_CKT_R11.html` 内嵌 payload；不是只替换方案名称或键位图。
 
 来源分支为 `research/untoned-cr7e-v52-20261119`，提交为 `da1441ed4ae37d5c8e0e93d2df33e5514b7af38e`。页面的生产报告是 `research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json`，最终辅序审阅是 `research/notes/2026-11-21-u7e-pinky-aux-final-publication.json`。仓库保留 [421 音节原始码表与语义合同](shenyun-ued-source.json)、[生产配置](../config/shenyun-21x21-mapping.json)和[扩展映射](shenyun-ued-3158ce08b5bc-mapping.json)，后续生成与 CI 不依赖本机 HTML。
