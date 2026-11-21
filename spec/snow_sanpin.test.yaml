@@ -498,22 +498,28 @@ deploy:
   layout_probe:
     tests:
       - send: dmi
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: dmiu
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: dm
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: dmou
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: llo
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: lloi
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: lloiu
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: mra
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: mrav
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
       - send: mrv
-        assert: print(pair_probe()) == nil
+        assert: error(pair_probe())
+      - send: bgcfia
+        assert: error(pair_probe())
+      - send: "bgcfia b{Escape}bgcf"
+        assert: error(pair_probe())
+      - send: "o bgcfia   bgcf"
+        assert: error(pair_probe())
