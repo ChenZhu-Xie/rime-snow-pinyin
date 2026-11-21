@@ -12,9 +12,9 @@
 
 ## 安装
 
-桌面用户原则上不需要单独安装 helper。由当前发布工作流生成的 `snow-pinyin.zip` 会把 Windows x64、macOS x64 和 Linux x64 三个便携构建产物放在压缩包根目录下的 `lua/snow/bin/`；把压缩包内容合并覆盖到现有 Rime 用户目录后重新部署即可，不要额外套一层 `rime-snow-pinyin/` 目录，也不要删除整个用户目录，以免丢失私有配置和用户词典。Lua 读取 `rime_api.get_user_data_dir()` 后拼出 `<Rime 用户目录>/lua/snow/bin/snow-keymap-平台文件名` 的绝对路径，再按当前前端选择并启动对应文件；用户不需要安装 Rust 或配置 `PATH`。
+桌面用户原则上不需要单独安装 helper。由当前发布工作流生成的 `snow-pinyin.zip` 会把 Windows x64、macOS x64 和 Linux x64 三个便携构建产物以及 Windows 启动 DLL 放在压缩包根目录下的 `lua/snow/bin/`；把压缩包内容合并覆盖到现有 Rime 用户目录后重新部署即可，不要额外套一层 `rime-snow-pinyin/` 目录，也不要删除整个用户目录，以免丢失私有配置和用户词典。Lua 读取 `rime_api.get_user_data_dir()` 后拼出 `<Rime 用户目录>/lua/snow/bin/snow-keymap-平台文件名` 的绝对路径，再按当前前端选择并启动对应文件；用户不需要安装 Rust 或配置 `PATH`。
 
-Windows 更新已有安装时，先在任务管理器结束 `snow-keymap-windows.exe`，再合并覆盖新版压缩包并重新部署。键位图隐藏后 helper 仍会常驻，重新部署只重载 Rime 方案与 Lua，不会替换或重启正在运行的 EXE；若跳过停进程这一步，Windows 可能保留旧 helper，表现为新版交互没有生效。覆盖完成后首次打开键位图会自动启动新版 helper。
+Windows 更新已有安装时，先在任务管理器结束 `snow-keymap-windows.exe`，再合并覆盖新版压缩包并重新部署。键位图隐藏后 helper 仍会常驻，重新部署只重载 Rime 方案与 Lua，不会替换或重启正在运行的 EXE；若跳过停进程这一步，Windows 可能保留旧 helper，表现为新版交互没有生效。覆盖时同时更新 `lua/snow/bin/snow_keymap_launcher.dll`；若 DLL 正被旧 Lua 状态占用，退出小狼毫后再覆盖并启动。覆盖完成后首次打开键位图会自动启动新版 helper。
 
 截至 `v0.3.13`，已经公开的 `snow-pinyin.zip` 仍早于 helper 注入流程，尚不含 `lua/snow/bin/`；上述免安装方式从按当前工作流重新构建或替换该附件后才成立。GitHub 的“Code → Download ZIP”源码包与普通 Git 克隆同样不含发布时注入的二进制文件，开发者使用源码时需要自行构建。
 
@@ -24,7 +24,7 @@ Windows 更新已有安装时，先在任务管理器结束 `snow-keymap-windows
 
 Rime 的候选接口只有文本与注释，没有跨前端的图片接口，因此 Lua 只判断触发条件并发送命令，显示工作由平台层完成。
 
-桌面端的 `tools/keymap-helper/` 是无控制台、单实例、常驻的 Rust GUI 程序。它轮询用户临时目录中的命令文件，直接把 `lua/snow/keymaps/*.svg` 栅格化到无边框、置顶且不抢焦点的窗口，并通过同目录心跳文件让重新部署后的 Lua 复用现有进程；Windows 窗口同时声明 `WS_EX_TOOLWINDOW`，避免任务栏、窗口边框工具和普通应用窗口管理误收录。方案初始化和切换只写跟随命令，helper 未运行时也不会自动启动或预加载 SVG；只有用户实际按键打开键位图时才按需启动。窗口首次创建后持续复用，后续显隐与方案切换路径不启动 PowerShell、CMD 或新的 helper 进程。发布工作流分别生成 Windows x64、macOS x64 和 Linux x64 可执行文件，再放入安装包的 `lua/snow/bin/`。
+桌面端的 `tools/keymap-helper/` 是无控制台、单实例、常驻的 Rust GUI 程序。它轮询用户临时目录中的命令文件，直接把 `lua/snow/keymaps/*.svg` 栅格化到无边框、置顶且不抢焦点的窗口，并通过同目录心跳文件让重新部署后的 Lua 复用现有进程；Windows 窗口同时声明 `WS_EX_TOOLWINDOW`，避免任务栏、窗口边框工具和普通应用窗口管理误收录。方案初始化和切换只写跟随命令，helper 未运行时也不会自动启动或预加载 SVG；只有用户实际按键打开键位图时才按需启动。Windows 通过同包的 `snow_keymap_launcher.dll` 直接调用 `CreateProcessW`，不创建 CMD 控制台或同步等待 helper 初始化；DLL 导出不访问 Lua C API，因此不依赖前端的 Lua 版本。启动前保存接收快捷键的前台窗口句柄，helper 在首次显示前完成居中，避免启动过程中的焦点变化影响定位。窗口首次创建后持续复用，后续显隐与方案切换路径不启动 PowerShell、CMD 或新的 helper 进程。发布工作流分别生成 Windows x64、macOS x64 和 Linux x64 可执行文件，再将它们及 Windows 启动 DLL 放入安装包的 `lua/snow/bin/`。
 
 新输入会话首次初始化时不发送跟随命令，避免 helper 或其他应用新建会话时，用默认方案覆盖另一会话刚请求的键位图。同一会话的方案切换仍立即跟随；显隐命令始终使用接收触发键的会话方案。键位图模块不会调用方案切换接口。
 
@@ -60,8 +60,11 @@ bun test --cwd scripts fixed-corpus/test/keymap-link-colors.test.ts fixed-corpus
 cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
 New-Item -ItemType Directory -Path lua/snow/bin -Force | Out-Null
 Copy-Item tools/keymap-helper/target/release/snow-keymap.exe lua/snow/bin/snow-keymap-windows.exe
+Copy-Item tools/keymap-helper/target/release/snow_keymap_launcher.dll lua/snow/bin/
 ```
 
 若 `snow-keymap-windows.exe` 已在运行，先结束该进程再执行 `Copy-Item`。重新部署不会替开发者执行构建、复制或进程重启。
 
 macOS 和 Linux 构建产物分别命名为 `snow-keymap-macos` 与 `snow-keymap-linux`。修改 helper 后运行 `cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml`；修改皮肤入口或资源后运行 `bun test --cwd scripts fixed-corpus/test/keymaps.test.ts` 并实际生成两种皮肤。
+
+Windows 发布构建后运行 `./tools/keymap-helper/tests/windows-launch.ps1`，使用独立的中文及空格临时路径检查 DLL 直接启动、首帧绘制、首次居中及前台焦点不变；脚本只关闭自己启动的测试进程并清理本次临时目录，不访问真实输入法的命令文件。该检查同时接入 Windows Actions。

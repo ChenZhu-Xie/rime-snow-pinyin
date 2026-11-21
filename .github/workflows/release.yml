@@ -49,6 +49,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Path helper-dist | Out-Null
           Copy-Item tools/keymap-helper/target/release/snow-keymap.exe "helper-dist/${{ matrix.output }}"
+          Copy-Item tools/keymap-helper/target/release/snow_keymap_launcher.dll helper-dist/
       - name: 整理 Unix 产物
         if: runner.os != 'Windows'
         run: |

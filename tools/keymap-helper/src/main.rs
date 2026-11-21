@@ -335,6 +335,13 @@ struct WindowArea {
 
 #[cfg(target_os = "windows")]
 fn focused_window_area() -> Option<WindowArea> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::GetForegroundWindow;
+
+    window_area(unsafe { GetForegroundWindow() } as usize)
+}
+
+#[cfg(target_os = "windows")]
+fn window_area(handle: usize) -> Option<WindowArea> {
     use std::ffi::c_void;
 
     #[repr(C)]
@@ -347,15 +354,15 @@ fn focused_window_area() -> Option<WindowArea> {
 
     #[link(name = "user32")]
     unsafe extern "system" {
-        fn GetForegroundWindow() -> *mut c_void;
+        fn IsWindow(window: *mut c_void) -> i32;
         fn GetWindowRect(window: *mut c_void, rect: *mut Rect) -> i32;
         fn IsIconic(window: *mut c_void) -> i32;
     }
 
     // SAFETY: the handles and output rectangle are used only for these read-only Win32 calls.
     unsafe {
-        let window = GetForegroundWindow();
-        if window.is_null() || IsIconic(window) != 0 {
+        let window = handle as *mut c_void;
+        if window.is_null() || IsWindow(window) == 0 || IsIconic(window) != 0 {
             return None;
         }
         let mut rect = Rect {
@@ -381,6 +388,11 @@ fn focused_window_area() -> Option<WindowArea> {
 
 #[cfg(not(target_os = "windows"))]
 fn focused_window_area() -> Option<WindowArea> {
+    None
+}
+
+#[cfg(not(target_os = "windows"))]
+fn window_area(_handle: usize) -> Option<WindowArea> {
     None
 }
 
@@ -523,6 +535,7 @@ struct App {
     svg: Option<Arc<usvg::Tree>>,
     current_path: Option<PathBuf>,
     pending_command: Option<Command>,
+    initial_focused_area: Option<WindowArea>,
     visible: bool,
     zoom: f64,
     touches: HashMap<u64, PhysicalPosition<f64>>,
@@ -547,6 +560,7 @@ impl App {
             svg: None,
             current_path: None,
             pending_command: None,
+            initial_focused_area: None,
             visible: false,
             zoom: 1.0,
             touches: HashMap::new(),
@@ -693,6 +707,15 @@ impl App {
         }
 
         let first_show = !self.visible;
+        // The launcher remembers the window that received the triggering key. Capture
+        // any fallback before SVG loading, rather than after potentially slow rendering.
+        let focused_area = if first_show {
+            self.initial_focused_area
+                .take()
+                .or_else(focused_window_area)
+        } else {
+            None
+        };
         let path_changed = self.current_path.as_deref() != Some(command.image_path.as_path());
         if should_check_svg(
             path_changed,
@@ -717,7 +740,6 @@ impl App {
             return;
         }
 
-        let focused_area = first_show.then(focused_window_area).flatten();
         // A window manager may have resized the hidden window. A cached SVG/image does
         // not imply that the native window still has the matching dimensions.
         if let Some(image) = self.image.as_ref() {
@@ -730,12 +752,12 @@ impl App {
                 }
             }
         }
-        window.set_visible(true);
-        window.request_redraw();
-        self.visible = true;
         if first_show {
             self.place_centered(event_loop, focused_area);
         }
+        window.set_visible(true);
+        window.request_redraw();
+        self.visible = true;
         let _ = command.token;
     }
 
@@ -934,30 +956,51 @@ impl ApplicationHandler<UserEvent> for App {
     }
 }
 
-fn command_file_from_args() -> Result<PathBuf, String> {
-    let mut args = std::env::args_os().skip(1);
+struct Startup {
+    command_file: PathBuf,
+    focused_window: Option<usize>,
+}
+
+fn startup_from_args(
+    args: impl IntoIterator<Item = std::ffi::OsString>,
+) -> Result<Startup, String> {
+    let mut args = args.into_iter();
+    let mut command_file = None;
+    let mut focused_window = None;
     while let Some(argument) = args.next() {
         if argument == "--command-file" {
-            return args
-                .next()
-                .map(PathBuf::from)
-                .ok_or_else(|| "--command-file 缺少路径".to_owned());
+            command_file = Some(PathBuf::from(args.next().ok_or("--command-file 缺少路径")?));
+        } else if argument == "--focus-window" {
+            focused_window = Some(
+                args.next()
+                    .and_then(|value| value.to_str().and_then(|value| value.parse().ok()))
+                    .ok_or("--focus-window 缺少有效的窗口句柄")?,
+            );
+        } else {
+            return Err(format!("未知参数：{}", argument.to_string_lossy()));
         }
     }
-    Err("用法：snow-keymap --command-file <路径>".to_owned())
+    Ok(Startup {
+        command_file: command_file.ok_or("用法：snow-keymap --command-file <路径>")?,
+        focused_window,
+    })
 }
 
 fn run() -> Result<(), String> {
-    let command_file = command_file_from_args()?;
+    let startup = startup_from_args(std::env::args_os().skip(1))?;
+    let command_file = startup.command_file;
     let Some(_instance_lock) = InstanceLock::acquire(&command_file)? else {
         return Ok(());
     };
     let event_loop = EventLoop::<UserEvent>::with_user_event()
         .build()
         .map_err(|error| format!("无法创建窗口事件循环：{error}"))?;
+    let initial_focused_area = startup.focused_window.and_then(window_area);
     let _command_watcher = start_command_watcher(command_file, event_loop.create_proxy());
+    let mut app = App::new();
+    app.initial_focused_area = initial_focused_area;
     event_loop
-        .run_app(&mut App::new())
+        .run_app(&mut app)
         .map_err(|error| format!("键位图窗口异常退出：{error}"))
 }
 
@@ -970,6 +1013,38 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn startup_preserves_the_trigger_window_and_unicode_paths_in_either_order() {
+        for args in [
+            [
+                "--command-file",
+                "C:/输入法 数据/keymap.command",
+                "--focus-window",
+                "12345",
+            ],
+            [
+                "--focus-window",
+                "12345",
+                "--command-file",
+                "C:/输入法 数据/keymap.command",
+            ],
+        ] {
+            let startup = startup_from_args(args.map(std::ffi::OsString::from)).unwrap();
+            assert_eq!(
+                startup.command_file,
+                PathBuf::from("C:/输入法 数据/keymap.command")
+            );
+            assert_eq!(startup.focused_window, Some(12345));
+        }
+        for args in [
+            vec![],
+            vec!["--command-file"],
+            vec!["--focus-window", "invalid"],
+        ] {
+            assert!(startup_from_args(args.into_iter().map(std::ffi::OsString::from)).is_err());
+        }
+    }
 
     #[test]
     fn parses_command_with_spaces_in_path() {
@@ -1258,8 +1333,19 @@ mod tests {
             if !matches!(event, Event::AboutToWait) || checked {
                 return;
             }
+            let target = WindowArea {
+                position: PhysicalPosition::new(130, 170),
+                size: PhysicalSize::new(1600, 1000),
+            };
+            app.initial_focused_area = Some(target);
             app.show_command(active, command("open"));
             let expected = window.inner_size();
+            assert_eq!(
+                window.outer_position().unwrap(),
+                centered_position(target.position, target.size, expected),
+                "the first show must use the triggering window even if foreground focus changed",
+            );
+            assert!(app.initial_focused_area.is_none());
             app.hide();
             let cached_image = app.image.as_ref().unwrap().pixels.as_ptr();
             let _ = window.request_inner_size(PhysicalSize::new(1704, 52));

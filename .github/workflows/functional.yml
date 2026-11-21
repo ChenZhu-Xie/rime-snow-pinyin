@@ -121,6 +121,13 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
       - name: 检查桌面 helper
         run: cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml
+      - name: 检查 Windows 原生启动与首次定位
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./tools/keymap-helper/tests/windows-launch.ps1
 
   test:
     name: ${{ matrix.scheme.name }} / librime ${{ matrix.runtime.version }}

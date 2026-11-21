@@ -12,6 +12,7 @@ local snow = require "snow.snow"
 ---@field platform string
 ---@field available boolean
 ---@field serial integer
+---@field launch_helper (fun())|nil
 
 local processor = {}
 local HELPER_ALIVE_SECONDS = 15
@@ -24,12 +25,6 @@ local function exists(path)
   if not file then return false end
   file:close()
   return true
-end
-
----@param value string
----@return string
-local function command_quote(value)
-  return '"' .. value:gsub('"', '""') .. '"'
 end
 
 ---@param value string
@@ -67,20 +62,16 @@ end
 
 ---@param env KeymapEnv
 local function launch(env)
-  ---@type string
-  local command
   if env.platform == "windows" then
-    command = table.concat({
-      "start", '""', "/b", command_quote(env.helper_path),
-      "--command-file", command_quote(env.command_path),
-    }, " ")
+    if not env.launch_helper then return end
+    env.launch_helper()
   else
-    command = table.concat({
+    local command = table.concat({
       shell_quote(env.helper_path), "--command-file", shell_quote(env.command_path),
       ">/dev/null", "2>&1", "&",
     }, " ")
+    os.execute(command)
   end
-  os.execute(command)
   snow.keymap_helper_launch_time = os.time()
 end
 
@@ -109,6 +100,7 @@ function processor.init(env)
   env.command_path = ""
   env.alive_path = ""
   env.platform = ""
+  env.launch_helper = nil
   local user_dir = rime_api.get_user_data_dir()
   local helper_name
   env.platform, helper_name = desktop_helper(user_dir)
@@ -123,6 +115,13 @@ function processor.init(env)
   env.command_path = temporary .. "/snow-pinyin-keymap-v2" .. user_suffix .. ".command"
   env.alive_path = env.command_path .. ".alive"
   env.available = exists(env.helper_path) and exists(env.image_path)
+  if env.platform == "windows" and env.available then
+    -- DLL 导出不读写 Lua 状态，兼容前端所用的 Lua 版本；直接启动 GUI，避免创建 CMD 控制台。
+    local launcher, message = package.loadlib(user_dir .. "/lua/snow/bin/snow_keymap_launcher.dll", "snow_keymap_launch")
+    env.launch_helper = launcher
+    env.available = launcher ~= nil
+    if not launcher then log.warning("键位图启动 DLL 加载失败：" .. tostring(message)) end
+  end
   snow.keymap_keys[env.engine.schema.schema_id] = env.available and env.keycode or nil
   if env.available then
     local context = env.engine.context

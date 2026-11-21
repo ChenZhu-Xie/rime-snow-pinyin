@@ -922,6 +922,21 @@ test("the Windows desktop helper identifies itself as a tool window", () => {
 	assert.match(helper, /mark_as_tool_window\(&window\)/u);
 });
 
+test("Windows opens the keymap through the native launcher without a console shell", () => {
+	const processor = read("lua/snow/keymap.lua");
+	assert.match(processor, /package\.loadlib\([^\n]+snow_keymap_launcher\.dll/u);
+	assert.doesNotMatch(processor, /\bstart\b|command_quote/u);
+	const launcher = read("tools/keymap-helper/src/launcher.rs");
+	assert.match(launcher, /CreateProcessW/u);
+	assert.match(launcher, /CREATE_NO_WINDOW/u);
+	assert.match(launcher, /--focus-window/u);
+	assert.doesNotMatch(launcher, /WaitForSingleObject|cmd\.exe|powershell/iu);
+	assert.match(
+		read(".github/workflows/release.yml"),
+		/Copy-Item[^\n]+snow_keymap_launcher\.dll/u,
+	);
+});
+
 test("scheme initialization reuses the desktop helper without launching a process", () => {
 	const processor = read("lua/snow/keymap.lua");
 	const init = processor.slice(
