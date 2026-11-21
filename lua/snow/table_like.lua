@@ -230,6 +230,7 @@ function jianpin.func(input, segment, env)
   -- 冰雪兰拼采用 12/213/23，冰雪三拼采用 12/213/23；四字词止于两辅。
   local positions = sanpin_auxiliary_positions(initial_count)
   for tone_index, position in ipairs(positions) do
+    ---@type string
     local tone = tones:sub(tone_index, tone_index)
     if tone ~= "" and groups[position] then
       groups[position] = groups[position] .. "?" .. tone

@@ -87,7 +87,7 @@ deploy:
         assert: has("冰") and comment("冰"):find("〔调 i〕", 1, true)
       - send: krf
         assert: has("输入法") and comment("输入法"):find("〔调₂₁₃ ai〕", 1, true)
-      - send: jjjc
+      - send: jjjs
         assert: has("经济基础") and comment("经济基础"):find("〔调₂₃ ai〕", 1, true)
       # 单字 IR+B1+B2：冰首笔丶 → o；当首笔丨 → i。
       - send: bgio
@@ -125,7 +125,7 @@ deploy:
         assert: eq(preedit, "smw")
       - send: "smxw{Control+o}{Control+o}{BackSpace}"
         assert: eq(preedit, "m x w")
-      - send: jjjcai
+      - send: jjjsai
         assert: has("经济基础")
       # UED 四字词取第二、第三字声调；「天时地利」的一声／四声能区分第一、第三字。
       - send: tkdl
@@ -311,11 +311,11 @@ deploy:
   # 六码二字词选完首字后，第二字可由下一个词顶屏，并与首字一起完成造词。
   encoding_popping:
     tests:
-      - send: "bgcfia b{Escape}bgsf"
+      - send: "bgcfia b{Escape}bgcf"
         assert: cand[1].text == "冰四"
   encoding_buffered:
     tests:
-      - send: "o bgcfia   bgsf"
+      - send: "o bgcfia   bgcf"
         assert: cand[1].text == "冰四"
   # 上游 buffered：分片组词、字母候选与英数混输；本地选择 o 命令切换缓冲。
   buffered:
@@ -406,7 +406,7 @@ deploy:
         assert: page("芫")
       - send: rzvvv
         assert: not page("嶅")
-      - send: rzv1l
+      - send: rzv1k
         assert: page("嶅")
       - send: "xfry["
         assert: commit == "熙"
@@ -494,3 +494,26 @@ deploy:
         assert: (cand[1].text == "也需") or error(pair_probe())
       - send: "yxivua yxi"
         assert: (cand[1].text == "也需") or error(pair_probe())
+
+  layout_probe:
+    tests:
+      - send: dmi
+        assert: print(pair_probe()) == nil
+      - send: dmiu
+        assert: print(pair_probe()) == nil
+      - send: dm
+        assert: print(pair_probe()) == nil
+      - send: dmou
+        assert: print(pair_probe()) == nil
+      - send: llo
+        assert: print(pair_probe()) == nil
+      - send: lloi
+        assert: print(pair_probe()) == nil
+      - send: lloiu
+        assert: print(pair_probe()) == nil
+      - send: mra
+        assert: print(pair_probe()) == nil
+      - send: mrav
+        assert: print(pair_probe()) == nil
+      - send: mrv
+        assert: print(pair_probe()) == nil

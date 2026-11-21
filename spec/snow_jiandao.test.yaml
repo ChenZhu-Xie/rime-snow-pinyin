@@ -375,3 +375,26 @@ deploy:
         assert: (cand[1].text == "也需") or error(pair_probe())
       - send: "yxvoai yxv"
         assert: (cand[1].text == "也需") or error(pair_probe())
+
+  layout_probe:
+    tests:
+      - send: dmi
+        assert: print(pair_probe()) == nil
+      - send: dmiu
+        assert: print(pair_probe()) == nil
+      - send: dm
+        assert: print(pair_probe()) == nil
+      - send: dmou
+        assert: print(pair_probe()) == nil
+      - send: llo
+        assert: print(pair_probe()) == nil
+      - send: lloi
+        assert: print(pair_probe()) == nil
+      - send: lloiu
+        assert: print(pair_probe()) == nil
+      - send: mra
+        assert: print(pair_probe()) == nil
+      - send: mrav
+        assert: print(pair_probe()) == nil
+      - send: mrv
+        assert: print(pair_probe()) == nil

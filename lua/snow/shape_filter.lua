@@ -57,7 +57,9 @@ end
 ---@param map table<string, string>
 ---@return table<string, string>, table<string, string>
 local function stroke_maps(map)
+  ---@type table<string, string>
   local reverse_map = {}
+  ---@type table<string, string>
   local direct_map = {}
   for stroke, key in pairs(map) do
     reverse_map[key] = stroke
@@ -155,6 +157,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
   for i, code in ipairs(codes) do
     codes[i] = code:sub(1, 1)
   end
+  ---@type integer[]
   local positions
   if #codes == 2 then
     positions = initial_pair_aux.positions(pair_standard_order or "12")
@@ -202,8 +205,11 @@ end
 ---@param env ShapeFilterEnv
 ---@return string[]
 local function sanpin_tone_options(text, position, spellings, tone_keys, env)
+  ---@type string[]
   local result = {}
+  ---@type table<string, boolean>
   local seen = {}
+  ---@param spelling string
   local function add(spelling)
     local tone = spelling:match("([1-5])$")
     local key = tone and tone_keys[tone] or nil
@@ -223,9 +229,11 @@ end
 
 ---@param current string
 ---@param word_length integer
+---@param pair_standard_order string
 ---@return integer[]?, string?
 local function sanpin_route(current, word_length, pair_standard_order)
   local initial = "[bpmfdtnlgkhjqxzcsrywe]"
+  ---@type string?
   local suffix
   if word_length == 1 then
     suffix = current:match("^" .. initial .. "[a-z]([ivuao]*)$")
@@ -257,6 +265,7 @@ local function sanpin_auxiliary_hint(text, current, env, candidate)
   for _, position in ipairs(positions) do
     local options = sanpin_tone_options(text, position, spellings, sanpin_tone_keys, env)
     if #options == 0 then return nil end
+    ---@type string[]
     local expanded = {}
     for _, code in ipairs(codes) do
       for _, key in ipairs(options) do table.insert(expanded, code .. key) end
@@ -265,11 +274,8 @@ local function sanpin_auxiliary_hint(text, current, env, candidate)
   end
   local next_tones = auxiliary_hint.next_codes(codes, suffix)
   if next_tones == "" then return nil end
-  local order = ""
-  if #positions > 1 then
-    for _, position in ipairs(positions) do order = order .. tostring(position) end
-    order = order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
-  end
+  local order = #positions > 1 and table.concat(positions):gsub("1", "₁")
+      :gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄") or ""
   return ("〔调%s %s〕"):format(order, next_tones)
 end
 
@@ -291,6 +297,7 @@ local function initial_pair_match(text, suffix, env, candidate)
   if cached then
     return initial_pair_aux.match(cached, suffix, tone_mode and "tone" or "shape", order)
   end
+  ---@type string[][]
   local options = {}
   local spellings = tone_mode and sanpin_spellings(candidate, env) or nil
   for position = 1, 2 do
