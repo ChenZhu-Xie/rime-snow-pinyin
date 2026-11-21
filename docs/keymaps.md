@@ -4,7 +4,7 @@
 
 ## 使用
 
-- Windows、macOS 与 Linux 桌面端：在中文模式、输入框为空时，冰雪四拼、冰雪鹤道、冰雪鹤拼和冰雪鹮道按 `e`，其余五个方案按 `v`。Windows 首次打开时居中于当前焦点窗口，无法读取跨应用窗口边界的平台回退到当前显示器中心；切换方案时，已打开的浮窗跟随显示新方案的键位图且不改变位置。按住左键即可直接拖动，普通左键单击不关闭；按 `Esc`、单击右键或再次按当前方案的键位图键可隐藏。浮窗获得焦点后可用鼠标滚轮缩放，macOS 也支持触控板双指捏合；缩放会复用已解析的 SVG，不再为每个滚轮事件重新读取文件、扫描系统字体和解析图形。
+- Windows、macOS 与 Linux 桌面端：在中文模式、输入框为空时，冰雪四拼、冰雪鹤道、冰雪鹤拼和冰雪鹮道按 `e`，其余五个方案按 `v`。Windows 首次打开时居中于当前焦点窗口，macOS 与 Linux X11 回退到当前显示器中心，原生 Wayland 的位置由合成器决定；切换方案时，已打开的浮窗跟随显示新方案的键位图且不主动改变位置。按住左键即可直接拖动，普通左键单击不关闭；按 `Esc`、单击右键或再次按当前方案的键位图键可隐藏。浮窗获得焦点后可用鼠标滚轮缩放，macOS 也支持触控板双指捏合；缩放会复用已解析的 SVG，不再为每个滚轮事件重新读取文件、扫描系统字体和解析图形。
 - 元书输入法（iOS、Android）：使用本项目发布的 `.cskin` 皮肤，在工具栏“中文”按钮上滑，选择方案；短按或长按键位图不退出，上滑键位图返回中文键盘。
 - 同文输入法（Android）：使用本项目发布的 `.trime.yaml` 主题，长按工具栏“中文”按钮，选择方案；短按或长按键位图不退出，上滑键位图返回中文键盘。
 
@@ -68,3 +68,9 @@ Copy-Item tools/keymap-helper/target/release/snow_keymap_launcher.dll lua/snow/b
 macOS 和 Linux 构建产物分别命名为 `snow-keymap-macos` 与 `snow-keymap-linux`。修改 helper 后运行 `cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml`；修改皮肤入口或资源后运行 `bun test --cwd scripts fixed-corpus/test/keymaps.test.ts` 并实际生成两种皮肤。
 
 Windows 发布构建后运行 `./tools/keymap-helper/tests/windows-launch.ps1`，使用独立的中文及空格临时路径检查 DLL 直接启动、首帧绘制、首次居中及前台焦点不变；脚本只关闭自己启动的测试进程并清理本次临时目录，不访问真实输入法的命令文件。该检查同时接入 Windows Actions。
+
+macOS 与 Linux 发布构建后运行 `python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop`，检查后台 shell 返回、首次提交图像、原生窗口可见性、显示器居中、前台焦点、连续三次缓存显隐及方案跟随。Actions 在 macOS 与 Xvfb／Openbox 的 X11 桌面运行此检查；另在无 X11 的 headless Weston 中加 `--wayland`，检查真实 Wayland 协议中的 surface 销毁与重开，后者不验证桌面位置或键盘焦点。测量从测试命令写入及 shell 启动开始，窗口可见性由轮询观察，提交图像表示 `softbuffer` 成功提交缓冲区；这些时间不等于实际输入法的硬件按键到屏幕亮起延迟，也不代表清空系统文件缓存后的冷启动。每次结果与日志随 Actions 构件保存。
+
+macOS 显式使用 Accessory 激活策略并关闭启动时强制激活，避免 helper 按普通应用的默认策略抢走前台。原生 Wayland 不支持 winit 的 `set_visible` 与绝对定位：隐藏时释放窗口及显示 surface，后续按键重建窗口，保留字体、已解析 SVG 和栅格图缓存；隐藏期间的方案跟随不建窗口。位置和置顶行为由 Wayland 合成器决定，不能保证显示器或宿主窗口居中。X11、macOS 与 Windows 仍复用原生窗口。
+
+可设置 `SNOW_KEYMAP_TRACE` 为日志路径，记录事件循环创建、字体加载、SVG 解析、栅格化、窗口创建、显隐与缓冲区提交的相对时间；默认不创建或写入日志文件。

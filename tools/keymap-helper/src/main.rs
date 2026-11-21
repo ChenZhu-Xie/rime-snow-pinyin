@@ -5,8 +5,8 @@ use std::fs::{File, OpenOptions};
 use std::io::{ErrorKind, Read, Seek, SeekFrom, Write};
 use std::num::NonZeroU32;
 use std::path::{Path, PathBuf};
-use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex, OnceLock};
 use std::thread::{self, JoinHandle};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
@@ -37,13 +37,29 @@ use windows_sys::Win32::UI::WindowsAndMessaging::{
 };
 #[cfg(target_os = "windows")]
 use winit::platform::windows::WindowAttributesExtWindows;
-#[cfg(target_os = "windows")]
 use winit::raw_window_handle::{HasWindowHandle, RawWindowHandle};
 
 const POLL_INTERVAL: Duration = Duration::from_millis(30);
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
 const MIN_ZOOM: f64 = 0.55;
 const MAX_ZOOM: f64 = 2.5;
+
+// Opt-in startup measurements; normal use neither creates nor writes a log file.
+fn trace(event: &str) {
+    static TRACE: OnceLock<(Instant, Option<Mutex<File>>)> = OnceLock::new();
+    let (started, output) = TRACE.get_or_init(|| {
+        let output = std::env::var_os("SNOW_KEYMAP_TRACE")
+            .and_then(|path| OpenOptions::new().create(true).append(true).open(path).ok())
+            .map(Mutex::new);
+        (Instant::now(), output)
+    });
+    if let Some(output) = output
+        && let Ok(mut file) = output.lock()
+    {
+        let line = format!("{:.3}\t{event}\n", started.elapsed().as_secs_f64() * 1000.0);
+        let _ = file.write_all(line.as_bytes());
+    }
+}
 // Match the outer background rect in the generated keymap SVGs.
 #[cfg(target_os = "windows")]
 const KEYMAP_CORNER_RADIUS: f64 = 14.0;
@@ -534,7 +550,6 @@ struct App {
     svg_cache: HashMap<PathBuf, CachedSvg>,
     svg: Option<Arc<usvg::Tree>>,
     current_path: Option<PathBuf>,
-    pending_command: Option<Command>,
     initial_focused_area: Option<WindowArea>,
     visible: bool,
     zoom: f64,
@@ -551,15 +566,17 @@ struct CachedSvg {
 
 impl App {
     fn new() -> Self {
+        trace("fonts.begin");
+        let svg_options = svg_options();
+        trace("fonts.end");
         Self {
             window: None,
             surface: None,
             image: None,
-            svg_options: svg_options(),
+            svg_options,
             svg_cache: HashMap::new(),
             svg: None,
             current_path: None,
-            pending_command: None,
             initial_focused_area: None,
             visible: false,
             zoom: 1.0,
@@ -579,7 +596,9 @@ impl App {
         {
             return Ok(cached.tree.clone());
         }
+        trace("svg.begin");
         let tree = Arc::new(load_svg(path, &self.svg_options)?);
+        trace("svg.end");
         self.svg_cache.insert(
             path.to_path_buf(),
             CachedSvg {
@@ -592,10 +611,23 @@ impl App {
     }
 
     fn hide(&mut self) {
-        if let Some(window) = self.window.as_ref() {
+        let wayland = self.window.as_ref().is_some_and(|window| {
+            matches!(
+                window.window_handle().map(|handle| handle.as_raw()),
+                Ok(RawWindowHandle::Wayland(_))
+            )
+        });
+        if wayland {
+            // winit's Wayland set_visible is a no-op. Drop the surface and window to
+            // unmap it, keeping font, SVG and pixel caches for the next toggle.
+            self.surface = None;
+            self.window = None;
+            trace("window.dropped");
+        } else if let Some(window) = self.window.as_ref() {
             window.set_visible(false);
         }
         self.visible = false;
+        trace("hidden");
         self.touches.clear();
         self.touch_press = None;
         self.touch_span = None;
@@ -629,9 +661,11 @@ impl App {
             PhysicalSize::new(image.width, image.height)
         });
         let (_, maximum_size) = self.monitor_and_maximum(event_loop);
+        trace("raster.begin");
         let Ok(image) = render_svg(svg, maximum_size, window.scale_factor() * self.zoom) else {
             return false;
         };
+        trace("raster.end");
         let previous_position = window.outer_position().ok();
         let _ = window.request_inner_size(PhysicalSize::new(image.width, image.height));
         if let Err(error) = round_window_corners(&window, &image) {
@@ -691,13 +725,17 @@ impl App {
     }
 
     fn show_command(&mut self, event_loop: &ActiveEventLoop, command: Command) {
-        let Some(window) = self.window.clone() else {
-            return;
-        };
+        trace("command.received");
         if should_defer_hidden_follow(command.action, self.visible) {
             self.current_path = Some(command.image_path);
             return;
         }
+        if self.window.is_none() {
+            self.resumed(event_loop);
+        }
+        let Some(window) = self.window.clone() else {
+            return;
+        };
         if command.action == CommandAction::Toggle
             && self.current_path.as_deref() == Some(command.image_path.as_path())
             && self.visible
@@ -758,6 +796,7 @@ impl App {
         window.set_visible(true);
         window.request_redraw();
         self.visible = true;
+        trace("shown");
         let _ = command.token;
     }
 
@@ -829,6 +868,9 @@ impl App {
     }
 
     fn redraw(&mut self) {
+        if !self.visible {
+            return;
+        }
         let (Some(surface), Some(image)) = (self.surface.as_mut(), self.image.as_ref()) else {
             return;
         };
@@ -845,7 +887,9 @@ impl App {
         };
         if buffer.len() == image.pixels.len() {
             buffer.copy_from_slice(&image.pixels);
-            let _ = buffer.present();
+            if buffer.present().is_ok() {
+                trace("presented");
+            }
         }
     }
 }
@@ -855,6 +899,7 @@ impl ApplicationHandler<UserEvent> for App {
         if self.window.is_some() {
             return;
         }
+        trace("window.begin");
         let attributes = WindowAttributes::default()
             .with_title("冰雪拼音键位图")
             .with_inner_size(PhysicalSize::new(1040, 590))
@@ -885,19 +930,13 @@ impl ApplicationHandler<UserEvent> for App {
         };
         self.surface = Some(surface);
         self.window = Some(window);
-        if let Some(command) = self.pending_command.take() {
-            self.show_command(event_loop, command);
-        }
+        trace("window.end");
     }
 
     fn user_event(&mut self, event_loop: &ActiveEventLoop, event: UserEvent) {
         match event {
             UserEvent::Command(command) => {
-                if self.window.is_some() {
-                    self.show_command(event_loop, command);
-                } else {
-                    self.pending_command = Some(command);
-                }
+                self.show_command(event_loop, command);
             }
         }
     }
@@ -987,14 +1026,26 @@ fn startup_from_args(
 }
 
 fn run() -> Result<(), String> {
+    trace("process.enter");
     let startup = startup_from_args(std::env::args_os().skip(1))?;
     let command_file = startup.command_file;
     let Some(_instance_lock) = InstanceLock::acquire(&command_file)? else {
         return Ok(());
     };
-    let event_loop = EventLoop::<UserEvent>::with_user_event()
+    trace("event_loop.begin");
+    let mut builder = EventLoop::<UserEvent>::with_user_event();
+    #[cfg(target_os = "macos")]
+    {
+        use winit::platform::macos::{ActivationPolicy, EventLoopBuilderExtMacOS};
+        builder
+            .with_activation_policy(ActivationPolicy::Accessory)
+            .with_activate_ignoring_other_apps(false)
+            .with_default_menu(false);
+    }
+    let event_loop = builder
         .build()
         .map_err(|error| format!("无法创建窗口事件循环：{error}"))?;
+    trace("event_loop.end");
     let initial_focused_area = startup.focused_window.and_then(window_area);
     let _command_watcher = start_command_watcher(command_file, event_loop.create_proxy());
     let mut app = App::new();

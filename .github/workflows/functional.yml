@@ -102,7 +102,7 @@ jobs:
     name: 键位图桌面 helper 与移动皮肤（${{ matrix.os }}）
     strategy:
       matrix:
-        os: [ubuntu-24.04, windows-latest]
+        os: [ubuntu-24.04, windows-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     steps:
       - name: 获取代码
@@ -121,13 +121,49 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
       - name: 检查桌面 helper
         run: cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml
+      - name: 编译桌面 helper
+        run: cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
+      - name: 安装 Linux 桌面测试环境
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes xvfb openbox xdotool x11-utils fonts-noto-cjk weston
+      - name: 检查 Linux X11 首次启动与显隐
+        if: runner.os == 'Linux'
+        run: |
+          xvfb-run -a -s '-screen 0 1600x1000x24' sh -c '
+            openbox >/tmp/snow-openbox.log 2>&1 &
+            trap "kill $!" EXIT
+            sleep 1
+            env -u WAYLAND_DISPLAY python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop/x11
+          '
+      - name: 检查原生 Wayland 隐藏与缓存重开
+        if: runner.os == 'Linux'
+        run: |
+          export XDG_RUNTIME_DIR="$(mktemp -d)"
+          weston --backend=headless-backend.so --socket=snow-keymap-test --idle-time=0 --log="$XDG_RUNTIME_DIR/weston.log" &
+          weston_pid=$!
+          trap 'kill "$weston_pid"' EXIT
+          for attempt in $(seq 1 100); do
+            test ! -S "$XDG_RUNTIME_DIR/snow-keymap-test" || break
+            sleep 0.1
+          done
+          env -u DISPLAY WAYLAND_DISPLAY=snow-keymap-test python3 tools/keymap-helper/tests/unix-launch.py --wayland --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop/wayland
+      - name: 检查 macOS 首次启动、定位与焦点
+        if: runner.os == 'macOS'
+        run: python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop/macos
       - name: 检查 Windows 原生启动与首次定位
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           ./tools/keymap-helper/tests/windows-launch.ps1
+      - name: 保存桌面启动测量
+        if: always() && runner.os != 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: keymap-desktop-${{ runner.os }}
+          path: output/keymap-desktop/
+          if-no-files-found: warn
 
   test:
     name: ${{ matrix.scheme.name }} / librime ${{ matrix.runtime.version }}
