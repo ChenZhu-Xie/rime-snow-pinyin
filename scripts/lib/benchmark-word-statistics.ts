@@ -8,10 +8,10 @@ export interface BenchmarkWordCounts {
 	tokenRate: number;
 	hanCharacters: number;
 	codeKeys: number;
-	averageCodeLength: number;
+	averageEncodingLength: number;
 	codeLengths: Record<string, { count: number; rate: number }>;
 	inputKeys: number;
-	averageKeyLength: number;
+	averageCodeLength: number;
 	keyLengths: Record<string, { count: number; rate: number }>;
 	selections: number;
 	selectionRate: number;
@@ -29,10 +29,10 @@ function emptyCounts(label: string): BenchmarkWordCounts {
 		tokenRate: 0,
 		hanCharacters: 0,
 		codeKeys: 0,
-		averageCodeLength: 0,
+		averageEncodingLength: 0,
 		codeLengths: {},
 		inputKeys: 0,
-		averageKeyLength: 0,
+		averageCodeLength: 0,
 		keyLengths: {},
 		selections: 0,
 		selectionRate: 0,
@@ -80,8 +80,10 @@ export function benchmarkWordStatistics(
 	}
 	for (const group of [total, ...groups]) {
 		group.tokenRate = total.tokens ? group.tokens / total.tokens : 0;
-		group.averageCodeLength = group.tokens ? group.codeKeys / group.tokens : 0;
-		group.averageKeyLength = group.tokens ? group.inputKeys / group.tokens : 0;
+		group.averageEncodingLength = group.tokens
+			? group.codeKeys / group.tokens
+			: 0;
+		group.averageCodeLength = group.tokens ? group.inputKeys / group.tokens : 0;
 		group.selectionRate = group.tokens ? group.selections / group.tokens : 0;
 		for (const bucket of Object.values(group.codeLengths))
 			bucket.rate = bucket.count / group.tokens;
@@ -124,7 +126,7 @@ export function renderBenchmarkWordStatistics(
 	)) {
 		const total = statistics.total;
 		lines.push(
-			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **合计** | **${total.tokens}／${percent(total.tokenRate)}** | ${codeLengths.map(() => "").join(" | ")} | **${total.averageKeyLength.toFixed(3)}** | **${total.selections}／${percent(total.selectionRate)}** |`,
+			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **合计** | **${total.tokens}／${percent(total.tokenRate)}** | ${codeLengths.map(() => "").join(" | ")} | **${total.averageCodeLength.toFixed(3)}** | **${total.selections}／${percent(total.selectionRate)}** |`,
 		);
 		for (const group of statistics.groups) {
 			const distribution = codeLengths.map((length) => {
@@ -132,7 +134,7 @@ export function renderBenchmarkWordStatistics(
 				return bucket ? `${bucket.count}／${percent(bucket.rate)}` : "";
 			});
 			lines.push(
-				`| | | | ${group.label} | ${group.tokens}／${percent(group.tokenRate)} | ${distribution.join(" | ")} | ${group.tokens ? group.averageKeyLength.toFixed(3) : "—"} | ${group.selections}／${percent(group.selectionRate)} |`,
+				`| | | | ${group.label} | ${group.tokens}／${percent(group.tokenRate)} | ${distribution.join(" | ")} | ${group.tokens ? group.averageCodeLength.toFixed(3) : "—"} | ${group.selections}／${percent(group.selectionRate)} |`,
 			);
 		}
 	}

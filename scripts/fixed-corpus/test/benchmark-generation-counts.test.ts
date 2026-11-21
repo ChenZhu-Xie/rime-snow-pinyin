@@ -162,7 +162,7 @@ test("5500 字统一表与原切分词次、码长加权和、选重及总按键
 			);
 			assert.equal(group.tokenRate, group.tokens / stats.total.tokens, id);
 			assert.equal(
-				group.averageCodeLength,
+				group.averageEncodingLength,
 				group.tokens ? group.codeKeys / group.tokens : 0,
 				id,
 			);
@@ -190,7 +190,7 @@ test("5500 字统一表与原切分词次、码长加权和、选重及总按键
 				id,
 			);
 			assert.equal(
-				group.averageKeyLength,
+				group.averageCodeLength,
 				group.tokens ? group.inputKeys / group.tokens : 0,
 				id,
 			);

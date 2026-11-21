@@ -24,9 +24,9 @@ test("词次统计保留实际输出段，区分编码、Shift、Space、选重�
 	assert.equal(stats.total.hanCharacters, 16);
 	assert.equal(stats.total.tokens, 6);
 	assert.equal(stats.total.codeKeys, 18);
-	assert.equal(stats.total.averageCodeLength, 3);
+	assert.equal(stats.total.averageEncodingLength, 3);
 	assert.equal(stats.total.inputKeys, 23);
-	assert.equal(stats.total.averageKeyLength, 23 / 6);
+	assert.equal(stats.total.averageCodeLength, 23 / 6);
 	assert.equal(stats.total.selections, 2);
 	assert.equal(stats.total.selectionRate, 1 / 3);
 	assert.deepEqual(
@@ -38,17 +38,17 @@ test("词次统计保留实际输出段，区分编码、Shift、Space、选重�
 		"1": { count: 1, rate: 0.5 },
 		"2": { count: 1, rate: 0.5 },
 	});
-	assert.equal(stats.groups[0].averageCodeLength, 1.5);
-	assert.equal(stats.groups[0].averageKeyLength, 2.5);
+	assert.equal(stats.groups[0].averageEncodingLength, 1.5);
+	assert.equal(stats.groups[0].averageCodeLength, 2.5);
 	assert.deepEqual(stats.groups[0].keyLengths, {
 		"2": { count: 1, rate: 0.5 },
 		"3": { count: 1, rate: 0.5 },
 	});
-	assert.equal(stats.groups[1].averageCodeLength, 2);
-	assert.equal(stats.groups[1].averageKeyLength, 4);
+	assert.equal(stats.groups[1].averageEncodingLength, 2);
+	assert.equal(stats.groups[1].averageCodeLength, 4);
 	assert.equal(stats.groups[1].selectionRate, 1);
-	assert.equal(stats.groups[2].averageCodeLength, 4);
-	assert.equal(stats.groups[4].averageCodeLength, 5);
+	assert.equal(stats.groups[2].averageEncodingLength, 4);
+	assert.equal(stats.groups[4].averageEncodingLength, 5);
 	const table = renderBenchmarkWordStatistics([
 		{ name: "示例", totalKeys: 25, statistics: stats },
 		{ name: "较少按键", totalKeys: 24, statistics: stats },
@@ -72,7 +72,7 @@ test("重复出现重复计词次，以 Unicode 汉字位置还原回放，空�
 	assert.equal(stats.total.tokens, 2);
 	assert.equal(stats.groups[1].tokens, 2);
 	assert.equal(stats.groups[1].tokenRate, 1);
-	assert.equal(stats.groups[1].averageCodeLength, 2);
+	assert.equal(stats.groups[1].averageEncodingLength, 2);
 	assert.equal(stats.groups[4].tokens, 0);
 	assert.match(
 		renderBenchmarkWordStatistics([

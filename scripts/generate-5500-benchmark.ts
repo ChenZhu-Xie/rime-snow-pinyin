@@ -212,9 +212,9 @@ const report = {
 		tokenRateDenominator: "各方案全部汉字输出段数",
 		codeLengthRateDenominator: "本词长类别的汉字输出段数",
 		selectionRateDenominator: "对应行的汉字输出段数；合计行为全方案",
-		averageCodeLength:
+		averageEncodingLength:
 			"JSON 中保留的纯编码拆账字段＝codeKeys／汉字输出段数，不用于报告平均码长",
-		averageKeyLength:
+		averageCodeLength:
 			"字词平均码长＝inputKeys／汉字输出段数，包含额外 Shift、Space、选重键；用于报告均码／段",
 		totalAverageLength:
 			"全方案总按键／5500 汉字；包含编码、Space、Shift、选重与标点",
@@ -240,7 +240,7 @@ const wordStatisticsTable = renderBenchmarkWordStatistics(
 const comparisonSchemes = [schemes.qingyun, schemes.flypy];
 const comparison = comparisonSchemes.map((scheme) => ({
 	tokens: scheme.wordStatistics.total.tokens,
-	mean: scheme.wordStatistics.total.averageKeyLength.toFixed(3),
+	mean: scheme.wordStatistics.total.averageCodeLength.toFixed(3),
 	breakdown: `${scheme.wordStatistics.total.codeKeys}＋${scheme.total.spaces}＋${scheme.total.shifts}＋${scheme.total.selections}＋${corpus.punctuationCharacters}＝${scheme.total.keys}`,
 }));
 const markdown = [

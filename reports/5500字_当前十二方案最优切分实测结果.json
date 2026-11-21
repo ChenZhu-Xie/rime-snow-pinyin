@@ -14,8 +14,8 @@
     "tokenRateDenominator": "各方案全部汉字输出段数",
     "codeLengthRateDenominator": "本词长类别的汉字输出段数",
     "selectionRateDenominator": "对应行的汉字输出段数；合计行为全方案",
-    "averageCodeLength": "JSON 中保留的纯编码拆账字段＝codeKeys／汉字输出段数，不用于报告平均码长",
-    "averageKeyLength": "字词平均码长＝inputKeys／汉字输出段数，包含额外 Shift、Space、选重键；用于报告均码／段",
+    "averageEncodingLength": "JSON 中保留的纯编码拆账字段＝codeKeys／汉字输出段数，不用于报告平均码长",
+    "averageCodeLength": "字词平均码长＝inputKeys／汉字输出段数，包含额外 Shift、Space、选重键；用于报告均码／段",
     "totalAverageLength": "全方案总按键／5500 汉字；包含编码、Space、Shift、选重与标点"
   },
   "schemes": {
@@ -73,7 +73,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 8865,
-          "averageCodeLength": 3.9824797843665767,
+          "averageEncodingLength": 3.9824797843665767,
           "codeLengths": {
             "1": {
               "count": 76,
@@ -109,7 +109,7 @@
             }
           },
           "inputKeys": 9293,
-          "averageKeyLength": 4.174752920035939,
+          "averageCodeLength": 4.174752920035939,
           "keyLengths": {
             "1": {
               "count": 6,
@@ -170,7 +170,7 @@
             "tokenRate": 0.1963162623539982,
             "hanCharacters": 437,
             "codeKeys": 1195,
-            "averageCodeLength": 2.734553775743707,
+            "averageEncodingLength": 2.734553775743707,
             "codeLengths": {
               "1": {
                 "count": 76,
@@ -202,7 +202,7 @@
               }
             },
             "inputKeys": 1266,
-            "averageKeyLength": 2.897025171624714,
+            "averageCodeLength": 2.897025171624714,
             "keyLengths": {
               "1": {
                 "count": 6,
@@ -242,7 +242,7 @@
             "tokenRate": 0.44833782569631625,
             "hanCharacters": 1996,
             "codeKeys": 3813,
-            "averageCodeLength": 3.82064128256513,
+            "averageEncodingLength": 3.82064128256513,
             "codeLengths": {
               "2": {
                 "count": 173,
@@ -266,7 +266,7 @@
               }
             },
             "inputKeys": 3962,
-            "averageKeyLength": 3.969939879759519,
+            "averageCodeLength": 3.969939879759519,
             "keyLengths": {
               "2": {
                 "count": 25,
@@ -298,7 +298,7 @@
             "tokenRate": 0.13566936208445643,
             "hanCharacters": 906,
             "codeKeys": 1335,
-            "averageCodeLength": 4.420529801324503,
+            "averageEncodingLength": 4.420529801324503,
             "codeLengths": {
               "3": {
                 "count": 88,
@@ -322,7 +322,7 @@
               }
             },
             "inputKeys": 1408,
-            "averageKeyLength": 4.662251655629139,
+            "averageCodeLength": 4.662251655629139,
             "keyLengths": {
               "3": {
                 "count": 17,
@@ -354,7 +354,7 @@
             "tokenRate": 0.151392632524708,
             "hanCharacters": 1348,
             "codeKeys": 1647,
-            "averageCodeLength": 4.887240356083086,
+            "averageEncodingLength": 4.887240356083086,
             "codeLengths": {
               "4": {
                 "count": 158,
@@ -378,7 +378,7 @@
               }
             },
             "inputKeys": 1648,
-            "averageKeyLength": 4.890207715133531,
+            "averageCodeLength": 4.890207715133531,
             "keyLengths": {
               "4": {
                 "count": 157,
@@ -410,7 +410,7 @@
             "tokenRate": 0.06828391734052111,
             "hanCharacters": 813,
             "codeKeys": 875,
-            "averageCodeLength": 5.756578947368421,
+            "averageEncodingLength": 5.756578947368421,
             "codeLengths": {
               "5": {
                 "count": 74,
@@ -430,7 +430,7 @@
               }
             },
             "inputKeys": 1009,
-            "averageKeyLength": 6.6381578947368425,
+            "averageCodeLength": 6.6381578947368425,
             "keyLengths": {
               "5": {
                 "count": 27,
@@ -1010,7 +1010,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 8416,
-          "averageCodeLength": 3.8819188191881917,
+          "averageEncodingLength": 3.8819188191881917,
           "codeLengths": {
             "1": {
               "count": 63,
@@ -1042,7 +1042,7 @@
             }
           },
           "inputKeys": 9021,
-          "averageKeyLength": 4.160977859778598,
+          "averageCodeLength": 4.160977859778598,
           "keyLengths": {
             "1": {
               "count": 1,
@@ -1095,7 +1095,7 @@
             "tokenRate": 0.14990774907749077,
             "hanCharacters": 325,
             "codeKeys": 710,
-            "averageCodeLength": 2.1846153846153844,
+            "averageEncodingLength": 2.1846153846153844,
             "codeLengths": {
               "1": {
                 "count": 63,
@@ -1123,7 +1123,7 @@
               }
             },
             "inputKeys": 933,
-            "averageKeyLength": 2.870769230769231,
+            "averageCodeLength": 2.870769230769231,
             "keyLengths": {
               "1": {
                 "count": 1,
@@ -1159,7 +1159,7 @@
             "tokenRate": 0.47001845018450183,
             "hanCharacters": 2038,
             "codeKeys": 3865,
-            "averageCodeLength": 3.7929342492639844,
+            "averageEncodingLength": 3.7929342492639844,
             "codeLengths": {
               "2": {
                 "count": 94,
@@ -1183,7 +1183,7 @@
               }
             },
             "inputKeys": 3883,
-            "averageKeyLength": 3.8105986261040234,
+            "averageCodeLength": 3.8105986261040234,
             "keyLengths": {
               "2": {
                 "count": 76,
@@ -1215,7 +1215,7 @@
             "tokenRate": 0.15359778597785978,
             "hanCharacters": 999,
             "codeKeys": 1401,
-            "averageCodeLength": 4.207207207207207,
+            "averageEncodingLength": 4.207207207207207,
             "codeLengths": {
               "3": {
                 "count": 85,
@@ -1235,7 +1235,7 @@
               }
             },
             "inputKeys": 1544,
-            "averageKeyLength": 4.636636636636637,
+            "averageCodeLength": 4.636636636636637,
             "keyLengths": {
               "3": {
                 "count": 12,
@@ -1267,7 +1267,7 @@
             "tokenRate": 0.1609778597785978,
             "hanCharacters": 1396,
             "codeKeys": 1652,
-            "averageCodeLength": 4.73352435530086,
+            "averageEncodingLength": 4.73352435530086,
             "codeLengths": {
               "4": {
                 "count": 121,
@@ -1287,7 +1287,7 @@
               }
             },
             "inputKeys": 1744,
-            "averageKeyLength": 4.997134670487106,
+            "averageCodeLength": 4.997134670487106,
             "keyLengths": {
               "4": {
                 "count": 121,
@@ -1319,7 +1319,7 @@
             "tokenRate": 0.06549815498154982,
             "hanCharacters": 742,
             "codeKeys": 788,
-            "averageCodeLength": 5.549295774647887,
+            "averageEncodingLength": 5.549295774647887,
             "codeLengths": {
               "5": {
                 "count": 73,
@@ -1335,7 +1335,7 @@
               }
             },
             "inputKeys": 917,
-            "averageKeyLength": 6.457746478873239,
+            "averageCodeLength": 6.457746478873239,
             "keyLengths": {
               "5": {
                 "count": 24,
@@ -1898,7 +1898,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 8448,
-          "averageCodeLength": 3.8859245630174795,
+          "averageEncodingLength": 3.8859245630174795,
           "codeLengths": {
             "1": {
               "count": 78,
@@ -1934,7 +1934,7 @@
             }
           },
           "inputKeys": 9090,
-          "averageKeyLength": 4.181232750689972,
+          "averageCodeLength": 4.181232750689972,
           "keyLengths": {
             "1": {
               "count": 4,
@@ -1995,7 +1995,7 @@
             "tokenRate": 0.15271389144434222,
             "hanCharacters": 332,
             "codeKeys": 688,
-            "averageCodeLength": 2.072289156626506,
+            "averageEncodingLength": 2.072289156626506,
             "codeLengths": {
               "1": {
                 "count": 78,
@@ -2019,7 +2019,7 @@
               }
             },
             "inputKeys": 929,
-            "averageKeyLength": 2.7981927710843375,
+            "averageCodeLength": 2.7981927710843375,
             "keyLengths": {
               "1": {
                 "count": 4,
@@ -2051,7 +2051,7 @@
             "tokenRate": 0.4705611775528979,
             "hanCharacters": 2046,
             "codeKeys": 3905,
-            "averageCodeLength": 3.817204301075269,
+            "averageEncodingLength": 3.817204301075269,
             "codeLengths": {
               "2": {
                 "count": 92,
@@ -2075,7 +2075,7 @@
               }
             },
             "inputKeys": 3926,
-            "averageKeyLength": 3.8377321603128056,
+            "averageCodeLength": 3.8377321603128056,
             "keyLengths": {
               "2": {
                 "count": 71,
@@ -2107,7 +2107,7 @@
             "tokenRate": 0.15547378104875806,
             "hanCharacters": 1014,
             "codeKeys": 1434,
-            "averageCodeLength": 4.242603550295858,
+            "averageEncodingLength": 4.242603550295858,
             "codeLengths": {
               "2": {
                 "count": 1,
@@ -2131,7 +2131,7 @@
               }
             },
             "inputKeys": 1578,
-            "averageKeyLength": 4.668639053254438,
+            "averageCodeLength": 4.668639053254438,
             "keyLengths": {
               "2": {
                 "count": 1,
@@ -2167,7 +2167,7 @@
             "tokenRate": 0.15731370745170192,
             "hanCharacters": 1368,
             "codeKeys": 1638,
-            "averageCodeLength": 4.7894736842105265,
+            "averageEncodingLength": 4.7894736842105265,
             "codeLengths": {
               "4": {
                 "count": 119,
@@ -2187,7 +2187,7 @@
               }
             },
             "inputKeys": 1728,
-            "averageKeyLength": 5.052631578947368,
+            "averageCodeLength": 5.052631578947368,
             "keyLengths": {
               "4": {
                 "count": 119,
@@ -2219,7 +2219,7 @@
             "tokenRate": 0.06393744250229991,
             "hanCharacters": 740,
             "codeKeys": 783,
-            "averageCodeLength": 5.633093525179856,
+            "averageEncodingLength": 5.633093525179856,
             "codeLengths": {
               "5": {
                 "count": 70,
@@ -2239,7 +2239,7 @@
               }
             },
             "inputKeys": 929,
-            "averageKeyLength": 6.683453237410072,
+            "averageCodeLength": 6.683453237410072,
             "keyLengths": {
               "5": {
                 "count": 21,
@@ -2810,7 +2810,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 9926,
-          "averageCodeLength": 2.6790823211875843,
+          "averageEncodingLength": 2.6790823211875843,
           "codeLengths": {
             "1": {
               "count": 417,
@@ -2850,7 +2850,7 @@
             }
           },
           "inputKeys": 11369,
-          "averageKeyLength": 3.0685560053981105,
+          "averageCodeLength": 3.0685560053981105,
           "keyLengths": {
             "1": {
               "count": 288,
@@ -2903,7 +2903,7 @@
             "tokenRate": 0.7481781376518218,
             "hanCharacters": 2772,
             "codeKeys": 6631,
-            "averageCodeLength": 2.392135642135642,
+            "averageEncodingLength": 2.392135642135642,
             "codeLengths": {
               "1": {
                 "count": 417,
@@ -2923,7 +2923,7 @@
               }
             },
             "inputKeys": 7837,
-            "averageKeyLength": 2.827200577200577,
+            "averageCodeLength": 2.827200577200577,
             "keyLengths": {
               "1": {
                 "count": 288,
@@ -2955,7 +2955,7 @@
             "tokenRate": 0.1311740890688259,
             "hanCharacters": 972,
             "codeKeys": 1440,
-            "averageCodeLength": 2.962962962962963,
+            "averageEncodingLength": 2.962962962962963,
             "codeLengths": {
               "2": {
                 "count": 18,
@@ -2967,7 +2967,7 @@
               }
             },
             "inputKeys": 1440,
-            "averageKeyLength": 2.962962962962963,
+            "averageCodeLength": 2.962962962962963,
             "keyLengths": {
               "2": {
                 "count": 18,
@@ -2987,7 +2987,7 @@
             "tokenRate": 0.04993252361673414,
             "hanCharacters": 555,
             "codeKeys": 654,
-            "averageCodeLength": 3.535135135135135,
+            "averageEncodingLength": 3.535135135135135,
             "codeLengths": {
               "3": {
                 "count": 86,
@@ -2999,7 +2999,7 @@
               }
             },
             "inputKeys": 738,
-            "averageKeyLength": 3.9891891891891893,
+            "averageCodeLength": 3.9891891891891893,
             "keyLengths": {
               "3": {
                 "count": 2,
@@ -3019,7 +3019,7 @@
             "tokenRate": 0.04588394062078273,
             "hanCharacters": 680,
             "codeKeys": 680,
-            "averageCodeLength": 4,
+            "averageEncodingLength": 4,
             "codeLengths": {
               "4": {
                 "count": 170,
@@ -3027,7 +3027,7 @@
               }
             },
             "inputKeys": 680,
-            "averageKeyLength": 4,
+            "averageCodeLength": 4,
             "keyLengths": {
               "4": {
                 "count": 170,
@@ -3043,7 +3043,7 @@
             "tokenRate": 0.024831309041835357,
             "hanCharacters": 521,
             "codeKeys": 521,
-            "averageCodeLength": 5.663043478260869,
+            "averageEncodingLength": 5.663043478260869,
             "codeLengths": {
               "5": {
                 "count": 49,
@@ -3067,7 +3067,7 @@
               }
             },
             "inputKeys": 674,
-            "averageKeyLength": 7.326086956521739,
+            "averageCodeLength": 7.326086956521739,
             "keyLengths": {
               "6": {
                 "count": 49,
@@ -3633,7 +3633,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 9122,
-          "averageCodeLength": 3.9626411815812337,
+          "averageEncodingLength": 3.9626411815812337,
           "codeLengths": {
             "1": {
               "count": 74,
@@ -3665,7 +3665,7 @@
             }
           },
           "inputKeys": 9513,
-          "averageKeyLength": 4.1324934839270195,
+          "averageCodeLength": 4.1324934839270195,
           "keyLengths": {
             "1": {
               "count": 7,
@@ -3706,7 +3706,7 @@
             "tokenRate": 0.14813205907906168,
             "hanCharacters": 341,
             "codeKeys": 709,
-            "averageCodeLength": 2.0791788856304985,
+            "averageEncodingLength": 2.0791788856304985,
             "codeLengths": {
               "1": {
                 "count": 74,
@@ -3730,7 +3730,7 @@
               }
             },
             "inputKeys": 958,
-            "averageKeyLength": 2.809384164222874,
+            "averageCodeLength": 2.809384164222874,
             "keyLengths": {
               "1": {
                 "count": 7,
@@ -3762,7 +3762,7 @@
             "tokenRate": 0.5073848827106864,
             "hanCharacters": 2336,
             "codeKeys": 4584,
-            "averageCodeLength": 3.9246575342465753,
+            "averageEncodingLength": 3.9246575342465753,
             "codeLengths": {
               "2": {
                 "count": 65,
@@ -3786,7 +3786,7 @@
               }
             },
             "inputKeys": 4634,
-            "averageKeyLength": 3.9674657534246576,
+            "averageCodeLength": 3.9674657534246576,
             "keyLengths": {
               "2": {
                 "count": 16,
@@ -3818,7 +3818,7 @@
             "tokenRate": 0.17680278019113815,
             "hanCharacters": 1221,
             "codeKeys": 1803,
-            "averageCodeLength": 4.42997542997543,
+            "averageEncodingLength": 4.42997542997543,
             "codeLengths": {
               "3": {
                 "count": 102,
@@ -3838,7 +3838,7 @@
               }
             },
             "inputKeys": 1894,
-            "averageKeyLength": 4.653562653562654,
+            "averageCodeLength": 4.653562653562654,
             "keyLengths": {
               "3": {
                 "count": 12,
@@ -3866,7 +3866,7 @@
             "tokenRate": 0.1424847958297133,
             "hanCharacters": 1312,
             "codeKeys": 1664,
-            "averageCodeLength": 5.073170731707317,
+            "averageEncodingLength": 5.073170731707317,
             "codeLengths": {
               "4": {
                 "count": 93,
@@ -3886,7 +3886,7 @@
               }
             },
             "inputKeys": 1665,
-            "averageKeyLength": 5.076219512195122,
+            "averageCodeLength": 5.076219512195122,
             "keyLengths": {
               "4": {
                 "count": 93,
@@ -3914,7 +3914,7 @@
             "tokenRate": 0.02519548218940052,
             "hanCharacters": 290,
             "codeKeys": 362,
-            "averageCodeLength": 6.241379310344827,
+            "averageEncodingLength": 6.241379310344827,
             "codeLengths": {
               "5": {
                 "count": 7,
@@ -3930,7 +3930,7 @@
               }
             },
             "inputKeys": 362,
-            "averageKeyLength": 6.241379310344827,
+            "averageCodeLength": 6.241379310344827,
             "keyLengths": {
               "5": {
                 "count": 7,
@@ -4476,7 +4476,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 9229,
-          "averageCodeLength": 3.942332336608287,
+          "averageEncodingLength": 3.942332336608287,
           "codeLengths": {
             "1": {
               "count": 76,
@@ -4508,7 +4508,7 @@
             }
           },
           "inputKeys": 9640,
-          "averageKeyLength": 4.11789833404528,
+          "averageCodeLength": 4.11789833404528,
           "keyLengths": {
             "1": {
               "count": 5,
@@ -4553,7 +4553,7 @@
             "tokenRate": 0.15677061085006408,
             "hanCharacters": 367,
             "codeKeys": 778,
-            "averageCodeLength": 2.119891008174387,
+            "averageEncodingLength": 2.119891008174387,
             "codeLengths": {
               "1": {
                 "count": 76,
@@ -4577,7 +4577,7 @@
               }
             },
             "inputKeys": 1044,
-            "averageKeyLength": 2.844686648501362,
+            "averageCodeLength": 2.844686648501362,
             "keyLengths": {
               "1": {
                 "count": 5,
@@ -4609,7 +4609,7 @@
             "tokenRate": 0.5181546347714652,
             "hanCharacters": 2426,
             "codeKeys": 4771,
-            "averageCodeLength": 3.9332234130255563,
+            "averageEncodingLength": 3.9332234130255563,
             "codeLengths": {
               "2": {
                 "count": 67,
@@ -4633,7 +4633,7 @@
               }
             },
             "inputKeys": 4823,
-            "averageKeyLength": 3.9760923330585327,
+            "averageCodeLength": 3.9760923330585327,
             "keyLengths": {
               "2": {
                 "count": 16,
@@ -4665,7 +4665,7 @@
             "tokenRate": 0.16830414352840667,
             "hanCharacters": 1182,
             "codeKeys": 1741,
-            "averageCodeLength": 4.418781725888325,
+            "averageEncodingLength": 4.418781725888325,
             "codeLengths": {
               "3": {
                 "count": 103,
@@ -4689,7 +4689,7 @@
               }
             },
             "inputKeys": 1833,
-            "averageKeyLength": 4.652284263959391,
+            "averageCodeLength": 4.652284263959391,
             "keyLengths": {
               "3": {
                 "count": 12,
@@ -4721,7 +4721,7 @@
             "tokenRate": 0.13242204186245193,
             "hanCharacters": 1240,
             "codeKeys": 1580,
-            "averageCodeLength": 5.096774193548387,
+            "averageEncodingLength": 5.096774193548387,
             "codeLengths": {
               "4": {
                 "count": 93,
@@ -4741,7 +4741,7 @@
               }
             },
             "inputKeys": 1581,
-            "averageKeyLength": 5.1,
+            "averageCodeLength": 5.1,
             "keyLengths": {
               "4": {
                 "count": 93,
@@ -4773,7 +4773,7 @@
             "tokenRate": 0.024348568987612132,
             "hanCharacters": 285,
             "codeKeys": 359,
-            "averageCodeLength": 6.298245614035087,
+            "averageEncodingLength": 6.298245614035087,
             "codeLengths": {
               "5": {
                 "count": 7,
@@ -4789,7 +4789,7 @@
               }
             },
             "inputKeys": 359,
-            "averageKeyLength": 6.298245614035087,
+            "averageCodeLength": 6.298245614035087,
             "keyLengths": {
               "5": {
                 "count": 7,
@@ -5336,7 +5336,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 8408,
-          "averageCodeLength": 3.905248490478402,
+          "averageEncodingLength": 3.905248490478402,
           "codeLengths": {
             "1": {
               "count": 72,
@@ -5372,7 +5372,7 @@
             }
           },
           "inputKeys": 9053,
-          "averageKeyLength": 4.204830469112866,
+          "averageCodeLength": 4.204830469112866,
           "keyLengths": {
             "1": {
               "count": 7,
@@ -5433,7 +5433,7 @@
             "tokenRate": 0.14862981885740828,
             "hanCharacters": 320,
             "codeKeys": 651,
-            "averageCodeLength": 2.034375,
+            "averageEncodingLength": 2.034375,
             "codeLengths": {
               "1": {
                 "count": 72,
@@ -5457,7 +5457,7 @@
               }
             },
             "inputKeys": 892,
-            "averageKeyLength": 2.7875,
+            "averageCodeLength": 2.7875,
             "keyLengths": {
               "1": {
                 "count": 7,
@@ -5489,7 +5489,7 @@
             "tokenRate": 0.46771946121690666,
             "hanCharacters": 2014,
             "codeKeys": 3863,
-            "averageCodeLength": 3.8361469712015888,
+            "averageEncodingLength": 3.8361469712015888,
             "codeLengths": {
               "2": {
                 "count": 72,
@@ -5513,7 +5513,7 @@
               }
             },
             "inputKeys": 3863,
-            "averageKeyLength": 3.8361469712015888,
+            "averageCodeLength": 3.8361469712015888,
             "keyLengths": {
               "2": {
                 "count": 72,
@@ -5545,7 +5545,7 @@
             "tokenRate": 0.15234556432884347,
             "hanCharacters": 984,
             "codeKeys": 1379,
-            "averageCodeLength": 4.204268292682927,
+            "averageEncodingLength": 4.204268292682927,
             "codeLengths": {
               "3": {
                 "count": 81,
@@ -5565,7 +5565,7 @@
               }
             },
             "inputKeys": 1531,
-            "averageKeyLength": 4.6676829268292686,
+            "averageCodeLength": 4.6676829268292686,
             "keyLengths": {
               "3": {
                 "count": 10,
@@ -5597,7 +5597,7 @@
             "tokenRate": 0.1630283325592197,
             "hanCharacters": 1404,
             "codeKeys": 1688,
-            "averageCodeLength": 4.8091168091168095,
+            "averageEncodingLength": 4.8091168091168095,
             "codeLengths": {
               "4": {
                 "count": 102,
@@ -5617,7 +5617,7 @@
               }
             },
             "inputKeys": 1789,
-            "averageKeyLength": 5.096866096866097,
+            "averageCodeLength": 5.096866096866097,
             "keyLengths": {
               "4": {
                 "count": 102,
@@ -5649,7 +5649,7 @@
             "tokenRate": 0.06827682303762192,
             "hanCharacters": 778,
             "codeKeys": 827,
-            "averageCodeLength": 5.625850340136054,
+            "averageEncodingLength": 5.625850340136054,
             "codeLengths": {
               "5": {
                 "count": 69,
@@ -5669,7 +5669,7 @@
               }
             },
             "inputKeys": 978,
-            "averageKeyLength": 6.653061224489796,
+            "averageCodeLength": 6.653061224489796,
             "keyLengths": {
               "5": {
                 "count": 20,
@@ -6241,7 +6241,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 9145,
-          "averageCodeLength": 3.9864864864864864,
+          "averageEncodingLength": 3.9864864864864864,
           "codeLengths": {
             "1": {
               "count": 91,
@@ -6273,7 +6273,7 @@
             }
           },
           "inputKeys": 9534,
-          "averageKeyLength": 4.156059285091543,
+          "averageCodeLength": 4.156059285091543,
           "keyLengths": {
             "1": {
               "count": 6,
@@ -6314,7 +6314,7 @@
             "tokenRate": 0.16346992153443765,
             "hanCharacters": 375,
             "codeKeys": 752,
-            "averageCodeLength": 2.005333333333333,
+            "averageEncodingLength": 2.005333333333333,
             "codeLengths": {
               "1": {
                 "count": 91,
@@ -6342,7 +6342,7 @@
               }
             },
             "inputKeys": 1027,
-            "averageKeyLength": 2.7386666666666666,
+            "averageCodeLength": 2.7386666666666666,
             "keyLengths": {
               "1": {
                 "count": 6,
@@ -6378,7 +6378,7 @@
             "tokenRate": 0.48256320836966,
             "hanCharacters": 2214,
             "codeKeys": 4437,
-            "averageCodeLength": 4.008130081300813,
+            "averageEncodingLength": 4.008130081300813,
             "codeLengths": {
               "2": {
                 "count": 25,
@@ -6402,7 +6402,7 @@
               }
             },
             "inputKeys": 4447,
-            "averageKeyLength": 4.017163504968383,
+            "averageCodeLength": 4.017163504968383,
             "keyLengths": {
               "2": {
                 "count": 16,
@@ -6434,7 +6434,7 @@
             "tokenRate": 0.17480383609415867,
             "hanCharacters": 1203,
             "codeKeys": 1776,
-            "averageCodeLength": 4.428927680798005,
+            "averageEncodingLength": 4.428927680798005,
             "codeLengths": {
               "3": {
                 "count": 107,
@@ -6458,7 +6458,7 @@
               }
             },
             "inputKeys": 1878,
-            "averageKeyLength": 4.683291770573566,
+            "averageCodeLength": 4.683291770573566,
             "keyLengths": {
               "3": {
                 "count": 7,
@@ -6490,7 +6490,7 @@
             "tokenRate": 0.15126416739319964,
             "hanCharacters": 1388,
             "codeKeys": 1788,
-            "averageCodeLength": 5.152737752161383,
+            "averageEncodingLength": 5.152737752161383,
             "codeLengths": {
               "4": {
                 "count": 89,
@@ -6510,7 +6510,7 @@
               }
             },
             "inputKeys": 1790,
-            "averageKeyLength": 5.1585014409221905,
+            "averageCodeLength": 5.1585014409221905,
             "keyLengths": {
               "4": {
                 "count": 88,
@@ -6538,7 +6538,7 @@
             "tokenRate": 0.02789886660854403,
             "hanCharacters": 320,
             "codeKeys": 392,
-            "averageCodeLength": 6.125,
+            "averageEncodingLength": 6.125,
             "codeLengths": {
               "5": {
                 "count": 13,
@@ -6554,7 +6554,7 @@
               }
             },
             "inputKeys": 392,
-            "averageKeyLength": 6.125,
+            "averageCodeLength": 6.125,
             "keyLengths": {
               "5": {
                 "count": 13,
@@ -7103,7 +7103,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 8448,
-          "averageCodeLength": 3.8948824343015214,
+          "averageEncodingLength": 3.8948824343015214,
           "codeLengths": {
             "1": {
               "count": 66,
@@ -7135,7 +7135,7 @@
             }
           },
           "inputKeys": 9109,
-          "averageKeyLength": 4.199631166436146,
+          "averageCodeLength": 4.199631166436146,
           "keyLengths": {
             "1": {
               "count": 5,
@@ -7188,7 +7188,7 @@
             "tokenRate": 0.15398801290917474,
             "hanCharacters": 334,
             "codeKeys": 721,
-            "averageCodeLength": 2.158682634730539,
+            "averageEncodingLength": 2.158682634730539,
             "codeLengths": {
               "1": {
                 "count": 66,
@@ -7212,7 +7212,7 @@
               }
             },
             "inputKeys": 950,
-            "averageKeyLength": 2.844311377245509,
+            "averageCodeLength": 2.844311377245509,
             "keyLengths": {
               "1": {
                 "count": 5,
@@ -7244,7 +7244,7 @@
             "tokenRate": 0.46841862609497464,
             "hanCharacters": 2032,
             "codeKeys": 3852,
-            "averageCodeLength": 3.7913385826771653,
+            "averageEncodingLength": 3.7913385826771653,
             "codeLengths": {
               "2": {
                 "count": 97,
@@ -7268,7 +7268,7 @@
               }
             },
             "inputKeys": 3872,
-            "averageKeyLength": 3.811023622047244,
+            "averageCodeLength": 3.811023622047244,
             "keyLengths": {
               "2": {
                 "count": 77,
@@ -7300,7 +7300,7 @@
             "tokenRate": 0.15444905486399263,
             "hanCharacters": 1005,
             "codeKeys": 1430,
-            "averageCodeLength": 4.268656716417911,
+            "averageEncodingLength": 4.268656716417911,
             "codeLengths": {
               "3": {
                 "count": 79,
@@ -7320,7 +7320,7 @@
               }
             },
             "inputKeys": 1574,
-            "averageKeyLength": 4.6985074626865675,
+            "averageCodeLength": 4.6985074626865675,
             "keyLengths": {
               "3": {
                 "count": 11,
@@ -7352,7 +7352,7 @@
             "tokenRate": 0.15352697095435686,
             "hanCharacters": 1332,
             "codeKeys": 1599,
-            "averageCodeLength": 4.801801801801802,
+            "averageEncodingLength": 4.801801801801802,
             "codeLengths": {
               "4": {
                 "count": 96,
@@ -7368,7 +7368,7 @@
               }
             },
             "inputKeys": 1713,
-            "averageKeyLength": 5.1441441441441444,
+            "averageCodeLength": 5.1441441441441444,
             "keyLengths": {
               "4": {
                 "count": 96,
@@ -7400,7 +7400,7 @@
             "tokenRate": 0.06961733517750116,
             "hanCharacters": 797,
             "codeKeys": 846,
-            "averageCodeLength": 5.602649006622516,
+            "averageEncodingLength": 5.602649006622516,
             "codeLengths": {
               "5": {
                 "count": 71,
@@ -7416,7 +7416,7 @@
               }
             },
             "inputKeys": 1000,
-            "averageKeyLength": 6.622516556291391,
+            "averageCodeLength": 6.622516556291391,
             "keyLengths": {
               "5": {
                 "count": 19,
@@ -7979,7 +7979,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 8525,
-          "averageCodeLength": 3.9376443418013856,
+          "averageEncodingLength": 3.9376443418013856,
           "codeLengths": {
             "1": {
               "count": 65,
@@ -8015,7 +8015,7 @@
             }
           },
           "inputKeys": 9204,
-          "averageKeyLength": 4.251270207852194,
+          "averageCodeLength": 4.251270207852194,
           "keyLengths": {
             "1": {
               "count": 4,
@@ -8076,7 +8076,7 @@
             "tokenRate": 0.1491916859122402,
             "hanCharacters": 323,
             "codeKeys": 680,
-            "averageCodeLength": 2.1052631578947367,
+            "averageEncodingLength": 2.1052631578947367,
             "codeLengths": {
               "1": {
                 "count": 65,
@@ -8104,7 +8104,7 @@
               }
             },
             "inputKeys": 909,
-            "averageKeyLength": 2.8142414860681115,
+            "averageCodeLength": 2.8142414860681115,
             "keyLengths": {
               "1": {
                 "count": 4,
@@ -8140,7 +8140,7 @@
             "tokenRate": 0.47575057736720555,
             "hanCharacters": 2060,
             "codeKeys": 3960,
-            "averageCodeLength": 3.8446601941747574,
+            "averageEncodingLength": 3.8446601941747574,
             "codeLengths": {
               "2": {
                 "count": 97,
@@ -8164,7 +8164,7 @@
               }
             },
             "inputKeys": 3984,
-            "averageKeyLength": 3.8679611650485435,
+            "averageCodeLength": 3.8679611650485435,
             "keyLengths": {
               "2": {
                 "count": 73,
@@ -8196,7 +8196,7 @@
             "tokenRate": 0.15381062355658198,
             "hanCharacters": 999,
             "codeKeys": 1423,
-            "averageCodeLength": 4.273273273273273,
+            "averageEncodingLength": 4.273273273273273,
             "codeLengths": {
               "3": {
                 "count": 79,
@@ -8216,7 +8216,7 @@
               }
             },
             "inputKeys": 1571,
-            "averageKeyLength": 4.717717717717718,
+            "averageCodeLength": 4.717717717717718,
             "keyLengths": {
               "3": {
                 "count": 16,
@@ -8252,7 +8252,7 @@
             "tokenRate": 0.15288683602771364,
             "hanCharacters": 1324,
             "codeKeys": 1619,
-            "averageCodeLength": 4.891238670694864,
+            "averageEncodingLength": 4.891238670694864,
             "codeLengths": {
               "4": {
                 "count": 94,
@@ -8272,7 +8272,7 @@
               }
             },
             "inputKeys": 1724,
-            "averageKeyLength": 5.20845921450151,
+            "averageCodeLength": 5.20845921450151,
             "keyLengths": {
               "4": {
                 "count": 94,
@@ -8308,7 +8308,7 @@
             "tokenRate": 0.06836027713625865,
             "hanCharacters": 794,
             "codeKeys": 843,
-            "averageCodeLength": 5.695945945945946,
+            "averageEncodingLength": 5.695945945945946,
             "codeLengths": {
               "5": {
                 "count": 67,
@@ -8328,7 +8328,7 @@
               }
             },
             "inputKeys": 1016,
-            "averageKeyLength": 6.864864864864865,
+            "averageCodeLength": 6.864864864864865,
             "keyLengths": {
               "5": {
                 "count": 17,
@@ -8896,7 +8896,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 9536,
-          "averageCodeLength": 3.7676807585934413,
+          "averageEncodingLength": 3.7676807585934413,
           "codeLengths": {
             "1": {
               "count": 252,
@@ -8936,7 +8936,7 @@
             }
           },
           "inputKeys": 9942,
-          "averageKeyLength": 3.9280916633741603,
+          "averageCodeLength": 3.9280916633741603,
           "keyLengths": {
             "1": {
               "count": 6,
@@ -8985,7 +8985,7 @@
             "tokenRate": 0.22323192414065587,
             "hanCharacters": 565,
             "codeKeys": 1079,
-            "averageCodeLength": 1.9097345132743362,
+            "averageEncodingLength": 1.9097345132743362,
             "codeLengths": {
               "1": {
                 "count": 252,
@@ -9017,7 +9017,7 @@
               }
             },
             "inputKeys": 1466,
-            "averageKeyLength": 2.594690265486726,
+            "averageCodeLength": 2.594690265486726,
             "keyLengths": {
               "1": {
                 "count": 6,
@@ -9057,7 +9057,7 @@
             "tokenRate": 0.5432635322007112,
             "hanCharacters": 2750,
             "codeKeys": 5539,
-            "averageCodeLength": 4.028363636363636,
+            "averageEncodingLength": 4.028363636363636,
             "codeLengths": {
               "2": {
                 "count": 25,
@@ -9085,7 +9085,7 @@
               }
             },
             "inputKeys": 5558,
-            "averageKeyLength": 4.0421818181818185,
+            "averageCodeLength": 4.0421818181818185,
             "keyLengths": {
               "2": {
                 "count": 6,
@@ -9121,7 +9121,7 @@
             "tokenRate": 0.11181351244567364,
             "hanCharacters": 849,
             "codeKeys": 1361,
-            "averageCodeLength": 4.809187279151944,
+            "averageEncodingLength": 4.809187279151944,
             "codeLengths": {
               "4": {
                 "count": 98,
@@ -9141,7 +9141,7 @@
               }
             },
             "inputKeys": 1361,
-            "averageKeyLength": 4.809187279151944,
+            "averageCodeLength": 4.809187279151944,
             "keyLengths": {
               "4": {
                 "count": 98,
@@ -9169,7 +9169,7 @@
             "tokenRate": 0.10075069142631371,
             "hanCharacters": 1020,
             "codeKeys": 1271,
-            "averageCodeLength": 4.984313725490196,
+            "averageEncodingLength": 4.984313725490196,
             "codeLengths": {
               "4": {
                 "count": 98,
@@ -9197,7 +9197,7 @@
               }
             },
             "inputKeys": 1271,
-            "averageKeyLength": 4.984313725490196,
+            "averageCodeLength": 4.984313725490196,
             "keyLengths": {
               "4": {
                 "count": 98,
@@ -9233,7 +9233,7 @@
             "tokenRate": 0.020940339786645595,
             "hanCharacters": 316,
             "codeKeys": 286,
-            "averageCodeLength": 5.39622641509434,
+            "averageEncodingLength": 5.39622641509434,
             "codeLengths": {
               "4": {
                 "count": 14,
@@ -9257,7 +9257,7 @@
               }
             },
             "inputKeys": 286,
-            "averageKeyLength": 5.39622641509434,
+            "averageCodeLength": 5.39622641509434,
             "keyLengths": {
               "4": {
                 "count": 14,
@@ -9785,7 +9785,7 @@
           "tokenRate": 1,
           "hanCharacters": 5500,
           "codeKeys": 10528,
-          "averageCodeLength": 3.174909529553679,
+          "averageEncodingLength": 3.174909529553679,
           "codeLengths": {
             "1": {
               "count": 365,
@@ -9813,7 +9813,7 @@
             }
           },
           "inputKeys": 11854,
-          "averageKeyLength": 3.574788902291918,
+          "averageCodeLength": 3.574788902291918,
           "keyLengths": {
             "1": {
               "count": 10,
@@ -9854,7 +9854,7 @@
             "tokenRate": 0.4013872135102533,
             "hanCharacters": 1331,
             "codeKeys": 2903,
-            "averageCodeLength": 2.18106686701728,
+            "averageEncodingLength": 2.18106686701728,
             "codeLengths": {
               "1": {
                 "count": 365,
@@ -9882,7 +9882,7 @@
               }
             },
             "inputKeys": 4066,
-            "averageKeyLength": 3.054845980465815,
+            "averageCodeLength": 3.054845980465815,
             "keyLengths": {
               "1": {
                 "count": 10,
@@ -9922,7 +9922,7 @@
             "tokenRate": 0.5591073582629674,
             "hanCharacters": 3708,
             "codeKeys": 7113,
-            "averageCodeLength": 3.836569579288026,
+            "averageEncodingLength": 3.836569579288026,
             "codeLengths": {
               "2": {
                 "count": 126,
@@ -9938,7 +9938,7 @@
               }
             },
             "inputKeys": 7265,
-            "averageKeyLength": 3.918554476806904,
+            "averageCodeLength": 3.918554476806904,
             "keyLengths": {
               "2": {
                 "count": 19,
@@ -9962,7 +9962,7 @@
             "tokenRate": 0.018998793727382387,
             "hanCharacters": 189,
             "codeKeys": 240,
-            "averageCodeLength": 3.8095238095238093,
+            "averageEncodingLength": 3.8095238095238093,
             "codeLengths": {
               "3": {
                 "count": 12,
@@ -9974,7 +9974,7 @@
               }
             },
             "inputKeys": 251,
-            "averageKeyLength": 3.984126984126984,
+            "averageCodeLength": 3.984126984126984,
             "keyLengths": {
               "3": {
                 "count": 1,
@@ -9994,7 +9994,7 @@
             "tokenRate": 0.020506634499396863,
             "hanCharacters": 272,
             "codeKeys": 272,
-            "averageCodeLength": 4,
+            "averageEncodingLength": 4,
             "codeLengths": {
               "4": {
                 "count": 68,
@@ -10002,7 +10002,7 @@
               }
             },
             "inputKeys": 272,
-            "averageKeyLength": 4,
+            "averageCodeLength": 4,
             "keyLengths": {
               "4": {
                 "count": 68,
@@ -10018,10 +10018,10 @@
             "tokenRate": 0,
             "hanCharacters": 0,
             "codeKeys": 0,
-            "averageCodeLength": 0,
+            "averageEncodingLength": 0,
             "codeLengths": {},
             "inputKeys": 0,
-            "averageKeyLength": 0,
+            "averageCodeLength": 0,
             "keyLengths": {},
             "selections": 0,
             "selectionRate": 0
