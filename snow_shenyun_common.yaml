@@ -141,6 +141,7 @@ shenyun:
     - snow_pinyin.user
   enable_sentence: false
   enable_completion: false
+  enable_word_completion: true
   enable_user_dict: true
   preedit_format: null
 
@@ -165,7 +166,7 @@ vacancy:
   enable_user_dict: false
 
 speller:
-  alphabet: abcdefghijklmnopqrstuvwxyz
+  alphabet: abcdefghijklmnopqrstuvwxyzBPMFDTNLGKHJQWVXRZCSY
   initials: bpmfdtnlgkhjqwvxrzcsy
   delimiter: " "
   popping:
@@ -199,6 +200,10 @@ speller:
     - match: "^[bpmfdtnlgkhjqwvxrzcsy][a-z][bpmfdtnlgkhjqwvxrzcsy][a-z][aeuio]$"
       accept: "[aeuio]"
       strategy: append
+    # 四声母后的大写是显式长词续写；保持大写标记，避免普通小写第五键绕过四码顶。
+    - match: "^[bpmfdtnlgkhjqwvxrzcsy]{4}[BPMFDTNLGKHJQWVXRZCSY]*$"
+      accept: "[BPMFDTNLGKHJQWVXRZCSY]"
+      strategy: append_raw
     # 其余字母先尝试追加；不能形成候选时顶出完整码首选，再重放该键。
     - match: "^[a-z]+$"
       accept: "[a-z]"

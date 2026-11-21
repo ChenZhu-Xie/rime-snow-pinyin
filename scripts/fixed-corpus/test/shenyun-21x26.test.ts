@@ -596,7 +596,10 @@ test("A、U、B 键类独立，逗号句号只由标点处理", () => {
 		[...auxiliary].some((key) => initial.includes(key)),
 		false,
 	);
-	assert.equal(common.speller.alphabet, "abcdefghijklmnopqrstuvwxyz");
+	assert.equal(
+		common.speller.alphabet,
+		"abcdefghijklmnopqrstuvwxyzBPMFDTNLGKHJQWVXRZCSY",
+	);
 	assert.equal(final.includes(",") || final.includes("."), false);
 	assert.deepEqual(common.speller.popping.slice(0, 8), [
 		{
@@ -642,14 +645,38 @@ test("A、U、B 键类独立，逗号句号只由标点处理", () => {
 		},
 	]);
 	assert.deepEqual(common.speller.popping[8], {
+		match: "^[bpmfdtnlgkhjqwvxrzcsy]{4}[BPMFDTNLGKHJQWVXRZCSY]*$",
+		accept: "[BPMFDTNLGKHJQWVXRZCSY]",
+		strategy: "append_raw",
+	});
+	assert.deepEqual(common.speller.popping[9], {
 		match: "^[a-z]+$",
 		accept: "[a-z]",
 		strategy: "conditional",
 	});
-	assert.deepEqual(common.speller.popping[9], {
+	assert.deepEqual(common.speller.popping[10], {
 		match: ".*[a-z0-9]",
 		accept: "[^a-z0-9 ]",
 	});
+});
+
+test("21×26 长词显式续写与词补全不放宽原有音节补全", () => {
+	const common = load(commonSource) as {
+		shenyun: { enable_completion: boolean; enable_word_completion: boolean };
+		speller: { popping: Array<{ match: string; accept: string; strategy?: string }> };
+	};
+	assert.equal(common.shenyun.enable_completion, false);
+	assert.equal(common.shenyun.enable_word_completion, true);
+	const strategy = (input: string, incoming: string) =>
+		common.speller.popping.find(
+			(rule) => new RegExp(`^(?:${rule.match})$`).test(input) &&
+				new RegExp(`^(?:${rule.accept})$`).test(incoming),
+		)?.strategy;
+	assert.equal(strategy("bpmf", "D"), "append_raw");
+	assert.equal(strategy("bpmfD", "T"), "append_raw");
+	assert.equal(strategy("bpmf", "d"), "conditional");
+	assert.equal(strategy("bpmf", "a"), "append");
+	assert.equal(strategy("bpmfDTN", "t"), undefined);
 });
 
 test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {

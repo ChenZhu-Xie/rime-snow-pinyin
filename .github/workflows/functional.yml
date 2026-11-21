@@ -60,6 +60,7 @@ jobs:
           lua5.4 spec/jiandao-toned-shape.test.lua
           lua5.4 spec/ued-shape.test.lua
           lua5.4 spec/shenyun-prefix-query.test.lua
+          lua5.4 spec/shenyun-longwords.test.lua
           lua5.4 spec/candidate_priority.test.lua
           lua5.4 spec/learned_priority.test.lua
           lua5.4 spec/postpone-learning.test.lua

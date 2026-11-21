@@ -1,6 +1,6 @@
 -- 冰雪鹤道 / 冰雪鹤拼的飞码式翻译器
 --
--- 主码族：一简 A、单字 AU / AUBBBB、空桶二字 AA、二字 AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA。
+-- 主码族：一简 A、单字 AU / AUBBBB、空桶二字 AA、二字 AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA、显式长词 AAAA+A…。
 -- 两个活动方案共用 RC26-39a5bfdc045342cd 声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
@@ -18,7 +18,7 @@ local initial_pair_aux = require "snow.initial_pair_aux"
 local jiandao_semantics = auxiliary_semantics["21x21"]
 local shenyun_semantics = auxiliary_semantics["21x26"]
 
-local this = {}
+local translator = {}
 
 ---@class ShenyunEnv: BihuaEnv
 ---@field translator Translator
@@ -288,9 +288,13 @@ local function format_preedit(route, mode, first_generation, pair_standard_order
     return route.proxy .. (route.suffix ~= "" and
       (mode == "tone" and " 调笔[" or " 形[") .. route.suffix .. "]" or "")
   end
+  local proxy = route.proxy
+  if route.family == "AAAA" or route.family == "LONG" then
+    proxy = proxy:gsub(".", "%0 "):sub(1, -2)
+  end
   local positions = route.length == 1 and { 1 }
       or auxiliary_positions(route.length, mode, first_generation, pair_standard_order, three_word_order, four_word_order)
-  return auxiliary_hint.format_preedit(route.proxy, route.suffix, mode, positions)
+  return auxiliary_hint.format_preedit(proxy, route.suffix, mode, positions)
 end
 
 ---@param candidate Candidate
@@ -374,9 +378,13 @@ local function advance(stream, env)
     end
     -- 已消费完整 proxy 的候选经 prepare 后恰好消费 main_length。
     -- 先筛字数和辅码；只给真正进入合流的候选修正 _end / quality。
-    if candidate.type ~= "sentence" and utf8.len(candidate.text) == stream.route.length then
+    local length = utf8.len(candidate.text)
+    local is_long = length and (stream.route.family == "LONG" and length >= stream.route.length
+        or stream.route.family == "AAAA" and stream.route.suffix == ""
+          and candidate.type == "completion" and length >= 5)
+    if candidate.type ~= "sentence" and (length == stream.route.length or is_long) then
       -- 单键只提示声韵码，不需要为每个单字查询形辅、声调或笔画。
-      if stream.route.family == "A" then
+      if stream.route.family == "A" or is_long then
         stream.candidate = snow.prepare(candidate, stream.route.proxy)
         stream.auxiliary = ""
         return true
@@ -399,8 +407,15 @@ end
 local function routes_for(input, segment, env)
   local routes = {}
   local n = input:len()
-  if n > 6 then return routes end
   local A, U, B = env.initial_keys, env.final_keys, env.auxiliary_keys
+  -- 大写只在四声母以后表示显式续写。保留这个标记，普通小写第五键仍走四码顶。
+  local continuation = input:sub(5)
+  if n >= 5 and all_in(input:sub(1, 4), 1, A)
+      and continuation:match("^[A-Z]+$") and all_in(continuation:lower(), 1, A) then
+    add_route(routes, "LONG", input:lower(), "", n)
+    return routes
+  end
+  if n > 6 then return routes end
   local first_pair = n >= 2 and input:sub(1, 2) or ""
   local first_vacant = first_pair ~= "" and all_in(first_pair, 1, A)
       and vacancy.is_empty(first_pair, segment, env.vacancy_translator,
@@ -439,14 +454,14 @@ local function routes_for(input, segment, env)
     add_route(routes, "AAA+B", input:sub(1, 1) .. " " .. input:sub(2, 2) .. " " .. input:sub(3, 3), input:sub(4), 3)
   end
   if n >= 4 and all_in(input:sub(1, 4), 1, A) and all_in(input, 5, B) then
-    add_route(routes, "AAAA", input:sub(1, 1) .. " " .. input:sub(2, 2) .. " " ..
-      input:sub(3, 3) .. " " .. input:sub(4, 4), input:sub(5), 4)
+    -- 原生词补全要求查询消耗长度等于真实输入末尾；不能注入三个填充分隔符。
+    add_route(routes, "AAAA", input:sub(1, 4), input:sub(5), 4)
   end
   return routes
 end
 
 ---@param env ShenyunEnv
-function this.init(env)
+function translator.init(env)
   local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
@@ -474,7 +489,7 @@ end
 ---@param input string
 ---@param segment Segment
 ---@param env ShenyunEnv
-function this.func(input, segment, env)
+function translator.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
   ---@type table<string, UserPhraseWeight>
@@ -550,7 +565,7 @@ function this.func(input, segment, env)
 end
 
 ---@param env ShenyunEnv
-function this.fini(env)
+function translator.fini(env)
   env.translator = nil
   env.vacancy_translator = nil
   env.vacancy_memory = nil
@@ -564,8 +579,8 @@ function this.fini(env)
   collectgarbage()
 end
 
-function this.tags_match(segment, env)
+function translator.tags_match(segment, env)
   return segment:has_tag("abc")
 end
 
-return this
+return translator

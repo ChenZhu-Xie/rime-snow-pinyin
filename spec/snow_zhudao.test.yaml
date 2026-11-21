@@ -15,6 +15,16 @@ script: |
     return true
   end
 deploy:
+  long_words:
+    tests:
+      - send: kyfx
+        assert: has("科学发展观") and commit == nil
+      - send: kyfxG
+        assert: cand[1].text == "科学发展观" and commit == nil
+      - send: xhrmGHG
+        assert: cand[1].text == "中华人民共和国" and commit == nil
+      - send: "kyfxG "
+        assert: commit == "科学发展观"
   entry_contract:
     tests:
       # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。
