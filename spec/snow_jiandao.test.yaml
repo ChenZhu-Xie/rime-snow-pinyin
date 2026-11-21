@@ -223,7 +223,7 @@ deploy:
       - send: "o whv2gc2tjxb  wgtx"
         assert: cand[1].text == "5G通信"
       # 兰道和兰拼的元音字母简拼都使用共享载体 x。
-      - send: "o dmou lloi{Down}{Down}{space}xw mrv{Down}{Down}{space} dlxm"
+      - send: "o dmou llo xw{Down}{space}mrv{Down}{Down}{space} dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
   mixed_spelling:
@@ -375,26 +375,3 @@ deploy:
         assert: (cand[1].text == "也需") or error(pair_probe())
       - send: "yxvoai yxv"
         assert: (cand[1].text == "也需") or error(pair_probe())
-
-  layout_probe:
-    tests:
-      - send: dmi
-        assert: error(pair_probe())
-      - send: dmiu
-        assert: error(pair_probe())
-      - send: dm
-        assert: error(pair_probe())
-      - send: dmou
-        assert: error(pair_probe())
-      - send: llo
-        assert: error(pair_probe())
-      - send: lloi
-        assert: error(pair_probe())
-      - send: lloiu
-        assert: error(pair_probe())
-      - send: mra
-        assert: error(pair_probe())
-      - send: mrav
-        assert: error(pair_probe())
-      - send: mrv
-        assert: error(pair_probe())

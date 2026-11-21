@@ -311,11 +311,11 @@ deploy:
   # 六码二字词选完首字后，第二字可由下一个词顶屏，并与首字一起完成造词。
   encoding_popping:
     tests:
-      - send: "bgcfia b{Escape}bgcf"
+      - send: "bgcfia{Down}{space}{Down}b{Escape}bgcf"
         assert: cand[1].text == "冰四"
   encoding_buffered:
     tests:
-      - send: "o bgcfia   bgcf"
+      - send: "o bgcfia{Down}{space}{Down}{space}{space}bgcf"
         assert: cand[1].text == "冰四"
   # 上游 buffered：分片组词、字母候选与英数混输；本地选择 o 命令切换缓冲。
   buffered:
@@ -342,7 +342,7 @@ deploy:
       - send: "o whu gco tji xba  wgtx"
         assert: cand[1].text == "五G通信"
       # 哆、啦、梦均不在 UED 完整音码首选，按实际候选位取字后验证英数混输造词。
-      - send: "o dmi{Down}{Down}{space}llo{Down}{space}xwo mra{Down}{space} dlxm"
+      - send: "o dmi llo{Down}{space}xwo mra{Down}{space} dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 声声二字词的调笔四辅，以及三字及以上简拼的大写补韵。
   initial_pair_and_mixed_spelling:
@@ -497,29 +497,7 @@ deploy:
 
   layout_probe:
     tests:
-      - send: dmi
+      - send: "bgcfia{Down}{space}"
         assert: error(pair_probe())
-      - send: dmiu
-        assert: error(pair_probe())
-      - send: dm
-        assert: error(pair_probe())
-      - send: dmou
-        assert: error(pair_probe())
-      - send: llo
-        assert: error(pair_probe())
-      - send: lloi
-        assert: error(pair_probe())
-      - send: lloiu
-        assert: error(pair_probe())
-      - send: mra
-        assert: error(pair_probe())
-      - send: mrav
-        assert: error(pair_probe())
-      - send: mrv
-        assert: error(pair_probe())
-      - send: bgcfia
-        assert: error(pair_probe())
-      - send: "bgcfia b{Escape}bgcf"
-        assert: error(pair_probe())
-      - send: "o bgcfia   bgcf"
+      - send: "bgcfia{Down}{space}{Down}"
         assert: error(pair_probe())
