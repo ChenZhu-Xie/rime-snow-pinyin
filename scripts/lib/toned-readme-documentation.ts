@@ -133,8 +133,6 @@ function tonedSections(language: BenchmarkLanguage) {
 					: `声母／零声母、输入示例、字母占用桶、固顶同码和运行时空桶规则见[${name}](docs/${link}.md)。研究音节域的静态空码与运行时声声空桶使用不同词典和口径，不能互相替代。配置是生成来源。`;
 		details.push(
 			`#### ${name} · ${config.id}`,
-			prose,
-			rows.length > 0 ? table(label, rows) : "",
 			`![${name}](lua/snow/keymaps/${scheme === "Liandao" ? "snow_jiandao_toned" : "snow_zhudao"}.svg)`,
 			language === "en"
 				? "**Continuous double-pinyin key frequencies (daily corpus, punctuation included)**"
@@ -147,6 +145,8 @@ function tonedSections(language: BenchmarkLanguage) {
 				: language === "zht"
 					? "直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。"
 					: "直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。",
+			prose,
+			rows.length > 0 ? table(label, rows) : "",
 		);
 	}
 	return (

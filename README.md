@@ -236,6 +236,14 @@
 
 #### 冰雪莲道 · CR-REF-7e650f7a4c
 
+![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+
+**日常八场景连续双拼键频图（含标点）**
+
+![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+
+直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。
+
 声母／零声母、输入示例、字母占用桶、固顶同码和运行时空桶规则见[冰雪莲道](docs/liandao.md)。研究音节域的静态空码与运行时声声空桶使用不同词典和口径，不能互相替代。配置是生成来源。
 
 | 韵母组 | 4 声 | 2/3 声 | 1/5 声 |
@@ -251,15 +259,15 @@
 | ai / ang / iang / uai / uang | `Y` | `H` | `Z` |
 | an / ian / uan / van | `Q` | `K` | `M` |
 
-![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+#### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
+
+![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
 
 **日常八场景连续双拼键频图（含标点）**
 
-![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
 
 直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。
-
-#### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
 声母／零声母、输入示例、字母占用桶、固顶同码和运行时空桶规则见[冰雪鹮道](docs/zhudao.md)。研究音节域的静态空码与运行时声声空桶使用不同词典和口径，不能互相替代。配置是生成来源。
 
@@ -275,14 +283,6 @@
 | i / o / uo / io | `O` | `K` | `Z` |
 | ou / iou | `T` | `D` | `B` |
 | eng / ing / ueng | `R` | `L` | `N` |
-
-![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
-
-**日常八场景连续双拼键频图（含标点）**
-
-![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
-
-直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。
 
 ### 固顶、空桶与逐级简码
 
@@ -691,6 +691,14 @@ Numbers share the codes of their corresponding Han numerals. When Han candidates
 
 #### 冰雪莲道 · CR-REF-7e650f7a4c
 
+![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+
+**Continuous double-pinyin key frequencies (daily corpus, punctuation included)**
+
+![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+
+The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded.
+
 Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions and runtime vacancy rules: [冰雪莲道](docs/liandao.md). Research inventory vacancies and runtime initial-pair vacancies use different dictionaries and scopes. The configuration is the generation source.
 
 | Final group | Tone 4 | Tone 2/3 | Tone 1/5 |
@@ -706,15 +714,15 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 | ai / ang / iang / uai / uang | `Y` | `H` | `Z` |
 | an / ian / uan / van | `Q` | `K` | `M` |
 
-![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+#### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
+
+![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
 
 **Continuous double-pinyin key frequencies (daily corpus, punctuation included)**
 
-![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
 
 The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded.
-
-#### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
 Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions and runtime vacancy rules: [冰雪鹮道](docs/zhudao.md). Research inventory vacancies and runtime initial-pair vacancies use different dictionaries and scopes. The configuration is the generation source.
 
@@ -730,14 +738,6 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 | i / o / uo / io | `O` | `K` | `Z` |
 | ou / iou | `T` | `D` | `B` |
 | eng / ing / ueng | `R` | `L` | `N` |
-
-![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
-
-**Continuous double-pinyin key frequencies (daily corpus, punctuation included)**
-
-![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
-
-The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded.
 
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
@@ -1055,6 +1055,14 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 #### 冰雪莲道 · CR-REF-7e650f7a4c
 
+![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+
+**日常八場景連續雙拼鍵頻圖（含標點）**
+
+![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+
+直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。
+
 聲母／零聲母、範例、字母占用桶、固頂同碼與執行時空桶規則見[冰雪莲道](docs/liandao.md)。研究音節域空碼與執行時聲聲空桶的詞典和口徑不同，不能互相替代。配置是生成來源。
 
 | 韻母組 | 4 聲 | 2/3 聲 | 1/5 聲 |
@@ -1070,15 +1078,15 @@ Reproducible current and historical layout comparisons are in the [appended five
 | ai / ang / iang / uai / uang | `Y` | `H` | `Z` |
 | an / ian / uan / van | `Q` | `K` | `M` |
 
-![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+#### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
+
+![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
 
 **日常八場景連續雙拼鍵頻圖（含標點）**
 
-![冰雪莲道 · 2149](docs/liandao-keyboard-heat.svg)
+![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
 
 直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。
-
-#### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
 聲母／零聲母、範例、字母占用桶、固頂同碼與執行時空桶規則見[冰雪鹮道](docs/zhudao.md)。研究音節域空碼與執行時聲聲空桶的詞典和口徑不同，不能互相替代。配置是生成來源。
 
@@ -1094,14 +1102,6 @@ Reproducible current and historical layout comparisons are in the [appended five
 | i / o / uo / io | `O` | `K` | `Z` |
 | ou / iou | `T` | `D` | `B` |
 | eng / ing / ueng | `R` | `L` | `N` |
-
-![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
-
-**日常八場景連續雙拼鍵頻圖（含標點）**
-
-![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
-
-直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。
 
 ### 固頂、空桶與逐級簡碼
 
