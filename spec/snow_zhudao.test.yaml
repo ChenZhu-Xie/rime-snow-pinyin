@@ -118,9 +118,11 @@ deploy:
         assert: has("报答") and cand[1].text ~= "报答"
       - send: bdiuue
         assert: cand[1].text == "报答"
-      # 学习后已迁入 bd 首选；继续补辅时也必须将它后置。
-      - send: "bdiuue bd"
-        assert: cand[1].text == "报答" and commit == "报答"
+      # bd 固顶「不到」不能被学习权重覆盖；在未固顶的 bdi 取首选后停止补辅。
+      - send: "bdiuue bdi"
+        assert: (cand[1].text == "报答" and commit == "报答") or error("first=" .. tostring(cand[1].text) .. ", commit=" .. tostring(commit))
+      - send: bd
+        assert: cand[1].text == "不到" and has("报答") and commit == nil
       - send: bdiu
         assert: cand[1].text ~= "报答" and has("报答") and commit == nil
   reverse_lookup:
