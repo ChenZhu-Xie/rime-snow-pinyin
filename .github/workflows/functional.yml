@@ -129,6 +129,7 @@ jobs:
         if: runner.os == 'macOS'
         run: bash tools/keymap-helper/build-macos.sh
       - name: 安装 Linux 桌面测试环境
+        id: linux-desktop
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
@@ -143,7 +144,7 @@ jobs:
             env -u WAYLAND_DISPLAY python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop/x11
           '
       - name: 检查原生 Wayland 隐藏与缓存重开
-        if: runner.os == 'Linux'
+        if: ${{ !cancelled() && runner.os == 'Linux' && steps.linux-desktop.outcome == 'success' }}
         run: |
           export XDG_RUNTIME_DIR="$(mktemp -d)"
           weston --backend=headless-backend.so --socket=snow-keymap-test --idle-time=0 --log="$XDG_RUNTIME_DIR/weston.log" &

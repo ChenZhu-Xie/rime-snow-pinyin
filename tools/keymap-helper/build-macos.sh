@@ -14,5 +14,5 @@ lipo -create \
   "$helper/target/aarch64-apple-darwin/release/snow-keymap" \
   -output "$binary"
 codesign --force --sign - "$binary"
-lipo -verify_arch x86_64 arm64 "$binary"
+lipo "$binary" -verify_arch x86_64 arm64
 codesign --verify --strict "$binary"
