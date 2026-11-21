@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { exact500Articles } from "./exact_500_articles";
+import { benchmarkTargetWords } from "./lib/benchmark-corpus";
 import {
 	type BenchmarkAlternative,
 	type BenchmarkPathResult,
@@ -56,27 +57,11 @@ const sourceDirectory = resolve(
 		? (process.argv[sourceArgument + 1] ?? "")
 		: join(process.env.APPDATA ?? "", "Rime"),
 );
-const sourceLabel = sourceArgument >= 0 ? "--source-dir" : "%APPDATA%/Rime";
 if (!existsSync(join(sourceDirectory, "sbxh.schema.yaml")))
 	throw new Error(`找不到声笔小鹤方案：${sourceDirectory}`);
 
 const allLines = exact500Articles.flatMap((article) => article.lines);
-const targetWords = new Set<string>();
-for (const text of allLines) {
-	const characters = [...text];
-	for (let start = 0; start < characters.length; start += 1) {
-		if (!/\p{Script=Han}/u.test(characters[start])) continue;
-		for (
-			let length = 1;
-			length <= 12 && start + length <= characters.length;
-			length += 1
-		) {
-			const word = characters.slice(start, start + length).join("");
-			if (!/^\p{Script=Han}+$/u.test(word)) break;
-			targetWords.add(word);
-		}
-	}
-}
+const targetWords = benchmarkTargetWords(allLines);
 
 const reverseWords = [...targetWords].sort();
 const reverseCodes = new Map<string, string[]>();
@@ -232,7 +217,7 @@ console.log(
 	`声笔小鹤候选探针：赛文子串 ${targetWords.size}，外部反查词 ${reverseCodes.size}，反查四码 ${reverseCodeHits}，外部静态命中 ${staticRows}。`,
 );
 
-const ranked: RankedBenchmarkCode[] = [];
+const ranked: Pick<RankedBenchmarkCode, "word" | "code" | "rank">[] = [];
 const sourceByWordCode = new Map<string, SourceKind>();
 const queriedCodes = new Map<string, string[]>();
 const firstLengthByWord = new Map<string, number>();
@@ -552,7 +537,7 @@ const aggregate = {
 const baselinePath = join(
 	ROOT,
 	"reports",
-	"5000字_当前八方案最优切分实测结果.json",
+	"5000字_当前十方案最优切分实测结果.json",
 );
 const baseline = JSON.parse(readFileSync(baselinePath, "utf8")) as {
 	contract: string;
@@ -571,7 +556,10 @@ const sbxhResult = {
 	auxiliaryMode: "笔画",
 	auxiliaryOrder:
 		"单字第三笔起；二字首字前二笔+末字前四笔；三字以上前三字各前二笔",
-	externalSource: sourceLabel,
+	externalSource: sourceDirectory,
+	reverseCache: portableReverseCache,
+	reverseSourceHash: reverseCacheHash,
+	candidateCache: oracle.cacheDirectory(),
 	staticRows,
 	reverseWords: reverseWords.length,
 	reverseWordHits: reverseCodes.size,
@@ -581,7 +569,7 @@ const sbxhResult = {
 	articles: articleResults.map((result) => result.stat),
 };
 const resultContract =
-	"current-nine-scheme-benchmark-v1-external-sbxh-rime-oracle";
+	"current-eleven-scheme-benchmark-v2-external-sbxh-rime-oracle";
 writeBenchmarkReplayCache(
 	join(ROOT, "output", "benchmark-replays", "sbxh.json"),
 	{
@@ -593,7 +581,7 @@ writeBenchmarkReplayCache(
 );
 const combinedSchemes = { ...baseline.schemes, sbxh: sbxhResult };
 writeFileSync(
-	join(ROOT, "reports", "5000字_当前九方案最优切分实测结果.json"),
+	join(ROOT, "reports", "5000字_当前十一方案最优切分实测结果.json"),
 	`${JSON.stringify(
 		{
 			contract: resultContract,
@@ -616,9 +604,9 @@ const ranking = [
 ].sort((a, b) => a.keys - b.keys);
 
 const report = [
-	"# 十篇五百字（5000 字全语料）：当前九方案最优切分实战测评",
+	"# 十篇五百字（5000 字全语料）：当前十一方案最优切分实战测评",
 	"",
-	"> 本报告在冰雪当前八方案同一赛文、同一按键计数和同一“先最少选重、再最少按键”基线上加入外部声笔小鹤。声笔小鹤的可用词、标准码、静态简码、笔画补码和候选排名均来自其自己的发布文件及空白 user dict 真实部署。",
+	"> 本报告在冰雪当前十方案同一赛文、同一按键计数和同一「先最少选重、再最少按键」基线上加入外部声笔小鹤。声笔小鹤的可用词、标准码、静态简码、笔画补码和候选排名均来自其自己的发布文件及空白 user dict 真实部署。",
 	"",
 	"## 总排名",
 	"",
@@ -632,9 +620,9 @@ const report = [
 	"## 声笔小鹤合同与结果",
 	"",
 	`- 总按键 **${aggregate.keys}**，平均码长 **${(aggregate.keys / 5000).toFixed(4)}**，Space ${aggregate.spaces}，Shift ${aggregate.shifts}，选重 ${aggregate.selections}。`,
-	`- 共枚举赛文连续汉字子串 ${reverseWords.length} 个；外部词典反查命中 ${reverseCodes.size} 个词、${reverseCodeHits} 个四码；外部静态简码命中 ${staticRows} 条；按“到达首选即截断”逐级查询 ${queriedCodes.size} 个去重编码。`,
+	`- 共枚举赛文连续汉字子串 ${reverseWords.length} 个；外部词典反查命中 ${reverseCodes.size} 个词、${reverseCodeHits} 个四码；外部静态简码命中 ${staticRows} 条；按「到达首选即截断」逐级查询 ${queriedCodes.size} 个去重编码。`,
 	"- 单字四码基码为双拼加前两笔，之后可继续补其余全部笔画；二字词四码主码为 `AaAbBaBb`，随后补首字前两笔与末字前四笔；三字词为 `AaBaCaCb`、四字及以上为 `AaBaCaZa`，随后补前三字各前两笔。Lua 自动码长翻译器允许这些标准码超过六码。",
-	"- 一码、二码以及二字三码简词均只读取外部 `sbxh.dict.yaml`。其中单字三码是双拼加首笔的标准声笔码；二字三码按本报告归入“630 类”，但仍是方案发布的有理静态简词。",
+	"- 一码、二码以及二字三码简词均只读取外部 `sbxh.dict.yaml`。其中单字三码是双拼加首笔的标准声笔码；二字三码按本报告归入「630 类」，但仍是方案发布的有理静态简词。",
 	"- 大写辅码与小写辅码候选等价却多一个 Shift，受按键目标支配；大写声母用于跨码顶屏时与 `Space + 小写声母` 同为两键，不能减少选重或总按键，因此最优路径中 Shift 为 0。",
 	"- 任何候选只有在真实空白部署中成为首选才可免选重；只有完全不存在首选打法时，才保留首页第 2～6 候选的一键 `2/3/7/8/9` 选重兜底。未引入无理码。",
 	"",
@@ -676,22 +664,22 @@ const report = [
 	"",
 	"## 可复现性",
 	"",
-	`- 外部来源：\`${sourceLabel}\`；只复制方案发布文件、Lua 与必需编译词典到一次性目录，明确排除 \`*.userdb\`、\`user.yaml\`、\`installation.yaml\` 和 \`*.custom.yaml\`。`,
+	`- 外部来源：\`${sourceDirectory}\`；只复制方案发布文件、Lua 与必需编译词典到一次性目录，明确排除 \`*.userdb\`、\`user.yaml\`、\`installation.yaml\` 和 \`*.custom.yaml\`。`,
 	"- 赛文子串先通过声笔小鹤自己的 `sbxh.extended.reverse.bin` 枚举标准四码，再按其 Lua 合同逐级追加全部合法笔画补码，直至首选即截断；没有借用冰雪词典的词条或读音。",
 	"- 每个编码由内容指纹缓存；外部方案文件、必需编译词典或 Rime DLL 任一变化都会自动切换缓存目录。",
 	"- 逐键回放中的 `_` 表示 Space；标点计一键。",
 ];
 const comparisonFilename =
-	"十篇五百字_5000字_当前九方案最优切分实战测评对齐汇编.txt";
+	"十篇五百字_5000字_当前十一方案最优切分实战测评对齐汇编.txt";
 report.push(
 	"",
 	"## 对齐汇编",
 	"",
-	"- [十篇逐篇当前九方案对齐回放](./十篇五百字_当前九方案逐键对齐回放/)",
-	`- [5000 字当前九方案纯文本对齐汇编](./${comparisonFilename})`,
+	"- [十篇逐篇当前十一方案对齐回放](./十篇五百字_当前十一方案逐键对齐回放/)",
+	`- [5000 字当前十一方案纯文本对齐汇编](./${comparisonFilename})`,
 );
 writeFileSync(
-	join(ROOT, "reports", "十篇五百字_当前九方案最优切分及字词比率报告.md"),
+	join(ROOT, "reports", "十篇五百字_当前十一方案最优切分及字词比率报告.md"),
 	report.join("\n"),
 	"utf8",
 );
@@ -719,13 +707,15 @@ const sbxhReplays = readBenchmarkReplayCache(
 	join(replayCacheDirectory, "sbxh.json"),
 );
 if (internalReplays.contract !== baseline.contract)
-	throw new Error("当前八方案回放缓存与当前九方案基线不一致，请重跑当前八方案");
+	throw new Error(
+		"当前十方案回放缓存与当前十一方案基线不一致，请重跑当前十方案",
+	);
 if (sbxhReplays.contract !== resultContract)
-	throw new Error("声笔小鹤回放缓存与当前九方案结果不一致，请重跑声笔小鹤");
+	throw new Error("声笔小鹤回放缓存与当前十一方案结果不一致，请重跑声笔小鹤");
 assertBenchmarkReplaySchemes(
 	internalReplays,
 	Object.keys(baseline.schemes),
-	"当前八方案",
+	"当前十方案",
 );
 assertBenchmarkReplaySchemes(sbxhReplays, ["sbxh"], "声笔小鹤");
 const replays: Record<string, BenchmarkArticleReplay[]> = {
@@ -734,7 +724,9 @@ const replays: Record<string, BenchmarkArticleReplay[]> = {
 };
 for (const [id] of schemeEntries) {
 	if (replays[id]?.length !== exact500Articles.length)
-		throw new Error(`方案 ${id} 缺少完整回放数据，请按当前八、九方案顺序重跑`);
+		throw new Error(
+			`方案 ${id} 缺少完整回放数据，请按当前十、十一方案顺序重跑`,
+		);
 }
 const statSummary = (stat: CombinedArticleStat) => {
 	const ratio = (count: number, total: number) =>
@@ -744,13 +736,13 @@ const statSummary = (stat: CombinedArticleStat) => {
 const combinedReplayDirectory = join(
 	ROOT,
 	"reports",
-	"十篇五百字_当前九方案逐键对齐回放",
+	"十篇五百字_当前十一方案逐键对齐回放",
 );
 mkdirSync(combinedReplayDirectory, { recursive: true });
 for (const [articleIndex, article] of exact500Articles.entries()) {
 	const firstStat = schemeEntries[0][1].articles[articleIndex];
 	const lines = [
-		`# 篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}·500 字）当前九方案实战回放`,
+		`# 篇 ${String(article.id).padStart(2, "0")}：${article.title}（${article.genre}·500 字）当前十一方案实战回放`,
 		"",
 		`- 口径：汉字 ${firstStat.hanCount} 个；标点 ${firstStat.punctCount} 个；均码 = 总实际按键 / ${firstStat.hanCount}。`,
 		...schemeEntries.map(
@@ -779,14 +771,14 @@ for (const [articleIndex, article] of exact500Articles.entries()) {
 	writeFileSync(
 		join(
 			combinedReplayDirectory,
-			`篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_当前九方案逐键对齐.md`,
+			`篇${String(article.id).padStart(2, "0")}_${article.genre}_500字_当前十一方案逐键对齐.md`,
 		),
 		lines.join("\n"),
 		"utf8",
 	);
 }
 const comparison = [
-	"当前九方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
+	"当前十一方案：十篇 500 字（共 5000 汉字）最优分词逐键实战测评回放汇编",
 	"====================================================================================================",
 	"口径：10 篇不同文体长文，每篇严格 500 汉字；标点计键；先最少选重次数，再最少实际按键；同为首选时优先最短标准码。只有完全没有首选打法时，才允许首页单键选重兜底（+1 键）。",
 	"记号：_ = Space（1 键）；⇧X = Shift+X（2 键）；排版空白不计键。",

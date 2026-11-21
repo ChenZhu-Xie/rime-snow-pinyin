@@ -232,6 +232,7 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 			["qingyun", "词语音码／单字形码"],
 			["rc26-shape", "12/12/24"],
 			["rc26-tone", "12/21/13"],
+			["liandao", "21/231/14"],
 			["zhudao", "21/12/23"],
 		],
 	);

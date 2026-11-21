@@ -32,17 +32,16 @@ export interface BenchmarkPathResult<Source extends string = string> {
 
 const fixedSources = new Set(["一简", "二简单字", "二简词", "630"]);
 
-export function preferredRankedCodes(
-	codes: RankedBenchmarkCode[],
-	maximumFallbackRank = 3,
-): RankedBenchmarkCode[] {
-	const byWord = new Map<string, RankedBenchmarkCode[]>();
+export function preferredRankedCodes<
+	T extends Pick<RankedBenchmarkCode, "word" | "code" | "rank">,
+>(codes: T[], maximumFallbackRank = 3): T[] {
+	const byWord = new Map<string, T[]>();
 	for (const code of codes) {
 		const values = byWord.get(code.word) ?? [];
 		values.push(code);
 		byWord.set(code.word, values);
 	}
-	const result: RankedBenchmarkCode[] = [];
+	const result: T[] = [];
 	for (const values of byWord.values()) {
 		const firstChoices = values.filter(({ rank }) => rank === 1);
 		if (firstChoices.length > 0) {

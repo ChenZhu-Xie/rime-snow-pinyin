@@ -25,6 +25,7 @@
 		"radical:check": "tsx generate-radical-codes.ts --check",
 		"benchmark:500": "bun 生成神韵500字实战测评.ts",
 		"benchmark:5000": "bun generate_full_benchmark_reports.ts",
+		"benchmark:5500": "bun run-5500-benchmark.ts",
 		"benchmark:sbxh:5000": "bun benchmark-sbxh-5000.ts",
 		"benchmark:flypy:5000": "bun benchmark-flypy-5000.ts",
 		"benchmark:ten:5000": "npm run benchmark:5000 && npm run benchmark:sbxh:5000 && npm run benchmark:flypy:5000",

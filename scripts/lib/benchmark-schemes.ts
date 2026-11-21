@@ -14,6 +14,7 @@ export type BenchmarkSchemeId =
 	| "oc21-shape"
 	| "rc26-tone"
 	| "rc26-shape"
+	| "liandao"
 	| "zhudao";
 
 export type BenchmarkCapacity = "四拼" | "21x9" | "21x21" | "21x26";
@@ -25,7 +26,14 @@ export interface BenchmarkScheme {
 	name: string;
 	shortName: string;
 	capacity: BenchmarkCapacity;
-	soundLayout: "sipin" | "qingyun" | "classic" | "oc21" | "rc26" | "zhudao";
+	soundLayout:
+		| "sipin"
+		| "qingyun"
+		| "classic"
+		| "oc21"
+		| "rc26"
+		| "liandao"
+		| "zhudao";
 	auxiliaryMode: BenchmarkAuxiliaryMode;
 	fixedFile: string;
 	auxiliaryOrder: string;
@@ -105,6 +113,17 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 		auxiliaryOrder: "12/21/13",
 	},
 	{
+		id: "liandao",
+		schemaId: "snow_jiandao_toned",
+		name: "冰雪莲道（CR-REF-7e650f7a4c 21×21 带调）",
+		shortName: "冰雪莲道",
+		capacity: "21x21",
+		soundLayout: "liandao",
+		auxiliaryMode: "shape",
+		fixedFile: "snow_jiandao_toned.fixed.txt",
+		auxiliaryOrder: "21/231/14",
+	},
+	{
 		id: "zhudao",
 		schemaId: "snow_zhudao",
 		name: "冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）",
@@ -168,6 +187,11 @@ const rc26Algebra = new SpellingAlgebra(
 const zhudaoAlgebra = new SpellingAlgebra(
 	rootPath("snow_zhudao.schema.yaml"),
 	"shenyun_algebra",
+	{ derive: false },
+);
+const liandaoAlgebra = new SpellingAlgebra(
+	rootPath("snow_jiandao_toned_common.yaml"),
+	"jiandao_toned_algebra",
 	{ derive: false },
 );
 const sipinAlgebra = new SpellingAlgebra(
@@ -292,6 +316,10 @@ export function suffixOutputCodes(
 }
 
 function soundCodes(scheme: BenchmarkScheme, syllable: string): string[] {
+	if (scheme.soundLayout === "liandao") {
+		const code = liandaoAlgebra.apply(syllable.replace(/0$/u, "5"));
+		return /^[a-z]{2}$/u.test(code) ? [code] : [];
+	}
 	if (scheme.soundLayout === "zhudao") {
 		const code = zhudaoAlgebra.apply(syllable.replace(/0$/u, "5"));
 		return /^[a-z]{2}$/u.test(code) ? [code] : [];

@@ -202,6 +202,9 @@ const BENCHMARK_DATA_PREFIXES = [
 	"snow_pinyin.",
 	"snow_sanpin",
 	"snow_shenyun_",
+	"snow_sipin.",
+	"snow_qingyun",
+	"snow_zhudao.",
 	"snow_xingpang.",
 ] as const;
 
@@ -389,5 +392,9 @@ export class RimeCandidateOracle {
 
 	cacheStats(): { hits: number; misses: number } {
 		return { hits: this.cacheHits, misses: this.cacheMisses };
+	}
+
+	cacheDirectory(): string {
+		return this.persistentCacheDirectory;
 	}
 }
