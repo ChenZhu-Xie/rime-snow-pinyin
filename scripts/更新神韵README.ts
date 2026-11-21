@@ -78,7 +78,7 @@ const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
 ![神韵(Overall-17) 21×26 5500 字最优路径全按键键频图](docs/shenyun-overall17-5500-keyboard-heat.svg)
 
-新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪鹤道共 9964 次实际按键，其中 Space 401、Shift 3、选重 0；短码、五辅键、空格、定字键、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。
+新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪鹤道共 9964 次实际按键，其中 Space 401、Shift 3、选重 0；短码、五辅键、空格、定字键、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。
 
 #### 声韵编码规则
 
@@ -177,7 +177,7 @@ Both SVGs are exported from the finalized entry in the benchmark page: the first
 
 ![Shenyun(Overall-17) 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-overall17-5500-keyboard-heat.svg)
 
-The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow Simple-Tao uses 9,964 actual keystrokes, including 401 Spaces, 3 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, character-selection keys, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.
+The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow Simple-Tao uses 9,964 actual keystrokes, including 401 Spaces, 3 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, character-selection keys, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.
 
 #### Coding rules
 
@@ -248,7 +248,7 @@ const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
 
 ![神韻(Overall-17) 21×26 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-overall17-5500-keyboard-heat.svg)
 
-新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪鶴道共 9964 次實際按鍵，其中 Space 401、Shift 3、選重 0；短碼、五輔鍵、空格、定字鍵、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。
+新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪鶴道共 9964 次實際按鍵，其中 Space 401、Shift 3、選重 0；短碼、五輔鍵、空格、定字鍵、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。
 
 #### 聲韻規則
 
@@ -701,7 +701,7 @@ function normalizeTerms(markdown: string) {
 
 ![无飞键道(U357) 21×21 5500 字最优路径全按键键频图](docs/shenyun-u357-5500-keyboard-heat.svg)
 
-新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪兰道共 9492 次实际按键，其中 Space 359、Shift 289、选重 0；短码、五辅键、空格、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。`,
+新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪兰道共 9492 次实际按键，其中 Space 359、Shift 289、选重 0；短码、五辅键、空格、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。`,
 		"![无飞键道(U357) 21×21 5500 字最优路径全按键键频图](docs/shenyun-u357-5500-keyboard-heat.svg)",
 	);
 	markdown = ensureAfter(
@@ -711,7 +711,7 @@ function normalizeTerms(markdown: string) {
 
 ![Wufei KeyTao(U357) 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-u357-5500-keyboard-heat.svg)
 
-The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow KeyTao uses 9,492 actual keystrokes, including 359 Spaces, 289 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.`,
+The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow KeyTao uses 9,492 actual keystrokes, including 359 Spaces, 289 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.`,
 		"![Wufei KeyTao(U357) 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-u357-5500-keyboard-heat.svg)",
 	);
 	markdown = ensureAfter(
@@ -721,7 +721,7 @@ The map is recomputed directly from the ten-scheme optimal-path replays over ele
 
 ![無飛鍵道(U357) 21×21 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)
 
-新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪兰道共 9492 次實際按鍵，其中 Space 359、Shift 289、選重 0；短碼、五輔鍵、空格、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。`,
+新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪兰道共 9492 次實際按鍵，其中 Space 359、Shift 289、選重 0；短碼、五輔鍵、空格、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。`,
 		"![無飛鍵道(U357) 21×21 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)",
 	);
 	return normalizeContractClaims(markdown);
@@ -1441,10 +1441,12 @@ ${zhBenchmark}
 
 现行与历史布局的可复算比较见 [五布局／六布局追加报告](reports/shenyun-comparison.md)。
 
-- [500 字冰雪十二方案实战测评](reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5000 字冰雪十二方案全量报告](reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5000 字十三方案报告（加入声笔小鹤）](reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5000 字十四方案报告（再加入小鹤音形）](reports/十篇五百字_十四方案最优切分及字词比率报告.md)
+当前校正后的测评：[5500 字十二方案与 11 个场景回放](reports/十一场景_5500字_当前十二方案对比评测.md)、[原 5000 字十二方案](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md)。以下旧版测评仅保留在 Git 历史。
+
+- [500 字冰雪十二方案实战测评](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
+- [5000 字冰雪十二方案全量报告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
+- [5000 字十三方案报告（加入声笔小鹤）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
+- [5000 字十四方案报告（再加入小鹤音形）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
 
 `;
 	const en = `### RC26-39a5bfdc045342cd 21×26 double pinyin
@@ -1558,10 +1560,10 @@ ${enBenchmark}
 
 Reproducible current and historical layout comparisons are in the [appended five-/six-layout report](reports/shenyun-comparison.md).
 
-- [500-character Snow twelve-scheme benchmark](reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5,000-character Snow twelve-scheme report](reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5,000-character thirteen-scheme report with 声笔小鹤](reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5,000-character fourteen-scheme report with 小鹤音形](reports/十篇五百字_十四方案最优切分及字词比率报告.md)
+- [500-character Snow twelve-scheme benchmark](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
+- [5,000-character Snow twelve-scheme report](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
+- [5,000-character thirteen-scheme report with 声笔小鹤](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
+- [5,000-character fourteen-scheme report with 小鹤音形](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
 
 `;
 	const zht = `### RC26-39a5bfdc045342cd 21×26 雙拼
@@ -1675,10 +1677,10 @@ ${zhtBenchmark}
 
 現行與歷史布局的可複算比較見[五布局／六布局追加報告](reports/shenyun-comparison.md)。
 
-- [500 字冰雪十二方案實戰測評](reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5000 字冰雪十二方案全量報告](reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5000 字十三方案報告（加入聲筆小鶴）](reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5000 字十四方案報告（再加入小鶴音形）](reports/十篇五百字_十四方案最优切分及字词比率报告.md)
+- [500 字冰雪十二方案實戰測評](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
+- [5000 字冰雪十二方案全量報告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
+- [5000 字十三方案報告（加入聲筆小鶴）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
+- [5000 字十四方案報告（再加入小鶴音形）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
 
 `;
 	let replaced = markdown

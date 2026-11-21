@@ -1,8 +1,12 @@
 // 从十四方案最优切分逐键回放生成神韵 5500 字全按键键频图。
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { rootPath } from "./lib/paths";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, relative } from "node:path";
+import {
+	readArchivedBenchmark,
+	listArchivedBenchmarkFiles,
+} from "./lib/archived-benchmark";
+import { ROOT, rootPath } from "./lib/paths";
 
 const title = "十一场景 5500 字最优路径全按键键频图";
 const replayDirectory = rootPath("reports", "十篇五百字_十四方案逐键对齐回放");
@@ -11,7 +15,7 @@ const benchmarkReportPath = rootPath(
 	"5000字_十四方案最优切分实测结果.json",
 );
 const outputReportPath = rootPath(
-	"reports",
+	"output/historical-benchmarks",
 	"神韵十一场景_5500字_最优路径全按键键频.json",
 );
 
@@ -94,7 +98,7 @@ const layouts: readonly Layout[] = [
 if (layouts.some(({ benchmarkName }) => benchmarkName === ""))
 	throw new Error("找不到热力图对应的 benchmark 方案。");
 
-const replayFiles = readdirSync(replayDirectory)
+const replayFiles = listArchivedBenchmarkFiles(relative(ROOT, replayDirectory))
 	.filter((filename) => filename.endsWith(".md"))
 	.sort((left, right) => left.localeCompare(right, "zh-CN"));
 if (replayFiles.length !== 10)
@@ -105,7 +109,7 @@ const duplicateReplay = replayFiles.find((filename) =>
 if (!duplicateReplay) throw new Error("找不到作为独立场景重复计算的第 10 篇。");
 
 const benchmarkReport = JSON.parse(
-	readFileSync(benchmarkReportPath, "utf8"),
+	readArchivedBenchmark(relative(ROOT, benchmarkReportPath)),
 ) as BenchmarkReport;
 
 function escapeXml(value: string): string {
@@ -187,7 +191,9 @@ function collectFiles(layout: Layout, filenames: readonly string[]): KeyCounts {
 	// 旧 benchmark 回放保留原名，只在读取时还原历史名称。
 	const prefix = `${layout.benchmarkName.replaceAll("冰雪鹤道", "冰雪简道").replaceAll("冰雪兰道", "冰雪健道")} `;
 	for (const filename of filenames) {
-		const lines = readFileSync(join(replayDirectory, filename), "utf8")
+		const lines = readArchivedBenchmark(
+			relative(ROOT, join(replayDirectory, filename)),
+		)
 			.split(/\r?\n/u)
 			.filter((line) => line.startsWith(prefix));
 		if (lines.length === 0)
@@ -321,6 +327,7 @@ function renderSvg(layout: Layout, result: KeyCounts): string {
 	return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 ${height}" role="img" aria-labelledby="title desc"><title id="title">${title}</title><desc id="desc">${description}</desc><rect width="940" height="${height}" fill="#f8f7ff"/>${groups.join("")}</svg>\n`;
 }
 
+mkdirSync(dirname(outputReportPath), { recursive: true });
 const previousSummary = existsSync(outputReportPath)
 	? (JSON.parse(readFileSync(outputReportPath, "utf8")) as {
 			contract?: string;
@@ -328,7 +335,11 @@ const previousSummary = existsSync(outputReportPath)
 			layouts?: Record<string, unknown>;
 			historical?: unknown;
 		})
-	: {};
+	: JSON.parse(
+			readArchivedBenchmark(
+				"reports/神韵十一场景_5500字_最优路径全按键键频.json",
+			),
+		);
 const historical =
 	previousSummary.contract === "snow-shenyun-5500-optimal-path-all-keys-v2"
 		? {

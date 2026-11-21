@@ -458,92 +458,55 @@ test("D/V 与 S2 异键同指率使用 benchmark 的原始口径", () => {
 	assert.ok(!r9Report.includes("S2 同指连击率"));
 });
 
-test("十一场景 5500 字全按键热力图与最优路径回放一致", () => {
-	const report = JSON.parse(
-		read("reports/神韵十一场景_5500字_最优路径全按键键频.json"),
-	) as {
-		corpus: { scenes: number; hanCharacters: number };
-		layouts: Record<
-			string,
-			{
-				totalKeystrokes: number;
-				spaces: number;
-				shifts: number;
-				selections: number;
-				nonZeroKeys: number;
-				auxiliaryKeys: string[];
-				counts: Record<string, number>;
-			}
-		>;
-	};
-	assert.equal(report.corpus.scenes, 11);
-	assert.equal(report.corpus.hanCharacters, 5500);
-	for (const [id, path, expected] of [
+test("\u5386\u53F2 5500 \u5B57\u70ED\u529B\u56FE\u81EA\u8EAB\u952E\u9891\u5B8C\u6574\uFF0C\u5F52\u6863\u62A5\u544A\u65E0\u9700\u7559\u5728\u5DE5\u4F5C\u6811", () => {
+	for (const [path, expected, auxiliaryKeys] of [
 		[
-			"d3v1-shape",
 			"docs/shenyun-d3v1-5500-keyboard-heat.svg",
 			{ keys: 9895, spaces: 382, shifts: 3, nonZeroKeys: 34 },
+			"AEUIO",
 		],
 		[
-			"qz-shape",
 			"docs/shenyun-qz-e8f37a-5500-keyboard-heat.svg",
 			{ keys: 9444, spaces: 376, shifts: 307, nonZeroKeys: 33 },
+			"AVUIO",
 		],
 		[
-			"overall17-first-shape",
 			"docs/shenyun-overall17-5500-keyboard-heat.svg",
 			{ keys: 9961, spaces: 406, shifts: 1, nonZeroKeys: 34 },
+			"AEUIO",
 		],
 		[
-			"u357-first-shape",
 			"docs/shenyun-u357-5500-keyboard-heat.svg",
 			{ keys: 9459, spaces: 393, shifts: 295, nonZeroKeys: 33 },
-		],
-		[
-			"overall17-shape",
-			"docs/shenyun-overall17-5500-keyboard-heat.svg",
-			{ keys: 9964, spaces: 401, shifts: 3, nonZeroKeys: 34 },
-		],
-		[
-			"u357-shape",
-			"docs/shenyun-u357-5500-keyboard-heat.svg",
-			{ keys: 9492, spaces: 359, shifts: 289, nonZeroKeys: 33 },
+			"AVUIO",
 		],
 	] as const) {
 		const svg = read(path);
-		const data = report.layouts[id];
 		includes(svg, 'viewBox="0 0 940 376"');
-		includes(svg, '<rect width="940" height="376" fill="#f8f7ff"/>');
 		includes(
 			svg,
-			'<title id="title">十一场景 5500 字最优路径全按键键频图</title>',
+			'<title id="title">\u5341\u4E00\u573A\u666F 5500 \u5B57\u6700\u4F18\u8DEF\u5F84\u5168\u6309\u952E\u952E\u9891\u56FE</title>',
 		);
-		assert.equal(svg.match(/data-mxkey=/gu)?.length, expected.nonZeroKeys);
-		assert.equal(data.totalKeystrokes, expected.keys);
-		assert.equal(data.spaces, expected.spaces);
-		assert.equal(data.shifts, expected.shifts);
-		assert.equal(data.selections, 0);
-		assert.equal(data.nonZeroKeys, expected.nonZeroKeys);
-		assert.equal(Object.keys(data.counts).length, expected.nonZeroKeys);
-		assert.ok(Object.values(data.counts).every((count) => count > 0));
+		const counts = Object.fromEntries(
+			[
+				...svg.matchAll(
+					/<g data-mxkey="([^"]+)"><title>[^<]+?\uFF1A(\d+) \u6B21/gu,
+				),
+			].map((match) => [match[1], Number(match[2])]),
+		);
+		assert.equal(Object.keys(counts).length, expected.nonZeroKeys);
 		assert.equal(
-			Object.values(data.counts).reduce((sum, count) => sum + count, 0),
+			Object.values(counts).reduce((sum, count) => sum + count, 0),
 			expected.keys,
 		);
-		for (const key of data.auxiliaryKeys)
-			assert.ok(data.counts[key] > 0, `${id} 辅键 ${key} 应有实际击键`);
-		assert.equal(data.counts.Space, expected.spaces);
-		assert.equal(data.counts.Shift, expected.shifts);
-		assert.equal(data.counts[","], 213);
-		assert.equal(data.counts["."], 154);
-		assert.equal(data.counts["\\"], 25);
-		for (const key of [..."1234567890"]) {
-			assert.equal(data.counts[key], undefined);
-			assert.ok(!svg.includes(`data-mxkey="${key}"`));
-		}
+		assert.equal(counts.Space, expected.spaces);
+		assert.equal(counts.Shift, expected.shifts);
+		for (const key of auxiliaryKeys) assert.ok(counts[key] > 0);
+		assert.equal(counts[","], 213);
+		assert.equal(counts["."], 154);
+		assert.equal(counts["\\"], 25);
+		for (const key of "1234567890") assert.equal(counts[key], undefined);
 	}
-	assert.equal(report.layouts["overall17-shape"].counts["["], 16);
-	assert.equal(report.layouts["u357-shape"].counts["["], undefined);
 });
 
 /* 历史 README 合同：下一代发布后不再把 Overall-17／U357 写成现行标题。

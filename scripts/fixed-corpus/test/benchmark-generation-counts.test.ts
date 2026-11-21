@@ -1,69 +1,80 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import test from "node:test";
+import { exact500Articles } from "../../exact_500_articles";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
-const report = (count: "十二" | "十三" | "十四") =>
-	JSON.parse(read(`reports/5000字_${count}方案最优切分实测结果.json`)) as {
+const report = (count: "十" | "十一" | "十二") =>
+	JSON.parse(read(`reports/5000字_当前${count}方案最优切分实测结果.json`)) as {
 		schemes: Record<string, unknown>;
 	};
 
-test("历史 500 与 5000 字报告按十二、十三、十四方案逐级扩展", () => {
-	const internalIds = Object.keys(report("十二").schemes);
-	assert.equal(internalIds.length, 12);
+test("当前 500 与 5000 字报告按十、十一、十二方案逐级扩展", () => {
+	const internalIds = Object.keys(report("十").schemes);
+	assert.equal(internalIds.length, 10);
 	assert.ok(
-		read("reports/冰雪十二方案_500字_最短键码实战测评.txt").startsWith(
-			"冰雪十二方案",
+		read("reports/冰雪当前十方案_500字_最短键码实战测评.txt").startsWith(
+			"冰雪当前十方案",
 		),
 	);
-	assert.deepEqual(Object.keys(report("十二").schemes), internalIds);
-	assert.deepEqual(Object.keys(report("十三").schemes), [
+	assert.deepEqual(Object.keys(report("十一").schemes), [
 		...internalIds,
 		"sbxh",
 	]);
-	assert.deepEqual(Object.keys(report("十四").schemes), [
+	assert.deepEqual(Object.keys(report("十二").schemes), [
 		...internalIds,
 		"sbxh",
 		"flypy",
 	]);
 });
 
-test("十二、十三、十四方案各保留十篇同序逐键回放", () => {
-	for (const count of ["十二", "十三", "十四"] as const) {
+test("当前十、十一、十二方案各保留十篇同序逐键回放", () => {
+	for (const count of ["十", "十一", "十二"] as const) {
 		const directory = new URL(
-			`reports/十篇五百字_${count}方案逐键对齐回放/`,
+			`reports/十篇五百字_当前${count}方案逐键对齐回放/`,
 			root,
 		);
-		assert.ok(existsSync(directory), `${count}方案回放目录不存在`);
+		assert.ok(existsSync(directory));
 		const files = readdirSync(directory)
-			.filter((filename) => filename.endsWith(".md"))
-			.sort((left, right) => left.localeCompare(right, "zh-CN"));
+			.filter((name) => name.endsWith(".md"))
+			.sort();
 		assert.equal(files.length, 10);
 		assert.deepEqual(
-			files.map((filename) => filename.match(/^篇(\d{2})_/u)?.[1]),
+			files.map((name) => name.match(/^篇(\d{2})_/u)?.[1]),
 			["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"],
-		);
-		assert.ok(
-			files.every((filename) => filename.includes(`${count}方案逐键对齐`)),
 		);
 	}
 });
 
-test("旧八、九、十方案核心产物保持逐字不变", () => {
-	const expected = {
-		"reports/冰雪八方案_500字_最短键码实战测评.txt":
-			"ea8f5173db23f749007fd06183739cc4ebfee2b8950ceb82681e615336152ffd",
-		"reports/5000字_八方案最优切分实测结果.json":
-			"12c9a6a965d04f6f291872c298c52da3047691db5f9e9bcf735e65e86075852c",
-		"reports/5000字_九方案最优切分实测结果.json":
-			"bfb3104d8b0fb7a74e09b0ea4fdd35801ef83382ace7809bd78d3a5f62098159",
-		"reports/5000字_十方案最优切分实测结果.json":
-			"ab930f24c3f068c53db2e90029b50fbd51f46b254d4696a0c8eab62c8ffae8e7",
-	} as const;
-	for (const [path, hash] of Object.entries(expected)) {
-		const actual = createHash("sha256").update(read(path)).digest("hex");
-		assert.equal(actual, hash, path);
+test("5500 字十二方案确已计入第十一场景的额外 500 字", () => {
+	const current = report("十二");
+	const extended = JSON.parse(
+		read("reports/5500字_当前十二方案最优切分实测结果.json"),
+	);
+	assert.deepEqual(Object.keys(extended.schemes), Object.keys(current.schemes));
+	for (const [id, value] of Object.entries(current.schemes)) {
+		const scheme = value as {
+			total: { keys: number };
+			articles: Array<{ keys: number }>;
+		};
+		assert.equal(
+			extended.schemes[id].total.keys,
+			scheme.total.keys + scheme.articles[9].keys,
+			id,
+		);
 	}
+	const scenes = readdirSync(
+		new URL("reports/十一场景_5500字_当前十二方案逐键对齐回放/", root),
+	);
+	assert.equal(scenes.filter((name) => name.endsWith(".md")).length, 11);
+	assert.ok(scenes.includes("场景11_独立赛文_500字.md"));
+	const lines = JSON.parse(
+		read("scripts/data/benchmark-article10.json"),
+	) as string[];
+	assert.deepEqual(lines, exact500Articles[9].lines);
+	assert.equal(
+		[...lines.join("")].filter((char) => /\p{Script=Han}/u.test(char)).length,
+		500,
+	);
 });

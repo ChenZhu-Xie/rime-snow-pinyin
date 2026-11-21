@@ -4,22 +4,14 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-// 从已有的神韵测评报告中提取第 10 篇（输入法赛文），严格 500 汉字，37 句
+// 独立保留输入法赛文，避免语料加载依赖已归档的测评输出。
 function loadArticle10(): string[] {
-	const text = readFileSync(
-		join(root, "reports", "冰雪八方案_500字_最短键码实战测评.txt"),
-		"utf8",
-	);
-	const lines = text.split(/\r?\n/);
-	const result: string[] = [];
-	for (const line of lines) {
-		if (line.startsWith("原文")) {
-			// 去掉“原文”和多余排版空格
-			const raw = line.slice("原文".length).replace(/\s+/gu, "");
-			result.push(raw);
-		}
-	}
-	return result;
+	return JSON.parse(
+		readFileSync(
+			join(root, "scripts", "data", "benchmark-article10.json"),
+			"utf8",
+		),
+	) as string[];
 }
 
 export interface Corpus500 {
