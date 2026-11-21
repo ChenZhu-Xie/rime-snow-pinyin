@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
+import { SpellingAlgebra } from "../../lib/algebra";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
 import { load } from "js-yaml";
 import { applyAlgebra, parseAlgebraRules } from "../algebra";
-import { SpellingAlgebra } from "../../lib/algebra";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
@@ -82,8 +82,8 @@ function encode(syllable: string): string | null {
 	return applyAlgebra(`${syllable}1`, rules).canonical;
 }
 
-test("两个方案的全部 Common399 五调编码逐一匹配 R11 页面冻结原码表", () => {
-	const source = JSON.parse(read("docs/shenyun-um40-source.json")) as {
+test("两个方案的全部 Common399 五调编码逐一匹配替换前提交冻结原码表", () => {
+	const source = JSON.parse(read("docs/shenyun-rc26-source.json")) as {
 		id: string;
 		pinyin: string[];
 		codeList: Array<string | null>;
@@ -155,12 +155,17 @@ function expectedCode(syllable: string): string {
 	return `${layout.initialMap[initial]}${layout.finalMap[final]}`.toLowerCase();
 }
 
-test("冰雪鹤道/调共用 UM40-ac9707a932d1 的 21×26 映射", () => {
-	assert.equal(activeLayout.id, "UM40-ac9707a932d1");
-	assert.equal(activeLayout.label, "UM40-ac9707a932d1");
+test("冰雪鹤道/调共用 RC26-39a5bfdc045342cd 的 21×26 映射", () => {
+	assert.equal(activeLayout.id, "RC26-39a5bfdc045342cd");
+	assert.equal(activeLayout.label, "RC26-39a5bfdc045342cd");
+	assert.equal(activeLayout.sourceBranch, "research/cr-frontier-gpu-anneal");
+	assert.equal(
+		activeLayout.sourceCommit,
+		"bb8541a1a863e9cb4f0e1269d7be047cf90aa137",
+	);
 	assert.equal(
 		activeLayout.sourceReport,
-		"research/notes/2026-11-20-um40-fixed-initial-rhymes.json",
+		"research/notes/2026-11-15-untoned-2126-aux-robust-comparison.json",
 	);
 	assert.deepEqual(activeLayout.capacity, [21, 26]);
 	assert.equal(activeLayout.commonSyllables, 399);
@@ -175,7 +180,7 @@ test("冰雪鹤道/调共用 UM40-ac9707a932d1 的 21×26 映射", () => {
 	assert.equal(activeLayout.shapeAuxiliaryOrder, "12/12/24");
 	assert.equal(activeLayout.toneAuxiliaryOrder, "12/21/13");
 	assert.equal(activeLayout.balanceContract, "soft-page-fill-v2");
-	assert.equal(activeLayout.cktV51, 9.071818587850963);
+	assert.equal(activeLayout.cktV51, 9.082777229838413);
 	assert.deepEqual(activeLayout.initialMap, {
 		b: "B",
 		p: "P",
@@ -191,7 +196,7 @@ test("冰雪鹤道/调共用 UM40-ac9707a932d1 的 21×26 映射", () => {
 		j: "J",
 		q: "F",
 		x: "Y",
-		zh: "W",
+		zh: "S",
 		ch: "X",
 		sh: "V",
 		r: "R",
@@ -202,44 +207,44 @@ test("冰雪鹤道/调共用 UM40-ac9707a932d1 的 21×26 映射", () => {
 		E: "Y",
 		O: "Y",
 		W: "J",
-		Y: "S",
-		YU: "S",
+		Y: "W",
+		YU: "W",
 	});
 	assert.deepEqual(activeLayout.finalMap, {
 		a: "A",
-		ai: "T",
+		ai: "F",
 		an: "L",
 		ang: "N",
 		ao: "K",
 		e: "H",
-		ei: "C",
-		en: "Q",
+		ei: "E",
+		en: "D",
 		eng: "J",
-		er: "C",
+		er: "E",
 		i: "I",
-		ia: "R",
-		ian: "W",
-		iang: "F",
-		iao: "Z",
-		ie: "S",
-		in: "D",
-		ing: "E",
-		iong: "V",
-		iu: "X",
+		ia: "B",
+		ian: "S",
+		iang: "C",
+		iao: "X",
+		ie: "Z",
+		in: "R",
+		ing: "Q",
+		iong: "M",
+		iu: "W",
 		o: "O",
-		ong: "R",
+		ong: "M",
 		ou: "Y",
 		u: "U",
-		ua: "W",
-		uai: "Z",
-		uan: "M",
-		uang: "E",
+		ua: "S",
+		uai: "Q",
+		uan: "T",
+		uang: "C",
 		ui: "P",
 		un: "G",
 		uo: "O",
 		v: "P",
-		van: "M",
-		ve: "B",
+		van: "T",
+		ve: "V",
 		vn: "G",
 	});
 });
@@ -262,8 +267,8 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 	assert.equal(letterBuckets.contract.vacantBucketsUsed, 0);
 	assert.equal(letterBuckets.contract.commonConsonantSuffix, "n");
 	assert.deepEqual(letterBuckets.contract.consonantExceptions, {
-		d: "dq",
-		j: "jv",
+		d: "db",
+		j: "jm",
 		x: "xo",
 	});
 	assert.deepEqual(letterBuckets.contract.preservedNamespaces, {
@@ -278,16 +283,16 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 			letterBuckets.letters.map(({ letter, code }) => [letter, code]),
 		),
 		{
-			a: "xz",
+			a: "xq",
 			b: "bn",
 			c: "cn",
-			d: "dq",
+			d: "db",
 			e: "xp",
 			f: "fn",
 			g: "gn",
 			h: "hn",
-			i: "xt",
-			j: "jv",
+			i: "xf",
+			j: "jm",
 			k: "kn",
 			l: "ln",
 			m: "mn",
@@ -298,7 +303,7 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 			r: "rn",
 			s: "sn",
 			t: "tn",
-			u: "xe",
+			u: "xc",
 			v: "vn",
 			w: "wn",
 			x: "xo",
@@ -412,7 +417,7 @@ test("两个 21×26 方案没有 630、空固顶行或重复固顶码", () => {
 });
 
 test("ue 来源拼写统一并入 ve 规范韵母", () => {
-	assert.equal(encode("gue"), "gb");
+	assert.equal(encode("gue"), "gv");
 	const sanpinRules = parseAlgebraRules(
 		read("snow_sanpin.schema.yaml"),
 		"sanpin_algebra",
@@ -420,7 +425,7 @@ test("ue 来源拼写统一并入 ve 规范韵母", () => {
 	assert.equal(applyAlgebra("gue2", sanpinRules).canonical, "gkv");
 });
 
-test("Common399 的实际拼写代数逐一等于 UM40-ac9707a932d1 映射，且留 147 个空码", () => {
+test("Common399 的实际拼写代数逐一等于 RC26-39a5bfdc045342cd 映射，且留 147 个空码", () => {
 	const frozen = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
 		payloadCodes: Record<string, string | null>;
 	};
@@ -459,17 +464,22 @@ test("Common399 的实际拼写代数逐一等于 UM40-ac9707a932d1 映射，且
 		auxiliary,
 	);
 	assert.equal(vacant.length, 147);
-	assert.equal(vacantAA.length, 137);
+	assert.equal(vacantAA.length, 132);
 	assert.deepEqual(vacantAB, [
+		"de",
+		"te",
 		"gi",
+		"ke",
 		"ki",
 		"hi",
 		"qe",
+		"we",
+		"wu",
+		"xe",
 		"ra",
 		"re",
-		"ze",
 		"ce",
-		"su",
+		"se",
 		"yu",
 	]);
 	const vacantAUB = vacantAB.flatMap((code) =>
@@ -478,8 +488,8 @@ test("Common399 的实际拼写代数逐一等于 UM40-ac9707a932d1 映射，且
 	const vacantAUBB = vacantAUB.flatMap((code) =>
 		[...auxiliary].map((suffix) => code + suffix),
 	);
-	assert.equal(new Set(vacantAUB).size, 50);
-	assert.equal(new Set(vacantAUBB).size, 250);
+	assert.equal(new Set(vacantAUB).size, 75);
+	assert.equal(new Set(vacantAUBB).size, 375);
 	assert.equal(vacant.includes("cw"), true);
 	assert.equal(vacant.includes("cb"), true);
 	assert.doesNotMatch(commonSource, /shenyun_vacant_au_pattern/u);
@@ -529,18 +539,21 @@ test("21×26 运行时空桶由系统单字词频推导，而非固定 147 码�
 		"bpmfdtnlgkhjqwvxrzcsy",
 		"aeuio",
 	);
-	assert.equal(runtimeVacant.length, 144);
-	assert.equal(runtimeVacantAA.length, 134);
+	assert.equal(runtimeVacant.length, 142);
+	assert.equal(runtimeVacantAA.length, 129);
 	assert.deepEqual(runtimeVacantAB, [
+		"te",
 		"gi",
 		"ki",
 		"hi",
 		"qe",
+		"we",
+		"wu",
+		"xe",
 		"ra",
 		"re",
-		"ze",
 		"ce",
-		"su",
+		"se",
 		"yu",
 	]);
 	assert.equal(runtimeVacant.includes("cw"), true);
@@ -751,9 +764,9 @@ test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () =>
 		q: "三",
 		r: "人",
 		z: "在",
-		s: "有",
+		s: "这",
 		v: "是",
-		w: "这",
+		w: "有",
 		x: "出",
 		y: "想",
 	} as Record<string, string>;
@@ -812,7 +825,7 @@ test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () =>
 					(readings.get(candidate) ?? []).some((spelling) =>
 						expectedCode(spelling).startsWith(key),
 					),
-					`${key}→${candidate} 必须属于 UM40-ac9707a932d1 的该声键`,
+					`${key}→${candidate} 必须属于 RC26-39a5bfdc045342cd 的该声键`,
 				);
 			}
 		}
@@ -833,7 +846,7 @@ test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () =>
 		assert.match(
 			content,
 			/^qi\t四$/mu,
-			`${filename} 的 qi 单字位应参考冰雪四拼并随 UM40-ac9707a932d1 重映射`,
+			`${filename} 的 qi 单字位应参考冰雪四拼并随 RC26-39a5bfdc045342cd 重映射`,
 		);
 	}
 

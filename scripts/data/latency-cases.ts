@@ -360,7 +360,7 @@ for (const schema of ["snow_shenyun_shape", "snow_shenyun_tone"]) {
 	LATENCY_CASES[schema] = [
 		{
 			id: "single-initial",
-			keys: "w",
+			keys: "s",
 			page: "支持",
 			source: `spec/${schema}.test.yaml`,
 		},
@@ -372,7 +372,7 @@ for (const schema of ["snow_shenyun_shape", "snow_shenyun_tone"]) {
 		},
 		{
 			id: "vacant-paging",
-			keys: "w{Page_Down}{Page_Up}",
+			keys: "s{Page_Down}{Page_Up}",
 			page: "支持",
 			source: `spec/${schema}.test.yaml`,
 		},

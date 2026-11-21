@@ -128,7 +128,7 @@ for (const domain of ["21x21", "21x26"]) {
 					root,
 					"docs",
 					domain === "21x26"
-						? "shenyun-um40-source.json"
+						? "shenyun-rc26-source.json"
 						: "shenyun-ued-source.json",
 				),
 				"utf8",
@@ -185,7 +185,7 @@ for (const domain of ["21x21", "21x26"]) {
 		"docs",
 		domain === "21x21"
 			? "shenyun-ued-3158ce08b5bc-mapping.json"
-			: "shenyun-um40-mapping.json",
+			: "shenyun-rc26-mapping.json",
 	);
 	const rendered = `${JSON.stringify(output, null, 2)}\n`;
 	if (process.argv.includes("--check")) {

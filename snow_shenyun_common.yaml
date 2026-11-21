@@ -1,5 +1,5 @@
 # 冰雪鹤道 / 冰雪鹤拼共用配置
-# 21×26 UM40-ac9707a932d1；冰雪鹤道与冰雪鹤拼共用。
+# 21×26 RC26-39a5bfdc045342cd（RC26-39a5bfdc045342cd）。
 
 __include: snow_pinyin.schema.yaml:/
 
@@ -58,7 +58,7 @@ engine:
     - lua_filter@*snow.shenyun_hint
 
 shenyun_algebra:
-  # UM40-ac9707a932d1；由 scripts/generate-layout-algebra.ts 生成。
+  # RC26-39a5bfdc045342cd；由 scripts/generate-layout-algebra.ts 生成。
   - erase/^(hng|m|n|ng|ê)\d$/
   - xform/(^| )r5(?= |$)/$1er5/
   - xform/([jqx])uan(?=\d)/$1van/
@@ -66,15 +66,15 @@ shenyun_algebra:
   - xform/([jqx])un(?=\d)/$1vn/
   - xform/([jqx])u(?=\d)/$1v/
   - xform/ue(?=\d)/ve/
-  - xform/(^| )yu/$1Sv/
+  - xform/(^| )yu/$1Wv/
   - xform/(^| )(?=a)/$1Y/
   - xform/(^| )(?=e)/$1Y/
   - xform/(^| )(?=o)/$1Y/
-  - xform/(^| )y/$1S/
+  - xform/(^| )y/$1W/
   - xform/(^| )w/$1J/
   - xform/(^| )ch/$1X/
   - xform/(^| )sh/$1V/
-  - xform/(^| )zh/$1W/
+  - xform/(^| )zh/$1S/
   - xform/(^| )b/$1B/
   - xform/(^| )c/$1C/
   - xform/(^| )d/$1D/
@@ -93,34 +93,34 @@ shenyun_algebra:
   - xform/(^| )t/$1T/
   - xform/(^| )x/$1Y/
   - xform/(^| )z/$1Z/
-  - xform/iang(?=\d)/F/
-  - xform/iong(?=\d)/V/
-  - xform/uang(?=\d)/E/
+  - xform/iang(?=\d)/C/
+  - xform/iong(?=\d)/M/
+  - xform/uang(?=\d)/C/
   - xform/ang(?=\d)/N/
   - xform/eng(?=\d)/J/
-  - xform/ian(?=\d)/W/
-  - xform/iao(?=\d)/Z/
-  - xform/ing(?=\d)/E/
-  - xform/ong(?=\d)/R/
-  - xform/uai(?=\d)/Z/
-  - xform/uan(?=\d)/M/
-  - xform/van(?=\d)/M/
-  - xform/ai(?=\d)/T/
+  - xform/ian(?=\d)/S/
+  - xform/iao(?=\d)/X/
+  - xform/ing(?=\d)/Q/
+  - xform/ong(?=\d)/M/
+  - xform/uai(?=\d)/Q/
+  - xform/uan(?=\d)/T/
+  - xform/van(?=\d)/T/
+  - xform/ai(?=\d)/F/
   - xform/an(?=\d)/L/
   - xform/ao(?=\d)/K/
-  - xform/ei(?=\d)/C/
-  - xform/en(?=\d)/Q/
-  - xform/er(?=\d)/C/
-  - xform/ia(?=\d)/R/
-  - xform/ie(?=\d)/S/
-  - xform/in(?=\d)/D/
-  - xform/iu(?=\d)/X/
+  - xform/ei(?=\d)/E/
+  - xform/en(?=\d)/D/
+  - xform/er(?=\d)/E/
+  - xform/ia(?=\d)/B/
+  - xform/ie(?=\d)/Z/
+  - xform/in(?=\d)/R/
+  - xform/iu(?=\d)/W/
   - xform/ou(?=\d)/Y/
-  - xform/ua(?=\d)/W/
+  - xform/ua(?=\d)/S/
   - xform/ui(?=\d)/P/
   - xform/un(?=\d)/G/
   - xform/uo(?=\d)/O/
-  - xform/ve(?=\d)/B/
+  - xform/ve(?=\d)/V/
   - xform/vn(?=\d)/G/
   - xform/a(?=\d)/A/
   - xform/e(?=\d)/H/
@@ -133,7 +133,7 @@ shenyun_algebra:
 
 shenyun:
   dictionary: snow_pinyin
-  prism: snow_shenyun_um40
+  prism: snow_shenyun
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext
@@ -152,7 +152,7 @@ learned_priority:
 # 空桶只看系统词典，不受个人调频影响；词频 0/1 的大字集兜底读音由 Lua 忽略。
 vacancy:
   dictionary: snow_pinyin
-  prism: snow_shenyun_um40
+  prism: snow_shenyun
   canonical_format:
     __include: /shenyun_algebra
   packs:
@@ -219,7 +219,7 @@ lookup_shenyun:
     __include: /shenyun_algebra
 
 translator:
-  prism: snow_shenyun_um40
+  prism: snow_shenyun
   preedit_format: null
   enable_schema_user_dict: true
   shape_elements: snow_jiandao_chaifen

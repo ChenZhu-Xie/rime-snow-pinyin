@@ -19,22 +19,22 @@
       "digit": "0",
       "han": "零",
       "pinyin": "ling2",
-      "shapeCode": "lee",
-      "toneCode": "lee"
+      "shapeCode": "lqe",
+      "toneCode": "lqe"
     },
     {
       "digit": "1",
       "han": "一",
       "pinyin": "yi1",
-      "shapeCode": "s",
-      "toneCode": "s"
+      "shapeCode": "w",
+      "toneCode": "w"
     },
     {
       "digit": "2",
       "han": "二",
       "pinyin": "er4",
-      "shapeCode": "yc",
-      "toneCode": "yc"
+      "shapeCode": "ye",
+      "toneCode": "ye"
     },
     {
       "digit": "3",
@@ -61,8 +61,8 @@
       "digit": "6",
       "han": "六",
       "pinyin": "liu4",
-      "shapeCode": "lxo",
-      "toneCode": "lxa"
+      "shapeCode": "lwo",
+      "toneCode": "lwa"
     },
     {
       "digit": "7",
@@ -82,8 +82,8 @@
       "digit": "9",
       "han": "九",
       "pinyin": "jiu3",
-      "shapeCode": "jxu",
-      "toneCode": "jxu"
+      "shapeCode": "jwu",
+      "toneCode": "jwu"
     },
     {
       "digit": "10",

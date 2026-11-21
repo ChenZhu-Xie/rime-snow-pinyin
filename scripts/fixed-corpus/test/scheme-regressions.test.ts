@@ -15,8 +15,8 @@ test("double-pinyin schemes isolate fixed-code databases while sharing snow_piny
 	const fixedDatabases = new Map([
 		["snow_jiandao.schema.yaml", "snow_jiandao_ued_3158ce08b5bc"],
 		["snow_sanpin.schema.yaml", "snow_sanpin_ued_3158ce08b5bc"],
-		["snow_shenyun_shape.schema.yaml", "snow_shenyun_shape_um40_ac9707a932d1"],
-		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_um40_ac9707a932d1"],
+		["snow_shenyun_shape.schema.yaml", "snow_shenyun_shape_rc26"],
+		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_rc26"],
 		["snow_jiandao_classic.schema.yaml", "snow_jiandao_classic"],
 		["snow_sanpin_classic.schema.yaml", "snow_sanpin_classic"],
 		["snow_jiandao_toned.schema.yaml", "snow_jiandao_toned_cr_ref_7e650f7a4c"],

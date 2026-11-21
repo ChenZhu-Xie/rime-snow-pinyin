@@ -27,19 +27,19 @@
 
 经典发布版只保留迁移前声韵布局，不冻结旧功能：冰雪键道与冰雪兰道共用辅序 `12/231/24`，冰雪三拼与冰雪兰拼共用辅序 `12/213/23`；AA/AAB 动态空桶、三字及以上简拼大写补韵、630、字母、临时数字、生僻字补空及上游通用修复均按经典音码重新迁移，详见[上游迁移审计](reports/经典键道三拼上游迁移审计.md)。
 
-### UM40-ac9707a932d1 21×26 双拼
+### RC26-39a5bfdc045342cd 21×26 双拼
 
-冰雪鹤道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪鹤拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）现共用 [UM40-ac9707a932d1 21×26 布局](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-20-um40-fixed-initial-rhymes.json)，仓库标识为 `UM40-ac9707a932d1`，来源冻结、迁移审计与验证步骤见 [UM40 布局说明](docs/um40.md)。布局在 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 上无音节重码，M-R2 `40`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `8/5/3/1`；按 21×26 原生四码封顶、跨词长联合候选池与 `soft-page-fill-v2` 计分，方案专属稳健结果为 CKT v5.1 `9.071818587850963`。
+冰雪鹤道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪鹤拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）现共用 [RC26-39a5bfdc045342cd 21×26 布局](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，仓库标识为 `RC26-39a5bfdc045342cd`，来源冻结、迁移审计与验证步骤见 [RC26 布局说明](docs/hedao.md)。布局在 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 上无音节重码，M-R2 `40`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `8/5/3/1`；按 21×26 原生四码封顶、跨词长联合候选池与 `soft-page-fill-v2` 计分，方案专属稳健结果为 CKT v5.1 `9.082777229838413`。
 
 五辅语义保持“折横撇竖点→`AEUIO`、一二三四轻→`IEUAO`”，按形义序观察声调仍为 `42310`。冰雪鹤道的二／三／四字词形辅序为 `12/12/24`，冰雪鹤拼的调辅序为 `12/21/13`；记号表示从各字位依次取辅码，运行规则以方案文件为准。
 
 **声母—韵母映射**
 
-![UM40-ac9707a932d1 21×26 双拼声韵键盘图](docs/shenyun-um40-keyboard.svg)
+![RC26-39a5bfdc045342cd 21×26 双拼声韵键盘图](docs/shenyun-rc26-keyboard.svg)
 
 **日常八场景文稿纯双拼键频图（含标点）**
 
-![UM40-ac9707a932d1 21×26 双拼纯双拼键频图](docs/shenyun-um40-keyboard-heat.svg)
+![RC26-39a5bfdc045342cd 21×26 双拼纯双拼键频图](docs/shenyun-rc26-keyboard-heat.svg)
 
 键频图由 benchmark 页面内置的 `r9MacroHeat` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
 
@@ -53,49 +53,49 @@
 | `f` | `F` | `d` | `D` | `t` | `T` |
 | `n` | `N` | `l` | `L` | `g` | `G` |
 | `k` | `K` | `h` | `H` | `j` | `J` |
-| `q` | `F` | `x` | `Y` | `zh` | `W` |
+| `q` | `F` | `x` | `Y` | `zh` | `S` |
 | `ch` | `X` | `sh` | `V` | `r` | `R` |
 | `z` | `Z` | `c` | `C` | `s` | `Q` |
 | `A` | `Y` | `E` | `Y` | `O` | `Y` |
-| `W` | `J` | `Y` | `S` | `YU` | `S` |
+| `W` | `J` | `Y` | `W` | `YU` | `W` |
 
 韵母使用下列次键；`v/van/ve/vn` 表示 ü 系：
 
 | 韵母 | 次键 | 韵母 | 次键 | 韵母 | 次键 |
 | --- | :---: | --- | :---: | --- | :---: |
-| `a` | `A` | `ai` | `T` | `an` | `L` |
+| `a` | `A` | `ai` | `F` | `an` | `L` |
 | `ang` | `N` | `ao` | `K` | `e` | `H` |
-| `ei` | `C` | `en` | `Q` | `eng` | `J` |
-| `er` | `C` | `i` | `I` | `ia` | `R` |
-| `ian` | `W` | `iang` | `F` | `iao` | `Z` |
-| `ie` | `S` | `in` | `D` | `ing` | `E` |
-| `iong` | `V` | `iu` | `X` | `o` | `O` |
-| `ong` | `R` | `ou` | `Y` | `u` | `U` |
-| `ua` | `W` | `uai` | `Z` | `uan` | `M` |
-| `uang` | `E` | `ui` | `P` | `un` | `G` |
-| `uo` | `O` | `v` | `P` | `van` | `M` |
-| `ve` | `B` | `vn` | `G` |  |  |
+| `ei` | `E` | `en` | `D` | `eng` | `J` |
+| `er` | `E` | `i` | `I` | `ia` | `B` |
+| `ian` | `S` | `iang` | `C` | `iao` | `X` |
+| `ie` | `Z` | `in` | `R` | `ing` | `Q` |
+| `iong` | `M` | `iu` | `W` | `o` | `O` |
+| `ong` | `M` | `ou` | `Y` | `u` | `U` |
+| `ua` | `S` | `uai` | `Q` | `uan` | `T` |
+| `uang` | `C` | `ui` | `P` | `un` | `G` |
+| `uo` | `O` | `v` | `P` | `van` | `T` |
+| `ve` | `V` | `vn` | `G` |  |  |
 
-- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 的 399 个音节全部拥有唯一双拼码；静态 21×26 键域有 147 个空码。按当前系统词典的实际占用口径运行时有 144 个 `AU` 空码，其中 134 个为 `AA`、10 个为 `AB`。
+- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 的 399 个音节全部拥有唯一双拼码；静态 21×26 键域有 147 个空码。按当前系统词典的实际占用口径运行时有 142 个 `AU` 空码，其中 129 个为 `AA`、13 个为 `AB`。
 - 单字主码为 `AU`。继续输入声母可进入 `AUA/AAA` 等词语路由，辅码只在相应阶段追加；二／三／四字词的方案专属辅序以上文 `12/12/24` 与 `12/21/13` 为准。
 - 冰雪鹤道的形辅键为 `A/E/U/I/O = 折/横/撇/竖/点`；冰雪鹤拼的调辅键为 `I/E/U/A/O = 一/二/三/四/轻`。空码补字只查询系统词典，不受个人词频影响。
 
 #### 英数入口
 
-两个 21×26 方案共用同一套字母入口。21 个辅音字母通常使用“字母原键 + `n`”，其中 `D/J/X` 分别使用 `dq/jv/xo`；五个元音字母使用 `x` 载体。入口只借用已有汉字候选的占用桶，不消耗空码；原汉字保持首选，大写、小写字母固定为第 2、3 候选。下表的“原首选”由当前冻结词典与映射计算，完整审计数据见 [字母桶配置](config/shenyun-21x26-letter-buckets.json)。
+两个 21×26 方案共用同一套字母入口。21 个辅音字母通常使用“字母原键 + `n`”，其中 `D/J/X` 分别使用 `db/jm/xo`；五个元音字母使用 `x` 载体。入口只借用已有汉字候选的占用桶，不消耗空码；原汉字保持首选，大写、小写字母固定为第 2、3 候选。下表的“原首选”由当前冻结词典与映射计算，完整审计数据见 [字母桶配置](config/shenyun-21x26-letter-buckets.json)。
 
 | 字母 | 输入码 | 原首选 | 字母 | 输入码 | 原首选 |
 | --- | :---: | :---: | --- | :---: | :---: |
-| A | `xz` | 踹 | N | `nn` | 囊 |
+| A | `xq` | 踹 | N | `nn` | 囊 |
 | B | `bn` | 帮 | O | `xi` | 吃 |
 | C | `cn` | 藏 | P | `pn` | 胖 |
-| D | `dq` | 扽 | Q | `qn` | 桑 |
+| D | `db` | 嗲 | Q | `qn` | 桑 |
 | E | `xp` | 吹 | R | `rn` | 让 |
-| F | `fn` | 放 | S | `sn` | 养 |
+| F | `fn` | 放 | S | `sn` | 张 |
 | G | `gn` | 刚 | T | `tn` | 躺 |
-| H | `hn` | 行 | U | `xe` | 床 |
-| I | `xt` | 拆 | V | `vn` | 上 |
-| J | `jv` | 炅 | W | `wn` | 张 |
+| H | `hn` | 行 | U | `xc` | 床 |
+| I | `xf` | 拆 | V | `vn` | 上 |
+| J | `jm` | 炅 | W | `wn` | 养 |
 | K | `kn` | 扛 | X | `xo` | 戳 |
 | L | `ln` | 狼 | Y | `yn` | 昂 |
 | M | `mn` | 忙 | Z | `zn` | 脏 |
@@ -104,16 +104,16 @@
 
 | 数字 | 冰雪鹤道 | 冰雪鹤拼 |
 | --- | :---: | :---: |
-| 零／0 | `lee` | `lee` |
-| 一／1 | `s` | `s` |
-| 二／2 | `yc` | `yc` |
+| 零／0 | `lqe` | `lqe` |
+| 一／1 | `w` | `w` |
+| 二／2 | `ye` | `ye` |
 | 三／3 | `q` | `q` |
 | 四／4 | `qii` | `qia` |
 | 五／5 | `jue` | `juu` |
-| 六／6 | `lxo` | `lxa` |
+| 六／6 | `lwo` | `lwa` |
 | 七／7 | `fie` | `fii` |
 | 八／8 | `bau` | `bai` |
-| 九／9 | `jxu` | `jxu` |
+| 九／9 | `jwu` | `jwu` |
 | 十／10 | `viu` | `vie` |
 
 字母和待启用数字均不侵占 `ABA` 的 `21×5×21=2205` 个状态，既有 `AAB`、`AAAB` 路由也保持不变。
@@ -193,52 +193,52 @@
 
 ### 固顶、空桶与逐级简码
 
-- 冰雪鹤道、冰雪鹤拼的现行 fixed 表各含 21 个一级简码、376 个二码单字、117 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
+- 冰雪鹤道、冰雪鹤拼的现行 fixed 表各含 21 个一级简码、378 个二码单字、108 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
 - 冰雪兰道、冰雪兰拼以 360 个二码单字和 81 个二简词完整覆盖 441 个 `AA` 位置。两方案的 630 区均由 105 个二码位与 525 个三码位组成，每码固定一个不重复词项。
 - 冰雪兰道、冰雪兰拼及对应经典方案的大写字母用于三字及以上简拼补韵：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
 - [二字词逐级排序研究](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音及 1,372 个二简／630 槽位。它作为候选常用度证据保留，不把“完整码已是首选”的词重复塞入短码。
 
 ### 现行双拼与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) benchmark
 
-下表用当前 UM40-ac9707a932d1 与 UED-3158ce08b5bc 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作参照。
+下表用当前 RC26-39a5bfdc045342cd 与 UED-3158ce08b5bc 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作参照。
 
-表中在 UM40-ac9707a932d1、UED-3158ce08b5bc 与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
+表中在 RC26-39a5bfdc045342cd、UED-3158ce08b5bc 与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。
 
-| 指标 | UM40-ac9707a932d1 21×26 | UED-3158ce08b5bc 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | 何为好 |
+| 指标 | RC26-39a5bfdc045342cd 21×26 | UED-3158ce08b5bc 21×21 | 原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | 何为好 |
 | --- | ---: | ---: | ---: | ---: | --- |
 | M-R2 记忆项 | **40** ★★ 🥇 | **41** ★ | 44 | 51 | 越低越好 |
 | 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | A、I 为诊断；仍按 D+V 越低越好 |
 | 飞键成分（声母／零声母组／韵母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 逻辑审计 | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 逻辑均匀度 | **82.026502** ★★ | 74.087239 | **78.897555** ★ | 83.107434 🥇 | 越高越统一 |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 逻辑均匀度 | **83.470667** ★★ 🥇 | 74.087239 | **78.897555** ★ | 83.107434 | 越高越统一 |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 唯一码／唯一率 | **399 / 100.000%** ★★ 🥇 | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 重码桶 | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | 越低越好 |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 受影响音节／占比 | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | 越低越好 |
 | 频率加权 S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
 | S2 补全平均码长 | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | 越低越好 |
-| S2 补全中心时间（ms） | **70.181** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | 越低越好 |
-| S2 异键同指率 | **5.247%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
-| 综合补全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.576597** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
-| 综合补全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.054283** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | 越低越好 |
-| 综合补全 CKT v5 | **9.062157** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | 越低越好 |
-| 综合补全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.613752** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.677090** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.277442** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | 越低越好 |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | 越低越好 |
-| 八轨综合选重率 | **0.618%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八轨第一辅键率 | **20.725%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
-| 八轨第二辅键率 | **4.445%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
-| 日常左右手负载／左手占比 | **1028:1121 / 47.836%** ★★ 🥇 | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率 | **41.508%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | 越低越好；非独立速度结论 |
-| 日常平均有效距离 | 0.701125 | **0.693857** ★ | **0.679555** ★★ 🥇 | 0.701172 | 越低越好 |
-| 20 合同 QAZ 左小指组峰值 | **16.822%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | 越低越好 |
+| S2 补全中心时间（ms） | **69.031** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | 越低越好 |
+| S2 异键同指率 | **4.845%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
+| 综合补全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.570690** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
+| 综合补全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.062885** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | 越低越好 |
+| 综合补全 CKT v5 | **9.072789** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | 越低越好 |
+| 综合补全 CKT v5.1 | **9.082777** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.587565** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.651302** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系综当量 | **10.203925** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | 越低越好 |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.252817** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | 越低越好 |
+| 八轨综合选重率 | **0.622%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八轨第一辅键率 | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
+| 八轨第二辅键率 | **4.489%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
+| 日常左右手负载／左手占比 | **997:1152 / 46.394%** ★ | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率 | **39.739%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | 越低越好；非独立速度结论 |
+| 日常平均有效距离 | **0.649234** ★★ 🥇 | 0.693857 | **0.679555** ★ | 0.701172 | 越低越好 |
+| 20 合同 QAZ 左小指组峰值 | **16.967%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | 越低越好 |
 | 20 合同 P 区右小指组峰值 | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | 越低越好 |
-| 20 合同最大单指峰值 | 34.439% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
-| 日常纯双拼移动手分数（含标点） | **134.743** ★ | 134.318 | **138.672** ★★ 🥇 | 135.310 | 越高越好 |
-| S2 主键区占比 | 42.043% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
-| 20 合同 TYB 双食指组峰值 | **12.340%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | 越低越好 |
-| 20 合同主键区下限 | **31.211%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
+| 20 合同最大单指峰值 | 35.359% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
+| 日常纯双拼移动手分数（含标点） | **145.320** ★★ 🥇 | 134.318 | **138.672** ★ | 135.310 | 越高越好 |
+| S2 主键区占比 | 44.118% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
+| 20 合同 TYB 双食指组峰值 | **12.012%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | 越低越好 |
+| 20 合同主键区下限 | **32.563%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
 
 #### 完整测评报告
 
@@ -351,19 +351,19 @@ Recipe: ℞ **snow-pinyin**
 
 [Snow Pinyin](https://input.tansongchen.com) is a family of Mandarin-based Chinese input methods. It combines phonetic information, discrete optimization, top-up coding, and adaptive learning for natural, efficient, and personalized input. The release includes [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪兰拼](https://input.tansongchen.com/snow3/), [Snow One-Code](https://input.tansongchen.com/snow1/), [冰雪兰道](https://input.tansongchen.com/snow-jiandao/), [Snow Qingyun](https://input.tansongchen.com/snow-qingyun/), [冰雪鹤道](snow_shenyun_shape.schema.yaml), [冰雪鹤拼](snow_shenyun_tone.schema.yaml), and the classic [冰雪键道](snow_jiandao_classic.schema.yaml) and [冰雪三拼](snow_sanpin_classic.schema.yaml).
 
-### UM40-ac9707a932d1 21×26 double pinyin
+### RC26-39a5bfdc045342cd 21×26 double pinyin
 
-冰雪鹤道 ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and 冰雪鹤拼 ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) now share the [UM40-ac9707a932d1 21×26 layout](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-20-um40-fixed-initial-rhymes.json), identified in this repository as `UM40-ac9707a932d1`. It has no [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) syllable collisions, M-R2 `40`, and all/written/traditional-initial/final disorder A/I/D/V `8/5/3/1`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and `soft-page-fill-v2`, its scheme-specific robust score is CKT v5.1 `9.071818587850963`.
+冰雪鹤道 ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and 冰雪鹤拼 ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) now share the [RC26-39a5bfdc045342cd 21×26 layout](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md), identified in this repository as `RC26-39a5bfdc045342cd`. It has no [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) syllable collisions, M-R2 `40`, and all/written/traditional-initial/final disorder A/I/D/V `8/5/3/1`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and `soft-page-fill-v2`, its scheme-specific robust score is CKT v5.1 `9.082777229838413`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AEUIO` and tones 1/2/3/4/neutral→`IEUAO`, yielding `42310` in shape-meaning order. 冰雪鹤道 uses shape order `12/12/24` and 冰雪鹤拼 uses tone order `12/21/13` for two-/three-/four-character words.
 
 **Initial–final mapping**
 
-![UM40-ac9707a932d1 21×26 initial/final keyboard map](docs/shenyun-um40-keyboard.svg)
+![RC26-39a5bfdc045342cd 21×26 initial/final keyboard map](docs/shenyun-rc26-keyboard.svg)
 
 **Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
 
-![UM40-ac9707a932d1 21×26 pure-double-pinyin key-frequency map](docs/shenyun-um40-keyboard-heat.svg)
+![RC26-39a5bfdc045342cd 21×26 pure-double-pinyin key-frequency map](docs/shenyun-rc26-keyboard-heat.svg)
 
 The map is exported directly from the current layout through the benchmark page's built-in `r9MacroHeat`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
 
@@ -377,49 +377,49 @@ Initials and zero-initial carriers use these first keys:
 | `f` | `F` | `d` | `D` | `t` | `T` |
 | `n` | `N` | `l` | `L` | `g` | `G` |
 | `k` | `K` | `h` | `H` | `j` | `J` |
-| `q` | `F` | `x` | `Y` | `zh` | `W` |
+| `q` | `F` | `x` | `Y` | `zh` | `S` |
 | `ch` | `X` | `sh` | `V` | `r` | `R` |
 | `z` | `Z` | `c` | `C` | `s` | `Q` |
 | `A` | `Y` | `E` | `Y` | `O` | `Y` |
-| `W` | `J` | `Y` | `S` | `YU` | `S` |
+| `W` | `J` | `Y` | `W` | `YU` | `W` |
 
 Finals use these second keys; `v/van/ve/vn` denote the ü series:
 
 | Final | Second key | Final | Second key | Final | Second key |
 | --- | :---: | --- | :---: | --- | :---: |
-| `a` | `A` | `ai` | `T` | `an` | `L` |
+| `a` | `A` | `ai` | `F` | `an` | `L` |
 | `ang` | `N` | `ao` | `K` | `e` | `H` |
-| `ei` | `C` | `en` | `Q` | `eng` | `J` |
-| `er` | `C` | `i` | `I` | `ia` | `R` |
-| `ian` | `W` | `iang` | `F` | `iao` | `Z` |
-| `ie` | `S` | `in` | `D` | `ing` | `E` |
-| `iong` | `V` | `iu` | `X` | `o` | `O` |
-| `ong` | `R` | `ou` | `Y` | `u` | `U` |
-| `ua` | `W` | `uai` | `Z` | `uan` | `M` |
-| `uang` | `E` | `ui` | `P` | `un` | `G` |
-| `uo` | `O` | `v` | `P` | `van` | `M` |
-| `ve` | `B` | `vn` | `G` |  |  |
+| `ei` | `E` | `en` | `D` | `eng` | `J` |
+| `er` | `E` | `i` | `I` | `ia` | `B` |
+| `ian` | `S` | `iang` | `C` | `iao` | `X` |
+| `ie` | `Z` | `in` | `R` | `ing` | `Q` |
+| `iong` | `M` | `iu` | `W` | `o` | `O` |
+| `ong` | `M` | `ou` | `Y` | `u` | `U` |
+| `ua` | `S` | `uai` | `Q` | `uan` | `T` |
+| `uang` | `C` | `ui` | `P` | `un` | `G` |
+| `uo` | `O` | `v` | `P` | `van` | `T` |
+| `ve` | `V` | `vn` | `G` |  |  |
 
-- All 399 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) syllables have unique double-pinyin codes. The static 21×26 domain has 147 vacant codes; under the current system-dictionary occupancy rule, 144 `AU` codes are vacant at runtime, comprising 134 `AA` and 10 `AB` codes.
+- All 399 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) syllables have unique double-pinyin codes. The static 21×26 domain has 147 vacant codes; under the current system-dictionary occupancy rule, 142 `AU` codes are vacant at runtime, comprising 129 `AA` and 13 `AB` codes.
 - A single-character main code is `AU`. Further initials enter word routes such as `AUA/AAA`, and auxiliaries are appended only at the applicable stage; the scheme-specific two-/three-/four-character orders are `12/12/24` and `12/21/13` above.
 - 冰雪鹤道 maps shape auxiliaries as `A/E/U/I/O = bend/horizontal/left-falling/vertical/dot`; 冰雪鹤拼 maps tone auxiliaries as `I/E/U/A/O = 1/2/3/4/neutral`. Vacant-code fallback queries system dictionaries only and is unaffected by personal frequency.
 
 #### Letter and number entry
 
-Both 21×26 schemes share one letter-entry map. The 21 consonant letters normally use their own key plus `n`; `D/J/X` instead use `dq/jv/xo`. The five vowels use the `x` carrier. These entries reuse occupied Han-character buckets and consume no vacant codes: the existing Han candidate stays first, with uppercase and lowercase in positions 2 and 3. “Original first” below is calculated from the current frozen dictionaries and mapping; see the complete [letter-bucket configuration](config/shenyun-21x26-letter-buckets.json).
+Both 21×26 schemes share one letter-entry map. The 21 consonant letters normally use their own key plus `n`; `D/J/X` instead use `db/jm/xo`. The five vowels use the `x` carrier. These entries reuse occupied Han-character buckets and consume no vacant codes: the existing Han candidate stays first, with uppercase and lowercase in positions 2 and 3. “Original first” below is calculated from the current frozen dictionaries and mapping; see the complete [letter-bucket configuration](config/shenyun-21x26-letter-buckets.json).
 
 | Letter | Input | Original first | Letter | Input | Original first |
 | --- | :---: | :---: | --- | :---: | :---: |
-| A | `xz` | 踹 | N | `nn` | 囊 |
+| A | `xq` | 踹 | N | `nn` | 囊 |
 | B | `bn` | 帮 | O | `xi` | 吃 |
 | C | `cn` | 藏 | P | `pn` | 胖 |
-| D | `dq` | 扽 | Q | `qn` | 桑 |
+| D | `db` | 嗲 | Q | `qn` | 桑 |
 | E | `xp` | 吹 | R | `rn` | 让 |
-| F | `fn` | 放 | S | `sn` | 养 |
+| F | `fn` | 放 | S | `sn` | 张 |
 | G | `gn` | 刚 | T | `tn` | 躺 |
-| H | `hn` | 行 | U | `xe` | 床 |
-| I | `xt` | 拆 | V | `vn` | 上 |
-| J | `jv` | 炅 | W | `wn` | 张 |
+| H | `hn` | 行 | U | `xc` | 床 |
+| I | `xf` | 拆 | V | `vn` | 上 |
+| J | `jm` | 炅 | W | `wn` | 养 |
 | K | `kn` | 扛 | X | `xo` | 戳 |
 | L | `ln` | 狼 | Y | `yn` | 昂 |
 | M | `mn` | 忙 | Z | `zn` | 脏 |
@@ -428,16 +428,16 @@ Number codes have been calculated from each corresponding Han numeral's current 
 
 | Number | 冰雪鹤道 | 冰雪鹤拼 |
 | --- | :---: | :---: |
-| 零／0 | `lee` | `lee` |
-| 一／1 | `s` | `s` |
-| 二／2 | `yc` | `yc` |
+| 零／0 | `lqe` | `lqe` |
+| 一／1 | `w` | `w` |
+| 二／2 | `ye` | `ye` |
 | 三／3 | `q` | `q` |
 | 四／4 | `qii` | `qia` |
 | 五／5 | `jue` | `juu` |
-| 六／6 | `lxo` | `lxa` |
+| 六／6 | `lwo` | `lwa` |
 | 七／7 | `fie` | `fii` |
 | 八／8 | `bau` | `bai` |
-| 九／9 | `jxu` | `jxu` |
+| 九／9 | `jwu` | `jwu` |
 | 十／10 | `viu` | `vie` |
 
 Neither the letters nor the pending numbers consume the `21×5×21=2205` `ABA` states; the existing `AAB` and `AAAB` routes are also preserved.
@@ -517,52 +517,52 @@ Numbers share the codes of their corresponding Han numerals. When Han candidates
 
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
-- Each current 冰雪鹤道/冰雪鹤拼 fixed table contains 21 one-key abbreviations, 376 two-key characters, 117 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
+- Each current 冰雪鹤道/冰雪鹤拼 fixed table contains 21 one-key abbreviations, 378 two-key characters, 108 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
 - 冰雪兰道 and 冰雪兰拼 cover all 441 `AA` positions with 360 two-key characters and 81 two-key word abbreviations. Each 630 section comprises 105 two-key and 525 three-key slots, with one non-repeated word fixed per code.
 - In 冰雪兰道, 冰雪兰拼, and their classic counterparts, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials.
 - The [staged bigram-ranking study](reports/sipin-bigram-ranking-research.md) covers 133,205 encodable readings and 1,372 two-key/630 slots. It remains frequency evidence without duplicating words that are already first at full code into shorter fixed slots.
 
 ### Current double-pinyin layouts versus KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段)
 
-This table directly replaces Overall-17 and U357 in the historical README comparison with the current UM40-ac9707a932d1 and UED-3158ce08b5bc results, using the same frozen payload and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) references.
+This table directly replaces Overall-17 and U357 in the historical README comparison with the current RC26-39a5bfdc045342cd and UED-3158ce08b5bc results, using the same frozen payload and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) references.
 
-The table ranks UM40-ac9707a932d1, UED-3158ce08b5bc, and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.
+The table ranks RC26-39a5bfdc045342cd, UED-3158ce08b5bc, and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.
 
-| Metric | UM40-ac9707a932d1 21×26 | UED-3158ce08b5bc 21×21 | KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | Better |
+| Metric | RC26-39a5bfdc045342cd 21×26 | UED-3158ce08b5bc 21×21 | KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | Better |
 | --- | ---: | ---: | ---: | ---: | --- |
 | M-R2 memory items | **40** ★★ 🥇 | **41** ★ | 44 | 51 | Lower |
 | All/written/traditional-initial/final disorder A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | A/I diagnostic; ranking remains lower D+V |
 | Flying-key components (initials/zero-initial groups/finals) | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | Lower |
 | [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) logic audit | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 🥇 | Higher |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) logic uniformity | **82.026502** ★★ | 74.087239 | **78.897555** ★ | 83.107434 🥇 | Higher |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) logic uniformity | **83.470667** ★★ 🥇 | 74.087239 | **78.897555** ★ | 83.107434 | Higher |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) unique codes/rate | **399 / 100.000%** ★★ 🥇 | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | Higher |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) collision buckets | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | Lower |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) affected syllables/rate | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | Lower |
 | Frequency-weighted S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | Lower |
 | S2 completion mean code length | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | Lower |
-| S2 completion center time (ms) | **70.181** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | Lower |
-| S2 different-key same-finger rate | **5.247%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | Lower |
-| [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) completion | **9.576597** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | Lower |
-| [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) completion | **9.054283** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | Lower |
-| CKT v5 completion | **9.062157** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | Lower |
-| CKT v5.1 completion | **9.071819** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | Lower |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.613752** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | Lower |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.677090** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | Lower |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.277442** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | Lower |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | Lower |
-| Eight-track aggregate selection rate | **0.618%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | Lower |
-| Eight-track first-auxiliary rate | **20.725%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | Lower |
-| Eight-track second-auxiliary rate | **4.445%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | Lower |
-| Daily left/right load and left share | **1028:1121 / 47.836%** ★★ 🥇 | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | Closer to 50% |
-| Daily same-hand rate | **41.508%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | Lower; not a standalone speed claim |
-| Daily mean effective distance | 0.701125 | **0.693857** ★ | **0.679555** ★★ 🥇 | 0.701172 | Lower |
-| 20-contract QAZ left-pinky peak | **16.822%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | Lower |
+| S2 completion center time (ms) | **69.031** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | Lower |
+| S2 different-key same-finger rate | **4.845%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | Lower |
+| [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) completion | **9.570690** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | Lower |
+| [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) completion | **9.062885** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | Lower |
+| CKT v5 completion | **9.072789** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | Lower |
+| CKT v5.1 completion | **9.082777** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | Lower |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.587565** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | Lower |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.651302** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | Lower |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) ensemble equivalent | **10.203925** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | Lower |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.252817** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | Lower |
+| Eight-track aggregate selection rate | **0.622%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | Lower |
+| Eight-track first-auxiliary rate | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | Lower |
+| Eight-track second-auxiliary rate | **4.489%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | Lower |
+| Daily left/right load and left share | **997:1152 / 46.394%** ★ | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | Closer to 50% |
+| Daily same-hand rate | **39.739%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | Lower; not a standalone speed claim |
+| Daily mean effective distance | **0.649234** ★★ 🥇 | 0.693857 | **0.679555** ★ | 0.701172 | Lower |
+| 20-contract QAZ left-pinky peak | **16.967%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | Lower |
 | 20-contract P-area right-pinky peak | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | Lower |
-| 20-contract maximum single-finger peak | 34.439% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | Lower |
-| Daily pure-double-pinyin moving-hand score (punctuation included) | **134.743** ★ | 134.318 | **138.672** ★★ 🥇 | 135.310 | Higher |
-| S2 home-zone share | 42.043% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | Higher |
-| 20-contract TYB index-finger peak | **12.340%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | Lower |
-| 20-contract home-zone floor | **31.211%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | Higher |
+| 20-contract maximum single-finger peak | 35.359% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | Lower |
+| Daily pure-double-pinyin moving-hand score (punctuation included) | **145.320** ★★ 🥇 | 134.318 | **138.672** ★ | 135.310 | Higher |
+| S2 home-zone share | 44.118% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | Higher |
+| 20-contract TYB index-finger peak | **12.012%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | Lower |
+| 20-contract home-zone floor | **32.563%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | Higher |
 
 #### Complete benchmark reports
 
@@ -603,19 +603,19 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通話拼音為基礎的中文輸入方案，結合字音資訊、離散最佳化、頂功技術與使用習慣學習，提供自然、高效且個人化的輸入體驗。發布列表包含[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪兰拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韻](https://input.tansongchen.com/snow-qingyun/)、[冰雪鶴道](snow_shenyun_shape.schema.yaml)、[冰雪鹤拼](snow_shenyun_tone.schema.yaml)，以及經典的[冰雪鍵道](snow_jiandao_classic.schema.yaml)與[冰雪三拼](snow_sanpin_classic.schema.yaml)。
 
-### UM40-ac9707a932d1 21×26 雙拼
+### RC26-39a5bfdc045342cd 21×26 雙拼
 
-冰雪鶴道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪鹤拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）現共用 [UM40-ac9707a932d1 21×26 布局](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-20-um40-fixed-initial-rhymes.json)，倉庫標識為 `UM40-ac9707a932d1`。布局在 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 上無音節重碼，M-R2 `40`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `8/5/3/1`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 `soft-page-fill-v2` 計分，方案專屬穩健結果為 CKT v5.1 `9.071818587850963`。
+冰雪鶴道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪鹤拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）現共用 [RC26-39a5bfdc045342cd 21×26 布局](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，倉庫標識為 `RC26-39a5bfdc045342cd`。布局在 [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 上無音節重碼，M-R2 `40`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `8/5/3/1`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 `soft-page-fill-v2` 計分，方案專屬穩健結果為 CKT v5.1 `9.082777229838413`。
 
 五輔語義保持「折橫撇豎點→`AEUIO`、一二三四輕→`IEUAO`」，按形義序觀察聲調仍為 `42310`。冰雪鶴道的二／三／四字詞形輔序為 `12/12/24`，冰雪鹤拼的調輔序為 `12/21/13`。
 
 **聲母—韻母映射**
 
-![UM40-ac9707a932d1 21×26 雙拼聲韻鍵盤圖](docs/shenyun-um40-keyboard.svg)
+![RC26-39a5bfdc045342cd 21×26 雙拼聲韻鍵盤圖](docs/shenyun-rc26-keyboard.svg)
 
 **日常八場景文稿純雙拼鍵頻圖（含標點）**
 
-![UM40-ac9707a932d1 21×26 雙拼純雙拼鍵頻圖](docs/shenyun-um40-keyboard-heat.svg)
+![RC26-39a5bfdc045342cd 21×26 雙拼純雙拼鍵頻圖](docs/shenyun-rc26-keyboard-heat.svg)
 
 鍵頻圖由 benchmark 頁面內建的 `r9MacroHeat` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
 
@@ -629,49 +629,49 @@ Reproducible current and historical layout comparisons are in the [appended five
 | `f` | `F` | `d` | `D` | `t` | `T` |
 | `n` | `N` | `l` | `L` | `g` | `G` |
 | `k` | `K` | `h` | `H` | `j` | `J` |
-| `q` | `F` | `x` | `Y` | `zh` | `W` |
+| `q` | `F` | `x` | `Y` | `zh` | `S` |
 | `ch` | `X` | `sh` | `V` | `r` | `R` |
 | `z` | `Z` | `c` | `C` | `s` | `Q` |
 | `A` | `Y` | `E` | `Y` | `O` | `Y` |
-| `W` | `J` | `Y` | `S` | `YU` | `S` |
+| `W` | `J` | `Y` | `W` | `YU` | `W` |
 
 韻母使用下列次鍵；`v/van/ve/vn` 表示 ü 系：
 
 | 韻母 | 次鍵 | 韻母 | 次鍵 | 韻母 | 次鍵 |
 | --- | :---: | --- | :---: | --- | :---: |
-| `a` | `A` | `ai` | `T` | `an` | `L` |
+| `a` | `A` | `ai` | `F` | `an` | `L` |
 | `ang` | `N` | `ao` | `K` | `e` | `H` |
-| `ei` | `C` | `en` | `Q` | `eng` | `J` |
-| `er` | `C` | `i` | `I` | `ia` | `R` |
-| `ian` | `W` | `iang` | `F` | `iao` | `Z` |
-| `ie` | `S` | `in` | `D` | `ing` | `E` |
-| `iong` | `V` | `iu` | `X` | `o` | `O` |
-| `ong` | `R` | `ou` | `Y` | `u` | `U` |
-| `ua` | `W` | `uai` | `Z` | `uan` | `M` |
-| `uang` | `E` | `ui` | `P` | `un` | `G` |
-| `uo` | `O` | `v` | `P` | `van` | `M` |
-| `ve` | `B` | `vn` | `G` |  |  |
+| `ei` | `E` | `en` | `D` | `eng` | `J` |
+| `er` | `E` | `i` | `I` | `ia` | `B` |
+| `ian` | `S` | `iang` | `C` | `iao` | `X` |
+| `ie` | `Z` | `in` | `R` | `ing` | `Q` |
+| `iong` | `M` | `iu` | `W` | `o` | `O` |
+| `ong` | `M` | `ou` | `Y` | `u` | `U` |
+| `ua` | `S` | `uai` | `Q` | `uan` | `T` |
+| `uang` | `C` | `ui` | `P` | `un` | `G` |
+| `uo` | `O` | `v` | `P` | `van` | `T` |
+| `ve` | `V` | `vn` | `G` |  |  |
 
-- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 的 399 個音節全部擁有唯一雙拼碼；靜態 21×26 鍵域有 147 個空碼。按目前系統詞典的實際占用口徑執行時有 144 個 `AU` 空碼，其中 134 個為 `AA`、10 個為 `AB`。
+- [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 的 399 個音節全部擁有唯一雙拼碼；靜態 21×26 鍵域有 147 個空碼。按目前系統詞典的實際占用口徑執行時有 142 個 `AU` 空碼，其中 129 個為 `AA`、13 個為 `AB`。
 - 單字主碼為 `AU`。繼續輸入聲母可進入 `AUA/AAA` 等詞語路由，輔碼只在相應階段追加；二／三／四字詞的方案專屬輔序以上文 `12/12/24` 與 `12/21/13` 為準。
 - 冰雪鶴道的形輔鍵為 `A/E/U/I/O = 折/橫/撇/豎/點`；冰雪鹤拼的調輔鍵為 `I/E/U/A/O = 一/二/三/四/輕`。空碼補字只查詢系統詞典，不受個人詞頻影響。
 
 #### 英數入口
 
-兩個 21×26 方案共用同一套字母入口。21 個輔音字母通常使用「字母原鍵 + `n`」，其中 `D/J/X` 分別使用 `dq/jv/xo`；五個母音字母使用 `x` 載體。入口只借用已有漢字候選的占用桶，不消耗空碼；原漢字保持首選，大寫、小寫字母固定為第 2、3 候選。下表的「原首選」由目前凍結詞典與映射計算，完整稽核資料見[字母桶設定](config/shenyun-21x26-letter-buckets.json)。
+兩個 21×26 方案共用同一套字母入口。21 個輔音字母通常使用「字母原鍵 + `n`」，其中 `D/J/X` 分別使用 `db/jm/xo`；五個母音字母使用 `x` 載體。入口只借用已有漢字候選的占用桶，不消耗空碼；原漢字保持首選，大寫、小寫字母固定為第 2、3 候選。下表的「原首選」由目前凍結詞典與映射計算，完整稽核資料見[字母桶設定](config/shenyun-21x26-letter-buckets.json)。
 
 | 字母 | 輸入碼 | 原首選 | 字母 | 輸入碼 | 原首選 |
 | --- | :---: | :---: | --- | :---: | :---: |
-| A | `xz` | 踹 | N | `nn` | 囊 |
+| A | `xq` | 踹 | N | `nn` | 囊 |
 | B | `bn` | 帮 | O | `xi` | 吃 |
 | C | `cn` | 藏 | P | `pn` | 胖 |
-| D | `dq` | 扽 | Q | `qn` | 桑 |
+| D | `db` | 嗲 | Q | `qn` | 桑 |
 | E | `xp` | 吹 | R | `rn` | 让 |
-| F | `fn` | 放 | S | `sn` | 养 |
+| F | `fn` | 放 | S | `sn` | 张 |
 | G | `gn` | 刚 | T | `tn` | 躺 |
-| H | `hn` | 行 | U | `xe` | 床 |
-| I | `xt` | 拆 | V | `vn` | 上 |
-| J | `jv` | 炅 | W | `wn` | 张 |
+| H | `hn` | 行 | U | `xc` | 床 |
+| I | `xf` | 拆 | V | `vn` | 上 |
+| J | `jm` | 炅 | W | `wn` | 养 |
 | K | `kn` | 扛 | X | `xo` | 戳 |
 | L | `ln` | 狼 | Y | `yn` | 昂 |
 | M | `mn` | 忙 | Z | `zn` | 脏 |
@@ -680,16 +680,16 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 | 數字 | 冰雪鶴道 | 冰雪鹤拼 |
 | --- | :---: | :---: |
-| 零／0 | `lee` | `lee` |
-| 一／1 | `s` | `s` |
-| 二／2 | `yc` | `yc` |
+| 零／0 | `lqe` | `lqe` |
+| 一／1 | `w` | `w` |
+| 二／2 | `ye` | `ye` |
 | 三／3 | `q` | `q` |
 | 四／4 | `qii` | `qia` |
 | 五／5 | `jue` | `juu` |
-| 六／6 | `lxo` | `lxa` |
+| 六／6 | `lwo` | `lwa` |
 | 七／7 | `fie` | `fii` |
 | 八／8 | `bau` | `bai` |
-| 九／9 | `jxu` | `jxu` |
+| 九／9 | `jwu` | `jwu` |
 | 十／10 | `viu` | `vie` |
 
 字母和待啟用數字均不侵占 `ABA` 的 `21×5×21=2205` 個狀態，既有 `AAB`、`AAAB` 路由也保持不變。
@@ -769,52 +769,52 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 ### 固頂、空桶與逐級簡碼
 
-- 冰雪鶴道、冰雪鹤拼的現行 fixed 表各含 21 個一級簡碼、376 個二碼單字、117 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
+- 冰雪鶴道、冰雪鹤拼的現行 fixed 表各含 21 個一級簡碼、378 個二碼單字、108 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
 - 冰雪兰道、冰雪兰拼以 360 個二碼單字和 81 個二簡詞完整覆蓋 441 個 `AA` 位置。兩方案的 630 區均由 105 個二碼位與 525 個三碼位組成，每碼固定一個不重複詞項。
 - 冰雪兰道、冰雪兰拼及對應經典方案的大寫字母用於三字及以上簡拼補韻：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
 - [二字詞逐級排序研究](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音及 1,372 個二簡／630 槽位。它作為候選常用度證據保留，不把「完整碼已是首選」的詞重複放入短碼。
 
 ### 現行雙拼與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) benchmark
 
-下表以目前 UM40-ac9707a932d1 與 UED-3158ce08b5bc 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作參照。
+下表以目前 RC26-39a5bfdc045342cd 與 UED-3158ce08b5bc 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作參照。
 
-表中在 UM40-ac9707a932d1、UED-3158ce08b5bc 與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。
+表中在 RC26-39a5bfdc045342cd、UED-3158ce08b5bc 與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。
 
-| 指標 | UM40-ac9707a932d1 21×26 | UED-3158ce08b5bc 21×21 | 原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | 何者為佳 |
+| 指標 | RC26-39a5bfdc045342cd 21×26 | UED-3158ce08b5bc 21×21 | 原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) | [首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) | 何者為佳 |
 | --- | ---: | ---: | ---: | ---: | --- |
 | M-R2 記憶項 | **40** ★★ 🥇 | **41** ★ | 44 | 51 | 越低越好 |
 | 全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V | **8 / 5 / 3 / 1** ★★ | 5 / 2 / 2 / 5 | **3 / 0 / 0 / 4** ★★ | 1 / 0 / 0 / 0 🥇 | A、I 為診斷；仍按 D+V 越低越好 |
 | 飛鍵成分（聲母／零聲母組／韻母） | **0 / 0 / 0** ★★ 🥇 | **0 / 0 / 0** ★★ 🥇 | 2 / 0 / 1 | 0 / 1 / 7 | 越少越好 |
 | [FA-1](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 邏輯稽核 | **98.999608** ★★ | **98.298315** ★ | 97.708694 | 99.763391 🥇 | 越高越一致 |
-| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 邏輯均勻度 | **82.026502** ★★ | 74.087239 | **78.897555** ★ | 83.107434 🥇 | 越高越統一 |
+| [LU-v1r](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 邏輯均勻度 | **83.470667** ★★ 🥇 | 74.087239 | **78.897555** ★ | 83.107434 | 越高越統一 |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 唯一碼／唯一率 | **399 / 100.000%** ★★ 🥇 | 351 / 87.970% | **372 / 93.233%** ★ | 399 / 100.000% 🥇 | 越高越好 |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 重碼桶 | **0** ★★ 🥇 | 48 | **27** ★ | 0 🥇 | 越低越好 |
 | [Common399](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#common399) 受影響音節／占比 | **0 / 0.000%** ★★ 🥇 | 96 / 24.060% | **54 / 13.534%** ★ | 0 / 0.000% 🥇 | 越低越好 |
 | 頻率加權 S2 miss | **0.000%** ★★ 🥇 | 1.894% | **0.929%** ★ | 0.000% 🥇 | 越低越好 |
 | S2 補全平均碼長 | **2.000000** ★★ 🥇 | 2.096813 | **2.072546** ★ | 2.000000 🥇 | 越低越好 |
-| S2 補全中心時間（ms） | **70.181** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | 越低越好 |
-| S2 異鍵同指率 | **5.247%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
-| 綜合補全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.576597** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
-| 綜合補全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.054283** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | 越低越好 |
-| 綜合補全 CKT v5 | **9.062157** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | 越低越好 |
-| 綜合補全 CKT v5.1 | **9.071819** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |
-| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.613752** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
-| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.677090** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
-| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.277442** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | 越低越好 |
-| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.268250** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | 越低越好 |
-| 八軌綜合選重率 | **0.618%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
-| 八軌第一輔鍵率 | **20.725%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
-| 八軌第二輔鍵率 | **4.445%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
-| 日常左右手負載／左手占比 | **1028:1121 / 47.836%** ★★ 🥇 | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
-| 日常同手率 | **41.508%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | 越低越好；非獨立速度結論 |
-| 日常平均有效距離 | 0.701125 | **0.693857** ★ | **0.679555** ★★ 🥇 | 0.701172 | 越低越好 |
-| 20 合同 QAZ 左小指組峰值 | **16.822%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | 越低越好 |
+| S2 補全中心時間（ms） | **69.031** ★★ 🥇 | **84.118** ★ | 90.257 | 79.890 | 越低越好 |
+| S2 異鍵同指率 | **4.845%** ★ | **4.021%** ★★ 🥇 | 11.638% | 11.343% | 越低越好 |
+| 綜合補全 [CKT v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/POST_R11_EXPLORATION.md) | **9.570690** ★★ | **9.668465** ★ | 10.000000 | 9.461105 🥇 | 越低越好 |
+| 綜合補全 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md) | **9.062885** ★★ 🥇 | **9.564204** ★ | 10.000000 | 9.184607 | 越低越好 |
+| 綜合補全 CKT v5 | **9.072789** ★★ 🥇 | **9.562144** ★ | 10.000000 | 9.195422 | 越低越好 |
+| 綜合補全 CKT v5.1 | **9.082777** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |
+| [A7E-v3](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.587565** ★★ | **10.730903** ★ | 10.740028 | 10.519452 🥇 | 越低越好 |
+| [A7E-v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.651302** ★★ | **10.795932** ★ | 10.805830 | 10.583290 🥇 | 越低越好 |
+| [A7E-v5](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) 系綜當量 | **10.203925** ★★ 🥇 | **10.607833** ★ | 11.478960 | 11.091225 | 越低越好 |
+| [A7E-v6-CW150](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#代表方案性能) | **9.252817** ★★ 🥇 | **9.647440** ★ | 10.000000 | 9.589632 | 越低越好 |
+| 八軌綜合選重率 | **0.622%** ★★ | **1.227%** ★ | 1.532% | 0.572% 🥇 | 越低越好 |
+| 八軌第一輔鍵率 | **20.962%** ★★ | **24.772%** ★ | 26.413% | 19.746% 🥇 | 越低越好 |
+| 八軌第二輔鍵率 | **4.489%** ★★ | **6.303%** ★ | 7.201% | 4.158% 🥇 | 越低越好 |
+| 日常左右手負載／左手占比 | **997:1152 / 46.394%** ★ | 1200:949 / 55.840% | **1121:1028 / 52.164%** ★★ 🥇 | 1004:1145 / 46.719% | 越接近 50% 越平衡 |
+| 日常同手率 | **39.739%** ★★ 🥇 | 47.278% | **45.882%** ★ | 45.416% | 越低越好；非獨立速度結論 |
+| 日常平均有效距離 | **0.649234** ★★ 🥇 | 0.693857 | **0.679555** ★ | 0.701172 | 越低越好 |
+| 20 合同 QAZ 左小指組峰值 | **16.967%** ★ | **16.717%** ★★ | 17.160% | 16.661% 🥇 | 越低越好 |
 | 20 合同 P 區右小指組峰值 | **3.150%** ★ | 4.841% | **2.774%** ★★ | 1.888% 🥇 | 越低越好 |
-| 20 合同最大單指峰值 | 34.439% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
-| 日常純雙拼移動手分數（含標點） | **134.743** ★ | 134.318 | **138.672** ★★ 🥇 | 135.310 | 越高越好 |
-| S2 主鍵區占比 | 42.043% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
-| 20 合同 TYB 雙食指組峰值 | **12.340%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | 越低越好 |
-| 20 合同主鍵區下限 | **31.211%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
+| 20 合同最大單指峰值 | 35.359% | **26.952%** ★★ 🥇 | **29.531%** ★ | 29.271% | 越低越好 |
+| 日常純雙拼移動手分數（含標點） | **145.320** ★★ 🥇 | 134.318 | **138.672** ★ | 135.310 | 越高越好 |
+| S2 主鍵區占比 | 44.118% | **51.279%** ★★ 🥇 | **49.001%** ★ | 36.600% | 越高越好 |
+| 20 合同 TYB 雙食指組峰值 | **12.012%** ★★ 🥇 | **14.281%** ★ | 14.733% | 12.358% | 越低越好 |
+| 20 合同主鍵區下限 | **32.563%** ★ | **36.536%** ★★ 🥇 | 30.815% | 24.243% | 越高越好 |
 
 #### 完整測評報告
 
