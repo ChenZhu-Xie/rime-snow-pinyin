@@ -15,7 +15,7 @@ l	来
 m	没
 n	你
 p	配
-q	三
+q	三 3
 r	人
 s	这
 t	他
@@ -30,7 +30,7 @@ baa	巴
 bae	霸
 bai	把
 bao	粑
-bau	爸
+bau	爸 8
 bd	本
 bda	畚
 bde	奔
@@ -183,7 +183,7 @@ cue	醋
 cui	促
 cuo	蹴
 cuu	簇
-cy	凑 C c
+cy	凑
 cye	辏
 cyu	腠
 da	大
@@ -192,7 +192,7 @@ dae	达
 dai	打
 dao	哒
 dau	答
-dd	扽 D d
+dd	扽
 de	嘚
 df	带
 dfa	逮
@@ -215,7 +215,7 @@ die	棣
 dii	低
 dio	底
 diu	第
-dj	等 D d
+dj	等
 dja	登
 dje	磴
 dji	瞪
@@ -331,7 +331,7 @@ fgi	囷
 fgo	裙
 fi	其
 fia	骑
-fie	起
+fie	起 7
 fii	岂
 fio	齐
 fiu	气
@@ -410,7 +410,7 @@ fxe	桥
 fxi	撬
 fxo	敲
 fxu	乔
-fy	否 F f
+fy	否
 fyu	缶
 fz	且
 fze	切
@@ -510,7 +510,7 @@ gue	顾
 gui	菇
 guo	咕
 guu	古
-gy	狗 G g
+gy	狗
 gya	沟
 gye	垢
 gyi	钩
@@ -610,7 +610,7 @@ hue	壶
 hui	虎
 huo	呼
 huu	胡
-hy	后 H h
+hy	后
 hye	厚
 hyi	侯
 hyo	吼
@@ -648,7 +648,7 @@ jeu	微
 jf	外
 jfe	歪
 jfi	崴
-jg	均 J j
+jg	均
 jga	君
 jge	珺
 jgi	俊
@@ -717,7 +717,7 @@ jte	鄄
 jti	捐
 jto	鹃
 jtu	狷
-ju	五
+ju	五 5
 jua	屋
 jue	无
 jui	捂
@@ -734,7 +734,7 @@ jwa	酒
 jwe	救
 jwi	旧
 jwo	就
-jwu	九
+jwu	九 9
 jx	叫
 jxa	娇
 jxe	较
@@ -827,7 +827,7 @@ kua	绔
 kue	酷
 kui	苦
 kuo	裤
-ky	口 K k
+ky	口
 kya	𫸩
 kyi	扣
 kyo	叩
@@ -910,7 +910,7 @@ lpe	榈
 lpi	铝
 lpo	旅
 lpu	律
-lq	零
+lq	零 0
 lqa	灵
 lqe	玲
 lqi	令
@@ -945,7 +945,7 @@ lw	留
 lwa	流
 lwe	柳
 lwi	镏
-lwo	六
+lwo	六 6
 lwu	遛
 lx	聊
 lxa	辽
@@ -953,7 +953,7 @@ lxe	尥
 lxi	撩
 lxo	料
 lxu	獠
-ly	楼 L l
+ly	楼
 lya	漏
 lye	露
 lyi	搂
@@ -1055,7 +1055,7 @@ mxe	杪
 mxi	瞄
 mxo	喵
 mxu	邈
-my	某 M m
+my	某
 mya	牟
 myi	眸
 myo	谋
@@ -1147,7 +1147,7 @@ nx	鸟
 nxa	尿
 nxi	茑
 nxu	袅
-ny	耨 N n
+ny	耨
 nz	孽
 nza	涅
 nze	聂
@@ -1237,7 +1237,7 @@ pxa	漂
 pxe	飘
 pxi	瞟
 pxo	嘌
-py	剖 P p
+py	剖
 pyi	抔
 pyo	裒
 pz	撇
@@ -1262,7 +1262,7 @@ qha	涩
 qhe	瑟
 qhi	铯
 qhu	啬
-qi	四
+qi	四 4
 qia	丝
 qie	死
 qii	似
@@ -1369,7 +1369,7 @@ rue	辱
 rui	儒
 ruo	襦
 ruu	入
-ry	肉 R r
+ry	肉
 rya	柔
 rye	鞣
 ryi	揉
@@ -1467,7 +1467,7 @@ sue	珠
 sui	著
 suo	祝
 suu	竹
-sy	周 S s
+sy	周
 sya	粥
 sye	轴
 syi	胄
@@ -1567,7 +1567,7 @@ txe	髫
 txi	挑
 txo	调
 txu	条
-ty	头 T t
+ty	头
 tyi	投
 tyu	透
 tz	帖
@@ -1608,7 +1608,7 @@ via	屎
 vie	事
 vii	使
 vio	试
-viu	十
+viu	十 10
 vj	生
 vja	圣
 vje	声
@@ -1684,7 +1684,7 @@ who	夜
 whu	爷
 wi	以
 wia	已
-wie	一
+wie	一 1
 wii	亿
 wio	易
 wiu	移
@@ -1743,7 +1743,7 @@ wve	玥
 wvi	钺
 wvo	曰
 wvu	月
-wy	又 W w
+wy	又
 wya	油
 wye	右
 wyi	由
@@ -1784,7 +1784,7 @@ xie	赤
 xii	持
 xio	痴
 xiu	翅
-xj	成 E e
+xj	成
 xja	承
 xje	城
 xji	撑
@@ -1835,7 +1835,7 @@ xue	楚
 xui	锄
 xuo	初
 xuu	触
-xy	抽 X x
+xy	抽
 xya	丑
 xye	酬
 xyi	瞅
@@ -1862,7 +1862,7 @@ yd	恩
 ydi	摁
 ye	而
 yea	欸
-yee	二
+yee	二 2
 yei	铒
 yeo	咡
 yeu	儿
@@ -1957,7 +1957,7 @@ yxe	校
 yxi	削
 yxo	晓
 yxu	笑
-yy	偶 Y y
+yy	偶
 yya	沤
 yye	欧
 yyi	藕
@@ -2045,7 +2045,7 @@ zue	珇
 zui	俎
 zuo	族
 zuu	租
-zy	走 Z z
+zy	走
 zya	驺
 zye	奏
 zyi	揍

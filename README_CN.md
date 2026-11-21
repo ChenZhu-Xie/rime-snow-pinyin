@@ -100,23 +100,23 @@
 | L | `ln` | 狼 | Y | `yn` | 昂 |
 | M | `mn` | 忙 | Z | `zn` | 脏 |
 
-数字入口已经按对应汉字的当前最短码完成计算，但配置状态仍为 `calculated-not-enabled`，尚未写入两个现行 fixed 表，所以下表是待启用映射，不是当前可用承诺。所有数字码均复用已有汉字码位，不占空码。
+三套 21×26 方案的 0～10 数字固顶别名均已启用。优先复用对应汉字数字已有的最短固顶码；没有三码以内固顶时，使用该字的主码加第一形辅／调辅。已有汉字首选与字母第 2、3 位保持不变，数字追加在其后；不占用声声空桶。
 
-| 数字 | 冰雪鹤道 | 冰雪鹤拼 |
-| --- | :---: | :---: |
-| 零／0 | `lqe` | `lqe` |
-| 一／1 | `w` | `w` |
-| 二／2 | `ye` | `ye` |
-| 三／3 | `q` | `q` |
-| 四／4 | `qii` | `qia` |
-| 五／5 | `jue` | `juu` |
-| 六／6 | `lwo` | `lwa` |
-| 七／7 | `fie` | `fii` |
-| 八／8 | `bau` | `bai` |
-| 九／9 | `jwu` | `jwu` |
-| 十／10 | `viu` | `vie` |
+| 数字 | 冰雪鹤道 | 冰雪鹤拼 | 冰雪鹮道 |
+| --- | :---: | :---: | :---: |
+| 零／0 | `lq` | `lq` | `wre` |
+| 一／1 | `wie` | `wii` | `lz` |
+| 二／2 | `yee` | `yea` | `rf` |
+| 三／3 | `q` | `q` | `sm` |
+| 四／4 | `qi` | `qi` | `sk` |
+| 五／5 | `ju` | `ju` | `pu` |
+| 六／6 | `lwo` | `lwa` | `wd` |
+| 七／7 | `fie` | `fii` | `qz` |
+| 八／8 | `bau` | `bai` | `bcu` |
+| 九／9 | `jwu` | `jwu` | `jtu` |
+| 十／10 | `viu` | `vie` | `vou` |
 
-字母和待启用数字均不侵占 `ABA` 的 `21×5×21=2205` 个状态，既有 `AAB`、`AAAB` 路由也保持不变。
+字母和数字均不侵占 `ABA` 的 `21×5×21=2205` 个状态，既有 `AAB`、`AAAB` 路由也保持不变。
 
 ### UED-3158ce08b5bc 21×21 双拼
 
@@ -539,23 +539,23 @@ Both 21×26 schemes share one letter-entry map. The 21 consonant letters normall
 | L | `ln` | 狼 | Y | `yn` | 昂 |
 | M | `mn` | 忙 | Z | `zn` | 脏 |
 
-Number codes have been calculated from each corresponding Han numeral's current shortest code, but the configuration status remains `calculated-not-enabled`. They have not been written to either current fixed table, so the following is a pending map rather than a currently available input contract. Every code reuses an occupied Han-character bucket.
+All three 21×26 schemes enable fixed numeral aliases from 0 through 10. They reuse the corresponding Han numeral’s shortest fixed code, or its main code plus the first shape or tone auxiliary when no fixed code of at most three keys exists. Existing Han first choices and letter positions 2 and 3 stay in place; digits follow them. No vacant initial-pair bucket is consumed.
 
-| Number | 冰雪鹤道 | 冰雪鹤拼 |
-| --- | :---: | :---: |
-| 零／0 | `lqe` | `lqe` |
-| 一／1 | `w` | `w` |
-| 二／2 | `ye` | `ye` |
-| 三／3 | `q` | `q` |
-| 四／4 | `qii` | `qia` |
-| 五／5 | `jue` | `juu` |
-| 六／6 | `lwo` | `lwa` |
-| 七／7 | `fie` | `fii` |
-| 八／8 | `bau` | `bai` |
-| 九／9 | `jwu` | `jwu` |
-| 十／10 | `viu` | `vie` |
+| Number | 冰雪鹤道 | 冰雪鹤拼 | 冰雪鹮道 |
+| --- | :---: | :---: | :---: |
+| 零／0 | `lq` | `lq` | `wre` |
+| 一／1 | `wie` | `wii` | `lz` |
+| 二／2 | `yee` | `yea` | `rf` |
+| 三／3 | `q` | `q` | `sm` |
+| 四／4 | `qi` | `qi` | `sk` |
+| 五／5 | `ju` | `ju` | `pu` |
+| 六／6 | `lwo` | `lwa` | `wd` |
+| 七／7 | `fie` | `fii` | `qz` |
+| 八／8 | `bau` | `bai` | `bcu` |
+| 九／9 | `jwu` | `jwu` | `jtu` |
+| 十／10 | `viu` | `vie` | `vou` |
 
-Neither the letters nor the pending numbers consume the `21×5×21=2205` `ABA` states; the existing `AAB` and `AAAB` routes are also preserved.
+Neither the letters nor the numbers consume the `21×5×21=2205` `ABA` states; the existing `AAB` and `AAAB` routes are also preserved.
 
 ### UED-3158ce08b5bc 21×21 double pinyin
 
@@ -904,23 +904,23 @@ Reproducible current and historical layout comparisons are in the [appended five
 | L | `ln` | 狼 | Y | `yn` | 昂 |
 | M | `mn` | 忙 | Z | `zn` | 脏 |
 
-數字入口已按對應漢字的目前最短碼完成計算，但設定狀態仍為 `calculated-not-enabled`，尚未寫入兩個現行 fixed 表，因此下表是待啟用映射，不是目前可用承諾。所有數字碼均重用已有漢字碼位，不占空碼。
+三套 21×26 方案的 0～10 數字固頂別名均已啟用。優先重用對應漢字數字已有的最短固頂碼；沒有三碼以內固頂時，使用該字的主碼加第一形輔／調輔。已有漢字首選與字母第 2、3 位保持不變，數字追加在其後；不占用聲聲空桶。
 
-| 數字 | 冰雪鶴道 | 冰雪鹤拼 |
-| --- | :---: | :---: |
-| 零／0 | `lqe` | `lqe` |
-| 一／1 | `w` | `w` |
-| 二／2 | `ye` | `ye` |
-| 三／3 | `q` | `q` |
-| 四／4 | `qii` | `qia` |
-| 五／5 | `jue` | `juu` |
-| 六／6 | `lwo` | `lwa` |
-| 七／7 | `fie` | `fii` |
-| 八／8 | `bau` | `bai` |
-| 九／9 | `jwu` | `jwu` |
-| 十／10 | `viu` | `vie` |
+| 數字 | 冰雪鶴道 | 冰雪鹤拼 | 冰雪鹮道 |
+| --- | :---: | :---: | :---: |
+| 零／0 | `lq` | `lq` | `wre` |
+| 一／1 | `wie` | `wii` | `lz` |
+| 二／2 | `yee` | `yea` | `rf` |
+| 三／3 | `q` | `q` | `sm` |
+| 四／4 | `qi` | `qi` | `sk` |
+| 五／5 | `ju` | `ju` | `pu` |
+| 六／6 | `lwo` | `lwa` | `wd` |
+| 七／7 | `fie` | `fii` | `qz` |
+| 八／8 | `bau` | `bai` | `bcu` |
+| 九／9 | `jwu` | `jwu` | `jtu` |
+| 十／10 | `viu` | `vie` | `vou` |
 
-字母和待啟用數字均不侵占 `ABA` 的 `21×5×21=2205` 個狀態，既有 `AAB`、`AAAB` 路由也保持不變。
+字母和數字均不侵占 `ABA` 的 `21×5×21=2205` 個狀態，既有 `AAB`、`AAAB` 路由也保持不變。
 
 ### UED-3158ce08b5bc 21×21 雙拼
 

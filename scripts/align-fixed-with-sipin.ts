@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { SpellingAlgebra } from "./lib/algebra";
 import { loadAuxiliarySemantics } from "./lib/auxiliary-semantics";
 import { characterReadingPriorities } from "./lib/character-reading-priorities";
+import { addNumberAliases, numeralReadings } from "./lib/fixed-number-aliases";
 import { loadVacancyFallbackSyllables } from "./lib/runtime-vacancy";
 import {
 	selectThreeKeyFixed,
@@ -702,7 +703,14 @@ function render21x26(
 	for (const line of source.split("\n")) {
 		if (!line.startsWith("#") && line.includes("\t")) {
 			const [code, candidates] = line.split("\t");
-			original.set(code, candidates);
+			// 旧布局的字母后缀不能随汉字行继续迁移；只由当前字母桶表重建。
+			original.set(
+				code,
+				candidates
+					.split(" ")
+					.filter((value) => !/^[A-Za-z]$/u.test(value))
+					.join(" "),
+			);
 		}
 	}
 	const letterCodes = new Set(letterByCode.keys());
@@ -766,7 +774,7 @@ function alignFixedContentOnce(fixed: string, source: string): string {
 		if (code.length === 1 && !ones.has(code)) {
 			reservedOneKeyWords.add(firstWord(candidates));
 		}
-		for (const value of candidates.split(" ")) {
+		for (const value of target.kind === "21x21" ? candidates.split(" ") : []) {
 			const numberWord = numberWordByDigits.get(value);
 			if (numberWord) reservedOneKeyWords.add(numberWord);
 		}
@@ -806,6 +814,27 @@ export function alignFixedContent(fixed: string, source: string): string {
 	);
 	if (fixed === "snow_jiandao_toned.fixed.txt")
 		return renderTonedFixed(target, algebra);
+	if (target.kind === "21x26") {
+		// 数字每次从稳定的汉字表重算，不把旧布局数字行反向当作选字依据。
+		const withoutDigits = source
+			.split("\n")
+			.map((line) => {
+				if (line.startsWith("#") || !line.includes("\t")) return line;
+				const [code, text] = line.split("\t");
+				return `${code}\t${text
+					.split(" ")
+					.filter((w) => !/^\d+$/u.test(w))
+					.join(" ")}`;
+			})
+			.join("\n");
+		let rendered = withoutDigits;
+		for (let iteration = 0; iteration < 10; iteration += 1) {
+			const next = alignFixedContentOnce(fixed, rendered);
+			if (next === rendered) return numberAliases(target, next).content;
+			rendered = next;
+		}
+		throw new Error(`${fixed} 的固顶优先级对齐未能在 10 轮内收敛`);
+	}
 	const numberReadings = [
 		"ling2",
 		"yi1",
@@ -860,6 +889,26 @@ export function alignFixedContent(fixed: string, source: string): string {
 		rendered = next;
 	}
 	throw new Error(`${fixed} 的固顶优先级对齐未能在 10 轮内收敛`);
+}
+
+function numberAliases(target: Target, source: string) {
+	const semantics = loadAuxiliarySemantics(target.kind);
+	const sourceShapeKeys = loadAuxiliarySemantics("21x21").shapeKeysByMeaning;
+	return addNumberAliases(
+		source,
+		new SpellingAlgebra(resolve(root, target.schema), "speller/algebra", {
+			derive: false,
+		}),
+		target.auxiliary,
+		replacementShapeCodes(),
+		new Map(
+			[...sourceShapeKeys].map((key, i) => [
+				key,
+				semantics.shapeKeysByMeaning[i],
+			]),
+		),
+		semantics.toneKeysByTone,
+	);
 }
 
 // 莲道按现行声母重映射兰道的 630；单字、数字和空桶按带调音码重算。
@@ -971,9 +1020,15 @@ function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
 
 function main() {
 	let stale = false;
+	const numberCodes = new Map<string, string[]>();
 	for (const target of targets) {
 		const source = read(target.fixed);
 		const rendered = alignFixedContent(target.fixed, source);
+		if (target.kind === "21x26")
+			numberCodes.set(
+				target.schema.replace(".schema.yaml", ""),
+				numberAliases(target, rendered).codes,
+			);
 		if (process.argv.includes("--check")) {
 			if (source !== rendered) {
 				console.error(`${target.fixed} 未与冰雪四拼固顶优先级同步`);
@@ -984,6 +1039,37 @@ function main() {
 			console.log(`已更新 ${target.fixed}`);
 		}
 	}
+	const path = "config/shenyun-21x26-number-codes.json";
+	const config = {
+		id: "SNOW-SHENYUN-21X26-NUMBER-CODES-V1",
+		status: "enabled",
+		schemes: {
+			shape: "snow_shenyun_shape",
+			tone: "snow_shenyun_tone",
+			tonedShape: "snow_zhudao",
+		},
+		contract: {
+			source: "shortest-fixed-numeral-otherwise-first-auxiliary",
+			candidateOrder: "preserve-existing-then-digit",
+			vacantBucketsUsed: 0,
+			preservedNamespaces: { ABA: 2205, AAB: "unchanged", AAAB: "unchanged" },
+		},
+		numbers: numeralReadings.map(([han, pinyin], i) => ({
+			digit: String(i),
+			han,
+			pinyin,
+			shapeCode: numberCodes.get("snow_shenyun_shape")![i],
+			toneCode: numberCodes.get("snow_shenyun_tone")![i],
+			tonedShapeCode: numberCodes.get("snow_zhudao")![i],
+		})),
+	};
+	const serialized = `${JSON.stringify(config, null, 2)}\n`;
+	if (process.argv.includes("--check")) {
+		if (read(path) !== serialized) {
+			console.error(`${path} 未同步`);
+			stale = true;
+		}
+	} else writeFileSync(resolve(root, path), serialized, "utf8");
 
 	if (stale) process.exitCode = 1;
 }

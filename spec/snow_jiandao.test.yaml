@@ -35,6 +35,17 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  entry_contract:
+    tests:
+      # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。
+      - send: sso
+        assert: cand[1].text == "㬚" and cand[1].comment:find("📌", 1, true)
+  traditional_entry_contract:
+    options:
+      traditionalization: true
+    tests:
+      - send: lk
+        assert: cand[1].text == "來"
   schema_menu:
     tests:
       - send: "{F4}"

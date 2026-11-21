@@ -518,6 +518,9 @@ test("default traditional source entries are postponed before conversion and ded
 	for (const schema of [
 		"snow_sanpin.schema.yaml",
 		"snow_jiandao.schema.yaml",
+		"snow_jiandao_classic.schema.yaml",
+		"snow_sanpin_classic.schema.yaml",
+		"snow_shenyun_common.yaml",
 	]) {
 		const source = read(schema);
 		const filter = source.indexOf("lua_filter@*snow.simplified");

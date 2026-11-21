@@ -820,8 +820,8 @@ test("两份 README 完整记录现行双拼的英数入口与声韵规则", () 
 		assert.ok(!readme.includes("M=36、无飞键、无音节重码、无 630"));
 		includes(readme, "`D/J/X` 分别使用 `db/jm/xo`");
 		includes(readme, "| D | `db` | 嗲 | Q | `qn` | 桑 |");
-		includes(readme, "配置状态仍为 `calculated-not-enabled`");
-		includes(readme, "| 四／4 | `qii` | `qia` |");
+		includes(readme, "三套 21×26 方案的 0～10 数字固顶别名均已启用");
+		includes(readme, "| 四／4 | `qi` | `qi` | `sk` |");
 		includes(readme, "| 四／4 | `cfi` | `cfa` |");
 		includes(readme, "| 零／0 | `lgv` | `lgv` |");
 		assert.ok(!readme.includes("| D | `dj`"));

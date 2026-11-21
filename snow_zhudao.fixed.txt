@@ -35,12 +35,12 @@ bbe	标
 bbi	煲
 bbo	褒
 bbu	膘
-bc	吧 8
+bc	吧
 bca	巴
 bce	彬
 bci	扒
 bco	宾
-bcu	八
+bcu	八 8
 be	北
 bea	绑
 bee	榜
@@ -101,7 +101,7 @@ bpe	靶
 bpi	拔
 bpo	跋
 bpu	胈
-bq	表 B b
+bq	表
 bqa	婊
 bqe	雹
 bqi	薄
@@ -201,7 +201,7 @@ cp	丛
 cpa	淙
 cpe	琮
 cpo	悰
-cq	槽 C c
+cq	槽
 cqa	漕
 cqe	曹
 cqi	草
@@ -319,7 +319,7 @@ dpe	达
 dpi	董
 dpo	懂
 dpu	答
-dq	倒 D d
+dq	倒
 dqa	导
 dqi	捣
 dqo	蹈
@@ -523,7 +523,7 @@ gpa	尕
 gpe	汞
 gpi	拱
 gpo	噶
-gq	搞 G g
+gq	搞
 gqa	缟
 gqe	槁
 gqi	镐
@@ -656,7 +656,7 @@ hpe	划
 hpi	华
 hpo	哄
 hpu	猾
-hq	好 H h
+hq	好
 hqa	濠
 hqe	郝
 hqi	蚝
@@ -803,7 +803,7 @@ jpe	夹
 jpi	仅
 jpo	谨
 jpu	胛
-jq	脚 J j
+jq	脚
 jqa	绞
 jqe	璬
 jqi	搅
@@ -820,11 +820,11 @@ jsa	降
 jse	匠
 jsi	虹
 jso	酱
-jt	久 9
+jt	久
 jta	酒
 jte	玖
 jti	韭
-jtu	九
+jtu	九 9
 ju	局
 jua	沮
 jue	橘
@@ -923,7 +923,7 @@ kpe	垮
 kpi	侉
 kpo	咯
 kpu	胩
-kq	考 K k
+kq	考
 kqa	洘
 kqe	栲
 kqi	拷
@@ -970,7 +970,7 @@ lbe	㙘
 lbi	优
 lbo	呦
 lbu	腰
-lc	因 L l
+lc	因
 lca	阴
 lce	压
 lci	鸭
@@ -1091,11 +1091,11 @@ lxe	殃
 lxi	鸯
 lxo	咉
 lxu	秧
-lz	唷 1
+lz	一 1
 lza	漪
-lze	一
+lze	壹
 lzi	依
-lzo	哟
+lzo	唷
 lzu	猗
 ma	面
 maa	漫
@@ -1204,7 +1204,7 @@ mzi	摸
 na	念
 naa	婻
 nae	廿
-nb	妞 N n
+nb	妞
 nbe	孬
 nc	南
 nd	耨
@@ -1371,7 +1371,7 @@ ppa	娃
 ppe	瓦
 ppi	频
 ppu	爬
-pq	跑 P p
+pq	跑
 pqa	嫖
 pqe	瓢
 pqi	瞟
@@ -1392,10 +1392,10 @@ psu	胖
 pt	抔
 pti	掊
 pto	裒
-pu	排 5
+pu	五 5
 pua	浦
 pue	无
-pui	葡
+pui	排
 puo	谱
 puu	牌
 pv	拍
@@ -1499,7 +1499,7 @@ qpe	琴
 qpi	擒
 qpo	穷
 qpu	筇
-qq	瞧 Q q
+qq	瞧
 qqe	桥
 qqi	侨
 qqo	愀
@@ -1539,9 +1539,9 @@ qxe	玱
 qxi	锵
 qxo	羌
 qxu	腔
-qz	期 7
+qz	七 7
 qza	漆
-qze	七
+qze	期
 qzi	萋
 qzo	嘁
 ra	按
@@ -1564,8 +1564,8 @@ ree	壤
 rei	蕊
 reo	瓤
 reu	卬
-rf	贰 2
-rfe	二
+rf	二 2
+rfe	贰
 rfo	咡
 rg	奥
 rga	绕
@@ -1615,7 +1615,7 @@ rpe	而
 rpi	荣
 rpo	容
 rpu	儿
-rq	熬 R r
+rq	熬
 rqa	娆
 rqe	獒
 rqi	扰
@@ -1707,10 +1707,10 @@ sje	瑟
 sji	撤
 sjo	㬚
 sju	掣
-sk	赤 4
+sk	四 4
 ska	巳
-ske	寺
-ski	四
+ske	赤
+ski	似
 sko	啜
 sku	翅
 sl	趁
@@ -1739,7 +1739,7 @@ spe	檫
 spi	撒
 spo	宠
 spu	猹
-sq	扫 S s
+sq	扫
 sqa	潮
 sqo	吵
 squ	朝
@@ -1866,7 +1866,7 @@ tpe	塔
 tpi	捅
 tpo	童
 tpu	筒
-tq	条 T t
+tq	条
 tqa	淘
 tqe	桃
 tqi	萄
@@ -1989,16 +1989,16 @@ vne	声
 vni	畲
 vno	昇
 vnu	升
-vo	时 10
+vo	时
 voa	屎
 voe	石
 voi	使
 voo	识
-vou	十
+vou	十 10
 vp	啥
 vpe	耍
 vpi	傻
-vq	勺 V v
+vq	勺
 vqe	柖
 vqi	苕
 vqo	韶
@@ -2059,11 +2059,11 @@ wc	啦
 wca	邋
 wce	垃
 wci	拉
-wd	露 6
+wd	六 6
 wda	漏
-wde	碌
+wde	露
 wdi	镂
-wdo	六
+wdo	瘘
 wdu	遛
 we	累
 wea	梁
@@ -2125,15 +2125,15 @@ wpe	林
 wpi	俩
 wpo	喇
 wpu	笼
-wq	老 W w
+wq	老
 wqa	辽
 wqe	聊
 wqi	佬
 wqo	牢
 wqu	獠
-wr	冷 0
+wr	冷
 wra	灵
-wre	零
+wre	零 0
 wri	领
 wro	凌
 wru	舲
@@ -2196,19 +2196,19 @@ xdu	籀
 xe	涨
 xea	奘
 xei	掌
-xf	炸 E e
+xf	炸
 xfa	溠
 xfe	榨
 xfi	众
 xfo	诈
 xfu	乍
-xg	照 O o
+xg	照
 xga	召
 xge	赵
 xgi	罩
 xgo	肇
 xgu	兆
-xh	住 U u
+xh	住
 xha	驻
 xhe	柱
 xhi	拽
@@ -2390,7 +2390,7 @@ ype	瑕
 ypi	侠
 ypo	暇
 ypu	循
-yq	小 Y y
+yq	小
 yqa	洨
 yqi	崤
 yqo	晓
@@ -2500,7 +2500,7 @@ zp	杂
 zpe	砸
 zpi	偬
 zpo	咋
-zq	早 Z z
+zq	早
 zqa	澡
 zqe	枣
 zqi	凿
@@ -2577,7 +2577,7 @@ xt	轴 O o
 pm	喷 P p
 qm	签 Q q
 rm	恩 R r
-sm	三 S s
+sm	三 S s 3
 tm	天 T t
 xd	皱 U u
 vm	删 V v

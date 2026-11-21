@@ -63,7 +63,7 @@ const numberCodes = JSON.parse(
 ) as {
 	id: string;
 	status: string;
-	schemes: { shape: string; tone: string };
+	schemes: { shape: string; tone: string; tonedShape: string };
 	contract: {
 		source: string;
 		vacantBucketsUsed: number;
@@ -343,13 +343,15 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 
 test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", () => {
 	assert.equal(numberCodes.id, "SNOW-SHENYUN-21X26-NUMBER-CODES-V1");
-	assert.equal(numberCodes.status, "calculated-not-enabled");
+	assert.equal(numberCodes.status, "enabled");
 	assert.deepEqual(numberCodes.schemes, {
 		shape: "snow_shenyun_shape",
 		tone: "snow_shenyun_tone",
+		tonedShape: "snow_zhudao",
 	});
 	assert.deepEqual(numberCodes.contract, {
-		source: "corresponding-han-shortest-current-code",
+		source: "shortest-fixed-numeral-otherwise-first-auxiliary",
+		candidateOrder: "preserve-existing-then-digit",
 		vacantBucketsUsed: 0,
 		preservedNamespaces: {
 			ABA: 2205,
@@ -386,11 +388,21 @@ test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", 
 			}
 		}
 	}
-	for (const file of [
-		"snow_shenyun_shape.fixed.txt",
-		"snow_shenyun_tone.fixed.txt",
-	]) {
-		assert.ok(!read(file).includes("# 数字"), file);
+	for (const [file, key] of [
+		["snow_shenyun_shape.fixed.txt", "shapeCode"],
+		["snow_shenyun_tone.fixed.txt", "toneCode"],
+	] as const) {
+		const rows = new Map(
+			read(file)
+				.split(/\r?\n/u)
+				.filter((l) => l.includes("\t") && !l.startsWith("#"))
+				.map((l) => l.split("\t") as [string, string]),
+		);
+		for (const entry of numberCodes.numbers)
+			assert.ok(
+				rows.get(entry[key])?.split(" ").includes(entry.digit),
+				`${file} ${entry.digit}`,
+			);
 	}
 });
 
@@ -813,7 +825,10 @@ test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () =>
 			assert.equal(keys.has(key), false, `键 ${key} 不能重复`);
 			keys.add(key);
 
-			const candidates = candidatesStr.trim().split(/\s+/);
+			const candidates = candidatesStr
+				.trim()
+				.split(/\s+/)
+				.filter((value) => !/^\d+$/u.test(value));
 			assert.equal(candidates.length, 1, `键 ${key} 只应固顶 1 个首选一简`);
 			assert.equal(
 				candidates[0],
@@ -845,7 +860,7 @@ test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () =>
 		);
 		assert.match(
 			content,
-			/^qi\t四$/mu,
+			/^qi\t四 4$/mu,
 			`${filename} 的 qi 单字位应参考冰雪四拼并随 RC26-39a5bfdc045342cd 重映射`,
 		);
 	}

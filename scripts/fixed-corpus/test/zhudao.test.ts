@@ -127,7 +127,11 @@ test("鹮道字母占用桶保留汉字首选及大写第二小写第三，未�
 		assert.ok(!vacant.has(code), code);
 		const candidates = fixed.get(code)?.split(" ");
 		assert.ok(candidates && /^\p{Script=Han}$/u.test(candidates[0]), code);
-		assert.deepEqual(candidates.slice(1), [letter.toUpperCase(), letter]);
+		assert.deepEqual(candidates.slice(1, 3), [letter.toUpperCase(), letter]);
+		assert.ok(
+			candidates.slice(3).every((value) => /^\d+$/u.test(value)),
+			code,
+		);
 	}
 });
 

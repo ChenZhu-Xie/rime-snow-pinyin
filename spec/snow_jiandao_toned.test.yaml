@@ -24,6 +24,17 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  entry_contract:
+    tests:
+      # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。
+      - send: swo
+        assert: cand[1].text == "㬚" and cand[1].comment:find("📌", 1, true)
+  traditional_entry_contract:
+    options:
+      traditionalization: true
+    tests:
+      - send: l
+        assert: cand[1].text == "來"
   popping:
     tests:
       # 冷态三字简拼不能借用其他查询留下的已学习／候选状态。

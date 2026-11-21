@@ -29,6 +29,17 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  entry_contract:
+    tests:
+      # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。
+      - send: cn
+        assert: cand[1].text == "岑" and cand[1].comment:find("📌", 1, true)
+  traditional_entry_contract:
+    options:
+      traditionalization: true
+    tests:
+      - send: l
+        assert: cand[1].text == "來"
   cross_route_user_phrase:
     tests:
       # 用前三字完整声韵、第四字声母唯一上屏“方案选单”，再退回 fxxd 验证跨路径用户词优先。

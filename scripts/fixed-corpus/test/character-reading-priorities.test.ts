@@ -164,7 +164,9 @@ test("两套 21×26 道系列三级固顶均为合法主码加首形辅，且不
 				.filter(([code]) => code.length <= 2)
 				.flatMap(([, words]) => words.split(" ")),
 		);
-		const triples = rows.filter(([code]) => code.length === 3);
+		const triples = rows
+			.filter(([code]) => code.length === 3)
+			.map(([code, words]) => [code, words.split(" ")[0]]);
 		assert.equal(triples.length, expectedCount, schema);
 		assert.equal(new Set(rows.map(([code]) => code)).size, rows.length, schema);
 		assert.equal(
@@ -197,7 +199,9 @@ test("两套 21×26 道系列三级固顶均为合法主码加首形辅，且不
 		.split(/\r?\n/u)
 		.filter((line) => !line.startsWith("#") && line.includes("\t"));
 	assert.ok(
-		toneRows.every((line) => line.split("\t")[0].length <= 2),
-		"冰雪鹤拼不扩展三级固顶",
+		toneRows.every(
+			(line) => line.split("\t")[0].length <= 2 || / \d+$/u.test(line),
+		),
+		"冰雪鹤拼仅允许数字别名使用三级码，不扩展普通三级单字固顶",
 	);
 });

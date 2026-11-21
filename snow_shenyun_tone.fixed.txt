@@ -14,7 +14,7 @@ l	来
 m	没
 n	你
 p	平
-q	三
+q	三 3
 r	人
 s	这
 t	他
@@ -53,15 +53,15 @@ co	错
 cp	催
 ct	窜
 cu	粗
-cy	凑 C c
+cy	凑
 da	大
-dd	扽 D d
+dd	扽
 de	嘚
 df	带
 dg	蹲
 dh	得
 di	地
-dj	等 D d
+dj	等
 dk	到
 dl	但
 dm	懂
@@ -96,7 +96,7 @@ fu	负
 fv	却
 fw	求
 fx	瞧
-fy	否 F f
+fy	否
 fz	且
 ga	尬
 gc	光
@@ -115,7 +115,7 @@ gq	怪
 gs	挂
 gt	管
 gu	故
-gy	狗 G g
+gy	狗
 ha	哈
 hc	黄
 hd	很
@@ -133,14 +133,14 @@ hq	坏
 hs	话
 ht	换
 hu	互
-hy	后 H h
+hy	后
 ja	哇
 jb	加
 jc	将
 jd	问
 je	为
 jf	外
-jg	均 J j
+jg	均
 ji	即
 jj	嗡
 jl	玩
@@ -151,7 +151,7 @@ jq	经
 jr	金
 js	见
 jt	卷
-ju	五
+ju	五 5
 jv	倔
 jw	久
 jx	叫
@@ -173,7 +173,7 @@ kq	快
 ks	跨
 kt	宽
 ku	哭
-ky	口 K k
+ky	口
 la	啦
 lb	俩
 lc	两
@@ -188,7 +188,7 @@ ll	蓝
 lm	龙
 lo	落
 lp	率
-lq	零
+lq	零 0
 lr	林
 ls	连
 lt	乱
@@ -196,7 +196,7 @@ lu	路
 lv	略
 lw	留
 lx	聊
-ly	楼 L l
+ly	楼
 lz	咧
 ma	吗
 md	门
@@ -214,7 +214,7 @@ ms	面
 mu	木
 mw	谬
 mx	秒
-my	某 M m
+my	某
 mz	灭
 na	那
 nc	娘
@@ -237,7 +237,7 @@ nu	怒
 nv	虐
 nw	牛
 nx	鸟
-ny	耨 N n
+ny	耨
 nz	孽
 pa	怕
 pd	喷
@@ -253,14 +253,14 @@ pr	拼
 ps	骗
 pu	铺
 px	票
-py	剖 P p
+py	剖
 pz	撇
 qa	飒
 qd	森
 qf	塞
 qg	孙
 qh	色
-qi	四
+qi	四 4
 qj	僧
 qk	扫
 ql	散
@@ -282,7 +282,7 @@ ro	若
 rp	瑞
 rt	软
 ru	如
-ry	肉 R r
+ry	肉
 sa	炸
 sc	装
 sd	真
@@ -300,7 +300,7 @@ sq	拽
 ss	抓
 st	转
 su	住
-sy	周 S s
+sy	周
 ta	她
 tf	太
 tg	臀
@@ -317,7 +317,7 @@ ts	天
 tt	团
 tu	吐
 tx	跳
-ty	头 T t
+ty	头
 tz	帖
 va	煞
 vc	双
@@ -350,19 +350,19 @@ wq	应
 wr	因
 wt	元
 wv	越
-wy	又 W w
+wy	又
 xa	差
 xd	趁
 xg	纯
 xh	撤
-xj	成 E e
+xj	成
 xk	超
 xl	产
 xm	重
 xn	长
 xt	传
 xu	处
-xy	抽 X x
+xy	抽
 ya	啊
 yb	下
 yc	像
@@ -384,7 +384,7 @@ yt	选
 yv	学
 yw	秀
 yx	小
-yy	偶 Y y
+yy	偶
 yz	写
 za	杂
 zd	怎
@@ -401,7 +401,7 @@ zo	做
 zp	最
 zt	钻
 zu	足
-zy	走 Z z
+zy	走
 # 二简词
 bb	版本
 bc	不错
@@ -511,6 +511,14 @@ zv	早上
 zw	怎样
 zx	早晨
 zz	坐在
+# 数字
+wii	一 1
+yea	二 2
+lwa	六 6
+fii	七 7
+bai	八 8
+jwu	九 9
+vie	十 10
 # 字母
 xq	踹 A a
 bn	帮 B b

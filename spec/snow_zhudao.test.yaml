@@ -15,6 +15,20 @@ script: |
     return true
   end
 deploy:
+  entry_contract:
+    tests:
+      # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。
+      - send: sjo
+        assert: cand[1].text == "㬚" and cand[1].comment:find("📌", 1, true)
+      # 数字别名保留汉字首选；鹮道的 3 不得在重生成时再次丢失。
+      - send: sm
+        assert: cand[1].text == "三" and cand[2].text == "S" and cand[3].text == "s" and cand[4].text == "3"
+  traditional_entry_contract:
+    options:
+      traditionalization: true
+    tests:
+      - send: w
+        assert: cand[1].text == "來"
   popping:
     tests:
       - send: jnse
