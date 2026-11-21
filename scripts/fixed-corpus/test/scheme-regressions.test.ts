@@ -1127,9 +1127,9 @@ test("split translators preserve native user phrase priority across routes", () 
 		);
 		assert.match(source, /lua_filter@\*snow\.learned_priority/u);
 		assert.ok(
-			source.indexOf("lua_filter@*snow.postpone") <
-				source.indexOf("lua_filter@*snow.learned_priority"),
-			`${schema} 必须让用户学习权重覆盖软性后置规则`,
+			source.indexOf("lua_filter@*snow.learned_priority") <
+				source.indexOf("lua_filter@*snow.postpone"),
+			`${schema} 必须先恢复学习排序，再记录并后置真实首选`,
 		);
 	}
 	for (const schema of [
@@ -1139,9 +1139,9 @@ test("split translators preserve native user phrase priority across routes", () 
 		const source = read(schema);
 		assert.match(source, /lua_filter@\*snow\.learned_priority/u);
 		assert.ok(
-			source.indexOf("lua_filter@*snow.postpone") <
-				source.indexOf("lua_filter@*snow.learned_priority"),
-			`${schema} 必须让用户学习权重覆盖软性后置规则`,
+			source.indexOf("lua_filter@*snow.learned_priority") <
+				source.indexOf("lua_filter@*snow.postpone"),
+			`${schema} 必须先恢复学习排序，再记录并后置真实首选`,
 		);
 		assert.match(source, /lua_translator@\*snow\.table_like\*t12/u);
 		assert.match(source, /lua_translator@\*snow\.table_like\*jianpin/u);

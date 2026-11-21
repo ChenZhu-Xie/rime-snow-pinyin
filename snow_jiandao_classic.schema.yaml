@@ -76,8 +76,8 @@ engine:
     - reverse_lookup_filter@lookup_sanpin
     - lua_filter@*snow.fix
     - lua_filter@*snow.shape_filter
-    - lua_filter@*snow.postpone
     - lua_filter@*snow.learned_priority
+    - lua_filter@*snow.postpone
     - lua_filter@*snow.simplified
     - simplifier
     - uniquifier

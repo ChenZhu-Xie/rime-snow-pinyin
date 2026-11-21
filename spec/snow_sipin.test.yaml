@@ -35,6 +35,9 @@ deploy:
   # 注意：这里的断言依赖词频未被本部署内的上屏改变，故上屏类测试一律放在最后
   popping:
     tests:
+      # 空用户词典的候选；与学习过「房展」后的顺序分开验证。
+      - send: fwa
+        assert: cand[1].text == "发展" and commit == nil
       # r5 并入 er5 后，原有字仍可按轻声儿输入
       - send: rioo
         assert: has("兒")
@@ -157,6 +160,17 @@ deploy:
         assert: commit == "；"
       - send: "\\"
         assert: commit == "、"
+  learned_fangzhan:
+    tests:
+      - send: fwa
+        assert: cand[1].text == "发展" and commit == nil
+      # 末音节补至 wao，再回头补首音节 fae，排除 fa 与 fang 的混淆。
+      - send: fwaoae
+        assert: cand[1].text == "房展" and commit == nil
+      - send: "fwaoae fwa"
+        assert: cand[1].text == "房展" and commit == "房展"
+      - send: fwao
+        assert: cand[1].text == "发展" and rank("房展") == 2 and commit == nil
   # 动态码长与自动造词：这些测试会改变词频并写入音节码用户词典
   encoding:
     tests:

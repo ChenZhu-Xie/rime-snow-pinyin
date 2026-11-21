@@ -17,6 +17,10 @@ script: |
 deploy:
   popping:
     tests:
+      - send: jnse
+        assert: cand[1].text == "经常" and commit == nil
+      - send: jnsei
+        assert: cand[1].text == "精髓" and rank("经常") == 2 and commit == nil
       # 与评测的无学习冷态候选一致；不能把第五候选当作首选短码。
       - send: yvd
         assert: cand[1].text == "形式的" and rank("新时代") > 1 and commit == nil
@@ -67,6 +71,16 @@ deploy:
         assert: commit == "测试的"
       - send: "cjvk/"
         assert: commit == "测试了"
+  learned_postponement:
+    tests:
+      - send: "jnse jnse"
+        assert: cand[1].text == "经常"
+      - send: jnsei
+        assert: cand[1].text == "精髓" and rank("经常") == 2 and commit == nil
+      - send: jnsei{BackSpace}
+        assert: cand[1].text == "经常" and commit == nil
+      - send: jnsei{BackSpace}i
+        assert: cand[1].text == "精髓" and rank("经常") == 2 and commit == nil
   initial_pair_four_aux:
     tests:
       # bd 空桶：「不」的前两辅 eu，然后「到」的前两辅 ea，逐字逐字追加。

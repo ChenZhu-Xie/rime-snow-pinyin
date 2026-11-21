@@ -1,6 +1,7 @@
 -- 原生用户词优先过滤器
 -- script_translator 会先按文本去重；缩写查询中若系统词先出现，Lua 只能看到普通 phrase。
 -- 这里用候选的规范音节码反查用户词典，恢复被去重掩盖的已学习身份。
+-- 必须位于首选后置之前，让后置记录实际首选，并在继续补码时让出首位。
 
 local snow = require "snow.snow"
 local candidate_priority = require "snow.candidate_priority"
