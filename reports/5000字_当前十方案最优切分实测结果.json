@@ -1,6 +1,6 @@
 {
   "contract": "current-ten-scheme-benchmark-v4-rime-oracle",
-  "candidateCache": "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\benchmark-rime-cache\\abcc7f82484123f054d4400564d8d63e65d37a570df89f37f1fedc62993dfd83",
+  "candidateCache": "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\benchmark-rime-cache\\869a7fc618b719416b23539a5a84ec2eb96fb1ba8dfc5e7320411e6e662b54c7",
   "candidateProtocol": "per-key-shift-readonly-reject-commit-v2",
   "schemes": {
     "sipin": {
