@@ -722,7 +722,7 @@ test("两份 README 的六张比较表、标题和方案链接完整", () => {
 });
 */
 
-test("两份 README 只以 RC26-39a5bfdc045342cd 与 UED-3158ce08b5bc 为现行双拼并链接全量报告", () => {
+test("两份 README 记录现行四份布局、带调对比与全量报告", () => {
 	for (const filename of ["README.md", "README_CN.md"]) {
 		const readme = read(filename);
 		for (const heading of [
@@ -752,46 +752,12 @@ test("两份 README 只以 RC26-39a5bfdc045342cd 与 UED-3158ce08b5bc 为现行�
 		includes(readme, "docs/shenyun-ued-3158ce08b5bc-keyboard.svg");
 		includes(readme, "docs/shenyun-rc26-keyboard-heat.svg");
 		includes(readme, "docs/shenyun-ued-3158ce08b5bc-keyboard-heat.svg");
-		for (const header of [
-			/\| 指标 \| RC26-39a5bfdc045342cd 21×26 \| UED-3158ce08b5bc 21×21 \| 原键道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何为好 \|/u,
-			/\| Metric \| RC26-39a5bfdc045342cd 21×26 \| UED-3158ce08b5bc 21×21 \| KeyTao (?:S005|\[S005\]\([^)]+\)) \| Shoudao (?:B04|\[B04\]\([^)]+\)) \| Better \|/u,
-			/\| 指標 \| RC26-39a5bfdc045342cd 21×26 \| UED-3158ce08b5bc 21×21 \| 原鍵道 (?:S005|\[S005\]\([^)]+\)) \| (?:首道 B04|\[首道 B04\]\([^)]+\)) \| 何者為佳 \|/u,
-		])
-			assert.match(readme, header);
-		assert.match(
-			readme,
-			/(?:首道 B04|\[首道 B04\]\([^)]+\)) 不参与三方案名次/u,
-		);
-		includes(readme, "🥇 独立比较全部四方案");
-		includes(
-			readme,
-			"| 综合补全 CKT v5.1 | **9.082777** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |",
-		);
-		includes(
-			readme,
-			"| CKT v5.1 completion | **9.082777** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | Lower |",
-		);
-		includes(
-			readme,
-			"| 綜合補全 CKT v5.1 | **9.082777** ★★ 🥇 | **9.565504** ★ | 9.999357 | 9.202834 | 越低越好 |",
-		);
-		const tableLines = readme.split("\n");
-		const currentTableStarts = tableLines
-			.map((line, index) =>
-				/^\| (?:指标|Metric|指標) \| RC26-39a5bfdc045342cd 21×26/u.test(line)
-					? index
-					: -1,
-			)
-			.filter((index) => index >= 0);
-		assert.equal(currentTableStarts.length, 3);
-		for (const start of currentTableStarts) {
-			let end = start + 2;
-			while (end < tableLines.length && tableLines[end].startsWith("|")) end++;
-			for (const row of tableLines.slice(start + 2, end)) {
-				includes(row, "★");
-				includes(row, "🥇");
-			}
-		}
+		includes(readme, "跨合同不统一标星或授奖");
+		includes(readme, "CKT v5.2");
+		includes(readme, "冰雪莲道 CR-REF-7e650f7a4c 21×21");
+		includes(readme, "冰雪鹮道 T2126-V52-M4-ec60a3637a99 21×26");
+		includes(readme, "[^zh-benchmark-toned]");
+		includes(readme, "[^zh-benchmark-v52]");
 		includes(readme, "reports/冰雪十二方案_500字_最短键码实战测评.txt");
 		includes(readme, "reports/十篇五百字_十二方案最优切分及字词比率报告.md");
 		includes(readme, "reports/十篇五百字_十三方案最优切分及字词比率报告.md");

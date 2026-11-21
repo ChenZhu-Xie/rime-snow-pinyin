@@ -1,4 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { appendCurrentBenchmark } from "./lib/current-layout-benchmark";
+import { readmeBenchmarkRows } from "./lib/readme-benchmark-rows";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
@@ -10,6 +12,12 @@ import {
 
 const benchmarkPath = process.argv.find((arg) => arg.endsWith(".html"));
 if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
+
+// 默认仅追加当前快照；历史重建必须显式选择。
+if (!process.argv.includes("--rebuild-legacy")) {
+	appendCurrentBenchmark(benchmarkPath, readmeBenchmarkRows);
+	process.exit(0);
+}
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const jsonPath = join(root, "reports", "shenyun-comparison.json");
