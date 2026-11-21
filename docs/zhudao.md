@@ -55,6 +55,10 @@
 
 重建通用固顶表时使用与 CI 一致的 Bun 1.3.14：在仓库根目录运行 `bun run --cwd scripts fixed:generate`，随后运行 `bun scripts/align-fixed-with-sipin.ts` 和 `bun scripts/generate-shenyun-hints.ts`；检查时用 `bun run --cwd scripts fixed:check`。通用编译器的生成与检查入口统一使用 Bun，避免混用 Node 后造成产物差异。
 
+## 三级单字固顶计划
+
+冰雪鹮道计划补齐「两码带调主码＋第一形辅」的三级单字固顶，与冰雪鹤道分别按各自音码分桶。选字参考冰雪四拼的单字固顶偏好，并避免与已有短码重复；当前阶段不追查或推导真正的一字词频，现有读音权重不视为已验证的一字词频。具体原则见[单字固顶选字原则](fixed-candidates.md)。现行固顶表尚未包含这一新增层。
+
 ## 安装与验证
 
 先在输入法的方案设置中启用冰雪鹮道，或在用户 `default.custom.yaml` 现有的 `patch/schema_list` 中追加 `- {schema: snow_zhudao}`，保留其他方案，然后重新部署。仅复制方案文件或在自带菜单中看到名称，不会让部署器编译它。部署后应生成 `build/snow_zhudao.schema.yaml` 和 `build/snow_zhudao.prism.bin`；未在当前方案列表启用时，自带菜单显示「未启用：请加入方案列表后重新部署」，即使留有旧编译文件也不能切换。已启用但缺少已编译方案时显示「未部署：请加入方案列表后重新部署」，选择它不会切换到空方案。
