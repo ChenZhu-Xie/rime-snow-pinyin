@@ -1,5 +1,8 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { appendCurrentBenchmark } from "./lib/current-layout-benchmark";
+import {
+	appendCurrentBenchmark,
+	refreshCurrentBenchmarkPresentation,
+} from "./lib/current-layout-benchmark";
 import { readmeBenchmarkRows } from "./lib/readme-benchmark-rows";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,6 +19,8 @@ if (!benchmarkPath) throw new Error("请传入 benchmark HTML 路径。");
 // 默认仅追加当前快照；历史重建必须显式选择。
 if (!process.argv.includes("--rebuild-legacy")) {
 	appendCurrentBenchmark(benchmarkPath, readmeBenchmarkRows);
+	if (process.argv.includes("--refresh-presentation"))
+		refreshCurrentBenchmarkPresentation(readmeBenchmarkRows);
 	process.exit(0);
 }
 

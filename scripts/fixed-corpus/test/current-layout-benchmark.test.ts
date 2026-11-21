@@ -7,6 +7,9 @@ import {
 	normalizedCostScore,
 	validateProductionContracts,
 	decorateCurrentValues,
+	tonedInitialDisorder,
+	orderCurrentSchemes,
+	table,
 } from "../../lib/current-layout-benchmark";
 import { rootPath } from "../../lib/paths";
 
@@ -98,7 +101,7 @@ test("六张 README benchmark 表都包含两份带调布局与 v5.2 新维度",
 	for (const file of ["README.md", "README_CN.md"]) {
 		const source = readFileSync(rootPath(file), "utf8");
 		const tables = source.match(
-			/\| (?:指标|Metric|指標) \| RC26-[^\n]+\n(?:\|[^\n]*\n)+/gu,
+			/\| (?:指标|Metric|指標) \| 冰雪鹮道[^\n]+\n(?:\|[^\n]*\n)+/gu,
 		)!;
 		assert.equal(tables.length, 3);
 		for (const table of tables) {
@@ -153,7 +156,7 @@ test("全部八列参与 v5.2 四档成本、逐轨耗时与终局负载", () =>
 		]);
 });
 
-test("星号排除首道与带调、金牌覆盖所有方案、蓝色菱形只标带调", () => {
+test("星号排除首道与带调、金牌覆盖所有方案、菱形覆盖所有非首道方案", () => {
 	const schemes = [
 		"RC26",
 		"OC21",
@@ -186,7 +189,7 @@ test("星号排除首道与带调、金牌覆盖所有方案、蓝色菱形只�
 	assert.equal(both[2], "—");
 });
 
-test("带调菱形按除首道外全部方案排名，第二名可在无调之后，第三名不标", () => {
+test("无调方案可同时获星与菱形，首道不获菱形，第三名不标", () => {
 	const schemes = ["B04", "RC26", "Liandao", "Zhudao"];
 	const result = decorateCurrentValues(
 		schemes.map((scheme, index) => ({
@@ -195,7 +198,7 @@ test("带调菱形按除首道外全部方案排名，第二名可在无调之�
 			score: index,
 		})),
 	);
-	assert.deepEqual(result, ["0 🥇", "**1** ★★", "**2** 🔹", "3"]);
+	assert.deepEqual(result, ["0 🥇", "**1** ★★ 🔷", "**2** 🔹", "3"]);
 	const tied = decorateCurrentValues([
 		{ scheme: "RC26", display: "1", score: 1 },
 		{ scheme: "OC21", display: "1", score: 1 },
@@ -203,6 +206,16 @@ test("带调菱形按除首道外全部方案排名，第二名可在无调之�
 	]);
 	assert.equal(tied[2], "2");
 	assert.equal(snapshot.rankingPolicy.diamonds.pool, "all-except-B04");
+	assert.equal(snapshot.rankingPolicy.diamonds.recipients, "all-except-B04");
+	assert.deepEqual(
+		decorateCurrentValues([
+			{ scheme: "RC26", display: "1", score: 1 },
+			{ scheme: "OC21", display: "2", score: 2 },
+			{ scheme: "Liandao", display: "3", score: 3 },
+			{ scheme: "Zhudao", display: "4", score: 4 },
+		]),
+		["**1** ★★ 🔷 🥇", "**2** ★ 🔹", "3", "4"],
+	);
 });
 
 test("分组使用竞赛排名：并列第一之后没有第二名", () => {
@@ -213,7 +226,82 @@ test("分组使用竞赛排名：并列第一之后没有第二名", () => {
 			score: index < 2 ? 1 : 2,
 		})),
 	);
-	assert.deepEqual(result, ["**1** ★★ 🥇", "**1** ★★ 🥇", "2"]);
+	assert.deepEqual(result, ["**1** ★★ 🔷 🥇", "**1** ★★ 🔷 🥇", "2"]);
+});
+
+test("带调 A/I/D/V 与无调格式统一，按实际映射补算 A/I，排名仍使用 D+V", () => {
+	for (const [scheme, expected] of [
+		["Liandao", [5, 2, 2, 5]],
+		["Zhudao", [7, 4, 2, 5]],
+	] as const) {
+		const audit = snapshot.native[scheme].initialDisorderAudit;
+		assert.deepEqual(tonedInitialDisorder(audit.firstByKey, 5), [...expected]);
+		assert.deepEqual(snapshot.metrics.initialDisorderAIDV[scheme], [
+			...expected,
+		]);
+		assert.equal(
+			formatCurrentMetric(snapshot, "initialDisorderAIDV", scheme, "disorder"),
+			`${expected.join(" / ")}[^zh-benchmark-toned]`,
+		);
+	}
+	const firstByKey = structuredClone(
+		snapshot.native.Liandao.initialDisorderAudit.firstByKey,
+	);
+	firstByKey.P.push("zero-W");
+	assert.deepEqual(tonedInitialDisorder(firstByKey, 5), [6, 3, 2, 5]);
+});
+
+test("方案列序不移动属性和方向列，单元格跟随鹮道与莲道移动", () => {
+	const schemes = ["RC26", "OC21", "S005", "B04", "Liandao", "Zhudao"];
+	assert.deepEqual(orderCurrentSchemes(schemes), [
+		"Zhudao",
+		"RC26",
+		"OC21",
+		"S005",
+		"Liandao",
+		"B04",
+	]);
+	assert.equal(
+		table(
+			["属性", "冰雪莲道", "冰雪鹮道", "说明"],
+			[["声码", "21", "26", "同语料"]],
+		),
+		"| 属性 | 冰雪鹮道 | 冰雪莲道 | 说明 |\n| --- | --- | --- | --- |\n| 声码 | 26 | 21 | 同语料 |",
+	);
+	for (const file of [
+		"README.md",
+		"README_CN.md",
+		"reports/shenyun-comparison.md",
+	]) {
+		const markdown = readFileSync(rootPath(file), "utf8");
+		const headers = [
+			...markdown.matchAll(/^\|[^\n]*冰雪鹮道 T2126-V52-M4[^\n]*\|$/gm),
+		];
+		assert.ok(headers.length >= 3, file);
+		for (const [line] of headers) {
+			const columns = line
+				.split("|")
+				.slice(1, -1)
+				.map((cell) => cell.trim());
+			const schemes = columns.filter((cell) =>
+				/T2126-V52-M4|CR-REF-|RC26-|UED-|Overall-17|U357|S005|B04/.test(cell),
+			);
+			assert.match(schemes[0], /T2126-V52-M4/);
+			assert.match(schemes.at(-2)!, /CR-REF-/);
+		}
+		for (const row of markdown
+			.split("\n")
+			.filter(
+				(line) =>
+					line.startsWith("|") &&
+					line.includes("A/I/D/V") &&
+					line.includes("benchmark-toned"),
+			)) {
+			assert.ok(!row.includes("D="), row);
+			assert.match(row, /7 \/ 4 \/ 2 \/ 5/);
+			assert.match(row, /5 \/ 2 \/ 2 \/ 5/);
+		}
+	}
 });
 
 test("两份带调连续双拼键频图逐键等于页面冻结日常文稿", () => {
@@ -231,15 +319,19 @@ test("两份带调连续双拼键频图逐键等于页面冻结日常文稿", ()
 			"utf8",
 		);
 		const cells = [
-			...svg.matchAll(/data-mxkey="([^"]+)"><title>[^<]*：(\d+)/g),
+			...svg.matchAll(
+				/data-mxkey="([^"]+)"><title>[^<]*：(\d+) 次，([\d.]+)%/g,
+			),
 		];
 		assert.equal(cells.length, 29);
 		assert.equal(
 			cells.reduce((sum, cell) => sum + Number(cell[2]), 0),
 			2149,
 		);
-		for (const [, key, count] of cells)
+		for (const [, key, count, percent] of cells) {
 			assert.equal(Number(count), stat.heat_map[key.toLowerCase()] ?? 0);
+			assert.equal(percent, ((100 * Number(count)) / 2149).toFixed(3));
+		}
 	}
 });
 

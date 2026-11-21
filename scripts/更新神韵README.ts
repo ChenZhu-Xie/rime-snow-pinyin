@@ -1322,13 +1322,13 @@ function replaceCurrentLayoutDocumentation(
 	const enBenchmark = currentReadmeBenchmarkTable("en");
 	const zhtBenchmark = currentReadmeBenchmarkTable("zht");
 	const zhBenchmarkLegend = latestCurrentBenchmark()
-		? "无调除首道外评星；全部方案比较金牌；带调方案按除首道外全部方案的排名标蓝色菱形。并列及可比性见表后图例和脚注。"
+		? "无调除首道外评星；全部方案比较金牌；除首道外全部方案按排名标蓝色菱形（含无调与带调）。并列及可比性见表后图例和脚注。"
 		: readmeBenchmarkLegends.zh;
 	const enBenchmarkLegend = latestCurrentBenchmark()
-		? "Stars rank untoned layouts except B04; gold medals compare all layouts. Blue diamonds mark toned layouts placing first/second among all layouts except B04. See the legend and comparability footnotes."
+		? "Stars rank untoned layouts except B04; gold medals compare all layouts. Blue diamonds mark first/second among all layouts except B04, both untoned and toned. See the legend and comparability footnotes."
 		: readmeBenchmarkLegends.en;
 	const zhtBenchmarkLegend = latestCurrentBenchmark()
-		? "無調除首道外評星，全部方案比較金牌；帶調按除首道外全部方案的排名標藍色菱形。並列與可比性見圖例及腳註。"
+		? "無調除首道外評星，全部方案比較金牌；除首道外全部方案按排名標藍色菱形（含無調與帶調）。並列與可比性見圖例及腳註。"
 		: readmeBenchmarkLegends.zht;
 	const zh = `### RC26-39a5bfdc045342cd 21×26 双拼
 

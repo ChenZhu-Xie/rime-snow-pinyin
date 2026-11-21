@@ -64,23 +64,26 @@ if (
 	throw new Error(`${mapping.id} 缺少完整键频数据。`);
 const title = "日常八场景文稿纯双拼键频图（含标点）";
 const parts = [
-	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc">',
-	`<title id="title">${title}</title><desc id="desc">${mapping.id}；benchmark 冻结日常文稿，共 ${stat.hits} 击键；只含纯双拼与标点。</desc>`,
+	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 304" role="img" aria-labelledby="title desc" font-family="Segoe UI, Microsoft YaHei, sans-serif">',
+	`<title id="title">${title}</title><desc id="desc">${mapping.id}；benchmark 冻结日常文稿，共 ${stat.hits} 击键；只含纯双拼与标点。每键占比为该键次数除以全部 ${stat.hits} 击键。</desc>`,
 	'<rect width="790" height="304" fill="#fbfcfa"/>',
-	`<text x="20" y="28" font-size="18" fill="#445650">${mapping.id}</text>`,
 ];
 const max = Math.max(...Object.values(stat.heat_map));
 for (const [row, keys] of ["QWERTYUIOP", "ASDFGHJKL;", "ZXCVBNM,."].entries()) {
 	for (const [column, key] of [...keys].entries()) {
 		const count = stat.heat_map[key.toLowerCase()] ?? 0;
-		const x = 20 + column * 73 + row * 17;
-		const y = 46 + row * 80;
+		const percent = `${((100 * count) / stat.hits).toFixed(3)}%`;
+		const x = 18 + column * 76 + [0, 19, 57][row];
+		const y = 22 + row * 88;
 		parts.push(
-			`<g data-mxkey="${key}"><title>${key}：${count}</title><rect x="${x}" y="${y}" width="66" height="70" rx="7" fill="hsl(152 27% ${96 - (43 * count) / max}%)" stroke="#b8c7be"/><text x="${x + 10}" y="${y + 24}" font-size="20" fill="#354b40">${key}</text><text x="${x + 33}" y="${y + 55}" text-anchor="middle" font-size="15" fill="#354b40">${count}</text></g>`,
+			`<g data-mxkey="${key}"><title>${key}：${count} 次，${percent}</title><rect x="${x}" y="${y}" width="68" height="76" rx="7" fill="hsl(145 18% ${97 - (48 * count) / max}%)" stroke="#9cad9e"/><text x="${x + 10}" y="${y + 23}" font-size="18" fill="#30483a">${key}</text><text x="${x + 34}" y="${y + 49}" text-anchor="middle" font-size="14" fill="#30483a">${percent}</text><text x="${x + 34}" y="${y + 65}" text-anchor="middle" font-size="10" fill="#5a6c60">${count} 次</text></g>`,
 		);
 	}
 }
-parts.push("</svg>");
+parts.push(
+	`<text x="18" y="295" font-size="12" fill="#5a6c60">${mapping.id} · ${stat.hits} 击键 · 每键占比／次数</text>`,
+	"</svg>",
+);
 const svg = `${parts.join("")}\n`;
 const output = rootPath(
 	"docs",
