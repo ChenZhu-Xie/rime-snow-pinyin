@@ -9,6 +9,10 @@ import {
 	renderBenchmarkReplays,
 } from "./lib/benchmark-replay";
 import { ALL_BENCHMARK_SCHEMES } from "./lib/benchmark-schemes";
+import {
+	benchmarkWordStatistics,
+	renderBenchmarkWordStatistics,
+} from "./lib/benchmark-word-statistics";
 import { rootPath } from "./lib/paths";
 
 interface ArticleStats {
@@ -113,11 +117,26 @@ const schemes = Object.fromEntries(
 				),
 			),
 		);
+		const wordStatistics = benchmarkWordStatistics(
+			scenes.flatMap(({ article, index }) =>
+				article.lines.map((text, lineIndex) => ({
+					text,
+					replay: replays.schemes[id][index][lineIndex],
+				})),
+			),
+		);
+		assert.equal(wordStatistics.total.hanCharacters, 5500, `${id}/统计汉字数`);
+		assert.equal(
+			wordStatistics.total.selections,
+			total.selections,
+			`${id}/统计选重`,
+		);
 		return [
 			id,
 			{
 				name: scheme.name,
 				total: { ...total, averageLength: total.keys / 5500 },
+				wordStatistics,
 				scenes: sceneStats,
 			},
 		];
@@ -164,10 +183,30 @@ const corpus = {
 };
 assert.equal(corpus.hanCharacters, 5500);
 assert.equal(corpus.punctuationCharacters, 392);
+for (const [id, scheme] of Object.entries(schemes))
+	assert.equal(
+		scheme.wordStatistics.total.codeKeys,
+		scheme.total.keys -
+			scheme.total.spaces -
+			scheme.total.shifts -
+			scheme.total.selections -
+			corpus.punctuationCharacters,
+		`${id}/编码、标点、Shift、Space、选重必须还原原始总按键`,
+	);
 const report = {
 	contract: "snow-twelve-scheme-5500-v2",
 	baseline: baseline.contract,
 	corpus,
+	wordStatisticsDefinition: {
+		unit: "最优路径实际汉字输出段的出现次数，重复出现重复计数；含结构略码及追加的／了，不重新分词；不含标点段",
+		codeLength:
+			"编码键数，含辅码、定位及略码键；大写字母计一码；不含额外 Shift、Space、选重键和排版标记",
+		tokenRateDenominator: "各方案全部汉字输出段数",
+		codeLengthRateDenominator: "本词长类别的汉字输出段数",
+		selectionRateDenominator: "对应行的汉字输出段数；合计行为全方案",
+		averageCodeLength:
+			"对应行编码键数总和／汉字输出段数；不同于含全部按键的总按键／5500 汉字",
+	},
 	schemes,
 };
 writeFileSync(
@@ -176,6 +215,14 @@ writeFileSync(
 );
 const ranking = Object.entries(schemes).sort(
 	([, a], [, b]) => a.total.keys - b.total.keys,
+);
+const wordStatisticsTable = renderBenchmarkWordStatistics(
+	ranking.map(([, scheme]) => ({
+		name: scheme.name.startsWith("小鹤音形")
+			? "小鹤音形（清风版）"
+			: scheme.name.replace(/（.*$/u, ""),
+		statistics: scheme.wordStatistics,
+	})),
 );
 const markdown = [
 	"# 十一场景 5500 字：当前十二方案最优切分对比",
@@ -192,6 +239,16 @@ const markdown = [
 		([, scheme], i) =>
 			`| ${i + 1} | ${scheme.name} | ${scheme.total.keys} | ${scheme.total.averageLength.toFixed(4)} | ${scheme.total.spaces} | ${scheme.total.shifts} | ${scheme.total.selections} |`,
 	),
+	"",
+	"## 词长、码长与选重统一统计",
+	"",
+	"按十一场景最优路径的实际汉字输出段统计，重复出现重复计数，标点不计词次。输出段包括结构略码及追加「的／了」，不再按另一套词典重新分词；五字及以上合并为多字词。第十一场景的额外 500 字同样计入。",
+	"",
+	"「词次／占比」的分母为本方案全部汉字输出段数；「码长分布」写为「码长→次数／该词长类别占比」，省略次数为零的码长；「选重率」为对应行选重次数除以词次，粗体合计行为全方案选重个数及比率。百分比保留两位小数，四舍五入后之和可能略偏离 100%。",
+	"",
+	"此表编码长度计入音码、辅码、定位及略码键，大写字母计一码，不含额外 Shift、Space、选重键和排版标记。平均码长为编码键数／词次，保留三位小数；与上表包含全部按键的总按键／5500 汉字不同。没有词次的类别以「—」表示均码。",
+	"",
+	wordStatisticsTable,
 	"",
 	"## 带调方案规则",
 	"",
@@ -223,3 +280,5 @@ for (const [, scheme] of ranking)
 	console.log(
 		`${scheme.name}\t${scheme.total.keys}\t${scheme.total.averageLength.toFixed(4)}\t选重 ${scheme.total.selections}`,
 	);
+if (process.argv.includes("--print-word-statistics"))
+	console.log(`\n${wordStatisticsTable}`);

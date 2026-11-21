@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import test from "node:test";
 import { exact500Articles } from "../../exact_500_articles";
+import type { BenchmarkWordStatistics } from "../../lib/benchmark-word-statistics";
 
 const root = new URL("../../../", import.meta.url);
 const read = (path: string) => readFileSync(new URL(path, root), "utf8");
@@ -77,4 +78,93 @@ test("5500 字十二方案确已计入第十一场景的额外 500 字", () => {
 		[...lines.join("")].filter((char) => /\p{Script=Han}/u.test(char)).length,
 		500,
 	);
+});
+
+test("5500 字统一表与原切分词次、码长加权和、选重及总按键逐项相符", () => {
+	const baseline = JSON.parse(
+		read("reports/5000字_当前十二方案最优切分实测结果.json"),
+	);
+	const extended = JSON.parse(
+		read("reports/5500字_当前十二方案最优切分实测结果.json"),
+	);
+	const wordKeys = ["c1", "c2", "c3", "c4", "c5plus"];
+	for (const [id, value] of Object.entries(extended.schemes)) {
+		const scheme = value as {
+			total: {
+				keys: number;
+				spaces: number;
+				shifts: number;
+				selections: number;
+			};
+			wordStatistics: BenchmarkWordStatistics;
+		};
+		const stats = scheme.wordStatistics;
+		assert.equal(stats.total.hanCharacters, 5500, id);
+		assert.equal(stats.total.selections, scheme.total.selections, id);
+		assert.equal(
+			stats.total.tokens,
+			stats.groups.reduce((sum, group) => sum + group.tokens, 0),
+			id,
+		);
+		assert.equal(
+			stats.total.codeKeys,
+			stats.groups.reduce((sum, group) => sum + group.codeKeys, 0),
+			id,
+		);
+		assert.equal(
+			stats.total.selections,
+			stats.groups.reduce((sum, group) => sum + group.selections, 0),
+			id,
+		);
+		assert.equal(
+			stats.total.codeKeys +
+				extended.corpus.punctuationCharacters +
+				scheme.total.spaces +
+				scheme.total.shifts +
+				scheme.total.selections,
+			scheme.total.keys,
+			id,
+		);
+		for (const [index, group] of stats.groups.entries()) {
+			const expected =
+				baseline.schemes[id].total.tokens[wordKeys[index]] +
+				baseline.schemes[id].articles[9].tokenCounts[wordKeys[index]];
+			assert.equal(
+				group.tokens,
+				expected,
+				`${id}/${group.label}/复用原切分计数`,
+			);
+			assert.equal(
+				Object.values(group.codeLengths).reduce(
+					(sum, bucket) => sum + bucket.count,
+					0,
+				),
+				group.tokens,
+				id,
+			);
+			assert.equal(
+				Object.entries(group.codeLengths).reduce(
+					(sum, [length, bucket]) => sum + Number(length) * bucket.count,
+					0,
+				),
+				group.codeKeys,
+				id,
+			);
+			assert.equal(group.tokenRate, group.tokens / stats.total.tokens, id);
+			assert.equal(
+				group.averageCodeLength,
+				group.tokens ? group.codeKeys / group.tokens : 0,
+				id,
+			);
+			assert.equal(
+				group.selectionRate,
+				group.tokens ? group.selections / group.tokens : 0,
+				id,
+			);
+			for (const bucket of Object.values(group.codeLengths))
+				assert.equal(bucket.rate, bucket.count / group.tokens, id);
+		}
+	}
+	const markdown = read("reports/十一场景_5500字_当前十二方案对比评测.md");
+	assert.equal((markdown.match(/\| \*\*合计\*\* \|/gu) ?? []).length, 12);
 });

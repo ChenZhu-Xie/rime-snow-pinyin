@@ -7,6 +7,14 @@
     "punctuationCharacters": 392,
     "note": "十篇各 500 字，加与第十篇相同的独立 500 字赛文，按两个场景计入。"
   },
+  "wordStatisticsDefinition": {
+    "unit": "最优路径实际汉字输出段的出现次数，重复出现重复计数；含结构略码及追加的／了，不重新分词；不含标点段",
+    "codeLength": "编码键数，含辅码、定位及略码键；大写字母计一码；不含额外 Shift、Space、选重键和排版标记",
+    "tokenRateDenominator": "各方案全部汉字输出段数",
+    "codeLengthRateDenominator": "本词长类别的汉字输出段数",
+    "selectionRateDenominator": "对应行的汉字输出段数；合计行为全方案",
+    "averageCodeLength": "对应行编码键数总和／汉字输出段数；不同于含全部按键的总按键／5500 汉字"
+  },
   "schemes": {
     "sipin": {
       "name": "冰雪四拼",
@@ -54,6 +62,218 @@
           "[": 5
         },
         "averageLength": 1.760909090909091
+      },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2226,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 8865,
+          "averageCodeLength": 3.9824797843665767,
+          "codeLengths": {
+            "1": {
+              "count": 76,
+              "rate": 0.034141958670260555
+            },
+            "2": {
+              "count": 316,
+              "rate": 0.14195867026055706
+            },
+            "3": {
+              "count": 481,
+              "rate": 0.21608265947888589
+            },
+            "4": {
+              "count": 504,
+              "rate": 0.22641509433962265
+            },
+            "5": {
+              "count": 487,
+              "rate": 0.21877807726864332
+            },
+            "6": {
+              "count": 284,
+              "rate": 0.1275831087151842
+            },
+            "7": {
+              "count": 65,
+              "rate": 0.029200359389038633
+            },
+            "8": {
+              "count": 13,
+              "rate": 0.005840071877807727
+            }
+          },
+          "selections": 1,
+          "selectionRate": 0.0004492362982929021
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 437,
+            "tokenRate": 0.1963162623539982,
+            "hanCharacters": 437,
+            "codeKeys": 1195,
+            "averageCodeLength": 2.734553775743707,
+            "codeLengths": {
+              "1": {
+                "count": 76,
+                "rate": 0.17391304347826086
+              },
+              "2": {
+                "count": 143,
+                "rate": 0.32723112128146453
+              },
+              "3": {
+                "count": 116,
+                "rate": 0.2654462242562929
+              },
+              "4": {
+                "count": 43,
+                "rate": 0.09839816933638444
+              },
+              "5": {
+                "count": 44,
+                "rate": 0.10068649885583524
+              },
+              "6": {
+                "count": 12,
+                "rate": 0.02745995423340961
+              },
+              "7": {
+                "count": 3,
+                "rate": 0.006864988558352402
+              }
+            },
+            "selections": 1,
+            "selectionRate": 0.002288329519450801
+          },
+          {
+            "label": "二字",
+            "tokens": 998,
+            "tokenRate": 0.44833782569631625,
+            "hanCharacters": 1996,
+            "codeKeys": 3813,
+            "averageCodeLength": 3.82064128256513,
+            "codeLengths": {
+              "2": {
+                "count": 173,
+                "rate": 0.17334669338677355
+              },
+              "3": {
+                "count": 277,
+                "rate": 0.2775551102204409
+              },
+              "4": {
+                "count": 224,
+                "rate": 0.22444889779559118
+              },
+              "5": {
+                "count": 204,
+                "rate": 0.20440881763527055
+              },
+              "6": {
+                "count": 120,
+                "rate": 0.12024048096192384
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 302,
+            "tokenRate": 0.13566936208445643,
+            "hanCharacters": 906,
+            "codeKeys": 1335,
+            "averageCodeLength": 4.420529801324503,
+            "codeLengths": {
+              "3": {
+                "count": 88,
+                "rate": 0.2913907284768212
+              },
+              "4": {
+                "count": 79,
+                "rate": 0.26158940397350994
+              },
+              "5": {
+                "count": 67,
+                "rate": 0.22185430463576158
+              },
+              "6": {
+                "count": 56,
+                "rate": 0.18543046357615894
+              },
+              "7": {
+                "count": 12,
+                "rate": 0.039735099337748346
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 337,
+            "tokenRate": 0.151392632524708,
+            "hanCharacters": 1348,
+            "codeKeys": 1647,
+            "averageCodeLength": 4.887240356083086,
+            "codeLengths": {
+              "4": {
+                "count": 158,
+                "rate": 0.4688427299703264
+              },
+              "5": {
+                "count": 98,
+                "rate": 0.29080118694362017
+              },
+              "6": {
+                "count": 46,
+                "rate": 0.13649851632047477
+              },
+              "7": {
+                "count": 31,
+                "rate": 0.09198813056379822
+              },
+              "8": {
+                "count": 4,
+                "rate": 0.011869436201780416
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 152,
+            "tokenRate": 0.06828391734052111,
+            "hanCharacters": 813,
+            "codeKeys": 875,
+            "averageCodeLength": 5.756578947368421,
+            "codeLengths": {
+              "5": {
+                "count": 74,
+                "rate": 0.4868421052631579
+              },
+              "6": {
+                "count": 50,
+                "rate": 0.32894736842105265
+              },
+              "7": {
+                "count": 19,
+                "rate": 0.125
+              },
+              "8": {
+                "count": 9,
+                "rate": 0.05921052631578947
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
       },
       "scenes": [
         {
@@ -588,6 +808,198 @@
         },
         "averageLength": 1.7114545454545456
       },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2168,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 8416,
+          "averageCodeLength": 3.8819188191881917,
+          "codeLengths": {
+            "1": {
+              "count": 63,
+              "rate": 0.029059040590405903
+            },
+            "2": {
+              "count": 272,
+              "rate": 0.12546125461254612
+            },
+            "3": {
+              "count": 293,
+              "rate": 0.13514760147601476
+            },
+            "4": {
+              "count": 903,
+              "rate": 0.4165129151291513
+            },
+            "5": {
+              "count": 514,
+              "rate": 0.2370848708487085
+            },
+            "6": {
+              "count": 113,
+              "rate": 0.05212177121771218
+            },
+            "7": {
+              "count": 10,
+              "rate": 0.004612546125461255
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 325,
+            "tokenRate": 0.14990774907749077,
+            "hanCharacters": 325,
+            "codeKeys": 710,
+            "averageCodeLength": 2.1846153846153844,
+            "codeLengths": {
+              "1": {
+                "count": 63,
+                "rate": 0.19384615384615383
+              },
+              "2": {
+                "count": 178,
+                "rate": 0.5476923076923077
+              },
+              "3": {
+                "count": 54,
+                "rate": 0.16615384615384615
+              },
+              "4": {
+                "count": 23,
+                "rate": 0.07076923076923076
+              },
+              "5": {
+                "count": 5,
+                "rate": 0.015384615384615385
+              },
+              "6": {
+                "count": 2,
+                "rate": 0.006153846153846154
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1019,
+            "tokenRate": 0.47001845018450183,
+            "hanCharacters": 2038,
+            "codeKeys": 3865,
+            "averageCodeLength": 3.7929342492639844,
+            "codeLengths": {
+              "2": {
+                "count": 94,
+                "rate": 0.09224730127576054
+              },
+              "3": {
+                "count": 154,
+                "rate": 0.15112855740922473
+              },
+              "4": {
+                "count": 649,
+                "rate": 0.6368989205103042
+              },
+              "5": {
+                "count": 113,
+                "rate": 0.11089303238469088
+              },
+              "6": {
+                "count": 9,
+                "rate": 0.008832188420019628
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 333,
+            "tokenRate": 0.15359778597785978,
+            "hanCharacters": 999,
+            "codeKeys": 1401,
+            "averageCodeLength": 4.207207207207207,
+            "codeLengths": {
+              "3": {
+                "count": 85,
+                "rate": 0.2552552552552553
+              },
+              "4": {
+                "count": 110,
+                "rate": 0.3303303303303303
+              },
+              "5": {
+                "count": 122,
+                "rate": 0.3663663663663664
+              },
+              "6": {
+                "count": 16,
+                "rate": 0.04804804804804805
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 349,
+            "tokenRate": 0.1609778597785978,
+            "hanCharacters": 1396,
+            "codeKeys": 1652,
+            "averageCodeLength": 4.73352435530086,
+            "codeLengths": {
+              "4": {
+                "count": 121,
+                "rate": 0.3467048710601719
+              },
+              "5": {
+                "count": 201,
+                "rate": 0.5759312320916905
+              },
+              "6": {
+                "count": 26,
+                "rate": 0.07449856733524356
+              },
+              "7": {
+                "count": 1,
+                "rate": 0.0028653295128939827
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 142,
+            "tokenRate": 0.06549815498154982,
+            "hanCharacters": 742,
+            "codeKeys": 788,
+            "averageCodeLength": 5.549295774647887,
+            "codeLengths": {
+              "5": {
+                "count": 73,
+                "rate": 0.5140845070422535
+              },
+              "6": {
+                "count": 60,
+                "rate": 0.4225352112676056
+              },
+              "7": {
+                "count": 9,
+                "rate": 0.06338028169014084
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
+      },
       "scenes": [
         {
           "id": 1,
@@ -1112,6 +1524,206 @@
         },
         "averageLength": 1.724
       },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2174,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 8448,
+          "averageCodeLength": 3.8859245630174795,
+          "codeLengths": {
+            "1": {
+              "count": 78,
+              "rate": 0.035878564857405704
+            },
+            "2": {
+              "count": 274,
+              "rate": 0.12603495860165592
+            },
+            "3": {
+              "count": 278,
+              "rate": 0.12787488500459981
+            },
+            "4": {
+              "count": 898,
+              "rate": 0.41306347746090155
+            },
+            "5": {
+              "count": 504,
+              "rate": 0.23183072677092917
+            },
+            "6": {
+              "count": 120,
+              "rate": 0.05519779208831647
+            },
+            "7": {
+              "count": 20,
+              "rate": 0.00919963201471941
+            },
+            "8": {
+              "count": 2,
+              "rate": 0.0009199632014719411
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 332,
+            "tokenRate": 0.15271389144434222,
+            "hanCharacters": 332,
+            "codeKeys": 688,
+            "averageCodeLength": 2.072289156626506,
+            "codeLengths": {
+              "1": {
+                "count": 78,
+                "rate": 0.23493975903614459
+              },
+              "2": {
+                "count": 181,
+                "rate": 0.5451807228915663
+              },
+              "3": {
+                "count": 48,
+                "rate": 0.14457831325301204
+              },
+              "4": {
+                "count": 21,
+                "rate": 0.06325301204819277
+              },
+              "5": {
+                "count": 4,
+                "rate": 0.012048192771084338
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1023,
+            "tokenRate": 0.4705611775528979,
+            "hanCharacters": 2046,
+            "codeKeys": 3905,
+            "averageCodeLength": 3.817204301075269,
+            "codeLengths": {
+              "2": {
+                "count": 92,
+                "rate": 0.08993157380254155
+              },
+              "3": {
+                "count": 144,
+                "rate": 0.14076246334310852
+              },
+              "4": {
+                "count": 663,
+                "rate": 0.6480938416422287
+              },
+              "5": {
+                "count": 107,
+                "rate": 0.10459433040078202
+              },
+              "6": {
+                "count": 17,
+                "rate": 0.016617790811339198
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 338,
+            "tokenRate": 0.15547378104875806,
+            "hanCharacters": 1014,
+            "codeKeys": 1434,
+            "averageCodeLength": 4.242603550295858,
+            "codeLengths": {
+              "2": {
+                "count": 1,
+                "rate": 0.0029585798816568047
+              },
+              "3": {
+                "count": 86,
+                "rate": 0.25443786982248523
+              },
+              "4": {
+                "count": 95,
+                "rate": 0.28106508875739644
+              },
+              "5": {
+                "count": 142,
+                "rate": 0.42011834319526625
+              },
+              "6": {
+                "count": 14,
+                "rate": 0.04142011834319527
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 342,
+            "tokenRate": 0.15731370745170192,
+            "hanCharacters": 1368,
+            "codeKeys": 1638,
+            "averageCodeLength": 4.7894736842105265,
+            "codeLengths": {
+              "4": {
+                "count": 119,
+                "rate": 0.347953216374269
+              },
+              "5": {
+                "count": 181,
+                "rate": 0.5292397660818714
+              },
+              "6": {
+                "count": 37,
+                "rate": 0.10818713450292397
+              },
+              "7": {
+                "count": 5,
+                "rate": 0.014619883040935672
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 139,
+            "tokenRate": 0.06393744250229991,
+            "hanCharacters": 740,
+            "codeKeys": 783,
+            "averageCodeLength": 5.633093525179856,
+            "codeLengths": {
+              "5": {
+                "count": 70,
+                "rate": 0.5035971223021583
+              },
+              "6": {
+                "count": 52,
+                "rate": 0.37410071942446044
+              },
+              "7": {
+                "count": 15,
+                "rate": 0.1079136690647482
+              },
+              "8": {
+                "count": 2,
+                "rate": 0.014388489208633094
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
+      },
       "scenes": [
         {
           "id": 1,
@@ -1635,6 +2247,174 @@
           "A": 178
         },
         "averageLength": 2.1383636363636365
+      },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 3705,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 9926,
+          "averageCodeLength": 2.6790823211875843,
+          "codeLengths": {
+            "1": {
+              "count": 417,
+              "rate": 0.1125506072874494
+            },
+            "2": {
+              "count": 1189,
+              "rate": 0.3209176788124157
+            },
+            "3": {
+              "count": 1418,
+              "rate": 0.3827260458839406
+            },
+            "4": {
+              "count": 589,
+              "rate": 0.15897435897435896
+            },
+            "5": {
+              "count": 49,
+              "rate": 0.013225371120107961
+            },
+            "6": {
+              "count": 32,
+              "rate": 0.00863697705802969
+            },
+            "7": {
+              "count": 5,
+              "rate": 0.001349527665317139
+            },
+            "8": {
+              "count": 5,
+              "rate": 0.001349527665317139
+            },
+            "9": {
+              "count": 1,
+              "rate": 0.0002699055330634278
+            }
+          },
+          "selections": 2,
+          "selectionRate": 0.0005398110661268556
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 2772,
+            "tokenRate": 0.7481781376518218,
+            "hanCharacters": 2772,
+            "codeKeys": 6631,
+            "averageCodeLength": 2.392135642135642,
+            "codeLengths": {
+              "1": {
+                "count": 417,
+                "rate": 0.15043290043290045
+              },
+              "2": {
+                "count": 1171,
+                "rate": 0.42243867243867245
+              },
+              "3": {
+                "count": 864,
+                "rate": 0.3116883116883117
+              },
+              "4": {
+                "count": 320,
+                "rate": 0.11544011544011544
+              }
+            },
+            "selections": 2,
+            "selectionRate": 0.0007215007215007215
+          },
+          {
+            "label": "二字",
+            "tokens": 486,
+            "tokenRate": 0.1311740890688259,
+            "hanCharacters": 972,
+            "codeKeys": 1440,
+            "averageCodeLength": 2.962962962962963,
+            "codeLengths": {
+              "2": {
+                "count": 18,
+                "rate": 0.037037037037037035
+              },
+              "3": {
+                "count": 468,
+                "rate": 0.9629629629629629
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 185,
+            "tokenRate": 0.04993252361673414,
+            "hanCharacters": 555,
+            "codeKeys": 654,
+            "averageCodeLength": 3.535135135135135,
+            "codeLengths": {
+              "3": {
+                "count": 86,
+                "rate": 0.4648648648648649
+              },
+              "4": {
+                "count": 99,
+                "rate": 0.5351351351351351
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 170,
+            "tokenRate": 0.04588394062078273,
+            "hanCharacters": 680,
+            "codeKeys": 680,
+            "averageCodeLength": 4,
+            "codeLengths": {
+              "4": {
+                "count": 170,
+                "rate": 1
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 92,
+            "tokenRate": 0.024831309041835357,
+            "hanCharacters": 521,
+            "codeKeys": 521,
+            "averageCodeLength": 5.663043478260869,
+            "codeLengths": {
+              "5": {
+                "count": 49,
+                "rate": 0.532608695652174
+              },
+              "6": {
+                "count": 32,
+                "rate": 0.34782608695652173
+              },
+              "7": {
+                "count": 5,
+                "rate": 0.05434782608695652
+              },
+              "8": {
+                "count": 5,
+                "rate": 0.05434782608695652
+              },
+              "9": {
+                "count": 1,
+                "rate": 0.010869565217391304
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
       },
       "scenes": [
         {
@@ -2167,6 +2947,194 @@
         },
         "averageLength": 1.800909090909091
       },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2302,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 9122,
+          "averageCodeLength": 3.9626411815812337,
+          "codeLengths": {
+            "1": {
+              "count": 74,
+              "rate": 0.03214596003475239
+            },
+            "2": {
+              "count": 260,
+              "rate": 0.11294526498696786
+            },
+            "3": {
+              "count": 259,
+              "rate": 0.11251086012163336
+            },
+            "4": {
+              "count": 1048,
+              "rate": 0.45525629887054736
+            },
+            "5": {
+              "count": 433,
+              "rate": 0.18809730668983493
+            },
+            "6": {
+              "count": 202,
+              "rate": 0.08774978279756733
+            },
+            "7": {
+              "count": 26,
+              "rate": 0.011294526498696786
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 341,
+            "tokenRate": 0.14813205907906168,
+            "hanCharacters": 341,
+            "codeKeys": 709,
+            "averageCodeLength": 2.0791788856304985,
+            "codeLengths": {
+              "1": {
+                "count": 74,
+                "rate": 0.21700879765395895
+              },
+              "2": {
+                "count": 195,
+                "rate": 0.5718475073313783
+              },
+              "3": {
+                "count": 47,
+                "rate": 0.1378299120234604
+              },
+              "4": {
+                "count": 21,
+                "rate": 0.06158357771260997
+              },
+              "5": {
+                "count": 4,
+                "rate": 0.011730205278592375
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1168,
+            "tokenRate": 0.5073848827106864,
+            "hanCharacters": 2336,
+            "codeKeys": 4584,
+            "averageCodeLength": 3.9246575342465753,
+            "codeLengths": {
+              "2": {
+                "count": 65,
+                "rate": 0.05565068493150685
+              },
+              "3": {
+                "count": 110,
+                "rate": 0.09417808219178082
+              },
+              "4": {
+                "count": 856,
+                "rate": 0.7328767123287672
+              },
+              "5": {
+                "count": 122,
+                "rate": 0.10445205479452055
+              },
+              "6": {
+                "count": 15,
+                "rate": 0.012842465753424657
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 407,
+            "tokenRate": 0.17680278019113815,
+            "hanCharacters": 1221,
+            "codeKeys": 1803,
+            "averageCodeLength": 4.42997542997543,
+            "codeLengths": {
+              "3": {
+                "count": 102,
+                "rate": 0.25061425061425063
+              },
+              "4": {
+                "count": 78,
+                "rate": 0.19164619164619165
+              },
+              "5": {
+                "count": 177,
+                "rate": 0.4348894348894349
+              },
+              "6": {
+                "count": 50,
+                "rate": 0.12285012285012285
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 328,
+            "tokenRate": 0.1424847958297133,
+            "hanCharacters": 1312,
+            "codeKeys": 1664,
+            "averageCodeLength": 5.073170731707317,
+            "codeLengths": {
+              "4": {
+                "count": 93,
+                "rate": 0.28353658536585363
+              },
+              "5": {
+                "count": 123,
+                "rate": 0.375
+              },
+              "6": {
+                "count": 107,
+                "rate": 0.32621951219512196
+              },
+              "7": {
+                "count": 5,
+                "rate": 0.01524390243902439
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 58,
+            "tokenRate": 0.02519548218940052,
+            "hanCharacters": 290,
+            "codeKeys": 362,
+            "averageCodeLength": 6.241379310344827,
+            "codeLengths": {
+              "5": {
+                "count": 7,
+                "rate": 0.1206896551724138
+              },
+              "6": {
+                "count": 30,
+                "rate": 0.5172413793103449
+              },
+              "7": {
+                "count": 21,
+                "rate": 0.3620689655172414
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
+      },
       "scenes": [
         {
           "id": 1,
@@ -2685,6 +3653,198 @@
           "[": 5
         },
         "averageLength": 1.824
+      },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2341,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 9229,
+          "averageCodeLength": 3.942332336608287,
+          "codeLengths": {
+            "1": {
+              "count": 76,
+              "rate": 0.03246475865014951
+            },
+            "2": {
+              "count": 273,
+              "rate": 0.11661683041435283
+            },
+            "3": {
+              "count": 273,
+              "rate": 0.11661683041435283
+            },
+            "4": {
+              "count": 1074,
+              "rate": 0.45877829987184965
+            },
+            "5": {
+              "count": 410,
+              "rate": 0.17513882956001708
+            },
+            "6": {
+              "count": 203,
+              "rate": 0.08671507902605724
+            },
+            "7": {
+              "count": 32,
+              "rate": 0.013669372063220846
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 367,
+            "tokenRate": 0.15677061085006408,
+            "hanCharacters": 367,
+            "codeKeys": 778,
+            "averageCodeLength": 2.119891008174387,
+            "codeLengths": {
+              "1": {
+                "count": 76,
+                "rate": 0.20708446866485014
+              },
+              "2": {
+                "count": 206,
+                "rate": 0.5613079019073569
+              },
+              "3": {
+                "count": 56,
+                "rate": 0.15258855585831063
+              },
+              "4": {
+                "count": 23,
+                "rate": 0.06267029972752043
+              },
+              "5": {
+                "count": 6,
+                "rate": 0.01634877384196185
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1213,
+            "tokenRate": 0.5181546347714652,
+            "hanCharacters": 2426,
+            "codeKeys": 4771,
+            "averageCodeLength": 3.9332234130255563,
+            "codeLengths": {
+              "2": {
+                "count": 67,
+                "rate": 0.055234954657873044
+              },
+              "3": {
+                "count": 114,
+                "rate": 0.09398186314921682
+              },
+              "4": {
+                "count": 881,
+                "rate": 0.7262984336356142
+              },
+              "5": {
+                "count": 135,
+                "rate": 0.11129431162407255
+              },
+              "6": {
+                "count": 16,
+                "rate": 0.013190436933223413
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 394,
+            "tokenRate": 0.16830414352840667,
+            "hanCharacters": 1182,
+            "codeKeys": 1741,
+            "averageCodeLength": 4.418781725888325,
+            "codeLengths": {
+              "3": {
+                "count": 103,
+                "rate": 0.2614213197969543
+              },
+              "4": {
+                "count": 77,
+                "rate": 0.19543147208121828
+              },
+              "5": {
+                "count": 161,
+                "rate": 0.4086294416243655
+              },
+              "6": {
+                "count": 52,
+                "rate": 0.1319796954314721
+              },
+              "7": {
+                "count": 1,
+                "rate": 0.0025380710659898475
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 310,
+            "tokenRate": 0.13242204186245193,
+            "hanCharacters": 1240,
+            "codeKeys": 1580,
+            "averageCodeLength": 5.096774193548387,
+            "codeLengths": {
+              "4": {
+                "count": 93,
+                "rate": 0.3
+              },
+              "5": {
+                "count": 101,
+                "rate": 0.3258064516129032
+              },
+              "6": {
+                "count": 109,
+                "rate": 0.35161290322580646
+              },
+              "7": {
+                "count": 7,
+                "rate": 0.02258064516129032
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 57,
+            "tokenRate": 0.024348568987612132,
+            "hanCharacters": 285,
+            "codeKeys": 359,
+            "averageCodeLength": 6.298245614035087,
+            "codeLengths": {
+              "5": {
+                "count": 7,
+                "rate": 0.12280701754385964
+              },
+              "6": {
+                "count": 26,
+                "rate": 0.45614035087719296
+              },
+              "7": {
+                "count": 24,
+                "rate": 0.42105263157894735
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
       },
       "scenes": [
         {
@@ -3205,6 +4365,202 @@
           "/": 18
         },
         "averageLength": 1.7172727272727273
+      },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2153,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 8408,
+          "averageCodeLength": 3.905248490478402,
+          "codeLengths": {
+            "1": {
+              "count": 72,
+              "rate": 0.03344170924291686
+            },
+            "2": {
+              "count": 265,
+              "rate": 0.12308406874129123
+            },
+            "3": {
+              "count": 225,
+              "rate": 0.10450534138411519
+            },
+            "4": {
+              "count": 967,
+              "rate": 0.44914073385973063
+            },
+            "5": {
+              "count": 496,
+              "rate": 0.23037621922898283
+            },
+            "6": {
+              "count": 115,
+              "rate": 0.053413841151881095
+            },
+            "7": {
+              "count": 11,
+              "rate": 0.005109150023223409
+            },
+            "8": {
+              "count": 2,
+              "rate": 0.0009289363678588017
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 320,
+            "tokenRate": 0.14862981885740828,
+            "hanCharacters": 320,
+            "codeKeys": 651,
+            "averageCodeLength": 2.034375,
+            "codeLengths": {
+              "1": {
+                "count": 72,
+                "rate": 0.225
+              },
+              "2": {
+                "count": 193,
+                "rate": 0.603125
+              },
+              "3": {
+                "count": 33,
+                "rate": 0.103125
+              },
+              "4": {
+                "count": 16,
+                "rate": 0.05
+              },
+              "5": {
+                "count": 6,
+                "rate": 0.01875
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1007,
+            "tokenRate": 0.46771946121690666,
+            "hanCharacters": 2014,
+            "codeKeys": 3863,
+            "averageCodeLength": 3.8361469712015888,
+            "codeLengths": {
+              "2": {
+                "count": 72,
+                "rate": 0.07149950347567031
+              },
+              "3": {
+                "count": 111,
+                "rate": 0.11022840119165839
+              },
+              "4": {
+                "count": 740,
+                "rate": 0.7348560079443893
+              },
+              "5": {
+                "count": 78,
+                "rate": 0.07745779543197617
+              },
+              "6": {
+                "count": 6,
+                "rate": 0.005958291956305859
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 328,
+            "tokenRate": 0.15234556432884347,
+            "hanCharacters": 984,
+            "codeKeys": 1379,
+            "averageCodeLength": 4.204268292682927,
+            "codeLengths": {
+              "3": {
+                "count": 81,
+                "rate": 0.24695121951219512
+              },
+              "4": {
+                "count": 109,
+                "rate": 0.3323170731707317
+              },
+              "5": {
+                "count": 128,
+                "rate": 0.3902439024390244
+              },
+              "6": {
+                "count": 10,
+                "rate": 0.03048780487804878
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 351,
+            "tokenRate": 0.1630283325592197,
+            "hanCharacters": 1404,
+            "codeKeys": 1688,
+            "averageCodeLength": 4.8091168091168095,
+            "codeLengths": {
+              "4": {
+                "count": 102,
+                "rate": 0.2905982905982906
+              },
+              "5": {
+                "count": 215,
+                "rate": 0.6125356125356125
+              },
+              "6": {
+                "count": 33,
+                "rate": 0.09401709401709402
+              },
+              "7": {
+                "count": 1,
+                "rate": 0.002849002849002849
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 147,
+            "tokenRate": 0.06827682303762192,
+            "hanCharacters": 778,
+            "codeKeys": 827,
+            "averageCodeLength": 5.625850340136054,
+            "codeLengths": {
+              "5": {
+                "count": 69,
+                "rate": 0.46938775510204084
+              },
+              "6": {
+                "count": 66,
+                "rate": 0.4489795918367347
+              },
+              "7": {
+                "count": 10,
+                "rate": 0.06802721088435375
+              },
+              "8": {
+                "count": 2,
+                "rate": 0.013605442176870748
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
       },
       "scenes": [
         {
@@ -3731,6 +5087,202 @@
         },
         "averageLength": 1.8047272727272727
       },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2294,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 9145,
+          "averageCodeLength": 3.9864864864864864,
+          "codeLengths": {
+            "1": {
+              "count": 91,
+              "rate": 0.03966870095902354
+            },
+            "2": {
+              "count": 234,
+              "rate": 0.1020052310374891
+            },
+            "3": {
+              "count": 192,
+              "rate": 0.08369659982563209
+            },
+            "4": {
+              "count": 1135,
+              "rate": 0.49476896251089797
+            },
+            "5": {
+              "count": 408,
+              "rate": 0.17785527462946818
+            },
+            "6": {
+              "count": 208,
+              "rate": 0.09067131647776809
+            },
+            "7": {
+              "count": 26,
+              "rate": 0.011333914559721011
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 375,
+            "tokenRate": 0.16346992153443765,
+            "hanCharacters": 375,
+            "codeKeys": 752,
+            "averageCodeLength": 2.005333333333333,
+            "codeLengths": {
+              "1": {
+                "count": 91,
+                "rate": 0.24266666666666667
+              },
+              "2": {
+                "count": 209,
+                "rate": 0.5573333333333333
+              },
+              "3": {
+                "count": 61,
+                "rate": 0.16266666666666665
+              },
+              "4": {
+                "count": 11,
+                "rate": 0.029333333333333333
+              },
+              "5": {
+                "count": 2,
+                "rate": 0.005333333333333333
+              },
+              "6": {
+                "count": 1,
+                "rate": 0.0026666666666666666
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1107,
+            "tokenRate": 0.48256320836966,
+            "hanCharacters": 2214,
+            "codeKeys": 4437,
+            "averageCodeLength": 4.008130081300813,
+            "codeLengths": {
+              "2": {
+                "count": 25,
+                "rate": 0.022583559168925023
+              },
+              "3": {
+                "count": 24,
+                "rate": 0.02168021680216802
+              },
+              "4": {
+                "count": 977,
+                "rate": 0.8825654923215899
+              },
+              "5": {
+                "count": 79,
+                "rate": 0.07136404697380307
+              },
+              "6": {
+                "count": 2,
+                "rate": 0.0018066847335140017
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 401,
+            "tokenRate": 0.17480383609415867,
+            "hanCharacters": 1203,
+            "codeKeys": 1776,
+            "averageCodeLength": 4.428927680798005,
+            "codeLengths": {
+              "3": {
+                "count": 107,
+                "rate": 0.26683291770573564
+              },
+              "4": {
+                "count": 58,
+                "rate": 0.14463840399002495
+              },
+              "5": {
+                "count": 194,
+                "rate": 0.4837905236907731
+              },
+              "6": {
+                "count": 41,
+                "rate": 0.10224438902743142
+              },
+              "7": {
+                "count": 1,
+                "rate": 0.0024937655860349127
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 347,
+            "tokenRate": 0.15126416739319964,
+            "hanCharacters": 1388,
+            "codeKeys": 1788,
+            "averageCodeLength": 5.152737752161383,
+            "codeLengths": {
+              "4": {
+                "count": 89,
+                "rate": 0.2564841498559078
+              },
+              "5": {
+                "count": 120,
+                "rate": 0.345821325648415
+              },
+              "6": {
+                "count": 134,
+                "rate": 0.3861671469740634
+              },
+              "7": {
+                "count": 4,
+                "rate": 0.011527377521613832
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 64,
+            "tokenRate": 0.02789886660854403,
+            "hanCharacters": 320,
+            "codeKeys": 392,
+            "averageCodeLength": 6.125,
+            "codeLengths": {
+              "5": {
+                "count": 13,
+                "rate": 0.203125
+              },
+              "6": {
+                "count": 30,
+                "rate": 0.46875
+              },
+              "7": {
+                "count": 21,
+                "rate": 0.328125
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
+      },
       "scenes": [
         {
           "id": 1,
@@ -4252,6 +5804,190 @@
           "/": 21
         },
         "averageLength": 1.7274545454545454
+      },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2169,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 8448,
+          "averageCodeLength": 3.8948824343015214,
+          "codeLengths": {
+            "1": {
+              "count": 66,
+              "rate": 0.030428769017980636
+            },
+            "2": {
+              "count": 282,
+              "rate": 0.13001383125864455
+            },
+            "3": {
+              "count": 284,
+              "rate": 0.13093591516828032
+            },
+            "4": {
+              "count": 868,
+              "rate": 0.4001844167819272
+            },
+            "5": {
+              "count": 531,
+              "rate": 0.24481327800829875
+            },
+            "6": {
+              "count": 127,
+              "rate": 0.05855232826187183
+            },
+            "7": {
+              "count": 11,
+              "rate": 0.005071461502996773
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 334,
+            "tokenRate": 0.15398801290917474,
+            "hanCharacters": 334,
+            "codeKeys": 721,
+            "averageCodeLength": 2.158682634730539,
+            "codeLengths": {
+              "1": {
+                "count": 66,
+                "rate": 0.19760479041916168
+              },
+              "2": {
+                "count": 185,
+                "rate": 0.5538922155688623
+              },
+              "3": {
+                "count": 52,
+                "rate": 0.15568862275449102
+              },
+              "4": {
+                "count": 26,
+                "rate": 0.07784431137724551
+              },
+              "5": {
+                "count": 5,
+                "rate": 0.014970059880239521
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1016,
+            "tokenRate": 0.46841862609497464,
+            "hanCharacters": 2032,
+            "codeKeys": 3852,
+            "averageCodeLength": 3.7913385826771653,
+            "codeLengths": {
+              "2": {
+                "count": 97,
+                "rate": 0.09547244094488189
+              },
+              "3": {
+                "count": 153,
+                "rate": 0.15059055118110237
+              },
+              "4": {
+                "count": 641,
+                "rate": 0.6309055118110236
+              },
+              "5": {
+                "count": 115,
+                "rate": 0.11318897637795275
+              },
+              "6": {
+                "count": 10,
+                "rate": 0.00984251968503937
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 335,
+            "tokenRate": 0.15444905486399263,
+            "hanCharacters": 1005,
+            "codeKeys": 1430,
+            "averageCodeLength": 4.268656716417911,
+            "codeLengths": {
+              "3": {
+                "count": 79,
+                "rate": 0.23582089552238805
+              },
+              "4": {
+                "count": 105,
+                "rate": 0.31343283582089554
+              },
+              "5": {
+                "count": 133,
+                "rate": 0.3970149253731343
+              },
+              "6": {
+                "count": 18,
+                "rate": 0.05373134328358209
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 333,
+            "tokenRate": 0.15352697095435686,
+            "hanCharacters": 1332,
+            "codeKeys": 1599,
+            "averageCodeLength": 4.801801801801802,
+            "codeLengths": {
+              "4": {
+                "count": 96,
+                "rate": 0.2882882882882883
+              },
+              "5": {
+                "count": 207,
+                "rate": 0.6216216216216216
+              },
+              "6": {
+                "count": 30,
+                "rate": 0.09009009009009009
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 151,
+            "tokenRate": 0.06961733517750116,
+            "hanCharacters": 797,
+            "codeKeys": 846,
+            "averageCodeLength": 5.602649006622516,
+            "codeLengths": {
+              "5": {
+                "count": 71,
+                "rate": 0.47019867549668876
+              },
+              "6": {
+                "count": 69,
+                "rate": 0.45695364238410596
+              },
+              "7": {
+                "count": 11,
+                "rate": 0.0728476821192053
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
       },
       "scenes": [
         {
@@ -4777,6 +6513,206 @@
         },
         "averageLength": 1.7447272727272727
       },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2165,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 8525,
+          "averageCodeLength": 3.9376443418013856,
+          "codeLengths": {
+            "1": {
+              "count": 65,
+              "rate": 0.03002309468822171
+            },
+            "2": {
+              "count": 284,
+              "rate": 0.13117782909930717
+            },
+            "3": {
+              "count": 234,
+              "rate": 0.10808314087759816
+            },
+            "4": {
+              "count": 909,
+              "rate": 0.41986143187066977
+            },
+            "5": {
+              "count": 508,
+              "rate": 0.2346420323325635
+            },
+            "6": {
+              "count": 145,
+              "rate": 0.06697459584295612
+            },
+            "7": {
+              "count": 16,
+              "rate": 0.007390300230946882
+            },
+            "8": {
+              "count": 4,
+              "rate": 0.0018475750577367205
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 323,
+            "tokenRate": 0.1491916859122402,
+            "hanCharacters": 323,
+            "codeKeys": 680,
+            "averageCodeLength": 2.1052631578947367,
+            "codeLengths": {
+              "1": {
+                "count": 65,
+                "rate": 0.20123839009287925
+              },
+              "2": {
+                "count": 187,
+                "rate": 0.5789473684210527
+              },
+              "3": {
+                "count": 48,
+                "rate": 0.14860681114551083
+              },
+              "4": {
+                "count": 19,
+                "rate": 0.058823529411764705
+              },
+              "5": {
+                "count": 3,
+                "rate": 0.009287925696594427
+              },
+              "6": {
+                "count": 1,
+                "rate": 0.0030959752321981426
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1030,
+            "tokenRate": 0.47575057736720555,
+            "hanCharacters": 2060,
+            "codeKeys": 3960,
+            "averageCodeLength": 3.8446601941747574,
+            "codeLengths": {
+              "2": {
+                "count": 97,
+                "rate": 0.0941747572815534
+              },
+              "3": {
+                "count": 107,
+                "rate": 0.10388349514563107
+              },
+              "4": {
+                "count": 699,
+                "rate": 0.6786407766990291
+              },
+              "5": {
+                "count": 113,
+                "rate": 0.10970873786407767
+              },
+              "6": {
+                "count": 14,
+                "rate": 0.013592233009708738
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 333,
+            "tokenRate": 0.15381062355658198,
+            "hanCharacters": 999,
+            "codeKeys": 1423,
+            "averageCodeLength": 4.273273273273273,
+            "codeLengths": {
+              "3": {
+                "count": 79,
+                "rate": 0.23723723723723725
+              },
+              "4": {
+                "count": 97,
+                "rate": 0.2912912912912913
+              },
+              "5": {
+                "count": 144,
+                "rate": 0.43243243243243246
+              },
+              "6": {
+                "count": 13,
+                "rate": 0.03903903903903904
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 331,
+            "tokenRate": 0.15288683602771364,
+            "hanCharacters": 1324,
+            "codeKeys": 1619,
+            "averageCodeLength": 4.891238670694864,
+            "codeLengths": {
+              "4": {
+                "count": 94,
+                "rate": 0.283987915407855
+              },
+              "5": {
+                "count": 181,
+                "rate": 0.5468277945619335
+              },
+              "6": {
+                "count": 54,
+                "rate": 0.16314199395770393
+              },
+              "7": {
+                "count": 2,
+                "rate": 0.006042296072507553
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 148,
+            "tokenRate": 0.06836027713625865,
+            "hanCharacters": 794,
+            "codeKeys": 843,
+            "averageCodeLength": 5.695945945945946,
+            "codeLengths": {
+              "5": {
+                "count": 67,
+                "rate": 0.4527027027027027
+              },
+              "6": {
+                "count": 63,
+                "rate": 0.42567567567567566
+              },
+              "7": {
+                "count": 14,
+                "rate": 0.0945945945945946
+              },
+              "8": {
+                "count": 4,
+                "rate": 0.02702702702702703
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
+      },
       "scenes": [
         {
           "id": 1,
@@ -5298,6 +7234,230 @@
         },
         "averageLength": 1.8789090909090909
       },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 2531,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 9536,
+          "averageCodeLength": 3.7676807585934413,
+          "codeLengths": {
+            "1": {
+              "count": 252,
+              "rate": 0.09956538917423943
+            },
+            "2": {
+              "count": 189,
+              "rate": 0.07467404188067957
+            },
+            "3": {
+              "count": 268,
+              "rate": 0.10588700118530225
+            },
+            "4": {
+              "count": 1222,
+              "rate": 0.48281311734492294
+            },
+            "5": {
+              "count": 439,
+              "rate": 0.17344922955353614
+            },
+            "6": {
+              "count": 119,
+              "rate": 0.047016989332279734
+            },
+            "7": {
+              "count": 32,
+              "rate": 0.012643224022125641
+            },
+            "8": {
+              "count": 9,
+              "rate": 0.0035559067562228367
+            },
+            "9": {
+              "count": 1,
+              "rate": 0.0003951007506914263
+            }
+          },
+          "selections": 0,
+          "selectionRate": 0
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 565,
+            "tokenRate": 0.22323192414065587,
+            "hanCharacters": 565,
+            "codeKeys": 1079,
+            "averageCodeLength": 1.9097345132743362,
+            "codeLengths": {
+              "1": {
+                "count": 252,
+                "rate": 0.44601769911504424
+              },
+              "2": {
+                "count": 164,
+                "rate": 0.2902654867256637
+              },
+              "3": {
+                "count": 119,
+                "rate": 0.21061946902654868
+              },
+              "4": {
+                "count": 14,
+                "rate": 0.024778761061946902
+              },
+              "5": {
+                "count": 11,
+                "rate": 0.019469026548672566
+              },
+              "6": {
+                "count": 4,
+                "rate": 0.007079646017699115
+              },
+              "7": {
+                "count": 1,
+                "rate": 0.0017699115044247787
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "二字",
+            "tokens": 1375,
+            "tokenRate": 0.5432635322007112,
+            "hanCharacters": 2750,
+            "codeKeys": 5539,
+            "averageCodeLength": 4.028363636363636,
+            "codeLengths": {
+              "2": {
+                "count": 25,
+                "rate": 0.01818181818181818
+              },
+              "3": {
+                "count": 149,
+                "rate": 0.10836363636363637
+              },
+              "4": {
+                "count": 998,
+                "rate": 0.7258181818181818
+              },
+              "5": {
+                "count": 172,
+                "rate": 0.12509090909090909
+              },
+              "6": {
+                "count": 27,
+                "rate": 0.019636363636363636
+              },
+              "7": {
+                "count": 4,
+                "rate": 0.002909090909090909
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 283,
+            "tokenRate": 0.11181351244567364,
+            "hanCharacters": 849,
+            "codeKeys": 1361,
+            "averageCodeLength": 4.809187279151944,
+            "codeLengths": {
+              "4": {
+                "count": 98,
+                "rate": 0.3462897526501767
+              },
+              "5": {
+                "count": 144,
+                "rate": 0.508833922261484
+              },
+              "6": {
+                "count": 38,
+                "rate": 0.13427561837455831
+              },
+              "7": {
+                "count": 3,
+                "rate": 0.01060070671378092
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 255,
+            "tokenRate": 0.10075069142631371,
+            "hanCharacters": 1020,
+            "codeKeys": 1271,
+            "averageCodeLength": 4.984313725490196,
+            "codeLengths": {
+              "4": {
+                "count": 98,
+                "rate": 0.3843137254901961
+              },
+              "5": {
+                "count": 92,
+                "rate": 0.3607843137254902
+              },
+              "6": {
+                "count": 43,
+                "rate": 0.16862745098039217
+              },
+              "7": {
+                "count": 16,
+                "rate": 0.06274509803921569
+              },
+              "8": {
+                "count": 5,
+                "rate": 0.0196078431372549
+              },
+              "9": {
+                "count": 1,
+                "rate": 0.00392156862745098
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 53,
+            "tokenRate": 0.020940339786645595,
+            "hanCharacters": 316,
+            "codeKeys": 286,
+            "averageCodeLength": 5.39622641509434,
+            "codeLengths": {
+              "4": {
+                "count": 14,
+                "rate": 0.2641509433962264
+              },
+              "5": {
+                "count": 20,
+                "rate": 0.37735849056603776
+              },
+              "6": {
+                "count": 7,
+                "rate": 0.1320754716981132
+              },
+              "7": {
+                "count": 8,
+                "rate": 0.1509433962264151
+              },
+              "8": {
+                "count": 4,
+                "rate": 0.07547169811320754
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
+      },
       "scenes": [
         {
           "id": 1,
@@ -5790,6 +7950,153 @@
           "Candidate2": 2
         },
         "averageLength": 2.2265454545454544
+      },
+      "wordStatistics": {
+        "total": {
+          "label": "合计",
+          "tokens": 3316,
+          "tokenRate": 1,
+          "hanCharacters": 5500,
+          "codeKeys": 10528,
+          "averageCodeLength": 3.174909529553679,
+          "codeLengths": {
+            "1": {
+              "count": 365,
+              "rate": 0.11007237635705669
+            },
+            "2": {
+              "count": 574,
+              "rate": 0.17310012062726177
+            },
+            "3": {
+              "count": 499,
+              "rate": 0.15048250904704463
+            },
+            "4": {
+              "count": 1876,
+              "rate": 0.5657418576598311
+            },
+            "6": {
+              "count": 1,
+              "rate": 0.00030156815440289503
+            },
+            "8": {
+              "count": 1,
+              "rate": 0.00030156815440289503
+            }
+          },
+          "selections": 2,
+          "selectionRate": 0.0006031363088057901
+        },
+        "groups": [
+          {
+            "label": "单字",
+            "tokens": 1331,
+            "tokenRate": 0.4013872135102533,
+            "hanCharacters": 1331,
+            "codeKeys": 2903,
+            "averageCodeLength": 2.18106686701728,
+            "codeLengths": {
+              "1": {
+                "count": 365,
+                "rate": 0.2742299023290759
+              },
+              "2": {
+                "count": 448,
+                "rate": 0.33658903080390684
+              },
+              "3": {
+                "count": 436,
+                "rate": 0.3275732531930879
+              },
+              "4": {
+                "count": 80,
+                "rate": 0.06010518407212622
+              },
+              "6": {
+                "count": 1,
+                "rate": 0.0007513148009015778
+              },
+              "8": {
+                "count": 1,
+                "rate": 0.0007513148009015778
+              }
+            },
+            "selections": 2,
+            "selectionRate": 0.0015026296018031556
+          },
+          {
+            "label": "二字",
+            "tokens": 1854,
+            "tokenRate": 0.5591073582629674,
+            "hanCharacters": 3708,
+            "codeKeys": 7113,
+            "averageCodeLength": 3.836569579288026,
+            "codeLengths": {
+              "2": {
+                "count": 126,
+                "rate": 0.06796116504854369
+              },
+              "3": {
+                "count": 51,
+                "rate": 0.02750809061488673
+              },
+              "4": {
+                "count": 1677,
+                "rate": 0.9045307443365695
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "三字",
+            "tokens": 63,
+            "tokenRate": 0.018998793727382387,
+            "hanCharacters": 189,
+            "codeKeys": 240,
+            "averageCodeLength": 3.8095238095238093,
+            "codeLengths": {
+              "3": {
+                "count": 12,
+                "rate": 0.19047619047619047
+              },
+              "4": {
+                "count": 51,
+                "rate": 0.8095238095238095
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "四字",
+            "tokens": 68,
+            "tokenRate": 0.020506634499396863,
+            "hanCharacters": 272,
+            "codeKeys": 272,
+            "averageCodeLength": 4,
+            "codeLengths": {
+              "4": {
+                "count": 68,
+                "rate": 1
+              }
+            },
+            "selections": 0,
+            "selectionRate": 0
+          },
+          {
+            "label": "五字及以上",
+            "tokens": 0,
+            "tokenRate": 0,
+            "hanCharacters": 0,
+            "codeKeys": 0,
+            "averageCodeLength": 0,
+            "codeLengths": {},
+            "selections": 0,
+            "selectionRate": 0
+          }
+        ]
       },
       "scenes": [
         {
