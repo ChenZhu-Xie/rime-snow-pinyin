@@ -91,8 +91,8 @@ local expected = {
   { "snow_sipin", "冰雪四拼", "21¹5ⁿ 动态调频 多音节词王" },
   { "snow_yipin", "冰雪一拼", "1200ⁿ95ᵐ 顶功并击 带调音节/击" },
   { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
-  { "snow_zhudao", "冰雪鹮道", "21¹26¹5⁴ 带调双拼 键道形辅" },
-  { "snow_jiandao_toned", "冰雪莲道", "21²5⁴ 带调键道 主码含调" },
+  { "snow_zhudao", "冰雪鹮道", "21¹26¹5⁴ 带调鹤道 键道形辅" },
+  { "snow_jiandao_toned", "冰雪莲道", "21²5⁴ 带调兰道 性能之王" },
 }
 
 assert(#menu.entries == #expected, "方案数必须为 11")
@@ -227,7 +227,7 @@ assert(selected_schema == "snow_qingyun" and context.input == "",
 yielded = {}
 menu.translator.func("dtld", segment, translator_env)
 assert(#yielded == 1 and yielded[1].text == "冰雪莲道", "带调莲道必须可被筛选")
-assert(yielded[1].comment == "21²5⁴ 带调键道 主码含调", "已部署莲道必须显示方案说明")
+assert(yielded[1].comment == "21²5⁴ 带调兰道 性能之王", "已部署莲道必须显示方案说明")
 selected_schema = nil
 selected_candidate = yielded[1]
 context.input = "~~'dtld"
