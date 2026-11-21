@@ -199,5 +199,5 @@ test("5500 字统一表与原切分词次、码长加权和、选重及总按键
 		}
 	}
 	const markdown = read("reports/十一场景_5500字_当前十二方案对比评测.md");
-	assert.equal((markdown.match(/\| \*\*合计\*\* \|/gu) ?? []).length, 12);
+	assert.equal((markdown.match(/\| 指标／实际键数 \|/gu) ?? []).length, 12);
 });

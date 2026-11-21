@@ -110,32 +110,39 @@ export function renderBenchmarkWordStatistics(
 		statistics: BenchmarkWordStatistics;
 	}>,
 ): string {
-	const maxCodeLength = Math.max(
-		0,
-		...schemes.flatMap(({ statistics }) =>
-			Object.keys(statistics.total.keyLengths).map(Number),
-		),
-	);
-	const codeLengths = Array.from({ length: maxCodeLength }, (_, i) => i + 1);
+	const ranking = [...schemes].sort((a, b) => a.totalKeys - b.totalKeys);
 	const lines = [
-		`| 方案 | 总按键 | 总均码／字 | 词长 | 输出段数／占比 | ${codeLengths.map((n) => `${n}键`).join(" | ")} | 均码／段 | 选重次数／率 |`,
-		`| --- | ---: | ---: | --- | ---: | ${codeLengths.map(() => "---:").join(" | ")} | ---: | ---: |`,
+		"| 方案 | 总按键 | 总均码／字 | 输出段数 | 均码／段 | 选重次数／率 |",
+		"| --- | ---: | ---: | ---: | ---: | ---: |",
 	];
-	for (const { name, totalKeys, statistics } of [...schemes].sort(
-		(a, b) => a.totalKeys - b.totalKeys,
-	)) {
+	for (const { name, totalKeys, statistics } of ranking) {
 		const total = statistics.total;
 		lines.push(
-			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **合计** | **${total.tokens}／${percent(total.tokenRate)}** | ${codeLengths.map(() => "").join(" | ")} | **${total.averageCodeLength.toFixed(3)}** | **${total.selections}／${percent(total.selectionRate)}** |`,
+			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **${total.tokens}** | **${total.tokens ? total.averageCodeLength.toFixed(3) : "—"}** | **${total.selections}／${percent(total.selectionRate)}** |`,
 		);
-		for (const group of statistics.groups) {
-			const distribution = codeLengths.map((length) => {
+	}
+	for (const { name, statistics } of ranking) {
+		const groups = statistics.groups;
+		lines.push(
+			"",
+			`**${name}**`,
+			"",
+			`| 指标／实际键数 | ${groups.map((g) => g.label).join(" | ")} |`,
+			`| --- | ${groups.map(() => "---:").join(" | ")} |`,
+			`| 输出段数／占比 | ${groups.map((g) => `${g.tokens}／${percent(g.tokenRate)}`).join(" | ")} |`,
+			`| 平均码长／段 | ${groups.map((g) => (g.tokens ? g.averageCodeLength.toFixed(3) : "—")).join(" | ")} |`,
+			`| 选重次数／率 | ${groups.map((g) => `${g.selections}／${percent(g.selectionRate)}`).join(" | ")} |`,
+		);
+		const maxCodeLength = Math.max(
+			0,
+			...Object.keys(statistics.total.keyLengths).map(Number),
+		);
+		for (let length = 1; length <= maxCodeLength; length++) {
+			const distribution = groups.map((group) => {
 				const bucket = group.keyLengths[length];
 				return bucket ? `${bucket.count}／${percent(bucket.rate)}` : "";
 			});
-			lines.push(
-				`| | | | ${group.label} | ${group.tokens}／${percent(group.tokenRate)} | ${distribution.join(" | ")} | ${group.tokens ? group.averageCodeLength.toFixed(3) : "—"} | ${group.selections}／${percent(group.selectionRate)} |`,
-			);
+			lines.push(`| ${length}键 | ${distribution.join(" | ")} |`);
 		}
 	}
 	return lines.join("\n");

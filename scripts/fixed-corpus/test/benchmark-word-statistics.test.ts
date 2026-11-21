@@ -53,8 +53,8 @@ test("词次统计保留实际输出段，区分编码、Shift、Space、选重�
 		{ name: "示例", totalKeys: 25, statistics: stats },
 		{ name: "较少按键", totalKeys: 24, statistics: stats },
 	]);
-	assert.match(table, /\*\*2／33\.33%\*\*/u);
-	assert.match(table, /1／50\.00% \| 1／50\.00%/u);
+	assert.match(table, /输出段数／占比 \| 2／33\.33%/u);
+	assert.match(table, /2键 \| 1／50\.00% \|/u);
 	assert.ok(table.includes("**25** | **1.5625**"));
 	assert.ok(table.indexOf("**较少按键**") < table.indexOf("**示例**"));
 });
@@ -74,12 +74,10 @@ test("重复出现重复计词次，以 Unicode 汉字位置还原回放，空�
 	assert.equal(stats.groups[1].tokenRate, 1);
 	assert.equal(stats.groups[1].averageEncodingLength, 2);
 	assert.equal(stats.groups[4].tokens, 0);
-	assert.match(
-		renderBenchmarkWordStatistics([
-			{ name: "示例", totalKeys: 8, statistics: stats },
-		]),
-		/五字及以上 \| 0／0\.00% \|  \|  \|  \| — \| 0／0\.00%/u,
-	);
+	const table = renderBenchmarkWordStatistics([
+		{ name: "示例", totalKeys: 8, statistics: stats },
+	]);
+	assert.ok(table.includes("| 平均码长／段 | — | 3.000 | — | — | — |"));
 	assert.throws(() =>
 		benchmarkWordStatistics([{ text: "甲，", replay: [[0, "a"]] }]),
 	);
