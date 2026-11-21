@@ -118,8 +118,11 @@ deploy:
         assert: has("报答") and cand[1].text ~= "报答"
       - send: bdiuue
         assert: cand[1].text == "报答"
-      - send: "bdiuue bdiu"
-        assert: cand[1].text == "报答"
+      # 学习后已迁入 bd 首选；继续补辅时也必须将它后置。
+      - send: "bdiuue bd"
+        assert: cand[1].text == "报答" and commit == "报答"
+      - send: bdiu
+        assert: cand[1].text ~= "报答" and has("报答") and commit == nil
   reverse_lookup:
     tests:
       - send: uwangyan

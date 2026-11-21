@@ -121,15 +121,16 @@ deploy:
       # 二字词四码顶、三字词加辅后顶、单字加辅后顶。
       - send: bzxdpn
         assert: commit == "冰雪" and has("扑")
-      - send: bzxdvobzxdvo
+      # 已学习的「冰雪」仍在 bzxd 首选，应在此顶出，不能继续补辅后误选「冰鞋」。
+      - send: bzxdbzxd
         assert: commit == "冰雪" and cand[1].text == "冰雪"
-      - send: krfuavbzxdvo
+      - send: krfuavbzxd
         assert: commit == "输入法" and cand[1].text == "冰雪"
       - send: xdvpn
         assert: commit == "雪" and cand[1].text == "哭"
-      - send: bzxdvo;
+      - send: bzxd;
         assert: commit == "冰雪的"
-      - send: bzxdvo/
+      - send: bzxd/
         assert: commit == "冰雪了"
   buffered:
     tests:
