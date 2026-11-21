@@ -5,9 +5,13 @@ import {
 	optimizeBenchmarkLine,
 	preferredRankedCodes,
 } from "../../lib/benchmark-paths";
-import type { RankedBenchmarkCode } from "../../lib/benchmark-ranking";
+import {
+	rankBenchmarkCodes,
+	type RankedBenchmarkCode,
+} from "../../lib/benchmark-ranking";
 import {
 	directOutputCodes,
+	pronunciationCodes,
 	suffixOutputCodes,
 	supportsStructuralAbbreviations,
 } from "../../lib/benchmark-schemes";
@@ -44,7 +48,7 @@ function alternative(
 	};
 }
 
-test("有首选编码时排除同字词的二三选短码并停在最短首选", () => {
+test("有首选编码时排除同字词的二三选短码，保留首选路径供实际键数比较", () => {
 	const actual = preferredRankedCodes([
 		ranked("卷帘门", "jlm", 3),
 		ranked("卷帘门", "jlme", 1),
@@ -52,8 +56,53 @@ test("有首选编码时排除同字词的二三选短码并停在最短首选",
 	]);
 	assert.deepEqual(
 		actual.map(({ code, rank }) => [code, rank]),
-		[["jlme", 1]],
+		[
+			["jlme", 1],
+			["jlmeo", 1],
+		],
 	);
+});
+
+test("实际 Shift 与分隔 Space 可使较长标准码更省键，候选查询不得按字符数早停", () => {
+	const entry = {
+		word: "输入法",
+		syllables: ["shu1", "ru4", "fa3"],
+		weight: 100,
+	};
+	const codes = pronunciationCodes("oc21-shape", entry.word, entry.syllables);
+	const shifted = codes.find(
+		(c) =>
+			c.mainLength === 4 && c.auxiliaryLength === 0 && /[A-Z]/u.test(c.code),
+	)!;
+	const unshifted = codes.find(
+		(c) => c.mainLength === 3 && c.auxiliaryLength === 2,
+	)!;
+	assert.equal(shifted.code.length, 4);
+	assert.equal(unshifted.code.length, 5);
+	const ranked = rankBenchmarkCodes(
+		"oc21-shape",
+		[entry],
+		[entry],
+		new Map(),
+		(code) =>
+			code === shifted.code || code === unshifted.code ? [entry.word] : [],
+	);
+	const alternatives = preferredRankedCodes(ranked).map((c) =>
+		alternative(entry.word, c.code, {
+			keyCost: c.code.length + (c.code.match(/[A-Z]/gu)?.length ?? 0),
+			popppable: c.popppable,
+		}),
+	);
+	const path = optimizeBenchmarkLine(
+		"输入法甲",
+		new Map([
+			[entry.word, alternatives],
+			["甲", [alternative("甲", "a", { instant: true })]],
+		]),
+	);
+	assert.equal(path.tokens[0].rawCode, unshifted.code);
+	assert.equal(path.keys, 6);
+	assert.equal(path.spaces, 0);
 });
 
 test("完全没有首选编码时才保留二三选兜底", () => {

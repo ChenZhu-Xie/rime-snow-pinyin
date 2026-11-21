@@ -45,12 +45,8 @@ export function preferredRankedCodes<
 	for (const values of byWord.values()) {
 		const firstChoices = values.filter(({ rank }) => rank === 1);
 		if (firstChoices.length > 0) {
-			const minimumLength = Math.min(
-				...firstChoices.map(({ code }) => code.length),
-			);
-			result.push(
-				...firstChoices.filter(({ code }) => code.length === minimumLength),
-			);
+			// 编码字符数不等于实际键数；Shift 和后续 Space 交给完整路径比较。
+			result.push(...firstChoices);
 		} else {
 			result.push(
 				...values.filter(

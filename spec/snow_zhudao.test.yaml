@@ -20,6 +20,8 @@ deploy:
       # 与评测的无学习冷态候选一致；不能把第五候选当作首选短码。
       - send: yvd
         assert: cand[1].text == "形式的" and rank("新时代") > 1 and commit == nil
+      - send: yvdho
+        assert: cand[1].text == "新时代" and commit == nil
       # 固顶只检查一例；字母入口按鹮道的实际占用桶重新选择。
       - send: d
         assert: cand[1].text == "都"

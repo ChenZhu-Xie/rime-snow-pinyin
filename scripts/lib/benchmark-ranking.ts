@@ -273,19 +273,36 @@ export function rankBenchmarkCodes(
 		const candidateCache = new Map<string, string[]>();
 		const result: RankedBenchmarkCode[] = [];
 		for (const [word, wordRoutes] of routesByWord) {
-			const byLength = new Map<number, TargetRoute[]>();
+			const byCost = new Map<number, TargetRoute[]>();
 			for (const route of wordRoutes) {
-				const length = route.generated.code.length;
-				const routesAtLength = byLength.get(length) ?? [];
-				routesAtLength.push(route);
-				byLength.set(length, routesAtLength);
+				const code = route.generated.code;
+				const cost = code.length + (code.match(/[A-Z]/gu)?.length ?? 0);
+				const routesAtCost = byCost.get(cost) ?? [];
+				routesAtCost.push(route);
+				byCost.set(cost, routesAtCost);
 			}
 			const fallback: RankedBenchmarkCode[] = [];
-			for (const length of [...byLength.keys()].sort(
+			let firstCost = Number.POSITIVE_INFINITY;
+			let minimumFirstChoices: RankedBenchmarkCode[] = [];
+			for (const cost of [...byCost.keys()].sort(
 				(left, right) => left - right,
 			)) {
+				// 分隔空格最多一键；超过最小物理成本一键的路径不可能更优。
+				if (cost > firstCost + 1) break;
+				const routesAtCost = (byCost.get(cost) ?? []).filter((route) => {
+					if (cost <= firstCost) return true;
+					// 多花一键只能与「最小成本＋Space」打平；还须能顶屏且标准码不更长。
+					return (
+						!minimumFirstChoices.some((choice) => choice.popppable) &&
+						isPoppableCode(scheme, route.generated) &&
+						route.generated.code.length <=
+							Math.min(
+								...minimumFirstChoices.map((choice) => choice.code.length),
+							)
+					);
+				});
 				const firstChoices: RankedBenchmarkCode[] = [];
-				for (const route of byLength.get(length) ?? []) {
+				for (const route of routesAtCost) {
 					let candidates = candidateCache.get(route.generated.code);
 					if (!candidates) {
 						candidates = [...candidateOracle(route.generated.code)];
@@ -306,10 +323,11 @@ export function rankBenchmarkCodes(
 				}
 				if (firstChoices.length > 0) {
 					result.push(...firstChoices);
-					break;
+					if (cost < firstCost) minimumFirstChoices = firstChoices;
+					firstCost = Math.min(firstCost, cost);
 				}
-				if (length === Math.max(...byLength.keys())) result.push(...fallback);
 			}
+			if (!Number.isFinite(firstCost)) result.push(...fallback);
 		}
 		return result;
 	}
