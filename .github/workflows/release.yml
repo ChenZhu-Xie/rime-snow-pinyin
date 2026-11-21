@@ -29,7 +29,7 @@ jobs:
           - platform: Windows x64
             os: windows-2025
             output: snow-keymap-windows.exe
-          - platform: macOS x64
+          - platform: macOS Intel／Apple silicon
             os: macos-15-intel
             output: snow-keymap-macos
           - platform: Linux x64
@@ -42,7 +42,11 @@ jobs:
       - name: 安装 Rust
         uses: dtolnay/rust-toolchain@stable
       - name: 编译
+        if: runner.os != 'macOS'
         run: cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
+      - name: 编译 macOS 双架构产物
+        if: runner.os == 'macOS'
+        run: bash tools/keymap-helper/build-macos.sh
       - name: 整理 Windows 产物
         if: runner.os == 'Windows'
         shell: pwsh
@@ -50,11 +54,17 @@ jobs:
           New-Item -ItemType Directory -Path helper-dist | Out-Null
           Copy-Item tools/keymap-helper/target/release/snow-keymap.exe "helper-dist/${{ matrix.output }}"
           Copy-Item tools/keymap-helper/target/release/snow_keymap_launcher.dll helper-dist/
-      - name: 整理 Unix 产物
-        if: runner.os != 'Windows'
+      - name: 整理 Linux 产物
+        if: runner.os == 'Linux'
         run: |
           mkdir -p helper-dist
           cp tools/keymap-helper/target/release/snow-keymap "helper-dist/${{ matrix.output }}"
+          chmod +x "helper-dist/${{ matrix.output }}"
+      - name: 整理 macOS 产物
+        if: runner.os == 'macOS'
+        run: |
+          mkdir -p helper-dist
+          cp tools/keymap-helper/target/universal/snow-keymap "helper-dist/${{ matrix.output }}"
           chmod +x "helper-dist/${{ matrix.output }}"
       - name: 上传产物
         uses: actions/upload-artifact@v4

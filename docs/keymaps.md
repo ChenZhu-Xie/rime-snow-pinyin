@@ -12,7 +12,7 @@
 
 ## 安装
 
-桌面用户原则上不需要单独安装 helper。由当前发布工作流生成的 `snow-pinyin.zip` 会把 Windows x64、macOS x64 和 Linux x64 三个便携构建产物以及 Windows 启动 DLL 放在压缩包根目录下的 `lua/snow/bin/`；把压缩包内容合并覆盖到现有 Rime 用户目录后重新部署即可，不要额外套一层 `rime-snow-pinyin/` 目录，也不要删除整个用户目录，以免丢失私有配置和用户词典。Lua 读取 `rime_api.get_user_data_dir()` 后拼出 `<Rime 用户目录>/lua/snow/bin/snow-keymap-平台文件名` 的绝对路径，再按当前前端选择并启动对应文件；用户不需要安装 Rust 或配置 `PATH`。
+桌面用户原则上不需要单独安装 helper。由当前发布工作流生成的 `snow-pinyin.zip` 会把 Windows x64、macOS 双架构（Intel／Apple silicon）和 Linux x64 三个便携构建产物以及 Windows 启动 DLL 放在压缩包根目录下的 `lua/snow/bin/`；把压缩包内容合并覆盖到现有 Rime 用户目录后重新部署即可，不要额外套一层 `rime-snow-pinyin/` 目录，也不要删除整个用户目录，以免丢失私有配置和用户词典。Lua 读取 `rime_api.get_user_data_dir()` 后拼出 `<Rime 用户目录>/lua/snow/bin/snow-keymap-平台文件名` 的绝对路径，再按当前前端选择并启动对应文件；用户不需要安装 Rust 或配置 `PATH`。
 
 Windows 更新已有安装时，先在任务管理器结束 `snow-keymap-windows.exe`，再合并覆盖新版压缩包并重新部署。键位图隐藏后 helper 仍会常驻，重新部署只重载 Rime 方案与 Lua，不会替换或重启正在运行的 EXE；若跳过停进程这一步，Windows 可能保留旧 helper，表现为新版交互没有生效。覆盖时同时更新 `lua/snow/bin/snow_keymap_launcher.dll`；若 DLL 正被旧 Lua 状态占用，退出小狼毫后再覆盖并启动。覆盖完成后首次打开键位图会自动启动新版 helper。
 
@@ -24,7 +24,7 @@ Windows 更新已有安装时，先在任务管理器结束 `snow-keymap-windows
 
 Rime 的候选接口只有文本与注释，没有跨前端的图片接口，因此 Lua 只判断触发条件并发送命令，显示工作由平台层完成。
 
-桌面端的 `tools/keymap-helper/` 是无控制台、单实例、常驻的 Rust GUI 程序。它轮询用户临时目录中的命令文件，直接把 `lua/snow/keymaps/*.svg` 栅格化到无边框、置顶且不抢焦点的窗口，并通过同目录心跳文件让重新部署后的 Lua 复用现有进程；Windows 窗口同时声明 `WS_EX_TOOLWINDOW`，避免任务栏、窗口边框工具和普通应用窗口管理误收录。方案初始化和切换只写跟随命令，helper 未运行时也不会自动启动或预加载 SVG；只有用户实际按键打开键位图时才按需启动。Windows 通过同包的 `snow_keymap_launcher.dll` 直接调用 `CreateProcessW`，不创建 CMD 控制台或同步等待 helper 初始化；DLL 导出不访问 Lua C API，因此不依赖前端的 Lua 版本。启动前保存接收快捷键的前台窗口句柄，helper 在首次显示前完成居中，避免启动过程中的焦点变化影响定位。窗口首次创建后持续复用，后续显隐与方案切换路径不启动 PowerShell、CMD 或新的 helper 进程。发布工作流分别生成 Windows x64、macOS x64 和 Linux x64 可执行文件，再将它们及 Windows 启动 DLL 放入安装包的 `lua/snow/bin/`。
+桌面端的 `tools/keymap-helper/` 是无控制台、单实例、常驻的 Rust GUI 程序。它轮询用户临时目录中的命令文件，直接把 `lua/snow/keymaps/*.svg` 栅格化到无边框、置顶且不抢焦点的窗口，并通过同目录心跳文件让重新部署后的 Lua 复用现有进程；Windows 窗口同时声明 `WS_EX_TOOLWINDOW`，避免任务栏、窗口边框工具和普通应用窗口管理误收录。方案初始化和切换只写跟随命令，helper 未运行时也不会自动启动或预加载 SVG；只有用户实际按键打开键位图时才按需启动。Windows 通过同包的 `snow_keymap_launcher.dll` 直接调用 `CreateProcessW`，不创建 CMD 控制台或同步等待 helper 初始化；DLL 导出不访问 Lua C API，因此不依赖前端的 Lua 版本。启动前保存接收快捷键的前台窗口句柄，helper 在首次显示前完成居中，避免启动过程中的焦点变化影响定位。Windows、macOS 与 X11 的窗口首次创建后持续复用，后续显隐与方案切换路径不启动 PowerShell、CMD 或新的 helper 进程。发布工作流分别生成 Windows x64、macOS 双架构（Intel／Apple silicon）和 Linux x64 可执行文件，再将它们及 Windows 启动 DLL 放入安装包的 `lua/snow/bin/`。
 
 新输入会话首次初始化时不发送跟随命令，避免 helper 或其他应用新建会话时，用默认方案覆盖另一会话刚请求的键位图。同一会话的方案切换仍立即跟随；显隐命令始终使用接收触发键的会话方案。键位图模块不会调用方案切换接口。
 
@@ -69,7 +69,7 @@ macOS 和 Linux 构建产物分别命名为 `snow-keymap-macos` 与 `snow-keymap
 
 Windows 发布构建后运行 `./tools/keymap-helper/tests/windows-launch.ps1`，使用独立的中文及空格临时路径检查 DLL 直接启动、首帧绘制、首次居中及前台焦点不变；脚本只关闭自己启动的测试进程并清理本次临时目录，不访问真实输入法的命令文件。该检查同时接入 Windows Actions。
 
-macOS 与 Linux 发布构建后运行 `python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop`，检查后台 shell 返回、首次提交图像、原生窗口可见性、显示器居中、前台焦点、连续三次缓存显隐及方案跟随。Actions 在 macOS 与 Xvfb／Openbox 的 X11 桌面运行此检查；另在无 X11 的 headless Weston 中加 `--wayland`，检查真实 Wayland 协议中的 surface 销毁与重开，后者不验证桌面位置或键盘焦点。测量从测试命令写入及 shell 启动开始，窗口可见性由轮询观察，提交图像表示 `softbuffer` 成功提交缓冲区；这些时间不等于实际输入法的硬件按键到屏幕亮起延迟，也不代表清空系统文件缓存后的冷启动。每次结果与日志随 Actions 构件保存。
+macOS 与 Linux 发布构建后运行 `python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop`，检查后台 shell 返回、首次提交图像、原生窗口可见性、显示器居中、前台焦点、连续三次缓存显隐及方案跟随。macOS 用 `bash tools/keymap-helper/build-macos.sh` 生成并以临时签名校验双架构产物，测试时把 `--helper` 指向 `tools/keymap-helper/target/universal/snow-keymap`。Actions 在 Intel Mac、Apple 芯片 Mac 与 Xvfb／Openbox 的 X11 桌面运行此检查；另在无 X11 的 headless Weston 中加 `--wayland`，检查真实 Wayland 协议中的 surface 销毁与重开，后者不验证桌面位置或键盘焦点。测量从测试命令写入及 shell 启动开始，窗口可见性由轮询观察，提交图像表示 `softbuffer` 成功提交缓冲区；这些时间不等于实际输入法的硬件按键到屏幕亮起延迟，也不代表清空系统文件缓存后的冷启动。每次结果与日志随 Actions 构件保存。
 
 macOS 显式使用 Accessory 激活策略并关闭启动时强制激活，避免 helper 按普通应用的默认策略抢走前台。原生 Wayland 不支持 winit 的 `set_visible` 与绝对定位：隐藏时释放窗口及显示 surface，后续按键重建窗口，保留字体、已解析 SVG 和栅格图缓存；隐藏期间的方案跟随不建窗口。位置和置顶行为由 Wayland 合成器决定，不能保证显示器或宿主窗口居中。X11、macOS 与 Windows 仍复用原生窗口。
 

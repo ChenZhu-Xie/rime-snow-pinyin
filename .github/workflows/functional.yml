@@ -102,7 +102,7 @@ jobs:
     name: 键位图桌面 helper 与移动皮肤（${{ matrix.os }}）
     strategy:
       matrix:
-        os: [ubuntu-24.04, windows-latest, macos-15-intel]
+        os: [ubuntu-24.04, windows-latest, macos-15-intel, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
       - name: 获取代码
@@ -122,12 +122,16 @@ jobs:
       - name: 检查桌面 helper
         run: cargo test --locked --manifest-path tools/keymap-helper/Cargo.toml
       - name: 编译桌面 helper
+        if: runner.os != 'macOS'
         run: cargo build --release --locked --manifest-path tools/keymap-helper/Cargo.toml
+      - name: 编译并校验 macOS 双架构 helper
+        if: runner.os == 'macOS'
+        run: bash tools/keymap-helper/build-macos.sh
       - name: 安装 Linux 桌面测试环境
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install --yes xvfb openbox xdotool x11-utils fonts-noto-cjk weston
+          sudo apt-get install --yes xvfb openbox xdotool x11-utils fonts-noto-cjk weston libxkbcommon-x11-0
       - name: 检查 Linux X11 首次启动与显隐
         if: runner.os == 'Linux'
         run: |
@@ -151,7 +155,7 @@ jobs:
           env -u DISPLAY WAYLAND_DISPLAY=snow-keymap-test python3 tools/keymap-helper/tests/unix-launch.py --wayland --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop/wayland
       - name: 检查 macOS 首次启动、定位与焦点
         if: runner.os == 'macOS'
-        run: python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/release/snow-keymap --output output/keymap-desktop/macos
+        run: python3 tools/keymap-helper/tests/unix-launch.py --helper tools/keymap-helper/target/universal/snow-keymap --output output/keymap-desktop/macos
       - name: 检查 Windows 原生启动与首次定位
         if: runner.os == 'Windows'
         shell: pwsh
@@ -161,7 +165,7 @@ jobs:
         if: always() && runner.os != 'Windows'
         uses: actions/upload-artifact@v4
         with:
-          name: keymap-desktop-${{ runner.os }}
+          name: keymap-desktop-${{ matrix.os }}
           path: output/keymap-desktop/
           if-no-files-found: warn
 
