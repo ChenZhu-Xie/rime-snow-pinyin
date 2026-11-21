@@ -228,7 +228,7 @@ patch:
   translator/reserved_initial_pair_pattern: "^(?:xh|xw)$"
   translator/jianpin_pattern: "^(?:[bpmfdtnlgkhjqxzcsrywe][A-Z]?){3,}$"
   # 与四拼一致：先顶出当前候选，再直接提交高频尾字。
-  # 保留 d→的、l→了，;/ 只作为可选的强制上屏尾字键。
+  # 与四拼一致：d→都、l→了，;/ 作为「的／了」强制上屏尾字键。
   punctuator/half_shape/+:
     ";": 的
     "|": ；

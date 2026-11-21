@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { alignFixedContent } from "../../align-fixed-with-sipin";
 import { SpellingAlgebra } from "../../lib/algebra";
 import { characterReadingPriorities } from "../../lib/character-reading-priorities";
 import { rootPath } from "../../lib/paths";
@@ -60,9 +61,31 @@ test("鹮道 sx 的读音兜底保留虽和尿的权重，固顶尊重四拼的�
 	assert.equal(algebra.apply("sui1"), "sx");
 });
 
-test("读音兜底重排保留冰雪兰道已约定的一级固顶 d→的", () => {
-	assert.match(
-		readFileSync(rootPath("snow_jiandao.fixed.txt"), "utf8"),
-		/^d\t的\r?$/mu,
-	);
+test("支持分号追加「的」的九个方案统一一级固顶 d→都", () => {
+	for (const schema of [
+		"snow_sipin",
+		"snow_jiandao",
+		"snow_sanpin",
+		"snow_jiandao_classic",
+		"snow_sanpin_classic",
+		"snow_shenyun_shape",
+		"snow_shenyun_tone",
+		"snow_zhudao",
+		"snow_jiandao_toned",
+	]) {
+		const filename = `${schema}.fixed.txt`;
+		const fixed = readFileSync(rootPath(filename), "utf8");
+		assert.match(fixed, /^d\t都\r?$/mu, schema);
+	}
+});
+
+test("兰道和莲道重新生成时将旧的 d→的 修正为 d→都", {
+	timeout: 120_000,
+}, () => {
+	for (const schema of ["snow_jiandao", "snow_jiandao_toned"]) {
+		const filename = `${schema}.fixed.txt`;
+		const fixed = readFileSync(rootPath(filename), "utf8");
+		const previous = fixed.replace(/^d\t都\r?$/mu, "d\t的");
+		assert.match(alignFixedContent(filename, previous), /^d\t都$/mu, schema);
+	}
 });

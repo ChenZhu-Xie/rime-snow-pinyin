@@ -216,13 +216,6 @@ function oneKeyReferences(
 	// p 槽不机械照搬四拼的“跑”：形辅方案取较高频且完整码仍需选重的“配”，
 	// 调辅方案保留历史上更熟悉、完整码候选更深的“平”。
 	result.set("p", target.auxiliary === "shape" ? "配" : "平");
-	// 冰雪兰道已有 d→的 的一级固顶合同；不要因二级兜底重排而迁成四拼的 d→都。
-	if (
-		["snow_jiandao.schema.yaml", "snow_jiandao_toned.schema.yaml"].includes(
-			target.schema,
-		)
-	)
-		result.set("d", "的");
 	return result;
 }
 
@@ -587,7 +580,8 @@ function render21x21(
 			const originalCode = replacement
 				? originalSingleCodeByWord.get(replacement)
 				: undefined;
-			if (originalCode !== undefined && originalCode !== code) {
+			// d 统一首选「都」，允许从原有二码固顶提升为一级简码。
+			if (code !== "d" && originalCode !== undefined && originalCode !== code) {
 				replacement = undefined;
 			}
 		}

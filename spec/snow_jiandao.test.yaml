@@ -191,13 +191,13 @@ deploy:
         assert: commit == "冰" and cand[1].text == "雪"
       - send: pbybkrf
         assert: commit == "拼音" and cand[1].text == "输入法"
-      # 强制上屏尾字；原 d/l 一码仍然保留
+      # 强制上屏尾字；与四拼一致，d 一码首选「都」
       - send: yfgs;
         assert: commit == "一个的"
       - send: yfgs/
         assert: commit == "一个了"
       - send: d
-        assert: cand[1].text == "的"
+        assert: cand[1].text == "都"
       - send: k
         assert: cand[1].text == "是"
       # 声声二字词按标准二字词辅序反向，每字连续两辅，辅码不进入上屏文本。

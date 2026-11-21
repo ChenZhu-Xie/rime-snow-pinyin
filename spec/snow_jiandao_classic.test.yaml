@@ -54,6 +54,8 @@ deploy:
       - send: zKxGwE
         assert: has("自行车")
       # 固顶词
+      - send: d
+        assert: cand[1].text == "都"
       - send: p
         assert: cand[1].text == "配"
       # 单字定字：[ 重复该字，] 在该字后追加“得”

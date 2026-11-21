@@ -60,7 +60,7 @@ deploy:
       - send: ba
         assert: cand[1].text == "不能"
       - send: d
-        assert: cand[1].text == "的"
+        assert: cand[1].text == "都"
   initial_pair:
     tests:
       # rf 在当前系统词典的运行时口径中为空，标准 21 的反序是 12。

@@ -899,7 +899,7 @@ czi	扫
 czo	糙
 czu	臊
 czv	曹
-d	的
+d	都
 db	顿
 dba	沌
 dbi	俊
@@ -993,7 +993,7 @@ dti	锻
 dto	端
 dtu	段
 dtv	椴
-dw	都
+dw	痘
 dwa	陡
 dwi	抖
 dwo	斗

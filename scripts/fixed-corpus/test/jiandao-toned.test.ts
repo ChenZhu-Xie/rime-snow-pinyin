@@ -197,7 +197,7 @@ test("莲道重算固顶音码、按声母重映射兰道全部 630，生成结�
 			parent630.split("\n").flatMap((line) => line.split("\t")[1].split(" ")),
 		).size,
 	);
-	assert.equal(fixed.get("d"), "的");
+	assert.equal(fixed.get("d"), "都");
 	assert.equal(fixed.get("pn"), "哭");
 	assert.equal(fixed.get("xdv"), "雪");
 	assert.equal(fixed.get("sg"), "成功");
