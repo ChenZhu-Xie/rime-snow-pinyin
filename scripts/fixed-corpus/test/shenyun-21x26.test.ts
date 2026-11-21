@@ -798,7 +798,7 @@ test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () =>
 	]) {
 		const expected: Record<string, string> = {
 			...expectedFirst,
-			p: filename.includes("shape") ? "配" : "平",
+			p: "跑",
 		};
 		const content = read(filename);
 		const oneKeySection = content

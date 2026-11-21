@@ -41,8 +41,8 @@ deploy:
       - send: yvdho
         assert: cand[1].text == "新时代" and commit == nil
       # 固顶只检查一例；字母入口按鹮道的实际占用桶重新选择。
-      - send: d
-        assert: cand[1].text == "都"
+      - send: p
+        assert: cand[1].text == "我"
       - send: bm
         assert: cand[2].text == "B" and cand[3].text == "b"
       # 固顶兜底按实际读音权重；尿的 niào 高频不能抬高其 suī 异读。

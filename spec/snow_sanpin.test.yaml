@@ -209,7 +209,7 @@ deploy:
         assert: cand[1].text == "藏着呢"
       # 固顶词
       - send: p
-        assert: cand[1].text == "平"
+        assert: cand[1].text == "跑"
       - send: xk
         assert: cand[1].text == "学"
       - send: bhyz
@@ -264,9 +264,9 @@ deploy:
         assert: commit == "个"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
-        assert: commit == "平平"
+        assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "平得"
+        assert: commit == "跑得"
       - send: nlyy
         assert: cand[1].text == "那样"
       - send: tpvvi

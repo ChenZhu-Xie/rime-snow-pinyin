@@ -13,7 +13,7 @@ k	看
 l	有
 m	没
 n	你
-p	配
+p	我
 q	去
 r	人
 s	出
@@ -1365,7 +1365,7 @@ poa	婆
 poe	圮
 poi	蜱
 poo	癖
-pou	我
+pou	脾
 pp	品
 ppa	娃
 ppe	瓦
@@ -1385,7 +1385,7 @@ pro	评
 pru	鹏
 ps	为
 psa	卫
-pse	未
+pse	配
 psi	位
 pso	忘
 psu	胖

@@ -14,7 +14,7 @@ k	看
 l	来
 m	没
 n	你
-p	配
+p	跑
 q	三 3
 r	人
 s	这
@@ -1165,7 +1165,7 @@ pda	湓
 pdu	盆
 pe	陪
 pea	赔
-pee	培
+pee	配
 pei	佩
 peo	呸
 peu	胚
@@ -1189,7 +1189,7 @@ pju	鹏
 pk	泡
 pke	匏
 pki	抛
-pko	跑
+pko	炮
 pku	刨
 pl	盘
 pla	潘

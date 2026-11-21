@@ -68,12 +68,12 @@ deploy:
       - send: d
         assert: cand[1].text == "都"
       - send: p
-        assert: cand[1].text == "配"
+        assert: cand[1].text == "跑"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
-        assert: commit == "配配"
+        assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "配得"
+        assert: commit == "跑得"
       - send: xh
         assert: cand[1].text == "学"
       - send: bgov

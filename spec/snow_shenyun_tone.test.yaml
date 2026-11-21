@@ -125,7 +125,7 @@ deploy:
       - send: d
         assert: cand[1].text == "都" and cand[1].comment:find("📌", 1, true) and not cand[2].comment:find("📌", 1, true)
       - send: p
-        assert: cand[1].text == "平"
+        assert: cand[1].text == "跑"
       - send: j
         assert: cand[1].text == "我"
       # 占用桶保留汉字首选，字母固定为大写第 2、小写第 3。

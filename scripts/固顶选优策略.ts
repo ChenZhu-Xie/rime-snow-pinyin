@@ -85,21 +85,4 @@ export const explicitlyRequestedWords = new Set([
 	"行叭",
 ]);
 
-// 这些领域词即使裸词频很高，完整四码也已在丰富的同码词中稳定首选，
-// 不值得再占 630。集合保持保守，避免误伤“但是、只是”一类句法词。
-export const fullCodeAlreadyEasyWords = new Set([
-	"经济",
-	"财政",
-	"股票",
-	"资本",
-	"投资",
-	"库存",
-	"缓存",
-	"配送",
-	"性能",
-	"媒体",
-	"科技",
-	"平台",
-]);
-
 export const rejectedFixedWords = new Set(["妈逼", "软盘", "四但", "人从"]);

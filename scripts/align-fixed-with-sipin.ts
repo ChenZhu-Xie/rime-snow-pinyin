@@ -201,10 +201,7 @@ function singlePriorities(): Priority[] {
 	return result;
 }
 
-function oneKeyReferences(
-	target: Target,
-	targetAlgebra: SpellingAlgebra,
-): Map<string, string> {
+function oneKeyReferences(targetAlgebra: SpellingAlgebra): Map<string, string> {
 	const result = new Map<string, string>();
 	for (const line of sipinLines) {
 		if (line.startsWith("#") || !line.includes("\t")) continue;
@@ -218,9 +215,6 @@ function oneKeyReferences(
 		const targetCode = targetAlgebra.apply(reading).slice(0, 1);
 		if (targetCode) result.set(targetCode, word);
 	}
-	// p 槽不机械照搬四拼的“跑”：形辅方案取较高频且完整码仍需选重的“配”，
-	// 调辅方案保留历史上更熟悉、完整码候选更深的“平”。
-	result.set("p", target.auxiliary === "shape" ? "配" : "平");
 	return result;
 }
 
@@ -766,7 +760,7 @@ function alignFixedContentOnce(fixed: string, source: string): string {
 			derive: false,
 		},
 	);
-	const ones = oneKeyReferences(target, algebra);
+	const ones = oneKeyReferences(algebra);
 	const reservedOneKeyWords = new Set(ones.values());
 	for (const line of source.split("\n")) {
 		if (line.startsWith("#") || !line.includes("\t")) continue;
@@ -919,7 +913,7 @@ function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
 		"speller/algebra",
 		{ derive: false },
 	);
-	const ones = oneKeyReferences(target, algebra);
+	const ones = oneKeyReferences(algebra);
 	const bases = baseReferences(algebra, ones.values());
 	const phrases = phraseReferences(algebra, loadVacancyFallbackSyllables());
 	const sections = new Map<string, string[]>();

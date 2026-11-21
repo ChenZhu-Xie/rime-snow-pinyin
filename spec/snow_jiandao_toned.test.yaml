@@ -75,8 +75,8 @@ deploy:
       # 630 按新声母重映射兰道；每类固顶仅选一例。
       - send: ba
         assert: cand[1].text == "不能"
-      - send: d
-        assert: cand[1].text == "都"
+      - send: p
+        assert: cand[1].text == "跑"
   learned_postponement:
     tests:
       - send: "bzxd bzxd"

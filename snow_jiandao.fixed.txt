@@ -1886,7 +1886,7 @@ nzi	挠
 nzo	恼
 nzu	脑
 nzv	孬
-p	平
+p	跑
 pb	拼
 pba	嫔
 pbi	困

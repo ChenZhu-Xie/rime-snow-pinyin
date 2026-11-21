@@ -943,7 +943,7 @@ nw	内
 nx	娘
 ny	弄
 nz	闹
-p	平
+p	跑
 pb	拼
 pc	票
 pd	撇

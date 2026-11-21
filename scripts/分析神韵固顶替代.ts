@@ -3,10 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { findStructuralAbbreviation, FixedReplacementIndex } from "./固顶替代";
-import {
-	fullCodeAlreadyEasyWords,
-	preferredEverydayWords,
-} from "./固顶选优策略";
+import { preferredEverydayWords } from "./固顶选优策略";
 import { mergeDictionaries, readDictionary } from "./固顶编译器";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -101,7 +98,6 @@ for (const file of files) {
 	const tailKeyPolicy: object[] = [];
 	const qualityPolicy: object[] = [];
 	const structuralPolicy: object[] = [];
-	const fullCodePolicy: object[] = [];
 	const utilityPolicy: object[] = [];
 	const lost: object[] = [];
 	for (const entry of changed) {
@@ -123,10 +119,6 @@ for (const file of files) {
 		);
 		if (structural) {
 			structuralPolicy.push({ ...entry, structural });
-			continue;
-		}
-		if (fullCodeAlreadyEasyWords.has(entry.word)) {
-			fullCodePolicy.push(entry);
 			continue;
 		}
 		const movedCodes = afterCodesByWord.get(entry.word);
@@ -162,7 +154,6 @@ for (const file of files) {
 		tailKeyPolicy,
 		qualityPolicy,
 		structuralPolicy,
-		fullCodePolicy,
 		utilityPolicy,
 		mechanisms,
 		added,
@@ -183,14 +174,13 @@ else {
 			tailKeyPolicy: object[];
 			qualityPolicy: object[];
 			structuralPolicy: object[];
-			fullCodePolicy: object[];
 			utilityPolicy: object[];
 			mechanisms: object;
 			added: object[];
 			lost: object[];
 		};
 		console.log(
-			`${file}：变化 ${values.changedSlots} 槽；尾字键策略让位 ${values.tailKeyPolicy.length}；质量复核让位 ${values.qualityPolicy.length}；结构略码让位 ${values.structuralPolicy.length}；完整码首选让位 ${values.fullCodePolicy.length}；日常语用让位 ${values.utilityPolicy.length}；等长或更短替代 ${values.replaced.length}；迁移 ${values.moved.length}；新增 ${values.added.length}；无策略丢失 ${values.lost.length}；机制 ${JSON.stringify(values.mechanisms)}`,
+			`${file}：变化 ${values.changedSlots} 槽；尾字键策略让位 ${values.tailKeyPolicy.length}；质量复核让位 ${values.qualityPolicy.length}；结构略码让位 ${values.structuralPolicy.length}；日常语用让位 ${values.utilityPolicy.length}；等长或更短替代 ${values.replaced.length}；迁移 ${values.moved.length}；新增 ${values.added.length}；无策略丢失 ${values.lost.length}；机制 ${JSON.stringify(values.mechanisms)}`,
 		);
 	}
 }

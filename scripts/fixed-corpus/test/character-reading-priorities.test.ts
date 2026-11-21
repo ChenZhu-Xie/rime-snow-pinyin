@@ -81,14 +81,45 @@ test("支持分号追加「的」的九个方案统一一级固顶 d→都", () 
 	}
 });
 
-test("兰道和莲道重新生成时将旧的 d→的 修正为 d→都", {
+test("八套双拼的 p 一简按四拼和本地声母重映射，不因全码选重深度换字", () => {
+	for (const schema of [
+		"snow_sipin",
+		"snow_jiandao",
+		"snow_sanpin",
+		"snow_jiandao_classic",
+		"snow_sanpin_classic",
+		"snow_shenyun_shape",
+		"snow_shenyun_tone",
+		"snow_zhudao",
+		"snow_jiandao_toned",
+	]) {
+		const fixed = new Map(
+			readFileSync(rootPath(`${schema}.fixed.txt`), "utf8")
+				.split(/\r?\n/u)
+				.filter((line) => !line.startsWith("#") && line.includes("\t"))
+				.map((line) => line.split("\t") as [string, string]),
+		);
+		// 鹮道将跑与我映射到同一声母，沿用四拼重映射后的我；其余方案保留跑。
+		assert.equal(
+			fixed.get("p"),
+			schema === "snow_zhudao" ? "我" : "跑",
+			schema,
+		);
+	}
+});
+
+test("兰道和莲道重新生成时恢复 d→都 和按四拼重映射的 p→跑", {
 	timeout: 120_000,
 }, () => {
 	for (const schema of ["snow_jiandao", "snow_jiandao_toned"]) {
 		const filename = `${schema}.fixed.txt`;
 		const fixed = readFileSync(rootPath(filename), "utf8");
-		const previous = fixed.replace(/^d\t都\r?$/mu, "d\t的");
-		assert.match(alignFixedContent(filename, previous), /^d\t都$/mu, schema);
+		const previous = fixed
+			.replace(/^d\t都\r?$/mu, "d\t的")
+			.replace(/^p\t跑\r?$/mu, "p\t配");
+		const regenerated = alignFixedContent(filename, previous);
+		assert.match(regenerated, /^d\t都$/mu, schema);
+		assert.match(regenerated, /^p\t跑$/mu, schema);
 	}
 });
 

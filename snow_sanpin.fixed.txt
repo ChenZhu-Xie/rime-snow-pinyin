@@ -937,7 +937,7 @@ nt	暖
 nw	耨
 ny	囊
 nz	闹
-p	平
+p	跑
 pb	拼
 pc	快
 pd	陪

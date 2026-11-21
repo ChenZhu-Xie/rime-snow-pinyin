@@ -12,7 +12,7 @@ k	是
 l	来
 m	没
 n	你
-p	配
+p	跑
 q	去
 r	人
 s	出
@@ -864,7 +864,7 @@ pjo	品
 pju	贫
 pk	盘
 pki	侃
-pl	跑
+pl	考
 pla	澎
 pli	瞟
 plo	烤
@@ -905,6 +905,7 @@ pwa	沛
 pwi	佩
 pwo	客
 pwu	克
+pwv	配
 px	咔
 pxv	夸
 py	快
