@@ -25,6 +25,8 @@ test("词次统计保留实际输出段，区分编码、Shift、Space、选重�
 	assert.equal(stats.total.tokens, 6);
 	assert.equal(stats.total.codeKeys, 18);
 	assert.equal(stats.total.averageCodeLength, 3);
+	assert.equal(stats.total.inputKeys, 23);
+	assert.equal(stats.total.averageKeyLength, 23 / 6);
 	assert.equal(stats.total.selections, 2);
 	assert.equal(stats.total.selectionRate, 1 / 3);
 	assert.deepEqual(
@@ -37,7 +39,13 @@ test("词次统计保留实际输出段，区分编码、Shift、Space、选重�
 		"2": { count: 1, rate: 0.5 },
 	});
 	assert.equal(stats.groups[0].averageCodeLength, 1.5);
+	assert.equal(stats.groups[0].averageKeyLength, 2.5);
+	assert.deepEqual(stats.groups[0].keyLengths, {
+		"2": { count: 1, rate: 0.5 },
+		"3": { count: 1, rate: 0.5 },
+	});
 	assert.equal(stats.groups[1].averageCodeLength, 2);
+	assert.equal(stats.groups[1].averageKeyLength, 4);
 	assert.equal(stats.groups[1].selectionRate, 1);
 	assert.equal(stats.groups[2].averageCodeLength, 4);
 	assert.equal(stats.groups[4].averageCodeLength, 5);
@@ -70,7 +78,7 @@ test("重复出现重复计词次，以 Unicode 汉字位置还原回放，空�
 		renderBenchmarkWordStatistics([
 			{ name: "示例", totalKeys: 8, statistics: stats },
 		]),
-		/五字及以上 \| 0／0\.00% \|  \|  \| — \| 0／0\.00%/u,
+		/五字及以上 \| 0／0\.00% \|  \|  \|  \| — \| 0／0\.00%/u,
 	);
 	assert.throws(() =>
 		benchmarkWordStatistics([{ text: "甲，", replay: [[0, "a"]] }]),

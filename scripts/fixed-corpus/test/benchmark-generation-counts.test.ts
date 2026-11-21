@@ -102,6 +102,11 @@ test("5500 字统一表与原切分词次、码长加权和、选重及总按键
 		assert.equal(stats.total.hanCharacters, 5500, id);
 		assert.equal(stats.total.selections, scheme.total.selections, id);
 		assert.equal(
+			stats.total.inputKeys + extended.corpus.punctuationCharacters,
+			scheme.total.keys,
+			id,
+		);
+		assert.equal(
 			stats.total.tokens,
 			stats.groups.reduce((sum, group) => sum + group.tokens, 0),
 			id,
@@ -109,6 +114,11 @@ test("5500 字统一表与原切分词次、码长加权和、选重及总按键
 		assert.equal(
 			stats.total.codeKeys,
 			stats.groups.reduce((sum, group) => sum + group.codeKeys, 0),
+			id,
+		);
+		assert.equal(
+			stats.total.inputKeys,
+			stats.groups.reduce((sum, group) => sum + group.inputKeys, 0),
 			id,
 		);
 		assert.equal(
@@ -162,6 +172,29 @@ test("5500 字统一表与原切分词次、码长加权和、选重及总按键
 				id,
 			);
 			for (const bucket of Object.values(group.codeLengths))
+				assert.equal(bucket.rate, bucket.count / group.tokens, id);
+			assert.equal(
+				Object.values(group.keyLengths).reduce(
+					(sum, bucket) => sum + bucket.count,
+					0,
+				),
+				group.tokens,
+				id,
+			);
+			assert.equal(
+				Object.entries(group.keyLengths).reduce(
+					(sum, [length, bucket]) => sum + Number(length) * bucket.count,
+					0,
+				),
+				group.inputKeys,
+				id,
+			);
+			assert.equal(
+				group.averageKeyLength,
+				group.tokens ? group.inputKeys / group.tokens : 0,
+				id,
+			);
+			for (const bucket of Object.values(group.keyLengths))
 				assert.equal(bucket.rate, bucket.count / group.tokens, id);
 		}
 	}

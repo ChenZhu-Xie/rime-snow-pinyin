@@ -183,7 +183,7 @@ const corpus = {
 };
 assert.equal(corpus.hanCharacters, 5500);
 assert.equal(corpus.punctuationCharacters, 392);
-for (const [id, scheme] of Object.entries(schemes))
+for (const [id, scheme] of Object.entries(schemes)) {
 	assert.equal(
 		scheme.wordStatistics.total.codeKeys,
 		scheme.total.keys -
@@ -193,6 +193,12 @@ for (const [id, scheme] of Object.entries(schemes))
 			corpus.punctuationCharacters,
 		`${id}/编码、标点、Shift、Space、选重必须还原原始总按键`,
 	);
+	assert.equal(
+		scheme.wordStatistics.total.inputKeys + corpus.punctuationCharacters,
+		scheme.total.keys,
+		`${id}/字词实际按键加标点必须还原原始总按键`,
+	);
+}
 const report = {
 	contract: "snow-twelve-scheme-5500-v2",
 	baseline: baseline.contract,
@@ -200,12 +206,16 @@ const report = {
 	wordStatisticsDefinition: {
 		unit: "最优路径实际汉字输出段的出现次数，重复出现重复计数；含结构略码及追加的／了，不重新分词；不含标点段",
 		codeLength:
-			"编码键数，含辅码、定位及略码键；大写字母计一码；不含额外 Shift、Space、选重键和排版标记",
+			"codeKeys、codeLengths 为纯编码拆账，含辅码、定位及略码键；大写字母计一码；不含额外 Shift、Space、选重键和排版标记，不用于报告平均码长及分布",
+		inputLength:
+			"inputKeys、keyLengths 为字词实际按键，包含编码、额外 Shift、Space、选重键；用于报告的码长分布及平均码长；标点另计入方案总按键",
 		tokenRateDenominator: "各方案全部汉字输出段数",
 		codeLengthRateDenominator: "本词长类别的汉字输出段数",
 		selectionRateDenominator: "对应行的汉字输出段数；合计行为全方案",
 		averageCodeLength:
-			"对应行编码键数总和／汉字输出段数；不同于含全部按键的总按键／5500 汉字",
+			"JSON 中保留的纯编码拆账字段＝codeKeys／汉字输出段数，不用于报告平均码长",
+		averageKeyLength:
+			"字词平均码长＝inputKeys／汉字输出段数，包含额外 Shift、Space、选重键；用于报告均码／段",
 		totalAverageLength:
 			"全方案总按键／5500 汉字；包含编码、Space、Shift、选重与标点",
 	},
@@ -230,8 +240,7 @@ const wordStatisticsTable = renderBenchmarkWordStatistics(
 const comparisonSchemes = [schemes.qingyun, schemes.flypy];
 const comparison = comparisonSchemes.map((scheme) => ({
 	tokens: scheme.wordStatistics.total.tokens,
-	mean: scheme.wordStatistics.total.averageCodeLength.toFixed(3),
-	codeKeys: scheme.wordStatistics.total.codeKeys,
+	mean: scheme.wordStatistics.total.averageKeyLength.toFixed(3),
 	breakdown: `${scheme.wordStatistics.total.codeKeys}＋${scheme.total.spaces}＋${scheme.total.shifts}＋${scheme.total.selections}＋${corpus.punctuationCharacters}＝${scheme.total.keys}`,
 }));
 const markdown = [
@@ -258,9 +267,9 @@ const markdown = [
 	"",
 	"「输出段数／占比」统计的是字词输出段的出现次数，分母为本方案全部汉字输出段数，不是汉字数；所有方案输入的汉字均为 5500 字。「选重率」为对应行选重次数除以输出段数，粗体合计行为全方案选重个数及比率。百分比保留两位小数，四舍五入后之和可能略偏离 100%。",
 	"",
-	"「总均码／字」为各方案的总平均码长＝总按键／5500 汉字，包含 Space、Shift、选重及标点，保留四位小数。「编码均码／段」为编码键数／输出段数，保留三位小数；编码长度计入音码、辅码、定位及略码键，大写字母计一码，不含额外 Shift、Space、选重键和排版标记。没有输出段的类别以「—」表示编码均码。",
+	"方案总平均码长、各词长类别的平均码长及码长分布均按实际按键统计，包含编码键、额外 Shift、Space、选重键；大写字母需要的 Shift 另计一键，排版标记不计。「总均码／字」＝含标点的全方案总按键／5500 汉字，保留四位小数；「均码／段」＝对应行汉字输出段的实际按键总数／输出段数，保留三位小数。标点段不属于字词，单独计入方案总按键；没有输出段的类别以「—」表示均码。",
 	"",
-	`例如，冰雪清韵将 5500 字切为 ${comparison[0].tokens} 个输出段，小鹤音形（清风版）切为 ${comparison[1].tokens} 段；平均每段编码分别为 ${comparison[0].mean} 和 ${comparison[1].mean} 码，编码键合计 ${comparison[0].codeKeys} 对 ${comparison[1].codeKeys}。加上 Space、Shift、选重和标点后，分别为 ${comparison[0].breakdown} 键、${comparison[1].breakdown} 键，故按总按键排序与按输出段数排序可以不同。`,
+	`例如，冰雪清韵将 5500 字切为 ${comparison[0].tokens} 个输出段，小鹤音形（清风版）切为 ${comparison[1].tokens} 段；含 Shift、Space、选重的平均每段实际按键分别为 ${comparison[0].mean} 和 ${comparison[1].mean}。拆账为纯编码＋Space＋Shift＋选重＋标点，分别为 ${comparison[0].breakdown} 键、${comparison[1].breakdown} 键，故按总按键排序与按输出段数排序可以不同。`,
 	"",
 	wordStatisticsTable,
 	"",

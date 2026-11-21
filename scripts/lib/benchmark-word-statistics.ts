@@ -10,6 +10,9 @@ export interface BenchmarkWordCounts {
 	codeKeys: number;
 	averageCodeLength: number;
 	codeLengths: Record<string, { count: number; rate: number }>;
+	inputKeys: number;
+	averageKeyLength: number;
+	keyLengths: Record<string, { count: number; rate: number }>;
 	selections: number;
 	selectionRate: number;
 }
@@ -28,6 +31,9 @@ function emptyCounts(label: string): BenchmarkWordCounts {
 		codeKeys: 0,
 		averageCodeLength: 0,
 		codeLengths: {},
+		inputKeys: 0,
+		averageKeyLength: 0,
+		keyLengths: {},
 		selections: 0,
 		selectionRate: 0,
 	};
@@ -60,17 +66,26 @@ export function benchmarkWordStatistics(
 				group.tokens++;
 				group.hanCharacters += length;
 				group.codeKeys += codeKeys;
+				group.inputKeys += counts.keys;
 				group.selections += counts.selections;
 				const bucket = (group.codeLengths[codeKeys] ??= { count: 0, rate: 0 });
 				bucket.count++;
+				const keyBucket = (group.keyLengths[counts.keys] ??= {
+					count: 0,
+					rate: 0,
+				});
+				keyBucket.count++;
 			}
 		}
 	}
 	for (const group of [total, ...groups]) {
 		group.tokenRate = total.tokens ? group.tokens / total.tokens : 0;
 		group.averageCodeLength = group.tokens ? group.codeKeys / group.tokens : 0;
+		group.averageKeyLength = group.tokens ? group.inputKeys / group.tokens : 0;
 		group.selectionRate = group.tokens ? group.selections / group.tokens : 0;
 		for (const bucket of Object.values(group.codeLengths))
+			bucket.rate = bucket.count / group.tokens;
+		for (const bucket of Object.values(group.keyLengths))
 			bucket.rate = bucket.count / group.tokens;
 	}
 	assert.equal(
@@ -96,12 +111,12 @@ export function renderBenchmarkWordStatistics(
 	const maxCodeLength = Math.max(
 		0,
 		...schemes.flatMap(({ statistics }) =>
-			Object.keys(statistics.total.codeLengths).map(Number),
+			Object.keys(statistics.total.keyLengths).map(Number),
 		),
 	);
 	const codeLengths = Array.from({ length: maxCodeLength }, (_, i) => i + 1);
 	const lines = [
-		`| 方案 | 总按键 | 总均码／字 | 词长 | 输出段数／占比 | ${codeLengths.map((n) => `${n}码`).join(" | ")} | 编码均码／段 | 选重次数／率 |`,
+		`| 方案 | 总按键 | 总均码／字 | 词长 | 输出段数／占比 | ${codeLengths.map((n) => `${n}键`).join(" | ")} | 均码／段 | 选重次数／率 |`,
 		`| --- | ---: | ---: | --- | ---: | ${codeLengths.map(() => "---:").join(" | ")} | ---: | ---: |`,
 	];
 	for (const { name, totalKeys, statistics } of [...schemes].sort(
@@ -109,15 +124,15 @@ export function renderBenchmarkWordStatistics(
 	)) {
 		const total = statistics.total;
 		lines.push(
-			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **合计** | **${total.tokens}／${percent(total.tokenRate)}** | ${codeLengths.map(() => "").join(" | ")} | **${total.averageCodeLength.toFixed(3)}** | **${total.selections}／${percent(total.selectionRate)}** |`,
+			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **合计** | **${total.tokens}／${percent(total.tokenRate)}** | ${codeLengths.map(() => "").join(" | ")} | **${total.averageKeyLength.toFixed(3)}** | **${total.selections}／${percent(total.selectionRate)}** |`,
 		);
 		for (const group of statistics.groups) {
 			const distribution = codeLengths.map((length) => {
-				const bucket = group.codeLengths[length];
+				const bucket = group.keyLengths[length];
 				return bucket ? `${bucket.count}／${percent(bucket.rate)}` : "";
 			});
 			lines.push(
-				`| | | | ${group.label} | ${group.tokens}／${percent(group.tokenRate)} | ${distribution.join(" | ")} | ${group.tokens ? group.averageCodeLength.toFixed(3) : "—"} | ${group.selections}／${percent(group.selectionRate)} |`,
+				`| | | | ${group.label} | ${group.tokens}／${percent(group.tokenRate)} | ${distribution.join(" | ")} | ${group.tokens ? group.averageKeyLength.toFixed(3) : "—"} | ${group.selections}／${percent(group.selectionRate)} |`,
 			);
 		}
 	}
