@@ -26,6 +26,9 @@ script: |
 deploy:
   popping:
     tests:
+      # 冷态三字简拼不能借用其他查询留下的已学习／候选状态。
+      - send: xkd
+        assert: cand[1].text == "形式的" and rank("新时代") > 1 and commit == nil
       # CR-REF 的音节和纯形辅：冰 bz、雪 xd、拼 pn；QZ 已改为 qiang1。
       - send: bz
         assert: has("冰")

@@ -449,7 +449,7 @@ writeFileSync(
 	join(ROOT, "reports", "5000字_当前十二方案最优切分实测结果.json"),
 	`${JSON.stringify(
 		{
-			contract: "current-twelve-scheme-benchmark-v2-windinput-flypy",
+			contract: "current-twelve-scheme-benchmark-v3-windinput-flypy",
 			baseline: baseline.contract,
 			schemes: combinedSchemes,
 		},
@@ -572,7 +572,7 @@ const replays: Record<string, BenchmarkArticleReplay[]> = {
 	flypy: articleResults.map(({ paths }) => paths.map(benchmarkReplay)),
 };
 writeBenchmarkReplayCache(join(replayCacheDirectory, "combined.json"), {
-	contract: "current-twelve-scheme-benchmark-v2-windinput-flypy",
+	contract: "current-twelve-scheme-benchmark-v3-windinput-flypy",
 	schemes: replays,
 });
 for (const [id] of schemeEntries) {

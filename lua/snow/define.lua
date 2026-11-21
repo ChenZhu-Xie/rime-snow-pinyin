@@ -492,7 +492,7 @@ function Code() end
 ---@class Memory
 ---@field lang_name string
 ---@field dict Dictionary
----@field user_dict UserDictionary
+---@field user_dict UserDictionary|nil
 ---@field start_session fun(self: self): boolean
 ---@field finish_session fun(self: self): boolean
 ---@field discard_session fun(self: self): boolean

@@ -57,6 +57,10 @@ assert(result[1].text == "方案选单",
   "the higher native user-dictionary weight must win when both phrases are learned")
 assert(result[2].text == "九霄" and result[3].text == "风萧萧",
   "ordinary candidates must retain their original relative order")
+local readonly = learned_priority.prioritize(source, {}, {}, 4)
+for index, value in ipairs(source) do
+  assert(readonly[index] == value, "关闭学习时不得改变系统候选顺序")
+end
 
 local fixed = candidate("固定候选", { "gu4", "ding4", "hou4", "xuan3" })
 fixed.comment = "📌"

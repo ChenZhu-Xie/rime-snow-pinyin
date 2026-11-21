@@ -16,6 +16,7 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { copyRimeDependencies } from "./rime-dependencies";
 import { ROOT } from "./paths";
+import { queryRimeCandidates } from "./rime-candidate-query";
 
 const definitions = {
 	RimeSetup: { args: [FFIType.ptr], returns: FFIType.void },
@@ -32,6 +33,8 @@ const definitions = {
 	RimeClearComposition: { args: [FFIType.u64], returns: FFIType.void },
 	RimeGetContext: { args: [FFIType.u64, FFIType.ptr], returns: FFIType.int },
 	RimeFreeContext: { args: [FFIType.ptr], returns: FFIType.int },
+	RimeGetCommit: { args: [FFIType.u64, FFIType.ptr], returns: FFIType.int },
+	RimeFreeCommit: { args: [FFIType.ptr], returns: FFIType.void },
 	RimeSelectSchema: {
 		args: [FFIType.u64, FFIType.cstring],
 		returns: FFIType.int,
@@ -123,6 +126,26 @@ function prepareData(
 		join(destination, "default.custom.yaml"),
 		`patch:\n  schema_list:\n${schemas.map((schema) => `    - schema: ${schema}`).join("\n")}\n`,
 	);
+	// 单方案预热与全量部署生成相同的只读补丁，保持缓存指纹可复用。
+	for (const name of readdirSync(destination)) {
+		if (name.startsWith("snow_") && name.endsWith(".schema.yaml"))
+			writeReadOnlyPatch(destination, name.slice(0, -".schema.yaml".length));
+	}
+}
+
+function writeReadOnlyPatch(directory: string, schema: string): void {
+	// 只冻结空白评测环境的学习；音码、固顶、候选和按键规则仍使用原方案。
+	writeFileSync(
+		join(directory, `${schema}.custom.yaml`),
+		"patch:\n" +
+			["translator", "jianpin", "initial_pair", "shenyun", "pinyin"]
+				.flatMap((namespace) => [
+					`  ${namespace}/enable_user_dict: false`,
+					`  ${namespace}/enable_schema_user_dict: false`,
+				])
+				.join("\n") +
+			"\n",
+	);
 }
 
 const SBXH_SOURCE_FILES = [
@@ -192,9 +215,10 @@ function prepareSbxhData(
 		join(destination, "default.custom.yaml"),
 		`patch:\n  schema_list:\n${schemas.map((schema) => `    - schema: ${schema}`).join("\n")}\n`,
 	);
+	for (const schema of schemas) writeReadOnlyPatch(destination, schema);
 }
 
-const CACHE_FORMAT = "rime-candidate-oracle-v1";
+const CACHE_FORMAT = "rime-candidate-oracle-v2-per-key-empty-state";
 const BENCHMARK_DATA_PREFIXES = [
 	"snow_bihua.",
 	"snow_bushou.",
@@ -230,6 +254,9 @@ function dataFingerprint(dataDirectory: string, dll: string): string {
 		hash.update("\0");
 	};
 	hash.update(`${CACHE_FORMAT}\0`);
+	// 查询实现属于缓存合同；逐键读取、修饰键或隔离规则改变后不得沿用旧记录。
+	hash.update(readFileSync(import.meta.path));
+	hash.update(readFileSync(join(ROOT, "scripts/lib/rime-candidate-query.ts")));
 	for (const name of readdirSync(dataDirectory).sort()) {
 		// 方案清单只控制部署入口，不改变被选方案的候选；忽略后可复用单方案预热结果。
 		if (name === "default.custom.yaml" || !affectsBenchmarkCandidates(name))
@@ -243,12 +270,13 @@ function dataFingerprint(dataDirectory: string, dll: string): string {
 interface PersistentCacheRecord {
 	code: string;
 	candidates: string[];
+	commit: string;
 }
 
 /** 空白用户目录中的真实 librime 候选查询；不提交候选，因此不会产生调频。 */
 export class RimeCandidateOracle {
 	private readonly library: RimeLibrary;
-	private readonly session: bigint;
+	private session: bigint;
 	private readonly originalDirectory: string;
 	private readonly dataDirectory: string;
 	private readonly persistentCacheDirectory: string;
@@ -256,6 +284,8 @@ export class RimeCandidateOracle {
 	private readonly loadedSchemas = new Set<string>();
 	private cacheHits = 0;
 	private cacheMisses = 0;
+	private cacheAudits = 0;
+	private rejectedQueries = 0;
 	private schema = "";
 
 	constructor(
@@ -308,6 +338,12 @@ export class RimeCandidateOracle {
 
 	selectSchema(schema: string): void {
 		if (schema === this.schema) return;
+		// 新会话隔离跨方案保留的选项、属性及 Lua 上下文。
+		if (this.schema !== "") {
+			this.library.symbols.RimeDestroySession(this.session);
+			this.session = this.library.symbols.RimeCreateSession();
+			if (!this.session) throw new Error("无法建立独立方案的 Rime 会话");
+		}
 		if (!this.library.symbols.RimeSelectSchema(this.session, cString(schema)))
 			throw new Error(`空白 Rime 部署无法选择方案：${schema}`);
 		this.schema = schema;
@@ -330,7 +366,9 @@ export class RimeCandidateOracle {
 				const record = JSON.parse(line) as Partial<PersistentCacheRecord>;
 				if (
 					typeof record.code === "string" &&
+					typeof record.commit === "string" &&
 					Array.isArray(record.candidates) &&
+					(record.commit === "" || record.candidates.length === 0) &&
 					record.candidates.every((candidate) => typeof candidate === "string")
 				)
 					this.cache.set(`${schema}\t${record.code}`, record.candidates);
@@ -350,13 +388,61 @@ export class RimeCandidateOracle {
 			return cached;
 		}
 		this.cacheMisses += 1;
-		this.library.symbols.RimeClearComposition(this.session);
-		for (const character of code)
-			this.library.symbols.RimeProcessKey(
-				this.session,
-				character.codePointAt(0) ?? 0,
-				0,
-			);
+		const result = this.queryFresh(code);
+		if (result.commit !== "") this.rejectedQueries++;
+		this.cache.set(key, result.candidates);
+		appendFileSync(
+			this.cachePath(this.schema),
+			`${JSON.stringify({ code, ...result } satisfies PersistentCacheRecord)}\n`,
+		);
+		return result.candidates;
+	}
+
+	private queryFresh(code: string): { candidates: string[]; commit: string } {
+		return queryRimeCandidates(code, {
+			clearComposition: () =>
+				this.library.symbols.RimeClearComposition(this.session),
+			processKey: (keycode, modifier) => {
+				this.library.symbols.RimeProcessKey(this.session, keycode, modifier);
+			},
+			readCandidates: () => this.readCandidates(),
+			takeCommit: () => this.takeCommit(),
+		});
+	}
+
+	/** 命中缓存后仍独立实查首尾样本，防止稳定复现错误缓存。 */
+	auditCachedQueries(extraCodes: readonly string[] = []): void {
+		const prefix = `${this.schema}\t`;
+		const codes = [...this.cache.keys()]
+			.filter((key) => key.startsWith(prefix))
+			.map((key) => key.slice(prefix.length));
+		for (const code of new Set([
+			...codes.slice(0, 8),
+			...codes.slice(-8),
+			...extraCodes,
+		])) {
+			const cached = this.cache.get(prefix + code);
+			if (!cached) continue;
+			const actual = this.queryFresh(code).candidates;
+			this.cacheAudits++;
+			if (JSON.stringify(actual) !== JSON.stringify(cached))
+				throw new Error(
+					`候选缓存与独立实查不符：${this.schema}/${code}；缓存 ${JSON.stringify(cached)}，实查 ${JSON.stringify(actual)}；请勿继续发布报告。`,
+				);
+		}
+	}
+
+	private takeCommit(): string {
+		const commit = new Uint8Array(16);
+		new DataView(commit.buffer).setInt32(0, 12, true);
+		if (!this.library.symbols.RimeGetCommit(this.session, commit)) return "";
+		const text = read.ptr(ptr(commit), 8);
+		const result = text ? String(new CString(text)) : "";
+		this.library.symbols.RimeFreeCommit(commit);
+		return result;
+	}
+
+	private readCandidates(): string[] {
 		const context = new Uint8Array(88);
 		new DataView(context.buffer).setInt32(0, 84, true);
 		const result: string[] = [];
@@ -370,11 +456,6 @@ export class RimeCandidateOracle {
 			}
 			this.library.symbols.RimeFreeContext(context);
 		}
-		this.cache.set(key, result);
-		appendFileSync(
-			this.cachePath(this.schema),
-			`${JSON.stringify({ code, candidates: result } satisfies PersistentCacheRecord)}\n`,
-		);
 		return result;
 	}
 
@@ -387,11 +468,21 @@ export class RimeCandidateOracle {
 	}
 
 	description(): string {
-		return `${basename(this.dataDirectory)}（空白 user dict，无提交、无调频）`;
+		return `${basename(this.dataDirectory)}（空白且关闭学习，逐键读取候选，拒绝中途上屏路径）`;
 	}
 
-	cacheStats(): { hits: number; misses: number } {
-		return { hits: this.cacheHits, misses: this.cacheMisses };
+	cacheStats(): {
+		hits: number;
+		misses: number;
+		audits: number;
+		rejected: number;
+	} {
+		return {
+			hits: this.cacheHits,
+			misses: this.cacheMisses,
+			audits: this.cacheAudits,
+			rejected: this.rejectedQueries,
+		};
 	}
 
 	cacheDirectory(): string {

@@ -400,6 +400,7 @@ try {
 		const alternatives = buildAlternatives(benchmarkCorpus, scheme.id, (code) =>
 			oracle.candidates(code),
 		);
+		oracle.auditCachedQueries();
 		const after = oracle.cacheStats();
 		console.log(
 			`${scheme.name} 候选查询：持久缓存命中 ${after.hits - before.hits}，实际查询 ${after.misses - before.misses}。`,

@@ -276,6 +276,7 @@ try {
 			}
 		}
 	}
+	oracle.auditCachedQueries();
 	const cache = oracle.cacheStats();
 	console.log(
 		`候选查询完成：去重编码 ${queriedCodes.size}；缓存命中 ${cache.hits}，实际查询 ${cache.misses}。`,
@@ -569,7 +570,7 @@ const sbxhResult = {
 	articles: articleResults.map((result) => result.stat),
 };
 const resultContract =
-	"current-eleven-scheme-benchmark-v2-external-sbxh-rime-oracle";
+	"current-eleven-scheme-benchmark-v3-external-sbxh-rime-oracle";
 writeBenchmarkReplayCache(
 	join(ROOT, "output", "benchmark-replays", "sbxh.json"),
 	{

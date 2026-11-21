@@ -42,6 +42,18 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  benchmark_readonly:
+    patch:
+      translator/enable_user_dict: false
+      translator/enable_schema_user_dict: false
+      jianpin/enable_user_dict: false
+      initial_pair/enable_user_dict: false
+    tests:
+      # 错误探针会先顶出「新时代」，但只读环境不能因此把它学到 xkd 首选。
+      - send: xkdKd
+        assert: commit == "新时代" or error(pair_probe())
+      - send: xkd
+        assert: (cand[1].text == "形式的" and rank("新时代") > 1) or error(pair_probe())
   cross_route_user_phrase:
     tests:
       # 用前三字完整声韵、第四字声母唯一上屏“方案选单”，再退回 frxd 验证跨路径用户词优先。

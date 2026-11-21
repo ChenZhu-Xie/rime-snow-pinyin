@@ -134,6 +134,17 @@ for (const [name, script] of stages.slice(start)) {
 		throw new Error(
 			`${name} 失败（${exitCode}），日志：${runDirectory}；候选缓存已保留。`,
 		);
+	const runtimeErrors = readFileSync(join(runDirectory, `${name}.log`), "utf8")
+		.split(/\r?\n/u)
+		.filter((line) =>
+			/Lua\w*::\w+ error\(|Error opening (?:reversedb|db)|attempt to index a nil value/u.test(
+				line,
+			),
+		);
+	if (runtimeErrors.length > 0)
+		throw new Error(
+			`${name} 出现 Rime 运行错误，停止生成可信报告：\n${runtimeErrors.slice(0, 5).join("\n")}`,
+		);
 	manifest.completed.push(name);
 	save();
 }

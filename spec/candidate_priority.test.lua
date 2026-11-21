@@ -75,6 +75,11 @@ assert(priority.is_learned_phrase(hidden_user, learned_memory, learned_cache))
 assert(lookup_count == 1, "learned phrase lookups must be cached")
 
 local ordinary = phrase_candidate("九霄", { "jiu3", "xiao1" })
+local readonly_memory = {
+  decode = function() error("只读词典不应读取用户词权重") end,
+}
+assert(priority.user_phrase_weight(ordinary, readonly_memory, {}) == nil,
+  "关闭用户词典时应直接保留系统词频，不能访问空的 user_dict")
 assert(not priority.is_learned_phrase(ordinary, learned_memory, learned_cache))
 ordinary.quality = 100
 hidden_user.quality = 1

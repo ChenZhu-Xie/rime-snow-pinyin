@@ -768,6 +768,13 @@ async function run() {
 			const result = buildAlternatives(benchmarkCorpus, scheme.id, (code) =>
 				oracle.candidates(code),
 			);
+			oracle.auditCachedQueries(
+				scheme.id === "liandao"
+					? ["xkd"]
+					: scheme.id === "zhudao"
+						? ["yvd"]
+						: [],
+			);
 			const after = oracle.cacheStats();
 			alternatives.set(scheme.id, result.alternatives);
 			singleCharacterFirstChoiceAudits.set(
@@ -775,7 +782,7 @@ async function run() {
 				result.singleCharacterFirstChoiceAudit,
 			);
 			console.log(
-				`【${scheme.name}】候选集完成，收录词条: ${result.alternatives.size}；持久缓存命中 ${after.hits - before.hits}，实际查询 ${after.misses - before.misses}`,
+				`【${scheme.name}】候选集完成，收录词条: ${result.alternatives.size}；持久缓存命中 ${after.hits - before.hits}，实际查询 ${after.misses - before.misses}，独立复查 ${after.audits - before.audits}`,
 			);
 		}
 	} finally {
@@ -798,7 +805,7 @@ async function run() {
 			stats: schemeRecord((scheme) => analyzePaths(article, paths[scheme])),
 		};
 	});
-	const resultContract = "current-ten-scheme-benchmark-v3-rime-oracle";
+	const resultContract = "current-ten-scheme-benchmark-v4-rime-oracle";
 	writeBenchmarkReplayCache(
 		join(root, "output", "benchmark-replays", "internal.json"),
 		{
@@ -901,6 +908,7 @@ async function run() {
 			{
 				contract: resultContract,
 				candidateCache: oracle.cacheDirectory(),
+				candidateProtocol: "per-key-shift-readonly-reject-commit-v2",
 				schemes: Object.fromEntries(
 					ALL_BENCHMARK_SCHEMES.map((scheme) => [
 						scheme.id,
@@ -925,6 +933,8 @@ async function run() {
 	);
 	const report = [
 		"# 十篇五百字（5000 字全语料）：冰雪当前十方案最优切分实战测评",
+		"",
+		"本报告已校正旧候选缓存：逐键读取候选，物理大写发送 Shift，方案间隔离会话，并关闭原生／方案用户词典学习。中途上屏的探针只记为不可用路径，不能将其尾段候选记在完整编码下；缓存同时保存拒绝原因，复跑另行实查首尾样本与两条『新时代』反例。",
 		"",
 		"> 本报告按当前运行合同重算十个仓库内方案：现行 RC26-39a5bfdc045342cd 与 UED-3158ce08b5bc 双拼、冰雪四拼、冰雪清韵，带调的冰雪莲道、冰雪鹮道，以及冰雪键道、冰雪三拼经典布局。当前十方案分别使用各自音码、形码、五辅语义、词语主码路由、方案专属 fixed 与辅序；标准学习词频仍共用 snow_pinyin。候选名次来自独立空白 user dict、无提交、无调频的真实 librime 部署；路径先最少化选重次数，再最少化实际按键。结果不等同真人输入速度。",
 		"",

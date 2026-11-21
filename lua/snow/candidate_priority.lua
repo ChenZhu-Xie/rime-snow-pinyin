@@ -19,6 +19,8 @@ end
 ---@param cache table<string, UserPhraseWeight>
 ---@return number|nil
 function priority.user_phrase_weight(candidate, memory, cache)
+  -- 关闭学习的空白评测或只读方案没有 UserDictionary，保持系统词频顺序。
+  if not memory.user_dict then return nil end
   local phrase = candidate:get_genuine():to_phrase()
   if not phrase then
     return nil

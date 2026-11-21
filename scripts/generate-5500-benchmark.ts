@@ -165,7 +165,7 @@ const corpus = {
 assert.equal(corpus.hanCharacters, 5500);
 assert.equal(corpus.punctuationCharacters, 392);
 const report = {
-	contract: "snow-twelve-scheme-5500-v1",
+	contract: "snow-twelve-scheme-5500-v2",
 	baseline: baseline.contract,
 	corpus,
 	schemes,
@@ -181,6 +181,8 @@ const markdown = [
 	"# 十一场景 5500 字：当前十二方案最优切分对比",
 	"",
 	"按每个方案自身规则枚举合法编码，在空白用户词典、无提交和无调频的候选顺序下，先最少化选重次数，再最少化实际按键；同为首选时优先最短标准码。Shift、Space、标点和选重均计键。结果为规则内最优切分模型，不代表真人速度。",
+	"",
+	"本轮已作废旧候选缓存并校正查询协议：逐键读取候选、发送真实 Shift 修饰键、分方案隔离会话、关闭学习，并排除中途上屏的编码。旧回放误将冰雪莲道 `xkd`、冰雪鹮道 `yvd` 记作「新时代」首选；干净部署中两者均为「形式的」首选，「新时代」排第五。本报告使用校正后重新求解的全部路径。",
 	"",
 	`语料：${corpus.note} 共 5500 汉字、392 标点。5000 字部分另见[十篇完整报告](./十篇五百字_当前十二方案最优切分及字词比率报告.md)。`,
 	"",
@@ -208,6 +210,8 @@ const markdown = [
 	"运行 `just benchmark-5500`（或 `bun scripts/run-5500-benchmark.ts`），按十个冰雪方案、声笔小鹤、小鹤音形、5500 字汇总顺序串行执行。",
 	"",
 	"真实候选缓存位于 `output/benchmark-rime-cache/<源文件与运行库 SHA-256>/<schema_id>.jsonl`，逐条追加，允许中断后续跑；冰雪莲道与冰雪鹮道各自独立保存。源方案、字典、Lua、共享数据或 Rime 库变化会使对应指纹失效。声笔反查缓存位于 `output/benchmark-sbxh-reverse-cache/`，清风词库缓存位于 `output/benchmark-flypy-cache/`，回放位于 `output/benchmark-replays/`。运行日志和本轮输入指纹位于 `output/benchmark-runs/`。缓存不提交 Git，重新运行会重新验证源文件并复用匹配的记录。",
+	"",
+	"缓存指纹也包含查询实现与只读部署补丁。每条记录保存候选和中途上屏文本；发生中途上屏时仅缓存空候选，避免把尾段误记为完整编码。缓存命中后仍绕过缓存实查每方案首尾各八条记录，并额外检查 `xkd`／`yvd`；不一致或日志出现 Lua／词典运行错误时整轮失败，不能仅凭重复回放一致宣布缓存正确。",
 	"",
 	"逐篇回放按键、Space、Shift、选重与 5000 字原始统计逐项核对，再加独立赛文；全按键键频随 5500 字 JSON 保存。清风回放若只给候选序号，键频使用 CandidateN 逻辑名称，不假定物理选重键。",
 	"",
