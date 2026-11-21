@@ -42,9 +42,11 @@ export const currentLayoutLabels: Record<string, string> = {
 
 export function orderCurrentSchemes(schemes: readonly string[]) {
 	const middle = schemes.filter((s) => s !== "Zhudao" && s !== "Liandao");
-	if (schemes.includes("Liandao"))
-		middle.splice(Math.max(0, middle.length - 1), 0, "Liandao");
-	return schemes.includes("Zhudao") ? ["Zhudao", ...middle] : middle;
+	return [
+		...(schemes.includes("Zhudao") ? ["Zhudao"] : []),
+		...(schemes.includes("Liandao") ? ["Liandao"] : []),
+		...middle,
+	];
 }
 
 export function tonedInitialDisorder(

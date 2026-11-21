@@ -255,10 +255,10 @@ test("方案列序不移动属性和方向列，单元格跟随鹮道与莲道�
 	const schemes = ["RC26", "OC21", "S005", "B04", "Liandao", "Zhudao"];
 	assert.deepEqual(orderCurrentSchemes(schemes), [
 		"Zhudao",
+		"Liandao",
 		"RC26",
 		"OC21",
 		"S005",
-		"Liandao",
 		"B04",
 	]);
 	assert.equal(
@@ -287,7 +287,7 @@ test("方案列序不移动属性和方向列，单元格跟随鹮道与莲道�
 				/T2126-V52-M4|CR-REF-|RC26-|UED-|Overall-17|U357|S005|B04/.test(cell),
 			);
 			assert.match(schemes[0], /T2126-V52-M4/);
-			assert.match(schemes.at(-2)!, /CR-REF-/);
+			assert.match(schemes[1], /CR-REF-/);
 		}
 		for (const row of markdown
 			.split("\n")
