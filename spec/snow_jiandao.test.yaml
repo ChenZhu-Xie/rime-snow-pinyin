@@ -222,7 +222,7 @@ deploy:
       # 本地 UED 兰道使用 whv/gc/tj/xb；数字和字母按实际候选位选取。
       - send: "o whv2gc2tjxb  wgtx"
         assert: cand[1].text == "5G通信"
-      # 兰道和兰拼的元音字母简拼都使用共享载体 x。
+      # 哆 dmou、啦 llo 首选；A 是 xw 的第二候选，梦是 mrv 的第三候选；元音字母简拼使用共享载体 x。
       - send: "o dmou llo xw{Down}{space}mrv{Down}{Down}{space} dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 混合声韵拼写：大写韵母不计入四个小写字母的分界。
@@ -375,3 +375,14 @@ deploy:
         assert: (cand[1].text == "也需") or error(pair_probe())
       - send: "yxvoai yxv"
         assert: (cand[1].text == "也需") or error(pair_probe())
+
+  layout_probe:
+    tests:
+      - send: "o dmou llo xw"
+        assert: error(pair_probe())
+      - send: "o dmou llo xw{Down}{space}mrv"
+        assert: error(pair_probe())
+      - send: "o dmou llo xw{Down}{space}mrv{Down}{Down}{space} dlxm"
+        assert: error(pair_probe())
+      - send: "o dmou llo xw mrv{Down}{Down}{space} dlxm"
+        assert: error(pair_probe())

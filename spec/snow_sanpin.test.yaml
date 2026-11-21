@@ -308,7 +308,7 @@ deploy:
         assert: commit == nil
       - send: "o bgxkkrf  krf "
         assert: commit == "冰雪输入法输入法"
-  # 六码二字词选完首字后，第二字可由下一个词顶屏，并与首字一起完成造词。
+  # 六码首选「冰次」，先选第二候选的分片「冰」，再选同音码下第二候选「四」；第二字由下一个词顶屏并完成造词。
   encoding_popping:
     tests:
       - send: "bgcfia{Down}{space}{Down}b{Escape}bgcf"
@@ -341,7 +341,7 @@ deploy:
       # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
       - send: "o whu gco tji xba  wgtx"
         assert: cand[1].text == "五G通信"
-      # 哆、啦、梦均不在 UED 完整音码首选，按实际候选位取字后验证英数混输造词。
+      # 哆 dmi 和 A xwo 首选；啦 llo、梦 mra 均选第二候选，再按 dlxm 验证英数混输造词。
       - send: "o dmi llo{Down}{space}xwo mra{Down}{space} dlxm"
         assert: cand[1].text == "哆啦A梦"
   # 声声二字词的调笔四辅，以及三字及以上简拼的大写补韵。
@@ -494,10 +494,3 @@ deploy:
         assert: (cand[1].text == "也需") or error(pair_probe())
       - send: "yxivua yxi"
         assert: (cand[1].text == "也需") or error(pair_probe())
-
-  layout_probe:
-    tests:
-      - send: "bgcfia{Down}{space}"
-        assert: error(pair_probe())
-      - send: "bgcfia{Down}{space}{Down}"
-        assert: error(pair_probe())
