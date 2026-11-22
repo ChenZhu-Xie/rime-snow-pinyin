@@ -218,7 +218,8 @@ function prepareSbxhData(
 	for (const schema of schemas) writeReadOnlyPatch(destination, schema);
 }
 
-const CACHE_FORMAT = "rime-candidate-oracle-v2-per-key-empty-state";
+const CACHE_FORMAT =
+	"rime-candidate-oracle-v3-terminal-commit-shift-punctuation";
 const BENCHMARK_DATA_PREFIXES = [
 	"snow_bihua.",
 	"snow_bushou.",
@@ -271,16 +272,20 @@ interface PersistentCacheRecord {
 	code: string;
 	candidates: string[];
 	commit: string;
+	completed: boolean;
 }
 
-/** 空白用户目录中的真实 librime 候选查询；不提交候选，因此不会产生调频。 */
+/** 空白用户目录中的真实 librime 候选与直选查询；关闭全部词典学习。 */
 export class RimeCandidateOracle {
 	private readonly library: RimeLibrary;
 	private session: bigint;
 	private readonly originalDirectory: string;
 	private readonly dataDirectory: string;
 	private readonly persistentCacheDirectory: string;
-	private readonly cache = new Map<string, string[]>();
+	private readonly cache = new Map<
+		string,
+		Omit<PersistentCacheRecord, "code">
+	>();
 	private readonly loadedSchemas = new Set<string>();
 	private cacheHits = 0;
 	private cacheMisses = 0;
@@ -367,11 +372,16 @@ export class RimeCandidateOracle {
 				if (
 					typeof record.code === "string" &&
 					typeof record.commit === "string" &&
+					typeof record.completed === "boolean" &&
 					Array.isArray(record.candidates) &&
 					(record.commit === "" || record.candidates.length === 0) &&
 					record.candidates.every((candidate) => typeof candidate === "string")
 				)
-					this.cache.set(`${schema}\t${record.code}`, record.candidates);
+					this.cache.set(`${schema}\t${record.code}`, {
+						candidates: record.candidates,
+						commit: record.commit,
+						completed: record.completed,
+					});
 			} catch {
 				// 中断可能留下不完整的末行；忽略它，缺失编码会重新查询。
 			}
@@ -381,6 +391,16 @@ export class RimeCandidateOracle {
 	}
 
 	candidates(code: string): string[] {
+		return this.query(code).candidates;
+	}
+
+	/** 只有完整输入在最后一个按键上提交才可作为直选路径。 */
+	committedText(code: string): string {
+		const result = this.query(code);
+		return result.completed ? result.commit : "";
+	}
+
+	private query(code: string): Omit<PersistentCacheRecord, "code"> {
 		const key = `${this.schema}\t${code}`;
 		const cached = this.cache.get(key);
 		if (cached) {
@@ -389,16 +409,16 @@ export class RimeCandidateOracle {
 		}
 		this.cacheMisses += 1;
 		const result = this.queryFresh(code);
-		if (result.commit !== "") this.rejectedQueries++;
-		this.cache.set(key, result.candidates);
+		if (result.commit !== "" && !result.completed) this.rejectedQueries++;
+		this.cache.set(key, result);
 		appendFileSync(
 			this.cachePath(this.schema),
 			`${JSON.stringify({ code, ...result } satisfies PersistentCacheRecord)}\n`,
 		);
-		return result.candidates;
+		return result;
 	}
 
-	private queryFresh(code: string): { candidates: string[]; commit: string } {
+	private queryFresh(code: string): Omit<PersistentCacheRecord, "code"> {
 		return queryRimeCandidates(code, {
 			clearComposition: () =>
 				this.library.symbols.RimeClearComposition(this.session),
@@ -423,7 +443,7 @@ export class RimeCandidateOracle {
 		])) {
 			const cached = this.cache.get(prefix + code);
 			if (!cached) continue;
-			const actual = this.queryFresh(code).candidates;
+			const actual = this.queryFresh(code);
 			this.cacheAudits++;
 			if (JSON.stringify(actual) !== JSON.stringify(cached))
 				throw new Error(

@@ -24,6 +24,11 @@ import {
 	supportsStructuralAbbreviations,
 } from "./lib/benchmark-schemes";
 import { RimeCandidateOracle } from "./lib/rime-candidate-oracle";
+import { BenchmarkCachedOracle } from "./lib/benchmark-cached-oracle";
+import {
+	wordLengthAlternatives,
+	wordLengthProbeCodes,
+} from "./lib/benchmark-word-length";
 import { generateAbbreviations } from "./固顶替代";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -37,6 +42,7 @@ type SourceKind =
 	| "普通码"
 	| "结构略码"
 	| "尾字键"
+	| "词长直选"
 	| "次选";
 
 type Alternative = BenchmarkAlternative<SourceKind>;
@@ -102,6 +108,7 @@ function compareAlternative(a: Alternative, b: Alternative) {
 		尾字键: 5,
 		普通码: 6,
 		次选: 7,
+		词长直选: 6,
 	};
 	return (
 		a.keyCost - b.keyCost ||
@@ -179,6 +186,7 @@ function buildAlternatives(
 	corpus: BenchmarkCorpus,
 	scheme: SchemeId,
 	candidateOracle: (code: string) => readonly string[],
+	commitOracle?: (code: string) => string,
 ) {
 	const {
 		targetWords,
@@ -193,6 +201,15 @@ function buildAlternatives(
 	const alternatives = new Map<string, Alternative[]>();
 	const add = (alternative: Alternative) => {
 		if (!targetWords.has(alternative.word)) return;
+		if (
+			commitOracle &&
+			(alternative.source === "结构略码" || alternative.source === "尾字键")
+		) {
+			const input = alternative.displayCode
+				.replace(/[⇧?]/gu, "")
+				.replace(/\[([1-9])\]/gu, "$1");
+			if (commitOracle(input) !== alternative.word) return;
+		}
 		const normalized =
 			scheme === "qingyun"
 				? { ...alternative, punctuationNeedsSeparator: true }
@@ -400,6 +417,27 @@ function buildAlternatives(
 		}
 	}
 
+	if (
+		commitOracle &&
+		!process.argv.includes("--without-word-length-selection")
+	) {
+		const codes = wordLengthProbeCodes(scheme, targetEntries.values(), (word) =>
+			Math.min(
+				...(alternatives.get(word) ?? [])
+					.filter((v) => v.selectionCount === 0)
+					.map((v) => v.keyCost + Number(!v.instant && !v.popppable)),
+			),
+		);
+		console.log(
+			`词长直选探针：${codes.length} 个编码 × 两种选择键；每次选择键计 Shift＋标点共两键。`,
+		);
+		for (const alternative of wordLengthAlternatives(
+			codes,
+			targetWords,
+			commitOracle,
+		))
+			add(alternative);
+	}
 	return { alternatives, singleCharacterFirstChoiceAudit };
 }
 
@@ -562,6 +600,7 @@ function analyzePaths(
 		结构略码: 0,
 		尾字键: 0,
 		次选: 0,
+		词长直选: 0,
 	};
 
 	for (const token of hanTokens) {
@@ -748,6 +787,9 @@ async function run() {
 	if (prewarmId && selectedSchemes.length !== 1)
 		throw new Error(`未知预热方案：${prewarmId}`);
 	const allLines = exact500Articles.flatMap((article) => article.lines);
+	const reuseIndex = process.argv.indexOf("--reuse-unchanged-cache");
+	const reuseDirectory =
+		reuseIndex < 0 ? undefined : process.argv[reuseIndex + 1];
 	const order = ALL_BENCHMARK_SCHEMES.map((scheme) => scheme.name);
 	console.log(`总行数: ${allLines.length}，文章数: ${exact500Articles.length}`);
 	const benchmarkCorpus = buildBenchmarkCorpus(allLines);
@@ -762,11 +804,35 @@ async function run() {
 	);
 	try {
 		for (const scheme of selectedSchemes) {
+			if (
+				reuseDirectory &&
+				(scheme.id === "sipin" || scheme.id === "qingyun")
+			) {
+				const cached = new BenchmarkCachedOracle(
+					reuseDirectory,
+					scheme.schemaId,
+				);
+				const result = buildAlternatives(benchmarkCorpus, scheme.id, (code) =>
+					cached.candidates(code),
+				);
+				alternatives.set(scheme.id, result.alternatives);
+				singleCharacterFirstChoiceAudits.set(
+					scheme.id,
+					result.singleCharacterFirstChoiceAudit,
+				);
+				console.log(
+					`【${scheme.name}】规则未变化，复用已验证候选 ${cached.cacheStats().hits} 条；重新汇总路径。`,
+				);
+				continue;
+			}
 			console.log(`构建【${scheme.name}】空白 Rime 实际候选集...`);
 			oracle.selectSchema(scheme.schemaId);
 			const before = oracle.cacheStats();
-			const result = buildAlternatives(benchmarkCorpus, scheme.id, (code) =>
-				oracle.candidates(code),
+			const result = buildAlternatives(
+				benchmarkCorpus,
+				scheme.id,
+				(code) => oracle.candidates(code),
+				(code) => oracle.committedText(code),
 			);
 			oracle.auditCachedQueries(
 				scheme.id === "liandao"
@@ -908,7 +974,8 @@ async function run() {
 			{
 				contract: resultContract,
 				candidateCache: oracle.cacheDirectory(),
-				candidateProtocol: "per-key-shift-readonly-reject-commit-v2",
+				candidateProtocol: "per-key-shift-readonly-terminal-commit-v3",
+				reusedUnchangedCandidateCache: reuseDirectory,
 				schemes: Object.fromEntries(
 					ALL_BENCHMARK_SCHEMES.map((scheme) => [
 						scheme.id,

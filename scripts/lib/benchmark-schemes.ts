@@ -495,7 +495,9 @@ function mainCode(scheme: BenchmarkScheme, sounds: string[]): string | null {
 		if (sounds.length === 3)
 			return sounds.map((code) => code[0]).join("") + sounds[2][1];
 		if (sounds.length === 4) return sounds.map((code) => code[0]).join("");
-		return null;
+		return sounds
+			.map((code, index) => (index < 4 ? code[0] : code[0].toUpperCase()))
+			.join("");
 	}
 	return sounds
 		.map((code, index) =>
@@ -507,6 +509,10 @@ function mainCode(scheme: BenchmarkScheme, sounds: string[]): string | null {
 function mainCodes(scheme: BenchmarkScheme, sounds: string[]): string[] {
 	const base = mainCode(scheme, sounds);
 	if (!base) return [];
+	if (scheme.capacity === "21x26" && sounds.length >= 5)
+		return Array.from({ length: base.length - 3 }, (_, i) =>
+			base.slice(0, i + 4),
+		);
 	if (scheme.capacity !== "21x21" || sounds.length < 3) return [base];
 	const result = new Set<string>();
 	for (let mask = 0; mask < 1 << 3; mask += 1) {

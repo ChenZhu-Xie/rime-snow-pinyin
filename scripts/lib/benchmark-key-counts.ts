@@ -36,7 +36,10 @@ export function countBenchmarkKeys(
 				if (!/[A-Z]/u.test(code[i + 1] ?? ""))
 					throw new Error(`无效 Shift 标记：${code}`);
 			} else if (char === "_") press("Space");
-			else if (/[A-Z]/u.test(char)) {
+			else if (char === "<" || char === ">") {
+				press("Shift");
+				press(char === "<" ? "," : ".");
+			} else if (/[A-Z]/u.test(char)) {
 				press("Shift");
 				press(char);
 			} else if (/[a-z]/u.test(char)) press(char.toUpperCase());

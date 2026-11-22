@@ -1,0 +1,269 @@
+{
+  "previousReportRef": "b6f356e",
+  "previousMeasurementRef": "c369ff7",
+  "productionRef": "4ddd603",
+  "corpus": "5500 汉字＋392 标点；第十一场景重复第十篇",
+  "selectionKeyCost": 2,
+  "selectionPolicy": "类别首词直选不计数字选重，Shift＋逗号／句号均计两键；两套对照均使用新固顶及新长词规则",
+  "coldRun": ".worktrees/benchmark-word-length-4ddd603/output/benchmark-runs/2026-11-22T03-09-12-592Z",
+  "warmRun": "output/benchmark-runs/2026-11-22T03-33-04-704Z",
+  "withoutRun": ".worktrees/benchmark-word-length-4ddd603/output/benchmark-runs/2026-11-22T03-30-31-251Z",
+  "verification": {
+    "productionRef": "4ddd603",
+    "fullWarmRun": "output/benchmark-runs/2026-11-22T03-33-04-704Z",
+    "completedAt": "2026-11-22T03:33:58.197Z",
+    "allTwelveSchemesMatchFirstMeasurement": true,
+    "allFourUnchangedSchemesMatchPreviousReport": true,
+    "cachedQueries": 86481,
+    "newQueries": 0,
+    "independentAudits": 130,
+    "persistentRecords": 91314,
+    "rootCache": "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\benchmark-rime-cache\\d8956b54f3e7a9f14cee4f37523ce902003834b4cce7144c65492845dde79a29",
+    "frozenCache": "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\benchmark-rime-cache\\f0ff413862e68e21f36c6b513e6c4f9d4b15297fe384b9384659595e910ceb14",
+    "rootCacheMatchesFrozenBytes": true,
+    "schemes": [
+      {
+        "name": "冰雪兰道（UED-3158ce08b5bc 21×21）",
+        "hits": 10529,
+        "misses": 0,
+        "audits": 16
+      },
+      {
+        "name": "冰雪兰拼（UED-3158ce08b5bc 21×21）",
+        "hits": 11679,
+        "misses": 0,
+        "audits": 16
+      },
+      {
+        "name": "冰雪鹤道（RC26-39a5bfdc045342cd 21×26）",
+        "hits": 9832,
+        "misses": 0,
+        "audits": 16
+      },
+      {
+        "name": "冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）",
+        "hits": 10654,
+        "misses": 0,
+        "audits": 16
+      },
+      {
+        "name": "冰雪莲道（CR-REF-7e650f7a4c 21×21 带调）",
+        "hits": 10447,
+        "misses": 0,
+        "audits": 17
+      },
+      {
+        "name": "冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）",
+        "hits": 9077,
+        "misses": 0,
+        "audits": 17
+      },
+      {
+        "name": "冰雪键道",
+        "hits": 11404,
+        "misses": 0,
+        "audits": 16
+      },
+      {
+        "name": "冰雪三拼",
+        "hits": 12859,
+        "misses": 0,
+        "audits": 16
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "id": "oc21-shape",
+      "name": "冰雪兰道",
+      "changed": true,
+      "previousKeys": 9413,
+      "keys": 9404,
+      "delta": -9,
+      "mean": 1.709818181818182,
+      "withoutSelectionKeys": 9412,
+      "selectionSavings": 8,
+      "lengthSelections": {
+        "left": 0,
+        "right": 4,
+        "total": 4
+      }
+    },
+    {
+      "id": "liandao",
+      "name": "冰雪莲道",
+      "changed": true,
+      "previousKeys": 9445,
+      "keys": 9437,
+      "delta": -8,
+      "mean": 1.715818181818182,
+      "withoutSelectionKeys": 9445,
+      "selectionSavings": 8,
+      "lengthSelections": {
+        "left": 0,
+        "right": 4,
+        "total": 4
+      }
+    },
+    {
+      "id": "oc21-tone",
+      "name": "冰雪兰拼",
+      "changed": true,
+      "previousKeys": 9482,
+      "keys": 9471,
+      "delta": -11,
+      "mean": 1.722,
+      "withoutSelectionKeys": 9481,
+      "selectionSavings": 10,
+      "lengthSelections": {
+        "left": 0,
+        "right": 5,
+        "total": 5
+      }
+    },
+    {
+      "id": "classic-shape",
+      "name": "冰雪键道",
+      "changed": true,
+      "previousKeys": 9501,
+      "keys": 9492,
+      "delta": -9,
+      "mean": 1.725818181818182,
+      "withoutSelectionKeys": 9501,
+      "selectionSavings": 9,
+      "lengthSelections": {
+        "left": 0,
+        "right": 4,
+        "total": 4
+      }
+    },
+    {
+      "id": "classic-tone",
+      "name": "冰雪三拼",
+      "changed": true,
+      "previousKeys": 9596,
+      "keys": 9584,
+      "delta": -12,
+      "mean": 1.7425454545454546,
+      "withoutSelectionKeys": 9596,
+      "selectionSavings": 12,
+      "lengthSelections": {
+        "left": 0,
+        "right": 5,
+        "total": 5
+      }
+    },
+    {
+      "id": "zhudao",
+      "name": "冰雪鹮道",
+      "changed": true,
+      "previousKeys": 9926,
+      "keys": 9598,
+      "delta": -328,
+      "mean": 1.745090909090909,
+      "withoutSelectionKeys": 9629,
+      "selectionSavings": 31,
+      "lengthSelections": {
+        "left": 26,
+        "right": 18,
+        "total": 44
+      }
+    },
+    {
+      "id": "rc26-shape",
+      "name": "冰雪鹤道",
+      "changed": true,
+      "previousKeys": 9905,
+      "keys": 9615,
+      "delta": -290,
+      "mean": 1.7481818181818183,
+      "withoutSelectionKeys": 9625,
+      "selectionSavings": 10,
+      "lengthSelections": {
+        "left": 15,
+        "right": 9,
+        "total": 24
+      }
+    },
+    {
+      "id": "rc26-tone",
+      "name": "冰雪鹤拼",
+      "changed": true,
+      "previousKeys": 10032,
+      "keys": 9684,
+      "delta": -348,
+      "mean": 1.7607272727272727,
+      "withoutSelectionKeys": 9703,
+      "selectionSavings": 19,
+      "lengthSelections": {
+        "left": 21,
+        "right": 11,
+        "total": 32
+      }
+    },
+    {
+      "id": "sipin",
+      "name": "冰雪四拼",
+      "changed": false,
+      "previousKeys": 9685,
+      "keys": 9685,
+      "delta": 0,
+      "mean": 1.760909090909091,
+      "withoutSelectionKeys": 9685,
+      "selectionSavings": 0,
+      "lengthSelections": {
+        "left": 0,
+        "right": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "sbxh",
+      "name": "声笔小鹤",
+      "changed": false,
+      "previousKeys": 10334,
+      "keys": 10334,
+      "delta": 0,
+      "mean": 1.8789090909090909,
+      "withoutSelectionKeys": 10334,
+      "selectionSavings": 0,
+      "lengthSelections": {
+        "left": 0,
+        "right": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "qingyun",
+      "name": "冰雪清韵",
+      "changed": false,
+      "previousKeys": 11761,
+      "keys": 11761,
+      "delta": 0,
+      "mean": 2.1383636363636365,
+      "withoutSelectionKeys": 11761,
+      "selectionSavings": 0,
+      "lengthSelections": {
+        "left": 0,
+        "right": 0,
+        "total": 0
+      }
+    },
+    {
+      "id": "flypy",
+      "name": "小鹤音形（清风版）",
+      "changed": false,
+      "previousKeys": 12246,
+      "keys": 12246,
+      "delta": 0,
+      "mean": 2.2265454545454544,
+      "withoutSelectionKeys": 12246,
+      "selectionSavings": 0,
+      "lengthSelections": {
+        "left": 0,
+        "right": 0,
+        "total": 0
+      }
+    }
+  ]
+}

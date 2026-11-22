@@ -20,6 +20,7 @@ import {
 } from "./lib/benchmark-replay";
 import { ROOT } from "./lib/paths";
 import { RimeCandidateOracle } from "./lib/rime-candidate-oracle";
+import { BenchmarkCachedOracle } from "./lib/benchmark-cached-oracle";
 import { sbxhIsPoppable, sbxhSupplementalStrokes } from "./lib/sbxh-benchmark";
 
 type SourceKind = "一简" | "二简单字" | "二简词" | "630" | "普通码" | "次选";
@@ -221,11 +222,18 @@ const ranked: Pick<RankedBenchmarkCode, "word" | "code" | "rank">[] = [];
 const sourceByWordCode = new Map<string, SourceKind>();
 const queriedCodes = new Map<string, string[]>();
 const firstLengthByWord = new Map<string, number>();
-const oracle = new RimeCandidateOracle(["sbxh"], {
-	externalSbxhDirectory: sourceDirectory,
-});
+const reuseIndex = process.argv.indexOf("--reuse-candidate-cache");
+const oracle =
+	reuseIndex >= 0
+		? new BenchmarkCachedOracle(
+				resolve(process.argv[reuseIndex + 1] ?? ""),
+				"sbxh",
+			)
+		: new RimeCandidateOracle(["sbxh"], {
+				externalSbxhDirectory: sourceDirectory,
+			});
 try {
-	oracle.selectSchema("sbxh");
+	if (oracle instanceof RimeCandidateOracle) oracle.selectSchema("sbxh");
 	const candidates = (code: string): string[] => {
 		const cached = queriedCodes.get(code);
 		if (cached) return cached;

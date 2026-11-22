@@ -11,21 +11,41 @@ import {
 import { join, relative, resolve } from "node:path";
 import { ROOT, rootPath } from "./lib/paths";
 
-// 四个阶段串行：真实候选、声笔反查及候选、清风词库、逐键核验与汇总。
+// 五个阶段串行：真实候选、声笔、清风、5500 字汇总、额外 500 字同源导出。
 const stages = [
 	["internal", "generate_full_benchmark_reports.ts"],
 	["sbxh", "benchmark-sbxh-5000.ts"],
 	["flypy", "benchmark-flypy-5000.ts"],
 	["summary", "generate-5500-benchmark.ts"],
+	["standalone", "export-500-benchmark.ts"],
 ] as const;
 const arg = (name: string) => {
 	const i = process.argv.indexOf(name);
 	return i < 0 ? undefined : process.argv[i + 1];
 };
 const first = arg("--from") ?? "internal";
+const reuseUnchanged = process.argv.includes("--reuse-unchanged");
+const previousInternal = reuseUnchanged
+	? JSON.parse(
+			readFileSync(
+				rootPath("reports/5000字_当前十方案最优切分实测结果.json"),
+				"utf8",
+			),
+		)
+	: undefined;
+const previousExternal = reuseUnchanged
+	? JSON.parse(
+			readFileSync(
+				rootPath("reports/5000字_当前十二方案最优切分实测结果.json"),
+				"utf8",
+			),
+		)
+	: undefined;
 const start = stages.findIndex(([name]) => name === first);
 if (start < 0)
-	throw new Error(`未知阶段 ${first}；可选 internal/sbxh/flypy/summary`);
+	throw new Error(
+		`未知阶段 ${first}；可选 internal/sbxh/flypy/summary/standalone`,
+	);
 const sbxh = resolve(
 	arg("--sbxh-dir") ?? join(process.env.APPDATA ?? "", "Rime"),
 );
@@ -100,7 +120,21 @@ const manifest = {
 	contract: "snow-benchmark-run-v1",
 	startedAt: new Date().toISOString(),
 	from: first,
+	wordLengthSelection: !process.argv.includes(
+		"--without-word-length-selection",
+	),
 	sources: { sbxh, flypy },
+	reuseUnchanged: reuseUnchanged
+		? {
+				internal: ["snow_sipin", "snow_qingyun"],
+				candidateCache:
+					previousInternal.reusedUnchangedCandidateCache ??
+					previousInternal.candidateCache,
+				sbxhCache: previousExternal.schemes.sbxh.candidateCache,
+				reason:
+					"调用者已审计这些方案及外部词库的规则和来源未变化；八个双拼方案不复用旧候选",
+			}
+		: undefined,
 	files: before,
 	completed: [] as string[],
 };
@@ -114,7 +148,23 @@ console.log(`十二方案 5500 字评测；日志与输入 SHA-256：${runDirect
 for (const [name, script] of stages.slice(start)) {
 	console.log(`开始 ${name}：${script}`);
 	const args = [rootPath("scripts", script)];
+	if (
+		name === "internal" &&
+		process.argv.includes("--without-word-length-selection")
+	)
+		args.push("--without-word-length-selection");
 	if (name === "sbxh") args.push("--source-dir", sbxh);
+	if (name === "internal" && reuseUnchanged)
+		args.push(
+			"--reuse-unchanged-cache",
+			previousInternal.reusedUnchangedCandidateCache ??
+				previousInternal.candidateCache,
+		);
+	if (name === "sbxh" && reuseUnchanged)
+		args.push(
+			"--reuse-candidate-cache",
+			previousExternal.schemes.sbxh.candidateCache,
+		);
 	if (name === "flypy") args.push("--source-dir", flypy);
 	const log = createWriteStream(join(runDirectory, `${name}.log`));
 	const exitCode = await new Promise<number | null>((done, reject) => {

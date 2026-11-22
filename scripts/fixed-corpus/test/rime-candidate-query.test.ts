@@ -33,7 +33,7 @@ test("候选查询逐键读取并传入物理 Shift，禁止只读最终一页",
 		"read",
 		"commit",
 	]);
-	assert.deepEqual(result, { candidates: ["10"], commit: "" });
+	assert.deepEqual(result, { candidates: ["10"], commit: "", completed: true });
 });
 
 test("中途顶屏的尾段候选不允许进入完整编码缓存", () => {
@@ -46,6 +46,34 @@ test("中途顶屏的尾段候选不允许进入完整编码缓存", () => {
 		readCandidates: () => ["尾段"],
 		takeCommit: () => (processed === 2 ? "提前上屏" : ""),
 	});
-	assert.deepEqual(result, { candidates: [], commit: "提前上屏" });
+	assert.deepEqual(result, {
+		candidates: [],
+		commit: "提前上屏",
+		completed: false,
+	});
 	assert.equal(processed, 2);
+});
+
+test("词长直选按物理 Shift＋标点发送，仅接受最后一键完成的提交", () => {
+	const events: Array<[number, number]> = [];
+	let pending = "";
+	const result = queryRimeCandidates("abcd<", {
+		clearComposition() {},
+		processKey(key, modifier) {
+			events.push([key, modifier]);
+			if (key === 44 && modifier === 1) pending = "人工智能";
+		},
+		readCandidates: () => [],
+		takeCommit: () => {
+			const text = pending;
+			pending = "";
+			return text;
+		},
+	});
+	assert.deepEqual(events.at(-1), [44, 1]);
+	assert.deepEqual(result, {
+		candidates: [],
+		commit: "人工智能",
+		completed: true,
+	});
 });

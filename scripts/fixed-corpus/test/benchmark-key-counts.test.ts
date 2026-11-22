@@ -23,3 +23,12 @@ test("逐键回放完整计入大小写、显式 Shift、空格、两种选重�
 	);
 	assert.throws(() => countBenchmarkKeys(["⇧a"]));
 });
+
+test("词长直选的左右书名号各为两键，不冒充数字选重或单键标点", () => {
+	const result = countBenchmarkKeys(["abcd<", "efgh>"]);
+	assert.equal(result.keys, 12);
+	assert.equal(result.shifts, 2);
+	assert.equal(result.selections, 0);
+	assert.equal(result.frequencies[","], 1);
+	assert.equal(result.frequencies["."], 1);
+});
