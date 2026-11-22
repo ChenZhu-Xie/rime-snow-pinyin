@@ -60,23 +60,23 @@ deploy:
       - send: kyfs
         assert: has("科学发展") and has("科学发展观") and commit == nil
       - send: kyfsG
-        assert: cand[1].text == "科学发展观" and commit == nil
+        assert: (cand[1].text == "科学发展观" and commit == nil) or error(pair_probe())
       - send: shrmGHG
-        assert: cand[1].text == "中华人民共和国" and commit == nil
+        assert: (cand[1].text == "中华人民共和国" and commit == nil) or error(pair_probe())
       - send: "kyfsG{less}"
-        assert: commit == "科学发展观《"
+        assert: (commit == "科学发展观《") or error(pair_probe())
       - send: "kyfsG "
-        assert: commit == "科学发展观"
+        assert: (commit == "科学发展观") or error(pair_probe())
       - send: kyfsGd
-        assert: commit == "科学发展观" and preedit == "d"
+        assert: (commit == "科学发展观" and preedit == "d") or error(pair_probe())
       - send: "kyfsG,"
-        assert: commit == "科学发展观，"
+        assert: (commit == "科学发展观，") or error(pair_probe())
   long_words_sentence:
     patch:
       'switches/@4/reset': 0
     tests:
       - send: kyfsG
-        assert: cand[1].text == "科学发展观" and commit == nil
+        assert: (cand[1].text == "科学发展观" and commit == nil) or error(pair_probe())
   entry_contract:
     tests:
       # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。

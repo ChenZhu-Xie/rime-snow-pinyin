@@ -14,6 +14,13 @@ script: |
     six_code_top = cand[1].text
     return true
   end
+  function pair_probe()
+    local parts = { "preedit=" .. tostring(preedit), "commit=" .. tostring(commit) }
+    for index = 1, math.min(16, #cand) do
+      parts[#parts + 1] = tostring(index) .. ":" .. cand[index].text .. "/" .. cand[index].comment
+    end
+    return table.concat(parts, " | ")
+  end
 deploy:
   word_length_selection:
     tests:
@@ -32,19 +39,19 @@ deploy:
       - send: kyfx
         assert: has("科学发展观") and commit == nil
       - send: kyfxG
-        assert: cand[1].text == "科学发展观" and commit == nil
+        assert: (cand[1].text == "科学发展观" and commit == nil) or error(pair_probe())
       - send: xhrmGHG
-        assert: cand[1].text == "中华人民共和国" and commit == nil
+        assert: (cand[1].text == "中华人民共和国" and commit == nil) or error(pair_probe())
       - send: "kyfxG "
-        assert: commit == "科学发展观"
+        assert: (commit == "科学发展观") or error(pair_probe())
       - send: kyfxGd
-        assert: commit == "科学发展观" and preedit == "d"
+        assert: (commit == "科学发展观" and preedit == "d") or error(pair_probe())
   long_words_sentence:
     patch:
       'switches/@4/reset': 0
     tests:
       - send: kyfxG
-        assert: cand[1].text == "科学发展观" and commit == nil
+        assert: (cand[1].text == "科学发展观" and commit == nil) or error(pair_probe())
   entry_contract:
     tests:
       # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。
@@ -69,7 +76,7 @@ deploy:
       - send: yvd
         assert: cand[1].text == "形式的" and rank("新时代") > 1 and commit == nil
       - send: yvdho
-        assert: cand[1].text == "新时代" and commit == nil
+        assert: (cand[1].text == "新时代" and commit == nil) or error(pair_probe())
       # 固顶只检查一例；字母入口按鹮道的实际占用桶重新选择。
       - send: p
         assert: cand[1].text == "我"
