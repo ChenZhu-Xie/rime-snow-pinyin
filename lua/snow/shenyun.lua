@@ -290,7 +290,7 @@ local function format_preedit(route, mode, first_generation, pair_standard_order
   end
   local proxy = route.proxy
   if route.family == "AAAA" or route.family == "LONG" then
-    proxy = proxy:lower():gsub(".", "%0 "):sub(1, -2)
+    proxy = proxy:lower():gsub(" ", ""):gsub(".", "%0 "):sub(1, -2)
   end
   local positions = route.length == 1 and { 1 }
       or auxiliary_positions(route.length, mode, first_generation, pair_standard_order, three_word_order, four_word_order)
@@ -455,8 +455,11 @@ local function routes_for(input, segment, env)
   end
   if n >= 4 and all_in(input:sub(1, 4), 1, A) and all_in(input, 5, B) then
     -- 等长大写简拼没有 AU 完整音节边，避免原生切分优先全拼而删除四声母路径。
-    -- 同时不注入填充分隔符，满足原生词补全的输入末尾长度条件。
-    add_route(routes, "AAAA", input:sub(1, 4):upper(), input:sub(5), 4)
+    -- 裸四声母不注入填充分隔符，满足原生词补全的输入末尾长度条件。
+    local proxy = input:sub(1, 4):upper()
+    -- 补辅时不启用长补全，保留旧查询的间隔与 quality 修正，避免改动跨词长排名。
+    if n > 4 then proxy = proxy:gsub(".", "%0 "):sub(1, -2) end
+    add_route(routes, "AAAA", proxy, input:sub(5), 4)
   end
   return routes
 end

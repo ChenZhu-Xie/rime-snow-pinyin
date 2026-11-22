@@ -8,21 +8,30 @@ local filter = {}
 ---@class PostponeEnv: Env
 ---@field known_candidates table<string, number>
 ---@field disable string
+---@field long_word_pattern string|nil
 
 ---@param env PostponeEnv
 function filter.init(env)
   env.known_candidates = {}
   env.disable = env.engine.schema.config:get_string("translator/disable_postpone_pattern") or ""
+  local config = env.engine.schema.config
+  if config:get_string("word_length/layout") == "21x26" then
+    local initials = config:get_string("speller/initials") or ""
+    env.long_word_pattern = "^" .. ("[" .. initials .. "]"):rep(4) .. "[" .. initials:upper() .. "]+$"
+  end
 end
 
 ---@param segment Segment
----@param env Env
+---@param env PostponeEnv
 function filter.tags_match(segment, env)
   local context = env.engine.context
   -- 在回补时不刷新
   if context.caret_pos ~= context.input:len() then
     return false
   end
+  -- 显式长词的后续声母细化同一个词，不是补辅，不能把其四码补全后置。
+  local input = snow.current(context)
+  if input and env.long_word_pattern and input:match(env.long_word_pattern) then return false end
   return context:get_option("popping") and segment:has_tag("abc")
 end
 
