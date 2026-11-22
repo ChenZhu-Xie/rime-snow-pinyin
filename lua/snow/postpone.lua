@@ -30,8 +30,10 @@ function filter.tags_match(segment, env)
     return false
   end
   -- 显式长词的后续声母细化同一个词，不是补辅，不能把其四码补全后置。
-  local input = snow.current(context)
-  if input and env.long_word_pattern and input:match(env.long_word_pattern) then return false end
+  if env.long_word_pattern then
+    local input = snow.current(context)
+    if input and input:match(env.long_word_pattern) then return false end
+  end
   return context:get_option("popping") and segment:has_tag("abc")
 end
 
