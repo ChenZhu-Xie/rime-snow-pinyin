@@ -46,6 +46,10 @@ Windows 的工具窗口样式通过原生 `WM_STYLECHANGING` 子类过程持续�
 
 README 的两张活动声韵图与九份浮窗 SVG/PNG 共用本仓库的原生生成器；纯双拼热力图直接读取 benchmark 的压缩 payload 中已冻结的日常文稿键频，不依赖浏览器。
 
+纯双拼图下方的紫色图按各方案自身最优路径统计全部实际按键，形辅和调辅成员分别绘图。十二个参评方案的完整图集见 [5500 字评测](../reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图)，原始逐键频次保存在 [5500 字 JSON](../reports/5500字_当前十二方案最优切分实测结果.json) 的 `schemes.*.total.frequencies`。统计包含编码、辅码、定位、略码、词长直选、Space、Shift、标点与选重，百分比分母为各方案全部实际按键，色阶按每张图的最高键频归一化；Shift 不分左右，清风版 `CandidateN` 单列为逻辑选重，不假定物理键位。十一场景共 5500 汉字、392 标点，第十篇与独立赛文相同，按两个场景计入；冰雪一拼未参加这轮 benchmark。
+
+运行 `just benchmark-heatmaps` 可从已验证报告重新导出十二张 SVG，并同步两份 README 的三语展示与报告图集；`just benchmark-heatmaps --check` 校验生成一致性，不调用 Rime，也不重跑求解。`generate-5500-benchmark.ts` 汇总新评测时也会同步生成 SVG 与报告图集，之后重跑上述命令更新 README。
+
 ```powershell
 $benchmark = "D:\path\to\shuangpin-layout-benchmark"
 bun scripts/generate-keymaps.ts

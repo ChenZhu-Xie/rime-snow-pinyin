@@ -5,6 +5,10 @@ import {
 } from "./lib/current-layout-benchmark";
 import { readmeBenchmarkRows } from "./lib/readme-benchmark-rows";
 import { updateTonedReadmeDocumentation } from "./lib/toned-readme-documentation";
+import {
+	readHeatmapReport,
+	updateBenchmarkHeatmapReadme,
+} from "./lib/benchmark-heatmaps";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -942,6 +946,7 @@ function finalizeReadme(markdown: string, host: "github" | "gitee") {
 		`### [$1](${overallSource})`,
 	);
 	output = updateTonedReadmeDocumentation(output);
+	output = updateBenchmarkHeatmapReadme(output, readHeatmapReport());
 	output = linkReadmeFiles(output, host);
 	output = linkShenyunTerms(output, "zh", host);
 	output = linkShenyunTerms(output, "en", host);

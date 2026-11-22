@@ -68,6 +68,24 @@
 
 键频图由 benchmark 页面内置的 `r9MacroHeat` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
 
+<!-- benchmark-heatmaps:shenyun-rc26 -->
+
+**十一场景 5500 字最优路径全按键键频图**
+
+按当前最优路径统计全部实际按键，包含辅码、Space、Shift、标点、词长直选与选重；每键显示次数及占总按键的百分比，颜色按本图最高键频归一化。第十篇与独立赛文按两个场景计入。
+
+**冰雪鹤道（RC26-39a5bfdc045342cd 21×26）** · 9615 键；Space 395、Shift 158、选重 0。
+
+![冰雪鹤道（RC26-39a5bfdc045342cd 21×26） · 5500](docs/benchmark-rc26-shape-5500-keyboard-heat.svg)
+
+**冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）** · 9684 键；Space 374、Shift 168、选重 0。
+
+![冰雪鹤拼（RC26-39a5bfdc045342cd 21×26） · 5500](docs/benchmark-rc26-tone-5500-keyboard-heat.svg)
+
+[十二方案完整热力图](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始键频数据](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 #### 声韵编码规则
 
 声母及零声母载体使用下列首键：
@@ -159,6 +177,24 @@
 
 键频图由 benchmark 页面内置的 `r9MacroHeat` 从现行布局直接导出，使用 2149 击键的日常八场景文稿，只统计纯双拼与文稿标点，不含五辅键、空格和选重。
 
+<!-- benchmark-heatmaps:shenyun-ued-3158ce08b5bc -->
+
+**十一场景 5500 字最优路径全按键键频图**
+
+按当前最优路径统计全部实际按键，包含辅码、Space、Shift、标点、词长直选与选重；每键显示次数及占总按键的百分比，颜色按本图最高键频归一化。第十篇与独立赛文按两个场景计入。
+
+**冰雪兰道（UED-3158ce08b5bc 21×21）** · 9404 键；Space 343、Shift 259、选重 0。
+
+![冰雪兰道（UED-3158ce08b5bc 21×21） · 5500](docs/benchmark-oc21-shape-5500-keyboard-heat.svg)
+
+**冰雪兰拼（UED-3158ce08b5bc 21×21）** · 9471 键；Space 365、Shift 271、选重 0。
+
+![冰雪兰拼（UED-3158ce08b5bc 21×21） · 5500](docs/benchmark-oc21-tone-5500-keyboard-heat.svg)
+
+[十二方案完整热力图](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始键频数据](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 #### 声韵编码规则
 
 声母及零声母载体使用下列首键：
@@ -244,6 +280,20 @@
 
 直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。
 
+<!-- benchmark-heatmaps:liandao -->
+
+**十一场景 5500 字最优路径全按键键频图**
+
+按当前最优路径统计全部实际按键，包含辅码、Space、Shift、标点、词长直选与选重；每键显示次数及占总按键的百分比，颜色按本图最高键频归一化。第十篇与独立赛文按两个场景计入。
+
+**冰雪莲道（CR-REF-7e650f7a4c 21×21 带调）** · 9437 键；Space 341、Shift 301、选重 0。
+
+![冰雪莲道（CR-REF-7e650f7a4c 21×21 带调） · 5500](docs/benchmark-liandao-5500-keyboard-heat.svg)
+
+[十二方案完整热力图](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始键频数据](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 声母／零声母、输入示例、字母占用桶、固顶同码和运行时空桶规则见[冰雪莲道](docs/liandao.md)。研究音节域的静态空码与运行时声声空桶使用不同词典和口径，不能互相替代。配置是生成来源。
 
 | 韵母组 | 4 声 | 2/3 声 | 1/5 声 |
@@ -268,6 +318,20 @@
 ![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
 
 直接读取 benchmark 中同一篇 2149 击键日常文稿的带调主码键频；声调已合入第二码，不另计调键。不含后置形辅、空格与选重。
+
+<!-- benchmark-heatmaps:zhudao -->
+
+**十一场景 5500 字最优路径全按键键频图**
+
+按当前最优路径统计全部实际按键，包含辅码、Space、Shift、标点、词长直选与选重；每键显示次数及占总按键的百分比，颜色按本图最高键频归一化。第十篇与独立赛文按两个场景计入。
+
+**冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）** · 9598 键；Space 387、Shift 177、选重 0。
+
+![冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调） · 5500](docs/benchmark-zhudao-5500-keyboard-heat.svg)
+
+[十二方案完整热力图](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始键频数据](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
 
 声母／零声母、输入示例、字母占用桶、固顶同码和运行时空桶规则见[冰雪鹮道](docs/zhudao.md)。研究音节域的静态空码与运行时声声空桶使用不同词典和口径，不能互相替代。配置是生成来源。
 
@@ -528,6 +592,24 @@ The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→
 
 The map is exported directly from the current layout through the benchmark page's built-in `r9MacroHeat`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
 
+<!-- benchmark-heatmaps:shenyun-rc26 -->
+
+**All-key frequency maps over eleven scenarios and 5,500 Chinese characters**
+
+Actual optimal-path keystrokes include auxiliaries, Space, Shift, punctuation and selection. Each key shows its count and share of all keystrokes; colors are normalized within each map. Article 10 is also counted as the standalone scenario.
+
+**冰雪鹤道（RC26-39a5bfdc045342cd 21×26）** · 9615 keys; Space 395, Shift 158, selections 0.
+
+![冰雪鹤道（RC26-39a5bfdc045342cd 21×26） · 5500](docs/benchmark-rc26-shape-5500-keyboard-heat.svg)
+
+**冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）** · 9684 keys; Space 374, Shift 168, selections 0.
+
+![冰雪鹤拼（RC26-39a5bfdc045342cd 21×26） · 5500](docs/benchmark-rc26-tone-5500-keyboard-heat.svg)
+
+[All twelve schemes](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [Raw key counts](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 #### Initial and final coding rules
 
 Initials and zero-initial carriers use these first keys:
@@ -619,6 +701,24 @@ The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→
 
 The map is exported directly from the current layout through the benchmark page's built-in `r9MacroHeat`. It uses the 2,149-keystroke daily eight-scenario corpus and includes only double-pinyin keys and corpus punctuation, excluding auxiliaries, spaces, and candidate selection.
 
+<!-- benchmark-heatmaps:shenyun-ued-3158ce08b5bc -->
+
+**All-key frequency maps over eleven scenarios and 5,500 Chinese characters**
+
+Actual optimal-path keystrokes include auxiliaries, Space, Shift, punctuation and selection. Each key shows its count and share of all keystrokes; colors are normalized within each map. Article 10 is also counted as the standalone scenario.
+
+**冰雪兰道（UED-3158ce08b5bc 21×21）** · 9404 keys; Space 343, Shift 259, selections 0.
+
+![冰雪兰道（UED-3158ce08b5bc 21×21） · 5500](docs/benchmark-oc21-shape-5500-keyboard-heat.svg)
+
+**冰雪兰拼（UED-3158ce08b5bc 21×21）** · 9471 keys; Space 365, Shift 271, selections 0.
+
+![冰雪兰拼（UED-3158ce08b5bc 21×21） · 5500](docs/benchmark-oc21-tone-5500-keyboard-heat.svg)
+
+[All twelve schemes](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [Raw key counts](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 #### Initial and final coding rules
 
 Initials and zero-initial carriers use these first keys:
@@ -704,6 +804,20 @@ Numbers share the codes of their corresponding Han numerals. When Han candidates
 
 The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded.
 
+<!-- benchmark-heatmaps:liandao -->
+
+**All-key frequency maps over eleven scenarios and 5,500 Chinese characters**
+
+Actual optimal-path keystrokes include auxiliaries, Space, Shift, punctuation and selection. Each key shows its count and share of all keystrokes; colors are normalized within each map. Article 10 is also counted as the standalone scenario.
+
+**冰雪莲道（CR-REF-7e650f7a4c 21×21 带调）** · 9437 keys; Space 341, Shift 301, selections 0.
+
+![冰雪莲道（CR-REF-7e650f7a4c 21×21 带调） · 5500](docs/benchmark-liandao-5500-keyboard-heat.svg)
+
+[All twelve schemes](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [Raw key counts](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions and runtime vacancy rules: [冰雪莲道](docs/liandao.md). Research inventory vacancies and runtime initial-pair vacancies use different dictionaries and scopes. The configuration is the generation source.
 
 | Final group | Tone 4 | Tone 2/3 | Tone 1/5 |
@@ -728,6 +842,20 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 ![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
 
 The same frozen 2,149-keystroke daily corpus is used. Tone is embedded in the two-key main code; no independent tone key is counted. Shape auxiliaries, spaces and candidate selection are excluded.
+
+<!-- benchmark-heatmaps:zhudao -->
+
+**All-key frequency maps over eleven scenarios and 5,500 Chinese characters**
+
+Actual optimal-path keystrokes include auxiliaries, Space, Shift, punctuation and selection. Each key shows its count and share of all keystrokes; colors are normalized within each map. Article 10 is also counted as the standalone scenario.
+
+**冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）** · 9598 keys; Space 387, Shift 177, selections 0.
+
+![冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调） · 5500](docs/benchmark-zhudao-5500-keyboard-heat.svg)
+
+[All twelve schemes](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [Raw key counts](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
 
 Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions and runtime vacancy rules: [冰雪鹮道](docs/zhudao.md). Research inventory vacancies and runtime initial-pair vacancies use different dictionaries and scopes. The configuration is the generation source.
 
@@ -893,6 +1021,24 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 鍵頻圖由 benchmark 頁面內建的 `r9MacroHeat` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
 
+<!-- benchmark-heatmaps:shenyun-rc26 -->
+
+**十一場景 5500 字最優路徑全按鍵鍵頻圖**
+
+依目前最優路徑統計全部實際按鍵，包含輔碼、Space、Shift、標點、詞長直選與選重；每鍵顯示次數及占總按鍵的百分比，顏色按本圖最高鍵頻歸一化。第十篇與獨立賽文按兩個場景計入。
+
+**冰雪鹤道（RC26-39a5bfdc045342cd 21×26）** · 9615 鍵；Space 395、Shift 158、選重 0。
+
+![冰雪鹤道（RC26-39a5bfdc045342cd 21×26） · 5500](docs/benchmark-rc26-shape-5500-keyboard-heat.svg)
+
+**冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）** · 9684 鍵；Space 374、Shift 168、選重 0。
+
+![冰雪鹤拼（RC26-39a5bfdc045342cd 21×26） · 5500](docs/benchmark-rc26-tone-5500-keyboard-heat.svg)
+
+[十二方案完整熱力圖](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始鍵頻資料](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 #### 聲韻編碼規則
 
 聲母及零聲母載體使用下列首鍵：
@@ -984,6 +1130,24 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 鍵頻圖由 benchmark 頁面內建的 `r9MacroHeat` 從現行布局直接匯出，使用 2149 擊鍵的日常八場景文稿，只統計純雙拼與文稿標點，不含五輔鍵、空格及選重。
 
+<!-- benchmark-heatmaps:shenyun-ued-3158ce08b5bc -->
+
+**十一場景 5500 字最優路徑全按鍵鍵頻圖**
+
+依目前最優路徑統計全部實際按鍵，包含輔碼、Space、Shift、標點、詞長直選與選重；每鍵顯示次數及占總按鍵的百分比，顏色按本圖最高鍵頻歸一化。第十篇與獨立賽文按兩個場景計入。
+
+**冰雪兰道（UED-3158ce08b5bc 21×21）** · 9404 鍵；Space 343、Shift 259、選重 0。
+
+![冰雪兰道（UED-3158ce08b5bc 21×21） · 5500](docs/benchmark-oc21-shape-5500-keyboard-heat.svg)
+
+**冰雪兰拼（UED-3158ce08b5bc 21×21）** · 9471 鍵；Space 365、Shift 271、選重 0。
+
+![冰雪兰拼（UED-3158ce08b5bc 21×21） · 5500](docs/benchmark-oc21-tone-5500-keyboard-heat.svg)
+
+[十二方案完整熱力圖](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始鍵頻資料](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 #### 聲韻編碼規則
 
 聲母及零聲母載體使用下列首鍵：
@@ -1069,6 +1233,20 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。
 
+<!-- benchmark-heatmaps:liandao -->
+
+**十一場景 5500 字最優路徑全按鍵鍵頻圖**
+
+依目前最優路徑統計全部實際按鍵，包含輔碼、Space、Shift、標點、詞長直選與選重；每鍵顯示次數及占總按鍵的百分比，顏色按本圖最高鍵頻歸一化。第十篇與獨立賽文按兩個場景計入。
+
+**冰雪莲道（CR-REF-7e650f7a4c 21×21 带调）** · 9437 鍵；Space 341、Shift 301、選重 0。
+
+![冰雪莲道（CR-REF-7e650f7a4c 21×21 带调） · 5500](docs/benchmark-liandao-5500-keyboard-heat.svg)
+
+[十二方案完整熱力圖](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始鍵頻資料](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
+
 聲母／零聲母、範例、字母占用桶、固頂同碼與執行時空桶規則見[冰雪莲道](docs/liandao.md)。研究音節域空碼與執行時聲聲空桶的詞典和口徑不同，不能互相替代。配置是生成來源。
 
 | 韻母組 | 4 聲 | 2/3 聲 | 1/5 聲 |
@@ -1093,6 +1271,20 @@ Reproducible current and historical layout comparisons are in the [appended five
 ![冰雪鹮道 · 2149](docs/zhudao-keyboard-heat.svg)
 
 直接讀取 benchmark 中同一篇 2149 擊鍵日常文稿的帶調主碼鍵頻；聲調已合入第二碼，不另計調鍵。不含後置形輔、空格與選重。
+
+<!-- benchmark-heatmaps:zhudao -->
+
+**十一場景 5500 字最優路徑全按鍵鍵頻圖**
+
+依目前最優路徑統計全部實際按鍵，包含輔碼、Space、Shift、標點、詞長直選與選重；每鍵顯示次數及占總按鍵的百分比，顏色按本圖最高鍵頻歸一化。第十篇與獨立賽文按兩個場景計入。
+
+**冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）** · 9598 鍵；Space 387、Shift 177、選重 0。
+
+![冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调） · 5500](docs/benchmark-zhudao-5500-keyboard-heat.svg)
+
+[十二方案完整熱力圖](reports/十一场景_5500字_当前十二方案对比评测.md#实际击键热力图) · [原始鍵頻資料](reports/5500字_当前十二方案最优切分实测结果.json)
+
+<!-- /benchmark-heatmaps -->
 
 聲母／零聲母、範例、字母占用桶、固頂同碼與執行時空桶規則見[冰雪鹮道](docs/zhudao.md)。研究音節域空碼與執行時聲聲空桶的詞典和口徑不同，不能互相替代。配置是生成來源。
 

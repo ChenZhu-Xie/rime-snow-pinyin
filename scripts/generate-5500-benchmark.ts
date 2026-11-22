@@ -4,6 +4,10 @@ import { join } from "node:path";
 import { exact500Articles } from "./exact_500_articles";
 import { countBenchmarkKeys } from "./lib/benchmark-key-counts";
 import {
+	renderBenchmarkHeatmapGallery,
+	writeBenchmarkHeatmaps,
+} from "./lib/benchmark-heatmaps";
+import {
 	assertBenchmarkReplaySchemes,
 	readBenchmarkReplayCache,
 	renderBenchmarkReplays,
@@ -225,6 +229,7 @@ writeFileSync(
 	rootPath("reports/5500字_当前十二方案最优切分实测结果.json"),
 	`${JSON.stringify(report, null, 2)}\n`,
 );
+writeBenchmarkHeatmaps(report);
 const ranking = Object.entries(schemes).sort(
 	([, a], [, b]) => a.total.keys - b.total.keys,
 );
@@ -274,6 +279,8 @@ const markdown = [
 	`例如，冰雪清韵将 5500 字切为 ${comparison[0].tokens} 个输出段，小鹤音形（清风版）切为 ${comparison[1].tokens} 段；含 Shift、Space、选重的平均每段实际按键分别为 ${comparison[0].mean} 和 ${comparison[1].mean}。拆账为纯编码＋Space＋Shift＋选重＋标点，分别为 ${comparison[0].breakdown} 键、${comparison[1].breakdown} 键，故按总按键排序与按输出段数排序可以不同。`,
 	"",
 	wordStatisticsTable,
+	"",
+	renderBenchmarkHeatmapGallery(report),
 	"",
 	"## 带调方案规则",
 	"",
