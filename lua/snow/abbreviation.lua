@@ -74,6 +74,7 @@ function processor.func(key_event, env)
   elseif partial_lookup[incoming] ~= nil then -- 插入并部分重复（ＡＸＡＢ）
     before = snow.sub(text, 1, 1) .. partial_lookup[incoming]
   elseif incoming == "G" then -- 只插入不重复（Ａ个Ｂ）
+    ---@type string
     local replacement
     if length == 1 then
       replacement = text .. "个"
