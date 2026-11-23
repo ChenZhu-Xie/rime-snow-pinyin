@@ -47,13 +47,13 @@ assert_positions("bhhivi", 3, { 6, 5, 4 }, "snow_shenyun_tone")
 
 assert_positions("wmxj", 4, { 1, 2, 3, 4 })
 assert_positions("wmxji", 4, { 1, 5, 3, 4 }, "snow_jiandao")
-assert_positions("wmxjiv", 4, { 1, 5, 3, 6 }, "snow_jiandao")
-assert_positions("wmxjivu", 4, { 7, 5, 3, 6 }, "snow_jiandao")
+assert_positions("wmxjiv", 4, { 1, 5, 6, 4 }, "snow_jiandao")
+assert_positions("wmxjivu", 4, { 1, 5, 6, 4 }, "snow_jiandao")
 assert_positions("wmxji", 4, { 1, 5, 3, 4 }, "snow_sanpin")
 assert_positions("wmxjiv", 4, { 1, 5, 6, 4 }, "snow_sanpin")
 assert_positions("wmxjivu", 4, { 7, 5, 6, 4 }, "snow_sanpin")
-assert_positions("wmxji", 4, { 1, 2, 3, 5 }, "snow_shenyun_shape")
-assert_positions("wmxjiv", 4, { 1, 6, 3, 5 }, "snow_shenyun_shape")
+assert_positions("wmxji", 4, { 1, 5, 3, 4 }, "snow_shenyun_shape")
+assert_positions("wmxjiv", 4, { 1, 5, 3, 6 }, "snow_shenyun_shape")
 assert_positions("wmxji", 4, { 5, 2, 3, 4 }, "snow_shenyun_tone")
 assert_positions("wmxjiv", 4, { 5, 2, 6, 4 }, "snow_shenyun_tone")
 
@@ -81,16 +81,45 @@ assert(env.next_key == "Control+i")
 assert(env.right_key == "Control+o")
 assert(env.uses_native_boundaries == false)
 
-for _, schema_id in ipairs({ "snow_sipin", "snow_qingyun" }) do
+for _, schema_id in ipairs({ "snow_sipin", "snow_qingyun", "snow_yipin" }) do
+  local forwarded = {}
   local native_env = {
     engine = {
       schema = {
         schema_id = schema_id,
       },
+      context = {
+        input = "bingwxuex",
+        caret_pos = 9,
+        is_composing = function() return true end,
+        composition = {
+          toSegmentation = function()
+            return { back = function() return { start = 0, _end = 9 } end }
+          end,
+        },
+        get_selected_candidate = function() return { text = "冰雪" } end,
+      },
+      process_key = function(_, key) forwarded[#forwarded + 1] = key end,
     },
   }
   navigator.init(native_env)
   assert(native_env.uses_native_boundaries == true)
+  for _, repr in ipairs({ "Control+u", "Control+i" }) do
+    local key = {
+      modifier = 4,
+      release = function() return false end,
+      eq = function(_, other) return repr == other end,
+    }
+    assert(navigator.func(key, native_env) == 1)
+  end
+  assert(forwarded[1] == "Shift+Left" and forwarded[2] == "Shift+Right")
+  local digit = {
+    modifier = 0,
+    keycode = 0x31,
+    release = function() return false end,
+    eq = function() return false end,
+  }
+  assert(navigator.func(digit, native_env) == 2, "native navigation must preserve number input")
 end
 
 print("code_navigator tests passed")

@@ -926,6 +926,20 @@ deploy:
         assert: cand[1].text == "冰雪拼音"
       - send: dvi{Release+d}{Release+v}{Release+i}cm,{Release+c}{Release+m}{Release+comma}r;{Release+r}{Release+semicolon}euo{Release+e}{Release+u}{Release+o}
         assert: cand[1].text == "充满希望"
+  navigation:
+    options:
+      popping: false
+    tests:
+      # 音节左移后只选第一音节，右移恢复完整词；不受并击器拦截。
+      - send: "sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{Control+u}"
+        assert: cand[1].text == "冰"
+      - send: "sgi{Release+s}{Release+g}{Release+i}drm{Release+d}{Release+r}{Release+m}{Control+u}{Control+i}"
+        assert: cand[1].text == "冰雪"
+  navigation_popping:
+    tests:
+      # 顶功模式下带空格追加的多音节词也能回到首音节选字。
+      - send: "sgi{Release+s}{Release+g}{Release+i}drm {Release+d}{Release+r}{Release+m}{Release+space}{Control+u}"
+        assert: cand[1].text == "冰"
   popping:
     tests:
       # 单音节词的简码：左手单手并击打出声介，打完自动上屏

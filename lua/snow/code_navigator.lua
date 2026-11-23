@@ -1,10 +1,10 @@
--- 键道、三拼、四拼、清韵编码导航处理器
+-- 编码导航处理器
 --
 -- 键道、三拼会把多字词的辅码集中放在编码末尾，Rime 原生的“按音节移动”
 -- 无法稳定对应到原始输入中的字位，因此根据当前候选字数还原逻辑字位。
 -- 这里只解释 context.input 的光标位置；shape_processor 吞下的 B 键保存在
 -- shape_input 中，不进入 context.input，不能据此推断键道候选的实际形码顺序。
--- 四拼、清韵则复用 Rime 原生音节边界；四方案均由此处理器提供物理循环移动。
+-- 四拼、清韵、一拼则复用 Rime 原生音节边界；各方案均由此处理器提供物理循环移动。
 
 local snow = require "snow.snow"
 
@@ -248,6 +248,7 @@ function navigator.init(env)
   env.logical_right_key = KeyEvent("Shift+Right")
   local schema_id = env.engine.schema.schema_id
   env.uses_native_boundaries = schema_id == "snow_sipin" or schema_id == "snow_qingyun"
+      or schema_id == "snow_yipin"
   clear_snapshot(env)
 end
 
@@ -297,7 +298,7 @@ function navigator.func(key, env)
     return snow.kAccepted
   end
 
-  -- 四拼、清韵的音节边界由 Rime 的 navigator 精确掌握；转发方向键即可。
+  -- 四拼、清韵、一拼的音节边界由 Rime 的 navigator 精确掌握；转发方向键即可。
   -- 三拼和键道则继续使用下面按候选字数还原的逻辑字位。
   if env.uses_native_boundaries then
     env.engine:process_key(is_next and env.logical_right_key or env.logical_left_key)

@@ -29,6 +29,7 @@ engine:
     - lua_processor@*snow.combo_popping
     - recognizer
     - lua_processor@*snow.user_dict
+    - lua_processor@*snow.code_navigator
     - key_binder
     - speller
     - punctuator
