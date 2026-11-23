@@ -719,8 +719,15 @@ test("两份 README 记录现行四份布局、带调对比与全量报告", () 
 		includes(readme, "CKT v5.2");
 		includes(readme, "冰雪莲道 CR-REF-7e650f7a4c 21×21");
 		includes(readme, "冰雪鹮道 T2126-V52-M4-ec60a3637a99 21×26");
-		includes(readme, "[^zh-benchmark-toned]");
-		includes(readme, "[^zh-benchmark-v52]");
+		for (const id of ["zh-benchmark-toned", "zh-benchmark-v52"]) {
+			if (filename === "README_CN.md") {
+				includes(readme, `](#readme-note-${id})`);
+				includes(readme, `<a id="readme-note-${id}"></a>`);
+			} else {
+				includes(readme, `[^${id}]`);
+			}
+		}
+		if (filename === "README_CN.md") assert.ok(!readme.includes("[^"));
 		includes(readme, "reports/冰雪十二方案_500字_最短键码实战测评.txt");
 		includes(readme, "reports/十篇五百字_十二方案最优切分及字词比率报告.md");
 		includes(readme, "reports/十篇五百字_十三方案最优切分及字词比率报告.md");

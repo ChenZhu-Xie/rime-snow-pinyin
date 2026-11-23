@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from "node:fs";
+import { updateGiteeReadme } from "./generate-gitee-readme";
 import {
 	latestCurrentBenchmark,
 	renderCurrentOverview,
@@ -19,7 +20,7 @@ import {
 } from "./lib/shenyun-markdown";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const files = [join(root, "README.md"), join(root, "README_CN.md")];
+const files = [join(root, "README.md")];
 
 const zhOverall = `### 神韵(Overall-17) 21×26 双拼
 
@@ -1941,8 +1942,7 @@ function update(markdown: string, host: "github" | "gitee") {
 
 for (const file of files) {
 	const source = readFileSync(file, "utf8");
-	const host = file.endsWith("README_CN.md") ? "gitee" : "github";
-	const output = update(source, host);
+	const output = update(source, "github");
 	const normalized = output.replaceAll("\r\n", "\n");
 	if (process.argv.includes("--check")) {
 		if (normalized !== source) throw new Error(`${file} 需要重新生成。`);
@@ -1954,3 +1954,5 @@ for (const file of files) {
 		console.log(`无需更新：${file}`);
 	}
 }
+
+updateGiteeReadme(process.argv.includes("--check"));
