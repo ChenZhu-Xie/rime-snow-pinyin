@@ -1,0 +1,10 @@
+{
+	"source": "shuangpin-layout-benchmark/a7_CKT_R11.html payload.characters",
+	"sourceUrl": "https://github.com/more-14-different/shuangpin-layout-benchmark",
+	"sourceSha256": "d0d15d9969b504714a37c6c04a4e8ff0d21b0e8c82b20a963f0009205c00d36b",
+	"charactersSha256": "3c41c253d2e1d574c1140b11c081ebe44baeadb8cb4188594f7816d2657b7320",
+	"tsvSha256": "da6cb7a72a02ca18682c67e8af45a6948aba05c08c9d13eb608bd3d82c61e5fb",
+	"rows": 8105,
+	"commonRows": 8095,
+	"definition": "冻结 benchmark 单字频次；用于选定 Top m 字集，不改写各方案词典的排序权重；同频保持 payload 原行序。"
+}

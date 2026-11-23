@@ -420,7 +420,11 @@ function standardWordOrder(scheme: BenchmarkScheme): string {
 	return order;
 }
 
-function sipinCodes(word: string, sounds: string[]): BenchmarkCode[] {
+function sipinCodes(
+	word: string,
+	sounds: string[],
+	singleAuxiliaryLimit = 4,
+): BenchmarkCode[] {
 	const result = new Map<string, BenchmarkCode>();
 	if (sounds.length === 1) {
 		const main = sounds[0];
@@ -429,7 +433,11 @@ function sipinCodes(word: string, sounds: string[]): BenchmarkCode[] {
 			result.set(code, { code, mainLength: length, auxiliaryLength: 0 });
 		}
 		for (const stroke of sipinStrokeCodes(word)) {
-			for (let length = 1; length <= Math.min(stroke.length, 4); length += 1) {
+			for (
+				let length = 1;
+				length <= Math.min(stroke.length, singleAuxiliaryLimit);
+				length += 1
+			) {
 				const code = main + stroke.slice(0, length);
 				result.set(code, {
 					code,
@@ -535,12 +543,13 @@ function auxiliarySequences(
 	scheme: BenchmarkScheme,
 	word: string,
 	syllables: string[],
+	singleAuxiliaryLimit = 4,
 ): string[][] {
 	if (!isDoublePinyinCapacity(scheme.capacity)) return [[]];
 	const capacity = scheme.capacity;
 	if (syllables.length === 1) {
 		if (scheme.auxiliaryMode === "shape") {
-			return [[...shapeCode(word, scheme)].slice(0, 4)];
+			return [[...shapeCode(word, scheme)].slice(0, singleAuxiliaryLimit)];
 		}
 		const tone = toneOf(syllables[0]);
 		const toneKey = tone
@@ -549,7 +558,9 @@ function auxiliarySequences(
 		if (!toneKey) return [[]];
 		const strokes = strokeCodes(word, capacity);
 		return strokes.length > 0
-			? strokes.map((stroke) => [toneKey, ...stroke].slice(0, 4))
+			? strokes.map((stroke) =>
+					[toneKey, ...stroke].slice(0, singleAuxiliaryLimit),
+				)
 			: [[toneKey]];
 	}
 	const positions = auxiliaryPositions(scheme, syllables.length);
@@ -644,6 +655,7 @@ export function pronunciationCodes(
 	id: BenchmarkSchemeId,
 	word: string,
 	syllables: string[],
+	options: { singleAuxiliaryLimit?: number } = {},
 ): BenchmarkCode[] {
 	if ([...word].length !== syllables.length || syllables.length === 0)
 		return [];
@@ -659,7 +671,11 @@ export function pronunciationCodes(
 	}
 	for (const sounds of soundCombinations) {
 		if (scheme.soundLayout === "sipin") {
-			for (const generated of sipinCodes(word, sounds))
+			for (const generated of sipinCodes(
+				word,
+				sounds,
+				options.singleAuxiliaryLimit,
+			))
 				result.set(generated.code, generated);
 			continue;
 		}
@@ -688,7 +704,12 @@ export function pronunciationCodes(
 				mainLength: main.length,
 				auxiliaryLength: 0,
 			});
-			for (const sequence of auxiliarySequences(scheme, word, syllables)) {
+			for (const sequence of auxiliarySequences(
+				scheme,
+				word,
+				syllables,
+				options.singleAuxiliaryLimit,
+			)) {
 				let code = main;
 				for (const auxiliary of sequence) {
 					if (!auxiliary) break;
