@@ -287,7 +287,7 @@ function main() {
 			"100 * (best alternative score - selected score) / selected score; positive means the deployed policy leads",
 		results,
 	};
-	const outputFile = path.join(root, "reports/ckt5-current-aux-order-gap.json");
+	const outputFile = path.join(root, "output/ckt5-current-aux-order-gap.json");
 	fs.writeFileSync(outputFile, `${JSON.stringify(output, null, 2)}\n`, "utf8");
 	process.stdout.write(`${outputFile}\n`);
 }

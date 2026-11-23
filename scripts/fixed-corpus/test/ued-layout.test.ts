@@ -43,12 +43,9 @@ test("UED 冻结来源逐条约束 421 音节与五辅语义", () => {
 	}
 });
 
-test("新旧 21×21 布局的 Common399 和扩展域碰撞分别计量", () => {
-	const previous = readJson("docs/shenyun-oc21-e1f155973380-mapping.json");
+test("当前 21×21 布局的 Common399 和扩展域碰撞分别计量", () => {
 	const current = readJson("docs/shenyun-ued-3158ce08b5bc-mapping.json");
-	assert.equal(previous.id, "OC21-e1f155973380");
 	for (const [mapping, common, extended] of [
-		[previous, [399, 345, 54, 96], [416, 351, 61, 90]],
 		[current, [399, 351, 48, 90], [416, 360, 55, 81]],
 	] as const) {
 		for (const [codes, expected] of [

@@ -17,7 +17,7 @@ npm run corpus:evidence
 
 - `--manifest <path>`：覆盖来源清单。
 - `--cache <path>`：覆盖生成目录，默认是仓库的 `cache/fixed-corpus/`。
-- `--summary <path>`：覆盖精简 Markdown 摘要位置。
+- `--summary <path>`：覆盖精简 Markdown 摘要位置，默认是仓库的 `output/fixed-corpus-summary.md`。
 - `--input-method-root <path>`：设置本机输入法源码根目录。
 - `--longma-root <path>`：设置龙码简码工作簿与两个发布压缩包所在目录。
 - `--inspect-word <词>`：向摘要追加关注词覆盖；默认检查“一些、冲着、下了”。
@@ -37,10 +37,7 @@ npm run fixed:check
 npm run fixed:verify
 ```
 
-选优只在神韵已经确定的合法空间骨架中进行。二简继续占用 53 个天然空位和
-11 个极冷音码；公开方案按独立家族计票，同源键道分支不会重复灌票；现有
-码位另有肌肉记忆成本。完整原则、变更清单和证据见
-`reports/shenyun-fixed-optimization.md`。
+选优只在当前生产布局的合法空间中进行；公开方案按独立家族计票，同源键道分支不会重复灌票。当前规则与证据见 [固顶候选说明](../../docs/fixed-candidates.md)，不沿用旧布局的码位数量或排序结论。临时采集、碰撞测量的报告写入 `output/`，不作为生产评测提交。
 
 来源清单使用拒绝优先的隐私策略。`userdb`、同步目录、用户词典、私人短语、构建产物不会因为宽泛匹配而进入语料。
 

@@ -438,7 +438,7 @@ test("ue 来源拼写统一并入 ve 规范韵母", () => {
 });
 
 test("Common399 的实际拼写代数逐一等于 RC26-39a5bfdc045342cd 映射，且留 147 个空码", () => {
-	const frozen = JSON.parse(read("docs/shenyun-r9-mapping.json")) as {
+	const frozen = JSON.parse(read("docs/shenyun-rc26-mapping.json")) as {
 		payloadCodes: Record<string, string | null>;
 	};
 	const common399 = Object.entries(frozen.payloadCodes)

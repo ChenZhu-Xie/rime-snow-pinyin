@@ -26,7 +26,7 @@ export function parseCollectArgs(args: string[]): CollectCliOptions {
 	const options: CollectCliOptions = {
 		manifestPath: resolve(repoRoot, "config/fixed-corpus-sources.yaml"),
 		cacheRoot: resolve(repoRoot, "cache/fixed-corpus"),
-		summaryPath: resolve(repoRoot, "reports/fixed-corpus-summary.md"),
+		summaryPath: resolve(repoRoot, "output/fixed-corpus-summary.md"),
 		offline: false,
 		inspectWords: ["一些", "冲着", "下了"],
 	};

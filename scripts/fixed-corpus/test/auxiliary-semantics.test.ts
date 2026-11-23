@@ -194,7 +194,6 @@ test("神韵机器可读配置显式区分形义序与声调序", () => {
 		"config/shenyun-21x26-mapping.json",
 		"config/shenyun-21x28-mapping.json",
 		"docs/shenyun-ued-3158ce08b5bc-mapping.json",
-		"docs/shenyun-u357-mapping.json",
 	]) {
 		const mapping = readMapping(path);
 		assert.equal(Object.hasOwn(mapping, "auxiliaryKeys"), false, path);

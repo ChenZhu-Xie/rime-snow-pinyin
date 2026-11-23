@@ -31,11 +31,20 @@ for (const domain of ["21x21", "21x26"]) {
 		initialMap: Record<string, string>;
 		finalMap: Record<string, string>;
 	};
-	const frozenR9 = JSON.parse(
-		readFileSync(join(root, "docs", "shenyun-r9-mapping.json"), "utf8"),
+	const frozenDomain = JSON.parse(
+		readFileSync(
+			join(
+				root,
+				"docs",
+				domain === "21x26"
+					? "shenyun-rc26-source.json"
+					: "shenyun-ued-source.json",
+			),
+			"utf8",
+		),
 	) as {
-		payloadCodes: Record<string, string | null>;
-		codes: Record<string, string | null>;
+		pinyin: string[];
+		codeList: Array<string | null>;
 	};
 
 	const unencoded = new Set(["hng", "m", "n", "ng", "ê"]);
@@ -92,11 +101,11 @@ for (const domain of ["21x21", "21x26"]) {
 		return first && second ? `${first}${second}`.toLowerCase() : null;
 	}
 
-	const syllables = Object.keys(frozenR9.codes);
+	const syllables = frozenDomain.pinyin;
 	const payloadCodes = Object.fromEntries(
-		syllables.map((syllable) => [
+		syllables.map((syllable, index) => [
 			syllable,
-			frozenR9.payloadCodes[syllable] === null ? null : deriveCode(syllable),
+			frozenDomain.codeList[index] === null ? null : deriveCode(syllable),
 		]),
 	);
 	const codes = Object.fromEntries(

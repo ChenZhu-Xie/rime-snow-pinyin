@@ -60,31 +60,12 @@ const result: any = {
 	schemes: {},
 	sourceHashes: {},
 };
-const old = read(rootPath("reports/shenyun-comparison.json"));
 for (const [scheme, id] of Object.entries(currentLayoutIds)) {
 	if (scheme === "Liandao" || scheme === "Zhudao") continue;
 	const entry = data.entries.find((entry: any) => entry.id === id);
-	const historical =
-		scheme === "Overall17First"
-			? "Overall17"
-			: scheme === "U357First"
-				? "U357"
-				: scheme;
 	const saved = source.contracts[scheme];
-	const policies =
-		saved.policies?.candidate ??
-		Object.fromEntries(
-			Object.entries(
-				old.comparisonPolicy.cktV51.auxiliaryOrders[historical],
-			).map(([mode, policy]) => [
-				mode,
-				Object.fromEntries(
-					String(policy)
-						.split("/")
-						.map((order, index) => [`word${index + 2}`, order]),
-				),
-			]),
-		);
+	const policies = saved.policies?.candidate;
+	if (!policies) throw new Error(`缺少当前 ${scheme} 辅序`);
 	// S005 是 v5.2 的冻结归一化参考，保持页面参考辅序；另列历史方案的旧版测值。
 	const chosen = scheme === "S005" ? data.cktV52.references.policies : policies;
 	const captures: any[] = [];

@@ -137,7 +137,7 @@ export function renderCollisionMarkdown(
 	const lines = [
 		"# 神韵与原冰雪键道双拼碰撞对比",
 		"",
-		"> 结论解读与双拼设计启发见[《神韵 R9 与原键道碰撞解读及双拼设计启发》](shenyun-collision-design-notes.md)。",
+		"> 本报告按调用时的方案与词典测量；当前冰雪兰道的布局合同见[布局说明](../docs/landao.md)。",
 		"",
 		"## 测量口径",
 		"",

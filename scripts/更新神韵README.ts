@@ -10,1075 +10,25 @@ import {
 	readHeatmapReport,
 	updateBenchmarkHeatmapReadme,
 } from "./lib/benchmark-heatmaps";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-import {
-	type ComparisonDirection,
-	decorateMarkdownTable,
-	linkReadmeFiles,
-	linkShenyunTerms,
-} from "./lib/shenyun-markdown";
-
-const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const files = [join(root, "README.md")];
-
-const zhOverall = `### 神韵(Overall-17) 21×26 双拼
-
-冰雪鹤道二／三／四字词当前运行的前两辅字位顺序为 \`12/21/42\`，冰雪鹤拼为 \`12/21/13\`；二／三／四字词均在四键主码后最多追加两辅。CKT v5.1 保留四码顶的两辅合同，第二辅后按选重计费；其宽网格稳健第一为形 \`12/21/14\`、调 \`12/21/13\`。
-
-冰雪鹤道（\`snow_shenyun_shape\`）与冰雪鹤拼（\`snow_shenyun_tone\`）共用 **神韵(Overall-17) 21×26 双拼**。该方案出自双拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿于提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本节映射与键盘图均以该定稿方案为准。
-
-#### 英数入口
-
-两个 21×26 方案已经启用同一套占用桶字母方案。它按当前五部系统词典计算，不使用任何运行时空桶：每码保留现有汉字首选，大写固定为第 2、小写固定为第 3。21 个辅音字母优先共用尾键 \`y\`；为避免把高价值自然候选后移，\`D/Q/V\` 改用各自行最低影响的 \`dj/qq/vm\`，\`X\` 保留 \`xy\`，五个元音从 \`x\` 行其余占用桶中选出。完整审计见[机器可读字母映射](config/shenyun-21x26-letter-buckets.json)。
-
-| 字母 | 输入码 | 汉字首选 | 字母 | 输入码 | 汉字首选 |
-| --- | :---: | :---: | --- | :---: | :---: |
-| A | \`xw\` | 欸 | N | \`ny\` | 囊 |
-| B | \`by\` | 帮 | O | \`xf\` | 偶 |
-| C | \`cy\` | 藏 | P | \`py\` | 胖 |
-| D | \`dj\` | 扽 | Q | \`qq\` | 穷 |
-| E | \`xj\` | 恩 | R | \`ry\` | 让 |
-| F | \`fy\` | 张 | S | \`sy\` | 桑 |
-| G | \`gy\` | 刚 | T | \`ty\` | 躺 |
-| H | \`hy\` | 行 | U | \`xx\` | 秀 |
-| I | \`xb\` | 寻 | V | \`vm\` | 戳 |
-| J | \`jy\` | 放 | W | \`wy\` | 上 |
-| K | \`ky\` | 扛 | X | \`xy\` | 昂 |
-| L | \`ly\` | 狼 | Y | \`yy\` | 养 |
-| M | \`my\` | 忙 | Z | \`zy\` | 脏 |
-
-数字码已按四个 21×21 方案的现行合同计算，但尚未写入两份 fixed 表：阿拉伯数字跟随对应汉字数字当前最短的既有合法码；\`1/2/3\` 因而沿用 \`一/二/三\` 的 \`y/xu/s\`，其余数字使用该汉字的首个形辅／调辅消歧码，不占无关空桶。机器可读结果见[数字码映射](config/shenyun-21x26-number-codes.json)。
-
-| 数字 | 冰雪鹤道 | 冰雪鹤拼 |
-| --- | :---: | :---: |
-| 零／0 | \`lre\` | \`lre\` |
-| 一／1 | \`y\` | \`y\` |
-| 二／2 | \`xu\` | \`xu\` |
-| 三／3 | \`s\` | \`s\` |
-| 四／4 | \`sii\` | \`sia\` |
-| 五／5 | \`que\` | \`quu\` |
-| 六／6 | \`lxo\` | \`lxa\` |
-| 七／7 | \`qie\` | \`qii\` |
-| 八／8 | \`bau\` | \`bai\` |
-| 九／9 | \`jxu\` | \`jxu\` |
-| 十／10 | \`wiu\` | \`wie\` |
-
-恰好三码的 \`ABA\`（\`U=A⊔B\`、\`|A|=21\`、\`|B|=5\`）共 \`21×5×21=2205\` 个状态，暂时完整保留，等有足以利用其五类结构的功能再启用；\`AAB\` 与 \`AAAB\` 的既定路由同样不改。
-
-> [!NOTE]
-> 由于作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)用户，因此[冰雪鹤拼](snow_shenyun_tone.schema.yaml)的五调辅键，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的顺序排列。
-
-**声韵辅-键 映射**
-
-![神韵(Overall-17) 21×26 双拼声韵键盘图](docs/shenyun-overall17-keyboard.svg)
-
-**日常八场景文稿纯双拼键频图（含标点）**
-
-![神韵(Overall-17) 21×26 双拼键频图](docs/shenyun-overall17-keyboard-heat.svg)
-
-两图由 benchmark 页面中的定稿方案导出：声韵图调用页面内置 \`keyboardSVG\` 后裁出 26 个字母键；键频图调用页面内置 \`r9MacroHeat\`，使用同一篇 2149 击键日常八场景文稿。键频图不含五辅键、空格和选重。
-
-**十一场景 5500 字最优路径全按键键频图**
-
-![神韵(Overall-17) 21×26 5500 字最优路径全按键键频图](docs/shenyun-overall17-5500-keyboard-heat.svg)
-
-新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪鹤道共 9964 次实际按键，其中 Space 401、Shift 3、选重 0；短码、五辅键、空格、定字键、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。
-
-#### 声韵编码规则
-
-普通声母首键为：
-
-| 声母 | 首键 | 声母 | 首键 | 声母 | 首键 |
-| --- | :---: | --- | :---: | --- | :---: |
-| b | B | p | P | m | M |
-| f | J | d | D | t | T |
-| n | N | l | L | g | G |
-| k | K | h | H | j | J |
-| q | Q | x | X | zh | F |
-| ch | V | sh | W | r | R |
-| z | Z | c | C | s | S |
-
-零声母载体为 \`AOE→X\`、\`W→Q\`、\`Y/YU→Y\`。韵母使用全部 26 个字母键：
-
-| 第二键 | 韵母 | 第二键 | 韵母 | 第二键 | 韵母 |
-| :---: | --- | :---: | --- | :---: | --- |
-| A | a | H | ai | O | an |
-| Y | ang | S | ao | E | e |
-| W | ei | J | en | N | eng |
-| U | er / u | I | i | K | ia / ong |
-| P | ian / uang | L | iang / ui | D | iao |
-| Z | ie | C | in | R | ing / uai |
-| Q | iong / uan | X | iu / ua | M | o / uo |
-| F | ou | T | un / van | V | v（ü） |
-| G | ve（üe） | B | vn |  |  |
-
-- Common399 全覆盖且 399 个二键码全部唯一，21×26 共保留 147 个空码；M-R2 为 36，普通声母仅 \`f→J\` 偏移，基础元音仅 \`o→M\` 偏移。
-- 冰雪鹤道辅键为 \`A/E/U/I/O\`，冰雪鹤拼声调键为 \`I/E/U/A/O → 一/二/三/四/轻\`。
-- 小写输入遵循飞花式顶功：单字为 \`A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB\`，即双拼主码后最多追加四辅；二／三／四字词的四键主码分别为 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主码后最多追加两辅，具体辅码字位顺序见本节首段。完整码之后输入下一字声码才顶屏，未完成主码直接续写；若第三音节的 \`AU\` 为运行时空桶，三字词还可在三个声码后直接追加辅码。
-- 完成编码后按 \`;\` 或 \`/\` 会先顶出当前候选，再分别追加“的”或“了”，与 21×21 方案的强制上屏尾字键一致。
-- 两组 21×26 方案的空桶均在运行时查询系统词典：完整单字词频大于 1 才占桶，个人词频不参与。当前词典实际得到 143 个空 \`AU\`，其中 134 个为空 \`AA\`、9 个为空 \`AB\`；单键只固顶一个一简字，其余候选先按词典权重排序，编码逐级延长时会将此前出现过的首选后置，因此字词可停在目标首次升为首选的最短合法编码，不必默认补满最长码。
-
-`;
-
-const enOverall = `### Shenyun(Overall-17) 21×26 double pinyin
-
-冰雪鹤道 currently uses first-two auxiliary-source orders \`12/21/42\` for two-/three-/four-character words, while 冰雪鹤拼 uses \`12/21/13\`; all three word lengths append at most two auxiliaries after their four-key main code. CKT v5.1 retains this two-auxiliary four-code-top contract and charges selection after the second auxiliary; its wide-grid robust policies are \`12/21/14\` for Shape and \`12/21/13\` for Tone.
-
-冰雪鹤道 (\`snow_shenyun_shape\`) and 冰雪鹤拼 (\`snow_shenyun_tone\`) share **Shenyun(Overall-17) 21×26 double pinyin**. The layout comes from the Shuangpin Layout Benchmark branch \`production/ckt-v4-2126-strict-d0-20261030\` and was finalized in commit \`7a7e154\`; \`2026-10-30-strict-d0-production-closure-report.md\` records the search constraints, derivation, and winning mapping. This repository freezes it as \`SNOW-SHENYUN-21X26-PRODUCTION\`, and this section's mapping and keyboard figures use that finalized layout.
-
-#### Letter and number entry
-
-Both 21×26 schemes have enabled the same occupied-bucket letter mapping. It is calculated against the current five system dictionaries and consumes no runtime-vacant bucket: each code preserves its existing Han first choice, with uppercase second and lowercase third. Twenty-one consonant letters preferentially share final key \`y\`; to avoid displacing high-value natural candidates, \`D/Q/V\` use their lowest-impact row codes \`dj/qq/vm\`, \`X\` keeps \`xy\`, and the five vowels use the least-impact remaining occupied buckets in the \`x\` row. See the [machine-readable letter mapping](config/shenyun-21x26-letter-buckets.json) for the full audit.
-
-| Letter | Input | Han first choice | Letter | Input | Han first choice |
-| --- | :---: | :---: | --- | :---: | :---: |
-| A | \`xw\` | 欸 | N | \`ny\` | 囊 |
-| B | \`by\` | 帮 | O | \`xf\` | 偶 |
-| C | \`cy\` | 藏 | P | \`py\` | 胖 |
-| D | \`dj\` | 扽 | Q | \`qq\` | 穷 |
-| E | \`xj\` | 恩 | R | \`ry\` | 让 |
-| F | \`fy\` | 张 | S | \`sy\` | 桑 |
-| G | \`gy\` | 刚 | T | \`ty\` | 躺 |
-| H | \`hy\` | 行 | U | \`xx\` | 秀 |
-| I | \`xb\` | 寻 | V | \`vm\` | 戳 |
-| J | \`jy\` | 放 | W | \`wy\` | 上 |
-| K | \`ky\` | 扛 | X | \`xy\` | 昂 |
-| L | \`ly\` | 狼 | Y | \`yy\` | 养 |
-| M | \`my\` | 忙 | Z | \`zy\` | 脏 |
-
-The number mapping has been calculated under the same contract as the four 21×21 schemes but has not yet been written to the two fixed tables. Each Arabic numeral follows the shortest current legal code of its corresponding Han numeral; \`1/2/3\` therefore keep \`y/xu/s\` from \`一/二/三\`, while every other numeral uses that Han character's first shape or tone auxiliary for disambiguation. No unrelated vacant bucket is consumed. See the [machine-readable number mapping](config/shenyun-21x26-number-codes.json).
-
-| Number | 冰雪鹤道 | 冰雪鹤拼 |
-| --- | :---: | :---: |
-| 零／0 | \`lre\` | \`lre\` |
-| 一／1 | \`y\` | \`y\` |
-| 二／2 | \`xu\` | \`xu\` |
-| 三／3 | \`s\` | \`s\` |
-| 四／4 | \`sii\` | \`sia\` |
-| 五／5 | \`que\` | \`quu\` |
-| 六／6 | \`lxo\` | \`lxa\` |
-| 七／7 | \`qie\` | \`qii\` |
-| 八／8 | \`bau\` | \`bai\` |
-| 九／9 | \`jxu\` | \`jxu\` |
-| 十／10 | \`wiu\` | \`wie\` |
-
-All \`21×5×21=2205\` exact three-key \`ABA\` states (\`U=A⊔B\`, \`|A|=21\`, \`|B|=5\`) remain reserved until a feature can make meaningful use of all five structural classes. Existing \`AAB\` and \`AAAB\` routes are unchanged as well.
-
-> [!NOTE]
-> Because the author also uses [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪鹤拼](snow_shenyun_tone.schema.yaml)'s five tone auxiliary keys are arranged directly in the order of [Snow Four-Code](https://input.tansongchen.com/snow4/).
-
-**Initial/final/auxiliary-key mapping**
-
-![Shenyun(Overall-17) 21×26 initial/final keyboard map](docs/shenyun-overall17-keyboard.svg)
-
-**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**
-
-![Shenyun(Overall-17) 21×26 key-frequency map](docs/shenyun-overall17-keyboard-heat.svg)
-
-Both SVGs are exported from the finalized entry in the benchmark page: the first uses its built-in \`keyboardSVG\`, while the second uses \`r9MacroHeat\` over the same 2,149-keystroke daily corpus. The heat map excludes auxiliaries, spaces, and candidate selection.
-
-**All-key frequency map for optimal paths over eleven benchmark scenarios and 5,500 Chinese characters**
-
-![Shenyun(Overall-17) 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-overall17-5500-keyboard-heat.svg)
-
-The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow Simple-Tao uses 9,964 actual keystrokes, including 401 Spaces, 3 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, character-selection keys, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.
-
-#### Coding rules
-
-Ordinary initials use their own letter except \`f→J\` and \`zh/ch/sh→F/V/W\`; zero-onset carriers are \`AOE→X\`, \`W→Q\`, and \`Y/YU→Y\`. The final keys are \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`.
-
-Common399 has 399 distinct two-key codes, leaving 147 vacancies in the 21×26 domain; M-R2 is 36. Shape auxiliaries are \`A/E/U/I/O\`, and tone auxiliaries are \`I/E/U/A/O → 1/2/3/4/neutral\`. Lowercase input follows the Feihua popping contract: characters use \`A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB\`, with at most four auxiliaries after the double-pinyin main code; the four-key main codes for two-, three-, and four-character words are \`A₁U₁A₂U₂\`, \`A₁A₂A₃U₃\`, and \`A₁A₂A₃A₄\`, followed by at most two auxiliaries in the source orders stated in this section's opening paragraph. A following initial commits only after a complete code, while an incomplete main code continues directly; if the third syllable's \`AU\` is a runtime-vacant bucket, a three-character word may append auxiliaries immediately after its three initials. After a completed code, \`;\` or \`/\` first commits the current candidate and then appends “的” or “了”, matching the forced tail-character keys in the 21×21 schemes. System-dictionary single-character entries with frequency above 1 occupy a bucket; user frequency does not, so the current dictionary yields 143 runtime \`AU\` vacancies: 134 vacant \`AA\` codes and 9 vacant \`AB\` codes. Only one one-key character is pinned per initial. Other candidates start in dictionary-weight order; as a legal code grows, previous first choices are postponed, so a character or word can stop at the shortest prefix that first promotes it instead of filling its maximum code.
-
-`;
-
-const zhtOverall = `### 神韻(Overall-17) 21×26 雙拼
-
-冰雪鶴道二／三／四字詞當前運行的前兩輔字位順序為 \`12/21/42\`，冰雪鹤拼為 \`12/21/13\`；二／三／四字詞均在四鍵主碼後最多追加兩輔。CKT v5.1 保留四碼頂的兩輔合同，第二輔後按選重計費；其寬網格穩健第一為形 \`12/21/14\`、調 \`12/21/13\`。
-
-冰雪鶴道（\`snow_shenyun_shape\`）與冰雪鹤拼（\`snow_shenyun_tone\`）共用 **神韻(Overall-17) 21×26 雙拼**。該方案出自雙拼布局 Benchmark 的 \`production/ckt-v4-2126-strict-d0-20261030\` 分支，定稿於提交 \`7a7e154\`；\`2026-10-30-strict-d0-production-closure-report.md\` 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 \`SNOW-SHENYUN-21X26-PRODUCTION\`，本節映射與鍵盤圖均以該定稿方案為準。
-
-#### 英數入口
-
-兩個 21×26 方案已啟用同一套占用桶字母方案。它按目前五部系統詞典計算，不使用任何運行時空桶：每碼保留既有漢字首選，大寫固定為第 2、小寫固定為第 3。21 個輔音字母優先共用尾鍵 \`y\`；為避免把高價值自然候選後移，\`D/Q/V\` 改用各自行最低影響的 \`dj/qq/vm\`，\`X\` 保留 \`xy\`，五個母音從 \`x\` 行其餘占用桶中選出。完整稽核見[機器可讀字母映射](config/shenyun-21x26-letter-buckets.json)。
-
-| 字母 | 輸入碼 | 漢字首選 | 字母 | 輸入碼 | 漢字首選 |
-| --- | :---: | :---: | --- | :---: | :---: |
-| A | \`xw\` | 欸 | N | \`ny\` | 囊 |
-| B | \`by\` | 幫 | O | \`xf\` | 偶 |
-| C | \`cy\` | 藏 | P | \`py\` | 胖 |
-| D | \`dj\` | 扽 | Q | \`qq\` | 窮 |
-| E | \`xj\` | 恩 | R | \`ry\` | 讓 |
-| F | \`fy\` | 張 | S | \`sy\` | 桑 |
-| G | \`gy\` | 剛 | T | \`ty\` | 躺 |
-| H | \`hy\` | 行 | U | \`xx\` | 秀 |
-| I | \`xb\` | 尋 | V | \`vm\` | 戳 |
-| J | \`jy\` | 放 | W | \`wy\` | 上 |
-| K | \`ky\` | 扛 | X | \`xy\` | 昂 |
-| L | \`ly\` | 狼 | Y | \`yy\` | 養 |
-| M | \`my\` | 忙 | Z | \`zy\` | 髒 |
-
-數字碼已按四個 21×21 方案的現行合同計算，但尚未寫入兩份 fixed 表：阿拉伯數字跟隨對應漢字數字目前最短的既有合法碼；\`1/2/3\` 因而沿用 \`一/二/三\` 的 \`y/xu/s\`，其餘數字使用該漢字的首個形輔／調輔消歧碼，不占無關空桶。機器可讀結果見[數字碼映射](config/shenyun-21x26-number-codes.json)。
-
-| 數字 | 冰雪鶴道 | 冰雪鹤拼 |
-| --- | :---: | :---: |
-| 零／0 | \`lre\` | \`lre\` |
-| 一／1 | \`y\` | \`y\` |
-| 二／2 | \`xu\` | \`xu\` |
-| 三／3 | \`s\` | \`s\` |
-| 四／4 | \`sii\` | \`sia\` |
-| 五／5 | \`que\` | \`quu\` |
-| 六／6 | \`lxo\` | \`lxa\` |
-| 七／7 | \`qie\` | \`qii\` |
-| 八／8 | \`bau\` | \`bai\` |
-| 九／9 | \`jxu\` | \`jxu\` |
-| 十／10 | \`wiu\` | \`wie\` |
-
-恰好三碼的 \`ABA\`（\`U=A⊔B\`、\`|A|=21\`、\`|B|=5\`）共 \`21×5×21=2205\` 個狀態，暫時完整保留，等有足以利用其五類結構的功能再啟用；\`AAB\` 與 \`AAAB\` 的既定路由同樣不改。
-
-> [!NOTE]
-> 由於作者也是[冰雪四拼](https://input.tansongchen.com/snow4/)使用者，因此[冰雪鹤拼](snow_shenyun_tone.schema.yaml)的五調輔鍵，直接按[冰雪四拼](https://input.tansongchen.com/snow4/)的順序排列。
-
-**聲韻輔-鍵 映射**
-
-![神韻(Overall-17) 21×26 雙拼聲韻鍵盤圖](docs/shenyun-overall17-keyboard.svg)
-
-**日常八場景文稿純雙拼鍵頻圖（含標點）**
-
-![神韻(Overall-17) 21×26 雙拼鍵頻圖](docs/shenyun-overall17-keyboard-heat.svg)
-
-兩圖由 benchmark 頁面中的定稿方案匯出：聲韻圖使用頁面內建 \`keyboardSVG\`，鍵頻圖使用 \`r9MacroHeat\` 與同一篇 2149 擊鍵日常文稿；鍵頻圖不含五輔鍵、空格及選重。
-
-**十一場景 5500 字最優路徑全按鍵鍵頻圖**
-
-![神韻(Overall-17) 21×26 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-overall17-5500-keyboard-heat.svg)
-
-新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪鶴道共 9964 次實際按鍵，其中 Space 401、Shift 3、選重 0；短碼、五輔鍵、空格、定字鍵、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。
-
-#### 聲韻規則
-
-普通聲母除 \`f→J\`、\`zh/ch/sh→F/V/W\` 外使用本字母；零聲母載體為 \`AOE→X\`、\`W→Q\`、\`Y/YU→Y\`。韻母鍵為 \`a:A, ai:H, an:O, ang:Y, ao:S, e:E, ei:W, en:J, eng:N, er/u:U, i:I, ia/ong:K, ian/uang:P, iang/ui:L, iao:D, ie:Z, in:C, ing/uai:R, iong/uan:Q, iu/ua:X, o/uo:M, ou:F, un/van:T, v:V, ve:G, vn:B\`。
-
-Common399 形成 399 個唯一二鍵碼，21×26 鍵域保留 147 個空碼；M-R2 為 36。形輔鍵為 \`A/E/U/I/O\`，聲調鍵為 \`I/E/U/A/O → 一/二/三/四/輕\`。小寫輸入遵循飛花式頂功：單字為 \`A_ / AU_ / AUB / AUBB / AUBBB / AUBBBB\`，即雙拼主碼後最多追加四輔；二／三／四字詞的四鍵主碼分別為 \`A₁U₁A₂U₂\`、\`A₁A₂A₃U₃\`、\`A₁A₂A₃A₄\`，主碼後最多追加兩輔，具體輔碼字位順序見本節首段。完整碼之後輸入下一字聲碼才頂屏，未完成主碼直接續寫；若第三音節的 \`AU\` 為運行時空桶，三字詞還可在三個聲碼後直接追加輔碼。完成編碼後按 \`;\` 或 \`/\` 會先頂出當前候選，再分別追加「的」或「了」，與 21×21 方案的強制上屏尾字鍵一致。空桶只查系統詞典，完整單字詞頻大於 1 才占桶，當前詞典有 143 個運行時空 \`AU\`，其中 134 個為空 \`AA\`、9 個為空 \`AB\`；每個聲鍵只固頂一個一簡字。其餘候選先按詞典權重排序，編碼逐級延長時會將此前出現過的首選後置，因此字詞可停在目標首次升為首選的最短合法編碼，不必預設補滿最長碼。
-
-`;
-
-const zhU357EnglishNumbers = `#### 英数入口
-
-本节同时列出采用 U357 的冰雪兰道、冰雪兰拼及其经典声韵对应方案冰雪键道、冰雪三拼。四个 21×21 方案已经启用同一套字母结构：冰雪兰道与冰雪键道使用二键基码；冰雪兰拼与冰雪三拼都在基码后追加轻声键 \`o\`。除 \`A/I/O/U/V\` 外的 21 个字母使用“字母小写＋\`c\`”，五个例外使用 \`A=xw、I=xl、O=xd、U=xh、V=xg\`。键道类保留原汉字首选，大写、小写固定为第 2、3 候选；三拼类的完整字母码固定大写第 1、小写第 2，即使与真实轻声音节重合也保持字母固顶。
-
-阿拉伯数字与对应汉字数字同码，不另占空桶；原码已有更重要首选时继续保留，例如冰雪兰道 \`qlv → 妻、七、7\`、冰雪键道 \`qkv → 其、七、7\`。
-
-| 数字 | 冰雪兰道 | 冰雪兰拼 | 冰雪键道 | 冰雪三拼 |
-| --- | :---: | :---: | :---: | :---: |
-| 零／0 | \`ltv\` | \`ltv\` | \`lgv\` | \`lgv\` |
-| 一／1 | \`y\` | \`y\` | \`y\` | \`y\` |
-| 二／2 | \`re\` | \`re\` | \`xj\` | \`xj\` |
-| 三／3 | \`sj\` | \`sj\` | \`s\` | \`s\` |
-| 四／4 | \`sli\` | \`sla\` | \`sk\` | \`sk\` |
-| 五／5 | \`shv\` | \`shu\` | \`wjv\` | \`wju\` |
-| 六／6 | \`ldo\` | \`lda\` | \`lqo\` | \`lqa\` |
-| 七／7 | \`qlv\` | \`qli\` | \`qkv\` | \`qki\` |
-| 八／8 | \`bwu\` | \`bwi\` | \`bsu\` | \`bsi\` |
-| 九／9 | \`jdu\` | \`jdu\` | \`jqu\` | \`jqu\` |
-| 十／10 | \`elu\` | \`elv\` | \`eku\` | \`ekv\` |`;
-
-const enU357EnglishNumbers = `#### Letter and number entry
-
-This subsection also lists the classic sound-layout counterparts of the U357 schemes: 冰雪键道 and 冰雪三拼. All four 21×21 schemes have enabled the same letter structure. 冰雪兰道 and 冰雪键道 use the two-key base; both 冰雪兰拼 and 冰雪三拼 append neutral-tone key \`o\`. The 21 consonant letters other than \`A/I/O/U/V\` use “lowercase letter + \`c\`”; the five exceptions are \`A=xw, I=xl, O=xd, U=xh, V=xg\`. KeyTao schemes preserve the existing Han first choice and pin uppercase/lowercase to positions 2/3. Three-Code schemes pin uppercase/lowercase to positions 1/2 at the full letter code, even where it overlaps a real neutral-tone syllable.
-
-Arabic numerals share the code of the corresponding Han numeral and consume no separate vacant bucket. An existing higher-priority first choice is preserved, for example \`qlv → 妻、七、7\` in 冰雪兰道 and \`qkv → 其、七、7\` in 冰雪键道.
-
-| Number | 冰雪兰道 | 冰雪兰拼 | 冰雪键道 | 冰雪三拼 |
-| --- | :---: | :---: | :---: | :---: |
-| 零／0 | \`ltv\` | \`ltv\` | \`lgv\` | \`lgv\` |
-| 一／1 | \`y\` | \`y\` | \`y\` | \`y\` |
-| 二／2 | \`re\` | \`re\` | \`xj\` | \`xj\` |
-| 三／3 | \`sj\` | \`sj\` | \`s\` | \`s\` |
-| 四／4 | \`sli\` | \`sla\` | \`sk\` | \`sk\` |
-| 五／5 | \`shv\` | \`shu\` | \`wjv\` | \`wju\` |
-| 六／6 | \`ldo\` | \`lda\` | \`lqo\` | \`lqa\` |
-| 七／7 | \`qlv\` | \`qli\` | \`qkv\` | \`qki\` |
-| 八／8 | \`bwu\` | \`bwi\` | \`bsu\` | \`bsi\` |
-| 九／9 | \`jdu\` | \`jdu\` | \`jqu\` | \`jqu\` |
-| 十／10 | \`elu\` | \`elv\` | \`eku\` | \`ekv\` |`;
-
-const zhtU357EnglishNumbers = `#### 英數入口
-
-本節同時列出採用 U357 的冰雪兰道、冰雪兰拼及其經典聲韻對應方案冰雪鍵道、冰雪三拼。四個 21×21 方案已啟用同一套字母結構：冰雪兰道與冰雪鍵道使用二鍵基碼；冰雪兰拼與冰雪三拼都在基碼後追加輕聲鍵 \`o\`。除 \`A/I/O/U/V\` 外的 21 個字母使用「字母小寫＋\`c\`」，五個例外使用 \`A=xw、I=xl、O=xd、U=xh、V=xg\`。鍵道類保留原漢字首選，大寫、小寫固定為第 2、3 候選；三拼類的完整字母碼固定大寫第 1、小寫第 2，即使與真實輕聲音節重合也保持字母固頂。
-
-阿拉伯數字與對應漢字數字同碼，不另占空桶；原碼已有更重要首選時繼續保留，例如冰雪兰道 \`qlv → 妻、七、7\`、冰雪鍵道 \`qkv → 其、七、7\`。
-
-| 數字 | 冰雪兰道 | 冰雪兰拼 | 冰雪鍵道 | 冰雪三拼 |
-| --- | :---: | :---: | :---: | :---: |
-| 零／0 | \`ltv\` | \`ltv\` | \`lgv\` | \`lgv\` |
-| 一／1 | \`y\` | \`y\` | \`y\` | \`y\` |
-| 二／2 | \`re\` | \`re\` | \`xj\` | \`xj\` |
-| 三／3 | \`sj\` | \`sj\` | \`s\` | \`s\` |
-| 四／4 | \`sli\` | \`sla\` | \`sk\` | \`sk\` |
-| 五／5 | \`shv\` | \`shu\` | \`wjv\` | \`wju\` |
-| 六／6 | \`ldo\` | \`lda\` | \`lqo\` | \`lqa\` |
-| 七／7 | \`qlv\` | \`qli\` | \`qkv\` | \`qki\` |
-| 八／8 | \`bwu\` | \`bwi\` | \`bsu\` | \`bsi\` |
-| 九／9 | \`jdu\` | \`jdu\` | \`jqu\` | \`jqu\` |
-| 十／10 | \`elu\` | \`elv\` | \`eku\` | \`ekv\` |`;
-
-const overallValues = [
-	"36",
-	"1 / 1",
-	"0 / 0 / 0",
-	"98.298315",
-	"81.043390",
-	"399 / 100%",
-	"0 / 0%",
-	"0 / 0（0%）",
-	"0%",
-	"2.0000",
-	"75.672",
-	"9.252%",
-	"9.630039",
-	"9.185254",
-	"9.195026",
-	"9.204752",
-	"10.620559",
-	"10.684702",
-	"10.821925",
-	"9.534119",
-	"0.609%",
-	"20.831%",
-	"4.459%",
-	"1017:1132 / 47.324%",
-	"45.882%",
-	"0.7118",
-	"18.8952%",
-	"3.5164%",
-	"27.6709%",
-	"37.0249%",
-	"24.7331%",
-	"12.4215%",
-	"132.219",
-];
-
-function normalizeSourceProvenance(markdown: string) {
-	let language: "zh" | "en" | "zht" = "zh";
-	return markdown
-		.split("\n")
-		.map((line) => {
-			if (line === "## 简体中文") language = "zh";
-			else if (line === "## English") language = "en";
-			else if (line === "## 繁體中文") language = "zht";
-			if (line.startsWith("冰雪鹤道（"))
-				return "冰雪鹤道（`snow_shenyun_shape`）与冰雪鹤拼（`snow_shenyun_tone`）共用 **神韵(Overall-17) 21×26 双拼**。该方案出自双拼布局 Benchmark 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿于提交 `7a7e154`；`2026-10-30-strict-d0-production-closure-report.md` 记录了搜索约束、得来过程和冠军声韵映射。本仓库将其固化为 `SNOW-SHENYUN-21X26-PRODUCTION`，本节映射与键盘图均以该定稿方案为准。";
-			if (line.startsWith("冰雪鹤道 ("))
-				return "冰雪鹤道 (`snow_shenyun_shape`) and 冰雪鹤拼 (`snow_shenyun_tone`) share **Shenyun(Overall-17) 21×26 double pinyin**. The layout comes from the Shuangpin Layout Benchmark branch `production/ckt-v4-2126-strict-d0-20261030` and was finalized in commit `7a7e154`; `2026-10-30-strict-d0-production-closure-report.md` records the search constraints, derivation, and winning mapping. This repository freezes it as `SNOW-SHENYUN-21X26-PRODUCTION`, and this section's mapping and keyboard figures use that finalized layout.";
-			if (line.startsWith("冰雪鶴道（"))
-				return "冰雪鶴道（`snow_shenyun_shape`）與冰雪鹤拼（`snow_shenyun_tone`）共用 **神韻(Overall-17) 21×26 雙拼**。該方案出自雙拼布局 Benchmark 的 `production/ckt-v4-2126-strict-d0-20261030` 分支，定稿於提交 `7a7e154`；`2026-10-30-strict-d0-production-closure-report.md` 記錄了搜尋約束、得來過程及冠軍聲韻映射。本倉庫將其固化為 `SNOW-SHENYUN-21X26-PRODUCTION`，本節映射與鍵盤圖均以該定稿方案為準。";
-			if (line.startsWith("[冰雪兰道]") && language === "zh")
-				return "[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)和[冰雪兰拼](https://input.tansongchen.com/snow3/)现共用 **无飞键道(U357) 21×21 双拼**，使用 21×21 声韵键域和 5 个互斥辅键 `IVUAO`。该方案出自双拼布局 Benchmark 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿于提交 `11713b6`；`2026-10-29-prodgate-directed-repair-final-report.md` 给出了 U=357 候选的搜索过程、完整映射、指标和投产推荐。本仓库采用并实现该候选，本节映射与键盘图均以报告中的 U=357 方案为准。";
-			if (line.startsWith("[冰雪兰道]") && language === "en")
-				return "[冰雪兰道](https://input.tansongchen.com/snow-jiandao/) and [冰雪兰拼](https://input.tansongchen.com/snow3/) now share **Wufei KeyTao(U357) 21×21 double pinyin**, using a 21×21 sound-code domain and five disjoint auxiliary keys, `IVUAO`. The layout comes from the Shuangpin Layout Benchmark branch `production/ckt-v4-2121-strict-avuio-20261024` and was finalized in commit `11713b6`; `2026-10-29-prodgate-directed-repair-final-report.md` records the U=357 candidate's search, full mapping, metrics, and production recommendation. This repository implements that candidate, and this section's mapping and keyboard figures use the reported U=357 layout.";
-			if (line.startsWith("[冰雪兰道]") && language === "zht")
-				return "[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)與[冰雪兰拼](https://input.tansongchen.com/snow3/)現共用 **無飛鍵道(U357) 21×21 雙拼**，使用 21×21 聲韻鍵域與 5 個互斥輔鍵 `IVUAO`。該方案出自雙拼布局 Benchmark 的 `production/ckt-v4-2121-strict-avuio-20261024` 分支，定稿於提交 `11713b6`；`2026-10-29-prodgate-directed-repair-final-report.md` 給出了 U=357 候選的搜尋過程、完整映射、指標及投產建議。本倉庫採用並實作該候選，本節映射與鍵盤圖均以報告中的 U=357 方案為準。";
-			return line
-				.replace(
-					"两图均直接从 benchmark HTML 中的目标方案导出",
-					"两图由 benchmark 页面中的定稿方案导出",
-				)
-				.replace(
-					"Both SVGs are exported directly from the target entry in the benchmark HTML",
-					"Both SVGs are exported from the finalized entry in the benchmark page",
-				)
-				.replace(
-					"兩圖均直接從 benchmark HTML 的目標方案匯出",
-					"兩圖由 benchmark 頁面中的定稿方案匯出",
-				);
-		})
-		.join("\n");
-}
-
-function normalizeContractClaims(markdown: string) {
-	const lines = markdown.split("\n").map((line) => {
-		if (line.startsWith("四方案共用 ") && line.includes("冻结 20 合同"))
-			return "四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。";
-		if (line.startsWith("All four layouts use "))
-			return "All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources.";
-		if (line.startsWith("四方案共用 ") && line.includes("凍結 20 合同"))
-			return "四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔，本比較為其套用同一飛花式四碼頂路由和統一字形／筆畫源。";
-		return line;
-	});
-	return lines
-		.join("\n")
-		.replace(
-			/(\[神韵\(Overall-17\)\]\([^)]+\))与 (\[B04\]\([^)]+\)) 按四码顶合同(?:计分)?，(\[无飞键道\(U357\)\]\([^)]+\))与 (\[S005\]\([^)]+\)) 按传统 21×21 合同(?:计分)?/gu,
-			"$1按原生飞花式四码顶合同、$2按本比较套用的同一合同计分，$3与 $4按传统 21×21 合同计分",
-		)
-		.replace(
-			/(\[神韻\(Overall-17\)\]\([^)]+\))與 (\[B04\]\([^)]+\)) 按四碼頂合同(?:計分)?，(\[無飛鍵道\(U357\)\]\([^)]+\))與 (\[S005\]\([^)]+\)) 按傳統 21×21 合同(?:計分)?/gu,
-			"$1按原生飛花式四碼頂合同、$2按本比較套用的同一合同計分，$3與 $4按傳統 21×21 合同計分",
-		)
-		.replace(
-			/(\[Shenyun\(Overall-17\)\]\([^)]+\)) and (\[B04\]\([^)]+\)) (?:use|are scored under) four-code-top contracts, while (\[Wufei KeyTao\(U357\)\]\([^)]+\)) and (\[S005\]\([^)]+\)) use the traditional 21×21 contract/gu,
-			"$1 uses its native Feihua four-code-top contract and $2 is scored under the same contract for this comparison, while $3 and $4 use the traditional 21×21 contract",
-		);
-}
-
-function addOverallColumn(markdown: string) {
-	const lines = markdown.split("\n");
-	for (let index = 0; index < lines.length; index++) {
-		if (!/^\| (?:指标|Metric|指標) \|/u.test(lines[index])) continue;
-		if (!lines[index].includes("Overall-17")) continue;
-		if (!lines[index].includes("U357") || lines[index].includes("Overall-17"))
-			continue;
-		const headerLabel = lines[index].startsWith("| Metric")
-			? "Shenyun(Overall-17) 21×26 double pinyin"
-			: lines[index].startsWith("| 指標")
-				? "神韻(Overall-17) 21×26 雙拼"
-				: "神韵(Overall-17) 21×26 双拼";
-		lines[index] = lines[index].replace(
-			/^(\| [^|]+ \|)/u,
-			`$1 ${headerLabel} |`,
-		);
-		lines[index + 1] = lines[index + 1].replace(/^(\| [^|]+ \|)/u, "$1 ---: |");
-		let row = 0;
-		for (
-			let cursor = index + 2;
-			cursor < lines.length && lines[cursor].startsWith("|");
-			cursor++
-		) {
-			if (row >= overallValues.length)
-				throw new Error("Benchmark 表格行数过多。");
-			const clean = lines[cursor]
-				.replaceAll("**", "")
-				.replaceAll(" ★", "")
-				.replaceAll("🥇", "");
-			lines[cursor] = clean.replace(
-				/^(\| [^|]+ \|)/u,
-				`$1 ${overallValues[row]} |`,
-			);
-			row++;
-		}
-		if (row !== overallValues.length)
-			throw new Error(`Benchmark 表格只有 ${row} 行。`);
-	}
-	return lines.join("\n");
-}
-
-function ensureAfter(
-	markdown: string,
-	anchor: string,
-	addition: string,
-	marker: string,
-) {
-	if (markdown.includes(marker)) return markdown;
-	if (!markdown.includes(anchor))
-		throw new Error(`README 中找不到插入锚点：${anchor}`);
-	return markdown.replace(anchor, `${anchor}\n\n${addition}`);
-}
-
-function removeStandaloneEnglishNumbers(markdown: string) {
-	const lines = markdown.split("\n");
-	const start = lines.findIndex((line) => line === "### 双拼方案英数字入口");
-	if (start < 0) return markdown;
-	const end = lines.findIndex(
-		(line, index) => index > start && line.startsWith("### "),
-	);
-	if (end < 0) throw new Error("README 中找不到英数字入口后的下一个章节。");
-	lines.splice(start, end - start);
-	while (start < lines.length && lines[start] === "" && lines[start - 1] === "")
-		lines.splice(start, 1);
-	return lines.join("\n");
-}
-
-function ensureMobileSkinsParagraph(markdown: string) {
-	const paragraph =
-		"发布页面同时提供同文（Android）的 `.trime.yaml` 皮肤包和元书（iOS、Android）的 `.cskin` 皮肤包；皮肤需与输入方案分别安装，布局预览、选择与导入说明见[手机皮肤](https://input.tansongchen.com/#手机皮肤)。触屏布局暂不提供冰雪一拼专用的并击键盘。";
-	if (markdown.includes(paragraph) || !markdown.includes("### 反查入口"))
-		return markdown;
-	return markdown.replace("### 反查入口", `${paragraph}\n\n### 反查入口`);
-}
-
-function ensureSubsection(
-	markdown: string,
-	sectionNeedle: string,
-	block: string,
-) {
-	const lines = markdown.split("\n");
-	const start = lines.findIndex(
-		(line) => line.startsWith("### ") && line.includes(sectionNeedle),
-	);
-	if (start < 0) throw new Error(`README 中找不到章节：${sectionNeedle}`);
-	let end = lines.findIndex(
-		(line, index) => index > start && line.startsWith("### "),
-	);
-	if (end < 0) end = lines.length;
-	const heading = block.split("\n", 1)[0];
-	if (lines.slice(start, end).includes(heading)) return markdown;
-	const marker = lines.findIndex(
-		(line, index) => index > start && index < end && line === "> [!NOTE]",
-	);
-	if (marker < 0)
-		throw new Error(`${sectionNeedle} 中找不到英数入口的插入位置。`);
-	lines.splice(marker, 0, ...block.split("\n"), "");
-	return lines.join("\n");
-}
-
-function normalizeTerms(markdown: string) {
-	markdown = normalizeSourceProvenance(markdown)
-		.replaceAll(
-			"冰雪兰道的二／三／四字前两位形辅字位顺序为 `12/23/24`，冰雪兰拼的前两位调码字位顺序为 `12/21/23`；运行时三字词按剩余字位补第三辅，四字词最多两辅。CKT v5 只优化并计分前两辅，第二辅后直接按选重计费。",
-			"冰雪兰道的二／三／四字前两位形辅字位顺序为 `12/23/24`，冰雪兰拼的前两位调码字位顺序为 `12/21/23`；运行时三字词按剩余字位补第三辅，四字词最多两辅。CKT v5.1 将三字词第三辅纳入优化和计分，完整辅序为冰雪兰道 `12/231/24`、冰雪兰拼 `12/213/21`；三字词第三辅后、四字词第二辅后按选重计费。",
-		)
-		.replaceAll(
-			"冰雪兰道 uses first-two shape-source orders `12/23/24` for two-/three-/four-character words; 冰雪兰拼 uses first-two tone-source orders `12/21/23`. At runtime, three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries. CKT v5 optimizes and scores only the first two auxiliaries, then switches directly to selection.",
-			"冰雪兰道 uses first-two shape-source orders `12/23/24` for two-/three-/four-character words; 冰雪兰拼 uses first-two tone-source orders `12/21/23`. At runtime, three-character words append the remaining third auxiliary, while four-character words use at most two auxiliaries. CKT v5.1 includes the third auxiliary in three-character-word optimization and scoring, giving full policies `12/231/24` for 冰雪兰道 and `12/213/21` for 冰雪兰拼; selection is charged after the third auxiliary for three-character words and after the second for four-character words.",
-		)
-		.replaceAll(
-			"冰雪兰道的二／三／四字前兩位形輔字位順序為 `12/23/24`，冰雪兰拼的前兩位調碼字位順序為 `12/21/23`；執行時三字詞按剩餘字位補第三輔，四字詞最多兩輔。CKT v5 只優化並計分前兩輔，第二輔後直接按選重計費。",
-			"冰雪兰道的二／三／四字前兩位形輔字位順序為 `12/23/24`，冰雪兰拼的前兩位調碼字位順序為 `12/21/23`；運行時三字詞按剩餘字位補第三輔，四字詞最多兩輔。CKT v5.1 將三字詞第三輔納入優化和計分，完整輔序為冰雪兰道 `12/231/24`、冰雪兰拼 `12/213/21`；三字詞第三輔後、四字詞第二輔後按選重計費。",
-		)
-		.replaceAll("**声韵键盘图**", "**声韵辅-键 映射**")
-		.replaceAll("**声韵映射**", "**声韵辅-键 映射**")
-		.replaceAll(
-			"**Initial/final keyboard map**",
-			"**Initial/final/auxiliary-key mapping**",
-		)
-		.replaceAll(
-			"**Initial/final mapping**",
-			"**Initial/final/auxiliary-key mapping**",
-		)
-		.replaceAll("**聲韻鍵盤圖**", "**聲韻輔-鍵 映射**")
-		.replaceAll("**聲韻映射**", "**聲韻輔-鍵 映射**")
-		.replaceAll(
-			"**无飞键道(U357) 21×21 双拼 日常八场景文稿 纯双拼键频图（含标点）**",
-			"**日常八场景文稿纯双拼键频图（含标点）**",
-		)
-		.replaceAll(
-			"**Wufei KeyTao(U357) 21×21 double pinyin pure-double-pinyin key-frequency map over the daily eight-scenario prose corpus (punctuation included)**",
-			"**Pure-double-pinyin key-frequency map over the daily eight-scenario corpus (punctuation included)**",
-		)
-		.replaceAll(
-			"**無飛鍵道(U357) 21×21 雙拼 日常八場景文稿 純雙拼鍵頻圖（含標點）**",
-			"**日常八場景文稿純雙拼鍵頻圖（含標點）**",
-		)
-		.replace(
-			/\*\*无\[飞键\]\([^)]+\)道·神韵 U357 综合人体工学前沿\*\*/gu,
-			"**无飞键道(U357) 21×21 双拼**",
-		)
-		.replace(
-			/\*\*Wufei KeyTao·Shenyun U357 ergonomic frontier\*\*/gu,
-			"**Wufei KeyTao(U357) 21×21 double pinyin**",
-		)
-		.replace(
-			/\*\*無\[飛鍵\]\([^)]+\)道·神韻 U357 綜合人體工學前沿\*\*/gu,
-			"**無飛鍵道(U357) 21×21 雙拼**",
-		)
-		.replaceAll("神韵 U357", "无飞键道(U357) 21×21 双拼")
-		.replaceAll("Shenyun U357", "Wufei KeyTao(U357) 21×21 double pinyin")
-		.replaceAll("神韻 U357", "無飛鍵道(U357) 21×21 雙拼")
-		.replaceAll(
-			"无飞键道·无飞键道(U357) 21×21 双拼",
-			"无飞键道(U357) 21×21 双拼",
-		)
-		.replaceAll(
-			"Wufei KeyTao·Wufei KeyTao(U357) 21×21 double pinyin",
-			"Wufei KeyTao(U357) 21×21 double pinyin",
-		)
-		.replaceAll(
-			"無飛鍵道·無飛鍵道(U357) 21×21 雙拼",
-			"無飛鍵道(U357) 21×21 雙拼",
-		)
-		.replaceAll("无飞键道(U357) 21×21 双拼 的", "无飞键道(U357) 21×21 双拼的")
-		.replaceAll("無飛鍵道(U357) 21×21 雙拼 的", "無飛鍵道(U357) 21×21 雙拼的")
-		.replaceAll(
-			"无飞键道(U357) 21×21 双拼 无飞键",
-			"无飞键道(U357) 21×21 双拼无飞键",
-		)
-		.replaceAll(
-			"無飛鍵道(U357) 21×21 雙拼 無飛鍵",
-			"無飛鍵道(U357) 21×21 雙拼無飛鍵",
-		)
-		.replaceAll(
-			"| 指标 | 神韵(Overall-17) 21×26 | 无飞键道(U357) 21×21 双拼 |",
-			"| 指标 | 神韵(Overall-17) 21×26 双拼 | 无飞键道(U357) 21×21 双拼 |",
-		)
-		.replaceAll(
-			"| Metric | Shenyun(Overall-17) 21×26 | Wufei KeyTao(U357) 21×21 double pinyin |",
-			"| Metric | Shenyun(Overall-17) 21×26 double pinyin | Wufei KeyTao(U357) 21×21 double pinyin |",
-		)
-		.replaceAll(
-			"| 指標 | 神韵(Overall-17) 21×26 | 無飛鍵道(U357) 21×21 雙拼 |",
-			"| 指標 | 神韻(Overall-17) 21×26 雙拼 | 無飛鍵道(U357) 21×21 雙拼 |",
-		)
-		.replaceAll("越低越好；三者均在 W6-Snow", "越低越好")
-		.replaceAll("Lower is better; all three peak in W6-Snow", "Lower is better")
-		.replaceAll(
-			"三方案的重码桶均为二元桶。",
-			"无飞键道(U357) 21×21 双拼与 S005 的重码桶均为二元桶；神韵(Overall-17) 21×26 双拼与 B04 没有 Common399 重码桶。",
-		)
-		.replaceAll(
-			"三方案的重碼桶均為二元桶。",
-			"無飛鍵道(U357) 21×21 雙拼與 S005 的重碼桶均為二元桶；神韻(Overall-17) 21×26 雙拼與 B04 沒有 Common399 重碼桶。",
-		)
-		.replaceAll(
-			"All three layouts have only binary collision buckets.",
-			"Wufei KeyTao(U357) 21×21 double pinyin and S005 have only binary collision buckets; Shenyun(Overall-17) 21×26 double pinyin and B04 have no Common399 collision bucket.",
-		)
-		.replaceAll(
-			"B04 按 26×26 四码顶合同，U357、S005 按 21×21 合同",
-			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同",
-		)
-		.replaceAll(
-			"B04 按 26×26 四码顶合同计分，U357、S005 按 21×21 合同计分",
-			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同计分",
-		)
-		.replaceAll(
-			"B04 按 26×26 四碼頂合同，U357、S005 按 21×21 合同",
-			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同",
-		)
-		.replaceAll(
-			"B04 按 26×26 四碼頂合同計分，U357、S005 按 21×21 合同計分",
-			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同計分",
-		)
-		.replaceAll(
-			"B04 uses the 26×26 four-code-top contract, whereas U357 and S005 use 21×21",
-			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, whereas Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
-		)
-		.replaceAll(
-			"B04 uses a 26×26 four-code-top contract, while U357 and S005 use 21×21",
-			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
-		)
-		.replaceAll(
-			"B04 is nevertheless scored under the 26×26 four-code-top contract, while U357 and S005 use the 21×21 contract",
-			"Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources; Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract",
-		)
-		.replaceAll(
-			"无飞键道(U357)与 S005 采用传统 21×21 合同，神韵(Overall-17)与 B04 采用四码顶合同。",
-			"无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。",
-		)
-		.replaceAll(
-			"無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
-			"無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔，本比較為其套用同一飛花式四碼頂路由和統一字形／筆畫源。",
-		)
-		.replaceAll(
-			"Wufei KeyTao(U357) and S005 use the traditional 21×21 contract; Shenyun(Overall-17) and B04 use the four-code-top contract.",
-			"Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources.",
-		)
-		.replaceAll(
-			"神韵(Overall-17)与 B04 按四码顶合同，无飞键道(U357)与 S005 按传统 21×21 合同",
-			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同",
-		)
-		.replaceAll(
-			"神韵(Overall-17)与 B04 按四码顶合同计分，无飞键道(U357)与 S005 按传统 21×21 合同计分",
-			"神韵(Overall-17)按原生飞花式四码顶合同、B04 按本比较套用的同一合同计分，无飞键道(U357)与 S005 按传统 21×21 合同计分",
-		)
-		.replaceAll(
-			"神韻(Overall-17)與 B04 按四碼頂合同，無飛鍵道(U357)與 S005 按傳統 21×21 合同",
-			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同",
-		)
-		.replaceAll(
-			"神韻(Overall-17)與 B04 按四碼頂合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同計分",
-			"神韻(Overall-17)按原生飛花式四碼頂合同、B04 按本比較套用的同一合同計分，無飛鍵道(U357)與 S005 按傳統 21×21 合同計分",
-		)
-		.replaceAll(
-			"Shenyun(Overall-17) and B04 use four-code-top contracts, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
-			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
-		)
-		.replaceAll(
-			"Shenyun(Overall-17) and B04 are scored under four-code-top contracts, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
-			"Shenyun(Overall-17) uses its native Feihua four-code-top contract and B04 is scored under the same contract for this comparison, while Wufei KeyTao(U357) and S005 use the traditional 21×21 contract",
-		)
-		.replaceAll(
-			"reports/shenyun-comparison.md#ckt-v4-的权重与额外时间如何进入主分",
-			"reports/shenyun-comparison.md#ckt-v4-成本分解",
-		)
-		.replace(
-			/bun scripts\/生成神韵键盘图\.ts "([^"]+)"\r?\nbun scripts\/导出神韵热力图\.ts "[^"]+"/gu,
-			'bun scripts/生成神韵键盘图.ts "$1"\nbun scripts/生成神韵键盘图.ts "$1" --21x26\nbun scripts/导出神韵热力图.ts "$1"\nbun scripts/导出神韵热力图.ts "$1" --21x26',
-		)
-		.replace(
-			/(### 兩代神韻與 S005、B04 的四方案公平比較\r?\n\r?\n)四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道\(U357\)与 S005 采用传统 21×21 合同，神韵\(Overall-17\)与 B04 采用四码顶合同。/gu,
-			"$1四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 採傳統 21×21 合同，神韻(Overall-17)與 B04 採四碼頂合同。",
-		);
-	markdown = ensureAfter(
-		markdown,
-		"> [!NOTE]\n> 注意：只包含双拼部分，5 辅键未参与评估。",
-		`**十一场景 5500 字最优路径全按键键频图**
-
-![无飞键道(U357) 21×21 5500 字最优路径全按键键频图](docs/shenyun-u357-5500-keyboard-heat.svg)
-
-新图直接复算十方案最优切分逐键回放，共 11 个 benchmark 场景、5500 汉字和 392 个标点；独立赛文与第 10 篇相同，按两个场景计两遍。冰雪兰道共 9492 次实际按键，其中 Space 359、Shift 289、选重 0；短码、五辅键、空格、标点及其他所有非 0 按键均已纳入，计数为 0 的数字选重键不绘制。[原始键频数据](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供复核。`,
-		"![无飞键道(U357) 21×21 5500 字最优路径全按键键频图](docs/shenyun-u357-5500-keyboard-heat.svg)",
-	);
-	markdown = ensureAfter(
-		markdown,
-		"> [!NOTE]\n> Only the double-pinyin layer is included; the five auxiliary keys are excluded.",
-		`**All-key frequency map for optimal paths over eleven benchmark scenarios and 5,500 Chinese characters**
-
-![Wufei KeyTao(U357) 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-u357-5500-keyboard-heat.svg)
-
-The map is recomputed directly from the ten-scheme optimal-path replays over eleven benchmark scenarios, 5,500 Chinese characters, and 392 punctuation marks; the standalone article duplicates article 10 as a separate scenario. Snow KeyTao uses 9,492 actual keystrokes, including 359 Spaces, 289 Shifts, and zero candidate selections. Short codes, all five auxiliary keys, spaces, punctuation, and every other nonzero key are included; zero-count numeric candidate-selection keys are not drawn. The [raw frequency data](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json) is available for verification.`,
-		"![Wufei KeyTao(U357) 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-u357-5500-keyboard-heat.svg)",
-	);
-	markdown = ensureAfter(
-		markdown,
-		"> [!NOTE]\n> 注意：只包含雙拼部分，5 輔鍵未參與評估。",
-		`**十一場景 5500 字最優路徑全按鍵鍵頻圖**
-
-![無飛鍵道(U357) 21×21 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)
-
-新圖直接復算十方案最優切分逐鍵回放，共 11 個 benchmark 場景、5500 漢字和 392 個標點；獨立賽文與第 10 篇相同，按兩個場景計兩遍。冰雪兰道共 9492 次實際按鍵，其中 Space 359、Shift 289、選重 0；短碼、五輔鍵、空格、標點及其他所有非 0 按鍵均已納入，計數為 0 的數字選重鍵不繪製。[原始鍵頻資料](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/神韵十一场景_5500字_最优路径全按键键频.json)可供複核。`,
-		"![無飛鍵道(U357) 21×21 5500 字最優路徑全按鍵鍵頻圖](docs/shenyun-u357-5500-keyboard-heat.svg)",
-	);
-	return normalizeContractClaims(markdown);
-}
-
-const readmeDirections = [
-	"min", // M-R2
-	"traditional-final-sum", // 全声母／字母声母／传统声母／韵母乱序度 A/I/D/V，仍按 D+V
-	"triple-sum", // 飞键成分
-	"max", // FA-1
-	"max", // LU-v1r
-	"max", // Common399 唯一码
-	"min", // 重码盈余
-	"min", // 重码桶
-	"min", // S2 miss
-	"min", // S2 平均码长
-	"min", // S2 中心时间
-	"min", // S2 异键同指率
-	"min", // CKT v3
-	"min", // CKT v4
-	"min", // CKT v5
-	"min", // CKT v5.1
-	"min", // A7E-v3
-	"min", // A7E-v4
-	"min", // A7E-v5
-	"min", // A7E-v6-CW150
-	"min", // 选重率
-	"min", // 第一辅键率
-	"min", // 第二辅键率
-	"closest-to-half", // 左手占比
-	"min", // 同手率
-	"min", // 平均有效距离
-	"min", // QAZ 左小指组峰值
-	"min", // P 区右小指组峰值
-	"min", // 最大单指峰值
-	"max", // S2 主键区占比
-	"max", // TYB 双食指组峰值
-	"min", // 20 合同主键区下限
-	"max", // 日常移动手分数
-] as const satisfies readonly ComparisonDirection[];
-
-function decorateReadmeTables(markdown: string) {
-	const lines = markdown.split("\n");
-	for (let index = 0; index < lines.length; index++) {
-		if (!/^\| (?:指标|Metric|指標) \|/u.test(lines[index])) continue;
-		let end = index + 1;
-		while (end < lines.length && lines[end].startsWith("|")) end++;
-		const decorated = decorateMarkdownTable(
-			lines.slice(index, end).join("\n"),
-			readmeDirections,
-		).split("\n");
-		lines.splice(index, end - index, ...decorated);
-		index += decorated.length - 1;
-	}
-	return lines.join("\n");
-}
-
-function addComparisonLegends(markdown: string) {
-	const lines = markdown
-		.split("\n")
-		.filter(
-			(line) =>
-				!(line.startsWith("表中") && line.includes("★")) &&
-				!line.startsWith("In the tables, **Bold** ★") &&
-				!line.startsWith("The tables rank ") &&
-				!["表中", "In the tables,"].includes(line.trim()),
-		);
-	for (let index = 0; index < lines.length; index++) {
-		const match = lines[index].match(/^\| (指标|Metric|指標) \|/u);
-		if (!match) continue;
-		if (!lines[index].includes("Overall-17")) continue;
-		const legend =
-			match[1] === "Metric"
-				? "The tables rank Shenyun(Overall-17), Wufei KeyTao(U357), and the original KeyTao S005 together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao B04 is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format."
-				: match[1] === "指標"
-					? "表中在神韻(Overall-17)、無飛鍵道(U357)與原鍵道 S005 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；首道 B04 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。"
-					: "表中在神韵(Overall-17)、无飞键道(U357)与原键道 S005 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；首道 B04 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。";
-		while (index > 0 && lines[index - 1] === "") {
-			lines.splice(index - 1, 1);
-			index--;
-		}
-		lines.splice(index, 0, "", legend, "");
-		index += 3;
-	}
-	return lines.join("\n");
-}
-
-function ensureCktV51Documentation(markdown: string) {
-	const definitionRows = [
-		"[^zh-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)保留各布局原生主码路由并统一最长六码：传统 21×21 三字词补足第三辅，四码顶仍为 `AAAU+BB`；六项参数在 0%～500% 的 `11⁶` 网格中选最低平均名次辅序。",
-		"[^en-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md) preserves each layout family's native main-code route while making six the maximum length: traditional 21×21 three-character words gain a third auxiliary, whereas four-code-top remains `AAAU+BB`; source orders are selected by mean rank over the six-parameter `11⁶` grid from 0% to 500%.",
-		"[^zht-ckt51]: [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)保留各布局原生主碼路由並統一最長六碼：傳統 21×21 三字詞補足第三輔，四碼頂仍為 `AAAU+BB`；六項參數在 0%～500% 的 `11⁶` 網格中選最低平均名次輔序。",
-	];
-	if (!markdown.includes("[^zh-ckt51]:")) {
-		markdown = markdown.replace(
-			/^(\[\^zht-ckt5\]:.*)$/mu,
-			`$1\n${definitionRows.join("\n")}`,
-		);
-	} else {
-		markdown = markdown
-			.split("\n")
-			.map((line) => {
-				const index = definitionRows.findIndex((row) =>
-					line.startsWith(row.slice(0, row.indexOf(":") + 1)),
-				);
-				return index >= 0 ? definitionRows[index] : line;
-			})
-			.join("\n");
-	}
-	for (const [marker, prior, row] of [
-		[
-			"| 综合补全 [CKT v5.1]",
-			/^(\| 综合补全 \[CKT v5\].*)$/mu,
-			"| 综合补全 [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^zh-ckt51] | 9.204752 | 9.717167 | 9.999357 | 9.202834 | 越低越好；原生路由最长六码 |",
-		],
-		[
-			"| Completion [CKT v5.1]",
-			/^(\| Completion \[CKT v5\].*)$/mu,
-			"| Completion [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^en-ckt51] | 9.204752 | 9.717167 | 9.999357 | 9.202834 | Lower; native routes with a six-code maximum |",
-		],
-		[
-			"| 綜合補全 [CKT v5.1]",
-			/^(\| 綜合補全 \[CKT v5\].*)$/mu,
-			"| 綜合補全 [CKT v5.1](research-notes/2026-11-02-ckt-v5.1-six-code.md)[^zht-ckt51] | 9.204752 | 9.717167 | 9.999357 | 9.202834 | 越低越好；原生路由最長六碼 |",
-		],
-	] as const) {
-		if (!markdown.includes(marker)) {
-			markdown = markdown.replace(prior, `$1\n${row}`);
-		} else {
-			markdown = markdown
-				.split("\n")
-				.map((line) => (line.startsWith(marker) ? row : line))
-				.join("\n");
-		}
-	}
-	return markdown;
-}
-
-function ensureSfbDocumentation(markdown: string) {
-	const definitionRows = [
-		"[^zh-dv]: A/I/D/V 保留 benchmark 的 D/V 原义并追加两个诊断量：D 只统计 18 个传统单字母声母；I 在 D 外计入 W/Y；A 再计入 A/E/O；V 统计基础韵母 `a/e/i/o/u`。可用键集不再恰好等于同名原键即计乱序，所以保留原键同时增加飞键也计入（如 B04 的 E→E/U 使 A 增加 1）。M 已包含这些非直映映射与路由成本，故不修正；历史排名仍按 D+V，A/I 不参与排名。",
-		"[^en-dv]: A/I/D/V preserves the benchmark's D/V contract and adds two diagnostics: D counts only the 18 traditional single-letter initials; I additionally counts W/Y; A additionally counts A/E/O; V covers the base finals `a/e/i/o/u`. A component is disordered whenever its key set is not exactly its same-letter home key, so an added flying route still counts (for example, B04 E→E/U adds 1 to A). M already includes these non-identity mapping and routing costs. Existing rankings remain based on D+V; A/I are diagnostic only.",
-		"[^zht-dv]: A/I/D/V 保留 benchmark 的 D/V 原義並追加兩個診斷量：D 只統計 18 個傳統單字母聲母；I 在 D 外計入 W/Y；A 再計入 A/E/O；V 統計基礎韻母 `a/e/i/o/u`。可用鍵集不再恰好等於同名原鍵即計亂序，所以保留原鍵同時增加飛鍵也計入（如 B04 的 E→E/U 使 A 增加 1）。M 已包含這些非直映映射與路由成本，故不修正；歷史排名仍按 D+V，A/I 不參與排名。",
-		"[^zh-sfb]: S2 异键同指率按相邻键对的频率权重统计：两键不同、但由同一物理手指负责的码内与边界键对权重，除以全部键对权重；同键重复不计入此项。",
-		"[^en-sfb]: The S2 different-key same-finger rate is the frequency-weighted share of within-code and boundary key pairs that use different keys assigned to the same physical finger, divided by all key-pair mass; exact-key repeats are excluded.",
-		"[^zht-sfb]: S2 異鍵同指率按相鄰鍵對的頻率權重統計：兩鍵不同、但由同一物理手指負責的碼內與邊界鍵對權重，除以全部鍵對權重；同鍵重複不計入此項。",
-	];
-	for (const definition of definitionRows) {
-		const marker = definition.slice(0, definition.indexOf(":") + 1);
-		if (!markdown.includes(marker)) {
-			const language = marker.slice(2, marker.indexOf("-"));
-			const anchor = new RegExp(`^(\\[\\^${language}-s2\\]:.*)$`, "mu");
-			markdown = markdown.replace(anchor, `$1\n${definition}`);
-		} else {
-			markdown = markdown
-				.split("\n")
-				.map((line) => (line.startsWith(marker) ? definition : line))
-				.join("\n");
-		}
-	}
-	for (const [marker, prior, row] of [
-		[
-			"| 声母／韵母乱序度 D/V",
-			/^(\| \[M-R2\].*\[\^zh-mr2\].*)$/mu,
-			"| 声母／韵母乱序度 D/V[^zh-dv] | 1 / 1 | 0 / 5 | 0 / 4 | 0 / 0 | 越低越接近字母原键 |",
-		],
-		[
-			"| Initial/final disorder D/V",
-			/^(\| \[M-R2\].*\[\^en-mr2\].*)$/mu,
-			"| Initial/final disorder D/V[^en-dv] | 1 / 1 | 0 / 5 | 0 / 4 | 0 / 0 | Lower; closer to alphabetic home keys |",
-		],
-		[
-			"| 聲母／韻母亂序度 D/V",
-			/^(\| \[M-R2\].*\[\^zht-mr2\].*)$/mu,
-			"| 聲母／韻母亂序度 D/V[^zht-dv] | 1 / 1 | 0 / 5 | 0 / 4 | 0 / 0 | 越低越接近字母原鍵 |",
-		],
-		[
-			"| S2 异键同指率",
-			/^(\| S2 补全中心时间.*)$/mu,
-			"| S2 异键同指率[^zh-sfb] | 9.252% | 4.255% | 11.638% | 11.343% | 越低越好 |",
-		],
-		[
-			"| S2 different-key same-finger rate",
-			/^(\| S2-completion center time.*)$/mu,
-			"| S2 different-key same-finger rate[^en-sfb] | 9.252% | 4.255% | 11.638% | 11.343% | Lower |",
-		],
-		[
-			"| S2 異鍵同指率",
-			/^(\| S2 補全中心時間.*)$/mu,
-			"| S2 異鍵同指率[^zht-sfb] | 9.252% | 4.255% | 11.638% | 11.343% | 越低越好 |",
-		],
-	] as const) {
-		if (!markdown.includes(marker)) {
-			markdown = markdown.replace(prior, `$1\n${row}`);
-		} else {
-			markdown = markdown
-				.split("\n")
-				.map((line) => (line.startsWith(marker) ? row : line))
-				.join("\n");
-		}
-	}
-	return markdown;
-}
-
-function finalizeReadme(markdown: string, host: "github" | "gitee") {
-	const documented = markdown.includes("### RC26-39a5bfdc045342cd 21×26 双拼")
-		? markdown
-		: ensureSfbDocumentation(ensureCktV51Documentation(markdown));
-	let output = markdown.includes("### RC26-39a5bfdc045342cd 21×26 双拼")
-		? documented
-		: addComparisonLegends(decorateReadmeTables(documented));
-	const overallSource =
-		host === "gitee"
-			? "https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md"
-			: "https://github.com/more-14-different/shuangpin-layout-benchmark/blob/7a7e154f3f7d0c86653ee15e755ccd72e866e5e2/research/milestones/strict-d0/2026-10-30-strict-d0-production-closure-report.md";
-	output = output.replace(
-		/^### (神韵\(Overall-17\) 21×26 双拼|Shenyun\(Overall-17\) 21×26 double pinyin|神韻\(Overall-17\) 21×26 雙拼)$/gmu,
-		`### [$1](${overallSource})`,
-	);
-	output = updateTonedReadmeDocumentation(output);
-	output = updateBenchmarkHeatmapReadme(output, readHeatmapReport());
-	output = linkReadmeFiles(output, host);
-	output = linkShenyunTerms(output, "zh", host);
-	output = linkShenyunTerms(output, "en", host);
-	output = linkShenyunTerms(output, "zht", host);
-	return output;
-}
-
+import { rootPath } from "./lib/paths";
+import { linkReadmeFiles, linkShenyunTerms } from "./lib/shenyun-markdown";
+import { join } from "node:path";
+
+const root = rootPath();
 type ReadmeBenchmarkLanguage = "zh" | "en" | "zht";
-
-type ReadmeBenchmarkMetric = {
-	RC26: unknown;
-	OC21: unknown;
-	S005: unknown;
-	B04: unknown;
-};
-
-type ReadmeBenchmarkFormat =
-	| "integer"
-	| "six"
-	| "three"
-	| "percent"
-	| "disorder"
-	| "flying"
-	| "unique"
-	| "affected"
-	| "left-right";
-
-function benchmarkNumber(value: unknown) {
-	if (typeof value !== "number") throw new Error("benchmark 指标不是数值");
-	return value;
-}
-
-function readmeBenchmarkDirection(key: string): ComparisonDirection {
-	if (key === "initialDisorderAIDV") return "traditional-final-sum";
-	if (key === "flyingKeyComponents") return "triple-sum";
-	if (key === "dailyLeftRightLoad") return "closest-to-half";
-	if (
-		[
-			"logicAuditFA1",
-			"logicUniformityLUv1r",
-			"common399UniqueCodes",
-			"dailyEightScenarioMovingHand",
-			"homeShareS2",
-			"homeFloor20Contracts",
-		].includes(key)
-	)
-		return "max";
-	return "min";
-}
-
-function formatReadmeBenchmarkValue(
-	metrics: Record<string, ReadmeBenchmarkMetric>,
-	key: string,
-	scheme: keyof ReadmeBenchmarkMetric,
-	format: ReadmeBenchmarkFormat,
-) {
-	const value = metrics[key]?.[scheme];
-	if (format === "integer") return benchmarkNumber(value).toFixed(0);
-	if (format === "six") return benchmarkNumber(value).toFixed(6);
-	if (format === "three") return benchmarkNumber(value).toFixed(3);
-	if (format === "percent")
-		return `${(benchmarkNumber(value) * 100).toFixed(3)}%`;
-	if (format === "disorder") {
-		if (!Array.isArray(value) || value.length !== 4)
-			throw new Error("A/I/D/V 指标格式错误");
-		return value.map((item) => benchmarkNumber(item).toFixed(0)).join(" / ");
-	}
-	if (format === "flying") {
-		if (!Array.isArray(value) || value.length !== 3)
-			throw new Error("飞键成分指标格式错误");
-		return value.map((item) => benchmarkNumber(item).toFixed(0)).join(" / ");
-	}
-	if (format === "unique") {
-		const rate = metrics.common399UniqueRate?.[scheme];
-		return `${benchmarkNumber(value).toFixed(0)} / ${(benchmarkNumber(rate) * 100).toFixed(3)}%`;
-	}
-	if (format === "affected") {
-		const rate = metrics.common399AffectedRate?.[scheme];
-		return `${benchmarkNumber(value).toFixed(0)} / ${(benchmarkNumber(rate) * 100).toFixed(3)}%`;
-	}
-	if (
-		typeof value !== "object" ||
-		value === null ||
-		!("left" in value) ||
-		!("right" in value) ||
-		!("leftShare" in value)
-	)
-		throw new Error("左右手负载指标格式错误");
-	return `${benchmarkNumber(value.left).toFixed(0)}:${benchmarkNumber(value.right).toFixed(0)} / ${(benchmarkNumber(value.leftShare) * 100).toFixed(3)}%`;
-}
-
 function currentReadmeBenchmarkTable(language: ReadmeBenchmarkLanguage) {
 	const snapshot = latestCurrentBenchmark();
-	if (snapshot)
-		return renderCurrentOverview(snapshot, readmeBenchmarkRows, language);
-	const report = JSON.parse(
-		readFileSync(join(root, "reports", "shenyun-comparison.json"), "utf8"),
-	) as {
-		nextGenerationComparison: {
-			metrics: Record<string, ReadmeBenchmarkMetric>;
-		};
-	};
-	const metrics = report.nextGenerationComparison.metrics;
-	const headers = {
-		zh: ["指标", "原键道 S005", "首道 B04", "何为好"],
-		en: ["Metric", "KeyTao S005", "Shoudao B04", "Better"],
-		zht: ["指標", "原鍵道 S005", "首道 B04", "何者為佳"],
-	} as const;
-	const [metricHeader, s005Header, b04Header, betterHeader] = headers[language];
-	const lines = [
-		`| ${metricHeader} | RC26-39a5bfdc045342cd 21×26 | UED-3158ce08b5bc 21×21 | ${s005Header} | ${b04Header} | ${betterHeader} |`,
-		"| --- | ---: | ---: | ---: | ---: | --- |",
-	];
-	for (const [key, labels, better, format] of readmeBenchmarkRows) {
-		lines.push(
-			`| ${labels[language]} | ${formatReadmeBenchmarkValue(metrics, key, "RC26", format)} | ${formatReadmeBenchmarkValue(metrics, key, "OC21", format)} | ${formatReadmeBenchmarkValue(metrics, key, "S005", format)} | ${formatReadmeBenchmarkValue(metrics, key, "B04", format)} | ${better[language]} |`,
-		);
-	}
-	return decorateMarkdownTable(
-		lines.join("\n"),
-		readmeBenchmarkRows.map(([key]) => readmeBenchmarkDirection(key)),
-		3,
-	);
+	if (!snapshot) throw new Error("缺少当前生产布局 benchmark");
+	return renderCurrentOverview(snapshot, readmeBenchmarkRows, language);
 }
-
-const readmeBenchmarkLegends: Record<ReadmeBenchmarkLanguage, string> = {
-	zh: "表中在 RC26-39a5bfdc045342cd、UED-3158ce08b5bc 与原键道 S005 三个方案间拉通排名：第 1 名数值加粗并标 ★★，第 2 名数值加粗并标 ★，第 3 名不加粗、不标星；首道 B04 不参与三方案名次。🥇 独立比较全部四方案，可以与星标同时出现在同一单元格。并列采用竞赛排名，例如并列第 1 名后的下一名为第 3 名；并列单元格使用相同格式。",
-	en: "The table ranks RC26-39a5bfdc045342cd, UED-3158ce08b5bc, and the original KeyTao S005 together: first place is bold with ★★, second place is bold with ★, and third place is unbolded and unstarred. Shoudao B04 is excluded from this three-layout ranking. 🥇 independently compares all four layouts and may appear in the same cell as stars. Ties use competition ranking, so the next place after a tie for first is third; tied cells use the same format.",
-	zht: "表中在 RC26-39a5bfdc045342cd、UED-3158ce08b5bc 與原鍵道 S005 三個方案間拉通排名：第 1 名數值加粗並標 ★★，第 2 名數值加粗並標 ★，第 3 名不加粗、不標星；首道 B04 不參與三方案名次。🥇 獨立比較全部四方案，可以與星標同時出現在同一單元格。並列採用競賽排名，例如並列第 1 名後的下一名為第 3 名；並列單元格使用相同格式。",
-};
-
+function finalizeReadme(markdown: string) {
+	let output = updateTonedReadmeDocumentation(markdown);
+	output = updateBenchmarkHeatmapReadme(output, readHeatmapReport());
+	output = linkReadmeFiles(output, "github");
+	for (const language of ["zh", "en", "zht"] as const)
+		output = linkShenyunTerms(output, language, "github");
+	return output;
+}
 type ActiveLayoutDocumentation = {
 	initialMap: Record<string, string>;
 	finalMap: Record<string, string>;
@@ -1336,13 +286,13 @@ function replaceCurrentLayoutDocumentation(
 	const zhtBenchmark = currentReadmeBenchmarkTable("zht");
 	const zhBenchmarkLegend = latestCurrentBenchmark()
 		? "无调除首道外评星；全部方案比较金牌；除首道外全部方案按排名标蓝色菱形（含无调与带调）。并列及可比性见表后图例和脚注。"
-		: readmeBenchmarkLegends.zh;
+		: "";
 	const enBenchmarkLegend = latestCurrentBenchmark()
 		? "Stars rank untoned layouts except B04; gold medals compare all layouts. Blue diamonds mark first/second among all layouts except B04, both untoned and toned. See the legend and comparability footnotes."
-		: readmeBenchmarkLegends.en;
+		: "";
 	const zhtBenchmarkLegend = latestCurrentBenchmark()
 		? "無調除首道外評星，全部方案比較金牌；除首道外全部方案按排名標藍色菱形（含無調與帶調）。並列與可比性見圖例及腳註。"
-		: readmeBenchmarkLegends.zht;
+		: "";
 	const zh = `### RC26-39a5bfdc045342cd 21×26 双拼
 
 冰雪鹤道（\`snow_shenyun_shape\`）与冰雪鹤拼（\`snow_shenyun_tone\`）现共用 [RC26-39a5bfdc045342cd 21×26 布局](${d3Source})，仓库标识为 \`RC26-39a5bfdc045342cd\`，来源冻结、迁移审计与验证步骤见 [RC26 布局说明](docs/hedao.md)。布局在 Common399 上无音节重码，M-R2 \`40\`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`8/5/3/1\`；按 21×26 原生四码封顶、跨词长联合候选池与 \`soft-page-fill-v2\` 计分，方案专属稳健结果为 CKT v5.1 \`9.082777229838413\`。
@@ -1389,7 +339,7 @@ ${mappingTable(activeD3Layout.finalMap, ["韵母", "次键"])}
 
 
 
-旧布局的 5500 字逐键回放保留在历史 benchmark；当前布局以本节声韵映射和纯双拼键频为准。
+当前布局的实际按键与逐场景回放见下方 5500 字评测。
 
 ### UED-3158ce08b5bc 21×21 双拼
 
@@ -1433,7 +383,7 @@ ${mappingTable(activeQzLayout.finalMap, ["韵母", "次键"])}
 
 
 
-旧布局的 5500 字逐键回放保留在历史 benchmark；当前布局以本节声韵映射和纯双拼键频为准。
+当前布局的实际按键与逐场景回放见下方 5500 字评测。
 
 ### 固顶、空桶与逐级简码
 
@@ -1441,11 +391,10 @@ ${mappingTable(activeQzLayout.finalMap, ["韵母", "次键"])}
 - 冰雪鹤道另有 ${d3ThreeKeyCharacters.toLocaleString("en-US")} 个三级单字固顶，冰雪鹮道另有 ${zhudaoThreeKeyCharacters.toLocaleString("en-US")} 个，均为两码主码加第一形辅，与短码固定单字不重复；参考四拼单字偏好，现有读音权重只作兜底，见[选字原则](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 ${qzTwoKeyCharacters} 个二码单字和 ${qzTwoKeyWords} 个二简词完整覆盖 441 个 \`AA\` 位置。两方案的 630 区均由 ${qzTwoKeySixThirty} 个二码位与 ${qzThreeKeySixThirty} 个三码位组成，每码固定一个不重复词项。
 - 冰雪兰道、冰雪兰拼及对应经典方案的大写字母用于三字及以上简拼补韵：前三字可写成 \`A[U]A[U]A[U]\`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
-- [二字词逐级排序研究](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音及 1,372 个二简／630 槽位。它作为候选常用度证据保留，不把“完整码已是首选”的词重复塞入短码。
 
 ### 现行双拼与原键道 S005、首道 B04 benchmark
 
-下表用当前 RC26-39a5bfdc045342cd 与 UED-3158ce08b5bc 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 S005、首道 B04 作参照。
+下表使用当前四份生产布局的冻结数据，并以原键道 S005、首道 B04 作为外部参照。
 
 ${zhBenchmarkLegend}
 
@@ -1453,14 +402,10 @@ ${zhBenchmark}
 
 #### 完整测评报告
 
-现行与历史布局的可复算比较见 [五布局／六布局追加报告](reports/shenyun-comparison.md)。
+当前生产布局与外部基线的可复算比较见 [当前布局比较报告](reports/shenyun-comparison.md)。
 
-当前校正后的测评：[5500 字十二方案与 11 个场景回放](reports/十一场景_5500字_当前十二方案对比评测.md)、[原 5000 字十二方案](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md)。以下旧版测评仅保留在 Git 历史。
+当前校正后的测评：[5500 字十二方案与 11 个场景回放](reports/十一场景_5500字_当前十二方案对比评测.md)、[原 5000 字十二方案](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md)。
 
-- [500 字冰雪十二方案实战测评](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5000 字冰雪十二方案全量报告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5000 字十三方案报告（加入声笔小鹤）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5000 字十四方案报告（再加入小鹤音形）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
 
 `;
 	const en = `### RC26-39a5bfdc045342cd 21×26 double pinyin
@@ -1509,7 +454,7 @@ The map is exported directly from the current layout through the benchmark page'
 
 ![RC26-39a5bfdc045342cd 21×26 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-rc26-5500-keyboard-heat.svg)
 
-The 5,500-character replays are historical benchmarks; current mappings and pure-double-pinyin frequencies are shown above.
+Current 5,500-character replays and all-key frequencies are linked below.
 
 ### UED-3158ce08b5bc 21×21 double pinyin
 
@@ -1553,7 +498,7 @@ The map is exported directly from the current layout through the benchmark page'
 
 ![UED-3158ce08b5bc 21×21 optimal-path all-key frequency map over 5,500 Chinese characters](docs/shenyun-ued-3158ce08b5bc-5500-keyboard-heat.svg)
 
-The 5,500-character replays are historical benchmarks; current mappings and pure-double-pinyin frequencies are shown above.
+Current 5,500-character replays and all-key frequencies are linked below.
 
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
@@ -1561,11 +506,10 @@ The 5,500-character replays are historical benchmarks; current mappings and pure
 - 冰雪鹤道 additionally fixes ${d3ThreeKeyCharacters.toLocaleString("en-US")} characters at three keys, and 冰雪鹮道 fixes ${zhudaoThreeKeyCharacters.toLocaleString("en-US")}. Each uses the two-key main code plus the first shape auxiliary, without repeating shorter fixed characters. Selection follows 四拼 character preferences with reading weights as fallback; see the [selection policy](docs/fixed-candidates.md).
 - 冰雪兰道 and 冰雪兰拼 cover all 441 \`AA\` positions with ${qzTwoKeyCharacters} two-key characters and ${qzTwoKeyWords} two-key word abbreviations. Each 630 section comprises ${qzTwoKeySixThirty} two-key and ${qzThreeKeySixThirty} three-key slots, with one non-repeated word fixed per code.
 - In 冰雪兰道, 冰雪兰拼, and their classic counterparts, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use \`A[U]A[U]A[U]\`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials.
-- The [staged bigram-ranking study](reports/sipin-bigram-ranking-research.md) covers 133,205 encodable readings and 1,372 two-key/630 slots. It remains frequency evidence without duplicating words that are already first at full code into shorter fixed slots.
 
 ### Current double-pinyin layouts versus KeyTao S005 and Shoudao B04
 
-This table directly replaces Overall-17 and U357 in the historical README comparison with the current RC26-39a5bfdc045342cd and UED-3158ce08b5bc results, using the same frozen payload and the original KeyTao S005 and Shoudao B04 references.
+This table uses frozen data for the four current production layouts, with KeyTao S005 and Shoudao B04 as external controls.
 
 ${enBenchmarkLegend}
 
@@ -1573,12 +517,8 @@ ${enBenchmark}
 
 #### Complete benchmark reports
 
-Reproducible current and historical layout comparisons are in the [appended five-/six-layout report](reports/shenyun-comparison.md).
+Reproducible current production layout comparisons and external controls are in the [current layout report](reports/shenyun-comparison.md).
 
-- [500-character Snow twelve-scheme benchmark](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5,000-character Snow twelve-scheme report](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5,000-character thirteen-scheme report with 声笔小鹤](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5,000-character fourteen-scheme report with 小鹤音形](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
 
 `;
 	const zht = `### RC26-39a5bfdc045342cd 21×26 雙拼
@@ -1627,7 +567,7 @@ ${mappingTable(activeD3Layout.finalMap, ["韻母", "次鍵"])}
 
 
 
-舊布局的 5500 字逐鍵回放保留在歷史 benchmark；目前布局以本節聲韻映射和純雙拼鍵頻為準。
+目前布局的實際按鍵與逐場景回放見下方 5500 字評測。
 
 ### UED-3158ce08b5bc 21×21 雙拼
 
@@ -1671,7 +611,7 @@ ${mappingTable(activeQzLayout.finalMap, ["韻母", "次鍵"])}
 
 
 
-舊布局的 5500 字逐鍵回放保留在歷史 benchmark；目前布局以本節聲韻映射和純雙拼鍵頻為準。
+目前布局的實際按鍵與逐場景回放見下方 5500 字評測。
 
 ### 固頂、空桶與逐級簡碼
 
@@ -1679,11 +619,10 @@ ${mappingTable(activeQzLayout.finalMap, ["韻母", "次鍵"])}
 - 冰雪鶴道另有 ${d3ThreeKeyCharacters.toLocaleString("en-US")} 個三級單字固頂，冰雪鹮道另有 ${zhudaoThreeKeyCharacters.toLocaleString("en-US")} 個，均為兩碼主碼加第一形輔，與短碼固定單字不重複；參考四拼單字偏好，現有讀音權重只作兜底，見[選字原則](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 ${qzTwoKeyCharacters} 個二碼單字和 ${qzTwoKeyWords} 個二簡詞完整覆蓋 441 個 \`AA\` 位置。兩方案的 630 區均由 ${qzTwoKeySixThirty} 個二碼位與 ${qzThreeKeySixThirty} 個三碼位組成，每碼固定一個不重複詞項。
 - 冰雪兰道、冰雪兰拼及對應經典方案的大寫字母用於三字及以上簡拼補韻：前三字可寫成 \`A[U]A[U]A[U]\`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
-- [二字詞逐級排序研究](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音及 1,372 個二簡／630 槽位。它作為候選常用度證據保留，不把「完整碼已是首選」的詞重複放入短碼。
 
 ### 現行雙拼與原鍵道 S005、首道 B04 benchmark
 
-下表以目前 RC26-39a5bfdc045342cd 與 UED-3158ce08b5bc 直接替代 README 歷史表中的 Overall-17 與 U357，並繼續使用同一凍結 payload 和原鍵道 S005、首道 B04 作參照。
+下表使用目前四份生產布局的凍結資料，並以原鍵道 S005、首道 B04 作為外部參照。
 
 ${zhtBenchmarkLegend}
 
@@ -1691,25 +630,21 @@ ${zhtBenchmark}
 
 #### 完整測評報告
 
-現行與歷史布局的可複算比較見[五布局／六布局追加報告](reports/shenyun-comparison.md)。
+目前生產布局與外部基線的可複算比較見[目前布局比較報告](reports/shenyun-comparison.md)。
 
-- [500 字冰雪十二方案實戰測評](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5000 字冰雪十二方案全量報告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5000 字十三方案報告（加入聲筆小鶴）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5000 字十四方案報告（再加入小鶴音形）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
 
 `;
 	let replaced = markdown
 		.replace(
-			/^### (?:(?:\[)?神韵\(Overall-17\)|(?:RC26-39a5bfdc045342cd|RC26-39a5bfdc045342cd) 21×26 双拼)[^\n]*\n[\s\S]*?(?=^### 快捷键$)/mu,
+			/^### RC26-39a5bfdc045342cd 21×26 双拼\n[\s\S]*?(?=^### 快捷键$)/mu,
 			zh,
 		)
 		.replace(
-			/^### (?:(?:\[)?Shenyun\(Overall-17\)|(?:RC26-39a5bfdc045342cd|RC26-39a5bfdc045342cd) 21×26 double pinyin)[^\n]*\n[\s\S]*?(?=^### Reports and audits$)/mu,
+			/^### RC26-39a5bfdc045342cd 21×26 double pinyin\n[\s\S]*?(?=^### Reports and audits$)/mu,
 			en,
 		)
 		.replace(
-			/^### (?:(?:\[)?神韻\(Overall-17\)|(?:RC26-39a5bfdc045342cd|RC26-39a5bfdc045342cd) 21×26 雙拼)[^\n]*\n[\s\S]*?(?=^### 研究報告與稽核資料$)/mu,
+			/^### RC26-39a5bfdc045342cd 21×26 雙拼\n[\s\S]*?(?=^### 研究報告與稽核資料$)/mu,
 			zht,
 		);
 	for (const [layoutHeading, nextHeading, order] of [
@@ -1793,166 +728,13 @@ ${zhtBenchmark}
 	return replaced;
 }
 
-function deduplicateOverallSections(markdown: string) {
-	const lines = markdown.split("\n");
-	const seen = new Set<string>();
-	for (let index = 0; index < lines.length; index++) {
-		if (
-			!lines[index].startsWith("### ") ||
-			!lines[index].includes("Overall-17")
-		)
-			continue;
-		const language = lines[index].includes("Shenyun")
-			? "en"
-			: lines[index].includes("神韻")
-				? "zht"
-				: "zh";
-		if (!seen.has(language)) {
-			seen.add(language);
-			continue;
-		}
-		let end = index + 1;
-		while (end < lines.length && !/^##(?:#)? /u.test(lines[end])) end++;
-		lines.splice(index, end - index);
-		index--;
-	}
-	return lines.join("\n");
-}
-
-function update(markdown: string, host: "github" | "gitee") {
-	markdown = markdown.replaceAll("UM40-ac9707a932d1", "RC26-39a5bfdc045342cd");
-	if (process.argv.includes("--tables-only"))
-		return finalizeReadme(normalizeTerms(addOverallColumn(markdown)), host);
-	if (process.argv.includes("--normalize-only"))
-		return finalizeReadme(normalizeTerms(markdown), host);
-	if (markdown.includes("### RC26-39a5bfdc045342cd 21×26 双拼"))
-		return finalizeReadme(
-			replaceCurrentLayoutDocumentation(markdown, host),
-			host,
-		);
-	markdown = ensureMobileSkinsParagraph(
-		removeStandaloneEnglishNumbers(markdown),
-	);
-	markdown = markdown
-		.replace(
-			/### \[神韵\(Overall-17\)[^\n]*\n[\s\S]*?(?=### \[无飞键道\(U357\))/u,
-			zhOverall,
-		)
-		.replace(
-			/### \[Shenyun\(Overall-17\)[^\n]*\n[\s\S]*?(?=### \[Wufei KeyTao\(U357\))/u,
-			enOverall,
-		)
-		.replace(
-			/### \[神韻\(Overall-17\)[^\n]*\n[\s\S]*?(?=### \[無飛鍵道\(U357\))/u,
-			zhtOverall,
-		)
-		.replace(
-			/(## 简体中文[\s\S]*?)(### (?:无\[飞键\]|\[无飞键道\(U357\)[^\n]*))/u,
-			(_match, prefix: string, heading: string) =>
-				`${prefix}${zhOverall}${heading}`,
-		)
-		.replace(
-			/(## English[\s\S]*?)(### (?:Wufei KeyTao|\[Wufei KeyTao\(U357\)[^\n]*))/u,
-			(_match, prefix: string, heading: string) =>
-				`${prefix}${enOverall}${heading}`,
-		)
-		.replace(
-			/(## 繁體中文[\s\S]*?)(### (?:無\[飛鍵\]|\[無飛鍵道\(U357\)[^\n]*))/u,
-			(_match, prefix: string, heading: string) =>
-				`${prefix}${zhtOverall}${heading}`,
-		)
-		.replace(/### 无\[飞键\][^\n]*/gu, "### 无飞键道(U357) 21×21 双拼")
-		.replace(
-			/### Wufei KeyTao·Shenyun U357[^\n]*/gu,
-			"### Wufei KeyTao(U357) 21×21 double pinyin",
-		)
-		.replace(/### 無\[飛鍵\][^\n]*/gu, "### 無飛鍵道(U357) 21×21 雙拼")
-		.replace(
-			/#### 神韵 U357 与[^\n]*/gu,
-			"### 两代神韵与 S005、B04 的四方案公平比较",
-		)
-		.replace(
-			/#### Fair comparison with[^\n]*/gu,
-			"### Four-scheme comparison of both Shenyun layouts, S005, and B04",
-		)
-		.replace(
-			/#### 神韻 U357 與[^\n]*/gu,
-			"### 兩代神韻與 S005、B04 的四方案公平比較",
-		)
-		.replace(
-			/三方案共用 Common399[^\n]*/gu,
-			"四方案共用 Common399、冻结 20 合同、字词／形码数据、CKT v4 模型和日常八场景文稿；无飞键道(U357)与 S005 按传统 21×21 合同计分；神韵(Overall-17)原生遵循飞花式四码顶；B04 采用原资料记录的 `AEUIO` 形辅与 `IEUAO` 调辅，本比较为其套用同一飞花式四码顶路由和统一字形／笔画源。",
-		)
-		.replace(
-			/All three layouts use Common399[^\n]*/gu,
-			"All four layouts use Common399, the frozen 20 contracts, the same word/shape data, CKT v4, and the daily corpus. Wufei KeyTao(U357) and S005 are scored under the traditional 21×21 contract. Shenyun(Overall-17) natively follows the Feihua four-code-top contract; B04 uses its documented `AEUIO` shape and `IEUAO` tone keys, while this comparison supplies the same Feihua four-code-top routing and shared shape/stroke sources.",
-		)
-		.replace(
-			/三方案共用 Common399、凍結 20 合同[^\n]*/gu,
-			"四方案共用 Common399、凍結 20 合同、字詞／形碼資料、CKT v4 模型及日常八場景文稿；無飛鍵道(U357)與 S005 按傳統 21×21 合同計分；神韻(Overall-17)原生遵循飛花式四碼頂；B04 採用原資料記錄的 `AEUIO` 形輔與 `IEUAO` 調輔，本比較為其套用同一飛花式四碼頂路由和統一字形／筆畫源。",
-		)
-		.replaceAll(
-			"reports/shenyun-u357-comparison.md",
-			"reports/shenyun-comparison.md",
-		)
-		.replaceAll(
-			"reports/shenyun-u357-comparison.json",
-			"reports/shenyun-comparison.json",
-		)
-		.replaceAll("神韵 U357 公平对比", "神韵四方案公平对比")
-		.replaceAll(
-			"Complete Shenyun U357 comparison",
-			"Complete four-scheme Shenyun comparison",
-		)
-		.replaceAll(
-			"Raw Shenyun U357 comparison JSON",
-			"Raw four-scheme Shenyun comparison JSON",
-		)
-		.replaceAll("神韻 U357 公平比較", "神韻四方案公平比較")
-		.replace(
-			/bun scripts\/生成神韵键盘图\.ts "([^"]+)"\nbun scripts\/导出神韵热力图\.ts "\1"/gu,
-			'bun scripts/生成神韵键盘图.ts "$1"\nbun scripts/生成神韵键盘图.ts "$1" --21x26\nbun scripts/导出神韵热力图.ts "$1"\nbun scripts/导出神韵热力图.ts "$1" --21x26',
-		);
-	if (markdown.includes("无飞键道(U357) 21×21 双拼"))
-		markdown = ensureSubsection(
-			markdown,
-			"无飞键道(U357) 21×21 双拼",
-			zhU357EnglishNumbers,
-		);
-	if (markdown.includes("Wufei KeyTao(U357) 21×21 double pinyin"))
-		markdown = ensureSubsection(
-			markdown,
-			"Wufei KeyTao(U357) 21×21 double pinyin",
-			enU357EnglishNumbers,
-		);
-	if (markdown.includes("無飛鍵道(U357) 21×21 雙拼"))
-		markdown = ensureSubsection(
-			markdown,
-			"無飛鍵道(U357) 21×21 雙拼",
-			zhtU357EnglishNumbers,
-		);
-	return finalizeReadme(
-		replaceCurrentLayoutDocumentation(
-			normalizeTerms(addOverallColumn(deduplicateOverallSections(markdown))),
-			host,
-		),
-		host,
-	);
-}
-
-for (const file of files) {
-	const source = readFileSync(file, "utf8");
-	const output = update(source, "github");
-	const normalized = output.replaceAll("\r\n", "\n");
-	if (process.argv.includes("--check")) {
-		if (normalized !== source) throw new Error(`${file} 需要重新生成。`);
-		console.log(`README 校验通过：${file}`);
-	} else if (normalized !== source) {
-		writeFileSync(file, normalized, "utf8");
-		console.log(`已更新：${file}`);
-	} else {
-		console.log(`无需更新：${file}`);
-	}
-}
-
+const file = rootPath("README.md");
+const source = readFileSync(file, "utf8");
+const output = finalizeReadme(
+	replaceCurrentLayoutDocumentation(source, "github"),
+).replaceAll("\r\n", "\n");
+if (process.argv.includes("--check")) {
+	if (output !== source) throw new Error("README.md 需要重新生成");
+	console.log("README 校验通过。");
+} else if (output !== source) writeFileSync(file, output, "utf8");
 updateGiteeReadme(process.argv.includes("--check"));

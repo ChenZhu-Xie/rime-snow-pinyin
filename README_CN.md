@@ -13,7 +13,7 @@
 
 开发脚本与维护约定见 [AGENTS.md](AGENTS.md)。
 
-六套现行双拼使用四份冻结布局：无调 21×21 的冰雪兰道／冰雪兰拼（UED）、无调 21×26 的冰雪鹤道／冰雪鹤拼（RC26），以及新增的带调[冰雪莲道](docs/liandao.md)（CR-REF）与[冰雪鹮道](docs/zhudao.md)（T2126）。布局、辅序、键位图与 benchmark 已按当前生产配置更新，历史结果在 reports 中保留并追加对照。
+六套现行双拼使用四份冻结布局：无调 21×21 的冰雪兰道／冰雪兰拼（UED）、无调 21×26 的冰雪鹤道／冰雪鹤拼（RC26），以及新增的带调[冰雪莲道](docs/liandao.md)（CR-REF）与[冰雪鹮道](docs/zhudao.md)（T2126）。布局、辅序、键位图与 benchmark 已按当前生产配置更新，reports 仅保留当前生产配置的评测与审计。
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通话拼音为基础的中文输入方案。它们充分利用汉字的字音信息来实现自然优雅的编码；它们使用先进的离散优化技术和顶功技术来设计，使得编码十分高效；它们配备了智能算法，通过学习用户的语言习惯来个性化输入体验。
 
@@ -348,11 +348,10 @@
 - 冰雪鹤道另有 1,648 个三级单字固顶，冰雪鹮道另有 2,022 个，均为两码主码加第一形辅，与短码固定单字不重复；参考四拼单字偏好，现有读音权重只作兜底，见[选字原则](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 360 个二码单字和 81 个二简词完整覆盖 441 个 `AA` 位置。两方案的 630 区均由 105 个二码位与 525 个三码位组成，每码固定一个不重复词项。
 - 冰雪兰道、冰雪兰拼及对应经典方案的大写字母用于三字及以上简拼补韵：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
-- [二字词逐级排序研究](reports/sipin-bigram-ranking-research.md)覆盖 133,205 条可编码读音及 1,372 个二简／630 槽位。它作为候选常用度证据保留，不把“完整码已是首选”的词重复塞入短码。
 
 ### 现行双拼与原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) benchmark
 
-下表用当前 RC26-39a5bfdc045342cd 与 UED-3158ce08b5bc 直接替代 README 历史表中的 Overall-17 与 U357，并继续以同一冻结 payload 和原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作参照。
+下表使用当前四份生产布局的冻结数据，并以原键道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作为外部参照。
 
 无调除首道外评星；全部方案比较金牌；除首道外全部方案按排名标蓝色菱形（含无调与带调）。并列及可比性见表后图例和脚注。
 
@@ -436,7 +435,7 @@
 
 <a id="readme-note-zh-benchmark-missing"></a>
 
-**[3]** 当前 v5.2 默认、×2／×3／×5、分轨耗时、前三辅率、选重及终局负载已覆盖全部八列：六个无调布局使用同一冻结语料和错误模型复算，两套带调布局使用其原生形辅四轨。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 的 v5.2 行是页面参考辅序（形 12/213/24、调 12/213/23），旧版行保留各自历史辅序。『不适用』表示不存在该生产合同（例如无调方案的带调原生四轨属性）；『未重选辅序』表示未另外搜索该方案的成本点最优值，不能用生产稳健辅序分数代填；其余『—』为来源未发布的审计量。以上均不等于 0，不参评。
+**[3]** 当前 v5.2 默认、×2／×3／×5、分轨耗时、前三辅率、选重及终局负载已覆盖全部六列：四个无调布局使用同一冻结语料和错误模型复算，两套带调布局使用其原生形辅四轨。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 的 v5.2 行是页面参考辅序（形 12/213/24、调 12/213/23）。『不适用』表示不存在该生产合同（例如无调方案的带调原生四轨属性）；『未重选辅序』表示未另外搜索该方案的成本点最优值，不能用生产稳健辅序分数代填；其余『—』为来源未发布的审计量。以上均不等于 0，不参评。
 
 <a id="readme-note-zh-benchmark-v52"></a>
 
@@ -444,14 +443,9 @@
 
 #### 完整测评报告
 
-现行与历史布局的可复算比较见 [当前四布局／六生产方案与历史布局追加报告](reports/shenyun-comparison.md)。
+当前生产布局与外部基线的可复算比较见 [当前布局比较报告](reports/shenyun-comparison.md)。
 
-当前校正后的测评：[5500 字十二方案与 11 个场景回放](reports/十一场景_5500字_当前十二方案对比评测.md)、[原 5000 字十二方案](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md)。以下旧版测评仅保留在 Git 历史。
-
-- [500 字冰雪十二方案实战测评](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5000 字冰雪十二方案全量报告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5000 字十三方案报告（加入声笔小鹤）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5000 字十四方案报告（再加入小鹤音形）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
+当前校正后的测评：[5500 字十二方案与 11 个场景回放](reports/十一场景_5500字_当前十二方案对比评测.md)、[原 5000 字十二方案](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md)。
 
 ### 快捷键
 
@@ -540,20 +534,12 @@
 
 ### 研究报告与审计资料
 
-[`reports/`](reports/) 集中保存布局评测、固顶证据与功能审计，便于复核正文中的结论：
+以下报告对应当前生产配置；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段)、声笔小鹤与小鹤音形仅作为外部对照。
 
-- [固顶候选语料摘要](reports/fixed-corpus-summary.md)：公开候选来源、独立家族、缺失来源和关注词覆盖情况。
-- [神韵与原冰雪键道双拼碰撞对比](reports/shenyun-collision-comparison.md)：按 Top 500～全量比较二字内部、四字内部及跨词长碰撞。
-- [神韵 R9 与原键道碰撞解读及双拼设计启发](reports/shenyun-collision-design-notes.md)：解释碰撞数据的取舍、结构原因和布局设计启发。
-- [神韵 R9 固顶受约束选优报告](reports/shenyun-fixed-optimization.md)：记录二简、AA 单字、三拼/键道 630 和去冗余约束。
-- [神韵四方案公平对比](reports/shenyun-comparison.md)：与 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 的现行 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md)、人体工学及八轨非首选率比较。
-- [神韵四方案公平对比原始 JSON](reports/shenyun-comparison.json)：上述现行对比的机器可复核数据。
-- [神韵 R9 公平对比](reports/shenyun-r9-comparison.md)：与 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 的历史 Benchmark 指标、分场景结果和边界说明。
-- [神韵 R9 公平对比原始 JSON](reports/shenyun-r9-comparison.json)：上述对比的机器可复核数据快照。
-- [当前方案快捷键审计与上游对照](reports/shortcut-audit.md)：七套方案的共享、专属及相对上游变化的快捷键。
-- [四拼二字词逐级排序对神韵固顶的参考调研](reports/sipin-bigram-ranking-research.md)：以四拼逐级候选名次为键道、三拼固顶提供有限旁证，不把四拼视为 R9 的组成部分。
-- [冰雪八方案 500 字最短键码实战测评](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪八方案_500字_最短键码实战测评.txt)：同一篇 500 字赛文下八条仓库内可复算轨的实际按键比较，包含冰雪四拼与冰雪清韵；两条含已知错误的外部冻结轨不再导入或排名。
-- [十方案 5000 字最优切分报告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十方案最优切分及字词比率报告.md)（[原始 JSON](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/5000字_十方案最优切分实测结果.json)、[逐篇十轨回放](https://github.com/ChenZhu-Xie/rime-snow-pinyin/tree/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十方案逐键对齐回放/)、[十轨汇编](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_5000字_十方案最优切分实战测评对齐汇编.txt)）：在冰雪八方案同一基线上加入外部声笔小鹤与小鹤音形，分别使用自己的发布词库、编码规则和空白用户数据；这四项保留该次历史成果，六、八、九方案报告及单方案回放仅为生成链中的子集。
+- [当前四布局／六生产双拼方案比较](reports/shenyun-comparison.md)：生产辅序、五辅语义、CKT v5.2、逐轨耗时与键位负载；[原始 JSON](reports/shenyun-comparison.json)、[冻结复算数据](reports/current-layout-replay.json)。
+- [当前十二方案 5500 字评测](reports/十一场景_5500字_当前十二方案对比评测.md)：十篇文稿与独立赛文共十一场景，包含实际按键热力图；[原始 JSON](reports/5500字_当前十二方案最优切分实测结果.json)、[逐场景回放](reports/十一场景_5500字_当前十二方案逐键对齐回放/)。
+- [当前十二方案 5000 字评测](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md)：十篇文稿的最优切分、字词比例与选重；[原始 JSON](reports/5000字_当前十二方案最优切分实测结果.json)。
+- [经典键道、三拼上游迁移审计](reports/经典键道三拼上游迁移审计.md)：仍在发布的两套经典布局如何接入当前功能与候选合同。
 
 ### 关于词库的说明
 
@@ -878,11 +864,10 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 - 冰雪鹤道 additionally fixes 1,648 characters at three keys, and 冰雪鹮道 fixes 2,022. Each uses the two-key main code plus the first shape auxiliary, without repeating shorter fixed characters. Selection follows 四拼 character preferences with reading weights as fallback; see the [selection policy](docs/fixed-candidates.md).
 - 冰雪兰道 and 冰雪兰拼 cover all 441 `AA` positions with 360 two-key characters and 81 two-key word abbreviations. Each 630 section comprises 105 two-key and 525 three-key slots, with one non-repeated word fixed per code.
 - In 冰雪兰道, 冰雪兰拼, and their classic counterparts, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials.
-- The [staged bigram-ranking study](reports/sipin-bigram-ranking-research.md) covers 133,205 encodable readings and 1,372 two-key/630 slots. It remains frequency evidence without duplicating words that are already first at full code into shorter fixed slots.
 
 ### Current double-pinyin layouts versus KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段)
 
-This table directly replaces Overall-17 and U357 in the historical README comparison with the current RC26-39a5bfdc045342cd and UED-3158ce08b5bc results, using the same frozen payload and the original KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) references.
+This table uses frozen data for the four current production layouts, with KeyTao [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and Shoudao [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) as external controls.
 
 Stars rank untoned layouts except [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段); gold medals compare all layouts. Blue diamonds mark first/second among all layouts except [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段), both untoned and toned. See the legend and comparability footnotes.
 
@@ -966,7 +951,7 @@ Stars rank untoned layouts except [B04](https://gitee.com/xie-chenzhu/shuangpin-
 
 <a id="readme-note-en-benchmark-missing"></a>
 
-**[3]** All eight columns now participate in v5.2 default/scaled costs, timing, auxiliary/selection rates and terminal loads. Six untoned layouts are replayed against the same frozen corpus and error model; toned layouts retain four native shape tracks. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) v5.2 uses the frozen reference policies; earlier rows retain historical policies. N/A denotes a different/inapplicable contract. Policy search not repeated means no separate point-optimal policy search; production robust-policy scores are not substituted. Remaining dashes denote unpublished audit counts, not zero, and do not compete.
+**[3]** All six columns now participate in v5.2 default/scaled costs, timing, auxiliary/selection rates and terminal loads. Four untoned layouts are replayed against the same frozen corpus and error model; toned layouts retain four native shape tracks. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) v5.2 uses the frozen reference policies. N/A denotes a different/inapplicable contract. Policy search not repeated means no separate point-optimal policy search; production robust-policy scores are not substituted. Remaining dashes denote unpublished audit counts, not zero, and do not compete.
 
 <a id="readme-note-en-benchmark-v52"></a>
 
@@ -974,29 +959,16 @@ Stars rank untoned layouts except [B04](https://gitee.com/xie-chenzhu/shuangpin-
 
 #### Complete benchmark reports
 
-Reproducible current and historical layout comparisons are in the [appended five-/six-layout report](reports/shenyun-comparison.md).
-
-- [500-character Snow twelve-scheme benchmark](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5,000-character Snow twelve-scheme report](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5,000-character thirteen-scheme report with 声笔小鹤](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5,000-character fourteen-scheme report with 小鹤音形](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
+Reproducible current production layout comparisons and external controls are in the [current layout report](reports/shenyun-comparison.md).
 
 ### Reports and audits
 
-[`reports/`](reports/) collects reproducible layout measurements, fixed-candidate evidence, and feature audits:
+These reports cover current production configurations. [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts), [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段), 声笔小鹤 and 小鹤音形 serve only as external controls.
 
-- [Fixed-candidate corpus summary](reports/fixed-corpus-summary.md): public sources, independent families, missing inputs, and coverage of selected words.
-- [Shenyun versus original 冰雪兰道 collision comparison](reports/shenyun-collision-comparison.md): two-character, four-character, and cross-length collisions from Top 500 through the full corpus.
-- [Shenyun R9 collision interpretation and design lessons](reports/shenyun-collision-design-notes.md): tradeoffs, structural causes, and implications for double-pinyin layout design.
-- [Shenyun R9 constrained fixed-candidate optimization](reports/shenyun-fixed-optimization.md): two-key abbreviations, AA characters, Three-Code/KeyTao 630 spaces, and redundancy constraints.
-- [Complete four-scheme Shenyun comparison](reports/shenyun-comparison.md): current [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md), ergonomics, and eight-track non-first rates against [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段).
-- [Raw four-scheme Shenyun comparison JSON](reports/shenyun-comparison.json): machine-reviewable data behind the current comparison.
-- [Complete Shenyun R9 benchmark comparison](reports/shenyun-r9-comparison.md): historical metrics and scenario results against [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) and [B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段), with scope limits.
-- [Raw Shenyun R9 comparison JSON](reports/shenyun-r9-comparison.json): machine-reviewable snapshot underlying the comparison.
-- [Shortcut audit and upstream comparison](reports/shortcut-audit.md): shared and scheme-specific shortcuts across all seven schemes plus local changes from upstream.
-- [Four-Code staged bigram ranking study](reports/sipin-bigram-ranking-research.md): limited ranking evidence for KeyTao and Three-Code fixed candidates; Four-Code itself is not part of R9.
-- [Eight-scheme 500-character shortest-code replay](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪八方案_500字_最短键码实战测评.txt): actual keystroke comparison across eight locally reproducible schemes, including Four-Code and Clear Rhyme; two external frozen tracks with known errors are no longer imported or ranked.
-- [Ten-scheme 5,000-character optimal-segmentation report](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十方案最优切分及字词比率报告.md) ([raw JSON](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/5000字_十方案最优切分实测结果.json), [per-article ten-track replays](https://github.com/ChenZhu-Xie/rime-snow-pinyin/tree/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十方案逐键对齐回放/), [combined ten-track alignment](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_5000字_十方案最优切分实战测评对齐汇编.txt)): adds external Stroke-Pinyin Xiaohe and Xiaohe Shape to the same eight-Snow-scheme baseline, each using its own published dictionaries, encoding rules, and blank user data. These four artifacts preserve that historical result; the six-, eight-, and nine-scheme reports and single-scheme replays are generation-stage subsets.
+- [Current four-layout / six-scheme comparison](reports/shenyun-comparison.md): production policies, auxiliary semantics, CKT v5.2, track costs and key loads; [raw JSON](reports/shenyun-comparison.json), [frozen replay data](reports/current-layout-replay.json).
+- [Current twelve-scheme 5,500-character benchmark](reports/十一场景_5500字_当前十二方案对比评测.md): eleven scenarios, actual keystrokes and heatmaps; [raw JSON](reports/5500字_当前十二方案最优切分实测结果.json), [scenario replays](reports/十一场景_5500字_当前十二方案逐键对齐回放/).
+- [Current twelve-scheme 5,000-character benchmark](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md): segmentation, word-length mix and selections across ten articles; [raw JSON](reports/5000字_当前十二方案最优切分实测结果.json).
+- [Classic KeyTao / Three-Code upstream integration audit](reports/经典键道三拼上游迁移审计.md): current features and candidate contracts for the two supported classic layouts.
 
 ### Dictionaries
 
@@ -1313,11 +1285,10 @@ Reproducible current and historical layout comparisons are in the [appended five
 - 冰雪鶴道另有 1,648 個三級單字固頂，冰雪鹮道另有 2,022 個，均為兩碼主碼加第一形輔，與短碼固定單字不重複；參考四拼單字偏好，現有讀音權重只作兜底，見[選字原則](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 360 個二碼單字和 81 個二簡詞完整覆蓋 441 個 `AA` 位置。兩方案的 630 區均由 105 個二碼位與 525 個三碼位組成，每碼固定一個不重複詞項。
 - 冰雪兰道、冰雪兰拼及對應經典方案的大寫字母用於三字及以上簡拼補韻：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。
-- [二字詞逐級排序研究](reports/sipin-bigram-ranking-research.md)覆蓋 133,205 條可編碼讀音及 1,372 個二簡／630 槽位。它作為候選常用度證據保留，不把「完整碼已是首選」的詞重複放入短碼。
 
 ### 現行雙拼與原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) benchmark
 
-下表對照目前四份布局／六套生產方案與兩個參考，新增兩個帶調欄、CKT v5.2、成本敏感性、第三輔、耗時及終局負載；[最新追加報告](reports/shenyun-comparison.md#current-layout-5bfbb1bfc281)保留逐軌來源與定義。
+下表使用目前四份生產布局的凍結資料，並以原鍵道 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[首道 B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 作為外部參照。
 
 無調除首道外評星，全部方案比較金牌；除首道外全部方案按排名標藍色菱形（含無調與帶調）。並列與可比性見圖例及腳註。
 
@@ -1401,7 +1372,7 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 <a id="readme-note-zht-benchmark-missing"></a>
 
-**[3]** 目前 v5.2 預設、×2／×3／×5、分軌耗時、前三輔率、選重與終局負載已涵蓋全部八欄：六個無調布局以同一凍結語料與錯誤模型複算，兩套帶調布局使用原生形輔四軌。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 的 v5.2 行採頁面參考輔序（形 12/213/24、調 12/213/23），舊版行保留各自歷史輔序。『不適用』表示不存在該生產合同；『未重選輔序』表示未另行搜尋成本點最優輔序，不以生產穩健輔序分數代填；其餘『—』表示來源未發布的審計量。以上均不等於 0，不參評。
+**[3]** 目前 v5.2 預設、×2／×3／×5、分軌耗時、前三輔率、選重與終局負載已涵蓋全部六欄：四個無調布局以同一凍結語料與錯誤模型複算，兩套帶調布局使用原生形輔四軌。[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts) 的 v5.2 行採頁面參考輔序（形 12/213/24、調 12/213/23）。『不適用』表示不存在該生產合同；『未重選輔序』表示未另行搜尋成本點最優輔序，不以生產穩健輔序分數代填；其餘『—』表示來源未發布的審計量。以上均不等於 0，不參評。
 
 <a id="readme-note-zht-benchmark-v52"></a>
 
@@ -1409,29 +1380,16 @@ Reproducible current and historical layout comparisons are in the [appended five
 
 #### 完整測評報告
 
-現行與歷史布局的可複算比較見[五布局／六布局追加報告](reports/shenyun-comparison.md)。
-
-- [500 字冰雪十二方案實戰測評](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪十二方案_500字_最短键码实战测评.txt)
-- [5000 字冰雪十二方案全量報告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十二方案最优切分及字词比率报告.md)
-- [5000 字十三方案報告（加入聲筆小鶴）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十三方案最优切分及字词比率报告.md)
-- [5000 字十四方案報告（再加入小鶴音形）](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十四方案最优切分及字词比率报告.md)
+目前生產布局與外部基線的可複算比較見[目前布局比較報告](reports/shenyun-comparison.md)。
 
 ### 研究報告與稽核資料
 
-[`reports/`](reports/) 集中保存布局評測、固頂證據與功能稽核，方便複核正文結論：
+以下報告對應目前生產設定；[S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段)、聲筆小鶴與小鶴音形僅作為外部對照。
 
-- [固頂候選語料摘要](reports/fixed-corpus-summary.md)：公開候選來源、獨立家族、缺失來源與關注詞覆蓋。
-- [神韻與原冰雪鍵道雙拼碰撞對比](reports/shenyun-collision-comparison.md)：按 Top 500 至全量比較二字內部、四字內部及跨詞長碰撞。
-- [神韻 R9 與原鍵道碰撞解讀及雙拼設計啟發](reports/shenyun-collision-design-notes.md)：解釋碰撞資料的取捨、結構原因與布局設計啟發。
-- [神韻 R9 固頂受約束選優報告](reports/shenyun-fixed-optimization.md)：記錄二簡、AA 單字、三拼/鍵道 630 與去冗餘約束。
-- [神韻四方案公平比較](reports/shenyun-comparison.md)：與 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 的現行 [CKT v4](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/docs/CKT_v4_SPEC.md)、人體工學及八軌非首選率比較。
-- [神韻四方案公平比較原始 JSON](reports/shenyun-comparison.json)：上述現行比較的機器可複核資料。
-- [神韻 R9 公平對比](reports/shenyun-r9-comparison.md)：與 [S005](https://pingshunhuangalex.gitbook.io/rime-xkjd/learn-xkjd/layouts)、[B04](https://gitee.com/xie-chenzhu/shuangpin-layout-benchmark/blob/main/README_CN.md#探索阶段) 的歷史 Benchmark 指標、分場景結果與邊界說明。
-- [神韻 R9 公平對比原始 JSON](reports/shenyun-r9-comparison.json)：上述對比的機器可複核資料快照。
-- [目前方案快捷鍵稽核與上游對照](reports/shortcut-audit.md)：七套方案的共用、專屬及相對上游變更的快捷鍵。
-- [四拼二字詞逐級排序對神韻固頂的參考調研](reports/sipin-bigram-ranking-research.md)：以四拼逐級候選名次為鍵道、三拼固頂提供有限旁證，不把四拼視為 R9 的組成部分。
-- [冰雪八方案 500 字最短鍵碼實戰測評](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/冰雪八方案_500字_最短键码实战测评.txt)：同一篇 500 字賽文下八條倉庫內可復算軌的實際按鍵比較，包含冰雪四拼與冰雪清韻；兩條含已知錯誤的外部凍結軌不再匯入或排名。
-- [十方案 5000 字最優切分報告](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十方案最优切分及字词比率报告.md)（[原始 JSON](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/5000字_十方案最优切分实测结果.json)、[逐篇十軌回放](https://github.com/ChenZhu-Xie/rime-snow-pinyin/tree/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_十方案逐键对齐回放/)、[十軌彙編](https://github.com/ChenZhu-Xie/rime-snow-pinyin/blob/362a041eb357b926fc0c2655e12351a19bddbd14/reports/十篇五百字_5000字_十方案最优切分实战测评对齐汇编.txt)）：在冰雪八方案的同一基線上加入外部聲筆小鶴與小鶴音形，分別使用自身發布詞庫、編碼規則與空白使用者資料；這四項是目前完整成果，六、八、九方案報告及單方案回放僅為生成鏈中的子集。
+- [目前四布局／六生產雙拼方案比較](reports/shenyun-comparison.md)：生產輔序、五輔語義、CKT v5.2、逐軌耗時與鍵位負載；[原始 JSON](reports/shenyun-comparison.json)、[凍結複算資料](reports/current-layout-replay.json)。
+- [目前十二方案 5500 字評測](reports/十一场景_5500字_当前十二方案对比评测.md)：十篇文稿與獨立賽文共十一場景，包含實際按鍵熱力圖；[原始 JSON](reports/5500字_当前十二方案最优切分实测结果.json)、[逐場景回放](reports/十一场景_5500字_当前十二方案逐键对齐回放/)。
+- [目前十二方案 5000 字評測](reports/十篇五百字_当前十二方案最优切分及字词比率报告.md)：十篇文稿的最優切分、字詞比例與選重；[原始 JSON](reports/5000字_当前十二方案最优切分实测结果.json)。
+- [經典鍵道、三拼上游遷移稽核](reports/经典键道三拼上游迁移审计.md)：仍在發布的兩套經典布局如何接入目前功能與候選合同。
 
 ### 詞庫說明
 

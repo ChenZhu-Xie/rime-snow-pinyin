@@ -67,7 +67,7 @@ export function parseMeasureArgs(args: string[]): MeasureCliOptions {
 			resolve(repoRoot, "cache/fixed-corpus/reports/collisions.json"),
 		markdownPath:
 			markdownPath ??
-			resolve(repoRoot, "reports/shenyun-collision-comparison.md"),
+			resolve(repoRoot, "output/shenyun-collision-comparison.md"),
 	};
 }
 

@@ -259,10 +259,6 @@ export function linkShenyunTerms(
 			`[${term}](${resolveLink(key, host)})`,
 		);
 	}
-	markdown = markdown.replace(
-		/(\[!\[[^\]]*U357[^\]]*\]\(docs\/shenyun-u357-keyboard\.svg\)\])\([^)]+\)/gu,
-		`$1(${resolveLink("u357Github", host)})`,
-	);
 	const protectedFragments: string[] = [];
 	const protectedMarkdown = markdown.replace(
 		/!?\[[^\]]*\]\([^)]+\)|``[\s\S]*?``|`[^`\n]+`/gu,

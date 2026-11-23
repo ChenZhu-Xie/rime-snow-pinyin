@@ -125,7 +125,7 @@ test("六张 README benchmark 表都包含两份带调布局与 v5.2 新维度",
 	}
 });
 
-test("全部八列参与 v5.2 四档成本、逐轨耗时与终局负载", () => {
+test("当前六列参与 v5.2 四档成本、逐轨耗时与终局负载", () => {
 	for (const scheme of Object.keys(snapshot.layoutIds))
 		for (const key of [
 			"cktV52",
@@ -142,14 +142,7 @@ test("全部八列参与 v5.2 四档成本、逐轨耗时与终局负载", () =>
 				Number.isFinite(snapshot.metrics[key][scheme]),
 				`${key}/${scheme}`,
 			);
-	for (const scheme of [
-		"RC26",
-		"OC21",
-		"Overall17First",
-		"U357First",
-		"S005",
-		"B04",
-	])
+	for (const scheme of ["RC26", "OC21", "S005", "B04"])
 		assert.deepEqual(Object.keys(snapshot.details[scheme].v52), [
 			"keytao",
 			"sanpin",
@@ -157,17 +150,8 @@ test("全部八列参与 v5.2 四档成本、逐轨耗时与终局负载", () =>
 });
 
 test("星号排除首道与带调、金牌覆盖所有方案、菱形覆盖所有非首道方案", () => {
-	const schemes = [
-		"RC26",
-		"OC21",
-		"Overall17First",
-		"U357First",
-		"S005",
-		"B04",
-		"Liandao",
-		"Zhudao",
-	];
-	const scores = [3, 4, 5, 6, 7, 0.5, 1, 2];
+	const schemes = ["RC26", "OC21", "S005", "B04", "Liandao", "Zhudao"];
+	const scores = [3, 4, 7, 0.5, 1, 2];
 	const result = decorateCurrentValues(
 		schemes.map((scheme, index) => ({
 			scheme,
@@ -177,9 +161,9 @@ test("星号排除首道与带调、金牌覆盖所有方案、菱形覆盖所�
 	);
 	assert.equal(result[0], "**3** ★★");
 	assert.equal(result[1], "**4** ★");
-	assert.equal(result[5], "0.5 🥇");
-	assert.equal(result[6], "**1** 🔷");
-	assert.equal(result[7], "**2** 🔹");
+	assert.equal(result[3], "0.5 🥇");
+	assert.equal(result[4], "**1** 🔷");
+	assert.equal(result[5], "**2** 🔹");
 	const both = decorateCurrentValues([
 		{ scheme: "S005", display: "3", score: 3 },
 		{ scheme: "Liandao", display: "1[^zh-benchmark-toned]", score: 1 },
@@ -335,22 +319,31 @@ test("两份带调连续双拼键频图逐键等于页面冻结日常文稿", ()
 	}
 });
 
-test("追加报告为新一版说明使用独立脚注，避免被历史定义覆盖", () => {
+test("生产报告只有当前布局快照，脚注均有定义", () => {
+	const expected = ["RC26", "OC21", "S005", "B04", "Liandao", "Zhudao"];
+	assert.deepEqual(Object.keys(snapshot.layoutIds), expected);
+	assert.equal("legacyDetails" in snapshot, false);
+	assert.equal("currentLayoutComparisons" in snapshot, false);
+	for (const metric of Object.values(snapshot.metrics))
+		assert.ok(
+			Object.keys(metric as object).every((scheme) =>
+				expected.includes(scheme),
+			),
+		);
 	const markdown = readFileSync(
 		rootPath("reports/shenyun-comparison.md"),
 		"utf8",
 	);
-	const marker = "<!-- current-layout-benchmark:";
-	const start = markdown.lastIndexOf(marker);
-	assert.ok(start > 0);
-	const history = markdown.slice(0, start);
-	const current = markdown.slice(start);
+	assert.equal(markdown.split("<!-- current-layout-benchmark:").length - 1, 1);
+	assert.equal(
+		markdown.split("# 当前四布局／六生产双拼方案比较").length - 1,
+		1,
+	);
+	assert.ok(!/Overall-17|U357|R9-21X21/.test(markdown));
 	const definitions = new Set(
-		[...current.matchAll(/^\[\^([^\]]+)\]:/gm)].map((match) => match[1]),
+		[...markdown.matchAll(/^\[\^([^\]]+)\]:/gm)].map((match) => match[1]),
 	);
 	assert.equal(definitions.size, 3);
-	for (const [, id] of current.matchAll(/\[\^(zh-benchmark-[^\]]+)\]/g)) {
+	for (const [, id] of markdown.matchAll(/\[\^(zh-benchmark-[^\]]+)\]/g))
 		assert.ok(definitions.has(id), id);
-		assert.ok(!history.includes(`[^${id}]:`), id);
-	}
 });
