@@ -26,6 +26,7 @@ const output = resolve(
 	argument("--output") ?? join(ROOT, "output/character-first-choice-probes"),
 );
 const label = argument("--label") ?? "fork";
+const onlySchema = argument("--schema");
 const prepareOnly = process.argv.includes("--prepare-only");
 assert.ok(
 	prepareOnly || process.env.GITHUB_ACTIONS === "true",
@@ -108,6 +109,7 @@ function schemaEngine(file: string): NonNullable<ProbeSchema["engine"]> {
 	return schemaEngine(include.slice(0, -2));
 }
 for (const [schema, entry] of Object.entries(cases.schemas)) {
+	if (onlySchema && schema !== onlySchema) continue;
 	// 原版仅对照同合同的四拼和清韵；其他布局不能照抄物理输入。
 	if (label === "upstream" && !["snow_sipin", "snow_qingyun"].includes(schema))
 		continue;
@@ -131,6 +133,31 @@ for (const [schema, entry] of Object.entries(cases.schemas)) {
 			manifest.sources[item] = hash(join(source, item));
 		}
 		cpSync(join(source, "lua"), join(staging, "lua"), { recursive: true });
+		// 仅修改诊断副本：观察后置表何时更新，不改动生产模块。
+		const postponePath = join(staging, "lua/snow/postpone.lua");
+		const postponeSource = readFileSync(postponePath, "utf8");
+		const instrumented = postponeSource.replace(
+			"return filter",
+			String.raw`
+local original_func = filter.func
+function filter.func(translation, env)
+  local ctx = env.engine.context
+  local function probe_state(phase)
+    local rows = {}
+    for text, length in pairs(env.known_candidates) do rows[#rows+1] = text .. ':' .. length end
+    table.sort(rows)
+    local f = assert(io.open(os.getenv('FIRST_CHOICE_TRACES'), 'a'))
+    f:write('STATE\t', phase, '\t', ctx.input, '\t', ctx:get_property('shape_input') or '', '\t', table.concat(rows, ','), '\n')
+    f:close()
+  end
+  probe_state('before')
+  original_func(translation, env)
+  probe_state('after')
+end
+return filter
+`,
+		);
+		writeFileSync(postponePath, instrumented);
 		if (existsSync(join(source, "opencc")))
 			cpSync(join(source, "opencc"), join(staging, "opencc"), {
 				recursive: true,
@@ -235,7 +262,7 @@ writeFileSync(
 	join(output, "manifest.json"),
 	JSON.stringify(manifest, null, 2) + "\n",
 );
-if (!prepareOnly) {
+if (!prepareOnly && manifest.probes.length > 0) {
 	assert.ok(existsSync(observation));
 	const records = readFileSync(observation, "utf8")
 		.trim()
