@@ -15,6 +15,7 @@ import {
 	ALL_BENCHMARK_SCHEMES,
 	directOutputCodes,
 	productionCharacterCodes,
+	passesUnknownShape,
 	qingyunReadingCodes,
 } from "./lib/benchmark-schemes";
 import {
@@ -309,6 +310,7 @@ function internalScheme(
 		builder.add(route);
 	};
 	const literals = new Map<string, CharacterRoute[]>();
+	const unknownShapes = new Map<string, CharacterRoute[]>();
 	let processed = 0;
 	for (const entry of singles) {
 		if (processed++ % 2048 === 0) checkMemory(scheme.shortName);
@@ -321,6 +323,11 @@ function internalScheme(
 			if (!code.startsWith(prefix)) continue;
 			const route = { ...entry, code };
 			add(route);
+			if (code.length === 2 && passesUnknownShape(scheme.id, entry.text)) {
+				const entries = unknownShapes.get(code) ?? [];
+				entries.push(route);
+				unknownShapes.set(code, entries);
+			}
 			if (!/\p{Script=Han}/u.test(entry.text)) {
 				const entries = literals.get(code) ?? [];
 				entries.push(route);
@@ -353,6 +360,13 @@ function internalScheme(
 	// 英数候选通过无部件／无笔画的过滤分支时仍会保留，不能只加入其裸码。
 	for (const code of relevant) {
 		if (!/^[a-z]+$/u.test(code)) continue;
+		if (
+			code.length > 2 &&
+			code.length <= 6 &&
+			/^[aviuo]+$/u.test(code.slice(2))
+		)
+			for (const entry of unknownShapes.get(code.slice(0, 2)) ?? [])
+				add({ ...entry, code });
 		for (let length = 1; length < code.length; length++)
 			for (const entry of literals.get(code.slice(0, length)) ?? []) {
 				if (

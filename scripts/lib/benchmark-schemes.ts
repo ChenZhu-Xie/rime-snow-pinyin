@@ -376,6 +376,18 @@ function shapeCode(character: string, scheme: BenchmarkScheme): string {
 	return remapShapeCode(activeShapeCodes.get(character) ?? "", scheme.capacity);
 }
 
+/** 21×21 道系 shape_filter 对没有部件记录的汉字放行任意形辅；英数不走此分支。 */
+export function passesUnknownShape(
+	id: BenchmarkSchemeId,
+	text: string,
+): boolean {
+	return (
+		["oc21-shape", "classic-shape", "liandao"].includes(id) &&
+		/^\p{Script=Han}$/u.test(text) &&
+		!activeShapeCodes.get(text)
+	);
+}
+
 function strokeCodes(character: string, capacity: BenchmarkCapacity): string[] {
 	if (!isDoublePinyinCapacity(capacity)) return [];
 	const keys = semantics[capacity].strokeKeysByStroke;

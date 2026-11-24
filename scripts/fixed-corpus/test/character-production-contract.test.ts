@@ -4,9 +4,18 @@ import test from "node:test";
 import { SpellingAlgebra } from "../../lib/algebra";
 import {
 	productionCharacterCodes,
+	passesUnknownShape,
 	qingyunReadingCodes,
 } from "../../lib/benchmark-schemes";
 import { rootPath } from "../../lib/paths";
+
+test("无部件汉字参与道系补码竞争，但英数和21×26不能借此放行", () => {
+	assert.ok(passesUnknownShape("liandao", "刋"));
+	assert.ok(!passesUnknownShape("liandao", "口"));
+	assert.ok(!passesUnknownShape("liandao", "O"));
+	assert.ok(!passesUnknownShape("rc26-shape", "刋"));
+	assert.ok(!passesUnknownShape("oc21-tone", "刋"));
+});
 
 test("四拼三键音节的 o 是生产补码，不能把第四键都当成笔画", () => {
 	const algebra = new SpellingAlgebra(

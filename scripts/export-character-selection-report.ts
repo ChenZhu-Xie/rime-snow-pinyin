@@ -113,12 +113,13 @@ function add(index: number, text: string, code: string, source: string) {
 	if (!missing[index].has(text)) return;
 	const value = { code, keys: physicalKeys(code) + 1, selection: true, source };
 	const old = alternatives[index].get(text);
+	const verified = source.startsWith("实测");
+	const oldVerified = old?.source.startsWith("实测") ?? false;
 	if (
 		!old ||
-		value.keys < old.keys ||
-		(value.keys === old.keys &&
-			((source.startsWith("实测") && !old.source.startsWith("实测")) ||
-				(source === old.source && code < old.code)))
+		(verified && !oldVerified) ||
+		(verified === oldVerified &&
+			(value.keys < old.keys || (value.keys === old.keys && code < old.code)))
 	)
 		alternatives[index].set(text, value);
 }
