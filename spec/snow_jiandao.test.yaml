@@ -35,6 +35,12 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  auxiliary_literal_exclusion:
+    tests:
+      - send: "xgvvii"
+        assert: commit == nil and cand[1].text == "刑"
+      - send: "qfviua"
+        assert: commit == nil and cand[1].text == "欺"
   word_length_selection:
     tests:
       - send: "rgen{less}"

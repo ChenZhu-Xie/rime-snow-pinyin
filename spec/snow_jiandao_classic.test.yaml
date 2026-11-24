@@ -23,6 +23,10 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  auxiliary_literal_exclusion:
+    tests:
+      - send: "xgvvii"
+        assert: commit == nil and cand[1].text == "刑"
   word_length_selection:
     tests:
       - send: "rgfn{less}"

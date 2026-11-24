@@ -354,8 +354,14 @@ function internalScheme(
 	for (const code of relevant) {
 		if (!/^[a-z]+$/u.test(code)) continue;
 		for (let length = 1; length < code.length; length++)
-			for (const entry of literals.get(code.slice(0, length)) ?? [])
+			for (const entry of literals.get(code.slice(0, length)) ?? []) {
+				if (
+					["oc21-shape", "classic-shape", "liandao"].includes(scheme.id) &&
+					/^[A-Za-z0-9]+$/u.test(entry.text)
+				)
+					continue;
 				add({ ...entry, code });
+			}
 	}
 	const pools = builder.finish();
 	const cache =

@@ -20,6 +20,19 @@ local env = {
   engine = { schema = { schema_id = "snow_jiandao" } },
 }
 local state = { id = "snow_jiandao", current = "krf", is_pinyin = false, jiandao_active = true, show_chaifen = false }
+for _, id in ipairs({ "snow_jiandao", "snow_jiandao_classic", "snow_jiandao_toned" }) do
+  state.id = id
+  state.current = "xg"
+  for _, text in ipairs({ "v", "V", "7" }) do
+    assert(filter.handle_candidate(text, "", env, state))
+    assert(not filter.handle_candidate(text, "v", env, state))
+    assert(not filter.handle_candidate(text, "vvii", env, state))
+  end
+  -- 无形码的汉字仍按既有合同放行，不能把修复扩大到全部未知字符。
+  assert(filter.handle_candidate("𠮷", "v", env, state))
+end
+state.id = "snow_jiandao"
+state.current = "krf"
 assert(filter.handle_candidate("输入法", "uav", env, state))
 assert(not filter.handle_candidate("输入法", "uva", env, state))
 state.current = "rgen"

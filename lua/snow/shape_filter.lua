@@ -449,6 +449,11 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
     end
   elseif state.id == "snow_jiandao"
       or state.id == "snow_jiandao_classic" or state.id == "snow_jiandao_toned" then -- 冰雪兰道／冰雪键道／冰雪莲道
+    -- 裸音码保留英数入口；显式追加汉字形辅后，英数没有形码可匹配。
+    -- 不能沿用未知汉字的空形码放行，否则 v/V/7 会在逐键后置中反复置顶。
+    if shape_input ~= "" and text:match("^[A-Za-z0-9]+$") then
+      return false, nil, nil
+    end
     if state.is_pinyin or state.jiandao_active then
       local code = jiandao_encode(
         text, state.current, env.shape_elements, env.shape_mapping, env.jiandao_shape_cache,
