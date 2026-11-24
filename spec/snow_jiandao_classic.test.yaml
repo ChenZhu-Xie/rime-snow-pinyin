@@ -29,6 +29,8 @@ deploy:
         assert: commit == nil and cand[1].text == "乙"
   auxiliary_literal_exclusion:
     tests:
+      - send: "xdiiv"
+        assert: commit == nil and cand[1].text == "藕"
       - send: "xgvvi"
         assert: commit == nil and cand[1].text == "刑"
       - send: "xgvvii"

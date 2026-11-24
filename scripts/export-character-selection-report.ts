@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createReadStream, readFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { createInterface } from "node:readline";
 import {
 	ALL_BENCHMARK_SCHEMES,
@@ -161,8 +161,23 @@ for await (const [text, reading] of records(rootPath("snow_qingyun.dict.yaml")))
 				add(qingyun, text, code.code, "离线形码词典（候选可达性未实测）");
 
 // 原始观测仅保存首页六项；出现可证明存在，未出现不能证明不存在。
-const probes = rootPath(
-	"output/character-first-choice-ci/45448955404/character-conflict-probes/results/observations.jsonl",
+assert.ok(
+	process.argv[4],
+	"必须显式提供与首选修订稿同批的 observations.jsonl，禁止静默使用历史缓存",
+);
+const probes = resolve(process.argv[4]);
+const probeManifest = JSON.parse(
+	readFileSync(join(dirname(probes), "manifest.json"), "utf8"),
+);
+assert.equal(
+	probeManifest.revision,
+	meta.engineRevision,
+	"选重候选与首选报告的采集提交不一致",
+);
+assert.deepEqual(
+	probeManifest.sources,
+	meta.sources,
+	"选重候选与首选报告的生产来源不一致",
 );
 sources[probes] = createHash("sha256")
 	.update(readFileSync(probes))
@@ -238,6 +253,17 @@ for (const [order, file] of [
 for (let index = 0; index < choices.length; index++)
 	for (const [text, value] of alternatives[index])
 		choices[index].set(text, value);
+// 用户逐键确认的清风版次选；总键数已经包含选重的一键，不再重复加键。
+for (const [text, code] of [
+	["棋", "qim"],
+	["巾", "jbl"],
+]) {
+	const choice = choices[flypy].get(text);
+	if (choice?.selection && choice.code === code) {
+		choice.code += ";";
+		choice.source = "用户实敲核对：末尾分号为次选键";
+	}
+}
 const cohorts = [500, 1000, 1500, 2000, 3000, 4000, 5000, 6000, 8000];
 const schemes = meta.schemes.map(
 	(scheme: { id: string; name: string }, index: number) => {
