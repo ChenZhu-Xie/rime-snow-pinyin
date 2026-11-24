@@ -21,6 +21,7 @@ jobs:
           sudo apt-get install --yes opencc meson libargparse-dev liblua5.4-dev libyaml-cpp-dev libboost-dev libboost-regex-dev libsnappy-dev
           mkdir -p opencc output/character-conflict-probes
           cp /usr/share/opencc/* opencc/
+          git config --global url."https://github.com/".insteadOf git@github.com:
           git clone https://github.com/rimeinn/mira.git output/mira-per-key
           git -C output/mira-per-key checkout 2de1926298536d78d803de6d07f3dbb4a1f51a3e
           git -C output/mira-per-key submodule update --init --recursive
