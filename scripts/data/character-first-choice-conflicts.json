@@ -1,0 +1,8496 @@
+{
+	"contract": "first-choice-conflict-targets-v1",
+	"definition": "冻结v2全部缓存冲突；新采集只作事实，不把旧缓存写成预期。",
+	"schemas": {
+		"snow_sipin": {
+			"id": "sipin",
+			"targets": {
+				"邦": {
+					"previousMinimum": "b1fia",
+					"rank": 1806
+				},
+				"钣": {
+					"previousMinimum": "bao1j",
+					"rank": 3321
+				},
+				"抱": {
+					"previousMinimum": "b1vo",
+					"rank": 231
+				},
+				"报": {
+					"previousMinimum": "b1vou",
+					"rank": 454
+				},
+				"绊": {
+					"previousMinimum": "ba1sii",
+					"rank": 2499
+				},
+				"磅": {
+					"previousMinimum": "pae1v",
+					"rank": 1620
+				},
+				"播": {
+					"previousMinimum": "bo1vo",
+					"rank": 958
+				},
+				"拨": {
+					"previousMinimum": "bo1vou",
+					"rank": 1489
+				},
+				"布": {
+					"previousMinimum": "b1ji",
+					"rank": 1035
+				},
+				"钚": {
+					"previousMinimum": "bu1ji",
+					"rank": 3168
+				},
+				"渤": {
+					"previousMinimum": "b1vui",
+					"rank": 2065
+				},
+				"搏": {
+					"previousMinimum": "boe1vo",
+					"rank": 2118
+				},
+				"泊": {
+					"previousMinimum": "po1vu",
+					"rank": 3262
+				},
+				"扑": {
+					"previousMinimum": "pu1v",
+					"rank": 758
+				},
+				"湃": {
+					"previousMinimum": "paiao",
+					"rank": 4350
+				},
+				"般": {
+					"previousMinimum": "b1wo",
+					"rank": 1156
+				},
+				"辏": {
+					"previousMinimum": "c1ye",
+					"rank": 5586
+				},
+				"枞": {
+					"previousMinimum": "co1m",
+					"rank": 3332
+				},
+				"辞": {
+					"previousMinimum": "c1ve",
+					"rank": 1431
+				},
+				"磁": {
+					"previousMinimum": "ci1vi",
+					"rank": 3152
+				},
+				"侧": {
+					"previousMinimum": "ce1r",
+					"rank": 1439
+				},
+				"促": {
+					"previousMinimum": "cuao",
+					"rank": 2874
+				},
+				"奏": {
+					"previousMinimum": "zo1h",
+					"rank": 1784
+				},
+				"措": {
+					"previousMinimum": "cia1v",
+					"rank": 2038
+				},
+				"莿": {
+					"previousMinimum": "ciaoe",
+					"rank": 7373
+				},
+				"𫶇": {
+					"previousMinimum": "deeoiai",
+					"rank": 7996
+				},
+				"滴": {
+					"previousMinimum": "d1vu",
+					"rank": 143
+				},
+				"提": {
+					"previousMinimum": "t1vo",
+					"rank": 526
+				},
+				"动": {
+					"previousMinimum": "d1l",
+					"rank": 544
+				},
+				"痘": {
+					"previousMinimum": "d1n",
+					"rank": 614
+				},
+				"逗": {
+					"previousMinimum": "do1y",
+					"rank": 695
+				},
+				"豆": {
+					"previousMinimum": "d1do",
+					"rank": 794
+				},
+				"淡": {
+					"previousMinimum": "da1vu",
+					"rank": 830
+				},
+				"澹": {
+					"previousMinimum": "da1vui",
+					"rank": 3049
+				},
+				"打": {
+					"previousMinimum": "d1v",
+					"rank": 46
+				},
+				"东": {
+					"previousMinimum": "d1he",
+					"rank": 1162
+				},
+				"抖": {
+					"previousMinimum": "do1vo",
+					"rank": 1244
+				},
+				"抵": {
+					"previousMinimum": "diuo",
+					"rank": 1900
+				},
+				"氐": {
+					"previousMinimum": "d1via",
+					"rank": 4051
+				},
+				"陡": {
+					"previousMinimum": "do1f",
+					"rank": 2820
+				},
+				"掸": {
+					"previousMinimum": "daoue",
+					"rank": 3607
+				},
+				"砥": {
+					"previousMinimum": "diuoe",
+					"rank": 4936
+				},
+				"澄": {
+					"previousMinimum": "de1vu",
+					"rank": 3095
+				},
+				"至": {
+					"previousMinimum": "wiao",
+					"rank": 596
+				},
+				"顿": {
+					"previousMinimum": "d1fea",
+					"rank": 1580
+				},
+				"否": {
+					"previousMinimum": "piu1k",
+					"rank": 1131
+				},
+				"右": {
+					"previousMinimum": "fo1kou",
+					"rank": 812
+				},
+				"幽": {
+					"previousMinimum": "fo1va",
+					"rank": 2464
+				},
+				"油": {
+					"previousMinimum": "fo1vu",
+					"rank": 554
+				},
+				"浟": {
+					"previousMinimum": "dieooo",
+					"rank": 6872
+				},
+				"逸": {
+					"previousMinimum": "fi1yoa",
+					"rank": 2725
+				},
+				"游": {
+					"previousMinimum": "fo1vui",
+					"rank": 786
+				},
+				"胤": {
+					"previousMinimum": "f1pe",
+					"rank": 3029
+				},
+				"柚": {
+					"previousMinimum": "fo1m",
+					"rank": 2210
+				},
+				"狺": {
+					"previousMinimum": "fi1qo",
+					"rank": 5438
+				},
+				"佛": {
+					"previousMinimum": "fo1r",
+					"rank": 859
+				},
+				"俑": {
+					"previousMinimum": "foe1re",
+					"rank": 3820
+				},
+				"佣": {
+					"previousMinimum": "foea1r",
+					"rank": 3990
+				},
+				"㶲": {
+					"previousMinimum": "foeaou",
+					"rank": 6295
+				},
+				"页": {
+					"previousMinimum": "feao",
+					"rank": 1118
+				},
+				"业": {
+					"previousMinimum": "fea1fe",
+					"rank": 1649
+				},
+				"盐": {
+					"previousMinimum": "f1mi",
+					"rank": 1172
+				},
+				"闫": {
+					"previousMinimum": "f1meo",
+					"rank": 2488
+				},
+				"衣": {
+					"previousMinimum": "fiio",
+					"rank": 1365
+				},
+				"哟": {
+					"previousMinimum": "f1ko",
+					"rank": 194
+				},
+				"育": {
+					"previousMinimum": "foiooe",
+					"rank": 3561
+				},
+				"优": {
+					"previousMinimum": "fo1re",
+					"rank": 1557
+				},
+				"悠": {
+					"previousMinimum": "fo1xi",
+					"rank": 2949
+				},
+				"影": {
+					"previousMinimum": "f1va",
+					"rank": 1570
+				},
+				"引": {
+					"previousMinimum": "f1go",
+					"rank": 1595
+				},
+				"移": {
+					"previousMinimum": "f1he",
+					"rank": 1624
+				},
+				"迎": {
+					"previousMinimum": "fi1y",
+					"rank": 1677
+				},
+				"英": {
+					"previousMinimum": "fi1c",
+					"rank": 1702
+				},
+				"忧": {
+					"previousMinimum": "f1xi",
+					"rank": 1734
+				},
+				"永": {
+					"previousMinimum": "f1du",
+					"rank": 1816
+				},
+				"涌": {
+					"previousMinimum": "foe1v",
+					"rank": 2141
+				},
+				"勇": {
+					"previousMinimum": "f1li",
+					"rank": 1879
+				},
+				"轶": {
+					"previousMinimum": "f1ye",
+					"rank": 1981
+				},
+				"宜": {
+					"previousMinimum": "fi1mu",
+					"rank": 2046
+				},
+				"营": {
+					"previousMinimum": "fi1ca",
+					"rank": 2156
+				},
+				"犹": {
+					"previousMinimum": "f1qo",
+					"rank": 2177
+				},
+				"佑": {
+					"previousMinimum": "fo1reo",
+					"rank": 2229
+				},
+				"蛹": {
+					"previousMinimum": "fo1y",
+					"rank": 2290
+				},
+				"咏": {
+					"previousMinimum": "foe1k",
+					"rank": 2463
+				},
+				"踊": {
+					"previousMinimum": "f1zu",
+					"rank": 4988
+				},
+				"宥": {
+					"previousMinimum": "fo1mu",
+					"rank": 2320
+				},
+				"映": {
+					"previousMinimum": "fie1r",
+					"rank": 2356
+				},
+				"夷": {
+					"previousMinimum": "fi1hee",
+					"rank": 3175
+				},
+				"彝": {
+					"previousMinimum": "f1jia",
+					"rank": 5353
+				},
+				"䓨": {
+					"previousMinimum": "fieieiio",
+					"rank": 6314
+				},
+				"颙": {
+					"previousMinimum": "fo1fe",
+					"rank": 6221
+				},
+				"喁": {
+					"previousMinimum": "foee1k",
+					"rank": 6443
+				},
+				"垟": {
+					"previousMinimum": "fue1t",
+					"rank": 5679
+				},
+				"垺": {
+					"previousMinimum": "po1tu",
+					"rank": 6480
+				},
+				"媵": {
+					"previousMinimum": "fiea1k",
+					"rank": 6536
+				},
+				"份": {
+					"previousMinimum": "feoa",
+					"rank": 678
+				},
+				"伐": {
+					"previousMinimum": "fa1r",
+					"rank": 959
+				},
+				"医": {
+					"previousMinimum": "fi1fa",
+					"rank": 2424
+				},
+				"㑊": {
+					"previousMinimum": "fiaouio",
+					"rank": 6265
+				},
+				"友": {
+					"previousMinimum": "f1fou",
+					"rank": 1266
+				},
+				"奇": {
+					"previousMinimum": "qi1d",
+					"rank": 1546
+				},
+				"𫖮": {
+					"previousMinimum": "fiuoiai",
+					"rank": 7964
+				},
+				"拔": {
+					"previousMinimum": "baeo",
+					"rank": 835
+				},
+				"衮": {
+					"previousMinimum": "g1to",
+					"rank": 3590
+				},
+				"宫": {
+					"previousMinimum": "g1m",
+					"rank": 476
+				},
+				"捂": {
+					"previousMinimum": "gueo",
+					"rank": 957
+				},
+				"抚": {
+					"previousMinimum": "fuuoe",
+					"rank": 3342
+				},
+				"𣲘": {
+					"previousMinimum": "gueoooe",
+					"rank": 7909
+				},
+				"根": {
+					"previousMinimum": "ge1m",
+					"rank": 1006
+				},
+				"格": {
+					"previousMinimum": "geeoe",
+					"rank": 1475
+				},
+				"供": {
+					"previousMinimum": "g1r",
+					"rank": 1013
+				},
+				"贡": {
+					"previousMinimum": "goea1g",
+					"rank": 3385
+				},
+				"果": {
+					"previousMinimum": "go1v",
+					"rank": 1212
+				},
+				"攻": {
+					"previousMinimum": "g1go",
+					"rank": 1243
+				},
+				"工": {
+					"previousMinimum": "g1goe",
+					"rank": 1562
+				},
+				"功": {
+					"previousMinimum": "g1goei",
+					"rank": 1794
+				},
+				"勾": {
+					"previousMinimum": "g1bau",
+					"rank": 1457
+				},
+				"沟": {
+					"previousMinimum": "go1vu",
+					"rank": 1485
+				},
+				"拘": {
+					"previousMinimum": "jaio",
+					"rank": 2484
+				},
+				"柜": {
+					"previousMinimum": "gu1m",
+					"rank": 1508
+				},
+				"桂": {
+					"previousMinimum": "gu1mua",
+					"rank": 2928
+				},
+				"圭": {
+					"previousMinimum": "g1tu",
+					"rank": 2053
+				},
+				"弓": {
+					"previousMinimum": "goeiae",
+					"rank": 2055
+				},
+				"武": {
+					"previousMinimum": "gu1w",
+					"rank": 2203
+				},
+				"哏": {
+					"previousMinimum": "geoe",
+					"rank": 2520
+				},
+				"垢": {
+					"previousMinimum": "g1tuu",
+					"rank": 2861
+				},
+				"构": {
+					"previousMinimum": "go1mu",
+					"rank": 3927
+				},
+				"诡": {
+					"previousMinimum": "g1fuo",
+					"rank": 3057
+				},
+				"鞲": {
+					"previousMinimum": "go1ge",
+					"rank": 6217
+				},
+				"枸": {
+					"previousMinimum": "jau1m",
+					"rank": 4897
+				},
+				"姤": {
+					"previousMinimum": "duaoaue",
+					"rank": 5326
+				},
+				"椁": {
+					"previousMinimum": "gouoei",
+					"rank": 6789
+				},
+				"缑": {
+					"previousMinimum": "go1si",
+					"rank": 7258
+				},
+				"划": {
+					"previousMinimum": "h1ge",
+					"rank": 1576
+				},
+				"唝": {
+					"previousMinimum": "goea1k",
+					"rank": 5301
+				},
+				"厚": {
+					"previousMinimum": "ho1y",
+					"rank": 820
+				},
+				"候": {
+					"previousMinimum": "ho1reo",
+					"rank": 2705
+				},
+				"花": {
+					"previousMinimum": "h1c",
+					"rank": 191
+				},
+				"获": {
+					"previousMinimum": "h1ca",
+					"rank": 1191
+				},
+				"纮": {
+					"previousMinimum": "ho1si",
+					"rank": 4234
+				},
+				"喝": {
+					"previousMinimum": "heio",
+					"rank": 331
+				},
+				"呵": {
+					"previousMinimum": "raao",
+					"rank": 425
+				},
+				"嘿": {
+					"previousMinimum": "heii",
+					"rank": 579
+				},
+				"伙": {
+					"previousMinimum": "ho1re",
+					"rank": 2681
+				},
+				"货": {
+					"previousMinimum": "h1b",
+					"rank": 483
+				},
+				"㸌": {
+					"previousMinimum": "hoaoou",
+					"rank": 6296
+				},
+				"化": {
+					"previousMinimum": "hi1r",
+					"rank": 857
+				},
+				"沪": {
+					"previousMinimum": "huao",
+					"rank": 1224
+				},
+				"护": {
+					"previousMinimum": "h1vo",
+					"rank": 1895
+				},
+				"恒": {
+					"previousMinimum": "he1xi",
+					"rank": 2104
+				},
+				"洪": {
+					"previousMinimum": "ho1vu",
+					"rank": 2224
+				},
+				"宏": {
+					"previousMinimum": "ho1m",
+					"rank": 2627
+				},
+				"痕": {
+					"previousMinimum": "h1ne",
+					"rank": 2334
+				},
+				"虹": {
+					"previousMinimum": "ho1yo",
+					"rank": 2470
+				},
+				"钬": {
+					"previousMinimum": "ho1ji",
+					"rank": 5602
+				},
+				"弘": {
+					"previousMinimum": "h1goe",
+					"rank": 4277
+				},
+				"衡": {
+					"previousMinimum": "he1yi",
+					"rank": 4808
+				},
+				"𤩽": {
+					"previousMinimum": "hioeee",
+					"rank": 7912
+				},
+				"哄": {
+					"previousMinimum": "ho1k",
+					"rank": 734
+				},
+				"唤": {
+					"previousMinimum": "hioo",
+					"rank": 2318,
+					"userCode": "hioai"
+				},
+				"滑": {
+					"previousMinimum": "hieo",
+					"rank": 1105
+				},
+				"苛": {
+					"previousMinimum": "ke1c",
+					"rank": 3317
+				},
+				"救": {
+					"previousMinimum": "jo1p",
+					"rank": 562
+				},
+				"鹫": {
+					"previousMinimum": "j1nuuu",
+					"rank": 4120
+				},
+				"进": {
+					"previousMinimum": "j1y",
+					"rank": 242
+				},
+				"近": {
+					"previousMinimum": "j1yo",
+					"rank": 399
+				},
+				"酒": {
+					"previousMinimum": "j1vu",
+					"rank": 561
+				},
+				"急": {
+					"previousMinimum": "j1x",
+					"rank": 354
+				},
+				"惊": {
+					"previousMinimum": "j1xi",
+					"rank": 1180
+				},
+				"㴔": {
+					"previousMinimum": "jieoooe",
+					"rank": 6293
+				},
+				"䴖": {
+					"previousMinimum": "jieiee",
+					"rank": 6334
+				},
+				"件": {
+					"previousMinimum": "j1re",
+					"rank": 398
+				},
+				"健": {
+					"previousMinimum": "juo1re",
+					"rank": 2049
+				},
+				"街": {
+					"previousMinimum": "j1yi",
+					"rank": 572
+				},
+				"挤": {
+					"previousMinimum": "ji1v",
+					"rank": 593
+				},
+				"济": {
+					"previousMinimum": "jia1vu",
+					"rank": 3440
+				},
+				"记": {
+					"previousMinimum": "jiao",
+					"rank": 622
+				},
+				"计": {
+					"previousMinimum": "jia1fu",
+					"rank": 2090
+				},
+				"际": {
+					"previousMinimum": "ji1fua",
+					"rank": 3785
+				},
+				"机": {
+					"previousMinimum": "jiio",
+					"rank": 667
+				},
+				"枅": {
+					"previousMinimum": "jii1mu",
+					"rank": 6746
+				},
+				"旧": {
+					"previousMinimum": "j1vua",
+					"rank": 696
+				},
+				"觉": {
+					"previousMinimum": "j1ju",
+					"rank": 710
+				},
+				"锩": {
+					"previousMinimum": "jo1jio",
+					"rank": 7675
+				},
+				"界": {
+					"previousMinimum": "j1tu",
+					"rank": 827
+				},
+				"解": {
+					"previousMinimum": "je1j",
+					"rank": 954
+				},
+				"屈": {
+					"previousMinimum": "jae1v",
+					"rank": 2569
+				},
+				"䴗": {
+					"previousMinimum": "jaeoi",
+					"rank": 6335
+				},
+				"捐": {
+					"previousMinimum": "jo1vo",
+					"rank": 1222
+				},
+				"掬": {
+					"previousMinimum": "jai1vo",
+					"rank": 3853
+				},
+				"啾": {
+					"previousMinimum": "jo1k",
+					"rank": 1387
+				},
+				"狷": {
+					"previousMinimum": "j1qo",
+					"rank": 2708
+				},
+				"眷": {
+					"previousMinimum": "jo1m",
+					"rank": 4538
+				},
+				"掘": {
+					"previousMinimum": "joe1v",
+					"rank": 2594
+				},
+				"炅": {
+					"previousMinimum": "jo1ri",
+					"rank": 2772
+				},
+				"究": {
+					"previousMinimum": "g1xo",
+					"rank": 3935
+				},
+				"猄": {
+					"previousMinimum": "ji1qo",
+					"rank": 6989
+				},
+				"蹶": {
+					"previousMinimum": "jo1z",
+					"rank": 4691
+				},
+				"倚": {
+					"previousMinimum": "fiu1r",
+					"rank": 2414
+				},
+				"𫌀": {
+					"previousMinimum": "jiiooai",
+					"rank": 7948
+				},
+				"具": {
+					"previousMinimum": "j1bai",
+					"rank": 921
+				},
+				"䐃": {
+					"previousMinimum": "jaoau",
+					"rank": 6311
+				},
+				"虮": {
+					"previousMinimum": "jii1y",
+					"rank": 7435
+				},
+				"阔": {
+					"previousMinimum": "k1me",
+					"rank": 1966
+				},
+				"咯": {
+					"previousMinimum": "ka1k",
+					"rank": 186
+				},
+				"雨": {
+					"previousMinimum": "k1kau",
+					"rank": 401
+				},
+				"圆": {
+					"previousMinimum": "k1su",
+					"rank": 692
+				},
+				"原": {
+					"previousMinimum": "k1yae",
+					"rank": 940
+				},
+				"苑": {
+					"previousMinimum": "k1ca",
+					"rank": 2430
+				},
+				"控": {
+					"previousMinimum": "k1v",
+					"rank": 631
+				},
+				"员": {
+					"previousMinimum": "kao1k",
+					"rank": 1259
+				},
+				"箜": {
+					"previousMinimum": "ko1wu",
+					"rank": 4444
+				},
+				"扣": {
+					"previousMinimum": "k1vo",
+					"rank": 802
+				},
+				"克": {
+					"previousMinimum": "ke1v",
+					"rank": 1033
+				},
+				"溘": {
+					"previousMinimum": "ke1vui",
+					"rank": 6897
+				},
+				"遇": {
+					"previousMinimum": "kaao",
+					"rank": 1256
+				},
+				"御": {
+					"previousMinimum": "k1yi",
+					"rank": 2008
+				},
+				"院": {
+					"previousMinimum": "ko1f",
+					"rank": 1527
+				},
+				"源": {
+					"previousMinimum": "k1vu",
+					"rank": 1769
+				},
+				"冤": {
+					"previousMinimum": "k1mi",
+					"rank": 1902
+				},
+				"渊": {
+					"previousMinimum": "ko1vui",
+					"rank": 2561
+				},
+				"悦": {
+					"previousMinimum": "k1xio",
+					"rank": 2039
+				},
+				"窳": {
+					"previousMinimum": "kau1x",
+					"rank": 7203
+				},
+				"㺄": {
+					"previousMinimum": "kauouau",
+					"rank": 6297
+				},
+				"蛞": {
+					"previousMinimum": "koa1y",
+					"rank": 7448
+				},
+				"𫐄": {
+					"previousMinimum": "koaoea",
+					"rank": 7953
+				},
+				"宛": {
+					"previousMinimum": "kaouoo",
+					"rank": 4496
+				},
+				"怨": {
+					"previousMinimum": "k1xi",
+					"rank": 1665
+				},
+				"淋": {
+					"previousMinimum": "lioao",
+					"rank": 2096
+				},
+				"榴": {
+					"previousMinimum": "lo1mua",
+					"rank": 2972
+				},
+				"罗": {
+					"previousMinimum": "lo1s",
+					"rank": 703
+				},
+				"流": {
+					"previousMinimum": "lo1v",
+					"rank": 740
+				},
+				"理": {
+					"previousMinimum": "li1s",
+					"rank": 765
+				},
+				"露": {
+					"previousMinimum": "lo1ka",
+					"rank": 1085
+				},
+				"隆": {
+					"previousMinimum": "l1fua",
+					"rank": 2066
+				},
+				"聋": {
+					"previousMinimum": "l1loe",
+					"rank": 2696
+				},
+				"琳": {
+					"previousMinimum": "li1si",
+					"rank": 2478
+				},
+				"略": {
+					"previousMinimum": "l1tuo",
+					"rank": 964
+				},
+				"䂮": {
+					"previousMinimum": "loaoeee",
+					"rank": 6301
+				},
+				"捞": {
+					"previousMinimum": "laui",
+					"rank": 990
+				},
+				"屡": {
+					"previousMinimum": "l1vii",
+					"rank": 2807
+				},
+				"令": {
+					"previousMinimum": "l1re",
+					"rank": 905
+				},
+				"溜": {
+					"previousMinimum": "lo1vu",
+					"rank": 1110
+				},
+				"利": {
+					"previousMinimum": "l1he",
+					"rank": 1134
+				},
+				"丽": {
+					"previousMinimum": "l1hee",
+					"rank": 1171
+				},
+				"吏": {
+					"previousMinimum": "l1heee",
+					"rank": 4327
+				},
+				"𫵷": {
+					"previousMinimum": "liaoiaie",
+					"rank": 7995
+				},
+				"录": {
+					"previousMinimum": "l1j",
+					"rank": 1170
+				},
+				"𫘧": {
+					"previousMinimum": "luaoaae",
+					"rank": 7972
+				},
+				"漏": {
+					"previousMinimum": "lo1vui",
+					"rank": 1183
+				},
+				"痢": {
+					"previousMinimum": "li1ne",
+					"rank": 4932
+				},
+				"柳": {
+					"previousMinimum": "lo1mu",
+					"rank": 1635
+				},
+				"临": {
+					"previousMinimum": "l1vua",
+					"rank": 1924
+				},
+				"卵": {
+					"previousMinimum": "ku1p",
+					"rank": 2100
+				},
+				"岭": {
+					"previousMinimum": "l1va",
+					"rank": 2351
+				},
+				"笼": {
+					"previousMinimum": "lo1w",
+					"rank": 2436
+				},
+				"履": {
+					"previousMinimum": "la1vii",
+					"rank": 3685
+				},
+				"箩": {
+					"previousMinimum": "lo1wu",
+					"rank": 3020
+				},
+				"拢": {
+					"previousMinimum": "loe1vo",
+					"rank": 3192
+				},
+				"绫": {
+					"previousMinimum": "lie1s",
+					"rank": 3197
+				},
+				"玲": {
+					"previousMinimum": "li1sie",
+					"rank": 3310
+				},
+				"璃": {
+					"previousMinimum": "lieo1s",
+					"rank": 3774
+				},
+				"蠡": {
+					"previousMinimum": "liu1y",
+					"rank": 4807
+				},
+				"碌": {
+					"previousMinimum": "l1vie",
+					"rank": 3001
+				},
+				"黧": {
+					"previousMinimum": "l1hei",
+					"rank": 6255
+				},
+				"硌": {
+					"previousMinimum": "geao",
+					"rank": 2505
+				},
+				"毛": {
+					"previousMinimum": "m1ma",
+					"rank": 211
+				},
+				"马": {
+					"previousMinimum": "mauo",
+					"rank": 437
+				},
+				"摩": {
+					"previousMinimum": "mo1m",
+					"rank": 285
+				},
+				"麽": {
+					"previousMinimum": "mo1mae",
+					"rank": 661
+				},
+				"莫": {
+					"previousMinimum": "m1ca",
+					"rank": 714
+				},
+				"殁": {
+					"previousMinimum": "m1da",
+					"rank": 3612
+				},
+				"茉": {
+					"previousMinimum": "mo1cau",
+					"rank": 4067
+				},
+				"蓦": {
+					"previousMinimum": "maa1c",
+					"rank": 4972
+				},
+				"蜜": {
+					"previousMinimum": "miao",
+					"rank": 1428
+				},
+				"密": {
+					"previousMinimum": "miaoo",
+					"rank": 1941
+				},
+				"墓": {
+					"previousMinimum": "mu1c",
+					"rank": 1764
+				},
+				"暮": {
+					"previousMinimum": "muaoe",
+					"rank": 1963
+				},
+				"慕": {
+					"previousMinimum": "muaoei",
+					"rank": 2590
+				},
+				"幕": {
+					"previousMinimum": "mao1ca",
+					"rank": 2686
+				},
+				"募": {
+					"previousMinimum": "boe1ca",
+					"rank": 4037
+				},
+				"谋": {
+					"previousMinimum": "mo1fu",
+					"rank": 2386
+				},
+				"模": {
+					"previousMinimum": "mue",
+					"rank": 2734
+				},
+				"沫": {
+					"previousMinimum": "mo1vu",
+					"rank": 2886
+				},
+				"谬": {
+					"previousMinimum": "mo1fuo",
+					"rank": 3913
+				},
+				"侔": {
+					"previousMinimum": "mo1r",
+					"rank": 5645
+				},
+				"么": {
+					"previousMinimum": "m1p",
+					"rank": 792
+				},
+				"幺": {
+					"previousMinimum": "f1fuu",
+					"rank": 2327
+				},
+				"辟": {
+					"previousMinimum": "bi1x",
+					"rank": 2366
+				},
+				"咔": {
+					"previousMinimum": "kaio",
+					"rank": 462
+				},
+				"珀": {
+					"previousMinimum": "po1s",
+					"rank": 4531
+				},
+				"皮": {
+					"previousMinimum": "p1pi",
+					"rank": 559
+				},
+				"乒": {
+					"previousMinimum": "piei",
+					"rank": 4587
+				},
+				"潽": {
+					"previousMinimum": "puioo",
+					"rank": 4642
+				},
+				"泼": {
+					"previousMinimum": "po1v",
+					"rank": 1625
+				},
+				"粕": {
+					"previousMinimum": "p1mi",
+					"rank": 7238
+				},
+				"䴙": {
+					"previousMinimum": "piaoaeu",
+					"rank": 6337
+				},
+				"确": {
+					"previousMinimum": "q1vie",
+					"rank": 2244
+				},
+				"权": {
+					"previousMinimum": "qo1mu",
+					"rank": 1735
+				},
+				"顷": {
+					"previousMinimum": "q1fea",
+					"rank": 5253
+				},
+				"钦": {
+					"previousMinimum": "qi1ji",
+					"rank": 2408
+				},
+				"勍": {
+					"previousMinimum": "qi1lia",
+					"rank": 6416
+				},
+				"劝": {
+					"previousMinimum": "q1fo",
+					"rank": 744
+				},
+				"圈": {
+					"previousMinimum": "q1su",
+					"rank": 745
+				},
+				"器": {
+					"previousMinimum": "q1ko",
+					"rank": 1218
+				},
+				"吱": {
+					"previousMinimum": "wi1k",
+					"rank": 1821
+				},
+				"秋": {
+					"previousMinimum": "q1hee",
+					"rank": 1219
+				},
+				"庆": {
+					"previousMinimum": "q1gi",
+					"rank": 1813
+				},
+				"怯": {
+					"previousMinimum": "q1xio",
+					"rank": 3148
+				},
+				"卿": {
+					"previousMinimum": "q1je",
+					"rank": 2230
+				},
+				"碏": {
+					"previousMinimum": "qo1vie",
+					"rank": 7153
+				},
+				"绮": {
+					"previousMinimum": "q1sii",
+					"rank": 2268
+				},
+				"砌": {
+					"previousMinimum": "qi1vi",
+					"rank": 2281
+				},
+				"栖": {
+					"previousMinimum": "qii1m",
+					"rank": 2578
+				},
+				"柒": {
+					"previousMinimum": "qii1mu",
+					"rank": 3376
+				},
+				"阙": {
+					"previousMinimum": "q1me",
+					"rank": 3269
+				},
+				"擎": {
+					"previousMinimum": "qi1vou",
+					"rank": 3896
+				},
+				"祇": {
+					"previousMinimum": "yieooa",
+					"rank": 2482
+				},
+				"歧": {
+					"previousMinimum": "q1wi",
+					"rank": 4285
+				},
+				"氰": {
+					"previousMinimum": "qiee1q",
+					"rank": 4286
+				},
+				"己": {
+					"previousMinimum": "jiu1j",
+					"rank": 1395
+				},
+				"呇": {
+					"previousMinimum": "meoai",
+					"rank": 6431
+				},
+				"枢": {
+					"previousMinimum": "qa1mua",
+					"rank": 4514
+				},
+				"㭕": {
+					"previousMinimum": "qaioei",
+					"rank": 6287
+				},
+				"赶": {
+					"previousMinimum": "g1zo",
+					"rank": 816
+				},
+				"弱": {
+					"previousMinimum": "r1g",
+					"rank": 308
+				},
+				"嗷": {
+					"previousMinimum": "rau1k",
+					"rank": 833
+				},
+				"鳌": {
+					"previousMinimum": "r1kae",
+					"rank": 3138
+				},
+				"欧": {
+					"previousMinimum": "r1q",
+					"rank": 1099
+				},
+				"荣": {
+					"previousMinimum": "roe1c",
+					"rank": 2097
+				},
+				"呕": {
+					"previousMinimum": "ro1ko",
+					"rank": 1997
+				},
+				"蓉": {
+					"previousMinimum": "roe1ca",
+					"rank": 2652
+				},
+				"融": {
+					"previousMinimum": "r1ge",
+					"rank": 2976
+				},
+				"𠙶": {
+					"previousMinimum": "rouuaia",
+					"rank": 7903
+				},
+				"顽": {
+					"previousMinimum": "s1fea",
+					"rank": 4316
+				},
+				"汶": {
+					"previousMinimum": "suoao",
+					"rank": 5113
+				},
+				"兑": {
+					"previousMinimum": "duia",
+					"rank": 1961
+				},
+				"谓": {
+					"previousMinimum": "s1fuoe",
+					"rank": 1968
+				},
+				"岁": {
+					"previousMinimum": "s1v",
+					"rank": 135
+				},
+				"碎": {
+					"previousMinimum": "s1vie",
+					"rank": 612
+				},
+				"喂": {
+					"previousMinimum": "su1k",
+					"rank": 298
+				},
+				"味": {
+					"previousMinimum": "meia1k",
+					"rank": 635
+				},
+				"硙": {
+					"previousMinimum": "gai1vi",
+					"rank": 5942
+				},
+				"屋": {
+					"previousMinimum": "s1vii",
+					"rank": 1223
+				},
+				"瓦": {
+					"previousMinimum": "s1siu",
+					"rank": 1530
+				},
+				"瑟": {
+					"previousMinimum": "se1s",
+					"rank": 1047
+				},
+				"围": {
+					"previousMinimum": "s1suie",
+					"rank": 1556
+				},
+				"眭": {
+					"previousMinimum": "sui1m",
+					"rank": 4229
+				},
+				"睢": {
+					"previousMinimum": "sui1mu",
+					"rank": 4540
+				},
+				"怂": {
+					"previousMinimum": "s1xio",
+					"rank": 1036
+				},
+				"耸": {
+					"previousMinimum": "so1r",
+					"rank": 2397
+				},
+				"簌": {
+					"previousMinimum": "su1wue",
+					"rank": 5971
+				},
+				"松": {
+					"previousMinimum": "so1m",
+					"rank": 1352
+				},
+				"温": {
+					"previousMinimum": "s1vui",
+					"rank": 1500
+				},
+				"涩": {
+					"previousMinimum": "se1v",
+					"rank": 1980
+				},
+				"韦": {
+					"previousMinimum": "suieee",
+					"rank": 2668
+				},
+				"违": {
+					"previousMinimum": "hu1yoa",
+					"rank": 2844
+				},
+				"叟": {
+					"previousMinimum": "so1fo",
+					"rank": 3600
+				},
+				"髓": {
+					"previousMinimum": "s1guu",
+					"rank": 4260
+				},
+				"韪": {
+					"previousMinimum": "suiu1su",
+					"rank": 7740
+				},
+				"鹜": {
+					"previousMinimum": "s1nuuu",
+					"rank": 4394
+				},
+				"笥": {
+					"previousMinimum": "s1wue",
+					"rank": 5486
+				},
+				"芴": {
+					"previousMinimum": "huio1c",
+					"rank": 7338
+				},
+				"𫗧": {
+					"previousMinimum": "suaouaa",
+					"rank": 7967
+				},
+				"苏": {
+					"previousMinimum": "s1c",
+					"rank": 1310
+				},
+				"婠": {
+					"previousMinimum": "gi1nau",
+					"rank": 6522
+				},
+				"蓊": {
+					"previousMinimum": "sueue",
+					"rank": 7408
+				},
+				"台": {
+					"previousMinimum": "t1si",
+					"rank": 511
+				},
+				"𬀩": {
+					"previousMinimum": "suiuiaee",
+					"rank": 7999
+				},
+				"乌": {
+					"previousMinimum": "su1p",
+					"rank": 1831
+				},
+				"园": {
+					"previousMinimum": "k1suie",
+					"rank": 1492
+				},
+				"洒": {
+					"previousMinimum": "sa1vu",
+					"rank": 1682
+				},
+				"𫇭": {
+					"previousMinimum": "suiueiio",
+					"rank": 7947
+				},
+				"索": {
+					"previousMinimum": "so1si",
+					"rank": 1933
+				},
+				"㧐": {
+					"previousMinimum": "soeuei",
+					"rank": 6279
+				},
+				"芠": {
+					"previousMinimum": "suoeei",
+					"rank": 6029
+				},
+				"𫘜": {
+					"previousMinimum": "suoeaae",
+					"rank": 7969
+				},
+				"限": {
+					"previousMinimum": "x1fu",
+					"rank": 1281
+				},
+				"童": {
+					"previousMinimum": "t1l",
+					"rank": 1741
+				},
+				"投": {
+					"previousMinimum": "to1vo",
+					"rank": 639
+				},
+				"偷": {
+					"previousMinimum": "t1re",
+					"rank": 640
+				},
+				"涂": {
+					"previousMinimum": "tueo",
+					"rank": 748
+				},
+				"屠": {
+					"previousMinimum": "t1vii",
+					"rank": 2832
+				},
+				"凸": {
+					"previousMinimum": "tuio",
+					"rank": 1622
+				},
+				"脱": {
+					"previousMinimum": "to1k",
+					"rank": 839
+				},
+				"透": {
+					"previousMinimum": "t1yo",
+					"rank": 968
+				},
+				"捅": {
+					"previousMinimum": "toe1v",
+					"rank": 1098
+				},
+				"铜": {
+					"previousMinimum": "to1j",
+					"rank": 2036
+				},
+				"统": {
+					"previousMinimum": "to1s",
+					"rank": 2912
+				},
+				"挞": {
+					"previousMinimum": "taao",
+					"rank": 2962
+				},
+				"沓": {
+					"previousMinimum": "daeoi",
+					"rank": 3931
+				},
+				"梃": {
+					"previousMinimum": "tiea",
+					"rank": 4902
+				},
+				"𫘨": {
+					"previousMinimum": "tieoaa",
+					"rank": 7973
+				},
+				"通": {
+					"previousMinimum": "toe",
+					"rank": 1080
+				},
+				"余": {
+					"previousMinimum": "xaeo",
+					"rank": 1560
+				},
+				"愉": {
+					"previousMinimum": "ka1xi",
+					"rank": 3229
+				},
+				"萄": {
+					"previousMinimum": "ta1ca",
+					"rank": 5534
+				},
+				"鿎": {
+					"previousMinimum": "tauoe",
+					"rank": 7900
+				},
+				"睡": {
+					"previousMinimum": "v1m",
+					"rank": 105
+				},
+				"梳": {
+					"previousMinimum": "vui1mu",
+					"rank": 1618
+				},
+				"守": {
+					"previousMinimum": "vo1m",
+					"rank": 1028
+				},
+				"屎": {
+					"previousMinimum": "vi1v",
+					"rank": 349
+				},
+				"史": {
+					"previousMinimum": "viuoi",
+					"rank": 895
+				},
+				"双": {
+					"previousMinimum": "vi1f",
+					"rank": 477
+				},
+				"识": {
+					"previousMinimum": "vieoo",
+					"rank": 1279
+				},
+				"试": {
+					"previousMinimum": "viao",
+					"rank": 507
+				},
+				"式": {
+					"previousMinimum": "v1fi",
+					"rank": 646
+				},
+				"射": {
+					"previousMinimum": "f1ve",
+					"rank": 891
+				},
+				"摄": {
+					"previousMinimum": "v1vou",
+					"rank": 1034
+				},
+				"首": {
+					"previousMinimum": "vo1vo",
+					"rank": 1166
+				},
+				"拴": {
+					"previousMinimum": "vio1v",
+					"rank": 2109
+				},
+				"拾": {
+					"previousMinimum": "jea1vo",
+					"rank": 2050
+				},
+				"实": {
+					"previousMinimum": "vi1mu",
+					"rank": 1756
+				},
+				"媞": {
+					"previousMinimum": "dai1n",
+					"rank": 4603
+				},
+				"匙": {
+					"previousMinimum": "v1bi",
+					"rank": 2747
+				},
+				"蓍": {
+					"previousMinimum": "vii1c",
+					"rank": 5539
+				},
+				"疏": {
+					"previousMinimum": "v1fuu",
+					"rank": 2857
+				},
+				"署": {
+					"previousMinimum": "vu1si",
+					"rank": 3266
+				},
+				"终": {
+					"previousMinimum": "w1si",
+					"rank": 930
+				},
+				"招": {
+					"previousMinimum": "wa1v",
+					"rank": 429
+				},
+				"沼": {
+					"previousMinimum": "wauu",
+					"rank": 4428
+				},
+				"拃": {
+					"previousMinimum": "waa1vo",
+					"rank": 6675
+				},
+				"重": {
+					"previousMinimum": "yo",
+					"rank": 338
+				},
+				"众": {
+					"previousMinimum": "wo1r",
+					"rank": 1179
+				},
+				"抓": {
+					"previousMinimum": "wi1v",
+					"rank": 364
+				},
+				"知": {
+					"previousMinimum": "w1viu",
+					"rank": 779
+				},
+				"指": {
+					"previousMinimum": "wiuo",
+					"rank": 426
+				},
+				"𦭜": {
+					"previousMinimum": "wiioeiii",
+					"rank": 7921
+				},
+				"祉": {
+					"previousMinimum": "wiuoo",
+					"rank": 4542
+				},
+				"宅": {
+					"previousMinimum": "w1m",
+					"rank": 468
+				},
+				"寨": {
+					"previousMinimum": "w1muo",
+					"rank": 2348
+				},
+				"郅": {
+					"previousMinimum": "wia1wi",
+					"rank": 3703
+				},
+				"豸": {
+					"previousMinimum": "wai1w",
+					"rank": 5576
+				},
+				"直": {
+					"previousMinimum": "wieo",
+					"rank": 577
+				},
+				"撞": {
+					"previousMinimum": "wiea",
+					"rank": 590
+				},
+				"执": {
+					"previousMinimum": "wieo1v",
+					"rank": 1938
+				},
+				"摭": {
+					"previousMinimum": "wieo1vo",
+					"rank": 4743
+				},
+				"涨": {
+					"previousMinimum": "waeu",
+					"rank": 642
+				},
+				"掌": {
+					"previousMinimum": "waeui",
+					"rank": 1646
+				},
+				"粥": {
+					"previousMinimum": "w1go",
+					"rank": 981
+				},
+				"郑": {
+					"previousMinimum": "we1f",
+					"rank": 771
+				},
+				"证": {
+					"previousMinimum": "w1fu",
+					"rank": 1068
+				},
+				"著": {
+					"previousMinimum": "w1ca",
+					"rank": 1086
+				},
+				"苎": {
+					"previousMinimum": "wu1cau",
+					"rank": 7342
+				},
+				"状": {
+					"previousMinimum": "w1pao",
+					"rank": 1327
+				},
+				"壮": {
+					"previousMinimum": "w1paoe",
+					"rank": 1471
+				},
+				"皱": {
+					"previousMinimum": "w1pi",
+					"rank": 1473
+				},
+				"钟": {
+					"previousMinimum": "wo1ji",
+					"rank": 1539
+				},
+				"扎": {
+					"previousMinimum": "waeo",
+					"rank": 992
+				},
+				"州": {
+					"previousMinimum": "w1du",
+					"rank": 1703
+				},
+				"逐": {
+					"previousMinimum": "wueo",
+					"rank": 2598
+				},
+				"蠋": {
+					"previousMinimum": "wue1yo",
+					"rank": 7480
+				},
+				"轴": {
+					"previousMinimum": "wo1y",
+					"rank": 1877
+				},
+				"咫": {
+					"previousMinimum": "wiuoa",
+					"rank": 6432
+				},
+				"宙": {
+					"previousMinimum": "wo1mu",
+					"rank": 5068
+				},
+				"瑑": {
+					"previousMinimum": "wio1s",
+					"rank": 7037
+				},
+				"僎": {
+					"previousMinimum": "wioaui",
+					"rank": 6387
+				},
+				"政": {
+					"previousMinimum": "w1pu",
+					"rank": 2762
+				},
+				"嶒": {
+					"previousMinimum": "ceeei",
+					"rank": 5348
+				},
+				"癣": {
+					"previousMinimum": "x1ne",
+					"rank": 2301
+				},
+				"雪": {
+					"previousMinimum": "x1ka",
+					"rank": 519
+				},
+				"嗅": {
+					"previousMinimum": "xou1ko",
+					"rank": 1829
+				},
+				"修": {
+					"previousMinimum": "xo1r",
+					"rank": 663
+				},
+				"嘘": {
+					"previousMinimum": "xa1k",
+					"rank": 1112
+				},
+				"吁": {
+					"previousMinimum": "xa1ko",
+					"rank": 2998
+				},
+				"昔": {
+					"previousMinimum": "c1ria",
+					"rank": 3766
+				},
+				"婞": {
+					"previousMinimum": "xieaa",
+					"rank": 6521
+				},
+				"嬛": {
+					"previousMinimum": "xo1n",
+					"rank": 974
+				},
+				"吸": {
+					"previousMinimum": "xi1k",
+					"rank": 1052
+				},
+				"嘻": {
+					"previousMinimum": "xi1ko",
+					"rank": 1276
+				},
+				"膝": {
+					"previousMinimum": "xi1koa",
+					"rank": 2500
+				},
+				"炫": {
+					"previousMinimum": "x1hou",
+					"rank": 1197
+				},
+				"喜": {
+					"previousMinimum": "x1tu",
+					"rank": 1200
+				},
+				"憙": {
+					"previousMinimum": "xiuoe",
+					"rank": 6663
+				},
+				"悬": {
+					"previousMinimum": "xo1x",
+					"rank": 1393
+				},
+				"玄": {
+					"previousMinimum": "x1to",
+					"rank": 2323
+				},
+				"喧": {
+					"previousMinimum": "xoo1k",
+					"rank": 2626
+				},
+				"㳚": {
+					"previousMinimum": "xaaoooe",
+					"rank": 6292
+				},
+				"蓿": {
+					"previousMinimum": "xaoo",
+					"rank": 7415
+				},
+				"绚": {
+					"previousMinimum": "xo1sii",
+					"rank": 4104
+				},
+				"晅": {
+					"previousMinimum": "xoou1r",
+					"rank": 6723
+				},
+				"心": {
+					"previousMinimum": "x1xi",
+					"rank": 127
+				},
+				"息": {
+					"previousMinimum": "x1zi",
+					"rank": 2550
+				},
+				"䜣": {
+					"previousMinimum": "xioeoa",
+					"rank": 6321
+				},
+				"押": {
+					"previousMinimum": "fui1v",
+					"rank": 1789
+				},
+				"芯": {
+					"previousMinimum": "x1c",
+					"rank": 1411
+				},
+				"虫": {
+					"previousMinimum": "yo1y",
+					"rank": 1345
+				},
+				"茶": {
+					"previousMinimum": "y1c",
+					"rank": 499
+				},
+				"茬": {
+					"previousMinimum": "y1ca",
+					"rank": 1690
+				},
+				"菖": {
+					"previousMinimum": "yaei",
+					"rank": 2956
+				},
+				"𥻗": {
+					"previousMinimum": "yaeoou",
+					"rank": 6262
+				},
+				"充": {
+					"previousMinimum": "y1to",
+					"rank": 1354
+				},
+				"憧": {
+					"previousMinimum": "yo1xi",
+					"rank": 4137
+				},
+				"臭": {
+					"previousMinimum": "y1zi",
+					"rank": 582
+				},
+				"愁": {
+					"previousMinimum": "y1xi",
+					"rank": 856
+				},
+				"仇": {
+					"previousMinimum": "y1re",
+					"rank": 1503
+				},
+				"稠": {
+					"previousMinimum": "yo1h",
+					"rank": 2526
+				},
+				"崇": {
+					"previousMinimum": "y1va",
+					"rank": 2948
+				},
+				"绸": {
+					"previousMinimum": "yo1si",
+					"rank": 4448
+				},
+				"义": {
+					"previousMinimum": "fi1d",
+					"rank": 1908
+				},
+				"伧": {
+					"previousMinimum": "yeoo",
+					"rank": 5283
+				},
+				"扯": {
+					"previousMinimum": "yeu",
+					"rank": 597
+				},
+				"拖": {
+					"previousMinimum": "toi",
+					"rank": 629
+				},
+				"坐": {
+					"previousMinimum": "z1t",
+					"rank": 185
+				},
+				"岞": {
+					"previousMinimum": "zoaoiai",
+					"rank": 6557
+				},
+				"左": {
+					"previousMinimum": "z1g",
+					"rank": 655
+				},
+				"揍": {
+					"previousMinimum": "z1vo",
+					"rank": 815
+				},
+				"昨": {
+					"previousMinimum": "zo1ri",
+					"rank": 2005
+				},
+				"棕": {
+					"previousMinimum": "zo1mu",
+					"rank": 2221
+				},
+				"宗": {
+					"previousMinimum": "z1muoe",
+					"rank": 2649
+				},
+				"踪": {
+					"previousMinimum": "zo1zu",
+					"rank": 4818
+				},
+				"昃": {
+					"previousMinimum": "zeao",
+					"rank": 6713
+				},
+				"白": {
+					"previousMinimum": "ba1b",
+					"rank": 353
+				}
+			},
+			"conflictCodes": [
+				"baei",
+				"baouu",
+				"baua1v",
+				"baoaa",
+				"baeae",
+				"boi1v",
+				"bua1j",
+				"bua1ji",
+				"bua1jio",
+				"bua1jioi",
+				"boeo",
+				"boe1v",
+				"boeoo",
+				"boe1vo",
+				"baeoo",
+				"boi1w",
+				"bvi",
+				"bqu",
+				"bfi",
+				"coua",
+				"coei",
+				"cie1v",
+				"cea1r",
+				"cua1r",
+				"couae",
+				"cia1v",
+				"deeuu",
+				"dee1w",
+				"dii1v",
+				"doea",
+				"doua",
+				"douae",
+				"douaei",
+				"daoa1v",
+				"dae1vo",
+				"doei",
+				"douu",
+				"diu1v",
+				"die1yo",
+				"douua",
+				"daou1v",
+				"diu1vi",
+				"dee1vu",
+				"dee1wi",
+				"dee1wia",
+				"due1fe",
+				"dfi",
+				"dri",
+				"dqi",
+				"dba",
+				"djo",
+				"fouu",
+				"foua",
+				"fouii",
+				"foue",
+				"foue1v",
+				"fiaou",
+				"fieae",
+				"foueo",
+				"foueoo",
+				"fioau",
+				"fouae",
+				"fioeu",
+				"foe1r",
+				"foe1re",
+				"foe1reo",
+				"foe1reoe",
+				"fea1f",
+				"fuoe1m",
+				"fii1f",
+				"foio",
+				"foi1k",
+				"foi1ko",
+				"fouiu",
+				"fouiui",
+				"fieu",
+				"fioua",
+				"fieou",
+				"fieeu",
+				"fieie",
+				"fouio",
+				"foeu",
+				"foeuo",
+				"foeua",
+				"fiaoe",
+				"fieoo",
+				"fieee",
+				"foueu",
+				"fouau",
+				"foeui",
+				"foeuia",
+				"foeuiae",
+				"fouao",
+				"fieai",
+				"fieoe",
+				"fie1j",
+				"foee",
+				"foeei",
+				"foeeia",
+				"fue1t",
+				"fieau",
+				"feoo",
+				"fai1r",
+				"fia1fa",
+				"fouo",
+				"fiu1d",
+				"fioo",
+				"fueooe",
+				"fae1v",
+				"fko",
+				"fvi",
+				"ffi",
+				"guou",
+				"goei",
+				"gue1v",
+				"gue1vo",
+				"geo1m",
+				"goeiu",
+				"goea",
+				"gouo",
+				"goeie",
+				"goeiei",
+				"goeieie",
+				"goui",
+				"gouio",
+				"goui1v",
+				"guiae",
+				"guiaei",
+				"guia1m",
+				"guiie",
+				"goeia",
+				"gue1w",
+				"geoei",
+				"gouae",
+				"gouaei",
+				"guiuo",
+				"gouie",
+				"gouiei",
+				"gou1g",
+				"gouoe",
+				"gouia",
+				"goeau",
+				"goa1g",
+				"goeai",
+				"guia1j",
+				"gko",
+				"gvi",
+				"gba",
+				"gqu",
+				"gsi",
+				"gfi",
+				"houa",
+				"houau",
+				"hii1c",
+				"hii1cau",
+				"hii1cauu",
+				"heoa",
+				"hoeea",
+				"hei1k",
+				"hei1ko",
+				"houo",
+				"hoa1b",
+				"hoa1be",
+				"hoa1bei",
+				"hoa1beia",
+				"hia1r",
+				"hua1v",
+				"heeeo",
+				"hoeeo",
+				"hoeeoo",
+				"heoe",
+				"hoeei",
+				"houou",
+				"hoeeae",
+				"heeeu",
+				"hio1cau",
+				"hio1cauu",
+				"hoea",
+				"hoeai",
+				"hii1r",
+				"hoa1r",
+				"heo1k",
+				"heo1ko",
+				"heoi",
+				"hioo",
+				"hiooi",
+				"hei1c",
+				"hko",
+				"hvi",
+				"hba",
+				"joua",
+				"jouao",
+				"jio1y",
+				"jouu",
+				"jie1x",
+				"jie1xi",
+				"jie1xioi",
+				"juoa1r",
+				"jei1y",
+				"jiu1v",
+				"jia1f",
+				"jia1fu",
+				"jii1m",
+				"jouai",
+				"joeo",
+				"joou",
+				"jea1t",
+				"jea1tu",
+				"jea1tuo",
+				"jea1tuoe",
+				"jeu1j",
+				"jae1v",
+				"jooi",
+				"jai1v",
+				"joui",
+				"jooa",
+				"jooao",
+				"jai1vo",
+				"joeoe",
+				"joeu",
+				"jouio",
+				"jiei1q",
+				"jouo",
+				"jii1r",
+				"jao1b",
+				"jue1vo",
+				"jui1vo",
+				"jouoo",
+				"jii1y",
+				"jio1ye",
+				"jie1g",
+				"jko",
+				"jvi",
+				"jba",
+				"jqu",
+				"jsi",
+				"jfi",
+				"koao",
+				"kau1k",
+				"kooe",
+				"kooee",
+				"kooae",
+				"koea",
+				"kooei",
+				"koei",
+				"koua",
+				"kea1v",
+				"kaa1y",
+				"kooaa",
+				"kooeo",
+				"kooi",
+				"kooio",
+				"koaoo",
+				"kaaoea",
+				"kau1x",
+				"koa1y",
+				"koa1yo",
+				"kaouo",
+				"kooo",
+				"lioa",
+				"louee",
+				"loeo",
+				"loueo",
+				"liu1s",
+				"liu1si",
+				"liu1sie",
+				"liu1siee",
+				"loua",
+				"loee",
+				"loeee",
+				"lioee",
+				"loa1t",
+				"loa1tuo",
+				"loa1tuoe",
+				"lau1v",
+				"louae",
+				"lieuu",
+				"loui",
+				"lia1h",
+				"lia1he",
+				"lia1hee",
+				"lua1j",
+				"lua1jia",
+				"loua1v",
+				"liaooe",
+				"louu",
+				"lioei",
+				"liou",
+				"lieui",
+				"loeeu",
+				"lio1sie",
+				"lio1siee",
+				"lau1vi",
+				"louaa",
+				"loeou",
+				"loeu",
+				"lie1s",
+				"lie1si",
+				"lie1sie",
+				"lie1siee",
+				"liuoa",
+				"louaeu",
+				"lie1h",
+				"loeuu",
+				"lio1h",
+				"lio1he",
+				"loa1vi",
+				"loei",
+				"loeia",
+				"loeiai",
+				"lko",
+				"lvi",
+				"mau1m",
+				"moe1m",
+				"moao",
+				"moaoe",
+				"moa1c",
+				"moa1ca",
+				"moa1cau",
+				"mia1m",
+				"mua1c",
+				"mua1ca",
+				"mua1cau",
+				"mua1cauu",
+				"moue",
+				"moueo",
+				"moeoe",
+				"moaoo",
+				"maoa1ca",
+				"moua",
+				"mouao",
+				"moueu",
+				"mao1p",
+				"mooo",
+				"miu1x",
+				"noea",
+				"poao",
+				"pie1p",
+				"pie1pi",
+				"pie1pie",
+				"pui1v",
+				"poio",
+				"poioo",
+				"poi1v",
+				"poaoo",
+				"pia1vo",
+				"pii1x",
+				"qoao",
+				"qooe",
+				"qieu",
+				"qioi",
+				"qieeo",
+				"qooa",
+				"qooi",
+				"qia1k",
+				"qia1ko",
+				"qia1kou",
+				"qia1kouu",
+				"qoui",
+				"qiea",
+				"qoa1x",
+				"qieiu",
+				"qoa1v",
+				"qoa1vi",
+				"qiuoa",
+				"qiaoe",
+				"qii1m",
+				"qii1mu",
+				"qoaoo",
+				"qie1vo",
+				"qie1w",
+				"qieeu",
+				"qiu1j",
+				"qai1mu",
+				"quoe1z",
+				"qba",
+				"qqu",
+				"qfi",
+				"roa1g",
+				"roa1go",
+				"roa1goe",
+				"roa1goei",
+				"raue1k",
+				"roui",
+				"roee",
+				"rouui",
+				"rouuia",
+				"roeee",
+				"roeeei",
+				"rouu1y",
+				"rvi",
+				"rsi",
+				"rfi",
+				"sioee",
+				"suoa",
+				"suoao",
+				"suiao",
+				"sui1v",
+				"suia1k",
+				"siia",
+				"suiaeu",
+				"sui1vi",
+				"sia1s",
+				"suoui",
+				"seao",
+				"suieia",
+				"suu1v",
+				"suu1vo",
+				"suiiia",
+				"suiiiae",
+				"soeu",
+				"soeuu",
+				"suaoue",
+				"soei",
+				"saiii",
+				"suoio",
+				"siu1s",
+				"seaoo",
+				"suu1w",
+				"suiee",
+				"suieee",
+				"souu",
+				"suiui",
+				"suiuia",
+				"suaoa",
+				"siouo",
+				"sia1w",
+				"sua1ca",
+				"sua1cau",
+				"sua1cauu",
+				"sioia",
+				"sueu",
+				"sia1si",
+				"suiuiae",
+				"sua1p",
+				"suoo",
+				"sue1w",
+				"sioei",
+				"soee",
+				"sieoo",
+				"seou",
+				"suiu1tu",
+				"soe1s",
+				"suo1f",
+				"suo1fu",
+				"suoua",
+				"sko",
+				"svi",
+				"sba",
+				"squ",
+				"sfi",
+				"toee",
+				"toue",
+				"toui",
+				"tue1v",
+				"tue1vu",
+				"toi1k",
+				"toi1ko",
+				"toua",
+				"toeu",
+				"toeeu",
+				"toeua",
+				"taa1v",
+				"tie1m",
+				"toeaa",
+				"tue1r",
+				"touio",
+				"tue1x",
+				"tou1k",
+				"tauo1c",
+				"touu",
+				"tuoe1y",
+				"vui1m",
+				"vui1mu",
+				"vauui",
+				"vouu",
+				"viu1v",
+				"vie1f",
+				"via1f",
+				"vea1v",
+				"vouuo",
+				"vio1v",
+				"vie1m",
+				"viaoa",
+				"vioo",
+				"viioe",
+				"vua1fu",
+				"viea",
+				"vua1s",
+				"vua1si",
+				"vko",
+				"vfi",
+				"vhe",
+				"vsi",
+				"vgu",
+				"vlo",
+				"vba",
+				"woei",
+				"wau1v",
+				"wau1vo",
+				"woea",
+				"woeau",
+				"wii1v",
+				"wii1vou",
+				"wiu1v",
+				"waui1v",
+				"wai1m",
+				"wia1w",
+				"wia1wi",
+				"wia1wia",
+				"wie1v",
+				"wie1vie",
+				"wie1vo",
+				"wie1vou",
+				"wie1vouu",
+				"wae1v",
+				"woui",
+				"weea1f",
+				"wua1c",
+				"wiea1p",
+				"woua",
+				"woeiu",
+				"wae1vo",
+				"wouio",
+				"wue1y",
+				"wue1yo",
+				"wouae",
+				"wiu1vi",
+				"wouao",
+				"wio1s",
+				"weei1p",
+				"wii1r",
+				"wiu1h",
+				"wfi",
+				"wri",
+				"wlo",
+				"xoou",
+				"xou1k",
+				"xoui",
+				"xai1k",
+				"xie1ri",
+				"xooi",
+				"xii1k",
+				"xii1ko",
+				"xooa",
+				"xiu1t",
+				"xooe",
+				"xooeo",
+				"xooii",
+				"xaa1ca",
+				"xaa1cau",
+				"xaa1cauu",
+				"xooaa",
+				"xooui",
+				"xae1r",
+				"xioo",
+				"xio1z",
+				"xie1z",
+				"xue1vo",
+				"xia1c",
+				"yoee",
+				"yae1c",
+				"yae1ca",
+				"yae1cau",
+				"yoei",
+				"yoeio",
+				"youa",
+				"youe",
+				"youeu",
+				"youeue",
+				"yoeei",
+				"youea",
+				"yai1d",
+				"yae1d",
+				"yau1d",
+				"yeoo",
+				"yiu1vo",
+				"youaa",
+				"zoa1t",
+				"zoa1tu",
+				"zoa1tuu",
+				"zou1g",
+				"zou1go",
+				"zou1goe",
+				"zou1goei",
+				"zoua",
+				"zouae",
+				"zoeo",
+				"zoei",
+				"zoeio",
+				"zoeii",
+				"zea1r",
+				"zoeoo",
+				"zia1b",
+				"zii1q"
+			]
+		},
+		"snow_jiandao": {
+			"id": "oc21-shape",
+			"targets": {
+				"俾": {
+					"previousMinimum": "bdiu",
+					"rank": 1834
+				},
+				"跋": {
+					"previousMinimum": "bdoi",
+					"rank": 2451
+				},
+				"辟": {
+					"previousMinimum": "bfavo",
+					"rank": 2366
+				},
+				"髓": {
+					"previousMinimum": "cxiav",
+					"rank": 4260
+				},
+				"眭": {
+					"previousMinimum": "gxiav",
+					"rank": 4229
+				},
+				"思": {
+					"previousMinimum": "ckiao",
+					"rank": 1619
+				},
+				"昔": {
+					"previousMinimum": "cmvi",
+					"rank": 3766
+				},
+				"疏": {
+					"previousMinimum": "chai",
+					"rank": 2857
+				},
+				"趋": {
+					"previousMinimum": "chvo",
+					"rank": 3723
+				},
+				"趣": {
+					"previousMinimum": "cwvo",
+					"rank": 586
+				},
+				"餐": {
+					"previousMinimum": "cbiv",
+					"rank": 1314
+				},
+				"典": {
+					"previousMinimum": "dpia",
+					"rank": 3124
+				},
+				"巅": {
+					"previousMinimum": "dpiau",
+					"rank": 3125
+				},
+				"投": {
+					"previousMinimum": "dwiu",
+					"rank": 639
+				},
+				"檐": {
+					"previousMinimum": "dnvua",
+					"rank": 3737
+				},
+				"禔": {
+					"previousMinimum": "efoao",
+					"rank": 5949
+				},
+				"识": {
+					"previousMinimum": "kfoao",
+					"rank": 1279
+				},
+				"积": {
+					"previousMinimum": "efuvo",
+					"rank": 2328
+				},
+				"净": {
+					"previousMinimum": "erovu",
+					"rank": 1499
+				},
+				"啄": {
+					"previousMinimum": "emov",
+					"rank": 2477
+				},
+				"育": {
+					"previousMinimum": "ewovu",
+					"rank": 3561
+				},
+				"属": {
+					"previousMinimum": "ehav",
+					"rank": 980
+				},
+				"慎": {
+					"previousMinimum": "eeoo",
+					"rank": 2555
+				},
+				"致": {
+					"previousMinimum": "efva",
+					"rank": 550
+				},
+				"这": {
+					"previousMinimum": "e",
+					"rank": 19
+				},
+				"价": {
+					"previousMinimum": "glii",
+					"rank": 994
+				},
+				"拘": {
+					"previousMinimum": "gwiuu",
+					"rank": 2484
+				},
+				"痕": {
+					"previousMinimum": "geov",
+					"rank": 2334
+				},
+				"惊": {
+					"previousMinimum": "heoo",
+					"rank": 1180
+				},
+				"夥": {
+					"previousMinimum": "hmi",
+					"rank": 5060
+				},
+				"货": {
+					"previousMinimum": "hmiu",
+					"rank": 483
+				},
+				"珲": {
+					"previousMinimum": "hbvv",
+					"rank": 4356
+				},
+				"触": {
+					"previousMinimum": "hjua",
+					"rank": 2076
+				},
+				"倚": {
+					"previousMinimum": "jfivu",
+					"rank": 2414
+				},
+				"押": {
+					"previousMinimum": "yli",
+					"rank": 1789
+				},
+				"拮": {
+					"previousMinimum": "jliuv",
+					"rank": 5766
+				},
+				"挟": {
+					"previousMinimum": "jliuvo",
+					"rank": 3713
+				},
+				"更": {
+					"previousMinimum": "gr",
+					"rank": 70
+				},
+				"沮": {
+					"previousMinimum": "jpai",
+					"rank": 5409
+				},
+				"滥": {
+					"previousMinimum": "lna",
+					"rank": 2779
+				},
+				"激": {
+					"previousMinimum": "jfaui",
+					"rank": 2371
+				},
+				"脚": {
+					"previousMinimum": "jkuv",
+					"rank": 407,
+					"userCode": "jquv"
+				},
+				"醒": {
+					"previousMinimum": "jgvio",
+					"rank": 510
+				},
+				"什": {
+					"previousMinimum": "keiu",
+					"rank": 1096
+				},
+				"侁": {
+					"previousMinimum": "keiuv",
+					"rank": 6359
+				},
+				"叶": {
+					"previousMinimum": "ksou",
+					"rank": 1157
+				},
+				"硌": {
+					"previousMinimum": "lmvu",
+					"rank": 2505
+				},
+				"碌": {
+					"previousMinimum": "lhvua",
+					"rank": 3001
+				},
+				"谷": {
+					"previousMinimum": "ghuo",
+					"rank": 1423
+				},
+				"幕": {
+					"previousMinimum": "mjiii",
+					"rank": 2686
+				},
+				"仅": {
+					"previousMinimum": "jbia",
+					"rank": 877
+				},
+				"摊": {
+					"previousMinimum": "nniu",
+					"rank": 1320
+				},
+				"伴": {
+					"previousMinimum": "bnio",
+					"rank": 1130
+				},
+				"房": {
+					"previousMinimum": "fyoa",
+					"rank": 599
+				},
+				"繁": {
+					"previousMinimum": "fnuv",
+					"rank": 3135
+				},
+				"控": {
+					"previousMinimum": "pjiu",
+					"rank": 631
+				},
+				"璩": {
+					"previousMinimum": "qtvv",
+					"rank": 5908
+				},
+				"㭕": {
+					"previousMinimum": "qtvvo",
+					"rank": 6287
+				},
+				"恪": {
+					"previousMinimum": "psoou",
+					"rank": 3228
+				},
+				"浸": {
+					"previousMinimum": "jbaav",
+					"rank": 2560
+				},
+				"精": {
+					"previousMinimum": "jgou",
+					"rank": 1075
+				},
+				"胜": {
+					"previousMinimum": "kruu",
+					"rank": 1001
+				},
+				"仰": {
+					"previousMinimum": "ryiua",
+					"rank": 2625
+				},
+				"嚣": {
+					"previousMinimum": "rzoov",
+					"rank": 4865
+				},
+				"樘": {
+					"previousMinimum": "tyvi",
+					"rank": 6816
+				},
+				"崭": {
+					"previousMinimum": "eniav",
+					"rank": 4731
+				},
+				"欻": {
+					"previousMinimum": "sqo",
+					"rank": 4425
+				},
+				"园": {
+					"previousMinimum": "ttia",
+					"rank": 1492
+				},
+				"忒": {
+					"previousMinimum": "td",
+					"rank": 634
+				},
+				"欢": {
+					"previousMinimum": "hta",
+					"rank": 1974
+				},
+				"限": {
+					"previousMinimum": "weai",
+					"rank": 1281
+				},
+				"靺": {
+					"previousMinimum": "wlvi",
+					"rank": 5251
+				},
+				"鞋": {
+					"previousMinimum": "wlviv",
+					"rank": 518
+				},
+				"栖": {
+					"previousMinimum": "xfvv",
+					"rank": 2578
+				},
+				"棤": {
+					"previousMinimum": "qkvv",
+					"rank": 6782
+				},
+				"釐": {
+					"previousMinimum": "lfvvi",
+					"rank": 4383
+				},
+				"携": {
+					"previousMinimum": "xfiui",
+					"rank": 1567
+				},
+				"淡": {
+					"previousMinimum": "dnao",
+					"rank": 830
+				},
+				"御": {
+					"previousMinimum": "yluu",
+					"rank": 2008
+				},
+				"宛": {
+					"previousMinimum": "yroo",
+					"rank": 4496
+				},
+				"币": {
+					"previousMinimum": "ybui",
+					"rank": 1930
+				},
+				"详": {
+					"previousMinimum": "yyoa",
+					"rank": 3528
+				},
+				"释": {
+					"previousMinimum": "kfuoa",
+					"rank": 2945
+				},
+				"措": {
+					"previousMinimum": "zsiu",
+					"rank": 2038
+				},
+				"择": {
+					"previousMinimum": "zsi",
+					"rank": 3016
+				},
+				"族": {
+					"previousMinimum": "zhov",
+					"rank": 1600
+				}
+			},
+			"conflictCodes": [
+				"bdiu",
+				"bdoi",
+				"bdoiv",
+				"bjavo",
+				"cxiav",
+				"ckiao",
+				"ckiaoa",
+				"cmvi",
+				"cmvio",
+				"chai",
+				"chvo",
+				"cwvo",
+				"cbiv",
+				"dpia",
+				"dwiu",
+				"dpiau",
+				"dnvua",
+				"efoao",
+				"efuvo",
+				"erovu",
+				"ewov",
+				"ewovu",
+				"ehav",
+				"eeoo",
+				"exva",
+				"ed",
+				"edo",
+				"glii",
+				"gwiuu",
+				"geov",
+				"heoo",
+				"hmi",
+				"hxvvo",
+				"hjua",
+				"jfivu",
+				"jliu",
+				"jliuv",
+				"jliuvo",
+				"jgvi",
+				"jpai",
+				"jpaii",
+				"jqaui",
+				"jkuv",
+				"jgvio",
+				"jgvioi",
+				"keiu",
+				"keiuo",
+				"ksiuo",
+				"ksou",
+				"lmvu",
+				"lmvua",
+				"lhuo",
+				"mjiii",
+				"mniii",
+				"mniiia",
+				"mjiiia",
+				"mfavo",
+				"nhia",
+				"nniu",
+				"pnio",
+				"pyoa",
+				"pnuv",
+				"qjiu",
+				"qtvv",
+				"qkoou",
+				"qbaav",
+				"qgou",
+				"qguu",
+				"ryiua",
+				"rzoov",
+				"srvio",
+				"srovu",
+				"sniav",
+				"sqo",
+				"sqou",
+				"srvioi",
+				"ttia",
+				"ttiav",
+				"tdv",
+				"tdvo",
+				"tnao",
+				"wniav",
+				"weai",
+				"wlvi",
+				"wlviv",
+				"wlvivo",
+				"xfvv",
+				"xfvvi",
+				"xfvvia",
+				"xliuvo",
+				"xfiui",
+				"xfiuio",
+				"ynao",
+				"yluu",
+				"yroo",
+				"yroou",
+				"ydoou",
+				"ybui",
+				"ybuia",
+				"yyoa",
+				"yyoao",
+				"yfuoa",
+				"zwvo",
+				"zsiu",
+				"zsiuv",
+				"zwov"
+			]
+		},
+		"snow_sanpin": {
+			"id": "oc21-tone",
+			"targets": {
+				"罢": {
+					"previousMinimum": "blai",
+					"rank": 1407
+				},
+				"跋": {
+					"previousMinimum": "blvia",
+					"rank": 2451
+				},
+				"湃": {
+					"previousMinimum": "pkao",
+					"rank": 4350
+				},
+				"瓷": {
+					"previousMinimum": "cfvov",
+					"rank": 1942
+				},
+				"璨": {
+					"previousMinimum": "cnavv",
+					"rank": 4291
+				},
+				"思": {
+					"previousMinimum": "cfoi",
+					"rank": 1619
+				},
+				"灿": {
+					"previousMinimum": "cnaou",
+					"rank": 2864
+				},
+				"辏": {
+					"previousMinimum": "cwav",
+					"rank": 5586
+				},
+				"擞": {
+					"previousMinimum": "cwavi",
+					"rank": 5782
+				},
+				"厕": {
+					"previousMinimum": "cfov",
+					"rank": 3089
+				},
+				"司": {
+					"previousMinimum": "cfvav",
+					"rank": 2164
+				},
+				"叠": {
+					"previousMinimum": "dcvao",
+					"rank": 996
+				},
+				"碟": {
+					"previousMinimum": "dcvvu",
+					"rank": 1632
+				},
+				"谍": {
+					"previousMinimum": "dcvoa",
+					"rank": 2810
+				},
+				"干": {
+					"previousMinimum": "gn",
+					"rank": 152
+				},
+				"怀": {
+					"previousMinimum": "hcvoo",
+					"rank": 1213
+				},
+				"槐": {
+					"previousMinimum": "hcvvi",
+					"rank": 3768
+				},
+				"皆": {
+					"previousMinimum": "jciva",
+					"rank": 555
+				},
+				"节": {
+					"previousMinimum": "jcivi",
+					"rank": 683
+				},
+				"借": {
+					"previousMinimum": "jcaui",
+					"rank": 570
+				},
+				"介": {
+					"previousMinimum": "gsauo",
+					"rank": 1056
+				},
+				"街": {
+					"previousMinimum": "jciuu",
+					"rank": 572
+				},
+				"界": {
+					"previousMinimum": "jcaia",
+					"rank": 827
+				},
+				"解": {
+					"previousMinimum": "jcaua",
+					"rank": 954
+				},
+				"届": {
+					"previousMinimum": "jcaav",
+					"rank": 971
+				},
+				"结": {
+					"previousMinimum": "jciaa",
+					"rank": 1122
+				},
+				"截": {
+					"previousMinimum": "jcvviv",
+					"rank": 1185
+				},
+				"阶": {
+					"previousMinimum": "jciai",
+					"rank": 3100
+				},
+				"计": {
+					"previousMinimum": "jfoo",
+					"rank": 2090
+				},
+				"激": {
+					"previousMinimum": "jfo",
+					"rank": 2371
+				},
+				"究": {
+					"previousMinimum": "jeoo",
+					"rank": 3935
+				},
+				"间": {
+					"previousMinimum": "jpi",
+					"rank": 506
+				},
+				"见": {
+					"previousMinimum": "jp",
+					"rank": 276
+				},
+				"记": {
+					"previousMinimum": "jfao",
+					"rank": 622
+				},
+				"世": {
+					"previousMinimum": "kfavii",
+					"rank": 1721
+				},
+				"始": {
+					"previousMinimum": "kfuau",
+					"rank": 1861
+				},
+				"视": {
+					"previousMinimum": "kfooa",
+					"rank": 1681
+				},
+				"甩": {
+					"previousMinimum": "kcuua",
+					"rank": 553
+				},
+				"氏": {
+					"previousMinimum": "kfaua",
+					"rank": 2195
+				},
+				"施": {
+					"previousMinimum": "kfuov",
+					"rank": 2292
+				},
+				"媞": {
+					"previousMinimum": "dkaau",
+					"rank": 4603
+				},
+				"匙": {
+					"previousMinimum": "kfoi",
+					"rank": 2747
+				},
+				"鎏": {
+					"previousMinimum": "levoov",
+					"rank": 5600
+				},
+				"列": {
+					"previousMinimum": "zlvv",
+					"rank": 1496
+				},
+				"裂": {
+					"previousMinimum": "lcuvu",
+					"rank": 1852
+				},
+				"烈": {
+					"previousMinimum": "lcavuao",
+					"rank": 3010
+				},
+				"柳": {
+					"previousMinimum": "leuv",
+					"rank": 1635
+				},
+				"岭": {
+					"previousMinimum": "lguia",
+					"rank": 2351
+				},
+				"榴": {
+					"previousMinimum": "levvi",
+					"rank": 2972
+				},
+				"冽": {
+					"previousMinimum": "lcaov",
+					"rank": 4860
+				},
+				"伶": {
+					"previousMinimum": "lgou",
+					"rank": 3433
+				},
+				"磨": {
+					"previousMinimum": "mjoov",
+					"rank": 1152
+				},
+				"魔": {
+					"previousMinimum": "mjvo",
+					"rank": 541
+				},
+				"宁": {
+					"previousMinimum": "nga",
+					"rank": 1695
+				},
+				"拧": {
+					"previousMinimum": "ng",
+					"rank": 1297
+				},
+				"刻": {
+					"previousMinimum": "pdio",
+					"rank": 1463
+				},
+				"憩": {
+					"previousMinimum": "qfauv",
+					"rank": 4885
+				},
+				"切": {
+					"previousMinimum": "qcava",
+					"rank": 487
+				},
+				"弃": {
+					"previousMinimum": "qfaov",
+					"rank": 1494
+				},
+				"奇": {
+					"previousMinimum": "rkuvu",
+					"rank": 1546
+				},
+				"绮": {
+					"previousMinimum": "qfuaa",
+					"rank": 2268
+				},
+				"淇": {
+					"previousMinimum": "qfvoov",
+					"rank": 2275
+				},
+				"砌": {
+					"previousMinimum": "qfavu",
+					"rank": 2281
+				},
+				"掮": {
+					"previousMinimum": "qpvvi",
+					"rank": 5770
+				},
+				"靬": {
+					"previousMinimum": "qpvv",
+					"rank": 5008
+				},
+				"启": {
+					"previousMinimum": "qfuoa",
+					"rank": 3022
+				},
+				"企": {
+					"previousMinimum": "qfauo",
+					"rank": 3074
+				},
+				"啐": {
+					"previousMinimum": "cxai",
+					"rank": 2574
+				},
+				"尔": {
+					"previousMinimum": "rpuua",
+					"rank": 1505
+				},
+				"儿": {
+					"previousMinimum": "rpou",
+					"rank": 266
+				},
+				"撑": {
+					"previousMinimum": "sro",
+					"rank": 670,
+					"userCode": "sriv"
+				},
+				"成": {
+					"previousMinimum": "sr",
+					"rank": 136
+				},
+				"撮": {
+					"previousMinimum": "sqi",
+					"rank": 1759
+				},
+				"乌": {
+					"previousMinimum": "whiua",
+					"rank": 1831
+				},
+				"鼯": {
+					"previousMinimum": "whvui",
+					"rank": 2987
+				},
+				"伍": {
+					"previousMinimum": "whou",
+					"rank": 2873
+				},
+				"务": {
+					"previousMinimum": "whoua",
+					"rank": 3004
+				},
+				"刑": {
+					"previousMinimum": "xgvvvu",
+					"rank": 1214
+				},
+				"形": {
+					"previousMinimum": "xgovv",
+					"rank": 1757
+				},
+				"谢": {
+					"previousMinimum": "xcaoa",
+					"rank": 453
+				},
+				"醒": {
+					"previousMinimum": "xguvi",
+					"rank": 510
+				},
+				"鞋": {
+					"previousMinimum": "xcvvi",
+					"rank": 518
+				},
+				"邪": {
+					"previousMinimum": "ksvva",
+					"rank": 1518
+				},
+				"携": {
+					"previousMinimum": "xcvviv",
+					"rank": 1567
+				},
+				"性": {
+					"previousMinimum": "xgaoo",
+					"rank": 719
+				},
+				"兴": {
+					"previousMinimum": "xgioo",
+					"rank": 2183
+				},
+				"星": {
+					"previousMinimum": "xgiia",
+					"rank": 847
+				},
+				"蟹": {
+					"previousMinimum": "xcaua",
+					"rank": 868
+				},
+				"侠": {
+					"previousMinimum": "jlvui",
+					"rank": 1021
+				},
+				"巡": {
+					"previousMinimum": "kbaaa",
+					"rank": 3090
+				},
+				"瑕": {
+					"previousMinimum": "xlvvv",
+					"rank": 1321
+				},
+				"挟": {
+					"previousMinimum": "jlivivv",
+					"rank": 3713
+				},
+				"讯": {
+					"previousMinimum": "xdaoa",
+					"rank": 1763
+				},
+				"训": {
+					"previousMinimum": "xdooa",
+					"rank": 2250
+				},
+				"腥": {
+					"previousMinimum": "xgiua",
+					"rank": 2592
+				},
+				"循": {
+					"previousMinimum": "xdvuu",
+					"rank": 3687
+				},
+				"叶": {
+					"previousMinimum": "ksai",
+					"rank": 1157
+				},
+				"遐": {
+					"previousMinimum": "xlvav",
+					"rank": 5227
+				},
+				"硎": {
+					"previousMinimum": "xgvvui",
+					"rank": 7145
+				},
+				"逸": {
+					"previousMinimum": "yfaua",
+					"rank": 2725
+				},
+				"奕": {
+					"previousMinimum": "yfaovui",
+					"rank": 2370
+				},
+				"嗌": {
+					"previousMinimum": "rkaia",
+					"rank": 3296
+				},
+				"毅": {
+					"previousMinimum": "yfaovou",
+					"rank": 3068
+				},
+				"移": {
+					"previousMinimum": "sfuuv",
+					"rank": 1624
+				},
+				"忆": {
+					"previousMinimum": "yfaooi",
+					"rank": 1809
+				},
+				"义": {
+					"previousMinimum": "slio",
+					"rank": 1908
+				},
+				"轶": {
+					"previousMinimum": "yfava",
+					"rank": 1981
+				},
+				"宜": {
+					"previousMinimum": "yfoo",
+					"rank": 2046
+				},
+				"翼": {
+					"previousMinimum": "yfaao",
+					"rank": 2143
+				},
+				"姨": {
+					"previousMinimum": "yfvau",
+					"rank": 2145
+				},
+				"椅": {
+					"previousMinimum": "yfuvi",
+					"rank": 2194
+				},
+				"倚": {
+					"previousMinimum": "jfiui",
+					"rank": 2414
+				},
+				"块": {
+					"previousMinimum": "pca",
+					"rank": 382
+				},
+				"意": {
+					"previousMinimum": "yfaov",
+					"rank": 1290
+				}
+			},
+			"conflictCodes": [
+				"blo",
+				"blvi",
+				"blvo",
+				"cfvo",
+				"cnav",
+				"cfii",
+				"cnao",
+				"cwav",
+				"cfo",
+				"cfva",
+				"dcv",
+				"dcvv",
+				"dcvo",
+				"ed",
+				"eda",
+				"edao",
+				"edaov",
+				"gnav",
+				"hcv",
+				"hcvv",
+				"jci",
+				"jciv",
+				"jca",
+				"jcau",
+				"jciu",
+				"jcai",
+				"jcuu",
+				"jcaa",
+				"jcva",
+				"jcvv",
+				"jcia",
+				"jfoo",
+				"jeo",
+				"jpo",
+				"jfooa",
+				"kfavi",
+				"kfua",
+				"kfaoa",
+				"kcu",
+				"kfau",
+				"kfiov",
+				"kfaa",
+				"kfo",
+				"kfuo",
+				"lcu",
+				"levoo",
+				"lca",
+				"lcav",
+				"lcavu",
+				"leu",
+				"lgui",
+				"levv",
+				"lcao",
+				"lgo",
+				"lcuv",
+				"mjvov",
+				"nga",
+				"phav",
+				"pdio",
+				"pdiov",
+				"qfau",
+				"qca",
+				"qfao",
+				"qfvvu",
+				"qci",
+				"qfua",
+				"qfvoo",
+				"qfav",
+				"qpvvi",
+				"qfuo",
+				"qfuu",
+				"qfo",
+				"rpuu",
+				"rpo",
+				"sro",
+				"srov",
+				"sqi",
+				"sqiv",
+				"whiu",
+				"whvu",
+				"who",
+				"whou",
+				"xgvv",
+				"xgvvv",
+				"xca",
+				"xgu",
+				"xcv",
+				"xcvv",
+				"xcvvi",
+				"xga",
+				"xgao",
+				"xgi",
+				"xcau",
+				"xlv",
+				"xdv",
+				"xdva",
+				"xlvv",
+				"xcvviv",
+				"xda",
+				"xdao",
+				"xgiu",
+				"xgio",
+				"xdvu",
+				"xcvi",
+				"xlva",
+				"xgvvu",
+				"yfau",
+				"yfaovu",
+				"yfaia",
+				"yfaovo",
+				"yfvu",
+				"yfaoo",
+				"yfaou",
+				"yfav",
+				"yfvo",
+				"yfaa",
+				"yfva",
+				"yfuv",
+				"yfuu",
+				"ykv",
+				"yfo",
+				"yfoo"
+			]
+		},
+		"snow_qingyun": {
+			"id": "qingyun",
+			"targets": {
+				"介": {
+					"previousMinimum": "rq",
+					"rank": 1056
+				},
+				"晒": {
+					"previousMinimum": "rx",
+					"rank": 274
+				},
+				"休": {
+					"previousMinimum": "lp",
+					"rank": 1305
+				},
+				"切": {
+					"previousMinimum": "qc",
+					"rank": 487
+				},
+				"呆": {
+					"previousMinimum": "fp",
+					"rank": 273,
+					"userCode": "fp"
+				},
+				"坎": {
+					"previousMinimum": "tb",
+					"rank": 1454
+				},
+				"姝": {
+					"previousMinimum": "xz",
+					"rank": 2710
+				},
+				"宋": {
+					"previousMinimum": "bp",
+					"rank": 1379
+				},
+				"容": {
+					"previousMinimum": "bg",
+					"rank": 1167
+				},
+				"帆": {
+					"previousMinimum": "rf",
+					"rank": 3389
+				},
+				"张": {
+					"previousMinimum": "gz",
+					"rank": 287
+				},
+				"皮": {
+					"previousMinimum": "mp",
+					"rank": 559
+				},
+				"板": {
+					"previousMinimum": "pf",
+					"rank": 1233
+				},
+				"栗": {
+					"previousMinimum": "xp",
+					"rank": 3540
+				},
+				"胃": {
+					"previousMinimum": "tq",
+					"rank": 973
+				},
+				"筒": {
+					"previousMinimum": "zt",
+					"rank": 2125
+				},
+				"铍": {
+					"previousMinimum": "qp",
+					"rank": 4114
+				},
+				"镇": {
+					"previousMinimum": "qz",
+					"rank": 1209
+				},
+				"防": {
+					"previousMinimum": "vf",
+					"rank": 1018
+				}
+			},
+			"conflictCodes": [
+				"rq",
+				"rx",
+				"lp",
+				"lrk",
+				"qc",
+				"fp",
+				"tb",
+				"tx",
+				"xq",
+				"xz",
+				"bp",
+				"bg",
+				"rf",
+				"gz",
+				"mp",
+				"pf",
+				"xp",
+				"wx",
+				"wq",
+				"tq",
+				"zn",
+				"zt",
+				"zw",
+				"qp",
+				"qz",
+				"vf",
+				"vjp"
+			]
+		},
+		"snow_shenyun_shape": {
+			"id": "rc26-shape",
+			"targets": {
+				"湃": {
+					"previousMinimum": "pfai",
+					"rank": 4350
+				},
+				"跋": {
+					"previousMinimum": "beoi",
+					"rank": 2451
+				},
+				"臂": {
+					"previousMinimum": "beae",
+					"rank": 2601
+				},
+				"鐾": {
+					"previousMinimum": "beaei",
+					"rank": 7653
+				},
+				"典": {
+					"previousMinimum": "dsia",
+					"rank": 3124
+				},
+				"巅": {
+					"previousMinimum": "dsiau",
+					"rank": 3125
+				},
+				"踶": {
+					"previousMinimum": "dioi",
+					"rank": 7571
+				},
+				"蹢": {
+					"previousMinimum": "dioio",
+					"rank": 7579
+				},
+				"弃": {
+					"previousMinimum": "fioee",
+					"rank": 1494
+				},
+				"奇": {
+					"previousMinimum": "fieue",
+					"rank": 1546
+				},
+				"漆": {
+					"previousMinimum": "fiaei",
+					"rank": 1692
+				},
+				"祇": {
+					"previousMinimum": "fioau",
+					"rank": 2482
+				},
+				"脐": {
+					"previousMinimum": "fiuoe",
+					"rank": 2703
+				},
+				"萋": {
+					"previousMinimum": "fiiie",
+					"rank": 2841
+				},
+				"企": {
+					"previousMinimum": "fiiiei",
+					"rank": 3074
+				},
+				"泣": {
+					"previousMinimum": "qhao",
+					"rank": 3391
+				},
+				"璩": {
+					"previousMinimum": "fpee",
+					"rank": 5908
+				},
+				"㭕": {
+					"previousMinimum": "fpeeo",
+					"rank": 6287
+				},
+				"伎": {
+					"previousMinimum": "fiiuo",
+					"rank": 4265
+				},
+				"吱": {
+					"previousMinimum": "siou",
+					"rank": 1821
+				},
+				"珲": {
+					"previousMinimum": "hgee",
+					"rank": 4356
+				},
+				"违": {
+					"previousMinimum": "jeeeo",
+					"rank": 2844
+				},
+				"侮": {
+					"previousMinimum": "juiue",
+					"rank": 5029
+				},
+				"仵": {
+					"previousMinimum": "juiueu",
+					"rank": 6343
+				},
+				"乌": {
+					"previousMinimum": "juuaa",
+					"rank": 1831
+				},
+				"务": {
+					"previousMinimum": "juuaau",
+					"rank": 3004
+				},
+				"究": {
+					"previousMinimum": "gpoou",
+					"rank": 3935
+				},
+				"愁": {
+					"previousMinimum": "fxue",
+					"rank": 856
+				},
+				"押": {
+					"previousMinimum": "jbiu",
+					"rank": 1789
+				},
+				"挟": {
+					"previousMinimum": "ybiue",
+					"rank": 3713
+				},
+				"沮": {
+					"previousMinimum": "jpai",
+					"rank": 5409
+				},
+				"险": {
+					"previousMinimum": "ysaii",
+					"rank": 1833
+				},
+				"刻": {
+					"previousMinimum": "keo",
+					"rank": 1463
+				},
+				"古": {
+					"previousMinimum": "guu",
+					"rank": 1337
+				},
+				"齁": {
+					"previousMinimum": "hyui",
+					"rank": 2338
+				},
+				"鎏": {
+					"previousMinimum": "lwaoi",
+					"rank": 5600
+				},
+				"榴": {
+					"previousMinimum": "lweua",
+					"rank": 2972
+				},
+				"碌": {
+					"previousMinimum": "loeua",
+					"rank": 3001
+				},
+				"岭": {
+					"previousMinimum": "lqiai",
+					"rank": 2351
+				},
+				"龄": {
+					"previousMinimum": "lqiei",
+					"rank": 3036
+				},
+				"棱": {
+					"previousMinimum": "ljee",
+					"rank": 2393
+				},
+				"陆": {
+					"previousMinimum": "luai",
+					"rank": 1545
+				},
+				"棂": {
+					"previousMinimum": "lqeae",
+					"rank": 5805
+				},
+				"啉": {
+					"previousMinimum": "ldo",
+					"rank": 3885
+				},
+				"无": {
+					"previousMinimum": "jue",
+					"rank": 145
+				},
+				"耱": {
+					"previousMinimum": "moeeo",
+					"rank": 7289
+				},
+				"媆": {
+					"previousMinimum": "nda",
+					"rank": 6530
+				},
+				"繁": {
+					"previousMinimum": "flue",
+					"rank": 3135
+				},
+				"笸": {
+					"previousMinimum": "pouee",
+					"rank": 7211
+				},
+				"思": {
+					"previousMinimum": "qfia",
+					"rank": 1619
+				},
+				"司": {
+					"previousMinimum": "ciae",
+					"rank": 2164
+				},
+				"偲": {
+					"previousMinimum": "qfi",
+					"rank": 3952
+				},
+				"葸": {
+					"previousMinimum": "qfii",
+					"rank": 7396
+				},
+				"戎": {
+					"previousMinimum": "rje",
+					"rank": 4507
+				},
+				"耳": {
+					"previousMinimum": "rjei",
+					"rank": 1204
+				},
+				"禔": {
+					"previousMinimum": "sioao",
+					"rank": 5949
+				},
+				"识": {
+					"previousMinimum": "vioao",
+					"rank": 1279
+				},
+				"吨": {
+					"previousMinimum": "dgoe",
+					"rank": 1656
+				},
+				"敦": {
+					"previousMinimum": "dpoe",
+					"rank": 3475
+				},
+				"愉": {
+					"previousMinimum": "tyo",
+					"rank": 3229
+				},
+				"褕": {
+					"previousMinimum": "tyoa",
+					"rank": 7503
+				},
+				"吴": {
+					"previousMinimum": "juoe",
+					"rank": 1173
+				},
+				"世": {
+					"previousMinimum": "vieii",
+					"rank": 1721
+				},
+				"释": {
+					"previousMinimum": "viuoa",
+					"rank": 2945
+				},
+				"视": {
+					"previousMinimum": "vioaia",
+					"rank": 1681
+				},
+				"实": {
+					"previousMinimum": "vioooo",
+					"rank": 1756
+				},
+				"始": {
+					"previousMinimum": "viaua",
+					"rank": 1861
+				},
+				"施": {
+					"previousMinimum": "vioeue",
+					"rank": 2292
+				},
+				"势": {
+					"previousMinimum": "viiuau",
+					"rank": 2363
+				},
+				"士": {
+					"previousMinimum": "NA",
+					"rank": 2383
+				},
+				"逝": {
+					"previousMinimum": "NA",
+					"rank": 2566
+				},
+				"什": {
+					"previousMinimum": "vdiu",
+					"rank": 1096,
+					"userCode": "vdiuo"
+				},
+				"侁": {
+					"previousMinimum": "vdiue",
+					"rank": 6359
+				},
+				"异": {
+					"previousMinimum": "wiaee",
+					"rank": 2149
+				},
+				"伊": {
+					"previousMinimum": "wiiae",
+					"rank": 1605
+				},
+				"毅": {
+					"previousMinimum": "NA",
+					"rank": 3068
+				},
+				"胰": {
+					"previousMinimum": "wiuea",
+					"rank": 4550
+				},
+				"忆": {
+					"previousMinimum": "wiooa",
+					"rank": 1809
+				},
+				"义": {
+					"previousMinimum": "wiouo",
+					"rank": 1908
+				},
+				"奕": {
+					"previousMinimum": "wioeeu",
+					"rank": 2370
+				},
+				"弈": {
+					"previousMinimum": "NA",
+					"rank": 4882
+				},
+				"倚": {
+					"previousMinimum": "jiieu",
+					"rank": 2414
+				},
+				"医": {
+					"previousMinimum": "wieue",
+					"rank": 2424
+				},
+				"艺": {
+					"previousMinimum": "wiiia",
+					"rank": 2759
+				},
+				"驿": {
+					"previousMinimum": "wiaaa",
+					"rank": 3033
+				},
+				"刈": {
+					"previousMinimum": "wiuoi",
+					"rank": 3356
+				},
+				"抑": {
+					"previousMinimum": "wiiuu",
+					"rank": 3495
+				},
+				"崖": {
+					"previousMinimum": "wfi",
+					"rank": 2165
+				},
+				"睚": {
+					"previousMinimum": "wfia",
+					"rank": 7119
+				},
+				"侈": {
+					"previousMinimum": "xiiu",
+					"rank": 6361
+				},
+				"摛": {
+					"previousMinimum": "xiiuo",
+					"rank": 6693
+				},
+				"抓": {
+					"previousMinimum": "ss",
+					"rank": 364
+				},
+				"欻": {
+					"previousMinimum": "xso",
+					"rank": 4425
+				},
+				"尔": {
+					"previousMinimum": "yeuai",
+					"rank": 1505
+				},
+				"菥": {
+					"previousMinimum": "yiii",
+					"rank": 7378
+				},
+				"捍": {
+					"previousMinimum": "gliuo",
+					"rank": 4139
+				},
+				"探": {
+					"previousMinimum": "tliuo",
+					"rank": 1948
+				}
+			},
+			"conflictCodes": [
+				"baai",
+				"baoi",
+				"beae",
+				"beaeu",
+				"dsia",
+				"dsiau",
+				"dioi",
+				"fioe",
+				"fieu",
+				"fiae",
+				"fioa",
+				"fiuo",
+				"fiii",
+				"fiiie",
+				"fiao",
+				"fpee",
+				"fiiu",
+				"fiou",
+				"hpeeo",
+				"juiu",
+				"juiue",
+				"juua",
+				"juuaa",
+				"jwoo",
+				"jwue",
+				"jbiu",
+				"jsai",
+				"ke",
+				"kuu",
+				"lwao",
+				"lweu",
+				"lweua",
+				"lqia",
+				"lqie",
+				"lqee",
+				"lwai",
+				"lqea",
+				"ldo",
+				"moee",
+				"nga",
+				"poue",
+				"qiia",
+				"qiae",
+				"qfi",
+				"rje",
+				"sioao",
+				"sgoe",
+				"tyo",
+				"tyoo",
+				"tgoe",
+				"viei",
+				"viuo",
+				"vioai",
+				"viooo",
+				"viau",
+				"vioeu",
+				"viiua",
+				"vieo",
+				"viiuoa",
+				"vdiu",
+				"vdiuo",
+				"wiae",
+				"wiia",
+				"wioeua",
+				"wiue",
+				"wioo",
+				"wiou",
+				"wioee",
+				"wioeeu",
+				"wiie",
+				"wieu",
+				"wiii",
+				"wiaa",
+				"wiuo",
+				"wiiu",
+				"wfi",
+				"wfia",
+				"xiiu",
+				"xsi",
+				"xso",
+				"xsou",
+				"yeua",
+				"yiii",
+				"ysiuo"
+			]
+		},
+		"snow_shenyun_tone": {
+			"id": "rc26-tone",
+			"targets": {
+				"杷": {
+					"previousMinimum": "pao",
+					"rank": 5382
+				},
+				"背": {
+					"previousMinimum": "beii",
+					"rank": 502
+				},
+				"辈": {
+					"previousMinimum": "beaiee",
+					"rank": 2368
+				},
+				"跋": {
+					"previousMinimum": "baeia",
+					"rank": 2451
+				},
+				"薄": {
+					"previousMinimum": "bke",
+					"rank": 893
+				},
+				"屏": {
+					"previousMinimum": "bqaa",
+					"rank": 1116
+				},
+				"巴": {
+					"previousMinimum": "baia",
+					"rank": 1221
+				},
+				"播": {
+					"previousMinimum": "boie",
+					"rank": 958
+				},
+				"湃": {
+					"previousMinimum": "pfao",
+					"rank": 4350
+				},
+				"边": {
+					"previousMinimum": "bsi",
+					"rank": 420
+				},
+				"采": {
+					"previousMinimum": "cfau",
+					"rank": 1828
+				},
+				"彩": {
+					"previousMinimum": "cfo",
+					"rank": 1598
+				},
+				"倒": {
+					"previousMinimum": "dka",
+					"rank": 153
+				},
+				"岛": {
+					"previousMinimum": "dkuu",
+					"rank": 832
+				},
+				"待": {
+					"previousMinimum": "dfau",
+					"rank": 485
+				},
+				"打": {
+					"previousMinimum": "dau",
+					"rank": 46
+				},
+				"荙": {
+					"previousMinimum": "daeeii",
+					"rank": 7361
+				},
+				"担": {
+					"previousMinimum": "dloe",
+					"rank": 2733
+				},
+				"萏": {
+					"previousMinimum": "dlaeii",
+					"rank": 7383
+				},
+				"丹": {
+					"previousMinimum": "dlo",
+					"rank": 1408
+				},
+				"道": {
+					"previousMinimum": "dko",
+					"rank": 418
+				},
+				"敦": {
+					"previousMinimum": "dgio",
+					"rank": 3475
+				},
+				"朵": {
+					"previousMinimum": "doo",
+					"rank": 1146
+				},
+				"伐": {
+					"previousMinimum": "fae",
+					"rank": 959
+				},
+				"憩": {
+					"previousMinimum": "fiaue",
+					"rank": 4885
+				},
+				"欺": {
+					"previousMinimum": "fiieii",
+					"rank": 1752
+				},
+				"弃": {
+					"previousMinimum": "fiaoe",
+					"rank": 1494
+				},
+				"奇": {
+					"previousMinimum": "wiueu",
+					"rank": 1546
+				},
+				"切": {
+					"previousMinimum": "fza",
+					"rank": 487
+				},
+				"脞": {
+					"previousMinimum": "cou",
+					"rank": 4238
+				},
+				"绮": {
+					"previousMinimum": "fiuaa",
+					"rank": 2268
+				},
+				"淇": {
+					"previousMinimum": "fieooe",
+					"rank": 2275
+				},
+				"济": {
+					"previousMinimum": "jiuoo",
+					"rank": 3440
+				},
+				"砌": {
+					"previousMinimum": "fiaeu",
+					"rank": 2281
+				},
+				"掮": {
+					"previousMinimum": "fseei",
+					"rank": 5770
+				},
+				"靬": {
+					"previousMinimum": "fsee",
+					"rank": 5008
+				},
+				"启": {
+					"previousMinimum": "fiuoa",
+					"rank": 3022
+				},
+				"企": {
+					"previousMinimum": "fiauo",
+					"rank": 3074
+				},
+				"份": {
+					"previousMinimum": "fda",
+					"rank": 678
+				},
+				"倾": {
+					"previousMinimum": "fquu",
+					"rank": 2304
+				},
+				"法": {
+					"previousMinimum": "fao",
+					"rank": 737
+				},
+				"啐": {
+					"previousMinimum": "cpai",
+					"rank": 2574
+				},
+				"坊": {
+					"previousMinimum": "fno",
+					"rank": 2043
+				},
+				"情": {
+					"previousMinimum": "fqe",
+					"rank": 414
+				},
+				"烦": {
+					"previousMinimum": "fle",
+					"rank": 573
+				},
+				"干": {
+					"previousMinimum": "gl",
+					"rank": 152
+				},
+				"供": {
+					"previousMinimum": "gmau",
+					"rank": 1013
+				},
+				"咕": {
+					"previousMinimum": "guo",
+					"rank": 1934
+				},
+				"哥": {
+					"previousMinimum": "ghi",
+					"rank": 200
+				},
+				"唝": {
+					"previousMinimum": "gmai",
+					"rank": 5301
+				},
+				"虹": {
+					"previousMinimum": "hmai",
+					"rank": 2470
+				},
+				"荷": {
+					"previousMinimum": "hhaei",
+					"rank": 2413
+				},
+				"垎": {
+					"previousMinimum": "hhaeie",
+					"rank": 6473
+				},
+				"哄": {
+					"previousMinimum": "hma",
+					"rank": 734
+				},
+				"讧": {
+					"previousMinimum": "hmao",
+					"rank": 7525
+				},
+				"伙": {
+					"previousMinimum": "hoo",
+					"rank": 2681
+				},
+				"午": {
+					"previousMinimum": "hoou",
+					"rank": 2847
+				},
+				"乎": {
+					"previousMinimum": "huo",
+					"rank": 1951
+				},
+				"候": {
+					"previousMinimum": "hyo",
+					"rank": 2705
+				},
+				"函": {
+					"previousMinimum": "hlaa",
+					"rank": 2783
+				},
+				"化": {
+					"previousMinimum": "hsau",
+					"rank": 857
+				},
+				"号": {
+					"previousMinimum": "hka",
+					"rank": 321
+				},
+				"喝": {
+					"previousMinimum": "hhi",
+					"rank": 331
+				},
+				"唤": {
+					"previousMinimum": "hto",
+					"rank": 2318
+				},
+				"滑": {
+					"previousMinimum": "hse",
+					"rank": 1105
+				},
+				"苛": {
+					"previousMinimum": "hhiei",
+					"rank": 3317
+				},
+				"鹫": {
+					"previousMinimum": "jwaoe",
+					"rank": 4120
+				},
+				"武": {
+					"previousMinimum": "juuee",
+					"rank": 2203
+				},
+				"浆": {
+					"previousMinimum": "jcaoe",
+					"rank": 2752
+				},
+				"务": {
+					"previousMinimum": "jueua",
+					"rank": 3004
+				},
+				"乌": {
+					"previousMinimum": "juiua",
+					"rank": 1831
+				},
+				"间": {
+					"previousMinimum": "jsi",
+					"rank": 506
+				},
+				"溅": {
+					"previousMinimum": "jsaoo",
+					"rank": 2033
+				},
+				"渐": {
+					"previousMinimum": "jsaooe",
+					"rank": 2216
+				},
+				"监": {
+					"previousMinimum": "jsaii",
+					"rank": 3336
+				},
+				"鉴": {
+					"previousMinimum": "jsai",
+					"rank": 2958
+				},
+				"鼯": {
+					"previousMinimum": "jueui",
+					"rank": 2987
+				},
+				"究": {
+					"previousMinimum": "jwoo",
+					"rank": 3935
+				},
+				"纪": {
+					"previousMinimum": "jiaaa",
+					"rank": 1856
+				},
+				"给": {
+					"previousMinimum": "ge",
+					"rank": 31
+				},
+				"尽": {
+					"previousMinimum": "jraa",
+					"rank": 649
+				},
+				"卺": {
+					"previousMinimum": "jruai",
+					"rank": 6424
+				},
+				"家": {
+					"previousMinimum": "jbi",
+					"rank": 132
+				},
+				"举": {
+					"previousMinimum": "jpo",
+					"rank": 976
+				},
+				"伍": {
+					"previousMinimum": "juou",
+					"rank": 2873
+				},
+				"具": {
+					"previousMinimum": "jpai",
+					"rank": 921
+				},
+				"娩": {
+					"previousMinimum": "jdaau",
+					"rank": 5706
+				},
+				"望": {
+					"previousMinimum": "jno",
+					"rank": 769
+				},
+				"激": {
+					"previousMinimum": "jio",
+					"rank": 2371
+				},
+				"计": {
+					"previousMinimum": "jioo",
+					"rank": 2090
+				},
+				"睛": {
+					"previousMinimum": "jqo",
+					"rank": 3277
+				},
+				"蹴": {
+					"previousMinimum": "cuai",
+					"rank": 4990
+				},
+				"记": {
+					"previousMinimum": "jiao",
+					"rank": 622
+				},
+				"辑": {
+					"previousMinimum": "jioe",
+					"rank": 3350
+				},
+				"静": {
+					"previousMinimum": "jqae",
+					"rank": 1246
+				},
+				"坷": {
+					"previousMinimum": "khue",
+					"rank": 6468
+				},
+				"伉": {
+					"previousMinimum": "knu",
+					"rank": 6344
+				},
+				"奋": {
+					"previousMinimum": "fdae",
+					"rank": 3793
+				},
+				"刻": {
+					"previousMinimum": "kei",
+					"rank": 1463
+				},
+				"啰": {
+					"previousMinimum": "loi",
+					"rank": 989
+				},
+				"逻": {
+					"previousMinimum": "loeiai",
+					"rank": 5590
+				},
+				"鎏": {
+					"previousMinimum": "lweooe",
+					"rank": 5600
+				},
+				"玲": {
+					"previousMinimum": "lqeee",
+					"rank": 3310
+				},
+				"量": {
+					"previousMinimum": "lcai",
+					"rank": 664
+				},
+				"晾": {
+					"previousMinimum": "lcaia",
+					"rank": 1645
+				},
+				"柳": {
+					"previousMinimum": "lwue",
+					"rank": 1635
+				},
+				"唠": {
+					"previousMinimum": "lka",
+					"rank": 1534
+				},
+				"烙": {
+					"previousMinimum": "lkao",
+					"rank": 1954
+				},
+				"岭": {
+					"previousMinimum": "lquia",
+					"rank": 2351
+				},
+				"铃": {
+					"previousMinimum": "lqeue",
+					"rank": 2959
+				},
+				"榴": {
+					"previousMinimum": "lweei",
+					"rank": 2972
+				},
+				"龄": {
+					"previousMinimum": "lqeie",
+					"rank": 3036
+				},
+				"陆": {
+					"previousMinimum": "luaa",
+					"rank": 1545
+				},
+				"淋": {
+					"previousMinimum": "lra",
+					"rank": 2096
+				},
+				"蔺": {
+					"previousMinimum": "lrae",
+					"rank": 4457
+				},
+				"碌": {
+					"previousMinimum": "luaeu",
+					"rank": 3001
+				},
+				"笼": {
+					"previousMinimum": "lmeu",
+					"rank": 2436
+				},
+				"亮": {
+					"previousMinimum": "lca",
+					"rank": 307
+				},
+				"利": {
+					"previousMinimum": "liau",
+					"rank": 1134
+				},
+				"啉": {
+					"previousMinimum": "lda",
+					"rank": 3885
+				},
+				"李": {
+					"previousMinimum": "liu",
+					"rank": 588
+				},
+				"窿": {
+					"previousMinimum": "lmo",
+					"rank": 4360
+				},
+				"良": {
+					"previousMinimum": "lcuo",
+					"rank": 2579
+				},
+				"磨": {
+					"previousMinimum": "moeoe",
+					"rank": 1152
+				},
+				"魔": {
+					"previousMinimum": "moeo",
+					"rank": 541
+				},
+				"蒙": {
+					"previousMinimum": "mji",
+					"rank": 1113
+				},
+				"幺": {
+					"previousMinimum": "moo",
+					"rank": 2327
+				},
+				"沫": {
+					"previousMinimum": "moao",
+					"rank": 2886
+				},
+				"袤": {
+					"previousMinimum": "mkao",
+					"rank": 7491
+				},
+				"宁": {
+					"previousMinimum": "nqa",
+					"rank": 1695
+				},
+				"佞": {
+					"previousMinimum": "nqau",
+					"rank": 5028
+				},
+				"难": {
+					"previousMinimum": "nla",
+					"rank": 155,
+					"userCode": "nle"
+				},
+				"婻": {
+					"previousMinimum": "nlaa",
+					"rank": 6526
+				},
+				"哪": {
+					"previousMinimum": "nh",
+					"rank": 279
+				},
+				"媆": {
+					"previousMinimum": "nga",
+					"rank": 6530
+				},
+				"漂": {
+					"previousMinimum": "pxa",
+					"rank": 1286
+				},
+				"嘌": {
+					"previousMinimum": "pxai",
+					"rank": 5308
+				},
+				"掊": {
+					"previousMinimum": "pyu",
+					"rank": 6681
+				},
+				"棚": {
+					"previousMinimum": "pjo",
+					"rank": 2420
+				},
+				"泊": {
+					"previousMinimum": "boeoo",
+					"rank": 3262
+				},
+				"篷": {
+					"previousMinimum": "pjou",
+					"rank": 4655
+				},
+				"嗣": {
+					"previousMinimum": "qiaia",
+					"rank": 4597
+				},
+				"思": {
+					"previousMinimum": "qioi",
+					"rank": 1619
+				},
+				"巳": {
+					"previousMinimum": "qiaae",
+					"rank": 2770
+				},
+				"些": {
+					"previousMinimum": "qoa",
+					"rank": 252
+				},
+				"嗦": {
+					"previousMinimum": "qoo",
+					"rank": 1801
+				},
+				"索": {
+					"previousMinimum": "qoe",
+					"rank": 1933
+				},
+				"诉": {
+					"previousMinimum": "quo",
+					"rank": 2597
+				},
+				"扔": {
+					"previousMinimum": "rja",
+					"rank": 505
+				},
+				"然": {
+					"previousMinimum": "rle",
+					"rank": 1515
+				},
+				"挣": {
+					"previousMinimum": "sjae",
+					"rank": 1202
+				},
+				"丁": {
+					"previousMinimum": "sje",
+					"rank": 1271
+				},
+				"正": {
+					"previousMinimum": "sja",
+					"rank": 226
+				},
+				"扎": {
+					"previousMinimum": "sae",
+					"rank": 992
+				},
+				"闸": {
+					"previousMinimum": "saeo",
+					"rank": 3051
+				},
+				"症": {
+					"previousMinimum": "sjio",
+					"rank": 834
+				},
+				"净": {
+					"previousMinimum": "jqao",
+					"rank": 1499
+				},
+				"轴": {
+					"previousMinimum": "sye",
+					"rank": 1877
+				},
+				"荮": {
+					"previousMinimum": "syaei",
+					"rank": 5531
+				},
+				"丞": {
+					"previousMinimum": "sjua",
+					"rank": 4195
+				},
+				"展": {
+					"previousMinimum": "slo",
+					"rank": 1344
+				},
+				"置": {
+					"previousMinimum": "sio",
+					"rank": 1955
+				},
+				"挑": {
+					"previousMinimum": "txi",
+					"rank": 529
+				},
+				"窕": {
+					"previousMinimum": "txuo",
+					"rank": 5479
+				},
+				"弹": {
+					"previousMinimum": "tle",
+					"rank": 924
+				},
+				"探": {
+					"previousMinimum": "tloe",
+					"rank": 1948
+				},
+				"腾": {
+					"previousMinimum": "tje",
+					"rank": 2493
+				},
+				"萄": {
+					"previousMinimum": "tko",
+					"rank": 5534
+				},
+				"驼": {
+					"previousMinimum": "too",
+					"rank": 1973
+				},
+				"世": {
+					"previousMinimum": "viaeii",
+					"rank": 1721
+				},
+				"始": {
+					"previousMinimum": "viuau",
+					"rank": 1861
+				},
+				"视": {
+					"previousMinimum": "viooa",
+					"rank": 1681
+				},
+				"实": {
+					"previousMinimum": "vioo",
+					"rank": 1756
+				},
+				"氏": {
+					"previousMinimum": "viaua",
+					"rank": 2195
+				},
+				"施": {
+					"previousMinimum": "viuoe",
+					"rank": 2292
+				},
+				"媞": {
+					"previousMinimum": "dfaau",
+					"rank": 4603
+				},
+				"匙": {
+					"previousMinimum": "vioi",
+					"rank": 2747
+				},
+				"沙": {
+					"previousMinimum": "vaao",
+					"rank": 1267
+				},
+				"事": {
+					"previousMinimum": "via",
+					"rank": 120
+				},
+				"什": {
+					"previousMinimum": "vdo",
+					"rank": 1096
+				},
+				"势": {
+					"previousMinimum": "vioeie",
+					"rank": 2363
+				},
+				"声": {
+					"previousMinimum": "vji",
+					"rank": 920
+				},
+				"署": {
+					"previousMinimum": "vuaiai",
+					"rank": 3266
+				},
+				"壹": {
+					"previousMinimum": "wiiei",
+					"rank": 1718
+				},
+				"逸": {
+					"previousMinimum": "wiaua",
+					"rank": 2725
+				},
+				"奕": {
+					"previousMinimum": "wiaoeui",
+					"rank": 2370
+				},
+				"嗌": {
+					"previousMinimum": "yfaia",
+					"rank": 3296
+				},
+				"毅": {
+					"previousMinimum": "wiaoeou",
+					"rank": 3068
+				},
+				"哟": {
+					"previousMinimum": "woi",
+					"rank": 194
+				},
+				"唷": {
+					"previousMinimum": "wo",
+					"rank": 1401
+				},
+				"移": {
+					"previousMinimum": "wieue",
+					"rank": 1624
+				},
+				"忆": {
+					"previousMinimum": "wiaooi",
+					"rank": 1809
+				},
+				"义": {
+					"previousMinimum": "xaio",
+					"rank": 1908
+				},
+				"轶": {
+					"previousMinimum": "wiaea",
+					"rank": 1981
+				},
+				"宜": {
+					"previousMinimum": "wioo",
+					"rank": 2046
+				},
+				"翼": {
+					"previousMinimum": "wiaao",
+					"rank": 2143
+				},
+				"姨": {
+					"previousMinimum": "wieau",
+					"rank": 2145
+				},
+				"椅": {
+					"previousMinimum": "wiuei",
+					"rank": 2194
+				},
+				"倚": {
+					"previousMinimum": "jiiui",
+					"rank": 2414
+				},
+				"怨": {
+					"previousMinimum": "wto",
+					"rank": 1665
+				},
+				"友": {
+					"previousMinimum": "wyo",
+					"rank": 1266
+				},
+				"咉": {
+					"previousMinimum": "wnui",
+					"rank": 4591
+				},
+				"异": {
+					"previousMinimum": "wiaae",
+					"rank": 2149
+				},
+				"意": {
+					"previousMinimum": "wiaoe",
+					"rank": 1290
+				},
+				"月": {
+					"previousMinimum": "wva",
+					"rank": 133
+				},
+				"益": {
+					"previousMinimum": "wiaoue",
+					"rank": 2690
+				},
+				"叉": {
+					"previousMinimum": "xau",
+					"rank": 1572
+				},
+				"衩": {
+					"previousMinimum": "xauo",
+					"rank": 2679
+				},
+				"呈": {
+					"previousMinimum": "kcei",
+					"rank": 1787
+				},
+				"撑": {
+					"previousMinimum": "xjo",
+					"rank": 670
+				},
+				"撮": {
+					"previousMinimum": "xsi",
+					"rank": 1759
+				},
+				"晨": {
+					"previousMinimum": "xdei",
+					"rank": 1918
+				},
+				"欻": {
+					"previousMinimum": "xsio",
+					"rank": 4425
+				},
+				"沉": {
+					"previousMinimum": "xdeo",
+					"rank": 1186
+				},
+				"绸": {
+					"previousMinimum": "xyaa",
+					"rank": 4448
+				},
+				"尔": {
+					"previousMinimum": "yeuua",
+					"rank": 1505
+				},
+				"兴": {
+					"previousMinimum": "yqao",
+					"rank": 2183
+				},
+				"惺": {
+					"previousMinimum": "yquo",
+					"rank": 4737
+				},
+				"芯": {
+					"previousMinimum": "yrae",
+					"rank": 1411
+				},
+				"削": {
+					"previousMinimum": "yvai",
+					"rank": 1655
+				},
+				"形": {
+					"previousMinimum": "yqo",
+					"rank": 1757
+				},
+				"心": {
+					"previousMinimum": "yri",
+					"rank": 127
+				},
+				"息": {
+					"previousMinimum": "yio",
+					"rank": 2550
+				},
+				"昔": {
+					"previousMinimum": "yieeii",
+					"rank": 3766
+				},
+				"训": {
+					"previousMinimum": "ygo",
+					"rank": 2250
+				},
+				"霄": {
+					"previousMinimum": "yxaeo",
+					"rank": 3814
+				},
+				"作": {
+					"previousMinimum": "zoi",
+					"rank": 662
+				},
+				"嘬": {
+					"previousMinimum": "zoii",
+					"rank": 2502
+				},
+				"宗": {
+					"previousMinimum": "zmo",
+					"rank": 2649
+				}
+			},
+			"conflictCodes": [
+				"bao",
+				"beaie",
+				"baei",
+				"boae",
+				"bqaa",
+				"bqia",
+				"baoa",
+				"bjie",
+				"boue",
+				"baeo",
+				"bsua",
+				"bso",
+				"cfau",
+				"cfauo",
+				"cfo",
+				"cfou",
+				"dku",
+				"dfiu",
+				"daeei",
+				"dlaei",
+				"dlo",
+				"dko",
+				"dloe",
+				"dloei",
+				"dpio",
+				"doo",
+				"doou",
+				"dkoo",
+				"fai",
+				"fiau",
+				"fiiei",
+				"fiao",
+				"fieeu",
+				"fzi",
+				"fiua",
+				"fieoo",
+				"fieooe",
+				"fiae",
+				"fseei",
+				"fiuo",
+				"fiuu",
+				"fdo",
+				"fquu",
+				"fquui",
+				"fao",
+				"fio",
+				"fno",
+				"fqo",
+				"flo",
+				"glae",
+				"gmau",
+				"gho",
+				"guo",
+				"ghoe",
+				"gmai",
+				"hhaei",
+				"hma",
+				"hmai",
+				"hoo",
+				"huo",
+				"hyo",
+				"hyou",
+				"hlaa",
+				"hsiu",
+				"hko",
+				"hho",
+				"hto",
+				"htoi",
+				"hso",
+				"hhie",
+				"hhiei",
+				"jwao",
+				"juue",
+				"jcaoe",
+				"juaua",
+				"juiu",
+				"jsao",
+				"jsaoo",
+				"jsaii",
+				"jueu",
+				"jwio",
+				"jeiia",
+				"jiuaa",
+				"jiuoo",
+				"jiuooe",
+				"jiioeu",
+				"jrua",
+				"jbo",
+				"jpo",
+				"juo",
+				"juou",
+				"jpoi",
+				"juoua",
+				"jueua",
+				"juuua",
+				"juoue",
+				"jdaa",
+				"jbeeie",
+				"jno",
+				"jnoo",
+				"jio",
+				"jioo",
+				"jeiiae",
+				"jqo",
+				"jwo",
+				"jwoo",
+				"jso",
+				"jiooa",
+				"jioe",
+				"jioea",
+				"jqoe",
+				"khue",
+				"knu",
+				"ke",
+				"loeia",
+				"lweoo",
+				"lqee",
+				"lcai",
+				"lquu",
+				"lwu",
+				"lka",
+				"lqui",
+				"lqeu",
+				"lwee",
+				"lqei",
+				"lwaa",
+				"lra",
+				"lwae",
+				"lmuu",
+				"lco",
+				"lqo",
+				"liou",
+				"lda",
+				"lioe",
+				"lmo",
+				"lmou",
+				"lcuo",
+				"lcuoa",
+				"lcoi",
+				"moeoe",
+				"moeoeu",
+				"mji",
+				"mjie",
+				"moaoeu",
+				"mjue",
+				"moo",
+				"mooo",
+				"moooe",
+				"moooeu",
+				"myao",
+				"nqa",
+				"nla",
+				"nao",
+				"nga",
+				"nlo",
+				"pxa",
+				"pxuo",
+				"pyu",
+				"pjo",
+				"poaoo",
+				"pjou",
+				"pjoue",
+				"qiai",
+				"qfii",
+				"qiii",
+				"qiaa",
+				"qoa",
+				"qio",
+				"qoo",
+				"qioi",
+				"qooe",
+				"qoe",
+				"qoee",
+				"quo",
+				"quoo",
+				"quooa",
+				"rje",
+				"rlo",
+				"sjie",
+				"sjiei",
+				"sae",
+				"sjio",
+				"syae",
+				"sjua",
+				"slo",
+				"sjo",
+				"sio",
+				"sioi",
+				"txu",
+				"tlo",
+				"txo",
+				"tloe",
+				"tloei",
+				"tjo",
+				"tko",
+				"tkoe",
+				"tkoei",
+				"tkoeii",
+				"too",
+				"tooa",
+				"viaei",
+				"viua",
+				"viaoa",
+				"vieoo",
+				"viau",
+				"viioe",
+				"viaa",
+				"vio",
+				"vaao",
+				"vioei",
+				"vdo",
+				"vdou",
+				"vioeie",
+				"vjo",
+				"vioo",
+				"viooo",
+				"viuo",
+				"viuoe",
+				"vuaiai",
+				"viooa",
+				"wiie",
+				"wiau",
+				"wiaoeu",
+				"wiaia",
+				"wiaoeo",
+				"wiioe",
+				"woi",
+				"wieu",
+				"wiaoo",
+				"wiaou",
+				"wiae",
+				"wieo",
+				"wiaa",
+				"wiea",
+				"wiue",
+				"wiuu",
+				"wgau",
+				"wyo",
+				"wnui",
+				"wio",
+				"wioo",
+				"wfe",
+				"wieae",
+				"wto",
+				"wtou",
+				"wiooe",
+				"wvo",
+				"wieoue",
+				"xau",
+				"xjui",
+				"xjo",
+				"xjoe",
+				"xsi",
+				"xdoi",
+				"xsio",
+				"xdio",
+				"xyaa",
+				"yeuu",
+				"yqio",
+				"yrae",
+				"yeo",
+				"yvai",
+				"yqo",
+				"yqoe",
+				"yqoee",
+				"yro",
+				"yio",
+				"yiou",
+				"yioui",
+				"yieui",
+				"yieeii",
+				"ygo",
+				"ygoo",
+				"yxaeo",
+				"zoi",
+				"zmo",
+				"zmoo"
+			]
+		},
+		"snow_jiandao_toned": {
+			"id": "liandao",
+			"targets": {
+				"般": {
+					"previousMinimum": "bku",
+					"rank": 1156
+				},
+				"扑": {
+					"previousMinimum": "bgiui",
+					"rank": 758
+				},
+				"学": {
+					"previousMinimum": "bgoo",
+					"rank": 100
+				},
+				"悖": {
+					"previousMinimum": "bwo",
+					"rank": 4504
+				},
+				"溥": {
+					"previousMinimum": "bpav",
+					"rank": 5420
+				},
+				"檗": {
+					"previousMinimum": "bpa",
+					"rank": 6821
+				},
+				"蔀": {
+					"previousMinimum": "bpii",
+					"rank": 7416
+				},
+				"薄": {
+					"previousMinimum": "bgii",
+					"rank": 893
+				},
+				"仳": {
+					"previousMinimum": "briv",
+					"rank": 5641
+				},
+				"屏": {
+					"previousMinimum": "bea",
+					"rank": 1116
+				},
+				"开": {
+					"previousMinimum": "bevv",
+					"rank": 124
+				},
+				"旁": {
+					"previousMinimum": "byov",
+					"rank": 1247
+				},
+				"湃": {
+					"previousMinimum": "bsai",
+					"rank": 4350
+				},
+				"脖": {
+					"previousMinimum": "bbuu",
+					"rank": 1797
+				},
+				"附": {
+					"previousMinimum": "bpai",
+					"rank": 1476
+				},
+				"族": {
+					"previousMinimum": "ceov",
+					"rank": 1600
+				},
+				"彩": {
+					"previousMinimum": "chuo",
+					"rank": 1598
+				},
+				"蓿": {
+					"previousMinimum": "cpiio",
+					"rank": 7415
+				},
+				"些": {
+					"previousMinimum": "xn",
+					"rank": 252
+				},
+				"滋": {
+					"previousMinimum": "cfao",
+					"rank": 2651
+				},
+				"苏": {
+					"previousMinimum": "cniia",
+					"rank": 1310
+				},
+				"诉": {
+					"previousMinimum": "cnoa",
+					"rank": 2597
+				},
+				"餐": {
+					"previousMinimum": "ckiv",
+					"rank": 1314
+				},
+				"担": {
+					"previousMinimum": "dsiu",
+					"rank": 2733
+				},
+				"抖": {
+					"previousMinimum": "dsi",
+					"rank": 1244
+				},
+				"蹈": {
+					"previousMinimum": "dlo",
+					"rank": 5224
+				},
+				"戥": {
+					"previousMinimum": "dloi",
+					"rank": 5095
+				},
+				"凸": {
+					"previousMinimum": "ddiv",
+					"rank": 1622
+				},
+				"底": {
+					"previousMinimum": "df",
+					"rank": 876
+				},
+				"敦": {
+					"previousMinimum": "dwov",
+					"rank": 3475
+				},
+				"檐": {
+					"previousMinimum": "dmvua",
+					"rank": 3737
+				},
+				"至": {
+					"previousMinimum": "ddva",
+					"rank": 596
+				},
+				"道": {
+					"previousMinimum": "dlou",
+					"rank": 418
+				},
+				"顿": {
+					"previousMinimum": "deva",
+					"rank": 1580
+				},
+				"侏": {
+					"previousMinimum": "emiu",
+					"rank": 5286
+				},
+				"吨": {
+					"previousMinimum": "dmov",
+					"rank": 1656
+				},
+				"啄": {
+					"previousMinimum": "ego",
+					"rank": 2477
+				},
+				"政": {
+					"previousMinimum": "ecviu",
+					"rank": 2762
+				},
+				"积": {
+					"previousMinimum": "efuv",
+					"rank": 2328
+				},
+				"致": {
+					"previousMinimum": "erva",
+					"rank": 550
+				},
+				"障": {
+					"previousMinimum": "eyai",
+					"rank": 3680
+				},
+				"盼": {
+					"previousMinimum": "fsia",
+					"rank": 1103
+				},
+				"砝": {
+					"previousMinimum": "fsvu",
+					"rank": 5937
+				},
+				"豮": {
+					"previousMinimum": "fsvuu",
+					"rank": 7539
+				},
+				"不": {
+					"previousMinimum": "b",
+					"rank": 9
+				},
+				"复": {
+					"previousMinimum": "feuv",
+					"rank": 1597
+				},
+				"价": {
+					"previousMinimum": "gxii",
+					"rank": 994
+				},
+				"划": {
+					"previousMinimum": "ggva",
+					"rank": 1576
+				},
+				"奋": {
+					"previousMinimum": "fev",
+					"rank": 3793
+				},
+				"拘": {
+					"previousMinimum": "gmiuu",
+					"rank": 2484
+				},
+				"括": {
+					"previousMinimum": "gxiu",
+					"rank": 4045
+				},
+				"痕": {
+					"previousMinimum": "geov",
+					"rank": 2334
+				},
+				"红": {
+					"previousMinimum": "gnaa",
+					"rank": 325
+				},
+				"感": {
+					"previousMinimum": "gkvu",
+					"rank": 475
+				},
+				"耠": {
+					"previousMinimum": "hbv",
+					"rank": 7284
+				},
+				"芒": {
+					"previousMinimum": "hhii",
+					"rank": 3511
+				},
+				"违": {
+					"previousMinimum": "hdvvo",
+					"rank": 2844
+				},
+				"倚": {
+					"previousMinimum": "jbiv",
+					"rank": 2414
+				},
+				"耕": {
+					"previousMinimum": "jzvv",
+					"rank": 3315
+				},
+				"孱": {
+					"previousMinimum": "cqav",
+					"rank": 5331
+				},
+				"掬": {
+					"previousMinimum": "jliuua",
+					"rank": 3853
+				},
+				"拮": {
+					"previousMinimum": "jdiuv",
+					"rank": 5766
+				},
+				"挟": {
+					"previousMinimum": "jxiu",
+					"rank": 3713
+				},
+				"更": {
+					"previousMinimum": "gt",
+					"rank": 70
+				},
+				"辑": {
+					"previousMinimum": "jbva",
+					"rank": 3350
+				},
+				"迹": {
+					"previousMinimum": "jbovo",
+					"rank": 3679
+				},
+				"醒": {
+					"previousMinimum": "xzvi",
+					"rank": 510
+				},
+				"险": {
+					"previousMinimum": "jka",
+					"rank": 1833
+				},
+				"视": {
+					"previousMinimum": "kboa",
+					"rank": 1681
+				},
+				"权": {
+					"previousMinimum": "qkv",
+					"rank": 1735
+				},
+				"势": {
+					"previousMinimum": "kbiu",
+					"rank": 2363
+				},
+				"酾": {
+					"previousMinimum": "kbv",
+					"rank": 6166
+				},
+				"殖": {
+					"previousMinimum": "kbvu",
+					"rank": 6826
+				},
+				"嵊": {
+					"previousMinimum": "kti",
+					"rank": 6584
+				},
+				"捎": {
+					"previousMinimum": "ktiu",
+					"rank": 1899
+				},
+				"削": {
+					"previousMinimum": "ktio",
+					"rank": 1655
+				},
+				"双": {
+					"previousMinimum": "kyao",
+					"rank": 477
+				},
+				"叶": {
+					"previousMinimum": "kwou",
+					"rank": 1157
+				},
+				"守": {
+					"previousMinimum": "kmoo",
+					"rank": 1028
+				},
+				"式": {
+					"previousMinimum": "kbvv",
+					"rank": 646
+				},
+				"术": {
+					"previousMinimum": "kjv",
+					"rank": 1551
+				},
+				"亮": {
+					"previousMinimum": "lzo",
+					"rank": 307
+				},
+				"鲁": {
+					"previousMinimum": "ljua",
+					"rank": 1928
+				},
+				"剌": {
+					"previousMinimum": "lrvi",
+					"rank": 3076
+				},
+				"悢": {
+					"previousMinimum": "lhoo",
+					"rank": 6644
+				},
+				"昤": {
+					"previousMinimum": "lzoi",
+					"rank": 6719
+				},
+				"量": {
+					"previousMinimum": "lhoi",
+					"rank": 664
+				},
+				"李": {
+					"previousMinimum": "lbv",
+					"rank": 588
+				},
+				"梁": {
+					"previousMinimum": "lha",
+					"rank": 1514
+				},
+				"磨": {
+					"previousMinimum": "mbo",
+					"rank": 1152
+				},
+				"无": {
+					"previousMinimum": "mgvv",
+					"rank": 145
+				},
+				"么": {
+					"previousMinimum": "mnu",
+					"rank": 792
+				},
+				"名": {
+					"previousMinimum": "meu",
+					"rank": 491
+				},
+				"幕": {
+					"previousMinimum": "mqiii",
+					"rank": 2686
+				},
+				"摹": {
+					"previousMinimum": "mbii",
+					"rank": 3628
+				},
+				"袤": {
+					"previousMinimum": "meov",
+					"rank": 7491
+				},
+				"呐": {
+					"previousMinimum": "nno",
+					"rank": 328
+				},
+				"摊": {
+					"previousMinimum": "nqi",
+					"rank": 1320
+				},
+				"难": {
+					"previousMinimum": "nka",
+					"rank": 155
+				},
+				"脑": {
+					"previousMinimum": "nluo",
+					"rank": 982
+				},
+				"辟": {
+					"previousMinimum": "pbav",
+					"rank": 2366
+				},
+				"劈": {
+					"previousMinimum": "pba",
+					"rank": 767
+				},
+				"完": {
+					"previousMinimum": "pmoo",
+					"rank": 87,
+					"userCode": "wkoo"
+				},
+				"空": {
+					"previousMinimum": "pjoo",
+					"rank": 735
+				},
+				"品": {
+					"previousMinimum": "pjo",
+					"rank": 1304
+				},
+				"椑": {
+					"previousMinimum": "pfvu",
+					"rank": 6792
+				},
+				"镨": {
+					"previousMinimum": "pjio",
+					"rank": 6201
+				},
+				"倥": {
+					"previousMinimum": "pjioo",
+					"rank": 6369
+				},
+				"娉": {
+					"previousMinimum": "pza",
+					"rank": 5064
+				},
+				"泊": {
+					"previousMinimum": "bgaui",
+					"rank": 3262
+				},
+				"审": {
+					"previousMinimum": "pkoo",
+					"rank": 2064
+				},
+				"硊": {
+					"previousMinimum": "hwvu",
+					"rank": 5469
+				},
+				"篷": {
+					"previousMinimum": "pcuvu",
+					"rank": 4655
+				},
+				"繁": {
+					"previousMinimum": "fkuv",
+					"rank": 3135
+				},
+				"刺": {
+					"previousMinimum": "crvi",
+					"rank": 907
+				},
+				"劁": {
+					"previousMinimum": "qlio",
+					"rank": 3399
+				},
+				"汫": {
+					"previousMinimum": "qea",
+					"rank": 6841
+				},
+				"胜": {
+					"previousMinimum": "ktuu",
+					"rank": 1001
+				},
+				"蚋": {
+					"previousMinimum": "rwia",
+					"rank": 6065
+				},
+				"崿": {
+					"previousMinimum": "rwiao",
+					"rank": 6581
+				},
+				"儿": {
+					"previousMinimum": "rlua",
+					"rank": 266
+				},
+				"嚣": {
+					"previousMinimum": "rloo",
+					"rank": 4865
+				},
+				"奇": {
+					"previousMinimum": "qfvu",
+					"rank": 1546
+				},
+				"追": {
+					"previousMinimum": "enui",
+					"rank": 275
+				},
+				"樘": {
+					"previousMinimum": "thvi",
+					"rank": 6816
+				},
+				"𥻗": {
+					"previousMinimum": "ssou",
+					"rank": 6262
+				},
+				"煁": {
+					"previousMinimum": "ssouv",
+					"rank": 6952
+				},
+				"移": {
+					"previousMinimum": "sfuv",
+					"rank": 1624
+				},
+				"场": {
+					"previousMinimum": "szv",
+					"rank": 731
+				},
+				"帘": {
+					"previousMinimum": "lkooi",
+					"rank": 2410
+				},
+				"晨": {
+					"previousMinimum": "smoi",
+					"rank": 1918
+				},
+				"沉": {
+					"previousMinimum": "smao",
+					"rank": 1186
+				},
+				"溴": {
+					"previousMinimum": "sea",
+					"rank": 4146
+				},
+				"滞": {
+					"previousMinimum": "erav",
+					"rank": 3498
+				},
+				"绸": {
+					"previousMinimum": "seaa",
+					"rank": 4448
+				},
+				"荖": {
+					"previousMinimum": "srii",
+					"rank": 7360
+				},
+				"税": {
+					"previousMinimum": "twu",
+					"rank": 1164
+				},
+				"园": {
+					"previousMinimum": "tkiav",
+					"rank": 1492
+				},
+				"团": {
+					"previousMinimum": "tkia",
+					"rank": 536
+				},
+				"荡": {
+					"previousMinimum": "dyii",
+					"rank": 2023
+				},
+				"啴": {
+					"previousMinimum": "skoo",
+					"rank": 5304
+				},
+				"屉": {
+					"previousMinimum": "tba",
+					"rank": 5071
+				},
+				"愉": {
+					"previousMinimum": "tmooi",
+					"rank": 3229
+				},
+				"腾": {
+					"previousMinimum": "tcuoa",
+					"rank": 2493
+				},
+				"驼": {
+					"previousMinimum": "tbaa",
+					"rank": 1973
+				},
+				"闻": {
+					"previousMinimum": "weoi",
+					"rank": 1026
+				},
+				"问": {
+					"previousMinimum": "we",
+					"rank": 86
+				},
+				"免": {
+					"previousMinimum": "mkua",
+					"rank": 1311
+				},
+				"眼": {
+					"previousMinimum": "wsia",
+					"rank": 666
+				},
+				"呙": {
+					"previousMinimum": "wgo",
+					"rank": 5042
+				},
+				"毌": {
+					"previousMinimum": "wmaa",
+					"rank": 4907
+				},
+				"纹": {
+					"previousMinimum": "weaa",
+					"rank": 1024
+				},
+				"限": {
+					"previousMinimum": "wsai",
+					"rank": 1281
+				},
+				"鞋": {
+					"previousMinimum": "wxvi",
+					"rank": 518
+				},
+				"栖": {
+					"previousMinimum": "xbvv",
+					"rank": 2578
+				},
+				"釐": {
+					"previousMinimum": "lfvvi",
+					"rank": 4383
+				},
+				"假": {
+					"previousMinimum": "xri",
+					"rank": 243
+				},
+				"呀": {
+					"previousMinimum": "xxov",
+					"rank": 118
+				},
+				"呼": {
+					"previousMinimum": "hnou",
+					"rank": 1342
+				},
+				"喧": {
+					"previousMinimum": "xkoo",
+					"rank": 2626
+				},
+				"慊": {
+					"previousMinimum": "qqoo",
+					"rank": 4417
+				},
+				"押": {
+					"previousMinimum": "yxi",
+					"rank": 1789
+				},
+				"携": {
+					"previousMinimum": "xbiui",
+					"rank": 1567
+				},
+				"芯": {
+					"previousMinimum": "xnii",
+					"rank": 1411
+				},
+				"降": {
+					"previousMinimum": "jya",
+					"rank": 1037
+				},
+				"霄": {
+					"previousMinimum": "xtvoi",
+					"rank": 3814
+				},
+				"旖": {
+					"previousMinimum": "yfov",
+					"rank": 5785
+				},
+				"痍": {
+					"previousMinimum": "yfovv",
+					"rank": 7081
+				},
+				"鹞": {
+					"previousMinimum": "ytuo",
+					"rank": 7864
+				},
+				"鹆": {
+					"previousMinimum": "ytuou",
+					"rank": 7853
+				},
+				"研": {
+					"previousMinimum": "ykvuv",
+					"rank": 1886
+				},
+				"掾": {
+					"previousMinimum": "yqiu",
+					"rank": 5373
+				},
+				"掞": {
+					"previousMinimum": "kqiuo",
+					"rank": 6683
+				},
+				"友": {
+					"previousMinimum": "ymvu",
+					"rank": 1266
+				},
+				"听": {
+					"previousMinimum": "tz",
+					"rank": 216
+				},
+				"宛": {
+					"previousMinimum": "wkoou",
+					"rank": 4496
+				},
+				"扰": {
+					"previousMinimum": "rliu",
+					"rank": 2426
+				},
+				"油": {
+					"previousMinimum": "yeai",
+					"rank": 554
+				},
+				"涓": {
+					"previousMinimum": "yqao",
+					"rank": 4429
+				},
+				"益": {
+					"previousMinimum": "yfoui",
+					"rank": 2690
+				},
+				"详": {
+					"previousMinimum": "yhoa",
+					"rank": 3528
+				},
+				"措": {
+					"previousMinimum": "cpiu",
+					"rank": 2038
+				},
+				"择": {
+					"previousMinimum": "zdi",
+					"rank": 3016
+				},
+				"姿": {
+					"previousMinimum": "zbo",
+					"rank": 2236
+				},
+				"堆": {
+					"previousMinimum": "dnvoi",
+					"rank": 1339
+				},
+				"柴": {
+					"previousMinimum": "shiv",
+					"rank": 1685
+				}
+			},
+			"conflictCodes": [
+				"bku",
+				"bgiui",
+				"bwoo",
+				"bpav",
+				"bpii",
+				"briv",
+				"bgoo",
+				"bea",
+				"bevv",
+				"byov",
+				"bsai",
+				"bbuu",
+				"bkuu",
+				"bpai",
+				"ceov",
+				"czuo",
+				"cpiio",
+				"cbiv",
+				"csov",
+				"cfao",
+				"cpiia",
+				"cpiioo",
+				"cnoa",
+				"ckiv",
+				"dsiu",
+				"dsiuo",
+				"dkiuo",
+				"dlo",
+				"ddiv",
+				"dnov",
+				"dnovu",
+				"dnovuv",
+				"dcovuv",
+				"deovu",
+				"deovuv",
+				"dtovu",
+				"dtovuv",
+				"dwov",
+				"dwovu",
+				"dwovuv",
+				"dmvua",
+				"ddva",
+				"ddvav",
+				"dlou",
+				"djva",
+				"emiu",
+				"eeov",
+				"eeovu",
+				"ecviu",
+				"esovu",
+				"esovuv",
+				"efuv",
+				"ewva",
+				"ezai",
+				"fsia",
+				"fsvu",
+				"fmvu",
+				"feuv",
+				"fnai",
+				"gxii",
+				"gjiv",
+				"gpva",
+				"ghv",
+				"gmiuu",
+				"gmiuua",
+				"gxiu",
+				"gxiuu",
+				"geov",
+				"gnaa",
+				"hzva",
+				"hqvu",
+				"hpaa",
+				"hdvv",
+				"hhii",
+				"hdvvo",
+				"jbiv",
+				"jzvv",
+				"jmav",
+				"jliuu",
+				"jliuua",
+				"jsiuv",
+				"jxiu",
+				"jxiuv",
+				"jzvi",
+				"jbva",
+				"jbovo",
+				"jzvio",
+				"jzvioi",
+				"jka",
+				"jkai",
+				"kboa",
+				"kpva",
+				"kbiu",
+				"kbv",
+				"kti",
+				"ktio",
+				"ktioi",
+				"kyao",
+				"kwou",
+				"kmoo",
+				"kbvv",
+				"kjv",
+				"kjvo",
+				"lzo",
+				"llua",
+				"lsvi",
+				"lhoo",
+				"lzoi",
+				"lbv",
+				"lza",
+				"mbo",
+				"mjvv",
+				"mxu",
+				"meu",
+				"meua",
+				"mqiii",
+				"mqiiia",
+				"mbii",
+				"mbov",
+				"mbovv",
+				"meov",
+				"nno",
+				"nqi",
+				"nma",
+				"npoi",
+				"nnoi",
+				"ntuo",
+				"pbav",
+				"pmoo",
+				"pjoo",
+				"pfvu",
+				"pjio",
+				"ppau",
+				"ppaui",
+				"pkoo",
+				"pkooi",
+				"pwvu",
+				"pcuvu",
+				"pkuv",
+				"qrvi",
+				"qtio",
+				"qtioi",
+				"qmvv",
+				"qea",
+				"qeuu",
+				"rwia",
+				"rsua",
+				"rloo",
+				"rloov",
+				"rhvu",
+				"rjui",
+				"rpui",
+				"slvio",
+				"ssou",
+				"sfuv",
+				"szv",
+				"szvo",
+				"ssooi",
+				"smoi",
+				"smao",
+				"sea",
+				"srav",
+				"seaa",
+				"sziiu",
+				"slvioi",
+				"twu",
+				"tkiav",
+				"tzii",
+				"tsov",
+				"tmoo",
+				"tba",
+				"twvv",
+				"tmooi",
+				"tkovu",
+				"tkovuv",
+				"tmovu",
+				"tmovuv",
+				"tsovu",
+				"tsovuv",
+				"tcuoa",
+				"tnui",
+				"tbaa",
+				"weoi",
+				"wkua",
+				"wsia",
+				"wzo",
+				"wkiav",
+				"wmaa",
+				"weaa",
+				"wsai",
+				"wxvi",
+				"wxviv",
+				"wxvivo",
+				"xzvi",
+				"xbvv",
+				"xbvvi",
+				"xri",
+				"xxov",
+				"xrou",
+				"xkoo",
+				"xkooo",
+				"xsiu",
+				"xsiuv",
+				"xbiui",
+				"xzuu",
+				"xrii",
+				"xtiioo",
+				"xzvio",
+				"xzvioi",
+				"xya",
+				"xtvoi",
+				"xtvoio",
+				"yfov",
+				"ytuo",
+				"yqvuv",
+				"yqiu",
+				"ymvu",
+				"yfou",
+				"yfvu",
+				"ymoou",
+				"yjoou",
+				"ytoou",
+				"yeiu",
+				"yeai",
+				"yqao",
+				"yfoui",
+				"yhoa",
+				"yhoao",
+				"yhoaou",
+				"zdiu",
+				"zrov",
+				"znvoi",
+				"zeov",
+				"zriv"
+			]
+		},
+		"snow_zhudao": {
+			"id": "zhudao",
+			"targets": {
+				"妇": {
+					"previousMinimum": "fva",
+					"rank": 2394
+				},
+				"溥": {
+					"previousMinimum": "bhae",
+					"rank": 5420
+				},
+				"扮": {
+					"previousMinimum": "fyi",
+					"rank": 1531
+				},
+				"盼": {
+					"previousMinimum": "pai",
+					"rank": 1103
+				},
+				"枸": {
+					"previousMinimum": "gte",
+					"rank": 4897
+				},
+				"槔": {
+					"previousMinimum": "gbeui",
+					"rank": 6810
+				},
+				"挥": {
+					"previousMinimum": "hyi",
+					"rank": 2308
+				},
+				"掀": {
+					"previousMinimum": "ymiu",
+					"rank": 1957
+				},
+				"捆": {
+					"previousMinimum": "kyi",
+					"rank": 2416
+				},
+				"楷": {
+					"previousMinimum": "kue",
+					"rank": 4625
+				},
+				"䴖": {
+					"previousMinimum": "jneeu",
+					"rank": 6334
+				},
+				"旖": {
+					"previousMinimum": "looe",
+					"rank": 5785
+				},
+				"痍": {
+					"previousMinimum": "looee",
+					"rank": 7081
+				},
+				"育": {
+					"previousMinimum": "lhoeu",
+					"rank": 3561
+				},
+				"医": {
+					"previousMinimum": "lzeue",
+					"rank": 2424
+				},
+				"掾": {
+					"previousMinimum": "laiu",
+					"rank": 5373
+				},
+				"掞": {
+					"previousMinimum": "laiuo",
+					"rank": 6683
+				},
+				"倚": {
+					"previousMinimum": "jzie",
+					"rank": 2414
+				},
+				"月": {
+					"previousMinimum": "lju",
+					"rank": 133
+				},
+				"爷": {
+					"previousMinimum": "lwu",
+					"rank": 882
+				},
+				"甯": {
+					"previousMinimum": "nlo",
+					"rank": 3028
+				},
+				"宁": {
+					"previousMinimum": "nro",
+					"rank": 1695
+				},
+				"侮": {
+					"previousMinimum": "puiuea",
+					"rank": 5029
+				},
+				"普": {
+					"previousMinimum": "puouo",
+					"rank": 1701
+				},
+				"葡": {
+					"previousMinimum": "bsiiu",
+					"rank": 2494
+				},
+				"匍": {
+					"previousMinimum": "puuae",
+					"rank": 4714
+				},
+				"蟠": {
+					"previousMinimum": "piia",
+					"rank": 6078
+				},
+				"畹": {
+					"previousMinimum": "liiao",
+					"rank": 5917
+				},
+				"午": {
+					"previousMinimum": "hzu",
+					"rank": 2847
+				},
+				"簰": {
+					"previousMinimum": "puueui",
+					"rank": 7234
+				},
+				"栖": {
+					"previousMinimum": "yzee",
+					"rank": 2578
+				},
+				"悄": {
+					"previousMinimum": "qboo",
+					"rank": 4136
+				},
+				"憔": {
+					"previousMinimum": "qqooi",
+					"rank": 5757
+				},
+				"俟": {
+					"previousMinimum": "skiao",
+					"rank": 4266
+				},
+				"叁": {
+					"previousMinimum": "saao",
+					"rank": 2167
+				},
+				"滞": {
+					"previousMinimum": "xkae",
+					"rank": 3498
+				},
+				"食": {
+					"previousMinimum": "voio",
+					"rank": 1092
+				},
+				"埽": {
+					"previousMinimum": "sge",
+					"rank": 5687
+				},
+				"槱": {
+					"previousMinimum": "ltee",
+					"rank": 6815
+				},
+				"溴": {
+					"previousMinimum": "sda",
+					"rank": 4146
+				},
+				"漱": {
+					"previousMinimum": "sdae",
+					"rank": 3634
+				},
+				"园": {
+					"previousMinimum": "liiae",
+					"rank": 1492
+				},
+				"蟫": {
+					"previousMinimum": "lpiaei",
+					"rank": 6079
+				},
+				"敦": {
+					"previousMinimum": "dsoe",
+					"rank": 3475
+				},
+				"痪": {
+					"previousMinimum": "haoe",
+					"rank": 5150
+				},
+				"屉": {
+					"previousMinimum": "tza",
+					"rank": 5071
+				},
+				"隋": {
+					"previousMinimum": "seai",
+					"rank": 2333
+				},
+				"势": {
+					"previousMinimum": "vkiu",
+					"rank": 2363
+				},
+				"拾": {
+					"previousMinimum": "vjiu",
+					"rank": 2050
+				},
+				"实": {
+					"previousMinimum": "vzoo",
+					"rank": 1756
+				},
+				"始": {
+					"previousMinimum": "vkaua",
+					"rank": 1861
+				},
+				"施": {
+					"previousMinimum": "vzoe",
+					"rank": 2292
+				},
+				"鎏": {
+					"previousMinimum": "wtao",
+					"rank": 5600
+				},
+				"溇": {
+					"previousMinimum": "wuao",
+					"rank": 6895
+				},
+				"岭": {
+					"previousMinimum": "wriai",
+					"rank": 2351
+				},
+				"陋": {
+					"previousMinimum": "wdaie",
+					"rank": 2854
+				},
+				"龄": {
+					"previousMinimum": "wriei",
+					"rank": 3036
+				},
+				"罹": {
+					"previousMinimum": "woiao",
+					"rank": 5501
+				},
+				"逻": {
+					"previousMinimum": "woiaoa",
+					"rank": 5590
+				},
+				"棂": {
+					"previousMinimum": "wreae",
+					"rank": 5805
+				},
+				"碌": {
+					"previousMinimum": "wheu",
+					"rank": 3001
+				},
+				"积": {
+					"previousMinimum": "jzue",
+					"rank": 2328
+				},
+				"稙": {
+					"previousMinimum": "xzue",
+					"rank": 5474
+				},
+				"章": {
+					"previousMinimum": "xsoeu",
+					"rank": 1369,
+					"userCode": "xsoe"
+				},
+				"赣": {
+					"previousMinimum": "gaoe",
+					"rank": 2837
+				},
+				"喧": {
+					"previousMinimum": "yioo",
+					"rank": 2626
+				},
+				"慊": {
+					"previousMinimum": "qaoo",
+					"rank": 4417
+				}
+			},
+			"conflictCodes": [
+				"fva",
+				"fyi",
+				"gbeu",
+				"hyi",
+				"hyiu",
+				"jnee",
+				"looe",
+				"lzoeu",
+				"lzeu",
+				"laiu",
+				"lzie",
+				"lnu",
+				"nlo",
+				"puiue",
+				"puou",
+				"puii",
+				"puua",
+				"piia",
+				"pvue",
+				"qzee",
+				"qqoo",
+				"skia",
+				"smao",
+				"skae",
+				"skio",
+				"sqe",
+				"sda",
+				"tiiae",
+				"tioe",
+				"tza",
+				"vziu",
+				"vooo",
+				"voau",
+				"vooe",
+				"wtao",
+				"wria",
+				"wdai",
+				"wrie",
+				"woiao",
+				"wrea",
+				"wdeu",
+				"xoue",
+				"xsoeu",
+				"yioo"
+			]
+		},
+		"snow_jiandao_classic": {
+			"id": "classic-shape",
+			"targets": {
+				"臂": {
+					"previousMinimum": "bwav",
+					"rank": 2601
+				},
+				"鐾": {
+					"previousMinimum": "bkavi",
+					"rank": 7653
+				},
+				"仳": {
+					"previousMinimum": "bkiv",
+					"rank": 5641
+				},
+				"唪": {
+					"previousMinimum": "brov",
+					"rank": 6438
+				},
+				"溥": {
+					"previousMinimum": "bja",
+					"rank": 5420
+				},
+				"跋": {
+					"previousMinimum": "bwoi",
+					"rank": 2451
+				},
+				"附": {
+					"previousMinimum": "bjai",
+					"rank": 1476
+				},
+				"族": {
+					"previousMinimum": "cdo",
+					"rank": 1600
+				},
+				"滋": {
+					"previousMinimum": "ckao",
+					"rank": 2651
+				},
+				"体": {
+					"previousMinimum": "cbiv",
+					"rank": 1012
+				},
+				"措": {
+					"previousMinimum": "ckiu",
+					"rank": 2038
+				},
+				"昔": {
+					"previousMinimum": "clvi",
+					"rank": 3766
+				},
+				"趋": {
+					"previousMinimum": "cjvo",
+					"rank": 3723
+				},
+				"趣": {
+					"previousMinimum": "cdvo",
+					"rank": 586
+				},
+				"典": {
+					"previousMinimum": "dmia",
+					"rank": 3124
+				},
+				"巅": {
+					"previousMinimum": "dmiau",
+					"rank": 3125
+				},
+				"佚": {
+					"previousMinimum": "ddiu",
+					"rank": 5644
+				},
+				"凸": {
+					"previousMinimum": "ddiv",
+					"rank": 1622
+				},
+				"敦": {
+					"previousMinimum": "dbov",
+					"rank": 3475
+				},
+				"檐": {
+					"previousMinimum": "dfvua",
+					"rank": 3737
+				},
+				"顿": {
+					"previousMinimum": "djva",
+					"rank": 1580
+				},
+				"招": {
+					"previousMinimum": "fzi",
+					"rank": 429
+				},
+				"什": {
+					"previousMinimum": "eniu",
+					"rank": 1096
+				},
+				"侁": {
+					"previousMinimum": "eniuv",
+					"rank": 6359
+				},
+				"削": {
+					"previousMinimum": "ezio",
+					"rank": 1655
+				},
+				"叶": {
+					"previousMinimum": "eeou",
+					"rank": 1157
+				},
+				"佻": {
+					"previousMinimum": "fziu",
+					"rank": 6355
+				},
+				"禔": {
+					"previousMinimum": "fkoao",
+					"rank": 5949
+				},
+				"识": {
+					"previousMinimum": "ekoao",
+					"rank": 1279
+				},
+				"壮": {
+					"previousMinimum": "fxo",
+					"rank": 1471
+				},
+				"妆": {
+					"previousMinimum": "fmov",
+					"rank": 881
+				},
+				"照": {
+					"previousMinimum": "fzo",
+					"rank": 259
+				},
+				"昭": {
+					"previousMinimum": "qzo",
+					"rank": 3343
+				},
+				"者": {
+					"previousMinimum": "feu",
+					"rank": 366
+				},
+				"宅": {
+					"previousMinimum": "fho",
+					"rank": 468
+				},
+				"折": {
+					"previousMinimum": "fei",
+					"rank": 673
+				},
+				"积": {
+					"previousMinimum": "fkuvo",
+					"rank": 2328
+				},
+				"摘": {
+					"previousMinimum": "fhi",
+					"rank": 1177
+				},
+				"状": {
+					"previousMinimum": "fmo",
+					"rank": 1327
+				},
+				"债": {
+					"previousMinimum": "fhiv",
+					"rank": 2103
+				},
+				"妯": {
+					"previousMinimum": "fdau",
+					"rank": 5325
+				},
+				"婤": {
+					"previousMinimum": "fdauu",
+					"rank": 6523
+				},
+				"啄": {
+					"previousMinimum": "flo",
+					"rank": 2477
+				},
+				"育": {
+					"previousMinimum": "fdovu",
+					"rank": 3561
+				},
+				"磜": {
+					"previousMinimum": "fhv",
+					"rank": 7163
+				},
+				"致": {
+					"previousMinimum": "fbva",
+					"rank": 550
+				},
+				"恍": {
+					"previousMinimum": "gxo",
+					"rank": 4044
+				},
+				"广": {
+					"previousMinimum": "gmo",
+					"rank": 1303
+				},
+				"桄": {
+					"previousMinimum": "gmv",
+					"rank": 6764
+				},
+				"串": {
+					"previousMinimum": "wti",
+					"rank": 1264
+				},
+				"价": {
+					"previousMinimum": "gsii",
+					"rank": 994
+				},
+				"拘": {
+					"previousMinimum": "gdiuu",
+					"rank": 2484
+				},
+				"痕": {
+					"previousMinimum": "gnov",
+					"rank": 2334
+				},
+				"惊": {
+					"previousMinimum": "hnoo",
+					"rank": 1180
+				},
+				"谎": {
+					"previousMinimum": "hxo",
+					"rank": 2011
+				},
+				"珲": {
+					"previousMinimum": "hwvv",
+					"rank": 4356
+				},
+				"煌": {
+					"previousMinimum": "hmou",
+					"rank": 3801
+				},
+				"挥": {
+					"previousMinimum": "hbiu",
+					"rank": 2308
+				},
+				"掀": {
+					"previousMinimum": "hni",
+					"rank": 1957
+				},
+				"格": {
+					"previousMinimum": "gevu",
+					"rank": 1475
+				},
+				"获": {
+					"previousMinimum": "hgi",
+					"rank": 1191
+				},
+				"澈": {
+					"previousMinimum": "jea",
+					"rank": 3196
+				},
+				"掣": {
+					"previousMinimum": "weu",
+					"rank": 3583
+				},
+				"斥": {
+					"previousMinimum": "qeu",
+					"rank": 3231
+				},
+				"坼": {
+					"previousMinimum": "jev",
+					"rank": 4720
+				},
+				"骆": {
+					"previousMinimum": "jsaau",
+					"rank": 1654
+				},
+				"樘": {
+					"previousMinimum": "tpvi",
+					"rank": 6816
+				},
+				"㬚": {
+					"previousMinimum": "jeo",
+					"rank": 6285
+				},
+				"砗": {
+					"previousMinimum": "wev",
+					"rank": 7133
+				},
+				"槱": {
+					"previousMinimum": "wzv",
+					"rank": 6815
+				},
+				"倚": {
+					"previousMinimum": "jkivu",
+					"rank": 2414
+				},
+				"净": {
+					"previousMinimum": "jgovu",
+					"rank": 1499
+				},
+				"崭": {
+					"previousMinimum": "jfiav",
+					"rank": 4731
+				},
+				"押": {
+					"previousMinimum": "ysi",
+					"rank": 1789
+				},
+				"拮": {
+					"previousMinimum": "jsiuv",
+					"rank": 5766
+				},
+				"挟": {
+					"previousMinimum": "xsiuv",
+					"rank": 3713
+				},
+				"更": {
+					"previousMinimum": "gr",
+					"rank": 70
+				},
+				"沮": {
+					"previousMinimum": "jlai",
+					"rank": 5409
+				},
+				"滥": {
+					"previousMinimum": "lfa",
+					"rank": 2779
+				},
+				"脚": {
+					"previousMinimum": "jcuv",
+					"rank": 407
+				},
+				"醒": {
+					"previousMinimum": "jgvio",
+					"rank": 510
+				},
+				"哐": {
+					"previousMinimum": "kxo",
+					"rank": 2969
+				},
+				"古": {
+					"previousMinimum": "kju",
+					"rank": 1337
+				},
+				"碌": {
+					"previousMinimum": "ljvua",
+					"rank": 3001
+				},
+				"谷": {
+					"previousMinimum": "ljuo",
+					"rank": 1423
+				},
+				"无": {
+					"previousMinimum": "mjvv",
+					"rank": 145
+				},
+				"耱": {
+					"previousMinimum": "mlvvo",
+					"rank": 7289
+				},
+				"冰": {
+					"previousMinimum": "bgov",
+					"rank": 872
+				},
+				"摊": {
+					"previousMinimum": "nfiu",
+					"rank": 1320
+				},
+				"而": {
+					"previousMinimum": "nrv",
+					"rank": 49,
+					"userCode": "xjvu"
+				},
+				"耐": {
+					"previousMinimum": "nhv",
+					"rank": 1228
+				},
+				"难": {
+					"previousMinimum": "nfao",
+					"rank": 155
+				},
+				"繁": {
+					"previousMinimum": "ffuv",
+					"rank": 3135
+				},
+				"笸": {
+					"previousMinimum": "pluvv",
+					"rank": 7211
+				},
+				"房": {
+					"previousMinimum": "fpoa",
+					"rank": 599
+				},
+				"片": {
+					"previousMinimum": "pfui",
+					"rank": 496
+				},
+				"恪": {
+					"previousMinimum": "keoou",
+					"rank": 3228
+				},
+				"组": {
+					"previousMinimum": "qlaa",
+					"rank": 441
+				},
+				"璩": {
+					"previousMinimum": "qlvv",
+					"rank": 5908
+				},
+				"㭕": {
+					"previousMinimum": "qlvvo",
+					"rank": 6287
+				},
+				"朝": {
+					"previousMinimum": "fzu",
+					"rank": 823
+				},
+				"嘀": {
+					"previousMinimum": "dkoo",
+					"rank": 1986
+				},
+				"宁": {
+					"previousMinimum": "ngoo",
+					"rank": 1695
+				},
+				"属": {
+					"previousMinimum": "ejav",
+					"rank": 980
+				},
+				"慎": {
+					"previousMinimum": "enoo",
+					"rank": 2555
+				},
+				"桃": {
+					"previousMinimum": "tzv",
+					"rank": 2018
+				},
+				"浸": {
+					"previousMinimum": "jbaav",
+					"rank": 2560
+				},
+				"精": {
+					"previousMinimum": "jgou",
+					"rank": 1075
+				},
+				"耷": {
+					"previousMinimum": "dsvu",
+					"rank": 4787
+				},
+				"胜": {
+					"previousMinimum": "eruu",
+					"rank": 1001
+				},
+				"戎": {
+					"previousMinimum": "rrv",
+					"rank": 4507
+				},
+				"月": {
+					"previousMinimum": "rdu",
+					"rank": 133
+				},
+				"术": {
+					"previousMinimum": "ejvo",
+					"rank": 1551
+				},
+				"洒": {
+					"previousMinimum": "sna",
+					"rank": 1682
+				},
+				"疏": {
+					"previousMinimum": "sjai",
+					"rank": 2857
+				},
+				"蓿": {
+					"previousMinimum": "sjiio",
+					"rank": 7415
+				},
+				"怙": {
+					"previousMinimum": "tdoo",
+					"rank": 5088
+				},
+				"吨": {
+					"previousMinimum": "dwo",
+					"rank": 1656
+				},
+				"吴": {
+					"previousMinimum": "twovv",
+					"rank": 1173
+				},
+				"愉": {
+					"previousMinimum": "tdooi",
+					"rank": 3229
+				},
+				"欢": {
+					"previousMinimum": "htao",
+					"rank": 1974
+				},
+				"疮": {
+					"previousMinimum": "wxo",
+					"rank": 3213
+				},
+				"巢": {
+					"previousMinimum": "wza",
+					"rank": 2441
+				},
+				"创": {
+					"previousMinimum": "wmi",
+					"rank": 1606
+				},
+				"眼": {
+					"previousMinimum": "wnia",
+					"rank": 666
+				},
+				"尺": {
+					"previousMinimum": "wea",
+					"rank": 2433
+				},
+				"义": {
+					"previousMinimum": "wsouo",
+					"rank": 1908
+				},
+				"囱": {
+					"previousMinimum": "wmu",
+					"rank": 4329
+				},
+				"梌": {
+					"previousMinimum": "wsvi",
+					"rank": 6773
+				},
+				"靺": {
+					"previousMinimum": "mlvi",
+					"rank": 5251
+				},
+				"橦": {
+					"previousMinimum": "wmv",
+					"rank": 5817
+				},
+				"欻": {
+					"previousMinimum": "wqo",
+					"rank": 4425
+				},
+				"漴": {
+					"previousMinimum": "fxa",
+					"rank": 5424
+				},
+				"爿": {
+					"previousMinimum": "pfai",
+					"rank": 4150
+				},
+				"限": {
+					"previousMinimum": "wnai",
+					"rank": 1281
+				},
+				"鞋": {
+					"previousMinimum": "wsvivo",
+					"rank": 518
+				},
+				"栖": {
+					"previousMinimum": "xkvv",
+					"rank": 2578
+				},
+				"棤": {
+					"previousMinimum": "clvv",
+					"rank": 6782
+				},
+				"釐": {
+					"previousMinimum": "lhvvi",
+					"rank": 4383
+				},
+				"仰": {
+					"previousMinimum": "xpiu",
+					"rank": 2625
+				},
+				"呼": {
+					"previousMinimum": "hjou",
+					"rank": 1342
+				},
+				"嚣": {
+					"previousMinimum": "xzoov",
+					"rank": 4865
+				},
+				"携": {
+					"previousMinimum": "xkiui",
+					"rank": 1567
+				},
+				"淡": {
+					"previousMinimum": "dfao",
+					"rank": 830
+				},
+				"御": {
+					"previousMinimum": "yluu",
+					"rank": 2008
+				},
+				"听": {
+					"previousMinimum": "tg",
+					"rank": 216
+				},
+				"宛": {
+					"previousMinimum": "ytoo",
+					"rank": 4496
+				},
+				"币": {
+					"previousMinimum": "ybui",
+					"rank": 1930
+				},
+				"详": {
+					"previousMinimum": "ypoa",
+					"rank": 3528
+				},
+				"释": {
+					"previousMinimum": "ekuoa",
+					"rank": 2945
+				},
+				"择": {
+					"previousMinimum": "zei",
+					"rank": 3016
+				}
+			},
+			"conflictCodes": [
+				"bwav",
+				"bwavu",
+				"bkiv",
+				"brov",
+				"bja",
+				"bwoi",
+				"bwoiv",
+				"bjai",
+				"cdo",
+				"ckao",
+				"cbiv",
+				"ckiu",
+				"ckiuv",
+				"clvi",
+				"clvio",
+				"clvioi",
+				"cjvo",
+				"cdvo",
+				"dmia",
+				"ddiu",
+				"dmiau",
+				"ddiv",
+				"dbov",
+				"dfvua",
+				"djva",
+				"eziu",
+				"eniu",
+				"eniuo",
+				"eeiuo",
+				"ezio",
+				"ezioi",
+				"ezioii",
+				"eeou",
+				"fzi",
+				"fziu",
+				"fkoao",
+				"fxo",
+				"fxov",
+				"fzo",
+				"fzoi",
+				"feu",
+				"feuo",
+				"fziua",
+				"fho",
+				"fei",
+				"fkuvo",
+				"fhi",
+				"fxovv",
+				"fhiv",
+				"fdau",
+				"fdov",
+				"fdovu",
+				"fhv",
+				"fbva",
+				"gxo",
+				"gmov",
+				"gmvi",
+				"gtia",
+				"gsii",
+				"gjiv",
+				"gdiuu",
+				"gnov",
+				"hnoo",
+				"hxo",
+				"hbvvo",
+				"hxou",
+				"hwiu",
+				"hni",
+				"hniu",
+				"hevu",
+				"hgi",
+				"jeao",
+				"jeaov",
+				"jeuvi",
+				"jeuu",
+				"jevo",
+				"jsaau",
+				"jrvio",
+				"jeoi",
+				"jevuv",
+				"jzvv",
+				"jkivu",
+				"jrovu",
+				"jfiav",
+				"jsiu",
+				"jsiuv",
+				"jsiuvo",
+				"jgvi",
+				"jmai",
+				"jmaii",
+				"jhuv",
+				"jrvioi",
+				"jgvio",
+				"jgvioi",
+				"kxo",
+				"kju",
+				"kjuo",
+				"llvu",
+				"llvua",
+				"ljuo",
+				"ljuoo",
+				"mlvv",
+				"mjvv",
+				"ngov",
+				"nfiu",
+				"nrv",
+				"nrvu",
+				"nlao",
+				"pluv",
+				"ppoa",
+				"pfui",
+				"pfuv",
+				"qhoou",
+				"qlaa",
+				"qcioii",
+				"qlvv",
+				"qzuou",
+				"qrovu",
+				"qeoo",
+				"qjoo",
+				"qeoou",
+				"qjav",
+				"qnoo",
+				"qciua",
+				"qeuu",
+				"qzvu",
+				"qbaav",
+				"qgou",
+				"qevuv",
+				"qguu",
+				"rrv",
+				"rdu",
+				"sbvo",
+				"sna",
+				"sjai",
+				"sjaio",
+				"sjiio",
+				"sjiioo",
+				"tdoo",
+				"twov",
+				"tdooi",
+				"ttov",
+				"tfao",
+				"wxo",
+				"wza",
+				"wxi",
+				"wnia",
+				"wea",
+				"weu",
+				"wsouo",
+				"wmu",
+				"wsvi",
+				"wsviv",
+				"wmv",
+				"wqo",
+				"wqou",
+				"wma",
+				"wmai",
+				"wnai",
+				"wsvivo",
+				"xkvv",
+				"xkvvi",
+				"xkvvia",
+				"xpiu",
+				"xsou",
+				"xzoov",
+				"xzoovu",
+				"xsiu",
+				"xsiuv",
+				"xsiuvo",
+				"xkiui",
+				"xkiuio",
+				"yfao",
+				"ysuu",
+				"ybou",
+				"ytoo",
+				"ytoou",
+				"ywoou",
+				"ybui",
+				"ybuia",
+				"ypoa",
+				"ypoao",
+				"yluoo",
+				"ykuoa",
+				"zdvo",
+				"zeiu",
+				"zeiuv"
+			]
+		},
+		"snow_sanpin_classic": {
+			"id": "classic-tone",
+			"targets": {
+				"罢": {
+					"previousMinimum": "bsai",
+					"rank": 1407
+				},
+				"膘": {
+					"previousMinimum": "bciua",
+					"rank": 1389
+				},
+				"标": {
+					"previousMinimum": "bcivi",
+					"rank": 1611
+				},
+				"跋": {
+					"previousMinimum": "bsvia",
+					"rank": 2451
+				},
+				"湃": {
+					"previousMinimum": "phao",
+					"rank": 4350
+				},
+				"吊": {
+					"previousMinimum": "dcaia",
+					"rank": 1057
+				},
+				"叼": {
+					"previousMinimum": "dciia",
+					"rank": 1005
+				},
+				"调": {
+					"previousMinimum": "dcaoa",
+					"rank": 776
+				},
+				"雕": {
+					"previousMinimum": "dciua",
+					"rank": 1662
+				},
+				"凋": {
+					"previousMinimum": "dciov",
+					"rank": 3953
+				},
+				"世": {
+					"previousMinimum": "ekavii",
+					"rank": 1721
+				},
+				"始": {
+					"previousMinimum": "ekuau",
+					"rank": 1861
+				},
+				"视": {
+					"previousMinimum": "ekooa",
+					"rank": 1681
+				},
+				"氏": {
+					"previousMinimum": "ekaua",
+					"rank": 2195
+				},
+				"施": {
+					"previousMinimum": "ekuov",
+					"rank": 2292
+				},
+				"媞": {
+					"previousMinimum": "dhaau",
+					"rank": 4603
+				},
+				"匙": {
+					"previousMinimum": "ekoi",
+					"rank": 2747
+				},
+				"招": {
+					"previousMinimum": "fzi",
+					"rank": 429,
+					"userCode": "qzi"
+				},
+				"朝": {
+					"previousMinimum": "jzv",
+					"rank": 823
+				},
+				"宅": {
+					"previousMinimum": "fhv",
+					"rank": 468
+				},
+				"撞": {
+					"previousMinimum": "fma",
+					"rank": 590
+				},
+				"摘": {
+					"previousMinimum": "fhi",
+					"rank": 1177
+				},
+				"状": {
+					"previousMinimum": "fmao",
+					"rank": 1327
+				},
+				"壮": {
+					"previousMinimum": "fmaov",
+					"rank": 1471
+				},
+				"债": {
+					"previousMinimum": "fha",
+					"rank": 2103
+				},
+				"祭": {
+					"previousMinimum": "fhau",
+					"rank": 1538
+				},
+				"斋": {
+					"previousMinimum": "fhio",
+					"rank": 2225
+				},
+				"择": {
+					"previousMinimum": "fhvv",
+					"rank": 3016
+				},
+				"复": {
+					"previousMinimum": "fdauv",
+					"rank": 1597
+				},
+				"着": {
+					"previousMinimum": "fe",
+					"rank": 50
+				},
+				"柴": {
+					"previousMinimum": "fhai",
+					"rank": 1685
+				},
+				"磜": {
+					"previousMinimum": "fhav",
+					"rank": 7163
+				},
+				"著": {
+					"previousMinimum": "feov",
+					"rank": 1086
+				},
+				"责": {
+					"previousMinimum": "fhavv",
+					"rank": 3254
+				},
+				"干": {
+					"previousMinimum": "gf",
+					"rank": 152
+				},
+				"广": {
+					"previousMinimum": "gmu",
+					"rank": 1303
+				},
+				"皇": {
+					"previousMinimum": "hmv",
+					"rank": 1805
+				},
+				"煌": {
+					"previousMinimum": "hmvo",
+					"rank": 3801
+				},
+				"惛": {
+					"previousMinimum": "hwu",
+					"rank": 6651
+				},
+				"较": {
+					"previousMinimum": "jcava",
+					"rank": 803
+				},
+				"交": {
+					"previousMinimum": "jciovu",
+					"rank": 636
+				},
+				"嚼": {
+					"previousMinimum": "jcvia",
+					"rank": 1383
+				},
+				"焦": {
+					"previousMinimum": "jciuio",
+					"rank": 1532
+				},
+				"撑": {
+					"previousMinimum": "jro",
+					"rank": 670
+				},
+				"成": {
+					"previousMinimum": "jr",
+					"rank": 136
+				},
+				"计": {
+					"previousMinimum": "jkoo",
+					"rank": 2090
+				},
+				"激": {
+					"previousMinimum": "jko",
+					"rank": 2371
+				},
+				"究": {
+					"previousMinimum": "jqoo",
+					"rank": 3935
+				},
+				"间": {
+					"previousMinimum": "jmi",
+					"rank": 506
+				},
+				"见": {
+					"previousMinimum": "jm",
+					"rank": 276
+				},
+				"记": {
+					"previousMinimum": "jkao",
+					"rank": 622
+				},
+				"诳": {
+					"previousMinimum": "kxv",
+					"rank": 3807
+				},
+				"框": {
+					"previousMinimum": "kma",
+					"rank": 1623
+				},
+				"琨": {
+					"previousMinimum": "kwiv",
+					"rank": 4099
+				},
+				"坤": {
+					"previousMinimum": "kwi",
+					"rank": 1838
+				},
+				"旷": {
+					"previousMinimum": "kmai",
+					"rank": 3609
+				},
+				"呈": {
+					"previousMinimum": "jrui",
+					"rank": 1787
+				},
+				"撩": {
+					"previousMinimum": "lcivi",
+					"rank": 1889
+				},
+				"鎏": {
+					"previousMinimum": "lqvoov",
+					"rank": 5600
+				},
+				"料": {
+					"previousMinimum": "lcaou",
+					"rank": 1062
+				},
+				"柳": {
+					"previousMinimum": "lquv",
+					"rank": 1635
+				},
+				"辽": {
+					"previousMinimum": "lcvai",
+					"rank": 2316
+				},
+				"岭": {
+					"previousMinimum": "lguia",
+					"rank": 2351
+				},
+				"榴": {
+					"previousMinimum": "lqvvi",
+					"rank": 2972
+				},
+				"搂": {
+					"previousMinimum": "ldi",
+					"rank": 1285
+				},
+				"蓼": {
+					"previousMinimum": "lcuvi",
+					"rank": 4244
+				},
+				"伶": {
+					"previousMinimum": "lgou",
+					"rank": 3433
+				},
+				"淼": {
+					"previousMinimum": "mcuia",
+					"rank": 3109
+				},
+				"磨": {
+					"previousMinimum": "mloov",
+					"rank": 1152
+				},
+				"魔": {
+					"previousMinimum": "mlvo",
+					"rank": 541
+				},
+				"妙": {
+					"previousMinimum": "mcaau",
+					"rank": 1386
+				},
+				"袅": {
+					"previousMinimum": "ncuua",
+					"rank": 2294
+				},
+				"宁": {
+					"previousMinimum": "nga",
+					"rank": 1695
+				},
+				"拧": {
+					"previousMinimum": "ng",
+					"rank": 1297
+				},
+				"漂": {
+					"previousMinimum": "pcaoo",
+					"rank": 1286
+				},
+				"飘": {
+					"previousMinimum": "pcivi",
+					"rank": 951
+				},
+				"瞟": {
+					"previousMinimum": "pcuia",
+					"rank": 1972
+				},
+				"憩": {
+					"previousMinimum": "qkauv",
+					"rank": 4885
+				},
+				"桥": {
+					"previousMinimum": "qcvvi",
+					"rank": 723
+				},
+				"翘": {
+					"previousMinimum": "qcava",
+					"rank": 1104
+				},
+				"巧": {
+					"previousMinimum": "qcuvi",
+					"rank": 1140
+				},
+				"敲": {
+					"previousMinimum": "qciov",
+					"rank": 1182
+				},
+				"悄": {
+					"previousMinimum": "qcioo",
+					"rank": 4136
+				},
+				"弃": {
+					"previousMinimum": "qkaov",
+					"rank": 1494
+				},
+				"奇": {
+					"previousMinimum": "xhuvu",
+					"rank": 1546
+				},
+				"乔": {
+					"previousMinimum": "qcvuv",
+					"rank": 1616
+				},
+				"绮": {
+					"previousMinimum": "qkuaa",
+					"rank": 2268
+				},
+				"淇": {
+					"previousMinimum": "qkvoov",
+					"rank": 2275
+				},
+				"砌": {
+					"previousMinimum": "qkavu",
+					"rank": 2281
+				},
+				"掮": {
+					"previousMinimum": "qmvvi",
+					"rank": 5770
+				},
+				"靬": {
+					"previousMinimum": "qmvv",
+					"rank": 5008
+				},
+				"启": {
+					"previousMinimum": "qkuoa",
+					"rank": 3022
+				},
+				"企": {
+					"previousMinimum": "qkauo",
+					"rank": 3074
+				},
+				"愀": {
+					"previousMinimum": "qqa",
+					"rank": 3735
+				},
+				"窍": {
+					"previousMinimum": "qcaoo",
+					"rank": 4102
+				},
+				"峭": {
+					"previousMinimum": "qcaia",
+					"rank": 5341
+				},
+				"啐": {
+					"previousMinimum": "cbai",
+					"rank": 2574
+				},
+				"思": {
+					"previousMinimum": "skoi",
+					"rank": 1619
+				},
+				"厕": {
+					"previousMinimum": "ceav",
+					"rank": 3089
+				},
+				"挑": {
+					"previousMinimum": "dcavi",
+					"rank": 529
+				},
+				"潮": {
+					"previousMinimum": "jzvo",
+					"rank": 1064
+				},
+				"澈": {
+					"previousMinimum": "wea",
+					"rank": 3196
+				},
+				"闯": {
+					"previousMinimum": "wmu",
+					"rank": 1328
+				},
+				"窗": {
+					"previousMinimum": "wmi",
+					"rank": 1458
+				},
+				"创": {
+					"previousMinimum": "wma",
+					"rank": 1606
+				},
+				"乌": {
+					"previousMinimum": "wjiua",
+					"rank": 1831
+				},
+				"鼯": {
+					"previousMinimum": "wjvui",
+					"rank": 2987
+				},
+				"掣": {
+					"previousMinimum": "jeau",
+					"rank": 3583
+				},
+				"彻": {
+					"previousMinimum": "jeauu",
+					"rank": 3892
+				},
+				"伍": {
+					"previousMinimum": "wjou",
+					"rank": 2873
+				},
+				"务": {
+					"previousMinimum": "wjoua",
+					"rank": 3004
+				},
+				"抓": {
+					"previousMinimum": "fq",
+					"rank": 364
+				},
+				"下": {
+					"previousMinimum": "xsa",
+					"rank": 63
+				},
+				"呵": {
+					"previousMinimum": "xsu",
+					"rank": 425
+				},
+				"削": {
+					"previousMinimum": "ezaio",
+					"rank": 1655
+				},
+				"徐": {
+					"previousMinimum": "xlvuu",
+					"rank": 1351
+				},
+				"刑": {
+					"previousMinimum": "xgvvvu",
+					"rank": 1214
+				},
+				"形": {
+					"previousMinimum": "xgovv",
+					"rank": 1757
+				},
+				"谢": {
+					"previousMinimum": "xdaoa",
+					"rank": 453
+				},
+				"醒": {
+					"previousMinimum": "xguvi",
+					"rank": 510
+				},
+				"鞋": {
+					"previousMinimum": "xdvvi",
+					"rank": 518
+				},
+				"邪": {
+					"previousMinimum": "eevva",
+					"rank": 1518
+				},
+				"携": {
+					"previousMinimum": "xdvviv",
+					"rank": 1567
+				},
+				"雪": {
+					"previousMinimum": "xhuvo",
+					"rank": 519
+				},
+				"霭": {
+					"previousMinimum": "xhuvoa",
+					"rank": 4577
+				},
+				"性": {
+					"previousMinimum": "xgaoo",
+					"rank": 719
+				},
+				"兴": {
+					"previousMinimum": "xgioo",
+					"rank": 2183
+				},
+				"需": {
+					"previousMinimum": "nlavo",
+					"rank": 739
+				},
+				"星": {
+					"previousMinimum": "xgiia",
+					"rank": 847
+				},
+				"蟹": {
+					"previousMinimum": "xdaua",
+					"rank": 868
+				},
+				"欧": {
+					"previousMinimum": "xdivuo",
+					"rank": 1099
+				},
+				"巡": {
+					"previousMinimum": "ewaaa",
+					"rank": 3090
+				},
+				"余": {
+					"previousMinimum": "xlvuo",
+					"rank": 1560
+				},
+				"须": {
+					"previousMinimum": "xliuuu",
+					"rank": 1358
+				},
+				"消": {
+					"previousMinimum": "xcioo",
+					"rank": 1429
+				},
+				"艾": {
+					"previousMinimum": "xhavii",
+					"rank": 1449
+				},
+				"尔": {
+					"previousMinimum": "xjuua",
+					"rank": 1505
+				},
+				"挟": {
+					"previousMinimum": "jsivivv",
+					"rank": 3713
+				},
+				"恤": {
+					"previousMinimum": "xlaoo",
+					"rank": 1691
+				},
+				"序": {
+					"previousMinimum": "xlaov",
+					"rank": 2147
+				},
+				"藕": {
+					"previousMinimum": "xduvii",
+					"rank": 1762
+				},
+				"讯": {
+					"previousMinimum": "xwaoa",
+					"rank": 1763
+				},
+				"训": {
+					"previousMinimum": "xwooa",
+					"rank": 2250
+				},
+				"续": {
+					"previousMinimum": "xlaaa",
+					"rank": 1785
+				},
+				"绪": {
+					"previousMinimum": "xlaaav",
+					"rank": 4105
+				},
+				"呕": {
+					"previousMinimum": "xduiav",
+					"rank": 1997
+				},
+				"孝": {
+					"previousMinimum": "xcaviv",
+					"rank": 2027
+				},
+				"萧": {
+					"previousMinimum": "xcivi",
+					"rank": 2047
+				},
+				"碍": {
+					"previousMinimum": "xhavui",
+					"rank": 2469
+				},
+				"腥": {
+					"previousMinimum": "xgiua",
+					"rank": 2592
+				},
+				"枭": {
+					"previousMinimum": "xciua",
+					"rank": 2885
+				},
+				"效": {
+					"previousMinimum": "xcaovu",
+					"rank": 3115
+				},
+				"蓄": {
+					"previousMinimum": "xlavi",
+					"rank": 3183
+				},
+				"酗": {
+					"previousMinimum": "xlavia",
+					"rank": 5232
+				},
+				"循": {
+					"previousMinimum": "xwvuu",
+					"rank": 3687
+				},
+				"叶": {
+					"previousMinimum": "eeai",
+					"rank": 1157
+				},
+				"硎": {
+					"previousMinimum": "xgvvui",
+					"rank": 7145
+				},
+				"儿": {
+					"previousMinimum": "xjou",
+					"rank": 266
+				},
+				"霄": {
+					"previousMinimum": "xcivo",
+					"rank": 3814
+				},
+				"逸": {
+					"previousMinimum": "ykaua",
+					"rank": 2725
+				},
+				"奕": {
+					"previousMinimum": "ykaovui",
+					"rank": 2370
+				},
+				"嗌": {
+					"previousMinimum": "ykaiav",
+					"rank": 3296
+				},
+				"毅": {
+					"previousMinimum": "ykaovou",
+					"rank": 3068
+				},
+				"移": {
+					"previousMinimum": "wkuuv",
+					"rank": 1624
+				},
+				"忆": {
+					"previousMinimum": "ykaooi",
+					"rank": 1809
+				},
+				"义": {
+					"previousMinimum": "wsiou",
+					"rank": 1908
+				},
+				"轶": {
+					"previousMinimum": "ykava",
+					"rank": 1981
+				},
+				"宜": {
+					"previousMinimum": "ykoo",
+					"rank": 2046
+				},
+				"渔": {
+					"previousMinimum": "ylvoo",
+					"rank": 3133
+				},
+				"渝": {
+					"previousMinimum": "ylvo",
+					"rank": 2068
+				},
+				"翼": {
+					"previousMinimum": "ykaao",
+					"rank": 2143
+				},
+				"姨": {
+					"previousMinimum": "ykvau",
+					"rank": 2145
+				},
+				"椅": {
+					"previousMinimum": "ykuvi",
+					"rank": 2194
+				},
+				"倚": {
+					"previousMinimum": "jkiui",
+					"rank": 2414
+				},
+				"瘀": {
+					"previousMinimum": "ylio",
+					"rank": 2689
+				},
+				"意": {
+					"previousMinimum": "ykaov",
+					"rank": 1290
+				}
+			},
+			"conflictCodes": [
+				"bso",
+				"bci",
+				"bciv",
+				"bsvi",
+				"bsvo",
+				"dca",
+				"dci",
+				"dcao",
+				"dciu",
+				"dcio",
+				"ekavi",
+				"ekua",
+				"ekaoa",
+				"ekau",
+				"ekiov",
+				"ekaa",
+				"eko",
+				"ekuo",
+				"feo",
+				"fzi",
+				"fziv",
+				"fhv",
+				"fxa",
+				"fhi",
+				"fxao",
+				"fxaov",
+				"fha",
+				"fhau",
+				"fhio",
+				"fhvv",
+				"fdauv",
+				"fzv",
+				"fhai",
+				"fhav",
+				"feov",
+				"fzvv",
+				"fhavv",
+				"gfav",
+				"gxu",
+				"hxv",
+				"hxvo",
+				"hwu",
+				"jca",
+				"jcio",
+				"jcv",
+				"jciu",
+				"jro",
+				"jrov",
+				"jkoo",
+				"jqo",
+				"jmo",
+				"jkooa",
+				"kxv",
+				"kxa",
+				"kwiv",
+				"kxai",
+				"kxvi",
+				"lcv",
+				"lqvoo",
+				"lca",
+				"lqu",
+				"lcva",
+				"lgui",
+				"lqvv",
+				"lduv",
+				"lcu",
+				"lgo",
+				"mcu",
+				"mlvov",
+				"mca",
+				"ncu",
+				"nga",
+				"pca",
+				"pci",
+				"pcu",
+				"qkau",
+				"qcv",
+				"qca",
+				"qcu",
+				"qci",
+				"qcio",
+				"qkao",
+				"qkvvu",
+				"qcvu",
+				"qhai",
+				"qkua",
+				"qkvoo",
+				"qkav",
+				"qmvvi",
+				"qkuo",
+				"qkuu",
+				"qcuo",
+				"qcao",
+				"qcai",
+				"qko",
+				"qhavv",
+				"skii",
+				"sko",
+				"tci",
+				"tcvo",
+				"tcu",
+				"wzv",
+				"wzvo",
+				"wea",
+				"wmuo",
+				"wxi",
+				"wxa",
+				"wjiu",
+				"wjvu",
+				"weao",
+				"weau",
+				"weauu",
+				"wjo",
+				"wjou",
+				"wqu",
+				"wquv",
+				"xso",
+				"xhii",
+				"xlv",
+				"xgvv",
+				"xgvvv",
+				"xda",
+				"xgu",
+				"xdv",
+				"xdvv",
+				"xdvvi",
+				"xhu",
+				"xhuv",
+				"xga",
+				"xgao",
+				"xliv",
+				"xgi",
+				"xdau",
+				"xdiv",
+				"xwv",
+				"xwva",
+				"xlvu",
+				"xliu",
+				"xci",
+				"xhav",
+				"xjuu",
+				"xdvviv",
+				"xla",
+				"xlao",
+				"xcii",
+				"xduv",
+				"xwa",
+				"xwao",
+				"xlaa",
+				"xlaaa",
+				"xdui",
+				"xcav",
+				"xciv",
+				"xhavu",
+				"xgiu",
+				"xciu",
+				"xcao",
+				"xlav",
+				"xlavi",
+				"xgio",
+				"xwvu",
+				"xdvi",
+				"xgvvu",
+				"xjo",
+				"xcavo",
+				"ykau",
+				"ykaovu",
+				"ykaia",
+				"ykaovo",
+				"ykvu",
+				"ykaoo",
+				"ykaou",
+				"ykav",
+				"ykvo",
+				"ylvoo",
+				"ykaa",
+				"ykva",
+				"ykuv",
+				"ykuu",
+				"yliov",
+				"yko",
+				"ykoo"
+			]
+		}
+	}
+}

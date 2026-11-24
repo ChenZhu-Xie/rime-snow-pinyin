@@ -12,7 +12,7 @@ import {
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { dump, load } from "js-yaml";
-import cases from "./data/character-first-choice-probes.json";
+import defaultCases from "./data/character-first-choice-probes.json";
 import { makeMiraDefaultCustomization } from "./lib/mira-default-custom";
 import { ROOT } from "./lib/paths";
 import { copyRimeDependencies } from "./lib/rime-dependencies";
@@ -21,6 +21,11 @@ const argument = (name: string) => {
 	const index = process.argv.indexOf(name);
 	return index < 0 ? undefined : process.argv[index + 1];
 };
+const casesPath = argument("--cases");
+const cases: { schemas: Record<string, { codes: string[] }> } = casesPath
+	? JSON.parse(readFileSync(resolve(casesPath), "utf8"))
+	: defaultCases;
+const defaultOnly = process.argv.includes("--default-only");
 const source = resolve(argument("--source") ?? ROOT);
 const output = resolve(
 	argument("--output") ?? join(ROOT, "output/character-first-choice-probes"),
@@ -114,8 +119,9 @@ for (const [schema, entry] of Object.entries(cases.schemas)) {
 	if (label === "upstream" && !["snow_sipin", "snow_qingyun"].includes(schema))
 		continue;
 	const engine = schemaEngine(`${schema}.schema.yaml`);
-	const variants =
-		schema === "snow_qingyun"
+	const variants = defaultOnly
+		? ["default"]
+		: schema === "snow_qingyun"
 			? ["default", "no-postpone", "shape-only", "pinyin-only"]
 			: ["default", "no-postpone", "no-fix"];
 	for (const variant of variants) {
@@ -290,15 +296,16 @@ if (!prepareOnly && manifest.probes.length > 0) {
 					`展示首选回归：${row.code}`,
 				);
 	}
-	console.log(
-		JSON.stringify(
-			records.filter((row) =>
-				cases.schemas[row.schema as keyof typeof cases.schemas].codes.includes(
-					row.code,
+	if (!casesPath)
+		console.log(
+			JSON.stringify(
+				records.filter((row) =>
+					cases.schemas[
+						row.schema as keyof typeof cases.schemas
+					].codes.includes(row.code),
 				),
+				null,
+				2,
 			),
-			null,
-			2,
-		),
-	);
+		);
 }

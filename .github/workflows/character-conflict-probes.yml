@@ -1,0 +1,42 @@
+name: 全部单字冲突逐键采集
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --cwd scripts --frozen-lockfile
+      - name: 准备真实引擎并记录哈希
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes opencc
+          mkdir -p opencc output/character-conflict-probes
+          cp /usr/share/opencc/* opencc/
+          curl --fail --location --output mira https://github.com/rimeinn/mira/releases/download/latest/mira-rime1.17
+          chmod +x mira
+          sha256sum mira | tee output/character-conflict-probes/runtime.sha256
+      - name: 枚举所有冲突字的读音和辅助码路径
+        run: bun scripts/prepare-character-conflict-probes.ts
+      - name: 串行采集空用户词典独立会话
+        run: |
+          /usr/bin/time -v bun scripts/probe-character-first-choice.ts --cases output/character-conflict-probes/input.json --default-only --runtime mira-rime1.17 --mira ./mira --output output/character-conflict-probes/results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: character-conflict-probes
+          path: |
+            output/character-conflict-probes/input.json
+            output/character-conflict-probes/runtime.sha256
+            output/**/observations.jsonl
+            output/**/per-key-traces.tsv
+            output/**/manifest.json
+            output/**/mira.log
