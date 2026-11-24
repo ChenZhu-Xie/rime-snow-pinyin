@@ -23,9 +23,10 @@ jobs:
           cp /usr/share/opencc/* opencc/
           git clone https://github.com/rimeinn/mira.git output/mira-per-key
           git -C output/mira-per-key checkout 2de1926298536d78d803de6d07f3dbb4a1f51a3e
+          git -C output/mira-per-key submodule update --init --recursive
           python scripts/patch-mira-per-key.py output/mira-per-key
           cd output/mira-per-key
-          meson setup build --prefer-static --prefix="$PWD/dist" --buildtype=release
+          MAKEFLAGS=-j2 CMAKE_BUILD_PARALLEL_LEVEL=2 meson setup build --prefer-static --prefix="$PWD/dist" --buildtype=release
           ninja -j2 install -C build
           cd ../..
           cp output/mira-per-key/dist/bin/mira mira
