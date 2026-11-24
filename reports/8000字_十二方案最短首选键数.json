@@ -1,5 +1,7 @@
 {
   "contract": "character-first-choice-offline-v1",
+  "validationStatus": "invalidated-by-production-probes",
+  "validationReport": "单字首选算法差异审计.md",
   "frequencyMetadata": {
     "source": "shuangpin-layout-benchmark/a7_CKT_R11.html payload.characters",
     "sourceUrl": "https://github.com/more-14-different/shuangpin-layout-benchmark",
@@ -52,7 +54,7 @@
     "lua/snow/radical_jiandao.txt": "dcfc3c9ab65f05e8abf8af29d876a82ecfbcf8b4bdd0fb81082964b50b971176",
     "scripts/lib/benchmark-schemes.ts": "bf6ed05cb18e355d1628ea1b5f68906ca123f652161be8fb3d16b12ab67afb1d",
     "scripts/lib/character-first-choice.ts": "479b23b1176f0deb914a3c0158239dc1b4a91b5500aa5d7f3a62095b6a81c094",
-    "scripts/generate-character-first-choice.ts": "de11e34a8e3d29e85ca62b0866b97bd56ce1e7c07363bf2d2e75b2b09cdc77a8",
+    "scripts/generate-character-first-choice.ts": "00a05a973796b7e7880e3c594f85af5ed8189b3827bd1f12916aecdcd56f2026",
     "scripts/export-rime-table.py": "98281bd622505fba816ff11e00ebd9b8865c78c81b038c0698a01cab04447d33",
     "scripts/lib/algebra.ts": "956864facbec43d6102ad7f6eac3f776ba1610704ee1ea71182124aa22eb37ee",
     "scripts/lib/auxiliary-semantics.ts": "4a0be5e590d7461f0131013af937bb7caf04409622b5889f887a6f685eb4d0d0",

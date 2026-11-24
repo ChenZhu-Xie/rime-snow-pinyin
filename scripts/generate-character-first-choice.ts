@@ -402,6 +402,8 @@ function writeReport(file: string, content: string) {
 
 const json = {
 	contract: "character-first-choice-offline-v1",
+	validationStatus: "invalidated-by-production-probes",
+	validationReport: "单字首选算法差异审计.md",
 	frequencyMetadata,
 	definition:
 		"空白用户词典静态模型；生产简码与直出纳入，个人学习和选重排除；成为首选即停止，不计确认空格；Top m 只筛字集，不裁剪排名池。",
@@ -448,6 +450,8 @@ writeReport(
 );
 const lines = [
 	"# 前 8000 常用字：十二方案最短首选键数（离线模型）",
+	"",
+	"**审计未通过：下列旧模型数值已发现码路与排序错误，暂不可用于方案横评。** 具体反例、原版对照及 Actions 候选证据见[单字首选算法差异审计](单字首选算法差异审计.md)。表格仅保留供排查旧模型，不代表修正后的统计结果。",
 	"",
 	"范围与 [5500 字十二方案评测](十一场景_5500字_当前十二方案对比评测.md) 相同；本报告是独立单字任务，不是从 5500 字赛文中抽字，也不把词组最优切分的码长挪用为单字码长。",
 	"",
