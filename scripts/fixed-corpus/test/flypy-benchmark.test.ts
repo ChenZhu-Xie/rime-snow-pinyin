@@ -115,3 +115,14 @@ test("有首选时只保留最短首选，无首选才允许首页兜底", () =>
 		[["aaaa", 1]],
 	);
 });
+
+test("仅统计目标字时仍保留非目标竞争者及其更长编码", () => {
+	const entries = parseFlypyWdatDump(
+		"aaaa\t甲\t0\t1\t0x1\naaaa\t范围外词\t0\t0\t0x1\naaaab\t更长的词\t0\t2\t0x1\nbbbb\t乙\t0\t3\t0x1\nbbbbc\t更长的词\t0\t4\t0x1\n",
+		{ id: "xh", baseOrder: 0, defaultWeight: 7000 },
+	);
+	const ranked = rankFlypyEntries(entries, new Set(["甲", "乙"]));
+	assert.equal(ranked.find(({ word }) => word === "甲")?.rank, 2);
+	assert.equal(ranked.find(({ word }) => word === "乙")?.instant, false);
+	assert.equal(ranked.find(({ word }) => word === "乙")?.popppable, false);
+});

@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
 	candidatePools,
+	FirstChoicePools,
+	relevantCharacterCodes,
 	minimumFirstChoices,
 	physicalKeys,
 	summarizeFirstChoices,
@@ -31,6 +33,49 @@ test("Top m 仅改变分母，范围外字和固定词继续占用首选", () =>
 	assert.equal(choices.get("乙")?.keys, 2);
 });
 
+test("有限竞争池与全池给出相同首选，保留范围外字、固顶与重复读音竞争", () => {
+	const routes: CharacterRoute[] = [];
+	for (const code of ["a", "ab", "abc", "abcd", "abce", "abcdf"])
+		for (let index = 0; index < 60; index++)
+			routes.push({
+				text: `候选${index}`,
+				code,
+				weight: 100 - index,
+				order: index,
+				deferred: index % 4 === 0,
+			});
+	routes.push({ text: "候选59", code: "abcd", weight: 200, order: 200 });
+	const targets = [
+		{ text: "候选59", code: "abcdf", weight: 1, order: 1 },
+		{ text: "候选58", code: "abce", weight: 1, order: 1 },
+	];
+	const fixed = new Map([["ab", ["固顶词", "候选1"]]]);
+	const builder = new FirstChoicePools(relevantCharacterCodes(targets), fixed);
+	for (const route of routes) builder.add(route);
+	const bounded = builder.finish();
+	assert.ok(
+		[...bounded].every(
+			([code, texts]) =>
+				texts.length <= code.length + (fixed.get(code)?.length ?? 0) + 1,
+		),
+	);
+	for (const mode of ["none", "move", "exclude"] as const) {
+		const first = new Map();
+		const second = new Map();
+		minimumFirstChoices(
+			targets,
+			candidatePools(routes),
+			fixed,
+			mode,
+			(code, text) => first.set(code, text),
+		);
+		minimumFirstChoices(targets, bounded, fixed, mode, (code, text) =>
+			second.set(code, text),
+		);
+		assert.deepEqual(second, first);
+	}
+});
+
 test("静态简码清空历史，动态补码的首选沿各分支独立后置", () => {
 	const routes: CharacterRoute[] = [
 		{ text: "甲", code: "ba", weight: 100, order: 0 },
@@ -53,6 +98,29 @@ test("静态简码清空历史，动态补码的首选沿各分支独立后置",
 	assert.equal(seen.get("baae"), "甲");
 	assert.equal(seen.get("baaee"), "乙");
 	assert.equal(seen.get("baaei"), "丙");
+});
+
+test("冰雪后置只查看前十项，全部已见时优先最近首选", () => {
+	const rows: CharacterRoute[] = [];
+	for (let length = 1; length <= 12; length++)
+		for (let index = 0; index < 12; index++)
+			rows.push({
+				text: `字${index}`,
+				code: "a".repeat(length),
+				weight: 100 - index,
+				order: index,
+			});
+	const observed = new Map();
+	minimumFirstChoices(
+		rows,
+		candidatePools(rows),
+		new Map(),
+		"move",
+		(code, text) => observed.set(code.length, text),
+	);
+	assert.equal(observed.get(10), "字9");
+	assert.equal(observed.get(11), "字9");
+	assert.equal(observed.get(12), "字9");
 });
 
 test("未获首选不能伪装成总体均键，Shift 和频次加权另外核算", () => {

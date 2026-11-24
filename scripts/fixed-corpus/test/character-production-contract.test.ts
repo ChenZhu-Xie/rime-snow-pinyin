@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { SpellingAlgebra } from "../../lib/algebra";
+import {
+	productionCharacterCodes,
+	qingyunReadingCodes,
+} from "../../lib/benchmark-schemes";
 import { rootPath } from "../../lib/paths";
 
 test("四拼三键音节的 o 是生产补码，不能把第四键都当成笔画", () => {
@@ -15,6 +19,46 @@ test("四拼三键音节的 o 是生产补码，不能把第四键都当成笔�
 	assert.ok(algebra.applyAll("sou3").includes("souu"));
 	assert.ok(algebra.applyAll("bu4").includes("buao"));
 	assert.ok(!algebra.applyAll("bu4").includes("buae"));
+	const lockRoutes = productionCharacterCodes("sipin", "锁", "suo3");
+	assert.ok(lockRoutes.some(({ code }) => code === "souo"));
+	assert.ok(!lockRoutes.some(({ code }) => code === "souu"));
+	assert.ok(
+		lockRoutes.some(
+			({ code, mainLength, auxiliaryLength }) =>
+				code.startsWith("souo") && mainLength === 4 && auxiliaryLength > 0,
+		),
+	);
+	assert.ok(
+		productionCharacterCodes("sipin", "布", "bu4").some(
+			({ code }) => code === "buao",
+		),
+	);
+});
+
+test("英数入口执行方案实际拼写，并保留清韵两字词的韵码", () => {
+	assert.ok(
+		productionCharacterCodes("oc21-shape", "i", "~i").some(
+			({ code }) => code === "xl",
+		),
+	);
+	assert.ok(
+		productionCharacterCodes("oc21-tone", "i", "~i").some(
+			({ code }) => code === "xlo",
+		),
+	);
+	assert.ok(
+		productionCharacterCodes("qingyun", "彐", "xue").some(
+			({ code }) => code === "xe",
+		),
+	);
+	const pair = qingyunReadingCodes(["zhe4", "xie1"], true);
+	assert.ok(pair.some(({ code }) => code === "zxe"));
+	assert.ok(!pair.some(({ code }) => code === "zx"));
+	assert.ok(
+		qingyunReadingCodes(["ke", "me", "ke", "me", "ke"]).every(
+			({ code }) => code.length <= 4,
+		),
+	);
 });
 
 test("清韵单字形码与普通拼音必须保留独立来源，不能替换成同一份字频", () => {

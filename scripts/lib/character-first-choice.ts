@@ -4,6 +4,8 @@ export interface CharacterRoute {
 	code: string;
 	weight: number;
 	order: number;
+	/** 默认原字排序在固顶、学习优先与后置之前完成。 */
+	deferred?: boolean;
 }
 
 export interface FirstChoice {
@@ -29,10 +31,64 @@ export function candidatePools(routes: Iterable<CharacterRoute>) {
 		[...pools].map(([code, pool]) => [
 			code,
 			[...pool.values()]
-				.sort((a, b) => b.weight - a.weight || a.order - b.order)
+				.sort(
+					(a, b) =>
+						Number(!!a.deferred) - Number(!!b.deferred) ||
+						b.weight - a.weight ||
+						a.order - b.order,
+				)
 				.map(({ text }) => text),
 		]),
 	);
+}
+
+/** 首选最多排除 n-1 个前缀首选和固定项，故每码只需保留 n+固定项+1 个竞争文本。 */
+export class FirstChoicePools {
+	private readonly rows = new Map<string, CharacterRoute[]>();
+	constructor(
+		private readonly relevant: ReadonlySet<string>,
+		private readonly fixed: ReadonlyMap<string, readonly string[]>,
+	) {}
+	add(route: CharacterRoute) {
+		if (!this.relevant.has(route.code)) return;
+		const rows = this.rows.get(route.code) ?? [];
+		const previous = rows.findIndex(({ text }) => text === route.text);
+		if (previous >= 0) {
+			if (rows[previous].weight >= route.weight) return;
+			rows.splice(previous, 1);
+		}
+		rows.push(route);
+		rows.sort(
+			(a, b) =>
+				Number(!!a.deferred) - Number(!!b.deferred) ||
+				b.weight - a.weight ||
+				a.order - b.order,
+		);
+		const limit =
+			route.code.length + (this.fixed.get(route.code)?.length ?? 0) + 1;
+		if (rows.length > limit) rows.length = limit;
+		this.rows.set(route.code, rows);
+	}
+	finish() {
+		const result = new Map(
+			[...this.rows].map(([code, rows]) => [
+				code,
+				rows.map(({ text }) => text),
+			]),
+		);
+		this.rows.clear();
+		return result;
+	}
+}
+
+export function relevantCharacterCodes(
+	routes: Iterable<Pick<CharacterRoute, "code">>,
+) {
+	const codes = new Set<string>();
+	for (const { code } of routes)
+		for (let length = 1; length <= code.length; length++)
+			codes.add(code.slice(0, length));
+	return codes;
 }
 
 /**
@@ -48,30 +104,48 @@ export function minimumFirstChoices(
 	resetHistory: (code: string) => boolean = () => false,
 ): Map<string, FirstChoice> {
 	const result = new Map<string, FirstChoice>();
-	const paths = new Map<string, string>();
-	for (const { code } of routes) paths.set(code, code);
-	const cache = new Map<string, Map<string, number>>();
-	const visit = (code: string): Map<string, number> => {
+	const paths = new Set(routes.map(({ code }) => code));
+	interface History {
+		text: string;
+		parent?: History;
+	}
+	const cache = new Map<string, History | undefined>();
+	const visit = (code: string): History | undefined => {
 		const cached = cache.get(code);
-		if (cached) return cached;
-		const known =
-			code.length > 1
-				? new Map(visit(code.slice(0, -1)))
-				: new Map<string, number>();
+		if (cache.has(code)) return cached;
+		let known = code.length > 1 ? visit(code.slice(0, -1)) : undefined;
 		const reset = resetHistory(code);
-		if (reset) known.clear();
+		if (reset) known = undefined;
+		const wasFirst = (text: string) => {
+			for (let node = known; node; node = node.parent)
+				if (node.text === text) return true;
+			return false;
+		};
 		const pinned = fixed.get(code) ?? [];
 		const free = (pools.get(code) ?? []).filter(
 			(text) => !pinned.includes(text),
 		);
+		// 冰雪生产后置只检查前十项；声笔排除沿用自己的完整过滤池。
+		const window =
+			postpone === "move"
+				? free.slice(0, Math.max(0, 10 - pinned.length))
+				: free;
 		const ordinary =
-			postpone === "none" ? free : free.filter((text) => !known.has(text));
+			postpone === "none" ? window : window.filter((text) => !wasFirst(text));
+		let repeated: string | undefined;
+		if (postpone === "move" && ordinary.length === 0) {
+			for (let node = known; node; node = node.parent) {
+				if (window.includes(node.text)) {
+					repeated = node.text;
+					break;
+				}
+			}
+		}
 		// 冰雪后置仍可在没有新候选时返回旧候选；声笔直接排除旧首选。
-		const first =
-			pinned[0] ?? ordinary[0] ?? (postpone === "move" ? free[0] : undefined);
+		const first = pinned[0] ?? ordinary[0] ?? repeated;
 		observe?.(code, first);
 		if (first) {
-			if (!reset) known.set(first, code.length);
+			if (!reset) known = { text: first, parent: known };
 			const keys = physicalKeys(code);
 			const previous = result.get(first);
 			if (
@@ -84,7 +158,7 @@ export function minimumFirstChoices(
 		cache.set(code, known);
 		return known;
 	};
-	for (const code of paths.keys()) visit(code);
+	for (const code of paths) visit(code);
 	return result;
 }
 

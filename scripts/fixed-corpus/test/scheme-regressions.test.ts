@@ -573,7 +573,13 @@ test("default traditional source entries are postponed before conversion and ded
 		const filter = source.indexOf("lua_filter@*snow.simplified");
 		const simplifier = source.indexOf("    - simplifier", filter);
 		const uniquifier = source.indexOf("    - uniquifier", simplifier);
-		assert.ok(filter >= 0 && simplifier > filter && uniquifier > simplifier);
+		const fixed = source.indexOf("lua_filter@*snow.fix");
+		const learned = source.indexOf("lua_filter@*snow.learned_priority");
+		const postpone = source.indexOf("lua_filter@*snow.postpone");
+		assert.ok(
+			filter >= 0 && fixed > filter && learned > fixed && postpone > learned,
+		);
+		assert.ok(simplifier > postpone && uniquifier > simplifier);
 	}
 });
 

@@ -1,0 +1,47 @@
+name: 单字首选修订回归
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --cwd scripts --frozen-lockfile
+      - name: 准备隔离测试依赖并记录实际运行时
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes opencc lua5.4
+          cp spec/fixtures/default.yaml default.yaml
+          mkdir -p opencc output/first-choice-regressions
+          cp /usr/share/opencc/* opencc/
+          curl --fail --location --output mira https://github.com/rimeinn/mira/releases/download/latest/mira-rime1.17
+          chmod +x mira
+          sha256sum mira | tee output/first-choice-regressions/runtime.sha256
+          echo "$GITHUB_WORKSPACE" >> "$GITHUB_PATH"
+      - name: 原字排序与连续首选后置
+        run: lua5.4 spec/postpone-display-order.test.lua
+      - name: 逐方案串行运行完整真实候选回归
+        run: |
+          status=0
+          for schema in snow_sanpin snow_jiandao snow_jiandao_classic snow_sanpin_classic snow_shenyun_shape snow_shenyun_tone snow_jiandao_toned snow_zhudao; do
+            /usr/bin/time -v bun scripts/test.ts "$schema" > "output/first-choice-regressions/$schema.log" 2>&1 || status=1
+            cat "output/first-choice-regressions/$schema.log"
+          done
+          exit "$status"
+      - name: 保存每方案结果与运行时摘要
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-choice-regressions
+          path: output/first-choice-regressions/

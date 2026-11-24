@@ -1,17 +1,28 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import {
+	closeSync,
+	existsSync,
+	openSync,
+	readFileSync,
+	readSync,
+	readdirSync,
+} from "node:fs";
 import { join, relative, resolve } from "node:path";
+import { StringDecoder } from "node:string_decoder";
 import { gunzipSync } from "node:zlib";
 import {
 	ALL_BENCHMARK_SCHEMES,
 	directOutputCodes,
-	pronunciationCodes,
+	productionCharacterCodes,
+	qingyunReadingCodes,
 } from "./lib/benchmark-schemes";
 import {
 	type CharacterRoute,
 	type FirstChoice,
 	candidatePools,
+	FirstChoicePools,
+	relevantCharacterCodes,
 	minimumFirstChoices,
 	physicalKeys,
 	summarizeFirstChoices,
@@ -113,7 +124,9 @@ assert.equal(characters.length, 8000);
 assert.equal(new Set(characters.map(({ text }) => text)).size, 8000);
 const targetSet = new Set(characters.map(({ text }) => text));
 const cohorts = [500, 1000, 1500, 2000, 3000, 4000, 5000, 6000, 8000];
-const outputDirectory = resolve(arg("--output-dir") ?? rootPath("reports"));
+const outputDirectory = resolve(
+	arg("--output-dir") ?? rootPath("output/character-first-choice-v2"),
+);
 const sbxhDirectory = resolve(
 	arg("--sbxh-dir") ?? join(process.env.APPDATA ?? "", "Rime"),
 );
@@ -155,21 +168,54 @@ function fixedEntries(file: string) {
 	}
 	return fixed;
 }
-function dictionary(file: string) {
-	return read(file)
-		.split(/\r?\n/u)
-		.flatMap((line, order) => {
-			if (!line.includes("\t") || line.startsWith("#")) return [];
-			const [text, code, weight] = line.split("\t");
-			return text && code
-				? [{ text, code, weight: Number(weight) || 0, order }]
-				: [];
-		});
+const maxMemoryMiB = Number(arg("--max-memory-mib") ?? "768");
+assert.ok(maxMemoryMiB >= 128 && Number.isFinite(maxMemoryMiB));
+function checkMemory(stage: string) {
+	const rss = process.memoryUsage().rss / 1024 / 1024;
+	if (rss <= maxMemoryMiB) return;
+	Bun.gc(true);
+	assert.ok(
+		process.memoryUsage().rss / 1024 / 1024 <= maxMemoryMiB,
+		`${stage} 超过 ${maxMemoryMiB} MiB 内存上限，已停止；改用更小的字集分批运行。`,
+	);
 }
-const singles = dictionary(rootPath("snow_pinyin.dict.yaml")).filter(
-	({ text, code }) => [...text].length === 1 && !code.startsWith("~"),
+function* dictionary(file: string): Generator<CharacterRoute> {
+	const descriptor = openSync(file, "r");
+	const digest = createHash("sha256");
+	const buffer = Buffer.alloc(64 * 1024);
+	const decoder = new StringDecoder("utf8");
+	let pending = "";
+	let order = 0;
+	try {
+		while (true) {
+			const size = readSync(descriptor, buffer);
+			if (size) digest.update(buffer.subarray(0, size));
+			pending += size ? decoder.write(buffer.subarray(0, size)) : decoder.end();
+			const lines = pending.split("\n");
+			pending = size ? lines.pop()! : "";
+			for (const raw of lines) {
+				const line = raw.replace(/\r$/u, "");
+				if (order++ % 4096 === 0) checkMemory(file);
+				if (!line.includes("\t") || line.startsWith("#")) continue;
+				const [text, code, weight] = line.split("\t");
+				if (text && code)
+					yield { text, code, weight: Number(weight) || 0, order: order - 1 };
+			}
+			if (!size) break;
+		}
+		sources[relative(ROOT, file).replaceAll("\\", "/")] = digest.digest("hex");
+	} finally {
+		closeSync(descriptor);
+	}
+}
+const singles = [...dictionary(rootPath("snow_pinyin.dict.yaml"))].filter(
+	({ text }) => [...text].length === 1 || /^\d+$/u.test(text),
 );
-const qingyunSingles = dictionary(rootPath("snow_qingyun.dict.yaml"));
+const qingyunSingles = [...dictionary(rootPath("snow_qingyun.dict.yaml"))];
+const scriptPreference = JSON.parse(
+	read(dataPath("character-script-preference.json")),
+) as { deferredCharacters: string };
+const deferred = new Set([...scriptPreference.deferredCharacters]);
 for (const name of readdirSync(ROOT)) {
 	if (/^snow_.*(?:\.schema|_common)\.yaml$/u.test(name)) read(rootPath(name));
 }
@@ -226,31 +272,92 @@ function auditObserver(schema: string, cacheDirectory: string | undefined) {
 	};
 }
 
-for (const scheme of ALL_BENCHMARK_SCHEMES) {
-	console.log(`离线枚举 ${scheme.shortName}…`);
-	const fixed = fixedEntries(rootPath(scheme.fixedFile));
+function internalScheme(
+	scheme: (typeof ALL_BENCHMARK_SCHEMES)[number],
+	prefix: string,
+) {
+	const fixed = new Map(
+		[...fixedEntries(rootPath(scheme.fixedFile))].filter(([code]) =>
+			code.startsWith(prefix),
+		),
+	);
 	const routes: CharacterRoute[] = [];
-	// 清韵用自己的形码词典权重；拼音路由另由拼音词典生成。
+	// 音码、英数入口执行生产 speller；清韵形码另按自己的词典记录生成。
 	for (const entry of singles) {
-		for (const { code } of pronunciationCodes(
+		if (!targetSet.has(entry.text)) continue;
+		for (const { code } of productionCharacterCodes(
 			scheme.id,
 			entry.text,
-			[entry.code],
-			{ singleAuxiliaryLimit: Infinity },
+			entry.code,
+			prefix,
 		))
-			routes.push({ ...entry, code });
+			if (code.startsWith(prefix)) routes.push({ ...entry, code });
 	}
 	if (scheme.id === "qingyun") {
-		// pronunciationCodes 同时返回形码，统一改用形码词典中的实际字权重。
-		const weights = new Map(
-			qingyunSingles.map(({ text, weight }) => [text, weight]),
-		);
-		for (const route of routes)
-			route.weight = weights.get(route.text) ?? route.weight;
+		for (const entry of qingyunSingles)
+			if (targetSet.has(entry.text))
+				for (const { code } of qingyunReadingCodes(entry.code.split(" ")))
+					if (code.startsWith(prefix)) routes.push({ ...entry, code });
 	}
 	for (const [code, texts] of fixed)
 		routes.push({ code, text: texts[0], weight: Infinity, order: -1 });
-	const pools = candidatePools(routes);
+	const relevant = relevantCharacterCodes(routes);
+	const builder = new FirstChoicePools(relevant, fixed);
+	const add = (route: CharacterRoute) => {
+		if (scheme.id !== "sipin" && scheme.id !== "qingyun")
+			route.deferred = deferred.has(route.text);
+		builder.add(route);
+	};
+	const literals = new Map<string, CharacterRoute[]>();
+	let processed = 0;
+	for (const entry of singles) {
+		if (processed++ % 2048 === 0) checkMemory(scheme.shortName);
+		for (const { code } of productionCharacterCodes(
+			scheme.id,
+			entry.text,
+			entry.code,
+			prefix,
+		)) {
+			if (!code.startsWith(prefix)) continue;
+			const route = { ...entry, code };
+			add(route);
+			if (!/\p{Script=Han}/u.test(entry.text)) {
+				const entries = literals.get(code) ?? [];
+				entries.push(route);
+				literals.set(code, entries);
+			}
+		}
+	}
+	if (scheme.id === "qingyun") {
+		for (const entry of qingyunSingles)
+			for (const { code } of qingyunReadingCodes(entry.code.split(" ")))
+				add({ ...entry, code });
+		for (const file of [
+			"snow_pinyin.base.dict.yaml",
+			"snow_pinyin.ext.dict.yaml",
+			"snow_pinyin.tencent.dict.yaml",
+			"snow_pinyin.user.dict.yaml",
+		]) {
+			for (const entry of dictionary(rootPath(file))) {
+				const readings = entry.code.split(" ");
+				if (
+					[...entry.text].length < 2 ||
+					readings.length !== [...entry.text].length
+				)
+					continue;
+				for (const { code } of qingyunReadingCodes(readings, true))
+					if (relevant.has(code)) add({ ...entry, code });
+			}
+		}
+	}
+	// 英数候选通过无部件／无笔画的过滤分支时仍会保留，不能只加入其裸码。
+	for (const code of relevant) {
+		if (!/^[a-z]+$/u.test(code)) continue;
+		for (let length = 1; length < code.length; length++)
+			for (const entry of literals.get(code.slice(0, length)) ?? [])
+				add({ ...entry, code });
+	}
+	const pools = builder.finish();
 	const cache =
 		scheme.id === "sipin" || scheme.id === "qingyun"
 			? (baseline.reusedUnchangedCandidateCache ?? baseline.candidateCache)
@@ -258,128 +365,244 @@ for (const scheme of ALL_BENCHMARK_SCHEMES) {
 	const { audit, observe } = auditObserver(scheme.schemaId, cache);
 	const choices = minimumFirstChoices(routes, pools, fixed, "move", observe);
 	for (const [text, code] of directOutputCodes(scheme.id))
-		choices.set(text, { code, keys: physicalKeys(code) });
-	results.push({
+		if (code.startsWith(prefix))
+			choices.set(text, { code, keys: physicalKeys(code) });
+	for (const text of choices.keys())
+		if (!targetSet.has(text)) choices.delete(text);
+	return {
 		id: scheme.id,
 		name: scheme.shortName,
-		method: "当前词典＋生产拼写／辅助码＋固定首选＋逐键后置的单字静态模型",
+		method:
+			"v2：生产单字拼写、英数竞争、独立清韵字根权重与普通词、固定首选、后置前原字排序；尚未完整复现 librime 排名",
 		choices,
 		audit,
-	});
+	};
 }
-
-console.log("离线枚举声笔小鹤…");
-const sbxhStrokes = new Map(
-	read(join(sbxhDirectory, "lua/sbxlm/strokes.txt"))
-		.split(/\r?\n/u)
-		.map((line) => line.split("\t") as [string, string]),
-);
-const sbxhStatic = dictionary(join(sbxhDirectory, "sbxh.dict.yaml"));
-const sbxhStaticPools = candidatePools(sbxhStatic);
-const sbxhDumpMetadata = JSON.parse(read(`${sbxhDump}.json`));
-assert.equal(
-	hash(readFileSync(sbxhDump)),
-	sbxhDumpMetadata.dumpSha256,
-	"声笔 TSV 与解码清单不一致",
-);
-const sbxhBinary = join(sbxhDirectory, "build/sbxh.extended.table.bin");
-sources[sbxhBinary] = hash(readFileSync(sbxhBinary));
-assert.equal(
-	sources[sbxhBinary],
-	sbxhDumpMetadata.sourceSha256,
-	"声笔发布扩展表已变化，须重新只读导出",
-);
-for (const file of [
-	"sbxh.schema.yaml",
-	"lua/sbxlm/auto_length.lua",
-	"lua/sbxlm/core.lua",
-])
-	read(join(sbxhDirectory, file));
-const sbxhRoutes: CharacterRoute[] = [];
-for (const entry of dictionary(sbxhDump)) {
-	// 单字可与多字词共用前三码；保留完整扩展码表参与竞争。
-	if (!/^[a-z]{4}$/u.test(entry.code)) continue;
-	if ([...entry.text].length === 1) {
-		const full =
-			entry.code + sbxhSupplementalStrokes([sbxhStrokes.get(entry.text) ?? ""]);
-		for (let length = 4; length <= full.length; length++)
-			sbxhRoutes.push({ ...entry, code: full.slice(0, length) });
-	} else {
-		// 单字第四码为笔画键；仍保留同码多字词以免静态模型缩小竞争池。
-		sbxhRoutes.push(entry);
+const worker = arg("--worker");
+const validWorkers = [
+	...ALL_BENCHMARK_SCHEMES.map(({ id }) => id),
+	"sbxh",
+	"flypy",
+];
+assert.ok(!worker || validWorkers.includes(worker), `未知方案：${worker}`);
+if (!worker) {
+	// 每个方案一个短生命周期进程；避免 JSC 的已提交页在后续方案间累积。
+	for (const id of validWorkers) {
+		const completed = Bun.spawnSync(
+			[process.execPath, ...process.argv.slice(1), "--worker", id],
+			{ stdout: "inherit", stderr: "inherit" },
+		);
+		assert.equal(completed.exitCode, 0, `${id} 子进程失败，未生成总报告`);
+		const snapshot = JSON.parse(
+			readFileSync(join(outputDirectory, ".workers", `${id}.json`), "utf8"),
+		);
+		for (const [file, digest] of Object.entries(snapshot.sources)) {
+			if (sources[file])
+				assert.equal(sources[file], digest, `各批次来源变化：${file}`);
+			sources[file] = digest as string;
+		}
+		results.push({
+			...snapshot.result,
+			choices: new Map(snapshot.result.choices),
+		});
 	}
 }
-const sbxhPools = candidatePools(sbxhRoutes);
-// 静态一、二、三码只查静态表；四码以后才查自动码长扩展表。
-for (const [code, texts] of sbxhStaticPools)
-	if (code.length <= 3) sbxhPools.set(code, texts);
-sbxhRoutes.push(...sbxhStatic.filter(({ code }) => code.length <= 3));
-const sbxhFixed = new Map<string, string[]>();
-for (const [code, texts] of sbxhStaticPools)
-	if (code.length <= 3) sbxhFixed.set(code, [texts[0]]);
-const sbxhAudit = auditObserver(
-	"sbxh",
-	externalBaseline.schemes.sbxh.candidateCache,
-);
-const sbxhChoices = minimumFirstChoices(
-	sbxhRoutes,
-	sbxhPools,
-	sbxhFixed,
-	"exclude",
-	sbxhAudit.observe,
-	(code) => code.length <= 3,
-);
-results.push({
-	id: "sbxh",
-	name: "声笔小鹤",
-	method: "发布静态简码＋只读解码扩展表＋逐笔过滤／旧首选排除的离线模型",
-	choices: sbxhChoices,
-	audit: sbxhAudit.audit,
-});
+for (const scheme of ALL_BENCHMARK_SCHEMES.filter(({ id }) => id === worker)) {
+	console.log(`离线枚举 ${scheme.shortName}（按编码首键分批）…`);
+	const prefixes = new Set<string>();
+	for (const entry of singles) {
+		if (!targetSet.has(entry.text)) continue;
+		for (const { code } of productionCharacterCodes(
+			scheme.id,
+			entry.text,
+			entry.code,
+		))
+			prefixes.add(code[0]);
+	}
+	if (scheme.id === "qingyun")
+		for (const entry of qingyunSingles)
+			if (targetSet.has(entry.text))
+				for (const { code } of qingyunReadingCodes(entry.code.split(" ")))
+					prefixes.add(code[0]);
+	for (const code of fixedEntries(rootPath(scheme.fixedFile)).keys())
+		prefixes.add(code[0]);
+	const combined: ReturnType<typeof internalScheme> = {
+		id: scheme.id,
+		name: scheme.shortName,
+		method: "",
+		choices: new Map(),
+		audit: { compared: 0, matched: 0, differences: [] },
+	};
+	for (const prefix of [...prefixes].sort()) {
+		const batch = internalScheme(scheme, prefix);
+		combined.method = batch.method;
+		for (const [text, value] of batch.choices) {
+			const old = combined.choices.get(text);
+			if (
+				!old ||
+				value.keys < old.keys ||
+				(value.keys === old.keys && value.code < old.code)
+			)
+				combined.choices.set(text, value);
+		}
+		combined.audit.compared += batch.audit.compared;
+		combined.audit.matched += batch.audit.matched;
+		combined.audit.differences.push(...batch.audit.differences);
+		Bun.gc(true);
+		checkMemory(`${scheme.shortName}/${prefix}`);
+	}
+	results.push(combined);
+	console.log(
+		`${scheme.shortName} 完成，RSS ${(process.memoryUsage().rss / 1024 / 1024).toFixed(0)} MiB`,
+	);
+}
 
-console.log("离线枚举小鹤音形（清风版）…");
-const dumpExecutable = resolve(
-	arg("--wdat-dump") ??
-		"D:/C2D/Temp/WindInput-v0.130.1/wind_input/target/release/examples/wdat_dump.exe",
-);
-const mainWdat = join(flypyDirectory, "schemas/flypy/00_xh.wdat");
-sources[mainWdat] = hash(readFileSync(mainWdat));
-read(join(flypyDirectory, "schemas/flypy.schema.toml"));
-const dumped = Bun.spawnSync([dumpExecutable, mainWdat]);
-assert.equal(dumped.exitCode, 0, new TextDecoder().decode(dumped.stderr));
-const flypyEntries = parseFlypyWdatDump(
-	new TextDecoder().decode(dumped.stdout),
-	{ id: "xh", baseOrder: 0, defaultWeight: 7000 },
-);
-for (const layer of [
-	{ file: "11_fl.dict.yaml", id: "fl", baseOrder: 1, defaultWeight: 6500 },
-	{ file: "21_yj.dict.yaml", id: "yj", baseOrder: 2, defaultWeight: 6000 },
-	{ file: "31_vt.dict.yaml", id: "vt", baseOrder: 4, defaultWeight: 5500 },
-	{ file: "32_yh.dict.yaml", id: "yh", baseOrder: 5, defaultWeight: 5000 },
-	{ file: "41_fh.dict.yaml", id: "fh", baseOrder: 6, defaultWeight: 4500 },
-	{ file: "61_ok.dict.yaml", id: "ok", baseOrder: 10 },
-])
-	flypyEntries.push(
-		...parseFlypyCodetable(
-			read(join(flypyDirectory, "schemas/flypy", layer.file)),
-			layer,
+function externalSbxh() {
+	console.log("离线枚举声笔小鹤…");
+	const sbxhStrokes = new Map(
+		read(join(sbxhDirectory, "lua/sbxlm/strokes.txt"))
+			.split(/\r?\n/u)
+			.map((line) => line.split("\t") as [string, string]),
+	);
+	const sbxhStatic = [...dictionary(join(sbxhDirectory, "sbxh.dict.yaml"))];
+	const sbxhStaticPools = candidatePools(sbxhStatic);
+	const sbxhDumpMetadata = JSON.parse(read(`${sbxhDump}.json`));
+	assert.equal(
+		hash(readFileSync(sbxhDump)),
+		sbxhDumpMetadata.dumpSha256,
+		"声笔 TSV 与解码清单不一致",
+	);
+	const sbxhBinary = join(sbxhDirectory, "build/sbxh.extended.table.bin");
+	sources[sbxhBinary] = hash(readFileSync(sbxhBinary));
+	assert.equal(
+		sources[sbxhBinary],
+		sbxhDumpMetadata.sourceSha256,
+		"声笔发布扩展表已变化，须重新只读导出",
+	);
+	for (const file of [
+		"sbxh.schema.yaml",
+		"lua/sbxlm/auto_length.lua",
+		"lua/sbxlm/core.lua",
+	])
+		read(join(sbxhDirectory, file));
+	const sbxhRoutes: CharacterRoute[] = [];
+	function* extendedRoutes(targetsOnly: boolean): Generator<CharacterRoute> {
+		for (const entry of dictionary(sbxhDump)) {
+			if (!/^[a-z]{4}$/u.test(entry.code)) continue;
+			if (targetsOnly && !targetSet.has(entry.text)) continue;
+			if ([...entry.text].length === 1) {
+				const full =
+					entry.code +
+					sbxhSupplementalStrokes([sbxhStrokes.get(entry.text) ?? ""]);
+				for (let length = 4; length <= full.length; length++)
+					yield { ...entry, code: full.slice(0, length) };
+			} else if (!targetsOnly) yield entry;
+		}
+	}
+	sbxhRoutes.push(...extendedRoutes(true));
+	sbxhRoutes.push(
+		...sbxhStatic.filter(
+			({ code, text }) => code.length <= 3 && targetSet.has(text),
 		),
 	);
-const flypyChoices = new Map<string, FirstChoice>();
-for (const item of rankFlypyEntries(flypyEntries, targetSet)) {
-	if (item.rank !== 1) continue;
-	const previous = flypyChoices.get(item.word);
-	const keys = physicalKeys(item.code);
-	if (!previous || keys < previous.keys)
-		flypyChoices.set(item.word, { code: item.code, keys });
+	const sbxhFixed = new Map<string, string[]>();
+	for (const [code, texts] of sbxhStaticPools)
+		if (code.length <= 3) sbxhFixed.set(code, [texts[0]]);
+	const builder = new FirstChoicePools(
+		relevantCharacterCodes(sbxhRoutes),
+		sbxhFixed,
+	);
+	for (const entry of extendedRoutes(false)) builder.add(entry);
+	const sbxhPools = builder.finish();
+	// 静态一、二、三码只查静态表；四码以后才查自动码长扩展表。
+	for (const [code, texts] of sbxhStaticPools)
+		if (code.length <= 3) sbxhPools.set(code, texts);
+	const sbxhAudit = auditObserver(
+		"sbxh",
+		externalBaseline.schemes.sbxh.candidateCache,
+	);
+	const sbxhChoices = minimumFirstChoices(
+		sbxhRoutes,
+		sbxhPools,
+		sbxhFixed,
+		"exclude",
+		sbxhAudit.observe,
+		(code) => code.length <= 3,
+	);
+	for (const text of sbxhChoices.keys())
+		if (!targetSet.has(text)) sbxhChoices.delete(text);
+	return {
+		id: "sbxh",
+		name: "声笔小鹤",
+		method: "发布静态简码＋只读解码扩展表＋逐笔过滤／旧首选排除的离线模型",
+		choices: sbxhChoices,
+		audit: sbxhAudit.audit,
+	};
 }
-results.push({
-	id: "flypy",
-	name: "小鹤音形（清风版）",
-	method: "5500 字报告同款官方 wdat 解码器和完整默认静态码表排序器",
-	choices: flypyChoices,
-	audit: { compared: 0, matched: 0, differences: [] },
-});
+if (worker === "sbxh") results.push(externalSbxh());
+Bun.gc(true);
+checkMemory("声笔小鹤");
+function externalFlypy() {
+	console.log("离线枚举小鹤音形（清风版）…");
+	const dumpExecutable = resolve(
+		arg("--wdat-dump") ??
+			"D:/C2D/Temp/WindInput-v0.130.1/wind_input/target/release/examples/wdat_dump.exe",
+	);
+	const mainWdat = join(flypyDirectory, "schemas/flypy/00_xh.wdat");
+	sources[mainWdat] = hash(readFileSync(mainWdat));
+	read(join(flypyDirectory, "schemas/flypy.schema.toml"));
+	const dumped = Bun.spawnSync([dumpExecutable, mainWdat]);
+	assert.equal(dumped.exitCode, 0, new TextDecoder().decode(dumped.stderr));
+	const flypyEntries = parseFlypyWdatDump(
+		new TextDecoder().decode(dumped.stdout),
+		{ id: "xh", baseOrder: 0, defaultWeight: 7000 },
+	);
+	for (const layer of [
+		{ file: "11_fl.dict.yaml", id: "fl", baseOrder: 1, defaultWeight: 6500 },
+		{ file: "21_yj.dict.yaml", id: "yj", baseOrder: 2, defaultWeight: 6000 },
+		{ file: "31_vt.dict.yaml", id: "vt", baseOrder: 4, defaultWeight: 5500 },
+		{ file: "32_yh.dict.yaml", id: "yh", baseOrder: 5, defaultWeight: 5000 },
+		{ file: "41_fh.dict.yaml", id: "fh", baseOrder: 6, defaultWeight: 4500 },
+		{ file: "61_ok.dict.yaml", id: "ok", baseOrder: 10 },
+	])
+		flypyEntries.push(
+			...parseFlypyCodetable(
+				read(join(flypyDirectory, "schemas/flypy", layer.file)),
+				layer,
+			),
+		);
+	checkMemory("小鹤音形码表解析");
+	const flypyChoices = new Map<string, FirstChoice>();
+	for (const item of rankFlypyEntries(flypyEntries, targetSet)) {
+		if (item.rank !== 1) continue;
+		const previous = flypyChoices.get(item.word);
+		const keys = physicalKeys(item.code);
+		if (!previous || keys < previous.keys)
+			flypyChoices.set(item.word, { code: item.code, keys });
+	}
+	return {
+		id: "flypy",
+		name: "小鹤音形（清风版）",
+		method: "5500 字报告同款官方 wdat 解码器和完整默认静态码表排序器",
+		choices: flypyChoices,
+		audit: { compared: 0, matched: 0, differences: [] },
+	};
+}
+if (worker === "flypy") results.push(externalFlypy());
+Bun.gc(true);
+checkMemory("小鹤音形");
+if (worker) {
+	assert.equal(results.length, 1);
+	const [result] = results;
+	writeOutput(
+		join(outputDirectory, ".workers", `${worker}.json`),
+		JSON.stringify({
+			result: { ...result, choices: [...result.choices] },
+			sources,
+		}),
+	);
+	process.exit(0);
+}
 assert.equal(results.length, 12);
 // 与其他会话共用仓库时，拒绝把不同输入时刻的结果混成一份报告。
 for (const [file, expected] of Object.entries(sources)) {
@@ -401,9 +624,13 @@ function writeReport(file: string, content: string) {
 }
 
 const json = {
-	contract: "character-first-choice-offline-v1",
-	validationStatus: "invalidated-by-production-probes",
-	validationReport: "单字首选算法差异审计.md",
+	contract: "character-first-choice-offline-v2",
+	validationStatus: "partial-contract-v2-unvalidated",
+	validationReport: relative(
+		outputDirectory,
+		rootPath("reports/单字首选算法差异审计.md"),
+	).replaceAll("\\", "/"),
+	maxMemoryMiB,
 	frequencyMetadata,
 	definition:
 		"空白用户词典静态模型；生产简码与直出纳入，个人学习和选重排除；成为首选即停止，不计确认空格；Top m 只筛字集，不裁剪排名池。",
@@ -451,9 +678,9 @@ writeReport(
 const lines = [
 	"# 前 8000 常用字：十二方案最短首选键数（离线模型）",
 	"",
-	"**审计未通过：下列旧模型数值已发现码路与排序错误，暂不可用于方案横评。** 具体反例、原版对照及 Actions 候选证据见[单字首选算法差异审计](单字首选算法差异审计.md)。表格仅保留供排查旧模型，不代表修正后的统计结果。",
+	"**v2 实验稿，尚未通过完整真实候选校验，暂不可用于确定方案优劣。** 已修正四拼补码枚举、英数竞争和清韵来源权重，并按新生产过滤链在后置前排列原字。旧问题见仓库 reports/单字首选算法差异审计.md。",
 	"",
-	"范围与 [5500 字十二方案评测](十一场景_5500字_当前十二方案对比评测.md) 相同；本报告是独立单字任务，不是从 5500 字赛文中抽字，也不把词组最优切分的码长挪用为单字码长。",
+	"范围与仓库 `reports/十一场景_5500字_当前十二方案对比评测.md` 相同；本报告是独立单字任务，不是从 5500 字赛文中抽字，也不把词组最优切分的码长挪用为单字码长。",
 	"",
 	"**这是包含生产简码的离线模型估算，不是真实输入法候选实测。** 已有缓存核对发现部分方案存在明显偏差，尤其冰雪四拼和冰雪清韵；具体一致率和模型边界见文末。未找到首选编码表示本模型枚举未覆盖，不能据此认定实际输入法必然无法首选。",
 	"",
@@ -503,7 +730,7 @@ lines.push(
 	"",
 	"CKT v5.2 改的是耗时和错误损失模型；它继承原有码路，并不直接求含生产简码的最短首选键数。本报告复用本仓库 5500 字评测的编码构造器、五辅语义与清风静态码表排序器，另外枚举完整单字辅码；无需启动 librime.dll、Mira 或真实输入法。声笔扩展词典由 Python 的 marisa-trie 只读解析 Table/4.0，解析条数必须与文件头相等。",
 	"",
-	"冰雪十方案使用全部单字读音作为竞争池，固定词保留其码位，并模拟逐键后置；这是单字静态近似，未完整重现 librime 的拼音质量计算、跨翻译器排序、词语补全及组句竞争。冰雪清韵双翻译器尤其可能有偏差。声笔模拟静态简码、四码扩展和逐笔过滤，未重现全部 Lua 路由。小鹤音形使用完整默认启用字词码表的实际静态排序。表中『最短』均限于枚举码路和所述模型，不能当作已通过实际候选验证的全局最短。",
+	"冰雪十方案使用全部单字读音竞争，保留非目标字及英数入口；清韵另外加入普通词条并区分形码与音码权重。固定词保留其码位，并模拟逐键后置；这是单字静态近似，未完整重现 librime 的拼音质量计算、跨翻译器排序、词语补全及组句竞争。冰雪清韵双翻译器尤其可能有偏差。声笔模拟静态简码、四码扩展和逐笔过滤，未重现全部 Lua 路由。小鹤音形使用完整默认启用字词码表的实际静态排序。表中『最短』均限于枚举码路和所述模型，不能当作已通过实际候选验证的全局最短。",
 	"",
 	"### 与已有真实候选缓存交叉核对",
 	"",
@@ -531,7 +758,7 @@ lines.push(
 	"bun scripts/generate-character-first-choice.ts",
 	"```",
 	"",
-	"外部方案目录或工具位置变化时，可传 `--sbxh-dir`、`--sbxh-dump`、`--flypy-dir`、`--wdat-dump`；`--output-dir` 改写报告目录。首次或主动更新 benchmark 字频才运行 `--import-frequency <a7_CKT_R11.html>`，普通复算无需外部 HTML。",
+	"外部方案目录或工具位置变化时，可传 `--sbxh-dir`、`--sbxh-dump`、`--flypy-dir`、`--wdat-dump`；`--output-dir` 改写报告目录。首次或主动更新 benchmark 字频才运行 `--import-frequency <a7_CKT_R11.html>`，普通复算无需外部 HTML。默认内存上限 768 MiB，`--max-memory-mib` 可调整；逐方案串行使用独立子进程，按编码首键分批，字典流式读取，每码仅保留足以决定首选的竞争前列，共享不可变前缀历史。达到上限后尝试回收，仍超限则中止而不生成报告。",
 	"",
 );
 writeReport(join(outputDirectory, `${basename}.md`), lines.join("\n"));

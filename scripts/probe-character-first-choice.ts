@@ -272,6 +272,24 @@ if (!prepareOnly && manifest.probes.length > 0) {
 		records.length,
 		manifest.probes.reduce((sum, probe) => sum + probe.codes.length, 0),
 	);
+	if (label === "fork") {
+		const required: Record<string, string> = {
+			mjv: "摩",
+			mjvo: "魔",
+			mjvov: "磨",
+		};
+		for (const row of records)
+			if (
+				row.schema === "snow_sanpin" &&
+				row.variant === "default" &&
+				required[row.code]
+			)
+				assert.equal(
+					row.candidates[0]?.text,
+					required[row.code],
+					`展示首选回归：${row.code}`,
+				);
+	}
 	console.log(
 		JSON.stringify(
 			records.filter((row) =>

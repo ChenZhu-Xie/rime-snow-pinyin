@@ -50,10 +50,10 @@ engine:
     - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
     - lua_filter@*snow.length_balance
+    - lua_filter@*snow.simplified
     - lua_filter@*snow.fix
     - lua_filter@*snow.learned_priority
     - lua_filter@*snow.postpone
-    - lua_filter@*snow.simplified
     - simplifier
     - uniquifier
     - lua_filter@*snow.shenyun_hint

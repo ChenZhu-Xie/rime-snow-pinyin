@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         source: [fork, upstream]
         runtime: [mira-rime1.13.1, mira-rime1.17]
@@ -38,12 +39,16 @@ jobs:
       - name: 安装字形转换与固定运行时
         run: |
           sudo apt-get update
-          sudo apt-get install --yes opencc
+          sudo apt-get install --yes opencc lua5.4
           curl --fail --location --output mira https://github.com/rimeinn/mira/releases/download/latest/${{ matrix.runtime }}
           chmod +x mira
           sha256sum mira
           mkdir -p ${{ matrix.source }}/opencc
           cp /usr/share/opencc/* ${{ matrix.source }}/opencc/
+      - name: 校验展示首选连续让位
+        if: matrix.source == 'fork'
+        working-directory: fork
+        run: lua5.4 spec/postpone-display-order.test.lua
       - name: 独立会话、空白用户词典、单变量采集
         env:
           PROBE_SCHEMA: ${{ inputs.schema }}

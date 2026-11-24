@@ -111,17 +111,26 @@ export function rankFlypyEntries(
 	const byCode = new Map<string, FlypyEntry[]>();
 	const targetCodes = new Map<string, FlypyEntry[]>();
 	const longerPrefixes = new Set<string>();
+	const requestedCodes = new Set(
+		entries
+			.filter((entry) => targetWords.has(entry.text))
+			.map(({ code }) => code),
+	);
 	for (const entry of entries) {
-		const values = byCode.get(entry.code) ?? [];
-		values.push(entry);
-		byCode.set(entry.code, values);
+		if (requestedCodes.has(entry.code)) {
+			const values = byCode.get(entry.code) ?? [];
+			values.push(entry);
+			byCode.set(entry.code, values);
+		}
 		if (targetWords.has(entry.text)) {
 			const targets = targetCodes.get(entry.text) ?? [];
 			targets.push(entry);
 			targetCodes.set(entry.text, targets);
 		}
-		for (let length = 1; length < entry.code.length; length += 1)
-			longerPrefixes.add(entry.code.slice(0, length));
+		for (let length = 1; length < entry.code.length; length += 1) {
+			const prefix = entry.code.slice(0, length);
+			if (requestedCodes.has(prefix)) longerPrefixes.add(prefix);
+		}
 	}
 
 	const candidatesByCode = new Map<string, FlypyEntry[]>();

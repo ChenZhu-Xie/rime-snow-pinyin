@@ -741,6 +741,123 @@ export function pronunciationCodes(
 	return [...result.values()];
 }
 
+const singleSpellingAlgebras = new Map<BenchmarkSchemeId, SpellingAlgebra>();
+const singleSpellings = new Map<string, string[]>();
+const singleInitials = new Map<string, string[]>();
+
+/** 单字离线枚举使用生产 speller；不改变 5500 字评测原有的标准码合同。 */
+export function productionCharacterCodes(
+	id: BenchmarkSchemeId,
+	text: string,
+	reading: string,
+	firstKey?: string,
+): BenchmarkCode[] {
+	const scheme = schemeById(id);
+	let algebra = singleSpellingAlgebras.get(id);
+	if (!algebra) {
+		algebra = new SpellingAlgebra(
+			rootPath(`${scheme.schemaId}.schema.yaml`),
+			"speller/algebra",
+		);
+		singleSpellingAlgebras.set(id, algebra);
+	}
+	const key = `${id}:${reading}`;
+	const literal = reading.startsWith("~") || !/^\p{Script=Han}$/u.test(text);
+	let spellings = singleSpellings.get(key);
+	if (!spellings && (literal || id === "sipin")) {
+		spellings = algebra.applyAll(reading);
+		singleSpellings.set(key, spellings);
+	}
+	if (firstKey) {
+		let initials = singleInitials.get(key);
+		if (!initials) {
+			initials = [
+				...new Set(
+					(spellings ?? soundCodes(scheme, reading)).map((code) => code[0]),
+				),
+			];
+			singleInitials.set(key, initials);
+		}
+		if (!initials.includes(firstKey)) return [];
+	}
+	if (literal) {
+		return spellings!
+			.filter((code) => /^[a-z;,./]+$/u.test(code))
+			.map((code) => ({ code, mainLength: code.length, auxiliaryLength: 0 }));
+	}
+	if (id === "qingyun") return qingyunReadingCodes([reading]);
+	if (id !== "sipin")
+		return pronunciationCodes(id, text, [reading], {
+			singleAuxiliaryLimit: Infinity,
+		});
+	const result = new Map<string, BenchmarkCode>();
+	const mains = spellings!.filter((code) =>
+		/^[bpmfdtnlgkhjqxzcsrwyv][aeiou]{1,3}$/u.test(code),
+	);
+	for (const main of mains) {
+		for (let length = 1; length <= main.length; length++) {
+			const code = main.slice(0, length);
+			result.set(code, { code, mainLength: length, auxiliaryLength: 0 });
+		}
+		// 生产规则只在四键主输入之后把后续元音键放进 shape_input。
+		if (main.length === 4) {
+			for (const strokes of sipinStrokeCodes(text))
+				for (let length = 1; length <= strokes.length; length++) {
+					const code = main + strokes.slice(0, length);
+					result.set(code, { code, mainLength: 4, auxiliaryLength: length });
+				}
+		}
+	}
+	// 部件辅助码入口 1 可以接在一至四键音码后，不能仅枚举完整音节。
+	const shape = sipinShapeCodes.get(text) ?? "";
+	for (const base of [...result.values()].filter(
+		({ auxiliaryLength }) => auxiliaryLength === 0,
+	)) {
+		for (let length = 1; length <= shape.length; length++) {
+			const code = base.code + "1" + shape.slice(0, length);
+			result.set(code, {
+				code,
+				mainLength: base.code.length,
+				auxiliaryLength: length + 1,
+			});
+		}
+	}
+	return [...result.values()];
+}
+
+/** 清韵音节／字根的前缀合同；单字形码与拼音分别提供各自的词典权重。 */
+const qingyunSingleSounds = new Map<string, string>();
+export function qingyunReadingCodes(
+	readings: readonly string[],
+	word = false,
+): BenchmarkCode[] {
+	const sounds = readings.map((reading) => {
+		let code = qingyunSingleSounds.get(reading);
+		if (code === undefined) {
+			code = qingyunAlgebra.apply(reading);
+			qingyunSingleSounds.set(reading, code);
+		}
+		return code;
+	});
+	if (
+		sounds.some((code) => !/^[bpmfdtnlgkhjqxzcsrwyv][aoeiu;,./]$/u.test(code))
+	)
+		return [];
+	const main = sounds
+		.slice(0, 4)
+		.map((code) => code[0])
+		.join("");
+	const codes = new Set<string>();
+	if (main && (!word || readings.length !== 2)) codes.add(main);
+	if (readings.length <= 3 && sounds.length > 0)
+		codes.add(main + sounds.at(-1)![1]);
+	return [...codes].map((code) => ({
+		code,
+		mainLength: code.length,
+		auxiliaryLength: 0,
+	}));
+}
+
 export function isPoppableCode(
 	id: BenchmarkSchemeId,
 	code: BenchmarkCode,

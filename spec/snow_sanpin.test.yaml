@@ -42,6 +42,17 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  postpone_display_order:
+    patch:
+      translator/enable_user_dict: false
+      translator/enable_schema_user_dict: false
+    tests:
+      - send: mjv
+        assert: cand[1].text == "摩"
+      - send: mjvo
+        assert: cand[1].text == "魔"
+      - send: mjvov
+        assert: cand[1].text == "磨"
   word_length_selection:
     tests:
       - send: "rgen{less}"
