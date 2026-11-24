@@ -1,6 +1,11 @@
 name: 全部单字冲突逐键采集
 on:
   workflow_dispatch:
+    inputs:
+      release_runtime:
+        description: 使用发布的 Mira 对全部前缀独立采集（不构建显式逐键分支）
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -16,6 +21,7 @@ jobs:
           bun-version: 1.3.14
       - run: bun install --cwd scripts --frozen-lockfile
       - name: 准备真实引擎并记录哈希
+        if: ${{ !inputs.release_runtime }}
         run: |
           sudo apt-get update
           sudo apt-get install --yes opencc meson libargparse-dev liblua5.4-dev libyaml-cpp-dev libboost-dev libboost-regex-dev libsnappy-dev
@@ -31,11 +37,21 @@ jobs:
           cd ../..
           cp output/mira-per-key/dist/bin/mira mira
           sha256sum mira | tee output/character-conflict-probes/runtime.sha256
+      - name: 使用发布运行时记录每个独立前缀
+        if: ${{ inputs.release_runtime }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes opencc
+          mkdir -p opencc output/character-conflict-probes
+          cp /usr/share/opencc/* opencc/
+          curl --fail --location --output mira https://github.com/rimeinn/mira/releases/download/latest/mira-rime1.17
+          chmod +x mira
+          sha256sum mira | tee output/character-conflict-probes/runtime.sha256
       - name: 枚举所有冲突字的读音和辅助码路径
         run: bun scripts/prepare-character-conflict-probes.ts
       - name: 串行采集空用户词典独立会话
         run: |
-          /usr/bin/time -v bun scripts/probe-character-first-choice.ts --cases output/character-conflict-probes/input.json --default-only --runtime mira-2de1926-explicit-per-key-context --mira ./mira --output output/character-conflict-probes/results
+          /usr/bin/time -v bun scripts/probe-character-first-choice.ts --cases output/character-conflict-probes/input.json --default-only --runtime '${{ inputs.release_runtime && 'release-independent-prefixes' || 'mira-2de1926-explicit-per-key-context' }}' --mira ./mira --output output/character-conflict-probes/results
       - uses: actions/upload-artifact@v4
         if: always()
         with:

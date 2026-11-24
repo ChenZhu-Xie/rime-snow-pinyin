@@ -18,19 +18,10 @@
 			]
 		},
 		"snow_jiandao": {
-			"codes": [
-				"xgvvii",
-				"qkviua",
-				"xdviio",
-				"jkaaaa",
-				"ykaaaa",
-				"kdoooo",
-				"yhoioi",
-				"xdiivv"
-			]
+			"codes": ["xgvvii", "qkviua", "xdiivv", "jkuaa", "ykaa", "kdoo", "yhoii"]
 		},
 		"snow_sanpin": {
-			"codes": ["jmiiuovuo", "jniiuviv", "ekaeieua"]
+			"codes": ["jmviuovuo", "jniiuoviv", "ekoeieua"]
 		}
 	}
 }

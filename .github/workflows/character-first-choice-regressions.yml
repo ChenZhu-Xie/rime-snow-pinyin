@@ -34,7 +34,7 @@ jobs:
       - name: 逐方案串行运行完整真实候选回归
         run: |
           status=0
-          for schema in snow_sanpin snow_jiandao snow_jiandao_classic snow_sanpin_classic snow_shenyun_shape snow_shenyun_tone snow_jiandao_toned snow_zhudao; do
+          for schema in snow_sanpin snow_jiandao snow_jiandao_classic snow_sanpin_classic snow_shenyun_shape snow_shenyun_tone snow_jiandao_toned snow_zhudao snow_qingyun; do
             /usr/bin/time -v bun scripts/test.ts "$schema" > "output/first-choice-regressions/$schema.log" 2>&1 || status=1
             cat "output/first-choice-regressions/$schema.log"
           done

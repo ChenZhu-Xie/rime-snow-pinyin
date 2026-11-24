@@ -50,15 +50,20 @@ const spec = {
 				"translator/enable_user_dict": false,
 				"extended/enable_user_dict": false,
 			},
-			tests: Object.entries(targets).flatMap(([target, full]) =>
-				Array.from({ length: full.length }, (_, i) => {
-					const code = full.slice(0, i + 1);
-					return {
-						send: code,
-						assert: `record(${JSON.stringify(code)}, ${JSON.stringify(target)})`,
-					};
-				}),
-			),
+			tests: Object.entries(targets)
+				.flatMap(([target, full]) =>
+					Array.from({ length: full.length }, (_, i) => {
+						const code = full.slice(0, i + 1);
+						return {
+							send: code,
+							assert: `record(${JSON.stringify(code)}, ${JSON.stringify(target)})`,
+						};
+					}),
+				)
+				.concat([
+					{ send: "jkeeiei8", assert: 'commit == "璟"' },
+					{ send: "lwiaeiei8", assert: 'commit == "罍"' },
+				]),
 		},
 	},
 };

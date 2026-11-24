@@ -24,6 +24,16 @@ script: |
     return cand[index] ~= nil and cand[index].comment:find(text) ~= nil
   end
 deploy:
+  cold_character_selection:
+    tests:
+      - send: fmjg
+        assert: commit == nil and rank("啰") == 6
+      - send: fmjg0
+        assert: commit == "啰"
+      - send: shtd
+        assert: commit == nil and rank("猿") == 2
+      - send: shtd2
+        assert: commit == "猿"
   # 全息模式：前缀码与顶功都不起作用，可以把每个字的形码打全参与组句
   sentence:
     options:
