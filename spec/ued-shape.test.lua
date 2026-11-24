@@ -27,6 +27,8 @@ for _, id in ipairs({ "snow_jiandao", "snow_jiandao_classic", "snow_jiandao_tone
     assert(filter.handle_candidate(text, "", env, state))
     assert(not filter.handle_candidate(text, "v", env, state))
     assert(not filter.handle_candidate(text, "vvii", env, state))
+    assert(filter.handle_candidate(text, "v", env, state, { comment = "📌", type = "table" }))
+    assert(filter.handle_candidate(text, "v", env, state, { comment = "📍", type = "table" }))
   end
   -- 无形码的汉字仍按既有合同放行，不能把修复扩大到全部未知字符。
   assert(filter.handle_candidate("𠮷", "v", env, state))
