@@ -37,8 +37,10 @@ script: |
 deploy:
   auxiliary_literal_exclusion:
     tests:
-      - send: "xgvvii"
+      - send: "xgvvi"
         assert: commit == nil and cand[1].text == "刑"
+      - send: "xgvvii"
+        assert: commit == nil and cand[2].text == "刑"
       - send: "qfviua"
         assert: commit == nil and cand[1].text == "欺"
   word_length_selection:
