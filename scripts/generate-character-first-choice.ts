@@ -168,7 +168,7 @@ function fixedEntries(file: string) {
 	}
 	return fixed;
 }
-const maxMemoryMiB = Number(arg("--max-memory-mib") ?? "768");
+const maxMemoryMiB = Number(arg("--max-memory-mib") ?? "1024");
 assert.ok(maxMemoryMiB >= 128 && Number.isFinite(maxMemoryMiB));
 function checkMemory(stage: string) {
 	const rss = process.memoryUsage().rss / 1024 / 1024;
@@ -176,7 +176,7 @@ function checkMemory(stage: string) {
 	Bun.gc(true);
 	assert.ok(
 		process.memoryUsage().rss / 1024 / 1024 <= maxMemoryMiB,
-		`${stage} 超过 ${maxMemoryMiB} MiB 内存上限，已停止；改用更小的字集分批运行。`,
+		`${stage} 超过 ${maxMemoryMiB} MiB 内存上限，已停止，未生成总报告；请排查当前批次的候选池规模。`,
 	);
 }
 function* dictionary(file: string): Generator<CharacterRoute> {
@@ -364,9 +364,6 @@ function internalScheme(
 			: baseline.candidateCache;
 	const { audit, observe } = auditObserver(scheme.schemaId, cache);
 	const choices = minimumFirstChoices(routes, pools, fixed, "move", observe);
-	for (const [text, code] of directOutputCodes(scheme.id))
-		if (code.startsWith(prefix))
-			choices.set(text, { code, keys: physicalKeys(code) });
 	for (const text of choices.keys())
 		if (!targetSet.has(text)) choices.delete(text);
 	return {
@@ -388,6 +385,7 @@ assert.ok(!worker || validWorkers.includes(worker), `未知方案：${worker}`);
 if (!worker) {
 	// 每个方案一个短生命周期进程；避免 JSC 的已提交页在后续方案间累积。
 	for (const id of validWorkers) {
+		Bun.gc(true);
 		const completed = Bun.spawnSync(
 			[process.execPath, ...process.argv.slice(1), "--worker", id],
 			{ stdout: "inherit", stderr: "inherit" },
@@ -433,7 +431,8 @@ for (const scheme of ALL_BENCHMARK_SCHEMES.filter(({ id }) => id === worker)) {
 		choices: new Map(),
 		audit: { compared: 0, matched: 0, differences: [] },
 	};
-	for (const prefix of [...prefixes].sort()) {
+	// 清韵码路最多四键、池较小；一次流式扫描普通词典，避免每个首键重复读百万词。
+	for (const prefix of scheme.id === "qingyun" ? [""] : [...prefixes].sort()) {
 		const batch = internalScheme(scheme, prefix);
 		combined.method = batch.method;
 		for (const [text, value] of batch.choices) {
@@ -450,6 +449,14 @@ for (const scheme of ALL_BENCHMARK_SCHEMES.filter(({ id }) => id === worker)) {
 		combined.audit.differences.push(...batch.audit.differences);
 		Bun.gc(true);
 		checkMemory(`${scheme.shortName}/${prefix}`);
+	}
+	// 标点等直出入口没有普通编码前缀，须在所有分批结果之外合并。
+	for (const [text, code] of directOutputCodes(scheme.id)) {
+		if (!targetSet.has(text)) continue;
+		const old = combined.choices.get(text);
+		const keys = physicalKeys(code);
+		if (!old || keys < old.keys || (keys === old.keys && code < old.code))
+			combined.choices.set(text, { code, keys });
 	}
 	results.push(combined);
 	console.log(
@@ -758,7 +765,7 @@ lines.push(
 	"bun scripts/generate-character-first-choice.ts",
 	"```",
 	"",
-	"外部方案目录或工具位置变化时，可传 `--sbxh-dir`、`--sbxh-dump`、`--flypy-dir`、`--wdat-dump`；`--output-dir` 改写报告目录。首次或主动更新 benchmark 字频才运行 `--import-frequency <a7_CKT_R11.html>`，普通复算无需外部 HTML。默认内存上限 768 MiB，`--max-memory-mib` 可调整；逐方案串行使用独立子进程，按编码首键分批，字典流式读取，每码仅保留足以决定首选的竞争前列，共享不可变前缀历史。达到上限后尝试回收，仍超限则中止而不生成报告。",
+	"外部方案目录或工具位置变化时，可传 `--sbxh-dir`、`--sbxh-dump`、`--flypy-dir`、`--wdat-dump`；`--output-dir` 改写报告目录。首次或主动更新 benchmark 字频才运行 `--import-frequency <a7_CKT_R11.html>`，普通复算无需外部 HTML。默认内存上限 1024 MiB，`--max-memory-mib` 可调整；逐方案串行使用独立子进程，按编码首键分批，字典流式读取，每码仅保留足以决定首选的竞争前列，共享不可变前缀历史。达到上限后尝试回收，仍超限则中止而不生成报告。",
 	"",
 );
 writeReport(join(outputDirectory, `${basename}.md`), lines.join("\n"));

@@ -11,6 +11,25 @@ import { SYLLABLE_PATTERNS } from "../../lib/pinyin-validation";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 
+test("部件辅助码显式依赖其反查字典，单方案部署也能生成", () => {
+	for (const file of [
+		"snow_sanpin.schema.yaml",
+		"snow_sanpin_classic.schema.yaml",
+		"snow_shenyun_tone.schema.yaml",
+	]) {
+		const document = load(read(file)) as {
+			schema: { dependencies: string[] };
+			patch: Record<string, unknown>;
+		};
+		assert.equal(
+			document.patch["translator/shape_elements"],
+			"snow_bushou",
+			file,
+		);
+		assert.ok(document.schema.dependencies.includes("snow_bushou"), file);
+	}
+});
+
 test("八套双拼方案在顶功前接入四主码词长直选，其他方案保持原有标点", () => {
 	for (const [file, layout] of [
 		["snow_jiandao.schema.yaml", "21x21"],

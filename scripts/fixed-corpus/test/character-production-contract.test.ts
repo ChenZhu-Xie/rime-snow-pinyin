@@ -61,6 +61,28 @@ test("英数入口执行方案实际拼写，并保留清韵两字词的韵码",
 	);
 });
 
+test("按首键分批不丢失单字码路或英数竞争码路", () => {
+	for (const [id, text, reading] of [
+		["sipin", "锁", "suo3"],
+		["oc21-shape", "i", "~i"],
+		["oc21-tone", "干", "gan1"],
+		["qingyun", "写", "xie3"],
+		["rc26-tone", "倒", "dao3"],
+	] as const) {
+		const all = productionCharacterCodes(id, text, reading);
+		const batched = [...new Set(all.map(({ code }) => code[0]))].flatMap(
+			(prefix) =>
+				productionCharacterCodes(id, text, reading, prefix).filter(({ code }) =>
+					code.startsWith(prefix),
+				),
+		);
+		assert.deepEqual(
+			batched.map(({ code }) => code).sort(),
+			all.map(({ code }) => code).sort(),
+		);
+	}
+});
+
 test("清韵单字形码与普通拼音必须保留独立来源，不能替换成同一份字频", () => {
 	const algebra = new SpellingAlgebra(
 		rootPath("snow_qingyun.schema.yaml"),

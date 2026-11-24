@@ -17,6 +17,7 @@ schema:
     - snow_pinyin
     - radical_pinyin
     - snow_sanpin_bihua
+    - snow_bushou
     - snow_jiandao_jianpin
 
 keymap:
