@@ -18,17 +18,23 @@ jobs:
       - name: 准备真实引擎并记录哈希
         run: |
           sudo apt-get update
-          sudo apt-get install --yes opencc
+          sudo apt-get install --yes opencc meson libargparse-dev liblua5.4-dev libyaml-cpp-dev libboost-dev libboost-regex-dev libsnappy-dev
           mkdir -p opencc output/character-conflict-probes
           cp /usr/share/opencc/* opencc/
-          curl --fail --location --output mira https://github.com/rimeinn/mira/releases/download/latest/mira-rime1.17
-          chmod +x mira
+          git clone https://github.com/rimeinn/mira.git output/mira-per-key
+          git -C output/mira-per-key checkout 2de1926298536d78d803de6d07f3dbb4a1f51a3e
+          python scripts/patch-mira-per-key.py output/mira-per-key
+          cd output/mira-per-key
+          meson setup build --prefer-static --prefix="$PWD/dist" --buildtype=release
+          ninja -j2 install -C build
+          cd ../..
+          cp output/mira-per-key/dist/bin/mira mira
           sha256sum mira | tee output/character-conflict-probes/runtime.sha256
       - name: 枚举所有冲突字的读音和辅助码路径
         run: bun scripts/prepare-character-conflict-probes.ts
       - name: 串行采集空用户词典独立会话
         run: |
-          /usr/bin/time -v bun scripts/probe-character-first-choice.ts --cases output/character-conflict-probes/input.json --default-only --runtime mira-rime1.17 --mira ./mira --output output/character-conflict-probes/results
+          /usr/bin/time -v bun scripts/probe-character-first-choice.ts --cases output/character-conflict-probes/input.json --default-only --runtime mira-2de1926-explicit-per-key-context --mira ./mira --output output/character-conflict-probes/results
       - uses: actions/upload-artifact@v4
         if: always()
         with:
