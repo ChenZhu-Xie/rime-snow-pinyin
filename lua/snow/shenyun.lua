@@ -416,7 +416,17 @@ local function routes_for(input, segment, env)
     add_route(routes, "LONG", input:upper(), "", n)
     return routes
   end
-  if n > 6 then return routes end
+  if n > 6 then
+    -- 调辅单字可继续追加笔画；词语和形辅仍保留原有六码合同。
+    if env.auxiliary_mode == "tone" and contains(A, input:sub(1, 1))
+        and contains(U, input:sub(2, 2)) and all_in(input, 3, B)
+        and not (all_in(input:sub(1, 2), 1, A)
+          and vacancy.is_empty(input:sub(1, 2), segment, env.vacancy_translator,
+            env.vacancy_memory, env.vacancy_projection, env.vacancy_cache)) then
+      add_route(routes, "AU", input:sub(1, 2), input:sub(3), 1)
+    end
+    return routes
+  end
   local first_pair = n >= 2 and input:sub(1, 2) or ""
   local first_vacant = first_pair ~= "" and all_in(first_pair, 1, A)
       and vacancy.is_empty(first_pair, segment, env.vacancy_translator,

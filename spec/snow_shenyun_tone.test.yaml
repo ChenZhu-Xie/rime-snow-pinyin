@@ -55,6 +55,10 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  extended_single_strokes:
+    tests:
+      - send: "viaeieua"
+        assert: commit == nil and cand[1].text == "势"
   word_length_selection:
     tests:
       - send: "rgsn{less}"
