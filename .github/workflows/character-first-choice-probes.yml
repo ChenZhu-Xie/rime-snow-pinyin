@@ -7,6 +7,10 @@ on:
         description: 可选，仅诊断指定 schema_id
         required: false
         type: string
+      production_cases:
+        description: 使用生产问题对照用例（上游独立编码）
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -52,7 +56,13 @@ jobs:
       - name: 独立会话、空白用户词典、单变量采集
         env:
           PROBE_SCHEMA: ${{ inputs.schema }}
-        run: bun fork/scripts/probe-character-first-choice.ts --source '${{ matrix.source }}' --label '${{ matrix.source }}' --runtime '${{ matrix.runtime }}' --mira ./mira --schema "$PROBE_SCHEMA" --output 'output/${{ matrix.source }}-${{ matrix.runtime }}'
+          PRODUCTION_CASES: ${{ inputs.production_cases }}
+        run: |
+          extra=()
+          if [ "$PRODUCTION_CASES" = true ]; then
+            extra=(--cases 'fork/scripts/data/character-production-${{ matrix.source }}-probes.json' --default-only)
+          fi
+          bun fork/scripts/probe-character-first-choice.ts --source '${{ matrix.source }}' --label '${{ matrix.source }}' --runtime '${{ matrix.runtime }}' --mira ./mira --schema "$PROBE_SCHEMA" --output 'output/${{ matrix.source }}-${{ matrix.runtime }}' "${extra[@]}"
       - name: 保存候选、注释与诊断输入
         if: always()
         uses: actions/upload-artifact@v4

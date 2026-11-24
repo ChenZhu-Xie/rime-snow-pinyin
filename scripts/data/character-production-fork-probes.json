@@ -1,0 +1,33 @@
+{
+	"contract": "production-regression-diagnostic-v1",
+	"definition": "逐键记录事实；输入是待核路径，不预设目标为首选。上游经典布局独立编码。",
+	"schemas": {
+		"snow_jiandao": {
+			"codes": ["xgvvii", "qfviua"]
+		},
+		"snow_sanpin": {
+			"codes": ["sro", "sriv", "jpivuo", "seviviv"]
+		},
+		"snow_qingyun": {
+			"codes": ["fp", "fpa", "shtd", "fmjg", "fmji", "fmjgo"]
+		},
+		"snow_shenyun_shape": {
+			"codes": ["jiaaaa", "jvaaaa", "wyaaaa"]
+		},
+		"snow_shenyun_tone": {
+			"codes": ["viaeieu", "viaeieua", "jsiiuoeuo", "xdeiuoeie"]
+		},
+		"snow_jiandao_toned": {
+			"codes": ["psoooo", "pmoo", "ynoioi"]
+		},
+		"snow_zhudao": {
+			"codes": ["joaaaa", "liiaeu", "xsoe", "xsoee", "xsoeu", "xxoeu"]
+		},
+		"snow_jiandao_classic": {
+			"codes": ["xgvvii", "xdviio", "jkaaaa", "yhoioi"]
+		},
+		"snow_sanpin_classic": {
+			"codes": ["jmiiuovuo", "jniiuviv", "ekaeieua"]
+		}
+	}
+}

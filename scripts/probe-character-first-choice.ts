@@ -116,7 +116,11 @@ function schemaEngine(file: string): NonNullable<ProbeSchema["engine"]> {
 for (const [schema, entry] of Object.entries(cases.schemas)) {
 	if (onlySchema && schema !== onlySchema) continue;
 	// 原版仅对照同合同的四拼和清韵；其他布局不能照抄物理输入。
-	if (label === "upstream" && !["snow_sipin", "snow_qingyun"].includes(schema))
+	if (
+		!casesPath &&
+		label === "upstream" &&
+		!["snow_sipin", "snow_qingyun"].includes(schema)
+	)
 		continue;
 	const engine = schemaEngine(`${schema}.schema.yaml`);
 	const variants = defaultOnly
