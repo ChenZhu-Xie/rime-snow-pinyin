@@ -42,6 +42,12 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  short_shape_and_stroke_sources:
+    tests:
+      - send: jpii
+        assert: commit == nil and cand[1].text == "尖"
+      - send: seviu
+        assert: commit == nil and cand[1].text == "尘"
   postpone_display_order:
     patch:
       translator/enable_user_dict: false

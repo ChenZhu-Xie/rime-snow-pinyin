@@ -1,0 +1,40 @@
+name: 声笔小鹤单字续笔诊断
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: sbsrf/sbsrf
+          ref: 1fc45eb39f6064407325d2bcf22cd745791a4505
+          path: output/sbsrf
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --cwd scripts --frozen-lockfile
+      - name: 准备运行时
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes opencc
+          cp /usr/share/opencc/* output/sbsrf/sbxlm/opencc/
+          curl --fail --location --output mira https://github.com/rimeinn/mira/releases/download/latest/mira-rime1.17
+          chmod +x mira
+      - name: 独立会话追加每一笔并记录首页和目标排名
+        env:
+          SBXH_REVISION: 1fc45eb39f6064407325d2bcf22cd745791a4505
+        run: /usr/bin/time -v bun scripts/probe-sbxh-character-strokes.ts output/sbsrf/sbxlm ./mira
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sbxh-character-strokes
+          path: |
+            output/sbxh-character-strokes/observations.jsonl
+            output/sbxh-character-strokes/manifest.json
+            output/sbxh-character-strokes/mira.log
+            output/sbxh-character-strokes/probe.test.yaml

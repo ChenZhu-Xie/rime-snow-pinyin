@@ -8,7 +8,7 @@
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
-		"types": ["node"],
+		"types": ["node", "bun-types"],
 		"noEmit": true
 	},
 	"include": ["./**/*.ts"]

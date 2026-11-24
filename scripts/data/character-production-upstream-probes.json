@@ -3,7 +3,19 @@
 	"definition": "逐键记录事实；输入是待核路径，不预设目标为首选。上游经典布局独立编码。",
 	"schemas": {
 		"snow_qingyun": {
-			"codes": ["fp", "fpa", "shtd", "fmjg", "fmji", "fmjgo"]
+			"codes": [
+				"fp",
+				"fpa",
+				"shtd",
+				"fmjg",
+				"fmji",
+				"fmjgo",
+				"fmjgI",
+				"fmjgO",
+				"fmjgA",
+				"fmjgE",
+				"fmjgU"
+			]
 		},
 		"snow_jiandao": {
 			"codes": [
@@ -13,7 +25,8 @@
 				"jkaaaa",
 				"ykaaaa",
 				"kdoooo",
-				"yhoioi"
+				"yhoioi",
+				"xdiivv"
 			]
 		},
 		"snow_sanpin": {

@@ -55,6 +55,12 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  short_shape_and_stroke_sources:
+    tests:
+      - send: jsii
+        assert: commit == nil and cand[1].text == "尖"
+      - send: xdeiu
+        assert: commit == nil and cand[1].text == "尘"
   extended_single_strokes:
     tests:
       - send: "viaeieua"
