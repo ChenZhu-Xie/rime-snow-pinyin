@@ -6,6 +6,7 @@ local bihua = require "snow.bihua"
 local auxiliary_semantics = require "snow.auxiliary_semantics"
 local auxiliary_hint = require "snow.auxiliary_hint"
 local initial_pair_aux = require "snow.initial_pair_aux"
+local shape_completion = require "snow.shape_completion"
 
 ---@class ShapeFilterEnv: BihuaEnv
 ---@field shape_elements ReverseLookup|nil
@@ -149,7 +150,7 @@ local function jiandao_encode(text, current, radicals_map, map, cache, schema_id
     return (codes[2] or "??"):sub(1, 2)
   elseif #codes == 1 then
     -- 如果只有一个字符，直接返回对应的编码
-    local code = codes[1] or "??"
+    local code = shape_completion.single(codes[1] or "")
     return schema_id == "snow_jiandao_toned" and code:sub(1, 4) or code
   end
   -- 普通词组取每个字的形码首码；活动冰雪兰道采用 UED-3158ce08b5bc 的

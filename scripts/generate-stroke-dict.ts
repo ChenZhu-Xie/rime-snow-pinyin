@@ -5,6 +5,14 @@ import { ROOT } from "./lib/paths";
 import { VERSION } from "./version";
 
 export function generateBihua(input: string) {
+	const corrections = readFileSync(
+		resolve(ROOT, "scripts/data/stroke-source-corrections.tsv"),
+		"utf8",
+	)
+		.split(/\r?\n/u)
+		.filter((line) => line && !line.startsWith("#"))
+		.join("\n");
+	input += "\n" + corrections;
 	const entries = new Map<
 		string,
 		{ text: string; code: string; sources: Set<string> }

@@ -8,6 +8,7 @@
 -- 冰雪鹮道复用路由，通过配置使用带调布局与形辅 21/12/23。
 
 local snow = require "snow.snow"
+local shape_completion = require "snow.shape_completion"
 local bihua = require "snow.bihua"
 local vacancy = require "snow.vacancy"
 local auxiliary_semantics = require "snow.auxiliary_semantics"
@@ -139,7 +140,7 @@ local function shape_codes(text, env)
     table.insert(codes, encode_radical(character, env))
   end
   if #codes == 1 then
-    return { codes[1] }
+    return { shape_completion.single(codes[1]) }
   elseif #codes >= 2 then
     return { ordered_initials(codes, auxiliary_positions(#codes, "shape", env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)) }
   end

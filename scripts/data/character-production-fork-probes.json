@@ -3,31 +3,185 @@
 	"definition": "逐键记录事实；输入是待核路径，不预设目标为首选。上游经典布局独立编码。",
 	"schemas": {
 		"snow_jiandao": {
-			"codes": ["xgvvii", "qfviua"]
+			"codes": [
+				"xgvvii",
+				"qfviua",
+				"j",
+				"jf",
+				"jfu",
+				"jfua",
+				"jfuaa",
+				"y",
+				"yf",
+				"yfa",
+				"yfaa",
+				"p",
+				"pw",
+				"pwo",
+				"pwoo",
+				"yk",
+				"yko",
+				"ykoi",
+				"ykoii"
+			]
 		},
 		"snow_sanpin": {
-			"codes": ["sro", "sriv", "jpivuo", "seviviv"]
+			"codes": [
+				"sro",
+				"sriv",
+				"jpivuo",
+				"seviviv",
+				"j",
+				"jp",
+				"jpi",
+				"jpii",
+				"jpiiu",
+				"jpiiuo",
+				"jpiiuov",
+				"jpiiuovu",
+				"jpiiuovuo",
+				"s",
+				"se",
+				"sev",
+				"sevi",
+				"seviu",
+				"seviuo",
+				"seviuov",
+				"seviuovi",
+				"seviuoviv"
+			]
 		},
 		"snow_qingyun": {
-			"codes": ["fp", "fpa", "shtd", "fmjg", "fmji", "fmjgo"]
+			"codes": [
+				"fp",
+				"fpa",
+				"shtd",
+				"fmjg",
+				"fmji",
+				"fmjgo",
+				"fmjG",
+				"fmjGi",
+				"fmjGI"
+			]
 		},
 		"snow_shenyun_shape": {
-			"codes": ["jiaaaa", "jvaaaa", "wyaaaa"]
+			"codes": [
+				"jiaaaa",
+				"jvaaaa",
+				"wyaaaa",
+				"j",
+				"ji",
+				"jiu",
+				"jiua",
+				"jiuaa",
+				"w",
+				"wi",
+				"wia",
+				"wiaa"
+			]
 		},
 		"snow_shenyun_tone": {
-			"codes": ["viaeieu", "viaeieua", "jsiiuoeuo", "xdeiuoeie"]
+			"codes": [
+				"viaeieu",
+				"viaeieua",
+				"jsiiuoeuo",
+				"xdeiuoeie",
+				"j",
+				"js",
+				"jsi",
+				"jsii",
+				"jsiiu",
+				"jsiiuo",
+				"jsiiuoe",
+				"jsiiuoeu",
+				"x",
+				"xd",
+				"xde",
+				"xdei",
+				"xdeiu",
+				"xdeiuo",
+				"xdeiuoe",
+				"xdeiuoei"
+			]
 		},
 		"snow_jiandao_toned": {
-			"codes": ["psoooo", "pmoo", "ynoioi"]
+			"codes": [
+				"psoooo",
+				"pmoo",
+				"ynoioi",
+				"p",
+				"ps",
+				"pso",
+				"psoo",
+				"y",
+				"yn",
+				"yno",
+				"ynoi",
+				"ynoii"
+			]
 		},
 		"snow_zhudao": {
-			"codes": ["joaaaa", "liiaeu", "xsoe", "xsoee", "xsoeu", "xxoeu"]
+			"codes": [
+				"joaaaa",
+				"liiaeu",
+				"xsoe",
+				"xsoee",
+				"xsoeu",
+				"xxoeu",
+				"j",
+				"jo",
+				"jou",
+				"joua",
+				"jouaa"
+			]
 		},
 		"snow_jiandao_classic": {
-			"codes": ["xgvvii", "xdviio", "jkaaaa", "yhoioi"]
+			"codes": [
+				"xgvvii",
+				"xdviio",
+				"jkaaaa",
+				"yhoioi",
+				"j",
+				"jk",
+				"jku",
+				"jkua",
+				"jkuaa",
+				"y",
+				"yk",
+				"yka",
+				"ykaa",
+				"k",
+				"kd",
+				"kdo",
+				"kdoo",
+				"yh",
+				"yho",
+				"yhoi",
+				"yhoii"
+			]
 		},
 		"snow_sanpin_classic": {
-			"codes": ["jmiiuovuo", "jniiuviv", "ekaeieua"]
+			"codes": [
+				"jmiiuovuo",
+				"jniiuviv",
+				"ekaeieua",
+				"j",
+				"jm",
+				"jmi",
+				"jmii",
+				"jmiiu",
+				"jmiiuo",
+				"jmiiuov",
+				"jmiiuovu",
+				"jn",
+				"jnv",
+				"jnvi",
+				"jnviu",
+				"jnviuo",
+				"jnviuov",
+				"jnviuovi",
+				"jnviuoviv"
+			]
 		}
 	}
 }

@@ -549,7 +549,10 @@ function auxiliarySequences(
 	const capacity = scheme.capacity;
 	if (syllables.length === 1) {
 		if (scheme.auxiliaryMode === "shape") {
-			return [[...shapeCode(word, scheme)].slice(0, singleAuxiliaryLimit)];
+			const shape = shapeCode(word, scheme);
+			const completed =
+				shape.length > 0 && shape.length < 4 ? shape + shape.at(-1) : shape;
+			return [[...completed].slice(0, singleAuxiliaryLimit)];
 		}
 		const tone = toneOf(syllables[0]);
 		const toneKey = tone
