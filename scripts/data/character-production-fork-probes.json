@@ -163,7 +163,9 @@
 				"yho",
 				"yhoi",
 				"yhoii",
-				"xdiivv"
+				"xdiivv",
+				"fzov",
+				"qzoi"
 			]
 		},
 		"snow_sanpin_classic": {
@@ -187,6 +189,17 @@
 				"jnviuov",
 				"jnviuovi",
 				"jnviuoviv"
+			]
+		},
+		"snow_sipin": {
+			"codes": [
+				"mo1ma",
+				"b1vouu",
+				"ba1vouu"
+			],
+			"targets": [
+				"报",
+				"摩"
 			]
 		}
 	}

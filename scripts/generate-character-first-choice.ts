@@ -370,7 +370,7 @@ function internalScheme(
 		for (let length = 1; length < code.length; length++)
 			for (const entry of literals.get(code.slice(0, length)) ?? []) {
 				if (
-					["oc21-shape", "classic-shape", "liandao"].includes(scheme.id) &&
+					scheme.id !== "qingyun" &&
 					/^[A-Za-z0-9]+$/u.test(entry.text)
 				)
 					continue;

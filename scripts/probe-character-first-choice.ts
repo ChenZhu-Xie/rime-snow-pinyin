@@ -22,7 +22,7 @@ const argument = (name: string) => {
 	return index < 0 ? undefined : process.argv[index + 1];
 };
 const casesPath = argument("--cases");
-const cases: { schemas: Record<string, { codes: string[] }> } = casesPath
+const cases: { schemas: Record<string, { codes: string[]; targets?: string[] }> } = casesPath
 	? JSON.parse(readFileSync(resolve(casesPath), "utf8"))
 	: defaultCases;
 const defaultOnly = process.argv.includes("--default-only");
@@ -70,13 +70,21 @@ function quote(s)
   end)
   return '"' .. escaped .. '"'
 end
-function record(code, schema, variant, label)
+function record(code, schema, variant, label, targets)
   local rows = {}
   for i = 1, math.min(6, #cand) do
     rows[#rows+1] = '{"text":' .. quote(cand[i].text) .. ',"comment":' .. quote(cand[i].comment or '') .. '}'
   end
+  local ranks = {}
+  for _, target in ipairs(targets) do
+    local rank = 'null'
+    for i, item in ipairs(cand) do
+      if item.text == target then rank = tostring(i); break end
+    end
+    ranks[#ranks+1] = quote(target) .. ':' .. rank
+  end
   local f = assert(io.open(os.getenv('FIRST_CHOICE_OBSERVATIONS'), 'a'))
-  f:write('{"label":' .. quote(label) .. ',"schema":' .. quote(schema) .. ',"variant":' .. quote(variant) .. ',"code":' .. quote(code) .. ',"preedit":' .. (preedit and quote(preedit) or 'null') .. ',"commit":' .. (commit and quote(commit) or 'null') .. ',"candidates":[' .. table.concat(rows, ',') .. ']}\n')
+  f:write('{"label":' .. quote(label) .. ',"schema":' .. quote(schema) .. ',"variant":' .. quote(variant) .. ',"code":' .. quote(code) .. ',"preedit":' .. (preedit and quote(preedit) or 'null') .. ',"commit":' .. (commit and quote(commit) or 'null') .. ',"ranks":{' .. table.concat(ranks, ',') .. '},"candidates":[' .. table.concat(rows, ',') .. ']}\n')
   f:close()
   return true
 end
@@ -234,7 +242,7 @@ return filter
 					},
 					tests: codes.map((code) => ({
 						send: code,
-						assert: `record(${JSON.stringify(code)}, ${JSON.stringify(schema)}, ${JSON.stringify(variant)}, ${JSON.stringify(label)})`,
+						assert: `record(${JSON.stringify(code)}, ${JSON.stringify(schema)}, ${JSON.stringify(variant)}, ${JSON.stringify(label)}, {${(entry.targets ?? []).map(t => JSON.stringify(t)).join(",")}})`,
 					})),
 				},
 			},

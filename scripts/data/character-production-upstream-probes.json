@@ -18,10 +18,35 @@
 			]
 		},
 		"snow_jiandao": {
-			"codes": ["xgvvii", "qkviua", "xdiivv", "jkuaa", "ykaa", "kdoo", "yhoii"]
+			"codes": [
+				"xgvvii",
+				"qkviua",
+				"xdiivv",
+				"jkuaa",
+				"ykaa",
+				"kdoo",
+				"yhoii",
+				"fzov",
+				"qzoi"
+			]
 		},
 		"snow_sanpin": {
-			"codes": ["jmviuovuo", "jniiuoviv", "ekoeieua"]
+			"codes": [
+				"jmviuovuo",
+				"jniiuoviv",
+				"ekoeieua"
+			]
+		},
+		"snow_sipin": {
+			"codes": [
+				"mo1ma",
+				"b1vouu",
+				"ba1vouu"
+			],
+			"targets": [
+				"报",
+				"摩"
+			]
 		}
 	}
 }
