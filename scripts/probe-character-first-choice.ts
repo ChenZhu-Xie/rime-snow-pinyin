@@ -22,7 +22,7 @@ const argument = (name: string) => {
 	return index < 0 ? undefined : process.argv[index + 1];
 };
 const casesPath = argument("--cases");
-const cases: { schemas: Record<string, { codes: string[]; targets?: string[] }> } = casesPath
+const cases: { schemas: Record<string, { codes: string[]; rankTargets?: string[] }> } = casesPath
 	? JSON.parse(readFileSync(resolve(casesPath), "utf8"))
 	: defaultCases;
 const defaultOnly = process.argv.includes("--default-only");
@@ -242,7 +242,7 @@ return filter
 					},
 					tests: codes.map((code) => ({
 						send: code,
-						assert: `record(${JSON.stringify(code)}, ${JSON.stringify(schema)}, ${JSON.stringify(variant)}, ${JSON.stringify(label)}, {${(entry.targets ?? []).map(t => JSON.stringify(t)).join(",")}})`,
+						assert: `record(${JSON.stringify(code)}, ${JSON.stringify(schema)}, ${JSON.stringify(variant)}, ${JSON.stringify(label)}, {${(entry.rankTargets ?? []).map(t => JSON.stringify(t)).join(",")}})`,
 					})),
 				},
 			},
