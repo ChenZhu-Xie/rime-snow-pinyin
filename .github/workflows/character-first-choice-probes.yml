@@ -1,0 +1,54 @@
+name: 单字首选隔离诊断
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        source: [fork, upstream]
+        runtime: [mira-rime1.13.1, mira-rime1.17]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          path: fork
+      - uses: actions/checkout@v4
+        if: matrix.source == 'upstream'
+        with:
+          repository: rimeinn/rime-snow-pinyin
+          ref: 99c1d6010ff7252175f2b373f05ff30e9541f3c3
+          submodules: true
+          path: upstream
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --cwd fork/scripts --frozen-lockfile
+      - name: 安装字形转换与固定运行时
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes opencc
+          curl --fail --location --output mira https://github.com/rimeinn/mira/releases/download/latest/${{ matrix.runtime }}
+          chmod +x mira
+          sha256sum mira
+          mkdir -p ${{ matrix.source }}/opencc
+          cp /usr/share/opencc/* ${{ matrix.source }}/opencc/
+      - name: 独立会话、空白用户词典、单变量采集
+        run: bun fork/scripts/probe-character-first-choice.ts --source '${{ matrix.source }}' --label '${{ matrix.source }}' --runtime '${{ matrix.runtime }}' --mira ./mira --output 'output/${{ matrix.source }}-${{ matrix.runtime }}'
+      - name: 保存候选、注释与诊断输入
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-choice-${{ matrix.source }}-${{ matrix.runtime }}
+          path: |
+            output/**/observations.jsonl
+            output/**/per-key-traces.tsv
+            output/**/manifest.json
+            output/**/mira.log
+            output/**/probe.test.yaml

@@ -1,0 +1,43 @@
+{
+	"contract": "independent-character-probes-v1",
+	"reported": "2026-11-24",
+	"definition": "用户本机观察仅作为证据，不写成干净 CI 的预期断言；每条编码从独立会话逐键输入。",
+	"schemas": {
+		"snow_sipin": {
+			"codes": ["zoa", "zoau", "souo", "souu", "b", "bua", "buae", "buao"],
+			"userObserved": {
+				"zoau": "作",
+				"souu": "叟",
+				"souo": "锁",
+				"b": "不",
+				"buae": "不",
+				"buao": "布"
+			}
+		},
+		"snow_jiandao": {
+			"codes": ["xlvi", "cnvv", "hmi"],
+			"userObserved": { "xlvi": "i", "cnvv": "弎", "hmi": "货" }
+		},
+		"snow_sanpin": {
+			"codes": ["yfiv", "gnav", "mjvo", "mjvov"],
+			"userObserved": {
+				"yfiv": "医",
+				"gnav": "干",
+				"mjvo": "摩",
+				"mjvov": "摩"
+			}
+		},
+		"snow_qingyun": {
+			"codes": ["xe", "pml", "nmj"],
+			"userObserved": { "xe": "彐", "pml": "破灭了", "nmj": "那么就" }
+		},
+		"snow_shenyun_shape": {
+			"codes": ["ty", "tyo", "tyoo", "dsia"],
+			"userObserved": { "ty": "头", "tyo": "褕", "tyoo": "愉", "dsia": "巅" }
+		},
+		"snow_shenyun_tone": {
+			"codes": ["bao", "dku", "dkuu", "dkuui", "dkau"],
+			"userObserved": { "bao": "杷", "dku": "岛", "dkau": "倒" }
+		}
+	}
+}
