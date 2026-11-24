@@ -307,6 +307,9 @@ end
 local function auxiliary_match(candidate, suffix, env, initial_pair)
   local text = candidate.text
   local radical_input = env.engine.context:get_property("shape_input") or ""
+  if (suffix ~= "" or radical_input ~= "") and text:match("^[A-Za-z0-9]+$") then
+    return false, ""
+  end
   if radical_input ~= "" then
     if env.auxiliary_mode ~= "tone" or utf8.len(text) ~= 1
         or radical_input:sub(1, 1) ~= "1" then

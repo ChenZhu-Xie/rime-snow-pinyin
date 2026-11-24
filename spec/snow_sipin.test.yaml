@@ -35,6 +35,8 @@ deploy:
   # 注意：这里的断言依赖词频未被本部署内的上屏改变，故上屏类测试一律放在最后
   popping:
     tests:
+      - send: b1vou
+        assert: commit == nil and cand[1].text == "报" and not has("b") and not has("B")
       # 空用户词典的候选；与学习过「房展」后的顺序分开验证。
       - send: fwa
         assert: cand[1].text == "发展" and commit == nil
