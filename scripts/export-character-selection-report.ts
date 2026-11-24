@@ -166,32 +166,41 @@ assert.ok(
 	process.argv[4],
 	"必须显式提供与首选修订稿同批的 observations.jsonl，禁止静默使用历史缓存",
 );
-const probes = resolve(process.argv[4]);
-const probeManifest = JSON.parse(
-	readFileSync(join(dirname(probes), "manifest.json"), "utf8"),
-);
-assert.equal(
-	probeManifest.revision,
-	meta.engineRevision,
-	"选重候选与首选报告的采集提交不一致",
-);
-assert.deepEqual(
-	probeManifest.sources,
-	meta.sources,
-	"选重候选与首选报告的生产来源不一致",
-);
-sources[probes] = createHash("sha256")
-	.update(readFileSync(probes))
-	.digest("hex");
 const observations = new Map<
 	string,
 	Map<string, { commit: string | null; candidates: { text: string }[] }>
 >();
-for (const line of readFileSync(probes, "utf8").trim().split("\n")) {
-	const row = JSON.parse(line);
-	const map = observations.get(row.schema) ?? new Map();
-	map.set(row.code, row);
-	observations.set(row.schema, map);
+for (const file of process.argv.slice(4)) {
+	const probes = resolve(file);
+	const probeManifest = JSON.parse(
+		readFileSync(join(dirname(probes), "manifest.json"), "utf8"),
+	);
+	assert.equal(
+		probeManifest.revision,
+		meta.engineRevision,
+		"选重候选与首选报告的采集提交不一致",
+	);
+	assert.deepEqual(
+		probeManifest.sources,
+		meta.sources,
+		"选重候选与首选报告的生产来源不一致",
+	);
+	sources[probes] = createHash("sha256")
+		.update(readFileSync(probes))
+		.digest("hex");
+	for (const line of readFileSync(probes, "utf8").trim().split("\n")) {
+		const row = JSON.parse(line);
+		const map = observations.get(row.schema) ?? new Map();
+		const existing = map.get(row.code);
+		if (existing)
+			assert.deepEqual(
+				[existing.commit, existing.candidates.map((c) => c.text)],
+				[row.commit, row.candidates.map((c: { text: string }) => c.text)],
+				"同批重复观测不一致：" + row.schema + "/" + row.code,
+			);
+		map.set(row.code, row);
+		observations.set(row.schema, map);
+	}
 }
 for (let index = 0; index < meta.schemes.length; index++) {
 	const schema = ALL_BENCHMARK_SCHEMES.find(
@@ -270,7 +279,7 @@ const schemes = meta.schemes.map(
 	(scheme: { id: string; name: string }, index: number) => {
 		const map = choices[index];
 		const text = [
-			"# 无首选时采用候选编码＋一键理想选重；未实测可达性见来源列。保留v3首选，未对所有选重路径证明最短。",
+			"# 无首选时采用候选编码＋一键理想选重；未实测可达性见来源列。保留输入稿首选，未对所有选重路径证明最短。",
 			"字\t编码\t总键数\t选重\t来源\t字频序\t冻结频次",
 		];
 		for (const row of rows) {
@@ -325,10 +334,16 @@ const schemes = meta.schemes.map(
 		return { ...scheme, cohorts: stats };
 	},
 );
+const sourceCounts: Record<string, number> = {};
+for (const map of choices)
+	for (const choice of map.values())
+		sourceCounts[choice.source] = (sourceCounts[choice.source] ?? 0) + 1;
 const markdown = [
 	"# 十二方案单字键数（无首选时加一键选重）",
 	"",
-	"均键按字等权；选重列为字数／占当前前m字的比例。键数分布已包含选重的一键。仅无首选记录使用选重；没有比较所有字的较短选重路径。选重统一假设一次动作，不计翻页，首选不计确认空格。来源包含未实测的离线词典码路，不能据此声明全部可实际输入或全量最短。原始首选数据保留在v3。",
+	"均键按字等权；选重列为字数／占当前前m字的比例。键数分布已包含选重的一键。仅无首选记录使用选重；没有比较所有字的较短选重路径。选重统一假设一次动作，不计翻页，首选不计确认空格。来源包含未实测的离线词典码路，不能据此声明全部可实际输入或全量最短。原始首选数据保留在输入目录，旧版 TSV 不覆盖。",
+	"",
+	`本表是实测与预测混合的修订稿，共 96000 个方案—字记录。首选实测 ${sourceCounts["空词典引擎观测"] ?? 0} 条，首页选重候选实测 ${sourceCounts["实测候选＋理想选重一键"] ?? 0} 条；其他行保留各自来源，不是全量通过验证。采集生产提交：${meta.engineRevision}。`,
 	"",
 ];
 for (const n of cohorts) {
@@ -373,6 +388,7 @@ writeOutput(
 			contract: "character-selection-hybrid-v4",
 			selectionCost: 1,
 			validationStatus: "mixed-unverified-selection-routes",
+			sourceCounts,
 			parentEngineRevision: meta.engineRevision,
 			parentRuntime: meta.runtime,
 			parentSha256: createHash("sha256").update(original).digest("hex"),

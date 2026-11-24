@@ -64,6 +64,21 @@ const basename = "8000字_十二方案最短首选键数";
 const previous = JSON.parse(
 	readFileSync(join(old, `${basename}.json`), "utf8"),
 );
+const refreshedBaseline = process.argv.includes("--current-baseline");
+if (refreshedBaseline) {
+	for (const [file, digest] of Object.entries(previous.sources)) {
+		const content = readFileSync(rootPath(file));
+		assert.ok(
+			[
+				content,
+				Buffer.from(content.toString("utf8").replaceAll("\r\n", "\n")),
+			].some(
+				(value) => createHash("sha256").update(value).digest("hex") === digest,
+			),
+			`新版离线来源已变化：${file}`,
+		);
+	}
+}
 const lines = readFileSync(join(old, `${basename}.tsv`), "utf8")
 	.trimEnd()
 	.split(/\r?\n/u);
@@ -93,11 +108,12 @@ const schemes = previous.schemes.map(
 		for (const row of rows) {
 			const correction = corrections.get(row[1]);
 			if (correction) {
-				assert.equal(
-					row[4 + index * 2],
-					correction.previousMinimum,
-					`v2来源不符：${scheme.name}/${row[1]}`,
-				);
+				if (!refreshedBaseline)
+					assert.equal(
+						row[4 + index * 2],
+						correction.previousMinimum,
+						`v2来源不符：${scheme.name}/${row[1]}`,
+					);
 				row[3 + index * 2] = String(correction.choice?.keys ?? "NA");
 				row[4 + index * 2] = correction.choice?.code ?? "NA";
 			}
@@ -142,6 +158,9 @@ writeOutput(
 			contract: "character-first-choice-hybrid-v3",
 			validationStatus: "observed-conflicts-only",
 			engineRevision: audit.revision,
+			baselineSha256: createHash("sha256")
+				.update(readFileSync(join(old, `${basename}.tsv`)))
+				.digest("hex"),
 			runtime: audit.runtime,
 			sources: audit.sources,
 			auditSha256: createHash("sha256")
