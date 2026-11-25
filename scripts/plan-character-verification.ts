@@ -16,6 +16,11 @@ const budget = Number(budgetArg);
 assert.ok(Number.isInteger(budget) && budget > 0);
 const read = (file: string) => readFileSync(file, "utf8");
 const meta = JSON.parse(read(join(offline, "8000字_十二方案最短首选键数.json")));
+for (const [file, digest] of Object.entries(meta.sources)) {
+	const content = readFileSync(rootPath(file));
+	assert.ok([content, Buffer.from(content.toString("utf8").replaceAll("\r\n", "\n"))].some(value =>
+		createHash("sha256").update(value).digest("hex") === digest), `离线预测来源已变化：${file}`);
+}
 const manifest = JSON.parse(read(join(observations, "manifest.json")));
 const diff = spawnSync("git", ["diff", "--exit-code", manifest.revision, "--", "lua", "deps", "snow_*.yaml", "snow_*.txt"], { cwd: rootPath(), encoding: "utf8" });
 assert.equal(diff.status, 0, "生产来源已变化，旧观测需要重新验证");
@@ -99,7 +104,7 @@ for (const [index, scheme] of meta.schemes.entries()) {
 	summaries.push({ scheme: scheme.name, counts, queuedCharacters: Object.keys(targets).length, independentInputs: codes.size, newInputs: [...codes].filter(code => !map.has(code)).length });
 }
 writeOutput(join(output, "confidence.tsv"), "\uFEFF" + table.join("\n") + "\n");
-writeOutput(join(output, "risk-profiles.json"), JSON.stringify({ productionRevision: manifest.revision, observationSha256: createHash("sha256").update(readFileSync(join(observations, "observations.jsonl"))).digest("hex"), selectionPolicy: "同方案同特征有失败样本的未验证路径优先，其次按字频；样本未经概率校准", schemas: riskProfiles }, null, 2) + "\n");
+writeOutput(join(output, "risk-profiles.json"), JSON.stringify({ productionRevision: manifest.revision, predictionSha256: createHash("sha256").update(readFileSync(join(offline, "8000字_十二方案最短首选键数.tsv"))).digest("hex"), observationSha256: createHash("sha256").update(readFileSync(join(observations, "observations.jsonl"))).digest("hex"), selectionPolicy: "同方案同特征有失败样本的未验证路径优先，其次按字频；样本未经概率校准", schemas: riskProfiles }, null, 2) + "\n");
 writeOutput(join(output, "input.json"), JSON.stringify({ contract: "character-budgeted-verification-v1", productionRevision: manifest.revision, perSchemaBudget: budget, schemas }, null, 2) + "\n");
 writeOutput(join(output, "summary.json"), JSON.stringify({ revision: manifest.revision, perSchemaBudget: budget, probabilityCalibrated: false, summaries }, null, 2) + "\n");
 console.log(JSON.stringify(summaries));
