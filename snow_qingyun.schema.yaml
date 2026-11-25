@@ -48,6 +48,7 @@ switches:
 engine:
   processors:
     - lua_processor@*snow.statistics*processor
+    - lua_processor@*snow.qingyun_mode
     - ascii_composer
     - lua_processor@*snow.select_character
     - lua_processor@*snow.popping

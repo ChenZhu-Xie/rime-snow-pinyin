@@ -168,8 +168,10 @@ CKT 的理想化消重与本任务包含生产简码、英数入口和固顶的�
 
 `python scripts/plot-character-selection-report.py [--report-dir reports]` 从含选重 JSON 生成同名 `_均键对比.png` 与 `.svg`，需要 Matplotlib 及中文字体。报告数据重算后运行此命令同步图片。九个子图各按精确均键升序，横轴统一从零开始；颜色对应布局，实心／斜纹对应双拼道系／拼系，实线／虚线边框对应 21×21／21×26。非双拼方案单独着色，不套用这两个样式维度。
 
-## 清韵单字模式与方案选项
+## 清韵单字模式与方案选项（当前口径）
 
-清韵有 `character` 开关，默认「字词」，可通过有候选时 Shift+Tab 切换，或 F4／Ctrl+` → 首项「方案选项」→「字词 → 单字」。菜单读取当前方案的 switches，选择开关不输出菜单文字；Ctrl+Shift+` 仍保留原生选单。
+清韵有 `character` 开关，启动默认「字词」。当前修复后，F4／Ctrl+` → 首项「方案选项」所选的「单字／字词」是持续模式，上屏后保持；有候选时 Shift+Tab 临时切换，上屏后恢复最近设定的持续模式。原生选单的 character 选项变化同样更新持续模式。重新进入方案／重启时仍遵循 schema 的 reset 配置，本次未把所有用户的启动默认值改为单字。上游固定版本 `99c1d60` 每次上屏直接恢复 `switches/3/reset`，没有区分菜单选择与临时切换；本地以独立 qingyun_mode 处理器修正，模式过滤规则不变。
 
-现有正式 8k 报告采用 `character=false`，不混入单字模式成绩。独立空词典 DLL 对照表明：开启单字模式后 `wye` 首选由「网页」变「玥」，`rf,` 由「乳房」变「昉」，`fp` 由占位提示变「呆」；但 `shtd` 仍为「猥、猿」，`zfdf` 仍为「喜、嘉」，单字间重码仍需选重。清韵上屏后会按该开关的 reset 配置复位（默认回到字词），因此从菜单打开并不等于永久修改默认值。
+现有正式 8k 报告已改为清韵持续单字模式 `character=true`，其他十一方案沿用原结果。清韵 7438 字无需选重、562 字需选重，全部可达；均键 3.59375，原字词模式为 7000／1000、3.81775。只有单字间重码仍需选重，如「猥、猿」「喜、嘉」。本轮独立空词典逐键采集 10153 个输入，并为首页缺测的 17 字重新采集后续页；没有复用字词模式缓存。首选报告、含选重报告、PNG／SVG、清韵 TXT、总 TSV 及新增总 CSV 已同步。
+
+证据在 `output/qingyun-character-full/`；清韵来源、模式、观测哈希和生产文件哈希写入报告 JSON 的 `qingyunCharacterModeEvidence`。采集器以输入中的 `schemas.snow_qingyun.options.character` 指定模式，缓存重用检查 query-options.json，不能把字词模式记录当单字模式复用。`python scripts/experiments/apply-qingyun-character-mode.py` 汇总此轮证据，其他方案数据保持不变；原报告备份在该目录 previous-reports 下。

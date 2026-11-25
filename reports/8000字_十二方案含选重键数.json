@@ -5,13 +5,13 @@
   "pageSize": 6,
   "validationStatus": "observed-enumerated-routes-with-retained-external-data",
   "sourceCounts": {
-    "空词典引擎观测": 78862,
-    "实测候选＋理想选重一键": 996,
-    "实测后续页候选＋翻页及选重": 142,
+    "空词典引擎观测": 79300,
+    "实测候选＋理想选重一键": 682,
+    "实测后续页候选＋翻页及选重": 18,
     "离线未验证": 15709,
     "声笔发布码表（选重可达性未实测）": 16,
-    "小鹤发布码表（理想选重一键）": 273,
-    "用户实敲核对：末尾分号为次选键": 2
+    "用户实敲核对：末尾分号为次选键": 2,
+    "小鹤发布码表（理想选重一键）": 273
   },
   "parentEngineRevision": "c21efd84ac2f1d334fa77c2e4919d982c8c3dcf4",
   "parentRuntime": "local-dll-prefix-batch",
@@ -2955,150 +2955,129 @@
       "cohorts": {
         "500": {
           "count": 500,
-          "mean": 2.596,
-          "selection": 0,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 206,
-            "3": 206,
-            "4": 60
-          }
+            "2": 217,
+            "3": 205,
+            "4": 50
+          },
+          "mean": 2.554,
+          "selection": 0,
+          "unresolved": []
         },
         "1000": {
           "count": 1000,
-          "mean": 2.806,
-          "selection": 2,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 337,
-            "3": 436,
-            "4": 199
-          }
+            "2": 352,
+            "3": 456,
+            "4": 163,
+            "5": 1
+          },
+          "mean": 2.757,
+          "selection": 2,
+          "unresolved": []
         },
         "1500": {
           "count": 1500,
-          "mean": 2.9486666666666665,
-          "selection": 3,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 413,
-            "3": 668,
-            "4": 390,
-            "5": 1
-          }
+            "2": 437,
+            "3": 720,
+            "4": 313,
+            "5": 2
+          },
+          "mean": 2.8826666666666667,
+          "selection": 3,
+          "unresolved": []
         },
         "2000": {
           "count": 2000,
-          "mean": 3.0665,
-          "selection": 8,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 466,
-            "3": 854,
-            "4": 649,
-            "5": 3
-          }
+            "2": 490,
+            "3": 960,
+            "4": 518,
+            "5": 4
+          },
+          "mean": 2.99,
+          "selection": 8,
+          "unresolved": []
         },
         "3000": {
           "count": 3000,
-          "mean": 3.263,
-          "selection": 37,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 525,
-            "3": 1100,
-            "4": 1325,
-            "5": 21,
-            "6": 1
-          }
+            "2": 552,
+            "3": 1337,
+            "4": 1072,
+            "5": 11
+          },
+          "mean": 3.162,
+          "selection": 28,
+          "unresolved": []
         },
         "4000": {
           "count": 4000,
-          "mean": 3.40325,
-          "selection": 89,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 557,
-            "3": 1254,
-            "4": 2105,
-            "5": 52,
-            "6": 2,
-            "8": 1,
-            "9": 1
-          }
+            "2": 586,
+            "3": 1653,
+            "4": 1706,
+            "5": 27
+          },
+          "mean": 3.2795,
+          "selection": 64,
+          "unresolved": []
         },
         "5000": {
           "count": 5000,
-          "mean": 3.5212,
-          "selection": 184,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 560,
-            "3": 1350,
-            "4": 2932,
-            "5": 117,
-            "6": 6,
-            "7": 1,
-            "8": 3,
-            "9": 2,
-            "10": 1
-          }
+            "2": 590,
+            "3": 1883,
+            "4": 2433,
+            "5": 64,
+            "6": 2
+          },
+          "mean": 3.3842,
+          "selection": 131,
+          "unresolved": []
         },
         "6000": {
           "count": 6000,
-          "mean": 3.6273333333333335,
-          "selection": 367,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 561,
-            "3": 1418,
-            "4": 3703,
-            "5": 256,
-            "6": 12,
-            "7": 8,
-            "8": 4,
-            "9": 3,
-            "10": 1,
-            "11": 4,
-            "12": 1,
-            "15": 1
-          }
+            "2": 592,
+            "3": 2087,
+            "4": 3157,
+            "5": 134,
+            "6": 2
+          },
+          "mean": 3.4638333333333335,
+          "selection": 244,
+          "unresolved": []
         },
         "8000": {
           "count": 8000,
-          "mean": 3.81775,
-          "selection": 1000,
-          "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 562,
-            "3": 1477,
-            "4": 5050,
-            "5": 768,
-            "6": 49,
-            "7": 17,
-            "8": 16,
-            "9": 8,
-            "10": 5,
-            "11": 10,
-            "12": 3,
-            "13": 3,
-            "14": 1,
-            "15": 1,
-            "19": 1,
-            "23": 1
-          }
+            "2": 593,
+            "3": 2363,
+            "4": 4645,
+            "5": 361,
+            "6": 8,
+            "7": 2
+          },
+          "mean": 3.59375,
+          "selection": 562,
+          "unresolved": []
         }
       },
-      "observedTargets": 8000
+      "observedTargets": 8000,
+      "evaluationOptions": {
+        "character": true
+      }
     },
     {
       "id": "rc26-shape",
@@ -8836,5 +8815,21 @@
       },
       "observedTargets": 0
     }
-  ]
+  ],
+  "qingyunCharacterModeEvidence": {
+    "mode": "character=true",
+    "revision": "73cea4a5c036337d2fed1218a91d0c02b72ae3de",
+    "fingerprint": "892aaedfb60b87f44e5b1e0e71f221ee45fb2ad2477d7316362694ee7f6a54ca",
+    "observationsSha256": "b401f0d0f625df96b8488ab70af7e9bf23e38f66a8948e36cd69f7236e5a77de",
+    "queryOptions": {
+      "character": true
+    },
+    "scope": "仅清韵重采为持续单字模式；其余方案沿用上一轮",
+    "productionFilesSha256": {
+      "lua/snow/qingyun.lua": "03f71377c70614a6efae5a7866c41d5dec884f6c2110647861c3f58f29a5dca0",
+      "lua/snow/qingyun_mode.lua": "cf56fe8651d6e0dcf73bdf9a5eb25f20ba355f20c0a4f9a5301f463550a50db4",
+      "snow_qingyun.schema.yaml": "39370c07451f863e3e665b0f8aaf1eb89a03bf693af6a8751a345aa230c4aeb4"
+    },
+    "expandedObservationsSha256": "e58ff232365a783af0ddf6d611c0353bf3f955d7ee4449488e82ebd7cfd5a7e4"
+  }
 }

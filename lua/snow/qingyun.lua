@@ -10,7 +10,6 @@ local filter = {}
 ---@field lookup_pinyin ReverseLookup|nil
 ---@field memory Memory
 ---@field chaifen ReverseLookup|nil
----@field connection Connection
 ---@field chaifen_cache table<string, string>
 ---@field preedit_cache table<string, string>
 
@@ -32,14 +31,6 @@ function filter.init(env)
   env.chaifen = ReverseLookup("snow_qingyun_chaifen")
   env.chaifen_cache = {}
   env.preedit_cache = {}
-  env.connection = env.engine.context.commit_notifier:connect(function(ctx)
-    local reset = env.engine.schema.config:get_int("switches/3/reset")
-    local target = reset == 1 and true or false
-    local current = ctx:get_option("character")
-    if current ~= target then
-      ctx:set_option("character", target)
-    end
-  end)
 end
 
 ---@param candidate Candidate
@@ -215,7 +206,6 @@ function filter.fini(env)
   env.chaifen = nil
   env.chaifen_cache = nil
   env.preedit_cache = nil
-  env.connection:disconnect()
   collectgarbage()
 end
 

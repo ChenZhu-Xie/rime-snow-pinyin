@@ -22,6 +22,7 @@ const output = resolve(outputArg);
 const input = JSON.parse(readFileSync(resolve(inputArg), "utf8"));
 const entry = input.schemas[schema];
 assert.ok(entry, `缺少方案：${schema}`);
+const characterMode = entry.options?.character === true;
 const codes = [...new Set<string>(entry.codes)];
 const required = new Set(codes);
 mkdirSync(join(output, "results"), { recursive: true });
@@ -55,7 +56,7 @@ oracle.selectSchema(schema);
 oracle.setOptions({
 	popping: true,
 	buffered: false,
-	character: false,
+	character: characterMode,
 	ascii_mode: false,
 	full_shape: false,
 	traditionalization: false,
@@ -63,6 +64,7 @@ oracle.setOptions({
 const startupMs = performance.now() - start;
 const fingerprint = oracle.cacheDirectory().split(/[\\/]/u).at(-1)!;
 const fingerprintPath = join(output, "fingerprint.txt");
+const optionsPath = join(output, "query-options.json");
 const observationPath = join(output, "results/observations.jsonl");
 type Result = ReturnType<RimeCandidateOracle["observeUncached"]>;
 const records = new Map<string, Result>();
@@ -70,6 +72,13 @@ let executions = 0;
 let appended = 0;
 try {
 	if (existsSync(observationPath)) {
+		assert.equal(
+			existsSync(optionsPath)
+				? JSON.parse(readFileSync(optionsPath, "utf8")).character
+				: false,
+			characterMode,
+			"查询模式变化，不能复用旧缓存",
+		);
 		assert.equal(
 			readFileSync(fingerprintPath, "utf8").trim(),
 			fingerprint,
@@ -101,6 +110,10 @@ try {
 		}
 	}
 	writeFileSync(fingerprintPath, fingerprint + "\n");
+	writeFileSync(
+		optionsPath,
+		JSON.stringify({ character: characterMode }) + "\n",
+	);
 	const cachedBefore = records.size;
 	// 同版本缓存仍抽查首尾路径，重建会话确认无跨查询状态残留。
 	for (const code of [
@@ -221,6 +234,7 @@ try {
 		revision: revision.stdout.trim(),
 		runtime: "local-dll-prefix-batch",
 		fingerprint,
+		queryOptions: { character: characterMode },
 		sources,
 		probes: [{ schema, variant: "default", codes: [...records.keys()] }],
 	};

@@ -23,7 +23,7 @@ try {
 	oracle.setOptions({
 		popping: true,
 		buffered: false,
-		character: false,
+		character: process.argv.includes("--character"),
 		ascii_mode: false,
 		traditionalization: false,
 	});

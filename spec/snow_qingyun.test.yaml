@@ -32,6 +32,12 @@ deploy:
         assert: cand[4].text == "字词 → 单字" and commit == nil
       - send: "8wye"
         assert: cand[1].text == "玥" and commit == nil
+      - send: "{space}rf,"
+        assert: cand[1].text == "昉"
+      - send: "{Shift+Tab}"
+        assert: cand[1].text == "乳房"
+      - send: "{space}wye"
+        assert: cand[1].text == "玥"
       - send: "{Escape}{Control+grave}{space}"
         assert: cand[4].text == "单字 → 字词" and commit == nil
       - send: "8wye"

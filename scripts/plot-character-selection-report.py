@@ -83,9 +83,11 @@ fig.legend(handles=[Patch(facecolor="#D7DEE7", edgecolor="#344052", label="双�
                     Patch(facecolor="white", edgecolor="#344052", linestyle="solid", label="21×21：实线边框"),
                     Patch(facecolor="white", edgecolor="#344052", linestyle="dashed", label="21×26：虚线边框")],
            loc="lower center", bbox_to_anchor=(0.54, 0.065), ncol=4, frameon=False, fontsize=11, handlelength=2.5, columnspacing=2)
-fig.text(0.09, 0.025, "样式维度仅用于双拼方案；其他方案单独着色。各图横轴从零开始，刻度一致。\n口径：优先无需选重，否则计翻页与选重；首选不计确认空格。最短性限于已枚举路径。\n十个冰雪方案为空词典引擎验证；声笔小鹤、小鹤音形（清风版）沿用原资料。", fontsize=10, color="#526174", linespacing=1.7)
+fig.text(0.09, 0.025, "样式维度仅用于双拼方案；其他方案单独着色。各图横轴从零开始，刻度一致。\n口径：优先无需选重，否则计翻页与选重；首选不计确认空格。最短性限于已枚举路径。\n清韵采用持续单字模式；十个冰雪方案为空词典引擎验证，两个外部方案沿用原资料（小鹤音形为清风版）。", fontsize=10, color="#526174", linespacing=1.7)
 for ext in ["png", "svg"]:
     target = args.report_dir / (stem + "_均键对比." + ext)
     fig.savefig(target, dpi=180, facecolor=fig.get_facecolor())
+    if ext == "svg":
+        target.write_text("\n".join(line.rstrip() for line in target.read_text(encoding="utf-8").splitlines()) + "\n", encoding="utf-8")
     print(target)
 plt.close(fig)
