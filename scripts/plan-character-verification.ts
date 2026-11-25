@@ -7,6 +7,7 @@ import { join, resolve } from "node:path";
 import { ALL_BENCHMARK_SCHEMES } from "./lib/benchmark-schemes";
 import { observedMinimum, type CharacterObservation } from "./lib/character-observed-choice";
 import { rootPath, writeOutput } from "./lib/paths";
+import { predictionSignature, recordPredictionEvidence, type RiskClass } from "./lib/character-prediction-risk";
 
 const [offlineArg, observationArg, outputArg, budgetArg = "1000"] = process.argv.slice(2);
 assert.ok(offlineArg && observationArg && outputArg, "需要离线目录、观测目录、输出目录和可选每方案编码预算");
@@ -33,16 +34,43 @@ for (const line of read(join(observations, "observations.jsonl")).trim().split("
 }
 const rows = read(join(offline, "8000字_十二方案最短首选键数.tsv")).trimEnd().split(/\r?\n/u).slice(1).map(line => line.split("\t"));
 const prefixes = (code: string) => Array.from({ length: code.length }, (_, i) => code.slice(0, i + 1));
-const table = ["方案\t字\t字频序\t预测码\t证据状态\t最短性证明\t本轮入队\t冻结频次"];
+const readings = new Map<string, string[]>();
+for (const line of read(rootPath("snow_pinyin.dict.yaml")).split(/\r?\n/u)) {
+	if (line.startsWith("#")) continue;
+	const [text, reading] = line.split("\t");
+	if (!reading) continue;
+	const values = readings.get(text) ?? [];
+	values.push(reading);
+	readings.set(text, values);
+}
+const table = ["方案\t字\t字频序\t预测码\t证据状态\t最短性证明\t本轮入队\t风险特征\t同类实测成功\t同类实测差异\t冻结频次"];
 const schemas: Record<string, { codes: string[]; targets: Record<string, { routes: string[]; previousMinimum: string; rank: number }> }> = {};
 const summaries = [];
+const riskProfiles: Record<string, Record<string, RiskClass>> = {};
 for (const [index, scheme] of meta.schemes.entries()) {
-	const schema = ALL_BENCHMARK_SCHEMES.find(s => s.id === scheme.id)?.schemaId;
+	const definition = ALL_BENCHMARK_SCHEMES.find(s => s.id === scheme.id);
+	const schema = definition?.schemaId;
 	const map = schema ? records.get(schema) ?? new Map() : new Map();
+	const fixed = new Map<string, string[]>();
+	if (definition) for (const line of read(rootPath(definition.fixedFile)).split(/\r?\n/u)) {
+		const [code, texts] = line.split("\t");
+		if (texts && !code.startsWith("#")) fixed.set(code, texts.split(" "));
+	}
+	const signature = (row: string[]) => predictionSignature({ text: row[1], code: row[4 + index * 2], readings: readings.get(row[1]) ?? [], fixed });
+	const profile = new Map<string, RiskClass>();
+	for (const row of rows) {
+		const code = row[4 + index * 2];
+		if (code === "NA" || !prefixes(code).every(prefix => map.has(prefix))) continue;
+		recordPredictionEvidence(profile, signature(row), row[1], code, observedMinimum(row[1], [code], map)?.code);
+	}
+	if (schema) riskProfiles[schema] = Object.fromEntries(profile);
+	const priority = (row: string[]) => Number((profile.get(signature(row))?.failed ?? 0) > 0);
+	const ordered = [...rows].sort((a, b) => priority(b) - priority(a) || Number(a[0]) - Number(b[0]));
+	const schemeRows: string[][] = [];
 	const codes = new Set<string>();
 	const targets: Record<string, { routes: string[]; previousMinimum: string; rank: number }> = {};
 	const counts: Record<string, number> = {};
-	for (const row of rows) {
+	for (const row of ordered) {
 		const code = row[4 + index * 2];
 		let status = "未实测：候选排序待验证";
 		let queued = false;
@@ -63,12 +91,15 @@ for (const [index, scheme] of meta.schemes.entries()) {
 			}
 		}
 		counts[status] = (counts[status] ?? 0) + 1;
-		table.push([scheme.name, row[1], row[0], code, status, "尚未证明所有更短路径已覆盖", Number(queued), row[2]].join("\t"));
+		const group = profile.get(signature(row));
+		schemeRows.push([scheme.name, row[1], row[0], code, status, "尚未证明所有更短路径已覆盖", String(Number(queued)), signature(row), String(group?.passed ?? 0), String(group?.failed ?? 0), row[2]]);
 	}
+	table.push(...schemeRows.sort((a, b) => Number(a[2]) - Number(b[2])).map(row => row.join("\t")));
 	if (schema && codes.size) schemas[schema] = { codes: [...codes].sort(), targets };
 	summaries.push({ scheme: scheme.name, counts, queuedCharacters: Object.keys(targets).length, independentInputs: codes.size, newInputs: [...codes].filter(code => !map.has(code)).length });
 }
 writeOutput(join(output, "confidence.tsv"), "\uFEFF" + table.join("\n") + "\n");
+writeOutput(join(output, "risk-profiles.json"), JSON.stringify({ productionRevision: manifest.revision, observationSha256: createHash("sha256").update(readFileSync(join(observations, "observations.jsonl"))).digest("hex"), selectionPolicy: "同方案同特征有失败样本的未验证路径优先，其次按字频；样本未经概率校准", schemas: riskProfiles }, null, 2) + "\n");
 writeOutput(join(output, "input.json"), JSON.stringify({ contract: "character-budgeted-verification-v1", productionRevision: manifest.revision, perSchemaBudget: budget, schemas }, null, 2) + "\n");
 writeOutput(join(output, "summary.json"), JSON.stringify({ revision: manifest.revision, perSchemaBudget: budget, probabilityCalibrated: false, summaries }, null, 2) + "\n");
 console.log(JSON.stringify(summaries));
