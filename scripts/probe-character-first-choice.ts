@@ -4,8 +4,10 @@ import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
 	cpSync,
+	closeSync,
 	existsSync,
 	mkdirSync,
+	openSync,
 	readFileSync,
 	readdirSync,
 	writeFileSync,
@@ -33,6 +35,7 @@ const output = resolve(
 const label = argument("--label") ?? "fork";
 const onlySchema = argument("--schema");
 const prepareOnly = process.argv.includes("--prepare-only");
+const traceEnabled = !process.argv.includes("--no-trace");
 assert.ok(
 	prepareOnly || process.env.GITHUB_ACTIONS === "true",
 	"真实候选采集仅允许 GitHub Actions，本地请用 --prepare-only",
@@ -175,7 +178,7 @@ end
 return filter
 `,
 		);
-		writeFileSync(postponePath, instrumented);
+		if (traceEnabled) writeFileSync(postponePath, instrumented);
 		if (existsSync(join(source, "opencc")))
 			cpSync(join(source, "opencc"), join(staging, "opencc"), {
 				recursive: true,
@@ -209,7 +212,7 @@ return filter
 						variant === "no-postpone" && filter === "lua_filter@*snow.postpone"
 					) && !(variant === "no-fix" && filter === "lua_filter@*snow.fix"),
 			),
-			"lua_filter@*first_choice_probe",
+			...(traceEnabled ? ["lua_filter@*first_choice_probe"] : []),
 		];
 		if (variant === "shape-only")
 			patch["engine/translators"] = ["script_translator@qingyun"];
@@ -252,13 +255,15 @@ return filter
 		if (prepareOnly) continue;
 		const temporary = join(directory, "tmp");
 		mkdirSync(temporary, { recursive: true });
+		const logPath = join(directory, "mira.log");
+		const logDescriptor = openSync(logPath, "w");
 		const result = spawnSync(
 			resolve(argument("--mira") ?? "./mira"),
 			["-C", join(directory, "cache"), specPath],
 			{
 				cwd: source,
 				encoding: "utf8",
-				maxBuffer: 32 * 1024 * 1024,
+				stdio: ["ignore", logDescriptor, logDescriptor],
 				env: {
 					...process.env,
 					TMPDIR: temporary,
@@ -267,11 +272,11 @@ return filter
 				},
 			},
 		);
-		writeFileSync(join(directory, "mira.log"), result.stdout + result.stderr);
+		closeSync(logDescriptor);
 		assert.equal(
 			result.status,
 			0,
-			`${schema}/${variant}: ${result.stdout}\n${result.stderr}`,
+			`${schema}/${variant}: ${result.error?.message ?? "采集失败"}，完整日志 ${logPath}`,
 		);
 		console.log(`${label}/${schema}/${variant}: ${codes.length} 个独立会话`);
 	}
