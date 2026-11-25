@@ -24,6 +24,18 @@ script: |
     return cand[index] ~= nil and cand[index].comment:find(text) ~= nil
   end
 deploy:
+  schema_options_menu:
+    tests:
+      - send: "{F4}"
+        assert: cand[1].text == "方案选项"
+      - send: "{space}"
+        assert: cand[4].text == "字词 → 单字" and commit == nil
+      - send: "8wye"
+        assert: cand[1].text == "玥" and commit == nil
+      - send: "{Escape}{Control+grave}{space}"
+        assert: cand[4].text == "单字 → 字词" and commit == nil
+      - send: "8wye"
+        assert: cand[1].text == "网页" and commit == nil
   cold_character_selection:
     tests:
       - send: fmjg

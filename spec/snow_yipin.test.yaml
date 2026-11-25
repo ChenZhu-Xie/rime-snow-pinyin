@@ -21,7 +21,7 @@ deploy:
   schema_menu:
     tests:
       - send: "{F4}"
-        assert: page("冰雪键道") and page("冰雪三拼") and page("冰雪兰道") and page("冰雪兰拼")
+        assert: cand[1].text == "方案选项" and page("冰雪键道") and page("冰雪三拼") and page("冰雪兰道") and page("冰雪兰拼")
       - send: "{Escape}"
         assert: cand[1] == nil
       - send: "{F4}h{Release+h}d{Release+d}"

@@ -149,6 +149,8 @@ end
 local selected_candidate = nil
 local selected_schema = nil
 local confirmed = 0
+local properties = {}
+local switch_values = {}
 local context = {
   input = "",
   select_notifier = notifier(),
@@ -157,10 +159,20 @@ local context = {
   pop_input = function(self, length) self.input = self.input:sub(1, -length - 1) return true end,
   confirm_current_selection = function() confirmed = confirmed + 1 return true end,
   get_selected_candidate = function() return selected_candidate end,
-  set_option = function() end,
+  set_option = function(_, key, value) switch_values[key] = value end,
+  get_option = function(_, key) return switch_values[key] == true end,
+  set_property = function(_, key, value) properties[key] = value end,
+  get_property = function(_, key) return properties[key] or "" end,
 }
 local config = {
+  get_list_size = function(_, path) return path == "switches" and 1 or 0 end,
+  get_list = function(_, path)
+    if path == "switches/@0/states" then
+      return { size = 2, get_value_at = function(_, index) return { value = ({"字词", "单字"})[index + 1] } end }
+    end
+  end,
   get_string = function(_, path)
+    if path == "switches/@0/name" then return "character" end
     if path == "schema_menu/prefix" then return "~~" end
     if path == "schema_menu/sentinel" then return "'" end
     if path == "schema_menu/tag" then return "schema_menu" end
@@ -214,8 +226,21 @@ assert(#yielded == 0, "无匹配时不得回落普通候选")
 
 yielded = {}
 menu.translator.func("'", segment, translator_env)
-assert(#yielded == #menu.entries, "空查询必须立即显示全部方案")
-assert(yielded[1].preedit == "", "空查询不得显示内部菜单前缀")
+assert(#yielded == #menu.entries + 1 and yielded[1].text == "方案选项", "空查询首项必须是方案选项，随后显示全部方案")
+assert(yielded[2].preedit == "", "空查询不得显示内部菜单前缀")
+selected_candidate = yielded[1]
+context.select_notifier.callbacks[1](context)
+assert(switch_values._auto_commit == false, "选项入口不能上屏")
+context.select_notifier.callbacks[2](context)
+assert(properties.snow_menu_options == "1" and context.input == "~~'", "首项进入当前方案选项")
+yielded = {}
+menu.translator.func("'", segment, translator_env)
+assert(#yielded == 1 and yielded[1].text == "字词 → 单字", "子菜单必须读取实际方案开关")
+selected_candidate = yielded[1]
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(switch_values.character and context.input == "" and properties.snow_menu_options == "", "选择单字应切换选项且不输出文字")
+
 
 selected_candidate = Candidate("schema_menu", 0, 3, "冰雪清韵", "")
 context.input = "~~'bxqy"

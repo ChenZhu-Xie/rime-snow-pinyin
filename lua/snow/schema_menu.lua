@@ -24,6 +24,8 @@ local snow = require "snow.snow"
 ---@field sentinel string
 ---@field tag string
 ---@field selected_schema_id string|nil
+---@field selected_action fun()|nil
+---@field actions table<string, fun()>
 ---@field available_schemas table<string, boolean>
 ---@field enabled_schemas table<string, boolean>
 ---@field prepare_connection Connection
@@ -212,6 +214,7 @@ function processor.func(key_event, env)
   for _, toggle_key in ipairs(env.toggle_keys) do
     if key_event:eq(toggle_key) then
       context:clear()
+      context:set_property("snow_menu_options", "")
       if not active then context:push_input(env.open_input) end
       return snow.kAccepted
     end
@@ -251,6 +254,8 @@ function translator.init(env)
   env.sentinel = config:get_string("schema_menu/sentinel") or "'"
   env.tag = config:get_string("schema_menu/tag") or "schema_menu"
   env.selected_schema_id = nil
+  env.selected_action = nil
+  env.actions = {}
   env.available_schemas = {}
   env.enabled_schemas = enabled_schemas()
   for _, entry in ipairs(menu.entries) do
@@ -263,14 +268,23 @@ function translator.init(env)
   local context = env.engine.context
   env.prepare_connection = context.select_notifier:connect(function(ctx)
     env.selected_schema_id = nil
+    env.selected_action = nil
     local candidate = ctx:get_selected_candidate()
     if not candidate then return end
     local genuine = candidate:get_genuine()
     if genuine.type ~= env.tag then return end
+    env.selected_action = env.actions[genuine.text]
     env.selected_schema_id = schema_id_for_name(genuine.text)
-    if env.selected_schema_id then ctx:set_option("_auto_commit", false) end
+    if env.selected_schema_id or env.selected_action then ctx:set_option("_auto_commit", false) end
   end, 0)
   env.select_connection = context.select_notifier:connect(function(ctx)
+    local action = env.selected_action
+    env.selected_action = nil
+    if action then
+      ctx:clear()
+      action()
+      return
+    end
     local schema_id = env.selected_schema_id
     if not schema_id then return end
     env.selected_schema_id = nil
@@ -295,6 +309,54 @@ function translator.func(input, segment, env)
   local query = input
   if is_active(query, env.prefix) then query = query:sub(#env.prefix + 1) end
   if query:sub(1, #env.sentinel) == env.sentinel then query = query:sub(#env.sentinel + 1) end
+  env.actions = {}
+  local context = env.engine.context
+  if context:get_property("snow_menu_options") == "1" then
+    local config = env.engine.schema.config
+    for index = 0, config:get_list_size("switches") - 1 do
+      local path = "switches/@" .. index
+      local states = config:get_list(path .. "/states")
+      local name = config:get_string(path .. "/name")
+      local options = config:get_list(path .. "/options")
+      if states and states.size >= 2 then
+        local current = 0
+        if name then
+          current = context:get_option(name) and 1 or 0
+        elseif options then
+          for option_index = 0, options.size - 1 do
+            local option = options:get_value_at(option_index)
+            if option and context:get_option(option.value) then current = option_index end
+          end
+        end
+        local next_index = (current + 1) % states.size
+        local before = states:get_value_at(current)
+        local after = states:get_value_at(next_index)
+        if before and after and (name or options) then
+          local text = before.value .. " → " .. after.value
+          env.actions[text] = function()
+            if name then
+              context:set_option(name, next_index == 1)
+            elseif options then
+              for option_index = 0, options.size - 1 do
+                local option = options:get_value_at(option_index)
+                if option then context:set_option(option.value, option_index == next_index) end
+              end
+            end
+            context:set_property("snow_menu_options", "")
+          end
+          yield(Candidate(env.tag, segment.start, segment._end, text, "切换当前方案选项"))
+        end
+      end
+    end
+    return
+  end
+  if query == "" then
+    env.actions["方案选项"] = function()
+      context:set_property("snow_menu_options", "1")
+      context:push_input(env.prefix .. env.sentinel)
+    end
+    yield(Candidate(env.tag, segment.start, segment._end, "方案选项", "切换字词／单字、简繁等当前方案开关"))
+  end
   for _, entry in ipairs(menu.filter_entries(query)) do
     ---@type string
     local comment
