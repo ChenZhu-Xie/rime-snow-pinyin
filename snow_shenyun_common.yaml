@@ -50,7 +50,8 @@ engine:
     - lua_filter@*snow.placeholder
     - reverse_lookup_filter@lookup_pinyin
     - lua_filter@*snow.length_balance
-    - lua_filter@*snow.simplified
+    # 暂停简体原字优先排序；保留源码，取消注释即可恢复。
+    # - lua_filter@*snow.simplified
     - lua_filter@*snow.fix
     - lua_filter@*snow.learned_priority
     - lua_filter@*snow.postpone

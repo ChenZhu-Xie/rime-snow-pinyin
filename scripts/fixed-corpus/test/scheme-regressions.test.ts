@@ -575,13 +575,14 @@ test("all released schemes run word selection before popping", () => {
 	}
 });
 
-test("default traditional source entries are postponed before conversion and deduplication", () => {
+test("simplified preference source is retained but schema loading is suspended", () => {
 	assert.match(read("lua/snow/simplified.lua"), /Opencc\("t2s\.json"\)/u);
 	assert.match(
 		read("lua/snow/simplified.lua"),
 		/table\.insert\(postponed, candidate\)/u,
 	);
 	for (const schema of [
+		"snow_pinyin.schema.yaml",
 		"snow_sanpin.schema.yaml",
 		"snow_jiandao.schema.yaml",
 		"snow_jiandao_classic.schema.yaml",
@@ -589,14 +590,17 @@ test("default traditional source entries are postponed before conversion and ded
 		"snow_shenyun_common.yaml",
 	]) {
 		const source = read(schema);
-		const filter = source.indexOf("lua_filter@*snow.simplified");
-		const simplifier = source.indexOf("    - simplifier", filter);
+		assert.doesNotMatch(source, /^\s*- lua_filter@\*snow\.simplified\s*$/mu);
+		assert.match(source, /^\s*# - lua_filter@\*snow\.simplified\s*$/mu);
+		const simplifier = source.indexOf("    - simplifier");
 		const uniquifier = source.indexOf("    - uniquifier", simplifier);
+		assert.ok(simplifier >= 0 && uniquifier > simplifier);
+		if (schema === "snow_pinyin.schema.yaml") continue;
 		const fixed = source.indexOf("lua_filter@*snow.fix");
 		const learned = source.indexOf("lua_filter@*snow.learned_priority");
 		const postpone = source.indexOf("lua_filter@*snow.postpone");
 		assert.ok(
-			filter >= 0 && fixed > filter && learned > fixed && postpone > learned,
+			fixed >= 0 && learned > fixed && postpone > learned,
 		);
 		assert.ok(simplifier > postpone && uniquifier > simplifier);
 	}
