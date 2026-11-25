@@ -420,7 +420,9 @@ for (const n of cohorts) {
 			.fill("---:")
 			.join(" | ")} |`,
 	);
-	for (const scheme of schemes) {
+	for (const scheme of [...schemes].sort(
+		(a, b) => (a.cohorts[n].mean ?? Infinity) - (b.cohorts[n].mean ?? Infinity),
+	)) {
 		const s = scheme.cohorts[n];
 		markdown.push(
 			`| ${scheme.name} | ${s.mean?.toFixed(4) ?? "待核实"} | ${cell(s.selection)} | ${lengths.map((k) => cell(s.distribution[k] ?? 0)).join(" | ")} |`,
