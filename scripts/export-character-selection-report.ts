@@ -281,8 +281,15 @@ for (const [order, file] of [
 		add(flypy, item.text, item.code, "小鹤发布码表（理想选重一键）");
 }
 for (let index = 0; index < choices.length; index++)
+	// 冰雪方案的词典码路不是候选证据；只允许实测选重兜底。
 	for (const [text, value] of alternatives[index])
-		choices[index].set(text, value);
+		if (
+			!ALL_BENCHMARK_SCHEMES.some((s) => s.id === meta.schemes[index].id) ||
+			value.source.startsWith("实测")
+		) {
+			assert.ok(!choices[index].has(text), "选重不得覆盖已有无选重路径");
+			choices[index].set(text, value);
+		}
 // 用户逐键确认的清风版次选；总键数已经包含选重的一键，不再重复加键。
 for (const [text, code] of [
 	["棋", "qim"],
@@ -310,7 +317,7 @@ const schemes = meta.schemes.map(
 					c?.code ?? "NA",
 					c?.keys ?? "NA",
 					c ? Number(c.selection) : "NA",
-					c?.source ?? "未找到词典码路",
+					c?.source ?? "候选可达性待核实（不计估算键数）",
 					row[0],
 					row[2],
 				].join("\t"),
@@ -361,7 +368,7 @@ for (const map of choices)
 const markdown = [
 	"# 十二方案单字键数（无首选时加一键选重）",
 	"",
-	"均键按字等权；选重列为字数／占当前前m字的比例。键数分布已包含选重的一键。仅无首选记录使用选重；没有比较所有字的较短选重路径。选重统一假设一次动作，不计翻页，首选不计确认空格。来源包含未实测的离线词典码路，不能据此声明全部可实际输入或全量最短。原始首选数据保留在输入目录，旧版 TSV 不覆盖。",
+	"优先无选重：只要在枚举路径中找到首选，就使用最短首选路径，即使选重路径更短；仅未找到首选时，采用已验证候选中最短的选重路径。选重统一加一键，不计翻页，首选不计确认空格。均键按字等权，选重比例以当前前m字为分母。冰雪方案无候选证据的字记为 NA，不用词典码路估算；含此类字的总体均键显示待核实，键数分布之和也相应少于 m。外部方案保留原资料来源。最短性限于已枚举路径。原始首选 TSV 保留。",
 	"",
 	`本表是实测与预测混合的修订稿，共 96000 个方案—字记录。首选实测 ${sourceCounts["空词典引擎观测"] ?? 0} 条，首页选重候选实测 ${sourceCounts["实测候选＋理想选重一键"] ?? 0} 条；其他行保留各自来源，不是全量通过验证。采集生产提交：${meta.engineRevision}。`,
 	"",
@@ -395,7 +402,7 @@ for (const n of cohorts) {
 		const s = scheme.cohorts[n];
 		if (s.unresolved.length)
 			markdown.push(
-				`${scheme.name}尚缺 ${s.unresolved.length} 字码路：${s.unresolved.join("、")}。`,
+				`${scheme.name}有 ${s.unresolved.length} 字尚无可达证据，总体均键待核实：${s.unresolved.join("、")}。`,
 				"",
 			);
 	}
