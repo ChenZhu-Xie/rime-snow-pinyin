@@ -3,23 +3,31 @@
   "selectionCost": 1,
   "validationStatus": "mixed-unverified-selection-routes",
   "sourceCounts": {
-    "离线未验证": 93020,
-    "空词典引擎观测": 1635,
-    "离线词典码路（候选可达性未实测）": 963,
-    "实测候选＋理想选重一键": 30,
-    "离线形码词典（候选可达性未实测）": 61,
+    "空词典引擎观测": 78805,
+    "离线词典码路（候选可达性未实测）": 148,
+    "实测候选＋理想选重一键": 1012,
+    "离线形码词典（候选可达性未实测）": 35,
+    "离线未验证": 15709,
     "声笔发布码表（选重可达性未实测）": 16,
     "小鹤发布码表（理想选重一键）": 273,
     "用户实敲核对：末尾分号为次选键": 2
   },
-  "parentEngineRevision": "02a775866b68f5dfd70839cc509a729b173f1a95",
-  "parentRuntime": "release-independent-prefixes",
-  "parentSha256": "d4b3fefbf35e8b075e68bf81f9e88ce0b563e55d803751a5f3c19baf797f84f8",
+  "parentEngineRevision": "5423e381777dc5fae358e773205243468c047e15",
+  "parentRuntime": "local-dll-prefix-batch",
+  "parentSha256": "ad79e46d0abc3d9521faccc6f46fa4ec8f36033e5fd2cbcd6f02cb80ed12ce4e",
   "sources": {
     "D:\\C2D\\Documents\\rime-snow-pinyin\\snow_pinyin.dict.yaml": "b1fb4d15c45aa0eb20d6f4c1b51c8cf040ca0698b42c6f3d720efd6d97718981",
     "D:\\C2D\\Documents\\rime-snow-pinyin\\snow_qingyun.dict.yaml": "3a47f2348100c4666703fe53976638d3d098d526f82d6ff15155e2a09b07535a",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-first-choice-b4b1c94\\audit-download\\character-conflict-probes\\results\\observations.jsonl": "ce3ab2b03ac6d8165fbc85b5505fee522d9728d8ff4d2a1bba4a80722eca6e37",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-first-choice-b4b1c94\\diagnostic\\fork-mira-rime1.13.1\\observations.jsonl": "8374b9342f3230ac1c4c09497abbf73448989f30f002aadeffeb7c66a39ac28c",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_sipin\\results\\observations.jsonl": "99b10e7e0f87a1b0352965940d602ba27d5625634e1379d440e2334e3c2ac6f5",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_jiandao\\results\\observations.jsonl": "611854a0abe8be49ac771a5c2a1b6b86d353ca35f8c90e6419f4835b00551dbb",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_sanpin\\results\\observations.jsonl": "199e063c444e5fab707a7dc9d46025030e2a97f4ff3caf317e18ac65e3ff60ed",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_qingyun\\results\\observations.jsonl": "aab4075b2f83b7c1010ee84de6db5a0b8b60247fe53cab89fafb109d638bc6a0",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_shenyun_shape\\results\\observations.jsonl": "39f7f27baa76c721a13ac0e79575fae8e5c46540356ad28d8fc10dcda227bef7",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_shenyun_tone\\results\\observations.jsonl": "a56a56e7de4ff13ca8aa3ace54744dfdd0f6351f4c6c408cdfea64265a10e20e",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_jiandao_toned\\results\\observations.jsonl": "63692965ae5a285c30cf72b3f7d494cda15886dbe5bd0f0280106720c7f8add9",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_zhudao\\results\\observations.jsonl": "06793dddc8c376dd04a3ff794808527bc4a6bf7d92d5219c79011b849ae90129",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_jiandao_classic\\results\\observations.jsonl": "4993af7ecb2f5ac6bc9c4dd53c53a3584496043a154ca8b61e7dd97d0fa3d330",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_sanpin_classic\\results\\observations.jsonl": "a97d954a0344067e38f5f9b6990274a84a00790b02855ff6848faa020de476d1",
     "C:\\Users\\Xcz\\AppData\\Roaming\\Rime\\sbxh.dict.yaml": "1f0b0ce7242fd420eca61d01bd0b75c1ba0394744550fa0318dad209f5a79962",
     "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-first-choice\\sbxh-extended.tsv": "6cfe4b798463d535b84e3f0c9560df697ccfced472595e1acd6e2c0d5ffcb290",
     "C:\\Program Files\\WindInput\\data_custom\\schemas\\flypy\\00_xh.wdat": "6e70e5aca89ec8deab473457f6f4ac679f916ee4ec47f253a550f88114bc9504",
@@ -37,48 +45,8 @@
       "method": "v2：生产单字拼写、英数竞争、独立清韵字根权重与普通词、固定首选、后置前原字排序；尚未完整复现 librime 排名",
       "audit": {
         "compared": 3266,
-        "matched": 2924,
+        "matched": 3025,
         "differences": [
-          {
-            "code": "baua1v",
-            "model": "抱",
-            "observed": "报"
-          },
-          {
-            "code": "boi1v",
-            "model": "播",
-            "observed": "拨"
-          },
-          {
-            "code": "bua1j",
-            "model": "布",
-            "observed": "钚"
-          },
-          {
-            "code": "bua1ji",
-            "model": "钚",
-            "observed": "鈈"
-          },
-          {
-            "code": "bua1jio",
-            "model": "鈈",
-            "observed": "鈽"
-          },
-          {
-            "code": "bua1jioi",
-            "model": "鈽",
-            "observed": "钸"
-          },
-          {
-            "code": "boe1v",
-            "model": "渤",
-            "observed": "搏"
-          },
-          {
-            "code": "boe1vo",
-            "model": "搏",
-            "observed": "扑"
-          },
           {
             "code": "boi1w",
             "model": "般",
@@ -100,21 +68,6 @@
             "observed": "不宜"
           },
           {
-            "code": "cie1v",
-            "model": "辞",
-            "observed": "磁"
-          },
-          {
-            "code": "cea1r",
-            "model": "侧",
-            "observed": "側"
-          },
-          {
-            "code": "cua1r",
-            "model": "促",
-            "observed": "傶"
-          },
-          {
             "code": "cia1v",
             "model": "措",
             "observed": "莿"
@@ -130,24 +83,9 @@
             "observed": "𫶇"
           },
           {
-            "code": "dii1v",
-            "model": "滴",
-            "observed": "提"
-          },
-          {
-            "code": "daoa1v",
-            "model": "淡",
-            "observed": "澹"
-          },
-          {
             "code": "dae1vo",
             "model": "打",
             "observed": "𬍡"
-          },
-          {
-            "code": "diu1v",
-            "model": "抵",
-            "observed": "氐"
           },
           {
             "code": "die1yo",
@@ -156,13 +94,8 @@
           },
           {
             "code": "daou1v",
-            "model": "掸",
+            "model": "抌",
             "observed": "𬘘"
-          },
-          {
-            "code": "diu1vi",
-            "model": "氐",
-            "observed": "砥"
           },
           {
             "code": "dee1vu",
@@ -215,54 +148,24 @@
             "observed": "1"
           },
           {
-            "code": "foue1v",
-            "model": "游",
-            "observed": "浟"
-          },
-          {
-            "code": "foe1r",
-            "model": "佛",
-            "observed": "俑"
-          },
-          {
-            "code": "foe1re",
-            "model": "俑",
-            "observed": "佣"
-          },
-          {
             "code": "foe1reo",
-            "model": "佣",
+            "model": "仏",
             "observed": "㶲"
           },
           {
             "code": "foe1reoe",
-            "model": "仏",
+            "model": "仸",
             "observed": "傛"
           },
           {
-            "code": "fea1f",
-            "model": "页",
-            "observed": "业"
-          },
-          {
-            "code": "fuoe1m",
-            "model": "盐",
-            "observed": "闫"
-          },
-          {
             "code": "fii1f",
-            "model": "衣",
+            "model": "医",
             "observed": "1"
           },
           {
-            "code": "foi1k",
-            "model": "哟",
-            "observed": "喲"
-          },
-          {
-            "code": "foi1ko",
-            "model": "喲",
-            "observed": "育"
+            "code": "fii1fa",
+            "model": "施",
+            "observed": "医"
           },
           {
             "code": "fie1j",
@@ -281,7 +184,7 @@
           },
           {
             "code": "fai1r",
-            "model": "伐",
+            "model": "傠",
             "observed": "佱"
           },
           {
@@ -321,28 +224,13 @@
           },
           {
             "code": "gue1v",
-            "model": "捂",
+            "model": "嵨",
             "observed": "5"
           },
           {
             "code": "gue1vo",
             "model": "抚",
             "observed": "𣲘"
-          },
-          {
-            "code": "geo1m",
-            "model": "根",
-            "observed": "格"
-          },
-          {
-            "code": "goui1v",
-            "model": "沟",
-            "observed": "拘"
-          },
-          {
-            "code": "guia1m",
-            "model": "柜",
-            "observed": "桂"
           },
           {
             "code": "gue1w",
@@ -401,32 +289,17 @@
           },
           {
             "code": "hii1c",
-            "model": "花",
+            "model": "荂",
             "observed": "芲"
           },
           {
-            "code": "hii1cau",
+            "code": "hii1ca",
             "model": "获",
-            "observed": "華"
-          },
-          {
-            "code": "hii1cauu",
-            "model": "華",
-            "observed": "蒊"
-          },
-          {
-            "code": "hei1k",
-            "model": "喝",
-            "observed": "呵"
-          },
-          {
-            "code": "hei1ko",
-            "model": "呵",
-            "observed": "嘿"
+            "observed": "荂"
           },
           {
             "code": "hoa1b",
-            "model": "货",
+            "model": "貨",
             "observed": "㸌"
           },
           {
@@ -448,11 +321,6 @@
             "code": "hia1r",
             "model": "化",
             "observed": "畵"
-          },
-          {
-            "code": "hua1v",
-            "model": "沪",
-            "observed": "护"
           },
           {
             "code": "hio1cau",
@@ -515,64 +383,19 @@
             "observed": "汇报"
           },
           {
-            "code": "jio1y",
-            "model": "进",
-            "observed": "近"
-          },
-          {
-            "code": "jie1x",
-            "model": "急",
-            "observed": "惊"
-          },
-          {
             "code": "jie1xi",
-            "model": "惊",
+            "model": "憬",
             "observed": "㴔"
           },
           {
-            "code": "jie1xioi",
+            "code": "jie1xio",
             "model": "忣",
+            "observed": "憬"
+          },
+          {
+            "code": "jie1xioi",
+            "model": "愱",
             "observed": "䴖"
-          },
-          {
-            "code": "juoa1r",
-            "model": "件",
-            "observed": "健"
-          },
-          {
-            "code": "jei1y",
-            "model": "街",
-            "observed": "蝔"
-          },
-          {
-            "code": "jiu1v",
-            "model": "挤",
-            "observed": "济"
-          },
-          {
-            "code": "jia1f",
-            "model": "记",
-            "observed": "计"
-          },
-          {
-            "code": "jia1fu",
-            "model": "计",
-            "observed": "际"
-          },
-          {
-            "code": "jii1m",
-            "model": "机",
-            "observed": "枅"
-          },
-          {
-            "code": "jea1t",
-            "model": "界",
-            "observed": "堺"
-          },
-          {
-            "code": "jea1tu",
-            "model": "堺",
-            "observed": "畍"
           },
           {
             "code": "jea1tuo",
@@ -585,19 +408,9 @@
             "observed": "㝏"
           },
           {
-            "code": "jeu1j",
-            "model": "解",
-            "observed": "觧"
-          },
-          {
             "code": "jae1v",
             "model": "屈",
             "observed": "䴗"
-          },
-          {
-            "code": "jai1v",
-            "model": "拘",
-            "observed": "掬"
           },
           {
             "code": "juoii",
@@ -611,7 +424,7 @@
           },
           {
             "code": "jai1vo",
-            "model": "掬",
+            "model": "抅",
             "observed": "𬶋"
           },
           {
@@ -690,21 +503,6 @@
             "observed": "建议"
           },
           {
-            "code": "kau1k",
-            "model": "咯",
-            "observed": "雨"
-          },
-          {
-            "code": "kea1v",
-            "model": "克",
-            "observed": "溘"
-          },
-          {
-            "code": "kaa1y",
-            "model": "遇",
-            "observed": "御"
-          },
-          {
             "code": "kaaoea",
             "model": "㊬",
             "observed": "愈"
@@ -730,13 +528,8 @@
             "observed": "宛"
           },
           {
-            "code": "liu1s",
-            "model": "理",
-            "observed": "瓼"
-          },
-          {
             "code": "liu1si",
-            "model": "瓼",
+            "model": "纚",
             "observed": "禮"
           },
           {
@@ -756,7 +549,7 @@
           },
           {
             "code": "loa1t",
-            "model": "略",
+            "model": "率",
             "observed": "䂮"
           },
           {
@@ -770,34 +563,24 @@
             "observed": "㞅"
           },
           {
-            "code": "lau1v",
-            "model": "捞",
-            "observed": "屡"
-          },
-          {
             "code": "louae",
             "model": "碌",
             "observed": "6"
           },
           {
-            "code": "lia1h",
-            "model": "利",
-            "observed": "丽"
-          },
-          {
-            "code": "lia1he",
-            "model": "丽",
-            "observed": "吏"
-          },
-          {
             "code": "lia1hee",
-            "model": "吏",
+            "model": "秝",
             "observed": "𫵷"
           },
           {
             "code": "lua1j",
-            "model": "录",
+            "model": "彔",
             "observed": "𫘧"
+          },
+          {
+            "code": "lua1ji",
+            "model": "錄",
+            "observed": "彔"
           },
           {
             "code": "lua1jia",
@@ -806,7 +589,7 @@
           },
           {
             "code": "loua1v",
-            "model": "漏",
+            "model": "溜",
             "observed": "6"
           },
           {
@@ -818,11 +601,6 @@
             "code": "lio1siee",
             "model": "理",
             "observed": "𬴊"
-          },
-          {
-            "code": "lau1vi",
-            "model": "屡",
-            "observed": "履"
           },
           {
             "code": "louaa",
@@ -910,54 +688,9 @@
             "observed": "历史"
           },
           {
-            "code": "mau1m",
-            "model": "毛",
-            "observed": "马"
-          },
-          {
-            "code": "moe1m",
-            "model": "摩",
-            "observed": "麽"
-          },
-          {
-            "code": "moa1c",
-            "model": "莫",
-            "observed": "茉"
-          },
-          {
-            "code": "moa1ca",
-            "model": "茉",
-            "observed": "蓦"
-          },
-          {
             "code": "moa1cau",
-            "model": "蓦",
-            "observed": "𬙊"
-          },
-          {
-            "code": "mia1m",
-            "model": "蜜",
-            "observed": "密"
-          },
-          {
-            "code": "mua1c",
-            "model": "墓",
-            "observed": "暮"
-          },
-          {
-            "code": "mua1ca",
-            "model": "暮",
-            "observed": "慕"
-          },
-          {
-            "code": "mua1cau",
-            "model": "慕",
-            "observed": "幕"
-          },
-          {
-            "code": "mua1cauu",
             "model": "幕",
-            "observed": "募"
+            "observed": "𬙊"
           },
           {
             "code": "maoa1ca",
@@ -980,11 +713,6 @@
             "observed": "彌"
           },
           {
-            "code": "pie1p",
-            "model": "皮",
-            "observed": "乒"
-          },
-          {
             "code": "pie1pi",
             "model": "頗",
             "observed": "炾"
@@ -993,16 +721,6 @@
             "code": "pie1pie",
             "model": "頗",
             "observed": "聠"
-          },
-          {
-            "code": "pui1v",
-            "model": "扑",
-            "observed": "潽"
-          },
-          {
-            "code": "poi1v",
-            "model": "泼",
-            "observed": "泊"
           },
           {
             "code": "pia1vo",
@@ -1015,38 +733,13 @@
             "observed": "𬳵"
           },
           {
-            "code": "qia1k",
-            "model": "器",
-            "observed": "吱"
-          },
-          {
-            "code": "qia1ko",
-            "model": "吱",
-            "observed": "呚"
-          },
-          {
-            "code": "qia1kou",
-            "model": "呚",
-            "observed": "呮"
-          },
-          {
-            "code": "qia1kouu",
-            "model": "呮",
-            "observed": "咠"
-          },
-          {
             "code": "qoa1x",
             "model": "怯",
             "observed": "𬒈"
           },
           {
-            "code": "qoa1v",
-            "model": "确",
-            "observed": "碏"
-          },
-          {
             "code": "qoa1vi",
-            "model": "碏",
+            "model": "屈",
             "observed": "𬒈"
           },
           {
@@ -1120,11 +813,6 @@
             "observed": "䚥"
           },
           {
-            "code": "raue1k",
-            "model": "嗷",
-            "observed": "鳌"
-          },
-          {
             "code": "rouu1y",
             "model": "輮",
             "observed": "𠙶"
@@ -1145,28 +833,13 @@
             "observed": "容易"
           },
           {
-            "code": "sui1v",
-            "model": "岁",
-            "observed": "碎"
-          },
-          {
-            "code": "suia1k",
-            "model": "喂",
-            "observed": "味"
-          },
-          {
-            "code": "sui1vi",
-            "model": "碎",
-            "observed": "屋"
-          },
-          {
             "code": "sia1s",
             "model": "瓦",
             "observed": "4"
           },
           {
             "code": "suu1v",
-            "model": "捂",
+            "model": "嵨",
             "observed": "5"
           },
           {
@@ -1176,8 +849,13 @@
           },
           {
             "code": "siu1s",
-            "model": "瓦",
+            "model": "瓧",
             "observed": "咓"
+          },
+          {
+            "code": "siu1si",
+            "model": "瓩",
+            "observed": "瓧"
           },
           {
             "code": "suu1w",
@@ -1275,29 +953,9 @@
             "observed": "唯一"
           },
           {
-            "code": "tue1v",
-            "model": "涂",
-            "observed": "屠"
-          },
-          {
             "code": "tue1vu",
             "model": "凸",
             "observed": "𬳿"
-          },
-          {
-            "code": "toi1k",
-            "model": "脱",
-            "observed": "咃"
-          },
-          {
-            "code": "toi1ko",
-            "model": "咃",
-            "observed": "咜"
-          },
-          {
-            "code": "taa1v",
-            "model": "挞",
-            "observed": "沓"
           },
           {
             "code": "tie1m",
@@ -1335,44 +993,14 @@
             "observed": "撣"
           },
           {
-            "code": "vui1m",
-            "model": "睡",
-            "observed": "梳"
-          },
-          {
-            "code": "vui1mu",
-            "model": "梳",
-            "observed": "枢"
+            "code": "too1m",
+            "model": "驼",
+            "observed": "駝"
           },
           {
             "code": "vauui",
             "model": "㊤",
             "observed": "搜"
-          },
-          {
-            "code": "viu1v",
-            "model": "屎",
-            "observed": "史"
-          },
-          {
-            "code": "vie1f",
-            "model": "双",
-            "observed": "识"
-          },
-          {
-            "code": "via1f",
-            "model": "试",
-            "observed": "式"
-          },
-          {
-            "code": "vea1v",
-            "model": "射",
-            "observed": "摄"
-          },
-          {
-            "code": "vio1v",
-            "model": "拴",
-            "observed": "拾"
           },
           {
             "code": "vie1m",
@@ -1430,19 +1058,9 @@
             "observed": "申报"
           },
           {
-            "code": "wau1v",
-            "model": "招",
-            "observed": "沼"
-          },
-          {
             "code": "wau1vo",
             "model": "拃",
             "observed": "𬶐"
-          },
-          {
-            "code": "wii1v",
-            "model": "抓",
-            "observed": "知"
           },
           {
             "code": "wii1vou",
@@ -1450,39 +1068,14 @@
             "observed": "𦭜"
           },
           {
-            "code": "wiu1v",
-            "model": "指",
-            "observed": "祉"
-          },
-          {
             "code": "waui1v",
             "model": "抓",
             "observed": "𬬿"
           },
           {
-            "code": "wai1m",
-            "model": "宅",
-            "observed": "寨"
-          },
-          {
-            "code": "wia1w",
-            "model": "至",
-            "observed": "郅"
-          },
-          {
-            "code": "wia1wi",
-            "model": "郅",
-            "observed": "豸"
-          },
-          {
             "code": "wia1wia",
-            "model": "豸",
+            "model": "臷",
             "observed": "𬃊"
-          },
-          {
-            "code": "wie1v",
-            "model": "直",
-            "observed": "撞"
           },
           {
             "code": "wie1vie",
@@ -1490,59 +1083,9 @@
             "observed": "職"
           },
           {
-            "code": "wie1vo",
-            "model": "撞",
-            "observed": "执"
-          },
-          {
-            "code": "wie1vou",
-            "model": "执",
-            "observed": "摭"
-          },
-          {
-            "code": "wie1vouu",
-            "model": "摭",
-            "observed": "扗"
-          },
-          {
-            "code": "wae1v",
-            "model": "涨",
-            "observed": "掌"
-          },
-          {
-            "code": "weea1f",
-            "model": "郑",
-            "observed": "证"
-          },
-          {
-            "code": "wua1c",
-            "model": "著",
-            "observed": "苎"
-          },
-          {
-            "code": "wiea1p",
-            "model": "状",
-            "observed": "壮"
-          },
-          {
-            "code": "wae1vo",
-            "model": "掌",
-            "observed": "扎"
-          },
-          {
-            "code": "wue1y",
-            "model": "逐",
-            "observed": "蠋"
-          },
-          {
             "code": "wue1yo",
-            "model": "蠋",
+            "model": "蚰",
             "observed": "築"
-          },
-          {
-            "code": "wiu1vi",
-            "model": "祉",
-            "observed": "咫"
           },
           {
             "code": "wio1s",
@@ -1580,34 +1123,9 @@
             "observed": "战略"
           },
           {
-            "code": "xou1k",
-            "model": "雪",
-            "observed": "嗅"
-          },
-          {
-            "code": "xai1k",
-            "model": "嘘",
-            "observed": "吁"
-          },
-          {
             "code": "xie1ri",
             "model": "昔",
             "observed": "婞"
-          },
-          {
-            "code": "xii1k",
-            "model": "吸",
-            "observed": "嘻"
-          },
-          {
-            "code": "xii1ko",
-            "model": "嘻",
-            "observed": "膝"
-          },
-          {
-            "code": "xiu1t",
-            "model": "喜",
-            "observed": "憙"
           },
           {
             "code": "xaa1ca",
@@ -1623,11 +1141,6 @@
             "code": "xaa1cauu",
             "model": "藇",
             "observed": "敍"
-          },
-          {
-            "code": "xae1r",
-            "model": "余",
-            "observed": "俆"
           },
           {
             "code": "xioo",
@@ -1655,19 +1168,14 @@
             "observed": "忥"
           },
           {
-            "code": "yae1c",
-            "model": "茶",
-            "observed": "茬"
-          },
-          {
-            "code": "yae1ca",
-            "model": "茬",
-            "observed": "菖"
-          },
-          {
             "code": "yae1cau",
-            "model": "菖",
+            "model": "苌",
             "observed": "𥻗"
+          },
+          {
+            "code": "yae1cauu",
+            "model": "苴",
+            "observed": "苌"
           },
           {
             "code": "yai1d",
@@ -1730,11 +1238,6 @@
             "observed": "䦈"
           },
           {
-            "code": "zea1r",
-            "model": "昃",
-            "observed": "侧"
-          },
-          {
             "code": "zoeoo",
             "model": "宗",
             "observed": "熶"
@@ -1754,103 +1257,103 @@
       "cohorts": {
         "500": {
           "count": 500,
-          "mean": 2.932,
+          "mean": 2.906,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 89,
-            "3": 291,
-            "4": 93,
+            "2": 90,
+            "3": 302,
+            "4": 81,
             "5": 4
           }
         },
         "1000": {
           "count": 1000,
-          "mean": 3.297,
+          "mean": 3.278,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 102,
-            "3": 478,
-            "4": 350,
-            "5": 46,
+            "2": 103,
+            "3": 491,
+            "4": 340,
+            "5": 42,
             "6": 1
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 3.542,
+          "mean": 3.5286666666666666,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 104,
-            "3": 560,
-            "4": 666,
-            "5": 144,
-            "6": 3
+            "2": 105,
+            "3": 574,
+            "4": 654,
+            "5": 142,
+            "6": 2
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.737,
+          "mean": 3.724,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 104,
-            "3": 609,
-            "4": 926,
-            "5": 316,
-            "6": 22
+            "2": 105,
+            "3": 623,
+            "4": 919,
+            "5": 310,
+            "6": 20
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 4.016,
+          "mean": 4.009,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 104,
-            "3": 652,
-            "4": 1351,
-            "5": 770,
-            "6": 94,
+            "2": 105,
+            "3": 668,
+            "4": 1339,
+            "5": 763,
+            "6": 96,
             "7": 5,
             "8": 1
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 4.22375,
+          "mean": 4.2205,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 104,
-            "3": 672,
-            "4": 1622,
-            "5": 1330,
-            "6": 234,
+            "2": 105,
+            "3": 688,
+            "4": 1604,
+            "5": 1327,
+            "6": 238,
             "7": 14,
             "8": 1
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 4.3932,
+          "mean": 4.3938,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 104,
-            "3": 682,
-            "4": 1828,
-            "5": 1879,
-            "6": 423,
+            "2": 105,
+            "3": 698,
+            "4": 1798,
+            "5": 1884,
+            "6": 431,
             "7": 49,
             "8": 8,
             "9": 3,
@@ -1859,42 +1362,42 @@
         },
         "6000": {
           "count": 6000,
-          "mean": 4.5275,
+          "mean": 4.550666666666666,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 104,
-            "3": 688,
-            "4": 1997,
-            "5": 2385,
-            "6": 687,
-            "7": 99,
-            "8": 12,
+            "2": 105,
+            "3": 703,
+            "4": 1916,
+            "5": 2382,
+            "6": 735,
+            "7": 116,
+            "8": 15,
             "9": 4,
             "10": 1
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.761125,
+          "mean": 4.824,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
-            "2": 104,
-            "3": 691,
-            "4": 2215,
-            "5": 3331,
-            "6": 1281,
-            "7": 275,
-            "8": 64,
-            "9": 13,
+            "2": 105,
+            "3": 704,
+            "4": 2032,
+            "5": 3234,
+            "6": 1473,
+            "7": 344,
+            "8": 65,
+            "9": 17,
             "10": 3
           }
         }
       },
-      "observedTargets": 513
+      "observedTargets": 8000
     },
     {
       "id": "oc21-shape",
@@ -2876,15 +2379,15 @@
         },
         "1500": {
           "count": 1500,
-          "mean": 3.1046666666666667,
+          "mean": 3.104,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 330,
             "3": 666,
-            "4": 435,
-            "5": 45,
+            "4": 436,
+            "5": 44,
             "6": 2
           }
         },
@@ -2896,9 +2399,9 @@
           "distribution": {
             "1": 22,
             "2": 339,
-            "3": 863,
-            "4": 670,
-            "5": 99,
+            "3": 862,
+            "4": 672,
+            "5": 98,
             "6": 7
           }
         },
@@ -2910,70 +2413,70 @@
           "distribution": {
             "1": 22,
             "2": 349,
-            "3": 1120,
-            "4": 1186,
-            "5": 303,
+            "3": 1119,
+            "4": 1188,
+            "5": 302,
             "6": 20
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.65375,
+          "mean": 3.65425,
           "selection": 6,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 353,
-            "3": 1295,
-            "4": 1697,
-            "5": 584,
-            "6": 49
+            "3": 1294,
+            "4": 1696,
+            "5": 587,
+            "6": 48
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.7964,
+          "mean": 3.7982,
           "selection": 15,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 353,
-            "3": 1429,
+            "3": 1425,
             "4": 2118,
-            "5": 973,
-            "6": 105
+            "5": 976,
+            "6": 106
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.9115,
-          "selection": 25,
+          "mean": 3.921,
+          "selection": 26,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 354,
-            "3": 1527,
-            "4": 2530,
-            "5": 1364,
-            "6": 203
+            "3": 1517,
+            "4": 2506,
+            "5": 1385,
+            "6": 216
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.09975,
-          "selection": 60,
+          "mean": 4.112125,
+          "selection": 57,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 354,
-            "3": 1666,
+            "3": 1627,
             "4": 3187,
-            "5": 2304,
-            "6": 467
+            "5": 2322,
+            "6": 488
           }
         }
       },
-      "observedTargets": 86
+      "observedTargets": 8000
     },
     {
       "id": "oc21-tone",
@@ -3204,8 +2707,8 @@
         },
         "2000": {
           "count": 2000,
-          "mean": 3.267,
-          "selection": 0,
+          "mean": 3.2675,
+          "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
@@ -3214,14 +2717,13 @@
             "4": 653,
             "5": 117,
             "6": 8,
-            "7": 1,
-            "8": 1
+            "8": 2
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.578333333333333,
-          "selection": 1,
+          "mean": 3.579,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
@@ -3230,89 +2732,91 @@
             "4": 1202,
             "5": 368,
             "6": 51,
-            "7": 5,
-            "8": 2,
-            "10": 1
+            "7": 4,
+            "8": 3,
+            "11": 1
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.813,
-          "selection": 1,
+          "mean": 3.8145,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 353,
             "3": 1065,
             "4": 1683,
-            "5": 702,
+            "5": 703,
             "6": 149,
-            "7": 16,
+            "7": 14,
             "8": 5,
             "9": 2,
-            "10": 1,
-            "12": 1
+            "11": 2,
+            "15": 1
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 4.0012,
-          "selection": 3,
+          "mean": 4.0054,
+          "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 353,
-            "3": 1109,
-            "4": 2074,
-            "5": 1084,
-            "6": 290,
-            "7": 52,
-            "8": 9,
+            "3": 1107,
+            "4": 2075,
+            "5": 1085,
+            "6": 289,
+            "7": 49,
+            "8": 10,
             "9": 4,
-            "10": 1,
-            "12": 1
+            "11": 4,
+            "15": 1
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 4.149166666666667,
-          "selection": 3,
+          "mean": 4.1531666666666665,
+          "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 354,
-            "3": 1141,
-            "4": 2409,
-            "5": 1495,
-            "6": 450,
-            "7": 106,
-            "8": 15,
+            "3": 1138,
+            "4": 2411,
+            "5": 1496,
+            "6": 448,
+            "7": 103,
+            "8": 17,
             "9": 4,
-            "10": 2,
-            "12": 1
+            "10": 1,
+            "11": 4,
+            "15": 1
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.401375,
-          "selection": 3,
+          "mean": 4.40525,
+          "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 354,
-            "3": 1175,
-            "4": 2901,
-            "5": 2327,
-            "6": 919,
-            "7": 236,
+            "3": 1173,
+            "4": 2899,
+            "5": 2329,
+            "6": 920,
+            "7": 233,
             "8": 43,
-            "9": 16,
-            "10": 5,
-            "12": 1
+            "9": 15,
+            "10": 4,
+            "11": 6,
+            "15": 1
           }
         }
       },
-      "observedTargets": 114
+      "observedTargets": 8000
     },
     {
       "id": "qingyun",
@@ -3479,105 +2983,105 @@
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 339,
-            "3": 433,
+            "2": 337,
+            "3": 436,
             "4": 198,
-            "5": 2
+            "5": 1
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 2.9486666666666665,
-          "selection": 2,
+          "mean": 2.949333333333333,
+          "selection": 3,
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 415,
-            "3": 665,
-            "4": 390,
+            "2": 413,
+            "3": 668,
+            "4": 389,
             "5": 2
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.063,
-          "selection": 7,
+          "mean": 3.067,
+          "selection": 8,
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 468,
-            "3": 856,
-            "4": 646,
-            "5": 2
+            "2": 466,
+            "3": 854,
+            "4": 648,
+            "5": 4
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.2453333333333334,
-          "selection": 32,
+          "mean": 3.2623333333333333,
+          "selection": 37,
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 528,
-            "3": 1126,
-            "4": 1316,
-            "5": 2
+            "2": 525,
+            "3": 1101,
+            "4": 1324,
+            "5": 22
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.36825,
-          "selection": 78,
+          "mean": 3.39925,
+          "selection": 89,
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 560,
-            "3": 1325,
-            "4": 2085,
-            "5": 2
+            "2": 557,
+            "3": 1258,
+            "4": 2104,
+            "5": 53
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.457,
-          "selection": 162,
+          "mean": 3.5096,
+          "selection": 184,
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 563,
-            "3": 1507,
-            "4": 2900,
-            "5": 2
+            "2": 560,
+            "3": 1365,
+            "4": 2930,
+            "5": 117
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.5108333333333333,
-          "selection": 310,
+          "mean": 3.5981666666666667,
+          "selection": 367,
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 565,
-            "3": 1723,
-            "4": 3682,
-            "5": 2
+            "2": 561,
+            "3": 1458,
+            "4": 3700,
+            "5": 253
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 3.5585,
-          "selection": 847,
+          "mean": 3.743,
+          "selection": 1000,
           "unresolved": [],
           "distribution": {
             "1": 28,
-            "2": 566,
-            "3": 2319,
-            "4": 5084,
-            "5": 3
+            "2": 562,
+            "3": 1607,
+            "4": 5044,
+            "5": 759
           }
         }
       },
-      "observedTargets": 19
+      "observedTargets": 8000
     },
     {
       "id": "rc26-shape",
@@ -3779,116 +3283,116 @@
         },
         "1000": {
           "count": 1000,
-          "mean": 2.783,
+          "mean": 2.784,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 329,
-            "3": 497,
-            "4": 144,
+            "3": 496,
+            "4": 145,
             "5": 7
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 2.9926666666666666,
+          "mean": 2.993333333333333,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 736,
-            "4": 337,
+            "3": 735,
+            "4": 338,
             "5": 34
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.1545,
+          "mean": 3.155,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 383,
-            "3": 938,
-            "4": 577,
+            "3": 937,
+            "4": 578,
             "5": 76,
             "6": 3
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.4053333333333335,
+          "mean": 3.4066666666666667,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 393,
-            "3": 1207,
-            "4": 1111,
-            "5": 254,
+            "3": 1206,
+            "4": 1109,
+            "5": 257,
             "6": 12
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.5805,
+          "mean": 3.5815,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1382,
-            "4": 1662,
-            "5": 493,
-            "6": 40
+            "3": 1381,
+            "4": 1659,
+            "5": 498,
+            "6": 39
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.7214,
+          "mean": 3.723,
           "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1515,
-            "4": 2156,
-            "5": 821,
-            "6": 85
+            "3": 1511,
+            "4": 2157,
+            "5": 823,
+            "6": 86
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.8348333333333335,
-          "selection": 8,
+          "mean": 3.8415,
+          "selection": 9,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1617,
-            "4": 2622,
-            "5": 1181,
-            "6": 157
+            "3": 1609,
+            "4": 2605,
+            "5": 1199,
+            "6": 164
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.020375,
-          "selection": 26,
+          "mean": 4.02675,
+          "selection": 22,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1741,
-            "4": 3436,
-            "5": 2027,
-            "6": 373
+            "3": 1718,
+            "4": 3439,
+            "5": 2039,
+            "6": 381
           }
         }
       },
-      "observedTargets": 97
+      "observedTargets": 8000
     },
     {
       "id": "rc26-tone",
@@ -5028,156 +4532,151 @@
       "cohorts": {
         "500": {
           "count": 500,
-          "mean": 2.466,
+          "mean": 2.468,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 242,
-            "3": 214,
-            "4": 21
+            "3": 213,
+            "4": 22
           }
         },
         "1000": {
           "count": 1000,
-          "mean": 2.782,
+          "mean": 2.785,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 329,
-            "3": 503,
-            "4": 136,
+            "3": 499,
+            "4": 140,
             "5": 8,
-            "8": 1
+            "7": 1
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 3.02,
+          "mean": 3.030666666666667,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 711,
-            "4": 351,
-            "5": 42,
-            "6": 2,
-            "8": 1
+            "3": 699,
+            "4": 359,
+            "5": 45,
+            "6": 3,
+            "7": 1
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.228,
+          "mean": 3.24,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 383,
-            "3": 845,
-            "4": 626,
-            "5": 113,
-            "6": 8,
-            "7": 1,
-            "8": 1
+            "3": 828,
+            "4": 636,
+            "5": 119,
+            "6": 9,
+            "7": 2
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.538,
+          "mean": 3.553,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 393,
-            "3": 1009,
-            "4": 1164,
-            "5": 357,
-            "6": 46,
+            "3": 985,
+            "4": 1168,
+            "5": 374,
+            "6": 50,
             "7": 5,
-            "8": 2,
+            "8": 1,
             "10": 1
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.77125,
+          "mean": 3.7865,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1089,
+            "3": 1058,
             "4": 1647,
-            "5": 677,
-            "6": 142,
-            "7": 14,
-            "8": 4,
-            "9": 2,
-            "10": 1,
-            "12": 1
+            "5": 704,
+            "6": 146,
+            "7": 16,
+            "8": 3,
+            "9": 1,
+            "10": 2
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.958,
-          "selection": 3,
+          "mean": 3.9756,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1146,
-            "4": 2049,
-            "5": 1047,
-            "6": 271,
+            "3": 1105,
+            "4": 2044,
+            "5": 1085,
+            "6": 281,
             "7": 50,
-            "8": 8,
-            "9": 4,
-            "10": 1,
-            "12": 1
+            "8": 7,
+            "9": 3,
+            "10": 2
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 4.104166666666667,
-          "selection": 3,
+          "mean": 4.120666666666667,
+          "selection": 2,
+          "unresolved": [],
+          "distribution": {
+            "1": 23,
+            "2": 400,
+            "3": 1150,
+            "4": 2388,
+            "5": 1483,
+            "6": 436,
+            "7": 102,
+            "8": 11,
+            "9": 4,
+            "10": 3
+          }
+        },
+        "8000": {
+          "count": 8000,
+          "mean": 4.3705,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
             "3": 1193,
-            "4": 2393,
-            "5": 1449,
-            "6": 420,
-            "7": 102,
-            "8": 13,
-            "9": 4,
-            "10": 2,
-            "12": 1
-          }
-        },
-        "8000": {
-          "count": 8000,
-          "mean": 4.35725,
-          "selection": 3,
-          "unresolved": [],
-          "distribution": {
-            "1": 23,
-            "2": 400,
-            "3": 1236,
-            "4": 2915,
-            "5": 2265,
-            "6": 873,
-            "7": 228,
-            "8": 39,
-            "9": 16,
-            "10": 4,
-            "12": 1
+            "4": 2913,
+            "5": 2287,
+            "6": 893,
+            "7": 236,
+            "8": 36,
+            "9": 13,
+            "10": 6
           }
         }
       },
-      "observedTargets": 229
+      "observedTargets": 8000
     },
     {
       "id": "liandao",
@@ -6676,29 +6175,29 @@
         },
         "2000": {
           "count": 2000,
-          "mean": 3.1775,
+          "mean": 3.178,
           "selection": 3,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 404,
-            "3": 840,
-            "4": 662,
+            "3": 839,
+            "4": 663,
             "5": 70,
             "6": 1
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.3953333333333333,
+          "mean": 3.3943333333333334,
           "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 418,
-            "3": 1149,
-            "4": 1185,
-            "5": 210,
+            "3": 1151,
+            "4": 1184,
+            "5": 209,
             "6": 15
           }
         },
@@ -6710,56 +6209,56 @@
           "distribution": {
             "1": 23,
             "2": 424,
-            "3": 1349,
-            "4": 1739,
-            "5": 430,
-            "6": 35
+            "3": 1350,
+            "4": 1738,
+            "5": 429,
+            "6": 36
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.6956,
+          "mean": 3.695,
           "selection": 12,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 428,
             "3": 1514,
-            "4": 2190,
-            "5": 773,
-            "6": 72
+            "4": 2194,
+            "5": 768,
+            "6": 73
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.8041666666666667,
+          "mean": 3.8095,
           "selection": 17,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 430,
-            "3": 1637,
-            "4": 2644,
-            "5": 1141,
-            "6": 125
+            "3": 1636,
+            "4": 2626,
+            "5": 1148,
+            "6": 137
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 3.98375,
-          "selection": 40,
+          "mean": 3.990875,
+          "selection": 37,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 431,
-            "3": 1803,
-            "4": 3441,
-            "5": 2000,
-            "6": 302
+            "3": 1785,
+            "4": 3434,
+            "5": 2011,
+            "6": 316
           }
         }
       },
-      "observedTargets": 186
+      "observedTargets": 8000
     },
     {
       "id": "zhudao",
@@ -6939,102 +6438,102 @@
         },
         "1500": {
           "count": 1500,
-          "mean": 2.83,
+          "mean": 2.828666666666667,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 455,
-            "3": 785,
-            "4": 228,
+            "3": 787,
+            "4": 226,
             "5": 9
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 2.9785,
+          "mean": 2.977,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 480,
-            "3": 1041,
-            "4": 429,
+            "3": 1044,
+            "4": 426,
             "5": 27
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.2253333333333334,
+          "mean": 3.2236666666666665,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 498,
-            "3": 1396,
-            "4": 952,
-            "5": 125,
+            "3": 1400,
+            "4": 949,
+            "5": 124,
             "6": 6
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.40375,
+          "mean": 3.4025,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 507,
-            "3": 1640,
-            "4": 1511,
-            "5": 300,
-            "6": 19
+            "3": 1643,
+            "4": 1508,
+            "5": 302,
+            "6": 17
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.5526,
+          "mean": 3.5508,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 513,
-            "3": 1800,
-            "4": 2050,
-            "5": 570,
-            "6": 44
+            "3": 1805,
+            "4": 2046,
+            "5": 572,
+            "6": 41
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.666333333333333,
-          "selection": 2,
+          "mean": 3.6685,
+          "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 514,
-            "3": 1942,
-            "4": 2568,
-            "5": 869,
-            "6": 84
+            "3": 1947,
+            "4": 2547,
+            "5": 883,
+            "6": 86
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 3.846625,
+          "mean": 3.84725,
           "selection": 14,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 514,
-            "3": 2142,
-            "4": 3510,
+            "3": 2137,
+            "4": 3515,
             "5": 1610,
             "6": 201
           }
         }
       },
-      "observedTargets": 67
+      "observedTargets": 8000
     },
     {
       "id": "classic-shape",
@@ -8374,129 +7873,129 @@
       "cohorts": {
         "500": {
           "count": 500,
-          "mean": 2.68,
+          "mean": 2.682,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 233,
-            "3": 128,
-            "4": 113,
+            "3": 127,
+            "4": 114,
             "5": 3
           }
         },
         "1000": {
           "count": 1000,
-          "mean": 2.936,
+          "mean": 2.938,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 306,
-            "3": 391,
-            "4": 272,
+            "3": 389,
+            "4": 274,
             "5": 8
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 3.1073333333333335,
+          "mean": 3.11,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 340,
-            "3": 621,
-            "4": 485,
+            "3": 617,
+            "4": 489,
             "5": 31
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.236,
+          "mean": 3.2385,
           "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 355,
-            "3": 828,
-            "4": 718,
+            "3": 823,
+            "4": 723,
             "5": 73,
             "6": 3
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.464,
+          "mean": 3.466666666666667,
           "selection": 3,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 362,
-            "3": 1111,
-            "4": 1221,
-            "5": 270,
-            "6": 13
+            "3": 1102,
+            "4": 1230,
+            "5": 271,
+            "6": 12
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.63375,
+          "mean": 3.6375,
           "selection": 6,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1289,
-            "4": 1727,
-            "5": 549,
-            "6": 42
+            "3": 1275,
+            "4": 1739,
+            "5": 552,
+            "6": 41
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.7758,
+          "mean": 3.7804,
           "selection": 15,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1428,
-            "4": 2160,
-            "5": 922,
-            "6": 97
+            "3": 1413,
+            "4": 2169,
+            "5": 926,
+            "6": 99
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.8935,
+          "mean": 3.9045,
           "selection": 25,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1536,
-            "4": 2559,
-            "5": 1318,
-            "6": 194
+            "3": 1513,
+            "4": 2554,
+            "5": 1331,
+            "6": 209
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.08225,
-          "selection": 58,
+          "mean": 4.097125,
+          "selection": 55,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1674,
-            "4": 3252,
-            "5": 2221,
-            "6": 460
+            "3": 1619,
+            "4": 3268,
+            "5": 2235,
+            "6": 485
           }
         }
       },
-      "observedTargets": 151
+      "observedTargets": 8000
     },
     {
       "id": "classic-tone",
@@ -8893,7 +8392,7 @@
         },
         "1500": {
           "count": 1500,
-          "mean": 3.0526666666666666,
+          "mean": 3.052,
           "selection": 0,
           "unresolved": [],
           "distribution": {
@@ -8902,122 +8401,123 @@
             "3": 719,
             "4": 368,
             "5": 44,
-            "6": 1,
-            "7": 1,
+            "6": 2,
             "8": 1
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.2545,
-          "selection": 0,
+          "mean": 3.255,
+          "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 355,
-            "3": 855,
-            "4": 640,
+            "3": 854,
+            "4": 641,
             "5": 116,
-            "6": 7,
-            "7": 3,
-            "8": 1
+            "6": 8,
+            "7": 1,
+            "8": 2
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.56,
-          "selection": 1,
+          "mean": 3.5606666666666666,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 363,
-            "3": 1015,
-            "4": 1182,
-            "5": 359,
-            "6": 48,
-            "7": 7,
-            "8": 2,
-            "10": 1
+            "3": 1013,
+            "4": 1185,
+            "5": 358,
+            "6": 49,
+            "7": 5,
+            "8": 3,
+            "11": 1
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.795,
-          "selection": 1,
+          "mean": 3.79725,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1084,
-            "4": 1660,
-            "5": 693,
-            "6": 146,
-            "7": 16,
+            "3": 1080,
+            "4": 1666,
+            "5": 691,
+            "6": 147,
+            "7": 14,
             "8": 4,
             "9": 2,
-            "10": 1,
-            "12": 1
+            "11": 2,
+            "15": 1
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.9818,
-          "selection": 3,
+          "mean": 3.987,
+          "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1139,
-            "4": 2053,
-            "5": 1066,
-            "6": 281,
-            "7": 53,
-            "8": 9,
+            "3": 1131,
+            "4": 2061,
+            "5": 1065,
+            "6": 282,
+            "7": 49,
+            "8": 10,
             "9": 4,
-            "10": 1,
-            "12": 1
+            "11": 4,
+            "15": 1
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 4.1305,
-          "selection": 3,
+          "mean": 4.134666666666667,
+          "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1177,
-            "4": 2389,
-            "5": 1473,
-            "6": 441,
-            "7": 106,
-            "8": 14,
+            "3": 1169,
+            "4": 2397,
+            "5": 1472,
+            "6": 443,
+            "7": 101,
+            "8": 15,
             "9": 4,
-            "10": 2,
-            "12": 1
+            "10": 1,
+            "11": 4,
+            "15": 1
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.383375,
-          "selection": 3,
+          "mean": 4.38675,
+          "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1216,
-            "4": 2893,
-            "5": 2295,
-            "6": 902,
-            "7": 239,
-            "8": 41,
-            "9": 16,
+            "3": 1207,
+            "4": 2904,
+            "5": 2291,
+            "6": 906,
+            "7": 234,
+            "8": 40,
+            "9": 15,
             "10": 4,
-            "12": 1
+            "11": 5,
+            "15": 1
           }
         }
       },
-      "observedTargets": 176
+      "observedTargets": 8000
     },
     {
       "id": "sbxh",

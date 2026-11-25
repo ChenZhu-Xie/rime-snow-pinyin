@@ -20,13 +20,30 @@
 
 ## 当前重算结果
 
-本轮基于生产提交 `02a775866b68f5dfd70839cc509a729b173f1a95`，十二方案各 8000 字共 96000 条记录已重算。各前 500、1000、1500、2000、3000、4000、5000、6000、8000 字分别横评，均键按字等权，选重按用户约定增加一键。已核对全部 108 个方案与字频范围组合的字数、键数分布、均键和选重数，十二份逐字 TXT 与合并 TSV 逐行一致，均按字频排序且末列为冻结频次。当前横评见 [含选重键数报告](../reports/8000字_十二方案含选重键数.md)，首选口径仍保留 [首选键数报告与 TSV](../reports/8000字_十二方案最短首选键数.md)。
+本轮基于生产提交 `5423e381777dc5fae358e773205243468c047e15`，十个冰雪方案各 8000 字已完成本地空词典 DLL 逐键采集，共保存 158344 条前缀观测。78,805 条「方案×字」在枚举路径中获得首选，1,012 条获得首页选重候选证据，183 条仍只有离线词典码路，尚未证明候选可达。后者分布为兰道 17、清韵 130、莲道 18、键道 18。声笔小鹤和小鹤音形继续沿用原有资料，本轮未修改其安装或码表。
 
-[冲突字采集](https://github.com/ChenZhu-Xie/rime-snow-pinyin/actions/runs/45498825535) 和 [生产方案重点探查](https://github.com/ChenZhu-Xie/rime-snow-pinyin/actions/runs/45498834766) 均成功。线上使用空用户词典和独立会话，复核十个冰雪方案的 1638 个「方案×字」条目及重点用例。其中 1635 条在枚举码路内获得首选，冰雪兰道、冰雪莲道、冰雪键道的「釐」采用选重兜底。声笔小鹤和小鹤音形复用既有候选与发布码表资料。
+各前 500、1000、1500、2000、3000、4000、5000、6000、8000 字分别横评，均键按字等权，选重按约定增加一键。已核对全部 108 个方案与字频范围组合的字数、键数分布、均键和选重数，十二份逐字 TXT 与合并 TSV 逐行一致，末列均为冻结频次。当前横评见 [含选重键数报告](../reports/8000字_十二方案含选重键数.md)，首选口径保留 [首选键数报告与 TSV](../reports/8000字_十二方案最短首选键数.md)。这些结果只证明枚举路径内的最短首选；选重优先使用实测首页候选，未证明所有字的全局最短输入方式。
 
-新离线预测与本轮 1638 条实测对比，有 438 条首选编码不同，其中 278 条键数不同。这些比例只描述冲突字样本。报告已用观测结果修订这些字，尚未实测的行继续标为离线来源。最终含选重稿包含 1635 条首选观测、30 条首页选重候选观测，其余行保留来源标记。离线模型仍有排序、码路覆盖差异，当前稿属于实测与预测混合结果，后续全量引擎验证仍有待完成。
+同字集 8 万条离线预测与 DLL 结果比较，4,378 条首选编码或可达状态不同，其中 2,620 条键数或可达状态不同；键数与可达状态一致率为 96.725%，不能把它解释为全部编码准确率。正式报告用引擎结果替换这十方案的离线排序预测，来源列继续区分观测和未验证资料。冻结字集先筛 `common=1`、按频次降序后取 8000；采集、汇总和导出均核对字集，避免直接截取原表前 8000 行导致分母相同而目标不同。
 
-本轮输出目录为 `output/character-first-choice-b4b1c94/`，包含新鲜离线稿 `offline/`、实测修订稿 `observed/`、含选重稿 `final/`、原报告副本 `previous-reports/`，以及 438 条逐字差异清单 `offline-ci-differences.tsv`。原始历史 TSV 保留在既有输出目录和 Git 历史中，当前生产报告更新为本轮结果。
+两进程主采集轮耗时 536.58 秒，合计工作集采样峰值 2.56 GiB，系统最低可用内存 12.68 GiB；该轮复用了早期试跑缓存，不是全冷启动。字集补测另耗时 25.92 秒；完整缓存复算耗时 24.45 秒，新增查询为零（仍独立复查各方案首尾缓存样本），峰值 2.02 GiB、最低可用内存 12.88 GiB。因此采用「离线枚举路径＋常驻 DLL 决定候选＋指纹缓存」；不宣称首次全量采集比纯离线更快，也未使用 GPU。资源上限为采样监测阈值，并非操作系统硬限额。
+
+本轮目录为 `output/character-full-local/`：`run/` 保存逐方案观测与审计，`combined/` 保存合并审计，`observed/` 保存首选修订稿，`final/` 保存含选重稿，`previous-reports/` 保存原报告副本；逐字差异在 `offline-dll-differences.tsv`。原始历史 TSV 保留在既有输出目录和 Git 历史中。
+
+复算入口（PowerShell，须预先设置可用 DLL／共享数据，编译缓存由实验入口预热；字集或规则变化须重新核对来源）：
+
+```powershell
+bun scripts/prepare-character-conflict-probes.ts output/character-full-local/input.json --all-characters
+$schemas = @('snow_sipin','snow_jiandao','snow_sanpin','snow_qingyun','snow_shenyun_shape','snow_shenyun_tone','snow_jiandao_toned','snow_zhudao','snow_jiandao_classic','snow_sanpin_classic')
+& ./scripts/experiments/benchmark-character-oracle.ps1 -Mode collect -Parallelism 2 -Schemas $schemas -InputPath output/character-full-local/input.json -OutputBase output/character-full-local/run
+foreach ($schema in $schemas) { bun scripts/audit-character-conflict-probes.ts "output/character-full-local/run/$schema"; if ($LASTEXITCODE) { throw 'Audit failed' } }
+bun scripts/merge-character-oracle.ts output/character-full-local
+bun scripts/export-character-observed-corrections.ts output/character-full-local/combined/audit.json output/character-first-choice-current output/character-full-local/observed --current-baseline
+$observations = $schemas | ForEach-Object { "output/character-full-local/run/$_/results/observations.jsonl" }
+bun scripts/export-character-selection-report.ts output/character-full-local/observed output/character-full-local/final @observations
+```
+
+采集按物理键数从短到长查询；某字已找到首选后可跳过更长路径，但导出前必须证明没有遗漏更短的枚举前缀。每个输入保留逐键候选读取与字内后置，字间清空输入并关闭学习。同指纹的完整观测可断点续跑，恢复时只截断未写完的末行；重复前缀不一致即失败。生产来源或引擎指纹变化须使用新目录，不能悄悄混用旧缓存。
 
 
 统计单位是独立单字输入：每个字从空输入和空白用户词典开始，字内仍按生产规则逐键后置。前一个字的上屏、学习或后置历史不会影响后一个字。纳入系统简码、固顶、英数竞争和直出键，不计确认空格、翻页与选重。前 500、1000、1500、2000、3000、4000、5000、6000、8000 字各自一张十二方案横评表；前 m 字只改变分母，不缩小竞争池。
@@ -54,7 +71,7 @@ bun scripts/generate-character-first-choice.ts --max-memory-mib 1024
 
 1024 MiB 是单进程采样检查阈值：超过时尝试完整回收，回收后仍超过即停止。它不是操作系统硬限额，瞬时峰值及父进程内存另计。失败时不生成新的总报告；输入文件摘要不一致也会中止，以防另一个会话改动源码后混入不同时刻的数据。
 
-本地只运行静态、生成与语料检查。真实候选回归使用 GitHub Actions 的「单字首选修订回归」，八方案在一个作业内串行测试并记录资源使用；「单字首选隔离诊断」保存逐键候选证据。Mira 下载资产必须核对实际 SHA-256，不把不同文件名当成独立内核版本。
+本地可按用户授权运行独立 DLL benchmark；Mira 真实候选回归仍只在 GitHub Actions 运行。「单字首选隔离诊断」保存逐键候选证据。Mira 下载资产必须核对实际 SHA-256，不把不同文件名当成独立内核版本。
 
 ## 尚未解决的边界
 

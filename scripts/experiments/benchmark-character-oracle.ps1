@@ -1,7 +1,13 @@
-param([int]$Parallelism=1,[string]$Mode='compare',[string[]]$Schemas=@('snow_sipin','snow_sanpin','snow_shenyun_tone','snow_qingyun'))
+param(
+  [ValidateRange(1,4)][int]$Parallelism=1,
+  [ValidateSet('compare','batch','collect')][string]$Mode='compare',
+  [string[]]$Schemas=@('snow_sipin','snow_sanpin','snow_shenyun_tone','snow_qingyun'),
+  [string]$InputPath='scripts/data/character-budgeted-probes.json',
+  [string]$OutputBase=''
+)
 $ErrorActionPreference='Stop'
 $root=(Get-Location).Path
-$base=Join-Path $root "output/oracle-comparison/p$Parallelism-$Mode"
+$base=if($OutputBase){[IO.Path]::GetFullPath($OutputBase)}else{Join-Path $root "output/oracle-comparison/p$Parallelism-$Mode"}
 [IO.Directory]::CreateDirectory($base) | Out-Null
 $pending=[Collections.Generic.Queue[string]]::new()
 foreach($schema in $Schemas){$pending.Enqueue($schema)}
@@ -28,7 +34,8 @@ try {
       $schema=$pending.Dequeue()
       $destination=Join-Path $base $schema
       [IO.Directory]::CreateDirectory($destination) | Out-Null
-      $arguments=@('scripts/experiments/benchmark-character-oracle.ts',$schema,'scripts/data/character-budgeted-probes.json','output/character-budgeted-round1/results/observations.jsonl',$destination,(Join-Path $root 'output/oracle-comparison/compiled'),$Mode)
+      $script=if($Mode -eq 'collect'){'scripts/collect-character-oracle.ts'}else{'scripts/experiments/benchmark-character-oracle.ts'}
+      $arguments=@($script,$schema,$InputPath,'output/character-budgeted-round1/results/observations.jsonl',$destination,(Join-Path $root 'output/oracle-comparison/compiled'),$Mode)
       $quoted=($arguments|ForEach-Object {'"'+$_+'"'}) -join ' '
       $process=Start-Process bun -ArgumentList $quoted -WorkingDirectory $root -WindowStyle Hidden -RedirectStandardOutput (Join-Path $destination 'stdout.log') -RedirectStandardError (Join-Path $destination 'stderr.log') -PassThru
       $active.Add(@{Process=$process;Schema=$schema})

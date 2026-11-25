@@ -101,6 +101,12 @@ const schemes = previous.schemes.map(
 			),
 		);
 		const choices = new Map<string, FirstChoice>();
+		// 全量批次必须与报告使用同一字集，不能以同为 8000 行冒充覆盖。
+		if (corrections.size === characters.length)
+			assert.ok(
+				characters.every(({ text }) => corrections.has(text)),
+				`全量采集字集不符：${scheme.name}`,
+			);
 		const textLines = [
 			"# 真实引擎修订与未验证离线数据混合；来源列逐字区分。NA仅表示已枚举路由未获首选。",
 			"字\t最短首选编码\t键数\t来源\t字频序\t冻结频次",
@@ -156,7 +162,7 @@ writeOutput(
 	JSON.stringify(
 		{
 			contract: "character-first-choice-hybrid-v3",
-			validationStatus: "observed-conflicts-only",
+			validationStatus: "observed-enumerated-routes-with-external-baselines",
 			engineRevision: audit.revision,
 			baselineSha256: createHash("sha256")
 				.update(readFileSync(join(old, `${basename}.tsv`)))
@@ -173,9 +179,9 @@ writeOutput(
 	) + "\n",
 );
 const markdown = [
-	"# 十二方案单字最短首选：冲突字真实引擎修订",
+	"# 十二方案单字最短首选：真实引擎修订",
 	"",
-	"冲突字依据空白用户词典逐键引擎观测，其他字仍为离线预测。最短仅限已枚举路径；未找到首选不能据此断言实际无法首选。旧版 TSV 保留。各方案 TXT 的来源列区分实测与预测，字频位于末列。",
+	`各方案观测目标数：${schemes.map((s: any) => `${s.name} ${s.observedTargets}/8000`).join("，")}。已观测字依据空白用户词典逐键引擎记录，其他字保留离线来源。最短仅限已枚举路径；未找到首选不能据此断言实际无法首选。旧版 TSV 保留。各方案 TXT 的来源列区分实测与预测，字频位于末列。`,
 	"",
 ];
 for (const n of cohorts) {

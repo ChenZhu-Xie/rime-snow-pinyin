@@ -185,22 +185,42 @@ for (const file of process.argv.slice(4)) {
 		meta.sources,
 		"选重候选与首选报告的生产来源不一致",
 	);
-	sources[probes] = createHash("sha256")
-		.update(readFileSync(probes))
-		.digest("hex");
-	for (const line of readFileSync(probes, "utf8").trim().split("\n")) {
+	const digest = createHash("sha256");
+	const stream = createReadStream(probes);
+	stream.on("data", (chunk) => digest.update(chunk));
+	const reader = createInterface({ input: stream, crlfDelay: Infinity });
+	for await (const line of reader) {
+		if (!line) continue;
 		const row = JSON.parse(line);
+		const schemeIndex = meta.schemes.findIndex(
+			(scheme: { id: string }) =>
+				ALL_BENCHMARK_SCHEMES.find((s) => s.id === scheme.id)?.schemaId ===
+				row.schema,
+		);
+		// 上屏前缀必须保留；其他记录只需保存仍缺首选的目标候选。
+		if (
+			!row.commit &&
+			(schemeIndex < 0 ||
+				!row.candidates.some((candidate: { text: string }) =>
+					missing[schemeIndex].has(candidate.text),
+				))
+		)
+			continue;
 		const map = observations.get(row.schema) ?? new Map();
 		const existing = map.get(row.code);
 		if (existing)
 			assert.deepEqual(
-				[existing.commit, existing.candidates.map((c) => c.text)],
+				[
+					existing.commit,
+					existing.candidates.map((c: { text: string }) => c.text),
+				],
 				[row.commit, row.candidates.map((c: { text: string }) => c.text)],
 				"同批重复观测不一致：" + row.schema + "/" + row.code,
 			);
 		map.set(row.code, row);
 		observations.set(row.schema, map);
 	}
+	sources[probes] = digest.digest("hex");
 }
 for (let index = 0; index < meta.schemes.length; index++) {
 	const schema = ALL_BENCHMARK_SCHEMES.find(

@@ -8,6 +8,17 @@ import {
 	directOutputCodes,
 } from "./lib/benchmark-schemes";
 import { rootPath, writeOutput } from "./lib/paths";
+import { benchmarkCharacters } from "./lib/benchmark-characters";
+
+const allCharacters = process.argv.includes("--all-characters");
+const schemaIndex = process.argv.indexOf("--schema");
+const onlySchema = schemaIndex < 0 ? undefined : process.argv[schemaIndex + 1];
+const characters = benchmarkCharacters(
+	readFileSync(
+		rootPath("scripts/data/benchmark-character-frequency.tsv"),
+		"utf8",
+	),
+).map(({ text }) => text);
 
 const readings = readFileSync(rootPath("snow_pinyin.dict.yaml"), "utf8")
 	.split(/\r?\n/u)
@@ -28,6 +39,7 @@ const schemas: Record<
 	}
 > = {};
 for (const scheme of ALL_BENCHMARK_SCHEMES) {
+	if (onlySchema && scheme.schemaId !== onlySchema) continue;
 	const entry =
 		conflicts.schemas[scheme.schemaId as keyof typeof conflicts.schemas];
 	const targets = new Map(
@@ -36,6 +48,19 @@ for (const scheme of ALL_BENCHMARK_SCHEMES) {
 			{ ...value, routes: new Set<string>() },
 		]),
 	);
+	if (allCharacters) {
+		const selected = new Set(characters);
+		for (const text of targets.keys())
+			if (!selected.has(text)) targets.delete(text);
+		for (const [index, text] of characters.entries()) {
+			if (!targets.has(text))
+				targets.set(text, {
+					previousMinimum: "NA",
+					rank: index + 1,
+					routes: new Set<string>(),
+				});
+		}
+	}
 	for (const [text, reading] of readings) {
 		const target = targets.get(text);
 		if (!target) continue;
