@@ -659,7 +659,7 @@
 658	欠	q1qu	4	0	qpua	4	0	qpa	3	0	mbo	3	0	fsu	3	0	fsa	3	0	qq	2	0	qa	2	0	qmua	4	0	qma	3	0	qmua	4	0	qmdr	4	0	5524
 659	笨	b1w	3	0	beu	3	0	bea	3	0	zb.	3	0	bdu	3	0	bda	3	0	beu	3	0	blu	3	0	bnu	3	0	bna	3	0	bfu	3	0	bfv	3	0	5491
 660	寄	j1mu	4	0	jfoo	4	0	jfaoo	5	0	bdkm	4	0	jioo	4	0	jiaoo	5	0	jroo	4	0	jkoo	4	0	jkoo	4	0	jkaoo	5	0	jiooae	6	0	jib	3	0	5484
-661	麽	mo1ma	5	0	mso	3	0	mloovuvi	8	0	gppm	4	0	mho	3	0	maooeue	7	0	NA	NA	NA	mnoe	4	0	meo	3	0	meoovuvi	8	0	meoeu	5	0	mogm	4	0	5468
+661	麽	mo1ma	5	0	mso	3	0	mloovuvi	8	0	gppm	4	0	mho	3	0	maooeue	7	0	mgovu	5	0	mnoe	4	0	meo	3	0	meoovuvi	8	0	meoeu	5	0	mogm	4	0	5468
 662	作	zoa	3	0	zmi	3	0	zmi	3	0	lz	2	0	zoi	3	0	zoau	4	0	zbi	3	0	zzi	3	0	zli	3	0	zli	3	0	zo	2	0	zor	3	0	5449
 663	修	xo1r	4	0	xei	3	0	xei	3	0	lm	2	0	ywi	3	0	ywi	3	0	xmi	3	0	yb	2	0	xqii	4	0	xqi	3	0	xq	2	0	xq	2	0	5443
 664	量	l1ria	5	0	ljoi	4	0	ljai	4	0	rk	2	0	lcoi	4	0	lcei	4	0	lhoi	4	0	weoi	4	0	lxo	3	0	lxai	4	0	lli	3	0	llo	3	0	5440
@@ -1023,7 +1023,7 @@
 1022	勿	s1b	3	0	wh	2	0	wh	2	0	svi	3	0	juu	3	0	juau	4	0	wpua	4	0	mkua	4	0	wj	2	0	wj	2	0	wuuau	5	0	wub	3	0	2382
 1023	共	goe	3	0	gjv	3	0	gj	2	0	g/	2	0	gm	2	0	gm	2	0	gpvi	4	0	gfe	3	0	gy	2	0	gy	2	0	gseii	5	0	gs	2	0	2373
 1024	纹	s1sii	5	0	weaa	4	0	weva	4	0	vkwy	4	0	jda	3	0	jdea	4	0	wsaa	4	0	pya	3	0	wnaa	4	0	wnva	4	0	wfa	3	0	wfs	3	0	2372
-1025	於	k1fa	4	0	NA	NA	NA	ytiova	6	0	frv	3	0	juoei	5	0	juioea	6	0	NA	NA	NA	lvo	3	0	NA	NA	NA	yliova	6	0	wuoea	5	0	wufd	4	0	2366
+1025	於	k1fa	4	0	ytov	4	0	ytiova	6	0	frv	3	0	juoei	5	0	juioea	6	0	ylov	4	0	lvo	3	0	NA	NA	NA	yliova	6	0	wuoea	5	0	wufd	4	0	2366
 1026	闻	s1me	4	0	weoi	4	0	wevo	4	0	gnk	3	0	jdoi	4	0	jdeo	4	0	wsoi	4	0	ploi	4	0	wnoi	4	0	wnvo	4	0	wfoia	5	0	wfm	3	0	2349
 1027	北	bei	3	0	bdi	3	0	bdu	3	0	mv	2	0	bei	3	0	beu	3	0	bdi	3	0	be	2	0	bwi	3	0	bwu	3	0	bwi	3	0	bwl	3	0	2345
 1028	守	vo1m	4	0	kwoo	4	0	kwu	3	0	bc.	3	0	vyoo	4	0	vyu	3	0	ksoo	4	0	vto	3	0	edoo	4	0	edu	3	0	szoo	4	0	uzbc	4	0	2339
@@ -1892,7 +1892,7 @@
 1891	噔	de1ko	5	0	droa	4	0	driia	5	0	flgk	4	0	djoa	4	0	djiia	5	0	dcoao	5	0	dnoa	4	0	droa	4	0	driia	5	0	dgiaea	6	0	dgk	3	0	475
 1892	陌	m1fu	4	0	mja	3	0	mjaa	4	0	vdri	4	0	moa	3	0	moaa	4	0	mpa	3	0	bua	3	0	mlai	4	0	mlaa	4	0	moa	3	0	moe	3	0	475
 1893	肚	dua1k	5	0	dhuv	4	0	dhau	4	0	ytu	3	0	duue	4	0	duau	4	0	dpu	3	0	dhue	4	0	djuv	4	0	djau	4	0	duuae	5	0	duo	3	0	474
-1894	吒	wa1k	4	0	NA	NA	NA	elaiavu	8	1	fhqi	4	0	sao	3	0	saiiaeu	7	0	NA	NA	NA	xco	3	0	NA	NA	NA	fsaiavu	8	1	zaiaeue	7	0	vakq	4	0	473
+1894	吒	wa1k	4	0	elou	4	0	elaiavu	8	1	fhqi	4	0	sao	3	0	saiiaeu	7	0	exo	3	0	xco	3	0	NA	NA	NA	fsaiavu	8	1	zaiaeue	7	0	vakq	4	0	473
 1895	护	h1vo	4	0	hhi	3	0	hhav	4	0	ngg	3	0	huiu	4	0	huae	4	0	hpi	3	0	hhi	3	0	hji	3	0	hjav	4	0	hue	3	0	huf	3	0	472
 1896	闭	b1me	4	0	bfoi	4	0	bfao	4	0	gnc	3	0	bioi	4	0	biao	4	0	broi	4	0	bkoi	4	0	bkoi	4	0	bkao	4	0	bioi	4	0	bim	3	0	472
 1897	俞	kae1re	6	0	ytivu	5	0	khauo	5	0	jqdo	4	0	wpieu	5	0	vuauo	5	0	ylivu	5	0	luie	4	0	ylivu	5	0	ejauo	5	0	suuoei	6	0	yurd	4	0	471
@@ -2913,7 +2913,7 @@
 2912	统	to1s	4	0	tjaa	4	0	tjua	4	0	vkw	3	0	tmaa	4	0	tmua	4	0	tjaa	4	0	tpa	3	0	tyaa	4	0	tyua	4	0	tsaa	4	0	tss	3	0	87
 2913	诈	wa1fu	5	0	eloa	4	0	elao	4	0	jzmv	4	0	saoa	4	0	saao	4	0	eroa	4	0	xfo	3	0	fsoa	4	0	fsao	4	0	zaoa	4	0	vay	3	0	87
 2914	阻	z1fu	4	0	zha	3	0	zhua	4	0	vns	3	0	suai	4	0	zuua	4	0	zja	3	0	xhai	4	0	zja	3	0	zjua	4	0	zuai	4	0	zue	3	0	87
-2915	乾	gaoae	5	0	NA	NA	NA	gniviiavvvi	11	0	szzl	4	0	fsuo	4	0	fseeiiaeee	10	0	NA	NA	NA	gauo	4	0	NA	NA	NA	gfiviiavvvi	11	0	qmei	4	0	qmu	3	0	86
+2915	乾	gaoae	5	0	gnuo	4	0	gniviiavvvi	11	0	szzl	4	0	fsuo	4	0	fseeiiaeee	10	0	gquo	4	0	gauo	4	0	NA	NA	NA	gfiviiavvvi	11	0	qmei	4	0	qmu	3	0	86
 2916	卅	sa1h	4	0	clv	3	0	clav	4	0	kc;	3	0	qae	3	0	qaae	4	0	crv	3	0	sfe	3	0	ssv	3	0	ssav	4	0	saeuii	6	0	saa	3	0	86
 2917	悍	ha1xi	5	0	hnooo	5	0	hnaoo	5	0	srg;	4	0	hloo	4	0	hlaoo	5	0	hqoo	4	0	haoo	4	0	hfoo	4	0	hfaoo	5	0	hjooii	6	0	hjx	3	0	86
 2918	拗	noua1	5	0	rziu	4	0	neav	4	0	nylh	4	0	nwiu	4	0	nwa	3	0	neiu	4	0	ndi	3	0	nqiu	4	0	nqa	3	0	vcei	4	0	aofl	4	0	86
@@ -3015,7 +3015,7 @@
 3014	匠	j1fae	5	0	jjv	3	0	jjo	3	0	kgxj	4	0	jce	3	0	jcae	4	0	jyv	3	0	jse	3	0	jxv	3	0	jxo	3	0	jleu	4	0	jlk	3	0	76
 3015	孵	f1wiu	5	0	fhua	4	0	fhiu	4	0	lddn	4	0	fuua	4	0	fuiu	4	0	fnu	3	0	fvu	3	0	fjuau	5	0	fjiu	4	0	fuuao	5	0	ful	3	0	76
 3016	择	waiee	5	0	zsi	3	0	ekvv	4	0	nv	2	0	zhi	3	0	sfee	4	0	zdi	3	0	zwi	3	0	zei	3	0	qhvv	4	0	zdeiea	6	0	vdfl	4	0	76
-3017	昇	ve1ri	5	0	NA	NA	NA	kriiavvuv	9	0	rhn/	4	0	vjo	3	0	vjiiaeeu	8	0	NA	NA	NA	vno	3	0	NA	NA	NA	eriiavvuv	9	0	sgiaee	6	0	ugou	4	0	76
+3017	昇	ve1ri	5	0	kroi	4	0	kriiavvuv	9	0	rhn/	4	0	vjo	3	0	vjiiaeeu	8	0	kcoi	4	0	vno	3	0	NA	NA	NA	eriiavvuv	9	0	sgiaee	6	0	ugou	4	0	76
 3018	晗	h1ria	5	0	hnoi	4	0	hnvi	4	0	rrlf	4	0	hloi	4	0	hlei	4	0	hkoi	4	0	hioi	4	0	hfoi	4	0	hfvi	4	0	hjiaee	6	0	hjok	4	0	76
 3019	濂	lu1vu	5	0	lpao	4	0	lpvoov	6	0	kgdh	4	0	lsao	4	0	lseooe	6	0	lka	3	0	wia	3	0	lmao	4	0	lmvoov	6	0	lmooeo	6	0	lmdn	4	0	76
 3020	箩	l1wue	5	0	lmu	3	0	lmvu	4	0	zmjg	4	0	lou	3	0	loeu	4	0	lguv	4	0	wouei	5	0	lluv	4	0	llvu	4	0	loueo	5	0	lov	3	0	76
@@ -3026,7 +3026,7 @@
 3025	检	juo1mu	6	0	jpv	3	0	jpuviu	6	0	pjs	3	0	jsei	4	0	jsueiu	6	0	jkv	3	0	jie	3	0	jmv	3	0	jmuviu	6	0	jme	3	0	jmm	3	0	75
 3026	泠	lieeo	5	0	lgai	4	0	lgvo	4	0	krlg	4	0	lqai	4	0	lqeo	4	0	lgai	4	0	wrai	4	0	lgai	4	0	lgvo	4	0	lkoo	4	0	okuvlk	6	0	75
 3027	泳	foe1vu	6	0	yjao	4	0	yjuoo	5	0	kgls	4	0	wmao	4	0	wmuoo	5	0	yjaoa	5	0	lpaoa	5	0	yyao	4	0	yyuoo	5	0	ysooe	5	0	okuvys	6	0	75
-3028	甯	niea	4	0	NA	NA	NA	ngaooaoaooiavvi	15	0	blnn	4	0	nqooi	5	0	nqaooaoaoo	10	0	NA	NA	NA	nlo	3	0	NA	NA	NA	ngaooaoaooiavvi	15	0	nkooa	5	0	nkb	3	0	75
+3028	甯	niea	4	0	ngoo	4	0	ngaooaoaooiavvi	15	0	blnn	4	0	nqooi	5	0	nqaooaoaoo	10	0	neo	3	0	nlo	3	0	NA	NA	NA	ngaooaoaooiavvi	15	0	nkooa	5	0	nkb	3	0	75
 3029	胤	f1pe	4	0	ybuaa	5	0	ybau	4	0	hyqj	4	0	wruaa	5	0	wrau	4	0	ypua	4	0	lfua	4	0	ybuaa	5	0	ybau	4	0	ybuaao	6	0	ybpv	4	0	75
 3030	躁	za1z	4	0	zzoi	4	0	zzai	4	0	fmfp	4	0	zkoi	4	0	zkai	4	0	ztoi	4	0	zgoi	4	0	zzoi	4	0	zzai	4	0	zciaei	6	0	zczm	4	0	75
 3031	销	xuu1j	5	0	xqioi	5	0	xqiuv	5	0	qs	2	0	yxioi	5	0	yxiue	5	0	xcioi	5	0	ybioi	5	0	xci	3	0	xciuv	5	0	xnuee	5	0	xnj	3	0	75
@@ -3556,7 +3556,7 @@
 3555	棺	gioie	5	0	gtv	3	0	gtiv	4	0	pbv	3	0	gte	3	0	gtie	4	0	gmvo	4	0	gaeo	4	0	gtv	3	0	gtiv	4	0	gre	3	0	grm	3	0	31
 3556	污	suioo	5	0	whav	4	0	whio	4	0	kvj	3	0	juae	4	0	juio	4	0	wnav	4	0	pvae	4	0	wjav	4	0	wjio	4	0	wuoo	4	0	wud	3	0	31
 3557	灼	wo1ho	5	0	emou	4	0	emvou	5	0	hso	3	0	soou	4	0	soeou	5	0	egou	4	0	xoou	4	0	flou	4	0	flvou	5	0	zoouu	5	0	voh	3	0	31
-3558	祕	mia1v	5	0	NA	NA	NA	mfaoaiooaou	11	0	jgbi	5	1	bioao	5	0	miaoaio	7	0	NA	NA	NA	bkoao	5	0	NA	NA	NA	mkaoaiooaou	11	0	bioaioo	7	0	mipb	4	0	31
+3558	祕	mia1v	5	0	mfoao	5	0	mfaoaiooaou	11	0	jgbi	5	1	bioao	5	0	miaoaio	7	0	mroao	5	0	bkoao	5	0	NA	NA	NA	mkaoaiooaou	11	0	bioaioo	7	0	mipb	4	0	31
 3559	纬	suiuaa	6	0	wdaa	4	0	wduaa	5	0	vkvd	4	0	jeaa	4	0	jeuaa	5	0	wdaa	4	0	peaae	5	0	wwaa	4	0	wwuaa	5	0	wwaae	5	0	wwsw	4	0	31
 3560	绺	louua	5	0	lea	3	0	leua	4	0	vkwf	5	1	lwaa	4	0	lwua	4	0	lsa	3	0	wtaa	4	0	lqaa	4	0	lqua	4	0	lqa	3	0	lqs	3	0	31
 3561	育	foioo	5	0	ytovu	5	0	ytaov	5	0	wyq	3	0	wooe	4	0	woi	3	0	ybovu	5	0	lhoeu	5	0	ylovu	5	0	ylaov	5	0	yoo	3	0	yuwo	4	0	31
@@ -4132,7 +4132,7 @@
 4131	娈	li1na	5	0	ltovau	6	0	lpaov	5	0	whxo	4	0	lsoea	5	0	lteoe	5	0	lkova	5	0	waoea	5	0	ltova	5	0	ltuo	4	0	lroeiiuoa	9	0	lrwn	4	0	12
 4132	峪	k1vaoi	6	0	ytiau	5	0	ytaiai	6	0	hgu	3	0	wpiau	5	0	wpaiai	6	0	ytia	4	0	lhia	4	0	yliau	5	0	ylaiai	6	0	yuiaiu	6	0	yuek	4	0	12
 4133	弼	b1goe	5	0	bfavvu	6	0	bfaava	6	0	gdrg	4	0	biaeeu	6	0	biaaea	6	0	bravvu	6	0	bkaeeu	6	0	bkavvu	6	0	bkaava	6	0	biaea	5	0	bigg	4	0	12
-4134	徵	w1yia	5	0	NA	NA	NA	efuuuiiaivv	11	0	dhww	4	0	sjuu	4	0	siuuuii	7	0	NA	NA	NA	xnuu	4	0	NA	NA	NA	fkuuuiiaivv	11	0	zguui	5	0	viiw	4	0	12
+4134	徵	w1yia	5	0	efuui	5	0	efuuuiiaivv	11	0	dhww	4	0	sjuu	4	0	siuuuii	7	0	efuu	4	0	xnuu	4	0	NA	NA	NA	fkuuuiiaivv	11	0	zguui	5	0	viiw	4	0	12
 4135	怠	d1sii	5	0	dkao	4	0	dkaao	5	0	yfla	4	0	dfao	4	0	dfaao	5	0	dyao	4	0	dhao	4	0	dhao	4	0	dhaao	5	0	ddao	4	0	dds	3	0	12
 4136	悄	quuio	5	0	qqo	3	0	qqio	4	0	ssq/	4	0	fxooi	5	0	fxio	4	0	qco	3	0	qboo	4	0	qco	3	0	qcio	4	0	qno	3	0	qnx	3	0	12
 4137	憧	yo1xi	5	0	sjooo	5	0	epaoo	5	0	slkv	4	0	scoo	4	0	scaoo	5	0	snoo	4	0	scoo	4	0	wyooo	5	0	fmaoo	5	0	csooio	6	0	isx	3	0	12
@@ -4381,7 +4381,7 @@
 4380	辗	nuouea	6	0	enva	4	0	enuva	5	0	dsgd	4	0	nsea	4	0	nsuea	5	0	ekva	4	0	niea	4	0	qfva	4	0	nmuva	5	0	nmea	4	0	nmi	3	0	9
 4381	邈	mu1y	4	0	mqu	3	0	mquu	4	0	zchz	4	0	mxu	3	0	mxuu	4	0	mlu	3	0	mquo	4	0	mcu	3	0	mcuu	4	0	mnuo	4	0	mnz	3	0	9
 4382	酬	yo1f	4	0	swv	3	0	swo	3	0	xvdm	4	0	xye	3	0	xyee	4	0	ssvio	5	0	ste	3	0	wdv	3	0	wdo	3	0	czeia	5	0	izy	3	0	9
-4383	釐	x1pui	5	0	NA	NA	NA	lkvvviu	7	0	wwcv	4	0	lfeei	5	0	tfieei	6	0	NA	NA	NA	tveei	5	0	NA	NA	NA	lhvvviu	7	0	xiee	4	0	xiwl	4	0	9
+4383	釐	x1pui	5	0	xfvv	4	0	lkvvviu	7	0	wwcv	4	0	lfeei	5	0	tfieei	6	0	xbvv	4	0	tveei	5	0	NA	NA	NA	lhvvviu	7	0	xiee	4	0	xiwl	4	0	9
 4384	钆	gaeou	5	0	glio	4	0	glvu	4	0	qje	4	1	gai	3	0	gaeu	4	0	gsio	4	0	gpio	4	0	gsio	4	0	gsvu	4	0	gaue	4	0	gajv	4	0	9
 4385	钊	wau1j	5	0	ezio	4	0	eziu	4	0	qdo	3	0	skio	4	0	skiu	4	0	ecioi	5	0	xbio	4	0	qzi	3	0	qziu	4	0	zcuee	5	0	vcj	3	0	9
 4386	阆	laea	4	0	lyoi	4	0	lya	3	0	gngg	4	0	lnoi	4	0	lna	3	0	lyoioa	6	0	weoio	5	0	lpoi	4	0	lpa	3	0	lhoi	4	0	lhml	4	0	9
@@ -4424,7 +4424,7 @@
 4423	柝	toa1m	5	0	tmvuu	5	0	tmav	4	0	pci	4	1	toeuu	5	0	toae	4	0	tpv	3	0	tke	3	0	tlvuu	5	0	tlav	4	0	toeiuo	6	0	tomi	4	0	8
 4424	械	jea1m	5	0	xcvvv	5	0	xcavi	5	0	pknq	4	0	jzeee	5	0	yzaei	5	0	xwvv	4	0	yjee	4	0	xdvvv	5	0	xdavi	5	0	xpeiu	5	0	xpm	3	0	8
 4425	欻	x1qu	4	0	xtou	4	0	xtio	4	0	hhbo	5	1	ypou	4	0	ypio	4	0	xcou	4	0	yhou	4	0	xlouu	5	0	xlio	4	0	vvouu	5	0	ixh	3	0	8
-4426	氾	fao1vu	6	0	NA	NA	NA	fnvoova	8	1	klje	5	1	flaa	4	0	fleooea	7	0	NA	NA	NA	fia	3	0	NA	NA	NA	ffvoova	8	1	fjooea	6	0	okuvee	6	0	8
+4426	氾	fao1vu	6	0	fnaa	4	0	fnvoova	8	1	klje	5	1	flaa	4	0	fleooea	7	0	fka	3	0	fia	3	0	NA	NA	NA	ffvoova	8	1	fjooea	6	0	okuvee	6	0	8
 4427	沂	fieo1v	6	0	yfauu	5	0	yfvoov	6	0	kgxa	4	0	wiauu	5	0	wieooe	6	0	yfauu	5	0	loauu	5	0	ykauu	5	0	ykvoov	6	0	ybooeuu	7	0	yidj	5	1	8
 4428	沼	wauu	4	0	ezaa	4	0	ezu	3	0	kcfo	4	0	skaa	4	0	sku	3	0	ela	3	0	xqa	3	0	qza	3	0	qzuo	4	0	zcooe	5	0	vcdk	4	0	8
 4429	涓	jo1vu	5	0	jrao	4	0	jrio	4	0	kfq/	4	0	jtao	4	0	jtio	4	0	jmaou	5	0	laao	4	0	jtao	4	0	jtio	4	0	jroo	4	0	jrd	3	0	8
@@ -4794,7 +4794,7 @@
 4793	莒	jau1ca	6	0	jtiioo	6	0	jtuvi	5	0	cffo	4	0	jpiioo	6	0	jpuei	5	0	jliioo	6	0	juiio	5	0	jliioo	6	0	jluvi	5	0	jueiii	6	0	juck	4	0	5
 4794	菅	gi1cauu	7	0	jpiioo	6	0	jpivii	6	0	cbvi	4	0	jsiioo	6	0	gtieii	6	0	jmiioo	6	0	gmiioo	6	0	jmiioo	6	0	jmivii	6	0	jmeiioo	7	0	jmck	4	0	5
 4795	蒌	lou1ca	6	0	lwii	4	0	lwav	4	0	cdpx	4	0	lwii	4	0	lyeei	5	0	lsiio	5	0	wdii	4	0	ldii	4	0	ldvvi	5	0	lzeii	5	0	lzc	3	0	5
-4796	蒐	sou1c	5	0	NA	NA	NA	cwiviiuiavv	11	0	cbjy	5	1	qyi	3	0	qyieiiu	7	0	NA	NA	NA	sbii	4	0	NA	NA	NA	sdiviiuiavv	11	0	szeiiu	6	0	szcg	4	0	5
+4796	蒐	sou1c	5	0	cwii	4	0	cwiviiuiavv	11	0	cbjy	5	1	qyi	3	0	qyieiiu	7	0	cmii	4	0	sbii	4	0	NA	NA	NA	sdiviiuiavv	11	0	szeiiu	6	0	szcg	4	0	5
 4797	蓓	be1ca	5	0	bdii	4	0	bdav	4	0	cllf	4	0	beii	4	0	beae	4	0	bwii	4	0	bsii	4	0	bwii	4	0	bwav	4	0	bweii	5	0	bwc	3	0	5
 4798	蓖	bi1cau	6	0	bfiiu	5	0	bfaviiu	7	0	chnb	4	0	biiiu	5	0	biaeiiu	7	0	briiu	5	0	bkiiu	5	0	bkiiu	5	0	bkaviiu	7	0	bieiiu	6	0	bicb	4	0	5
 4799	蔟	cou1c	5	0	chiio	5	0	chavii	6	0	cfzd	4	0	cuii	4	0	cuaei	5	0	cpii	4	0	cdii	4	0	cjii	4	0	cjavi	5	0	cueiio	6	0	cuc	3	0	5
@@ -5450,7 +5450,7 @@
 5449	璆	qo1sie	6	0	qevv	4	0	qevvv	5	0	wxxr	5	1	fwee	4	0	fweee	5	0	qsvv	4	0	qtee	4	0	qqvv	4	0	qqvvv	5	0	qqeei	5	0	qqwp	4	0	2
 5450	璋	wae1s	5	0	eyvvo	5	0	eyivv	5	0	wlkz	4	0	snee	4	0	sniee	5	0	ezvv	4	0	xxee	4	0	qpvvo	5	0	qpivv	5	0	zhee	4	0	vhw	3	0	2
 5451	甏	beeaei	6	0	brvo	4	0	brav	4	0	zfdw	4	0	bjeo	4	0	bjae	4	0	btvo	4	0	bleo	4	0	brvo	4	0	brav	4	0	bgei	4	0	bguw	4	0	2
-5452	甦	suioeia	7	0	NA	NA	NA	chiviavv	8	0	kryh	5	1	queiu	5	0	quieiae	7	0	NA	NA	NA	svei	4	0	NA	NA	NA	sjiviav	7	0	sueiaeeu	8	0	sug	3	0	2
+5452	甦	suioeia	7	0	chviu	5	0	chiviavv	8	0	kryh	5	1	queiu	5	0	quieiae	7	0	cnviu	5	0	svei	4	0	NA	NA	NA	sjiviav	7	0	sueiaeeu	8	0	sug	3	0	2
 5453	畤	wi1tuo	6	0	efiavo	6	0	efaiavi	7	0	ttc.	5	1	siiaeo	6	0	siaiaei	7	0	eriavo	6	0	stiaeo	6	0	fkiavo	6	0	ekaiavi	7	0	ziiaeiee	8	0	vitc	4	0	2
 5454	畲	vei1r	5	0	ksivi	5	0	ksiu	4	0	rvxt	4	0	vhiei	5	0	vhiu	4	0	knivi	5	0	vni	3	0	eeivi	5	0	eeiu	4	0	seuoe	5	0	uert	4	0	2
 5455	疔	dieio	5	0	dgovv	5	0	dgio	4	0	bkme	5	1	nhoe	4	0	dqio	4	0	dzovv	5	0	dnoee	5	0	dgovv	5	0	dgio	4	0	dkoe	4	0	dkb	3	0	2
@@ -5510,7 +5510,7 @@
 5509	肮	raei1	5	0	gyu	3	0	ryiu	4	0	ywto	4	0	gnuo	4	0	yni	3	0	rzu	3	0	rxu	3	0	xpu	3	0	xpi	3	0	vhu	3	0	aho	3	0	2
 5510	胄	wo1koa	6	0	ewi	3	0	ewaia	5	0	yq/	3	0	syi	3	0	syaia	5	0	eeia	4	0	xdi	3	0	fdi	3	0	fdaia	5	0	zziae	5	0	vzyo	4	0	2
 5511	脎	saa1k	5	0	clu	3	0	clau	4	0	yypa	4	0	qau	3	0	qaau	4	0	cru	3	0	sfuu	4	0	ssu	3	0	ssau	4	0	sauae	5	0	sao	3	0	2
-5512	脩	xoui1r	6	0	NA	NA	NA	xeiuiiua	8	0	lmwq	5	1	txiiu	5	0	wyuuii	6	0	NA	NA	NA	tqiiu	5	0	NA	NA	NA	xciuiiua	8	0	xquii	5	0	xqro	4	0	2
+5512	脩	xoui1r	6	0	xeii	4	0	xeiuiiua	8	0	lmwq	5	1	txiiu	5	0	wyuuii	6	0	xmiiu	5	0	tqiiu	5	0	NA	NA	NA	xciuiiua	8	0	xquii	5	0	xqro	4	0	2
 5513	腧	vu1ko	5	0	khui	4	0	khau	4	0	yjqd	4	0	vuui	4	0	vuau	4	0	kpu	3	0	vhu	3	0	ejui	4	0	ejau	4	0	suuae	5	0	uuod	4	0	2
 5514	腴	kae1k	5	0	ytuui	5	0	ytvua	5	0	yjr.	4	0	wpuui	5	0	wpeua	5	0	yluui	5	0	luuu	4	0	yluui	5	0	ylvua	5	0	yuuae	5	0	yuoy	4	0	2
 5515	膑	bio1k	5	0	bbu	3	0	bbau	4	0	ybqb	4	0	bru	3	0	brau	4	0	bpu	3	0	bfuo	4	0	bbu	3	0	bbau	4	0	bbu	3	0	bbo	3	0	2
@@ -6055,8 +6055,8 @@
 6054	蕗	lua1c	5	0	lhiio	5	0	lhavii	6	0	cfmf	4	0	luiio	5	0	luaeii	6	0	lpiio	5	0	whiio	5	0	ljiio	5	0	ljavii	6	0	lueiii	6	0	luck	4	0	1
 6055	蕤	ruie	4	0	rxiiv	5	0	rxv	3	0	ckcv	4	0	rpiie	5	0	rpe	3	0	rdiiv	5	0	reii	4	0	rbiiv	5	0	rbv	3	0	rveiie	6	0	rvcu	4	0	1
 6056	薤	xe1ca	5	0	xcii	4	0	xcavii	6	0	cdfk	4	0	yzii	4	0	yzaeii	6	0	xwi	3	0	yji	3	0	xdiivu	6	0	xdavii	6	0	xpeiie	6	0	xpc	3	0	1
-6057	薳	kooue	5	0	NA	NA	NA	yruviivivi	10	0	ctfz	4	0	jeiieo	6	0	wtueiiei	8	0	NA	NA	NA	liiie	5	0	NA	NA	NA	ytuviivivi	10	0	wweiiei	7	0	wwcz	4	0	1
-6058	薹	tai1ca	6	0	NA	NA	NA	tkvviiviv	9	0	czft	4	0	tfiie	5	0	tfeeiiei	8	0	NA	NA	NA	tuiieo	6	0	NA	NA	NA	thvviiviv	9	0	tdeiie	6	0	tdct	4	0	1
+6057	薳	kooue	5	0	wdiivo	6	0	yruviivivi	10	0	ctfz	4	0	jeiieo	6	0	wtueiiei	8	0	wdiivo	6	0	liiie	5	0	NA	NA	NA	ytuviivivi	10	0	wweiiei	7	0	wwcz	4	0	1
+6058	薹	tai1ca	6	0	tkiiv	5	0	tkvviiviv	9	0	czft	4	0	tfiie	5	0	tfeeiiei	8	0	thiiv	5	0	tuiieo	6	0	NA	NA	NA	thvviiviv	9	0	tdeiie	6	0	tdct	4	0	1
 6059	藠	juua1c	6	0	jqiiu	5	0	jqavii	6	0	chrr	4	0	jxiiu	5	0	jxaeii	6	0	jtiiu	5	0	jgi	3	0	jciiu	5	0	jcavii	6	0	jneiiui	7	0	jncb	4	0	1
 6060	藦	moe1cau	7	0	mjiiov	6	0	mjvviio	7	0	cgpn	4	0	moiioe	6	0	moeeiio	7	0	mgiiov	6	0	mkiioe	6	0	mliiov	6	0	mlvviio	7	0	moeiioe	7	0	okccmo	7	1	1
 6061	蘧	qae1c	5	0	qtiii	5	0	qtvvi	5	0	chkz	4	0	fpiii	5	0	fpeei	5	0	qliii	5	0	jhiii	5	0	qliii	5	0	qlvvi	5	0	queiii	6	0	qucz	4	0	1
@@ -6206,7 +6206,7 @@
 6205	阍	hu1me	5	0	hboi	4	0	hbio	4	0	gnxr	4	0	hgoi	4	0	hgio	4	0	hmo	3	0	hmo	3	0	hwoi	4	0	hwio	4	0	hyoi	4	0	hym	3	0	1
 6206	阒	qa1me	5	0	qtoi	4	0	qtao	4	0	gnmq	4	0	fpoi	4	0	fpao	4	0	qtoi	4	0	qho	3	0	qloi	4	0	qlao	4	0	quoi	4	0	qumq	4	0	1
 6207	阱	jieuai	6	0	jgai	4	0	jguai	5	0	vvqo	4	0	jqai	4	0	jquai	5	0	jgai	4	0	jra	3	0	jgai	4	0	jguai	5	0	jkai	4	0	jke	3	0	1
-6208	陞	veeia	5	0	NA	NA	NA	kriaiuvui	9	0	vhnt	5	1	vjaiu	5	0	vjiaiue	7	0	NA	NA	NA	vnai	4	0	NA	NA	NA	eriaiuvui	9	0	sgaiue	6	0	uget	4	0	1
+6208	陞	veeia	5	0	krai	4	0	kriaiuvui	9	0	vhnt	5	1	vjaiu	5	0	vjiaiue	7	0	kca	3	0	vnai	4	0	NA	NA	NA	eriaiuvui	9	0	sgaiue	6	0	uget	4	0	1
 6209	陧	ne1fu	5	0	ncai	4	0	ncaai	5	0	vrt	4	1	nzai	4	0	nzaai	5	0	nwai	4	0	njai	4	0	ndai	4	0	ndaai	5	0	npai	4	0	npet	4	0	1
 6210	陬	weeoai	6	0	zwai	4	0	esvai	5	0	vkhv	4	0	shai	4	0	sheai	5	0	zmai	4	0	xwai	4	0	zdai	4	0	qevai	5	0	zzai	4	0	zze	3	0	1
 6211	陴	pi1fua	6	0	pfaiu	5	0	pfvai	5	0	vbe	3	0	biaiu	5	0	pieai	5	0	pfaiu	5	0	bkaiu	5	0	pkaiu	5	0	pkvai	5	0	piaiu	5	0	pieu	4	0	1
@@ -6962,7 +6962,7 @@
 6961	燏	kaaoouuo	8	0	ytoua	5	0	ytaouuo	7	0	hlgf	5	1	wpoua	5	0	wpaouuo	7	0	ytoua	5	0	lhoua	5	0	yloua	5	0	ylaouuo	7	0	yuouuo	6	0	yuhk	4	0	0
 6962	燠	rauaou	6	0	ytouu	5	0	rzaou	5	0	hhnd	4	0	wpouu	5	0	ykaou	5	0	ytouu	5	0	lhouu	5	0	ylouu	5	0	xzaou	5	0	yuouu	5	0	okhoao	6	0	0
 6963	燹	bieaeu	6	0	xpvuo	5	0	bgavu	5	0	kckh	4	0	bqeu	4	0	bqaeu	5	0	xkvuo	5	0	yieu	4	0	xmvuo	5	0	bgavu	5	0	xmeua	5	0	okuiuiho	8	0	0
-6964	爇	roa1ca	6	0	NA	NA	NA	rmaviivivuo	11	0	ctbq	4	0	rhiie	5	0	rhaeiie	7	0	NA	NA	NA	rkiie	5	0	NA	NA	NA	reaviiv	7	0	roeiie	6	0	roch	4	0	0
+6964	爇	roa1ca	6	0	rmiiv	5	0	rmaviivivuo	11	0	ctbq	4	0	rhiie	5	0	rhaeiie	7	0	rpiiv	5	0	rkiie	5	0	NA	NA	NA	reaviiv	7	0	roeiie	6	0	roch	4	0	0
 6965	爔	xiioouuoo	9	0	xfouou	6	0	xfiouuoo	8	0	hdwh	5	1	yiouou	6	0	yiiouuoo	8	0	xbouou	6	0	yzouou	6	0	xkouou	6	0	xkiouuoo	8	0	xiouuoou	8	0	xihd	4	0	0
 6966	爚	ko1ho	5	0	ykou	4	0	ykaou	5	0	hjfc	4	0	wkou	4	0	wvaou	5	0	ywouiv	6	0	lgou	4	0	yhou	4	0	yhaou	5	0	ytouu	5	0	yth	3	0	0
 6967	爟	gi1ho	5	0	gtou	4	0	gtaou	5	0	hcff	5	1	gtou	4	0	gtaou	5	0	gqou	4	0	gaou	4	0	gtoui	5	0	gtaou	5	0	grouu	5	0	grh	3	0	0
@@ -7343,7 +7343,7 @@
 7342	苎	wua1c	5	0	ehiio	5	0	ehavii	6	0	cbke	4	0	suiio	5	0	suaeii	6	0	epiio	5	0	xhiio	5	0	qjiio	5	0	qjavii	6	0	zueiio	6	0	vuca	4	0	0
 7343	苘	qieue	5	0	qgiii	5	0	qguv	4	0	cnfo	4	0	fqiii	5	0	fque	4	0	qgii	4	0	qrii	4	0	qgiii	5	0	qguv	4	0	qkeiii	6	0	qkck	4	0	0
 7344	苠	mio1c	5	0	mbii	4	0	mbvvi	5	0	cskj	4	0	mrii	4	0	mreei	5	0	mjii	4	0	mpii	4	0	mbii	4	0	mbvvi	5	0	mbeii	5	0	mbc	3	0	0
-7345	苧	ni1cau	6	0	NA	NA	NA	ngvviiooavi	11	0	cbkm	4	0	nqii	4	0	suaeiio	7	0	NA	NA	NA	nrii	4	0	NA	NA	NA	ngvviiooavi	11	0	nkeiio	6	0	nkcd	4	0	0
+7345	苧	ni1cau	6	0	ngii	4	0	ngvviiooavi	11	0	cbkm	4	0	nqii	4	0	suaeiio	7	0	ngii	4	0	nrii	4	0	NA	NA	NA	ngvviiooavi	11	0	nkeiio	6	0	nkcd	4	0	0
 7346	苫	tuo1ca	6	0	kniii	5	0	knavi	5	0	chfo	4	0	tsii	4	0	tsiei	5	0	kqii	4	0	tmii	4	0	efiii	5	0	efavi	5	0	sjeii	5	0	ujck	4	0	0
 7347	茀	feia1ca	7	0	fhiia	5	0	fdavii	6	0	cgqo	5	1	beiia	5	0	feaeii	6	0	fjiia	5	0	fsii	4	0	fjiia	5	0	fwavii	6	0	fueiia	6	0	fucf	4	0	0
 7348	茆	maue1c	6	0	mziiu	5	0	mzuvii	6	0	clhd	4	0	mkiiu	5	0	mkeeii	6	0	mliiu	6	1	mqiiu	5	0	mziiu	5	0	mzuvii	6	0	mceiiu	6	0	mcce	4	0	0
