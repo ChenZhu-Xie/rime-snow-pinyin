@@ -69,6 +69,6 @@ for (const [index, scheme] of meta.schemes.entries()) {
 	summaries.push({ scheme: scheme.name, counts, queuedCharacters: Object.keys(targets).length, independentInputs: codes.size, newInputs: [...codes].filter(code => !map.has(code)).length });
 }
 writeOutput(join(output, "confidence.tsv"), "\uFEFF" + table.join("\n") + "\n");
-writeOutput(join(output, "input.json"), JSON.stringify({ contract: "character-budgeted-verification-v1", schemas }, null, 2) + "\n");
+writeOutput(join(output, "input.json"), JSON.stringify({ contract: "character-budgeted-verification-v1", productionRevision: manifest.revision, perSchemaBudget: budget, schemas }, null, 2) + "\n");
 writeOutput(join(output, "summary.json"), JSON.stringify({ revision: manifest.revision, perSchemaBudget: budget, probabilityCalibrated: false, summaries }, null, 2) + "\n");
 console.log(JSON.stringify(summaries));
