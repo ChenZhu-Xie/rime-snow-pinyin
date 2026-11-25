@@ -47,6 +47,12 @@ public static class SnowNativeLaunchProbe {
     [DllImport("kernel32.dll", CharSet=CharSet.Ansi)] static extern IntPtr GetProcAddress(IntPtr module, string name);
     [DllImport("kernel32.dll")] static extern bool FreeLibrary(IntPtr module);
     [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll", SetLastError=true)] static extern IntPtr SetThreadDpiAwarenessContext(IntPtr context);
+    [DllImport("user32.dll")] static extern IntPtr GetThreadDpiAwarenessContext();
+    [DllImport("user32.dll")] static extern IntPtr GetWindowDpiAwarenessContext(IntPtr hwnd);
+    [DllImport("user32.dll")] static extern int GetAwarenessFromDpiAwarenessContext(IntPtr context);
+    [DllImport("user32.dll")] static extern uint GetDpiForWindow(IntPtr hwnd);
+    [DllImport("user32.dll")] static extern uint GetDpiForSystem();
     [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr hwnd, out Rect rect);
     [DllImport("user32.dll")] static extern bool GetClientRect(IntPtr hwnd, out Rect rect);
     [DllImport("user32.dll")] static extern bool ClientToScreen(IntPtr hwnd, ref Point point);
@@ -77,6 +83,7 @@ public static class SnowNativeLaunchProbe {
         uint pid; GetWindowThreadProcessId(hwnd, out pid);
         int cloaked; int cloakResult = DwmGetWindowAttribute(hwnd, 14, out cloaked, sizeof(int));
         return new { handle = hwnd.ToInt64(), pid, title = title.ToString(), rect,
+            dpi = GetDpiForWindow(hwnd), awareness = GetAwarenessFromDpiAwarenessContext(GetWindowDpiAwarenessContext(hwnd)),
             style = GetWindowLongPtr(hwnd, -16).ToInt64().ToString("X"),
             extended_style = GetWindowLongPtr(hwnd, -20).ToInt64().ToString("X"),
             cloak_result = cloakResult, cloaked };
@@ -123,6 +130,15 @@ public static class SnowNativeLaunchProbe {
     }
 
     public static object Run(string library, string helper, string output) {
+        // GetWindowRect is DPI virtualized, but GDI DC pixel coordinates are physical.
+        // Match winit's per-monitor context for geometry, sample positions and screenshots.
+        var previousDpi = SetThreadDpiAwarenessContext(new IntPtr(-4));
+        if (previousDpi == IntPtr.Zero) throw new Exception("Cannot select physical DPI coordinates: " + Marshal.GetLastWin32Error());
+        try { return RunWithPhysicalCoordinates(library, helper, output); }
+        finally { SetThreadDpiAwarenessContext(previousDpi); }
+    }
+
+    static object RunWithPhysicalCoordinates(string library, string helper, string output) {
         var module = LoadLibraryW(library);
         if (module == IntPtr.Zero) throw new Exception("LoadLibraryW failed: " + Marshal.GetLastWin32Error());
         Process child = null;
@@ -164,22 +180,29 @@ public static class SnowNativeLaunchProbe {
             Rect bounds;
             if (!GetWindowRect(window, out bounds)) throw new Exception("Cannot inspect keymap bounds");
             bool centered = !hasTarget || Math.Abs((bounds.Left + bounds.Right) - (target.Left + target.Right)) <= 2 && Math.Abs((bounds.Top + bounds.Bottom) - (target.Top + target.Bottom)) <= 2;
-            bool sameForeground = GetForegroundWindow() == foreground;
-            // Wait for an actual keymap background pixel, rather than just window visibility.
+            // Observe the composed desktop without borrowing the helper's window DC while
+            // it paints. Cross-process GetDC(window)/ReleaseDC can interfere with its
+            // retained softbuffer DC during the first frame. Use physical coordinates
+            // throughout, and verify the sample belongs to this window before accepting it.
             bool painted = false;
             uint lastPixel = 0;
+            Point sample = new Point();
             while (watch.Elapsed.TotalSeconds < 10 && !painted) {
-                IntPtr dc = GetDC(window);
+                sample = new Point();
+                if (!ClientToScreen(window, ref sample)) throw new Exception("Cannot locate keymap client area");
+                sample.X += (bounds.Right - bounds.Left) / 2;
+                sample.Y += 10;
+                IntPtr dc = GetDC(IntPtr.Zero);
                 if (dc != IntPtr.Zero) {
-                    lastPixel = GetPixel(dc, (bounds.Right - bounds.Left) / 2, 10);
-                    painted = lastPixel == 0x00ecf2f5;
-                    ReleaseDC(window, dc);
+                    lastPixel = GetPixel(dc, sample.X, sample.Y);
+                    painted = lastPixel == 0x00ecf2f5 && WindowFromPoint(sample) == window;
+                    ReleaseDC(IntPtr.Zero, dc);
                 }
                 if (!painted) Thread.Sleep(5);
             }
+            bool sameForeground = GetForegroundWindow() == foreground;
             Rect client; GetClientRect(window, out client);
             var origin = new Point(); ClientToScreen(window, ref origin);
-            var sample = new Point { X = origin.X + (bounds.Right - bounds.Left) / 2, Y = origin.Y + 10 };
             // Diagnose only after the original paint assertion has reached its result.
             // A foreign window DC can expose clipping/desktop contents; record the screen
             // independently and do not let a diagnostic flush make the assertion pass.
@@ -194,6 +217,8 @@ public static class SnowNativeLaunchProbe {
                 screen_pixel_after_dwm = screenPixel.ToString("X"), window_clip_kind = windowClipKind,
                 window_clip = windowClip, screen_clip_kind = screenClipKind, screen_clip = screenClip,
                 foreground_changed_during_paint = GetForegroundWindow() != foreground,
+                thread_awareness = GetAwarenessFromDpiAwarenessContext(GetThreadDpiAwarenessContext()),
+                system_dpi = GetDpiForSystem(),
                 launch_ms = returned, visible_ms = visible, centered, same_foreground = sameForeground, painted };
             if (!painted) {
                 SaveClientBitmap(window, client, Path.Combine(output, "client.bmp"));
