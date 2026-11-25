@@ -95,14 +95,14 @@ menu.entries = {
   {
     schema_id = "snow_zhudao",
     name = "冰雪鹮道",
-    comment = "21¹26¹5⁴ 带调鹤道 键道形辅",
-    aliases = { "bxhd", "hd", "dthd", "ddhd", "dtdp", "jdxf", "bxhddtdpjdxf" },
+    comment = "21¹26¹5⁴ 带调鹤道 最低记忆",
+    aliases = { "bxhd", "hd", "dthd", "ddhd", "dtdp", "jdxf", "bxhddtdpjdxf", "zdjy", "bxhddthdzdjy" },
   },
   {
     schema_id = "snow_jiandao_toned",
     name = "冰雪莲道",
-    comment = "21²5⁴ 带调兰道 性能之王",
-    aliases = { "bxld", "ld", "dtld", "ddld", "dtjd", "ddjd", "zmhd", "bxlddtjdzmhd" },
+    comment = "21²5⁴ 带调兰道 字词均衡",
+    aliases = { "bxld", "ld", "dtld", "ddld", "dtjd", "ddjd", "zmhd", "bxlddtjdzmhd", "zcjh", "bxlddtldzcjh" },
   },
 }
 
