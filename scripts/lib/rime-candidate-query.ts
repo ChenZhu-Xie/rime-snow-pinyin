@@ -9,6 +9,7 @@ export interface RimeCandidateQueryDriver {
 export function queryRimeCandidates(
 	code: string,
 	driver: RimeCandidateQueryDriver,
+	observePrefix?: (code: string, result: { candidates: string[]; commit: string; completed: boolean }) => void,
 ): { candidates: string[]; commit: string; completed: boolean } {
 	driver.clearComposition();
 	if (driver.takeCommit() !== "")
@@ -25,6 +26,9 @@ export function queryRimeCandidates(
 		);
 		result = driver.readCandidates();
 		const commit = driver.takeCommit();
+		observePrefix?.(code.slice(0, index + 1), {
+			candidates: commit ? [] : [...result], commit, completed: true,
+		});
 		if (commit !== "")
 			return { candidates: [], commit, completed: index === code.length - 1 };
 	}

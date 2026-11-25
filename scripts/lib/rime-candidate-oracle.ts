@@ -39,6 +39,7 @@ const definitions = {
 		args: [FFIType.u64, FFIType.cstring],
 		returns: FFIType.int,
 	},
+	RimeSetOption: { args: [FFIType.u64, FFIType.cstring, FFIType.int], returns: FFIType.void },
 } as const;
 
 type RimeLibrary = Library<typeof definitions>;
@@ -138,7 +139,7 @@ function writeReadOnlyPatch(directory: string, schema: string): void {
 	writeFileSync(
 		join(directory, `${schema}.custom.yaml`),
 		"patch:\n" +
-			["translator", "jianpin", "initial_pair", "shenyun", "pinyin"]
+			["translator", "qingyun", "jianpin", "initial_pair", "shenyun", "pinyin"]
 				.flatMap((namespace) => [
 					`  ${namespace}/enable_user_dict: false`,
 					`  ${namespace}/enable_schema_user_dict: false`,
@@ -292,12 +293,17 @@ export class RimeCandidateOracle {
 	private cacheAudits = 0;
 	private rejectedQueries = 0;
 	private schema = "";
+	private queryOptions: Record<string, boolean> = {};
 
 	constructor(
 		schemas: string[],
 		options: {
 			externalSbxhDirectory?: string;
 			externalSbxhReverseWords?: readonly string[];
+			/** 实验用独立缓存目录，避免多进程同时追加同一文件。 */
+			cacheRoot?: string;
+			/** 已部署只读快照的根目录；每进程复制到独立临时目录。 */
+			compiledCacheRoot?: string;
 		} = {},
 	) {
 		const dll = findRimeDll();
@@ -313,12 +319,9 @@ export class RimeCandidateOracle {
 			);
 		else prepareData(this.dataDirectory, shared, schemas);
 		const fingerprint = dataFingerprint(this.dataDirectory, dll);
-		this.persistentCacheDirectory = join(
-			ROOT,
-			"output",
-			"benchmark-rime-cache",
-			fingerprint,
-		);
+		this.persistentCacheDirectory = join(options.cacheRoot ?? join(ROOT, "output", "benchmark-rime-cache"), fingerprint);
+		const compiled = options.compiledCacheRoot ? join(options.compiledCacheRoot, fingerprint) : undefined;
+		if (compiled && existsSync(join(compiled, "build"))) cpSync(join(compiled, "build"), join(this.dataDirectory, "build"), { recursive: true });
 		mkdirSync(this.persistentCacheDirectory, { recursive: true });
 		this.originalDirectory = process.cwd();
 		process.chdir(this.dataDirectory);
@@ -337,6 +340,10 @@ export class RimeCandidateOracle {
 		this.library.symbols.RimeInitialize(null);
 		if (this.library.symbols.RimeStartMaintenance(1))
 			this.library.symbols.RimeJoinMaintenanceThread();
+		if (compiled && !existsSync(join(compiled, "build"))) {
+			mkdirSync(compiled, { recursive: true });
+			cpSync(join(this.dataDirectory, "build"), join(compiled, "build"), { recursive: true });
+		}
 		this.session = this.library.symbols.RimeCreateSession();
 		if (!this.session) throw new Error("无法建立空白 Rime benchmark 会话");
 	}
@@ -419,6 +426,21 @@ export class RimeCandidateOracle {
 	}
 
 	private queryFresh(code: string): Omit<PersistentCacheRecord, "code"> {
+		return this.observeUncached(code);
+	}
+
+	/** 对照实验可要求每条路径新建会话，并收集沿途前缀。 */
+	observeUncached(
+		code: string,
+		freshSession = false,
+		observePrefix?: Parameters<typeof queryRimeCandidates>[2],
+	): Omit<PersistentCacheRecord, "code"> {
+		if (freshSession) {
+			this.library.symbols.RimeDestroySession(this.session);
+			this.session = this.library.symbols.RimeCreateSession();
+			if (!this.session || !this.library.symbols.RimeSelectSchema(this.session, cString(this.schema))) throw new Error("无法建立独立查询会话");
+			this.setOptions(this.queryOptions);
+		}
 		return queryRimeCandidates(code, {
 			clearComposition: () =>
 				this.library.symbols.RimeClearComposition(this.session),
@@ -427,7 +449,12 @@ export class RimeCandidateOracle {
 			},
 			readCandidates: () => this.readCandidates(),
 			takeCommit: () => this.takeCommit(),
-		});
+		}, observePrefix);
+	}
+
+	setOptions(options: Record<string, boolean>): void {
+		this.queryOptions = { ...options };
+		for (const [name, value] of Object.entries(options)) this.library.symbols.RimeSetOption(this.session, cString(name), Number(value));
 	}
 
 	/** 命中缓存后仍独立实查首尾样本，防止稳定复现错误缓存。 */

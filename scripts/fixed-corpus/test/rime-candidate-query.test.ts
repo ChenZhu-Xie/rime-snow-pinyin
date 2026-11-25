@@ -2,6 +2,23 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { queryRimeCandidates } from "../../lib/rime-candidate-query";
 
+test("前缀观测在提前上屏处终止，并保存独立的候选数组", () => {
+	let typed = "";
+	const observations: Array<[string, unknown]> = [];
+	const candidates = ["首选"];
+	queryRimeCandidates("abcd", {
+		clearComposition() {},
+		processKey(key) { typed += String.fromCodePoint(key); },
+		readCandidates: () => candidates,
+		takeCommit: () => typed === "ab" ? "提交" : "",
+	}, (code, result) => observations.push([code, result]));
+	candidates[0] = "后续变化";
+	assert.deepEqual(observations, [
+		["a", { candidates: ["首选"], commit: "", completed: true }],
+		["ab", { candidates: [], commit: "提交", completed: true }],
+	]);
+});
+
 test("候选查询逐键读取并传入物理 Shift，禁止只读最终一页", () => {
 	const events: string[] = [];
 	const result = queryRimeCandidates("xKd", {
