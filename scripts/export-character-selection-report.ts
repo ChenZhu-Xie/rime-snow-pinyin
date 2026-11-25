@@ -385,12 +385,21 @@ const sourceCounts: Record<string, number> = {};
 for (const map of choices)
 	for (const choice of map.values())
 		sourceCounts[choice.source] = (sourceCounts[choice.source] ?? 0) + 1;
+const fullyObserved = ALL_BENCHMARK_SCHEMES.every((expected) => {
+	const scheme = schemes.find((s: any) => s.id === expected.id);
+	return (
+		scheme?.observedTargets === 8000 &&
+		scheme.cohorts[8000].unresolved.length === 0
+	);
+});
 const markdown = [
-	"# 十二方案单字键数（无首选时加一键选重）",
+	"# 十二方案单字键数（优先无选重，计入翻页）",
 	"",
 	"优先无选重：只要在枚举路径中找到首选，就使用最短首选路径，即使选重路径更短；仅未找到首选时，采用已验证候选中最短的选重路径。选重加一键，翻页每次加一键（六候选页），首选不计确认空格。均键按字等权，选重比例以当前前m字为分母。冰雪方案无候选证据的字记为 NA，不用词典码路估算；含此类字的总体均键显示待核实，键数分布之和也相应少于 m。外部方案保留原资料来源。最短性限于已枚举路径。原始首选 TSV 保留。",
 	"",
-	`本表是实测与预测混合的修订稿，共 96000 个方案—字记录。首选实测 ${sourceCounts["空词典引擎观测"] ?? 0} 条，首页选重候选实测 ${sourceCounts["实测候选＋理想选重一键"] ?? 0} 条；其他行保留各自来源，不是全量通过验证。采集生产提交：${meta.engineRevision}。`,
+	fullyObserved
+		? `十个冰雪方案各 8000 字均有空词典逐键引擎证据，声笔小鹤、小鹤音形沿用原资料；共 96000 个方案—字记录。首选实测 ${sourceCounts["空词典引擎观测"] ?? 0} 条，首页选重实测 ${sourceCounts["实测候选＋理想选重一键"] ?? 0} 条，后续页选重实测 ${sourceCounts["实测后续页候选＋翻页及选重"] ?? 0} 条。采集生产提交：${meta.engineRevision}。`
+		: `本表是实测与预测混合的修订稿，共 96000 个方案—字记录。首选实测 ${sourceCounts["空词典引擎观测"] ?? 0} 条，首页选重候选实测 ${sourceCounts["实测候选＋理想选重一键"] ?? 0} 条；其他行保留各自来源，不是全量通过验证。采集生产提交：${meta.engineRevision}。`,
 	"",
 ];
 for (const n of cohorts) {
@@ -436,7 +445,9 @@ writeOutput(
 			selectionCost: 1,
 			pageCost: 1,
 			pageSize: 6,
-			validationStatus: "mixed-unverified-selection-routes",
+			validationStatus: fullyObserved
+				? "observed-enumerated-routes-with-retained-external-data"
+				: "mixed-unverified-selection-routes",
 			sourceCounts,
 			parentEngineRevision: meta.engineRevision,
 			parentRuntime: meta.runtime,

@@ -64,8 +64,22 @@ const basename = "8000字_十二方案最短首选键数";
 const previous = JSON.parse(
 	readFileSync(join(old, `${basename}.json`), "utf8"),
 );
-const refreshedBaseline = process.argv.includes("--current-baseline");
-if (refreshedBaseline) {
+const fullRefresh = process.argv.includes("--full-refresh");
+const refreshedBaseline =
+	process.argv.includes("--current-baseline") || fullRefresh;
+if (fullRefresh) {
+	// 旧表只提供固定字频顺序与外部方案资料；十个冰雪方案必须全部有新证据。
+	for (const scheme of ALL_BENCHMARK_SCHEMES) {
+		const result = audit.results.find((r) => r.schema === scheme.schemaId);
+		assert.equal(
+			result?.characters.length,
+			8000,
+			`全量刷新缺少 ${scheme.schemaId}`,
+		);
+		assert.equal(new Set(result?.characters.map((r) => r.text)).size, 8000);
+	}
+}
+if (process.argv.includes("--current-baseline")) {
 	for (const [file, digest] of Object.entries(previous.sources)) {
 		const content = readFileSync(rootPath(file));
 		assert.ok(

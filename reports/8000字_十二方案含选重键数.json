@@ -1,33 +1,34 @@
 {
   "contract": "character-selection-hybrid-v4",
   "selectionCost": 1,
-  "validationStatus": "mixed-unverified-selection-routes",
+  "pageCost": 1,
+  "pageSize": 6,
+  "validationStatus": "observed-enumerated-routes-with-retained-external-data",
   "sourceCounts": {
-    "空词典引擎观测": 78805,
-    "实测候选＋理想选重一键": 1009,
-    "停用过滤器后空词典引擎观测": 35,
-    "实测后续页候选＋翻页及选重": 133,
+    "空词典引擎观测": 78862,
+    "实测候选＋理想选重一键": 996,
+    "实测后续页候选＋翻页及选重": 142,
     "离线未验证": 15709,
     "声笔发布码表（选重可达性未实测）": 16,
-    "用户实敲核对：末尾分号为次选键": 2,
-    "小鹤发布码表（理想选重一键）": 273
+    "小鹤发布码表（理想选重一键）": 273,
+    "用户实敲核对：末尾分号为次选键": 2
   },
-  "parentEngineRevision": "5423e381777dc5fae358e773205243468c047e15",
+  "parentEngineRevision": "c21efd84ac2f1d334fa77c2e4919d982c8c3dcf4",
   "parentRuntime": "local-dll-prefix-batch",
-  "parentSha256": "ad79e46d0abc3d9521faccc6f46fa4ec8f36033e5fd2cbcd6f02cb80ed12ce4e",
+  "parentSha256": "ad0b184c5674b7ec6b8994088a4f5b547ebb48cb47fb9d6a506b75d055b0630a",
   "sources": {
     "D:\\C2D\\Documents\\rime-snow-pinyin\\snow_pinyin.dict.yaml": "b1fb4d15c45aa0eb20d6f4c1b51c8cf040ca0698b42c6f3d720efd6d97718981",
     "D:\\C2D\\Documents\\rime-snow-pinyin\\snow_qingyun.dict.yaml": "3a47f2348100c4666703fe53976638d3d098d526f82d6ff15155e2a09b07535a",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_sipin\\results\\observations.jsonl": "99b10e7e0f87a1b0352965940d602ba27d5625634e1379d440e2334e3c2ac6f5",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_jiandao\\results\\observations.jsonl": "611854a0abe8be49ac771a5c2a1b6b86d353ca35f8c90e6419f4835b00551dbb",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_sanpin\\results\\observations.jsonl": "199e063c444e5fab707a7dc9d46025030e2a97f4ff3caf317e18ac65e3ff60ed",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_qingyun\\results\\observations.jsonl": "aab4075b2f83b7c1010ee84de6db5a0b8b60247fe53cab89fafb109d638bc6a0",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_shenyun_shape\\results\\observations.jsonl": "39f7f27baa76c721a13ac0e79575fae8e5c46540356ad28d8fc10dcda227bef7",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_shenyun_tone\\results\\observations.jsonl": "a56a56e7de4ff13ca8aa3ace54744dfdd0f6351f4c6c408cdfea64265a10e20e",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_jiandao_toned\\results\\observations.jsonl": "63692965ae5a285c30cf72b3f7d494cda15886dbe5bd0f0280106720c7f8add9",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_zhudao\\results\\observations.jsonl": "06793dddc8c376dd04a3ff794808527bc4a6bf7d92d5219c79011b849ae90129",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_jiandao_classic\\results\\observations.jsonl": "4993af7ecb2f5ac6bc9c4dd53c53a3584496043a154ca8b61e7dd97d0fa3d330",
-    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-local\\run\\snow_sanpin_classic\\results\\observations.jsonl": "a97d954a0344067e38f5f9b6990274a84a00790b02855ff6848faa020de476d1",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_sipin\\results\\observations.jsonl": "8a299890ba44f96e438dd147139b848f0a1064c2f65dcb2d6f2c9a94a6c8084e",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_jiandao\\results\\observations.jsonl": "6744ea717082f76f0ff63e2c4c5c7e0ba7f120e3804b9fceb0d44a9828c8daec",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_sanpin\\results\\observations.jsonl": "7a552121e9fc6c2a7b5237cf22561df7aa34eff10bd2e4dbf31bd7f88c32cf58",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\expanded\\snow_qingyun\\results\\observations.jsonl": "f0c20586ff332d3926ad7ee23b9a51e7ccdae71a2beb9811b0050bfe10bcfd7e",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_shenyun_shape\\results\\observations.jsonl": "2361a0e64dfa13e731bec3420ea54ef8fded3d03bee2e2ee96e6bd823101b999",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_shenyun_tone\\results\\observations.jsonl": "158ae8524a4d01d25c60ec7509cf2f4805aeb27ce556c91f393fb8f874d692ad",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_jiandao_toned\\results\\observations.jsonl": "69be78207f411a425051c5cce3768446a9e2e6b3cd037804bd1e3298ed006007",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_zhudao\\results\\observations.jsonl": "b89bc88c06c7007289426634780c5aba6976391945fedfa170c9336f780e8292",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_jiandao_classic\\results\\observations.jsonl": "98d3681b0eb6de74b7c1d1a362af4e5eca998e2f90c7de4ba2ed7942896f980a",
+    "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-full-current\\run\\snow_sanpin_classic\\results\\observations.jsonl": "f93eb8c5f29db0d3bc92bf8557eef0d1d1abe47946dbc2777f9548a1519db01a",
     "C:\\Users\\Xcz\\AppData\\Roaming\\Rime\\sbxh.dict.yaml": "1f0b0ce7242fd420eca61d01bd0b75c1ba0394744550fa0318dad209f5a79962",
     "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\character-first-choice\\sbxh-extended.tsv": "6cfe4b798463d535b84e3f0c9560df697ccfced472595e1acd6e2c0d5ffcb290",
     "C:\\Program Files\\WindInput\\data_custom\\schemas\\flypy\\00_xh.wdat": "6e70e5aca89ec8deab473457f6f4ac679f916ee4ec47f253a550f88114bc9504",
@@ -2407,72 +2408,72 @@
         },
         "3000": {
           "count": 3000,
-          "mean": 3.4873333333333334,
+          "mean": 3.4876666666666667,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 349,
             "3": 1116,
-            "4": 1191,
-            "5": 302,
+            "4": 1190,
+            "5": 303,
             "6": 20
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.656,
+          "mean": 3.65675,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 353,
             "3": 1288,
-            "4": 1701,
-            "5": 588,
-            "6": 48
+            "4": 1699,
+            "5": 589,
+            "6": 49
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.8006,
+          "mean": 3.8014,
           "selection": 5,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 353,
             "3": 1415,
-            "4": 2126,
-            "5": 978,
-            "6": 106
+            "4": 2123,
+            "5": 980,
+            "6": 107
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.9235,
+          "mean": 3.9243333333333332,
           "selection": 14,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 354,
             "3": 1505,
-            "4": 2515,
-            "5": 1388,
-            "6": 216
+            "4": 2512,
+            "5": 1389,
+            "6": 218
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.115125,
+          "mean": 4.116,
           "selection": 40,
           "unresolved": [],
           "distribution": {
             "1": 22,
             "2": 354,
             "3": 1610,
-            "4": 3198,
-            "5": 2327,
-            "6": 489
+            "4": 3194,
+            "5": 2328,
+            "6": 492
           }
         }
       },
@@ -2678,141 +2679,129 @@
         },
         "1000": {
           "count": 1000,
-          "mean": 2.821,
+          "mean": 2.819,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 297,
-            "3": 528,
-            "4": 143,
-            "5": 8,
-            "8": 1
+            "3": 527,
+            "4": 144,
+            "5": 9
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 3.0673333333333335,
+          "mean": 3.0653333333333332,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 327,
-            "3": 727,
-            "4": 377,
-            "5": 43,
-            "6": 2,
-            "8": 1
+            "3": 725,
+            "4": 380,
+            "5": 44,
+            "6": 1
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.2675,
-          "selection": 1,
+          "mean": 3.265,
+          "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 340,
-            "3": 857,
-            "4": 653,
-            "5": 117,
-            "6": 8,
-            "8": 2
+            "3": 854,
+            "4": 657,
+            "5": 119,
+            "6": 7
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.579,
-          "selection": 2,
+          "mean": 3.578666666666667,
+          "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 347,
-            "3": 1001,
-            "4": 1202,
-            "5": 368,
-            "6": 51,
+            "3": 994,
+            "4": 1206,
+            "5": 373,
+            "6": 52,
             "7": 4,
-            "8": 3,
-            "11": 1
+            "8": 1
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.8145,
+          "mean": 3.8105,
+          "selection": 1,
+          "unresolved": [],
+          "distribution": {
+            "1": 23,
+            "2": 353,
+            "3": 1057,
+            "4": 1686,
+            "5": 711,
+            "6": 152,
+            "7": 14,
+            "8": 3,
+            "9": 1
+          }
+        },
+        "5000": {
+          "count": 5000,
+          "mean": 3.9998,
           "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 353,
-            "3": 1065,
-            "4": 1683,
-            "5": 703,
-            "6": 149,
-            "7": 14,
-            "8": 5,
-            "9": 2,
-            "11": 2,
-            "15": 1
-          }
-        },
-        "5000": {
-          "count": 5000,
-          "mean": 4.0054,
-          "selection": 4,
-          "unresolved": [],
-          "distribution": {
-            "1": 23,
-            "2": 353,
-            "3": 1107,
-            "4": 2075,
-            "5": 1085,
-            "6": 289,
-            "7": 49,
-            "8": 10,
-            "9": 4,
-            "11": 4,
-            "15": 1
+            "3": 1097,
+            "4": 2080,
+            "5": 1094,
+            "6": 295,
+            "7": 48,
+            "8": 7,
+            "9": 3
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 4.1531666666666665,
-          "selection": 4,
+          "mean": 4.148833333333333,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 354,
-            "3": 1138,
-            "4": 2411,
-            "5": 1496,
-            "6": 448,
+            "3": 1127,
+            "4": 2416,
+            "5": 1503,
+            "6": 458,
             "7": 103,
-            "8": 17,
-            "9": 4,
-            "10": 1,
-            "11": 4,
-            "15": 1
+            "8": 12,
+            "9": 3,
+            "10": 1
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.40525,
-          "selection": 4,
+          "mean": 4.40025,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 354,
-            "3": 1173,
-            "4": 2899,
-            "5": 2329,
-            "6": 920,
-            "7": 233,
-            "8": 43,
-            "9": 15,
-            "10": 4,
-            "11": 6,
-            "15": 1
+            "3": 1162,
+            "4": 2903,
+            "5": 2333,
+            "6": 938,
+            "7": 234,
+            "8": 38,
+            "9": 12,
+            "10": 3
           }
         }
       },
@@ -3324,56 +3313,56 @@
         },
         "1500": {
           "count": 1500,
-          "mean": 2.993333333333333,
+          "mean": 2.9926666666666666,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
             "3": 735,
-            "4": 338,
-            "5": 34
+            "4": 339,
+            "5": 33
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.155,
+          "mean": 3.1545,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 383,
             "3": 937,
-            "4": 578,
-            "5": 76,
+            "4": 579,
+            "5": 75,
             "6": 3
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.4066666666666667,
+          "mean": 3.407,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 393,
             "3": 1206,
-            "4": 1109,
-            "5": 257,
+            "4": 1108,
+            "5": 258,
             "6": 12
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.5815,
+          "mean": 3.58175,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
             "3": 1381,
-            "4": 1659,
-            "5": 498,
+            "4": 1658,
+            "5": 499,
             "6": 39
           }
         },
@@ -3393,16 +3382,16 @@
         },
         "6000": {
           "count": 6000,
-          "mean": 3.8415,
+          "mean": 3.8413333333333335,
           "selection": 9,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
             "3": 1609,
-            "4": 2605,
-            "5": 1199,
-            "6": 164
+            "4": 2607,
+            "5": 1196,
+            "6": 165
           }
         },
         "8000": {
@@ -3414,9 +3403,9 @@
             "1": 23,
             "2": 400,
             "3": 1718,
-            "4": 3439,
-            "5": 2039,
-            "6": 381
+            "4": 3440,
+            "5": 2037,
+            "6": 382
           }
         }
       },
@@ -4572,7 +4561,7 @@
         },
         "1000": {
           "count": 1000,
-          "mean": 2.785,
+          "mean": 2.783,
           "selection": 0,
           "unresolved": [],
           "distribution": {
@@ -4580,43 +4569,40 @@
             "2": 329,
             "3": 499,
             "4": 140,
-            "5": 8,
-            "7": 1
+            "5": 9
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 3.030666666666667,
+          "mean": 3.0286666666666666,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
             "3": 699,
-            "4": 359,
+            "4": 360,
             "5": 45,
-            "6": 3,
-            "7": 1
+            "6": 3
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.24,
+          "mean": 3.237,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 383,
             "3": 828,
-            "4": 636,
+            "4": 638,
             "5": 119,
-            "6": 9,
-            "7": 2
+            "6": 9
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.553,
+          "mean": 3.550666666666667,
           "selection": 1,
           "unresolved": [],
           "distribution": {
@@ -4624,16 +4610,15 @@
             "2": 393,
             "3": 985,
             "4": 1168,
-            "5": 374,
-            "6": 50,
-            "7": 5,
-            "8": 1,
-            "10": 1
+            "5": 375,
+            "6": 52,
+            "7": 3,
+            "8": 1
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.7865,
+          "mean": 3.78275,
           "selection": 1,
           "unresolved": [],
           "distribution": {
@@ -4641,66 +4626,64 @@
             "2": 400,
             "3": 1058,
             "4": 1647,
-            "5": 704,
-            "6": 146,
-            "7": 16,
-            "8": 3,
-            "9": 1,
-            "10": 2
+            "5": 706,
+            "6": 150,
+            "7": 13,
+            "8": 2,
+            "9": 1
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.9756,
+          "mean": 3.9718,
           "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
             "3": 1105,
-            "4": 2044,
-            "5": 1085,
-            "6": 281,
-            "7": 50,
-            "8": 7,
-            "9": 3,
-            "10": 2
+            "4": 2042,
+            "5": 1092,
+            "6": 285,
+            "7": 44,
+            "8": 6,
+            "9": 3
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 4.120666666666667,
+          "mean": 4.118833333333333,
           "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1150,
-            "4": 2388,
-            "5": 1483,
-            "6": 436,
-            "7": 102,
-            "8": 11,
+            "3": 1149,
+            "4": 2385,
+            "5": 1487,
+            "6": 445,
+            "7": 96,
+            "8": 10,
             "9": 4,
-            "10": 3
+            "10": 1
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.3705,
+          "mean": 4.368375,
           "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1193,
-            "4": 2913,
-            "5": 2287,
-            "6": 893,
-            "7": 236,
-            "8": 36,
+            "3": 1192,
+            "4": 2910,
+            "5": 2291,
+            "6": 906,
+            "7": 228,
+            "8": 33,
             "9": 13,
-            "10": 6
+            "10": 4
           }
         }
       },
@@ -6203,86 +6186,86 @@
         },
         "2000": {
           "count": 2000,
-          "mean": 3.1795,
+          "mean": 3.18,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 404,
-            "3": 837,
-            "4": 664,
+            "3": 836,
+            "4": 665,
             "5": 71,
             "6": 1
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.3956666666666666,
+          "mean": 3.3966666666666665,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 418,
-            "3": 1148,
-            "4": 1186,
-            "5": 210,
+            "3": 1146,
+            "4": 1187,
+            "5": 211,
             "6": 15
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.56025,
+          "mean": 3.56125,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 424,
-            "3": 1345,
+            "3": 1343,
             "4": 1741,
-            "5": 431,
+            "5": 433,
             "6": 36
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.697,
+          "mean": 3.698,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 428,
-            "3": 1506,
+            "3": 1504,
             "4": 2200,
-            "5": 770,
-            "6": 73
+            "5": 771,
+            "6": 74
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.8118333333333334,
+          "mean": 3.813,
           "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 430,
-            "3": 1626,
-            "4": 2632,
-            "5": 1152,
-            "6": 137
+            "3": 1624,
+            "4": 2631,
+            "5": 1153,
+            "6": 139
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 3.993625,
+          "mean": 3.994875,
           "selection": 19,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 431,
-            "3": 1771,
-            "4": 3441,
-            "5": 2017,
-            "6": 317
+            "3": 1769,
+            "4": 3438,
+            "5": 2019,
+            "6": 320
           }
         }
       },
@@ -6453,110 +6436,110 @@
         },
         "1000": {
           "count": 1000,
-          "mean": 2.643,
+          "mean": 2.642,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 405,
-            "3": 480,
-            "4": 90,
+            "3": 481,
+            "4": 89,
             "5": 2
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 2.828666666666667,
+          "mean": 2.828,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 455,
-            "3": 787,
-            "4": 226,
+            "3": 788,
+            "4": 225,
             "5": 9
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 2.977,
+          "mean": 2.9765,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 480,
-            "3": 1044,
-            "4": 426,
+            "3": 1045,
+            "4": 425,
             "5": 27
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.2236666666666665,
+          "mean": 3.223333333333333,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 498,
-            "3": 1400,
-            "4": 949,
+            "3": 1401,
+            "4": 948,
             "5": 124,
             "6": 6
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.4025,
+          "mean": 3.40225,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 507,
-            "3": 1643,
-            "4": 1508,
+            "3": 1644,
+            "4": 1507,
             "5": 302,
             "6": 17
           }
         },
         "5000": {
           "count": 5000,
-          "mean": 3.5508,
+          "mean": 3.5506,
           "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 513,
-            "3": 1805,
+            "3": 1806,
             "4": 2046,
-            "5": 572,
-            "6": 41
+            "5": 570,
+            "6": 42
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 3.6685,
+          "mean": 3.6683333333333334,
           "selection": 4,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 514,
-            "3": 1947,
+            "3": 1948,
             "4": 2547,
-            "5": 883,
-            "6": 86
+            "5": 881,
+            "6": 87
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 3.84725,
+          "mean": 3.847,
           "selection": 14,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 514,
-            "3": 2137,
+            "3": 2138,
             "4": 3515,
-            "5": 1610,
+            "5": 1609,
             "6": 201
           }
         }
@@ -7927,159 +7910,99 @@
         },
         "1500": {
           "count": 1500,
-          "mean": null,
+          "mean": 3.1106666666666665,
           "selection": 0,
-          "unresolved": [
-            "於"
-          ],
+          "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 340,
             "3": 616,
-            "4": 489,
+            "4": 490,
             "5": 31
           }
         },
         "2000": {
           "count": 2000,
-          "mean": null,
+          "mean": 3.2395,
           "selection": 0,
-          "unresolved": [
-            "於",
-            "吒"
-          ],
+          "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 355,
             "3": 821,
-            "4": 723,
+            "4": 725,
             "5": 73,
             "6": 3
           }
         },
         "3000": {
           "count": 3000,
-          "mean": null,
+          "mean": 3.4683333333333333,
           "selection": 0,
-          "unresolved": [
-            "於",
-            "吒",
-            "乾"
-          ],
+          "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 362,
             "3": 1099,
-            "4": 1230,
-            "5": 271,
+            "4": 1231,
+            "5": 273,
             "6": 12
           }
         },
         "4000": {
           "count": 4000,
-          "mean": null,
+          "mean": 3.64025,
           "selection": 0,
-          "unresolved": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕"
-          ],
+          "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
             "3": 1269,
-            "4": 1739,
-            "5": 552,
+            "4": 1740,
+            "5": 557,
             "6": 41
           }
         },
         "5000": {
           "count": 5000,
-          "mean": null,
+          "mean": 3.784,
           "selection": 5,
-          "unresolved": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
-            "徵",
-            "釐",
-            "氾",
-            "蒐"
-          ],
+          "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1403,
-            "4": 2169,
-            "5": 926,
+            "3": 1402,
+            "4": 2173,
+            "5": 933,
             "6": 99
           }
         },
         "6000": {
           "count": 6000,
-          "mean": null,
+          "mean": 3.9088333333333334,
           "selection": 12,
-          "unresolved": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
-            "徵",
-            "釐",
-            "氾",
-            "蒐",
-            "夥",
-            "甦",
-            "脩"
-          ],
+          "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1500,
-            "4": 2554,
-            "5": 1331,
-            "6": 209
+            "3": 1499,
+            "4": 2557,
+            "5": 1341,
+            "6": 210
           }
         },
         "8000": {
           "count": 8000,
-          "mean": null,
+          "mean": 4.102,
           "selection": 37,
-          "unresolved": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
-            "徵",
-            "釐",
-            "氾",
-            "蒐",
-            "夥",
-            "甦",
-            "脩",
-            "薳",
-            "薹",
-            "陞",
-            "爇",
-            "苧"
-          ],
+          "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1601,
-            "4": 3268,
-            "5": 2235,
-            "6": 485
+            "3": 1599,
+            "4": 3271,
+            "5": 2250,
+            "6": 487
           }
         }
       },
@@ -8466,142 +8389,130 @@
         },
         "1000": {
           "count": 1000,
-          "mean": 2.816,
+          "mean": 2.814,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 308,
-            "3": 512,
-            "4": 147,
-            "5": 9,
-            "8": 1
+            "3": 511,
+            "4": 148,
+            "5": 10
           }
         },
         "1500": {
           "count": 1500,
-          "mean": 3.052,
+          "mean": 3.0493333333333332,
           "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 343,
-            "3": 719,
-            "4": 368,
-            "5": 44,
-            "6": 2,
-            "8": 1
+            "3": 718,
+            "4": 370,
+            "5": 45,
+            "6": 1
           }
         },
         "2000": {
           "count": 2000,
-          "mean": 3.255,
-          "selection": 1,
+          "mean": 3.252,
+          "selection": 0,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 355,
-            "3": 854,
-            "4": 641,
-            "5": 116,
-            "6": 8,
-            "7": 1,
-            "8": 2
+            "3": 852,
+            "4": 644,
+            "5": 118,
+            "6": 7,
+            "7": 1
           }
         },
         "3000": {
           "count": 3000,
-          "mean": 3.5606666666666666,
-          "selection": 2,
+          "mean": 3.5596666666666668,
+          "selection": 1,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 363,
-            "3": 1013,
-            "4": 1185,
-            "5": 358,
-            "6": 49,
+            "3": 1007,
+            "4": 1189,
+            "5": 362,
+            "6": 50,
             "7": 5,
-            "8": 3,
-            "11": 1
+            "8": 1
           }
         },
         "4000": {
           "count": 4000,
-          "mean": 3.79725,
+          "mean": 3.7925,
+          "selection": 1,
+          "unresolved": [],
+          "distribution": {
+            "1": 23,
+            "2": 370,
+            "3": 1073,
+            "4": 1670,
+            "5": 697,
+            "6": 150,
+            "7": 14,
+            "8": 2,
+            "9": 1
+          }
+        },
+        "5000": {
+          "count": 5000,
+          "mean": 3.981,
           "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1080,
-            "4": 1666,
-            "5": 691,
-            "6": 147,
-            "7": 14,
-            "8": 4,
-            "9": 2,
-            "11": 2,
-            "15": 1
-          }
-        },
-        "5000": {
-          "count": 5000,
-          "mean": 3.987,
-          "selection": 4,
-          "unresolved": [],
-          "distribution": {
-            "1": 23,
-            "2": 370,
-            "3": 1131,
-            "4": 2061,
-            "5": 1065,
-            "6": 282,
-            "7": 49,
-            "8": 10,
-            "9": 4,
-            "11": 4,
-            "15": 1
+            "3": 1122,
+            "4": 2066,
+            "5": 1073,
+            "6": 288,
+            "7": 48,
+            "8": 7,
+            "9": 3
           }
         },
         "6000": {
           "count": 6000,
-          "mean": 4.134666666666667,
-          "selection": 4,
+          "mean": 4.1305,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1169,
-            "4": 2397,
-            "5": 1472,
-            "6": 443,
-            "7": 101,
-            "8": 15,
-            "9": 4,
-            "10": 1,
-            "11": 4,
-            "15": 1
+            "3": 1159,
+            "4": 2402,
+            "5": 1476,
+            "6": 455,
+            "7": 100,
+            "8": 11,
+            "9": 3,
+            "10": 1
           }
         },
         "8000": {
           "count": 8000,
-          "mean": 4.38675,
-          "selection": 4,
+          "mean": 4.38225,
+          "selection": 2,
           "unresolved": [],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1207,
-            "4": 2904,
-            "5": 2291,
-            "6": 906,
-            "7": 234,
-            "8": 40,
-            "9": 15,
-            "10": 4,
-            "11": 5,
-            "15": 1
+            "3": 1197,
+            "4": 2908,
+            "5": 2293,
+            "6": 925,
+            "7": 233,
+            "8": 36,
+            "9": 12,
+            "10": 3
           }
         }
       },
@@ -8925,61 +8836,5 @@
       },
       "observedTargets": 0
     }
-  ],
-  "supplementalEvidence": {
-    "schema": "snow_qingyun",
-    "targets": 130,
-    "sourceRevision": "399b1b01342cb7e1f05fccf5c1854b5bdbc0592e",
-    "upstreamRevision": "99c1d6010ff7252175f2b373f05ff30e9541f3c3",
-    "firstPageOverlap": 405,
-    "firstPageDifferences": 0,
-    "sha256": "624c62b7d44ec392b1c4ed7582a0f2639fe258a6177c8dbe857091e932c91deb",
-    "audit": "清韵130字可达性审计.tsv",
-    "selectionCost": 1,
-    "pageCost": 1,
-    "shorterSelections": [
-      {
-        "text": "猿",
-        "code": "y;",
-        "rank": 10,
-        "keys": 4
-      },
-      {
-        "text": "鲀",
-        "code": "t.",
-        "rank": 11,
-        "keys": 4
-      },
-      {
-        "text": "坉",
-        "code": "t.",
-        "rank": 12,
-        "keys": 4
-      }
-    ]
-  },
-  "pageCost": 1,
-  "pageSize": 6,
-  "filterDisabledSupplement": {
-    "evidence": [
-      {
-        "schema": "snow_jiandao",
-        "targets": 17,
-        "revision": "29157703c87db4f39cb0dbe6c86fd373aceb7ec2",
-        "inputSha256": "ea0e99a037ef0a86a3aeeda678e26147a0fde3756d11449df30a88c5c99e6a26",
-        "observationsSha256": "e73017b9bd2b5c0d0161b5cff332362fae32cf9cfecbae7a3404a428ffff0d80",
-        "resultSha256": "4f4c63579d524ff28c4224ddeb89ae085cae5423f1673715bcd8af0a8fcdaf71"
-      },
-      {
-        "schema": "snow_jiandao_toned",
-        "targets": 18,
-        "revision": "29157703c87db4f39cb0dbe6c86fd373aceb7ec2",
-        "inputSha256": "5fd9b83900db533c5e204255dd7330f6794f3ab4fcad641b3119076b822fcf66",
-        "observationsSha256": "ab4ad46e078a02cfd7ce3ef3d2253c10146954d938c0cf7eaf4c6c9c438c4fce",
-        "resultSha256": "e908989b59d9ee6e458c8443ac6d6174aeebd9c513f482e6d684a6f3dfec693d"
-      }
-    ],
-    "audit": "兰道莲道35字可达性复核.tsv",
-    "scope": "只补测此前 NA 的 35 字，其余字沿用原观测；非停用过滤器后的全量重算"
-  }
+  ]
 }

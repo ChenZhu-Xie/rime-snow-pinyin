@@ -1,8 +1,8 @@
 {
   "contract": "character-first-choice-hybrid-v3",
   "validationStatus": "observed-enumerated-routes-with-external-baselines",
-  "engineRevision": "5423e381777dc5fae358e773205243468c047e15",
-  "baselineSha256": "1e284295991ba58c8b97e1ebaf8bd43b01c50766f668b208c07e6fa725f1604e",
+  "engineRevision": "c21efd84ac2f1d334fa77c2e4919d982c8c3dcf4",
+  "baselineSha256": "ad79e46d0abc3d9521faccc6f46fa4ec8f36033e5fd2cbcd6f02cb80ed12ce4e",
   "runtime": "local-dll-prefix-batch",
   "sources": {
     "snow_bihua.dict.yaml": "2b026f07140456729b2978c595a3f74ee47bcb9bc4c35a7488616046928df02d",
@@ -10,12 +10,12 @@
     "snow_bushou.dict.yaml": "664eedf9f1768106144a993c0d51de513983973c0858bba834bc5dbb73882575",
     "snow_bushou.schema.yaml": "10c1fb823442a70ac96597c80b40163374e344ffd8ef18a29c351cc3a4ceb164",
     "snow_jiandao.fixed.txt": "44d1601d2eff4fb1f8723d91a568309fd9c0fdf3fa2ddc8ed68dc1d7aa7aa403",
-    "snow_jiandao.schema.yaml": "818bde66adc96718414008d3739d6724cea35330f2b4f4dacd1c03ea3f715bb3",
+    "snow_jiandao.schema.yaml": "4115634b15fe3c40dc41b4b4252cad50f47bca8b38c42fd71467541f4df1b720",
     "snow_jiandao_bihua.schema.yaml": "fb365f790621cf27ec58a99ee668001668fe2b9a0b88708604325d429f8ae166",
     "snow_jiandao_chaifen.dict.yaml": "102df3584c22409647c3c7300fe5b48a2826f4e263e8cd96e3e2f52c9c59907c",
     "snow_jiandao_chaifen.schema.yaml": "35a989da347e1a19d8cd3bc54180b19283f9c4ecb4507e7dc7703449646aa837",
     "snow_jiandao_classic.fixed.txt": "6088c852a55eac591aaa7dd6f1e78181d7750959e463cb8da78ea01bebff7e4e",
-    "snow_jiandao_classic.schema.yaml": "be5175e26789bc0700819c248c407afdd59011c6e69a3b3579ea8d3f5472c82a",
+    "snow_jiandao_classic.schema.yaml": "bd48fe57ceca30682aa0a838dcc39c6ea659bcad25058142b68cac3f893fec84",
     "snow_jiandao_classic_jianpin.schema.yaml": "134c6b6e97874430f065e804702328165d321dbd0238946ca72f2c6d44180736",
     "snow_jiandao_jianpin.schema.yaml": "6685ce92086599f160a7f56cb1618eb85ce44604b15c3341781cf1e93122616d",
     "snow_jiandao_toned.fixed.txt": "00e4090ca3a168d6765a00331f07dbe7139625eb6065296b9fa73f3381f98909",
@@ -26,7 +26,7 @@
     "snow_pinyin.base.dict.yaml": "6a43e1696489c996ab36f0dc1f05f30feeb15924f7a18a344110fbed9855f31e",
     "snow_pinyin.dict.yaml": "f27cb6c917c0f2c8ae9dedcb0962326afebc8150b8af90626e459a49686bdeeb",
     "snow_pinyin.ext.dict.yaml": "0f7a03f7c607dda580e3cc62e1126ce9dd23b4cfca197e4165b9ff54e8dfe0f2",
-    "snow_pinyin.schema.yaml": "5d3aa1f287a3a7e80b0cc9037f983e754da52c6f5ee6ab4cc3e2d25a5d23f3a0",
+    "snow_pinyin.schema.yaml": "dedda5125d1d99c1ca19688f49888ec07add658cd897e4f93fc1a98a65f31428",
     "snow_pinyin.tencent.dict.yaml": "13f0f84d82444dde95c6252df0daef3de77e8c3c3447c3049b3e6c2d115aa707",
     "snow_pinyin.user.dict.yaml": "d5d2694f4adb936691302120fbbd7dcb50d8d739ee2014be73fdd33f58180853",
     "snow_qingyun.dict.yaml": "1e4e28ddfe3939f02f23997b3b1ad00324aff28ec83a0baba711042476029fec",
@@ -36,11 +36,11 @@
     "snow_qingyun_chaifen.schema.yaml": "e2ea4cdc17ef615a01da27a8da02151f98c47bd3483661dc0d1bcc68a9526ca2",
     "snow_qingyun_xingma.schema.yaml": "0d64d712e28087ba0517b3a38b1dd0067ddbb6a086edc1dae263603cb1f385f1",
     "snow_sanpin.fixed.txt": "a7c90022d7a2be5a776dc1d4f5a08f9ff080a0f0809d99c5de2d7ce3120e1aba",
-    "snow_sanpin.schema.yaml": "71e5f99443a93b68cbeeb6a796993f648eae45119691802b7e56a067e061e68a",
+    "snow_sanpin.schema.yaml": "53da28f2203b7dfaf309f1d6b735a0cd5d97d6419c4cab0400bf3db090446e3b",
     "snow_sanpin_bihua.schema.yaml": "cc0fbc10a028f6cd83b7731f9e54125827ad67454a4782a3aa109b358103a4d5",
     "snow_sanpin_classic.fixed.txt": "48b7bfe2f9e4872001aaa636365611ab1829acbaa348d6b2f8947b39cf7c88b0",
-    "snow_sanpin_classic.schema.yaml": "f441d1a7f9ab563f175def16fab0f378336454e07320b88a36df36b16f8b4c77",
-    "snow_shenyun_common.yaml": "63374448bfb8aafe966a09b97d3161d00f9842eb17e6c90e08225cac73a61d46",
+    "snow_sanpin_classic.schema.yaml": "396291967f6b98e6e84020bbeaa13cc8ce7bdb6978cb21451c720bc7a8355dc1",
+    "snow_shenyun_common.yaml": "ccf29e19e03562d7c825f336ad11d80a88e0af2e7d0005bce32bd1261062a7fd",
     "snow_shenyun_shape.fixed.txt": "782b919787ced6805f7cf0732b472922397c4b2db7d4e7ec1f8eddcdc40c541c",
     "snow_shenyun_shape.schema.yaml": "e451983c08cc399f65d4304d7c762fc634eb27eacd1b194a4ff590fee71649a6",
     "snow_shenyun_tone.fixed.txt": "bc87292cbf4e0a8aef775c7b233ad59344d0946d2e31920d0b396e8d7b78c6c1",
@@ -56,7 +56,7 @@
     "snow_zhudao.fixed.txt": "f00f2483cabad5293bcb1382a0dfe31647120d44ace5e044b60e06f722d3749e",
     "snow_zhudao.schema.yaml": "9f8f185947a1c3a216e04461ffc24aab9431ea4323f552f05f281ee7a61feb6b"
   },
-  "auditSha256": "7f2c5b141c1c9759061a18b61a33ddfc566dec5f1eee40693e29c277afc74aeb",
+  "auditSha256": "912d1e6f436b6682a4a214db76d570851d9fe23e97b9937caa324dbeb97cbdfb",
   "schemes": [
     {
       "id": "sipin",
@@ -2420,143 +2420,105 @@
         },
         "1500": {
           "count": 1500,
-          "covered": 1499,
-          "missing": [
-            "於"
-          ],
+          "covered": 1500,
+          "missing": [],
           "distribution": {
             "1": 22,
             "2": 330,
             "3": 665,
-            "4": 436,
+            "4": 437,
             "5": 44,
             "6": 2
           },
-          "mean": null,
-          "coveredMean": 3.1040693795863907,
-          "frequencyWeightedCoveredMean": 1.590063375020101
+          "mean": 3.1046666666666667,
+          "coveredMean": 3.1046666666666667,
+          "frequencyWeightedCoveredMean": 1.590142029741803
         },
         "2000": {
           "count": 2000,
-          "covered": 1998,
-          "missing": [
-            "於",
-            "吒"
-          ],
+          "covered": 2000,
+          "missing": [],
           "distribution": {
             "1": 22,
             "2": 339,
             "3": 860,
-            "4": 672,
+            "4": 674,
             "5": 98,
             "6": 7
           },
-          "mean": null,
-          "coveredMean": 3.2532532532532534,
-          "frequencyWeightedCoveredMean": 1.5992041242805548
+          "mean": 3.254,
+          "coveredMean": 3.254,
+          "frequencyWeightedCoveredMean": 1.599297734979544
         },
         "3000": {
           "count": 3000,
-          "covered": 2997,
-          "missing": [
-            "於",
-            "吒",
-            "乾"
-          ],
+          "covered": 3000,
+          "missing": [],
           "distribution": {
             "1": 22,
             "2": 349,
             "3": 1116,
-            "4": 1188,
-            "5": 302,
+            "4": 1190,
+            "5": 303,
             "6": 20
           },
-          "mean": null,
-          "coveredMean": 3.48682015348682,
-          "frequencyWeightedCoveredMean": 1.605114501510843
+          "mean": 3.4876666666666667,
+          "coveredMean": 3.4876666666666667,
+          "frequencyWeightedCoveredMean": 1.6052121088911397
         },
         "4000": {
           "count": 4000,
-          "covered": 3994,
-          "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕"
-          ],
+          "covered": 4000,
+          "missing": [],
           "distribution": {
             "1": 22,
             "2": 353,
             "3": 1288,
-            "4": 1696,
-            "5": 587,
-            "6": 48
+            "4": 1699,
+            "5": 589,
+            "6": 49
           },
-          "mean": null,
-          "coveredMean": 3.655232849273911,
-          "frequencyWeightedCoveredMean": 1.606432887794102
+          "mean": 3.65675,
+          "coveredMean": 3.65675,
+          "frequencyWeightedCoveredMean": 1.606537944043594
         },
         "5000": {
           "count": 5000,
-          "covered": 4985,
+          "covered": 4995,
           "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
             "瘐",
-            "徵",
             "奄",
-            "釐",
-            "氾",
             "狡",
             "鹡",
-            "雉",
-            "蒐"
+            "雉"
           ],
           "distribution": {
             "1": 22,
             "2": 353,
             "3": 1415,
-            "4": 2118,
-            "5": 973,
-            "6": 104
+            "4": 2123,
+            "5": 977,
+            "6": 105
           },
           "mean": null,
-          "coveredMean": 3.7981945837512536,
-          "frequencyWeightedCoveredMean": 1.6067336232725287
+          "coveredMean": 3.7997997997998,
+          "frequencyWeightedCoveredMean": 1.6068400293562928
         },
         "6000": {
           "count": 6000,
-          "covered": 5974,
+          "covered": 5986,
           "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
             "瘐",
-            "徵",
             "奄",
-            "釐",
-            "氾",
             "狡",
             "鹡",
             "雉",
-            "蒐",
             "煳",
             "黝",
             "墼",
             "嵇",
             "嵝",
-            "甦",
             "碶",
-            "脩",
             "苜",
             "蚜",
             "帼"
@@ -2565,62 +2527,45 @@
             "1": 22,
             "2": 354,
             "3": 1505,
-            "4": 2506,
-            "5": 1374,
-            "6": 213
+            "4": 2512,
+            "5": 1378,
+            "6": 215
           },
           "mean": null,
-          "coveredMean": 3.9198192166052896,
-          "frequencyWeightedCoveredMean": 1.6068097643141435
+          "coveredMean": 3.9213164049448714,
+          "frequencyWeightedCoveredMean": 1.6069163501400632
         },
         "8000": {
           "count": 8000,
-          "covered": 7943,
+          "covered": 7960,
           "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
             "瘐",
-            "徵",
             "奄",
-            "釐",
-            "氾",
             "狡",
             "鹡",
             "雉",
-            "蒐",
             "煳",
             "黝",
             "墼",
             "嵇",
             "嵝",
-            "甦",
             "碶",
-            "脩",
             "苜",
             "蚜",
             "帼",
             "羕",
-            "薳",
-            "薹",
             "蜮",
             "蠼",
             "郗",
-            "陞",
             "鸨",
             "䏡",
             "厣",
             "幛",
             "悆",
             "扺",
-            "爇",
             "犄",
             "獍",
             "疫",
-            "苧",
             "茋",
             "蒺",
             "螠",
@@ -2639,13 +2584,13 @@
             "1": 22,
             "2": 354,
             "3": 1610,
-            "4": 3182,
-            "5": 2303,
-            "6": 472
+            "4": 3190,
+            "5": 2308,
+            "6": 476
           },
           "mean": null,
-          "coveredMean": 4.108649125015737,
-          "frequencyWeightedCoveredMean": 1.606820077014812
+          "coveredMean": 4.110050251256282,
+          "frequencyWeightedCoveredMean": 1.6069268013792124
         }
       },
       "observedTargets": 8000
@@ -2857,14 +2802,13 @@
           "distribution": {
             "1": 23,
             "2": 297,
-            "3": 528,
-            "4": 143,
-            "5": 8,
-            "8": 1
+            "3": 527,
+            "4": 144,
+            "5": 9
           },
-          "mean": 2.821,
-          "coveredMean": 2.821,
-          "frequencyWeightedCoveredMean": 1.5219094458438376
+          "mean": 2.819,
+          "coveredMean": 2.819,
+          "frequencyWeightedCoveredMean": 1.521755690452443
         },
         "1500": {
           "count": 1500,
@@ -2873,160 +2817,139 @@
           "distribution": {
             "1": 23,
             "2": 327,
-            "3": 727,
-            "4": 377,
-            "5": 43,
-            "6": 2,
-            "8": 1
+            "3": 725,
+            "4": 380,
+            "5": 44,
+            "6": 1
           },
-          "mean": 3.0673333333333335,
-          "coveredMean": 3.0673333333333335,
-          "frequencyWeightedCoveredMean": 1.5441704061700374
+          "mean": 3.0653333333333332,
+          "coveredMean": 3.0653333333333332,
+          "frequencyWeightedCoveredMean": 1.5439827050684884
         },
         "2000": {
           "count": 2000,
-          "covered": 1999,
-          "missing": [
-            "吒"
-          ],
+          "covered": 2000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 340,
-            "3": 857,
-            "4": 653,
-            "5": 117,
-            "6": 8,
-            "8": 1
+            "3": 854,
+            "4": 657,
+            "5": 119,
+            "6": 7
           },
-          "mean": null,
-          "coveredMean": 3.2651325662831416,
-          "frequencyWeightedCoveredMean": 1.5541772050229874
+          "mean": 3.265,
+          "coveredMean": 3.265,
+          "frequencyWeightedCoveredMean": 1.5540185040688188
         },
         "3000": {
           "count": 3000,
-          "covered": 2998,
+          "covered": 2999,
           "missing": [
-            "吒",
             "士"
           ],
           "distribution": {
             "1": 23,
             "2": 347,
-            "3": 1001,
-            "4": 1201,
-            "5": 368,
-            "6": 51,
+            "3": 994,
+            "4": 1205,
+            "5": 373,
+            "6": 52,
             "7": 4,
-            "8": 2,
-            "11": 1
+            "8": 1
           },
           "mean": null,
-          "coveredMean": 3.577384923282188,
-          "frequencyWeightedCoveredMean": 1.5607903560436913
+          "coveredMean": 3.578526175391797,
+          "frequencyWeightedCoveredMean": 1.560648729801478
         },
         "4000": {
           "count": 4000,
-          "covered": 3998,
+          "covered": 3999,
           "missing": [
-            "吒",
             "士"
           ],
           "distribution": {
             "1": 23,
             "2": 353,
-            "3": 1065,
-            "4": 1682,
-            "5": 703,
-            "6": 149,
+            "3": 1057,
+            "4": 1685,
+            "5": 711,
+            "6": 152,
             "7": 14,
-            "8": 4,
-            "9": 2,
-            "11": 2,
-            "15": 1
+            "8": 3,
+            "9": 1
           },
           "mean": null,
-          "coveredMean": 3.8134067033516756,
-          "frequencyWeightedCoveredMean": 1.5623398961122679
+          "coveredMean": 3.8104526131532883,
+          "frequencyWeightedCoveredMean": 1.5621831497062857
         },
         "5000": {
           "count": 5000,
-          "covered": 4996,
+          "covered": 4998,
           "missing": [
-            "吒",
             "士",
-            "氾",
             "尜"
           ],
           "distribution": {
             "1": 23,
             "2": 353,
-            "3": 1107,
-            "4": 2073,
-            "5": 1085,
-            "6": 289,
-            "7": 49,
-            "8": 8,
-            "9": 4,
-            "11": 4,
-            "15": 1
+            "3": 1097,
+            "4": 2078,
+            "5": 1094,
+            "6": 295,
+            "7": 48,
+            "8": 7,
+            "9": 3
           },
           "mean": null,
-          "coveredMean": 4.0038030424339475,
-          "frequencyWeightedCoveredMean": 1.5626899335889246
+          "coveredMean": 3.999799919967987,
+          "frequencyWeightedCoveredMean": 1.562532291714769
         },
         "6000": {
           "count": 6000,
-          "covered": 5996,
+          "covered": 5998,
           "missing": [
-            "吒",
             "士",
-            "氾",
             "尜"
           ],
           "distribution": {
             "1": 23,
             "2": 354,
-            "3": 1138,
-            "4": 2409,
-            "5": 1496,
-            "6": 448,
+            "3": 1127,
+            "4": 2414,
+            "5": 1503,
+            "6": 458,
             "7": 103,
-            "8": 15,
-            "9": 4,
-            "10": 1,
-            "11": 4,
-            "15": 1
+            "8": 12,
+            "9": 3,
+            "10": 1
           },
           "mean": null,
-          "coveredMean": 4.151934623082055,
-          "frequencyWeightedCoveredMean": 1.5627778654335382
+          "coveredMean": 4.148882960986995,
+          "frequencyWeightedCoveredMean": 1.56262028192572
         },
         "8000": {
           "count": 8000,
-          "covered": 7996,
+          "covered": 7998,
           "missing": [
-            "吒",
             "士",
-            "氾",
             "尜"
           ],
           "distribution": {
             "1": 23,
             "2": 354,
-            "3": 1173,
-            "4": 2897,
-            "5": 2329,
-            "6": 920,
-            "7": 233,
-            "8": 41,
-            "9": 15,
-            "10": 4,
-            "11": 6,
-            "15": 1
+            "3": 1162,
+            "4": 2901,
+            "5": 2333,
+            "6": 938,
+            "7": 234,
+            "8": 38,
+            "9": 12,
+            "10": 3
           },
           "mean": null,
-          "coveredMean": 4.404452226113056,
-          "frequencyWeightedCoveredMean": 1.5627905971945615
+          "coveredMean": 4.400350087521881,
+          "frequencyWeightedCoveredMean": 1.5626328225084485
         }
       },
       "observedTargets": 8000
@@ -5227,12 +5150,12 @@
             "1": 23,
             "2": 370,
             "3": 735,
-            "4": 338,
-            "5": 34
+            "4": 339,
+            "5": 33
           },
-          "mean": 2.993333333333333,
-          "coveredMean": 2.993333333333333,
-          "frequencyWeightedCoveredMean": 1.5539884966689503
+          "mean": 2.9926666666666666,
+          "coveredMean": 2.9926666666666666,
+          "frequencyWeightedCoveredMean": 1.5539558589967033
         },
         "2000": {
           "count": 2000,
@@ -5242,13 +5165,13 @@
             "1": 23,
             "2": 383,
             "3": 937,
-            "4": 578,
-            "5": 76,
+            "4": 579,
+            "5": 75,
             "6": 3
           },
-          "mean": 3.155,
-          "coveredMean": 3.155,
-          "frequencyWeightedCoveredMean": 1.5630063327652346
+          "mean": 3.1545,
+          "coveredMean": 3.1545,
+          "frequencyWeightedCoveredMean": 1.562973837536409
         },
         "3000": {
           "count": 3000,
@@ -5258,13 +5181,13 @@
             "1": 23,
             "2": 393,
             "3": 1206,
-            "4": 1109,
-            "5": 257,
+            "4": 1108,
+            "5": 258,
             "6": 12
           },
-          "mean": 3.4066666666666667,
-          "coveredMean": 3.4066666666666667,
-          "frequencyWeightedCoveredMean": 1.5688490777832604
+          "mean": 3.407,
+          "coveredMean": 3.407,
+          "frequencyWeightedCoveredMean": 1.5688202683564545
         },
         "4000": {
           "count": 4000,
@@ -5274,13 +5197,13 @@
             "1": 23,
             "2": 400,
             "3": 1381,
-            "4": 1659,
-            "5": 498,
+            "4": 1658,
+            "5": 499,
             "6": 39
           },
-          "mean": 3.5815,
-          "coveredMean": 3.5815,
-          "frequencyWeightedCoveredMean": 1.5701651410022586
+          "mean": 3.58175,
+          "coveredMean": 3.58175,
+          "frequencyWeightedCoveredMean": 1.5701362371644916
         },
         "5000": {
           "count": 5000,
@@ -5301,7 +5224,7 @@
           },
           "mean": null,
           "coveredMean": 3.7215772618094474,
-          "frequencyWeightedCoveredMean": 1.5704619743926926
+          "frequencyWeightedCoveredMean": 1.5704329505087606
         },
         "6000": {
           "count": 6000,
@@ -5321,13 +5244,13 @@
             "1": 23,
             "2": 400,
             "3": 1609,
-            "4": 2605,
-            "5": 1192,
-            "6": 162
+            "4": 2607,
+            "5": 1189,
+            "6": 163
           },
           "mean": null,
-          "coveredMean": 3.8394258053747286,
-          "frequencyWeightedCoveredMean": 1.5705370923581707
+          "coveredMean": 3.8392588883324987,
+          "frequencyWeightedCoveredMean": 1.570508028170659
         },
         "8000": {
           "count": 8000,
@@ -5360,13 +5283,13 @@
             "1": 23,
             "2": 400,
             "3": 1718,
-            "4": 3439,
-            "5": 2027,
-            "6": 371
+            "4": 3440,
+            "5": 2025,
+            "6": 372
           },
           "mean": null,
           "coveredMean": 4.022812735021309,
-          "frequencyWeightedCoveredMean": 1.570547509822784
+          "frequencyWeightedCoveredMean": 1.5705184320498171
         }
       },
       "observedTargets": 8000
@@ -6530,12 +6453,11 @@
             "2": 329,
             "3": 499,
             "4": 140,
-            "5": 8,
-            "7": 1
+            "5": 9
           },
-          "mean": 2.785,
-          "coveredMean": 2.785,
-          "frequencyWeightedCoveredMean": 1.530818763848778
+          "mean": 2.783,
+          "coveredMean": 2.783,
+          "frequencyWeightedCoveredMean": 1.530666221985375
         },
         "1500": {
           "count": 1500,
@@ -6545,14 +6467,13 @@
             "1": 23,
             "2": 370,
             "3": 699,
-            "4": 359,
+            "4": 360,
             "5": 45,
-            "6": 3,
-            "7": 1
+            "6": 3
           },
-          "mean": 3.030666666666667,
-          "coveredMean": 3.030666666666667,
-          "frequencyWeightedCoveredMean": 1.5525650334243009
+          "mean": 3.0286666666666666,
+          "coveredMean": 3.0286666666666666,
+          "frequencyWeightedCoveredMean": 1.5523741733933585
         },
         "2000": {
           "count": 2000,
@@ -6562,14 +6483,13 @@
             "1": 23,
             "2": 383,
             "3": 828,
-            "4": 636,
+            "4": 638,
             "5": 119,
-            "6": 9,
-            "7": 2
+            "6": 9
           },
-          "mean": 3.24,
-          "coveredMean": 3.24,
-          "frequencyWeightedCoveredMean": 1.5625830982041662
+          "mean": 3.237,
+          "coveredMean": 3.237,
+          "frequencyWeightedCoveredMean": 1.5623735822634504
         },
         "3000": {
           "count": 3000,
@@ -6582,15 +6502,14 @@
             "2": 393,
             "3": 985,
             "4": 1168,
-            "5": 373,
-            "6": 50,
-            "7": 5,
-            "8": 1,
-            "10": 1
+            "5": 374,
+            "6": 52,
+            "7": 3,
+            "8": 1
           },
           "mean": null,
-          "coveredMean": 3.5525175058352785,
-          "frequencyWeightedCoveredMean": 1.5690919151881566
+          "coveredMean": 3.550183394464822,
+          "frequencyWeightedCoveredMean": 1.5688894951869015
         },
         "4000": {
           "count": 4000,
@@ -6603,16 +6522,15 @@
             "2": 400,
             "3": 1058,
             "4": 1647,
-            "5": 703,
-            "6": 146,
-            "7": 16,
-            "8": 3,
-            "9": 1,
-            "10": 2
+            "5": 705,
+            "6": 150,
+            "7": 13,
+            "8": 2,
+            "9": 1
           },
           "mean": null,
-          "coveredMean": 3.7861965491372844,
-          "frequencyWeightedCoveredMean": 1.5706205057643325
+          "coveredMean": 3.7824456114028506,
+          "frequencyWeightedCoveredMean": 1.570409470199411
         },
         "5000": {
           "count": 5000,
@@ -6625,17 +6543,16 @@
             "1": 23,
             "2": 400,
             "3": 1105,
-            "4": 2043,
-            "5": 1084,
-            "6": 281,
-            "7": 50,
-            "8": 7,
-            "9": 3,
-            "10": 2
+            "4": 2041,
+            "5": 1091,
+            "6": 285,
+            "7": 44,
+            "8": 6,
+            "9": 3
           },
           "mean": null,
-          "coveredMean": 3.975390156062425,
-          "frequencyWeightedCoveredMean": 1.570965789973065
+          "coveredMean": 3.971588635454182,
+          "frequencyWeightedCoveredMean": 1.5707542984508724
         },
         "6000": {
           "count": 6000,
@@ -6647,18 +6564,18 @@
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1150,
-            "4": 2387,
-            "5": 1482,
-            "6": 436,
-            "7": 102,
-            "8": 11,
+            "3": 1149,
+            "4": 2384,
+            "5": 1486,
+            "6": 445,
+            "7": 96,
+            "8": 10,
             "9": 4,
-            "10": 3
+            "10": 1
           },
           "mean": null,
-          "coveredMean": 4.12054018006002,
-          "frequencyWeightedCoveredMean": 1.5710521462260225
+          "coveredMean": 4.118706235411804,
+          "frequencyWeightedCoveredMean": 1.5708409751920787
         },
         "8000": {
           "count": 8000,
@@ -6670,18 +6587,18 @@
           "distribution": {
             "1": 23,
             "2": 400,
-            "3": 1193,
-            "4": 2912,
-            "5": 2286,
-            "6": 893,
-            "7": 236,
-            "8": 36,
+            "3": 1192,
+            "4": 2909,
+            "5": 2290,
+            "6": 906,
+            "7": 228,
+            "8": 33,
             "9": 13,
-            "10": 6
+            "10": 4
           },
           "mean": null,
-          "coveredMean": 4.370467616904226,
-          "frequencyWeightedCoveredMean": 1.5710647112103104
+          "coveredMean": 4.36834208552138,
+          "frequencyWeightedCoveredMean": 1.5708534177255082
         }
       },
       "observedTargets": 8000
@@ -8158,203 +8075,139 @@
         },
         "1000": {
           "count": 1000,
-          "covered": 999,
-          "missing": [
-            "麽"
-          ],
+          "covered": 1000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 355,
             "3": 361,
             "4": 250,
-            "5": 10
+            "5": 11
           },
-          "mean": null,
-          "coveredMean": 2.868868868868869,
-          "frequencyWeightedCoveredMean": 1.5830527347286185
+          "mean": 2.871,
+          "coveredMean": 2.871,
+          "frequencyWeightedCoveredMean": 1.5833133484801154
         },
         "1500": {
           "count": 1500,
-          "covered": 1498,
-          "missing": [
-            "麽",
-            "於"
-          ],
+          "covered": 1500,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 387,
             "3": 617,
-            "4": 441,
-            "5": 29,
+            "4": 442,
+            "5": 30,
             "6": 1
           },
-          "mean": null,
-          "coveredMean": 3.0460614152202936,
-          "frequencyWeightedCoveredMean": 1.6029236554208997
+          "mean": 3.048,
+          "coveredMean": 3.048,
+          "frequencyWeightedCoveredMean": 1.6032581252940374
         },
         "2000": {
           "count": 2000,
-          "covered": 1997,
-          "missing": [
-            "麽",
-            "於",
-            "吒"
-          ],
+          "covered": 2000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 404,
             "3": 836,
-            "4": 663,
-            "5": 70,
+            "4": 665,
+            "5": 71,
             "6": 1
           },
-          "mean": null,
-          "coveredMean": 3.1782674011016523,
-          "frequencyWeightedCoveredMean": 1.6114648006984167
+          "mean": 3.18,
+          "coveredMean": 3.18,
+          "frequencyWeightedCoveredMean": 1.6118111998638003
         },
         "3000": {
           "count": 3000,
-          "covered": 2996,
-          "missing": [
-            "麽",
-            "於",
-            "吒",
-            "乾"
-          ],
+          "covered": 3000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 418,
-            "3": 1147,
-            "4": 1184,
-            "5": 209,
+            "3": 1146,
+            "4": 1187,
+            "5": 211,
             "6": 15
           },
-          "mean": null,
-          "coveredMean": 3.3948598130841123,
-          "frequencyWeightedCoveredMean": 1.616983565928501
+          "mean": 3.3966666666666665,
+          "coveredMean": 3.3966666666666665,
+          "frequencyWeightedCoveredMean": 1.6173371376937171
         },
         "4000": {
           "count": 4000,
-          "covered": 3993,
-          "missing": [
-            "麽",
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕"
-          ],
+          "covered": 4000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 424,
             "3": 1343,
-            "4": 1738,
-            "5": 429,
+            "4": 1741,
+            "5": 433,
             "6": 36
           },
-          "mean": null,
-          "coveredMean": 3.559479088404708,
-          "frequencyWeightedCoveredMean": 1.6182377464113848
+          "mean": 3.56125,
+          "coveredMean": 3.56125,
+          "frequencyWeightedCoveredMean": 1.6185966361135804
         },
         "5000": {
           "count": 5000,
-          "covered": 4988,
+          "covered": 4999,
           "missing": [
-            "麽",
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
-            "徵",
-            "釐",
-            "氾",
-            "雉",
-            "蒐"
+            "雉"
           ],
           "distribution": {
             "1": 23,
             "2": 428,
-            "3": 1503,
-            "4": 2194,
-            "5": 767,
-            "6": 73
+            "3": 1504,
+            "4": 2200,
+            "5": 770,
+            "6": 74
           },
           "mean": null,
-          "coveredMean": 3.696271050521251,
-          "frequencyWeightedCoveredMean": 1.6185244796617937
+          "coveredMean": 3.697739547909582,
+          "frequencyWeightedCoveredMean": 1.6188844731987055
         },
         "6000": {
           "count": 6000,
-          "covered": 5983,
+          "covered": 5996,
           "missing": [
-            "麽",
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
-            "徵",
-            "釐",
-            "氾",
             "雉",
-            "蒐",
-            "甦",
             "縢",
-            "脩",
             "苜",
             "畴"
           ],
           "distribution": {
             "1": 23,
             "2": 430,
-            "3": 1623,
-            "4": 2626,
-            "5": 1145,
-            "6": 136
+            "3": 1624,
+            "4": 2631,
+            "5": 1150,
+            "6": 138
           },
           "mean": null,
-          "coveredMean": 3.8102958382082566,
-          "frequencyWeightedCoveredMean": 1.618597049371384
+          "coveredMean": 3.8120413609072714,
+          "frequencyWeightedCoveredMean": 1.6189572510618861
         },
         "8000": {
           "count": 8000,
-          "covered": 7963,
+          "covered": 7981,
           "missing": [
-            "麽",
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
-            "徵",
-            "釐",
-            "氾",
             "雉",
-            "蒐",
-            "甦",
             "縢",
-            "脩",
             "苜",
             "畴",
-            "薳",
-            "薹",
-            "陞",
             "鹌",
             "黼",
             "㫰",
             "囹",
             "幛",
             "幪",
-            "爇",
             "犄",
             "竫",
             "罨",
-            "苧",
             "茆",
             "踉",
             "髃",
@@ -8365,14 +8218,14 @@
           "distribution": {
             "1": 23,
             "2": 431,
-            "3": 1767,
-            "4": 3434,
-            "5": 1999,
-            "6": 309
+            "3": 1769,
+            "4": 3438,
+            "5": 2007,
+            "6": 313
           },
           "mean": null,
-          "coveredMean": 3.9898279542885846,
-          "frequencyWeightedCoveredMean": 1.618607049822954
+          "coveredMean": 3.991605062022303,
+          "frequencyWeightedCoveredMean": 1.6189673879220017
         }
       },
       "observedTargets": 8000
@@ -8549,13 +8402,13 @@
           "distribution": {
             "1": 23,
             "2": 405,
-            "3": 480,
-            "4": 90,
+            "3": 481,
+            "4": 89,
             "5": 2
           },
-          "mean": 2.643,
-          "coveredMean": 2.643,
-          "frequencyWeightedCoveredMean": 1.4861434143195884
+          "mean": 2.642,
+          "coveredMean": 2.642,
+          "frequencyWeightedCoveredMean": 1.486067143387887
         },
         "1500": {
           "count": 1500,
@@ -8564,13 +8417,13 @@
           "distribution": {
             "1": 23,
             "2": 455,
-            "3": 787,
-            "4": 226,
+            "3": 788,
+            "4": 225,
             "5": 9
           },
-          "mean": 2.828666666666667,
-          "coveredMean": 2.828666666666667,
-          "frequencyWeightedCoveredMean": 1.5049027894657017
+          "mean": 2.828,
+          "coveredMean": 2.828,
+          "frequencyWeightedCoveredMean": 1.5048273614049041
         },
         "2000": {
           "count": 2000,
@@ -8579,13 +8432,13 @@
           "distribution": {
             "1": 23,
             "2": 480,
-            "3": 1044,
-            "4": 426,
+            "3": 1045,
+            "4": 425,
             "5": 27
           },
-          "mean": 2.977,
-          "coveredMean": 2.977,
-          "frequencyWeightedCoveredMean": 1.513177605007968
+          "mean": 2.9765,
+          "coveredMean": 2.9765,
+          "frequencyWeightedCoveredMean": 1.5131025061443932
         },
         "3000": {
           "count": 3000,
@@ -8596,14 +8449,14 @@
           "distribution": {
             "1": 23,
             "2": 498,
-            "3": 1400,
-            "4": 948,
+            "3": 1401,
+            "4": 947,
             "5": 124,
             "6": 6
           },
           "mean": null,
-          "coveredMean": 3.223407802600867,
-          "frequencyWeightedCoveredMean": 1.5186700421384174
+          "coveredMean": 3.2230743581193733,
+          "frequencyWeightedCoveredMean": 1.5185951347544522
         },
         "4000": {
           "count": 4000,
@@ -8614,14 +8467,14 @@
           "distribution": {
             "1": 23,
             "2": 507,
-            "3": 1643,
-            "4": 1507,
+            "3": 1644,
+            "4": 1506,
             "5": 302,
             "6": 17
           },
           "mean": null,
-          "coveredMean": 3.402350587646912,
-          "frequencyWeightedCoveredMean": 1.5199339145630324
+          "coveredMean": 3.402100525131283,
+          "frequencyWeightedCoveredMean": 1.5198589369697082
         },
         "5000": {
           "count": 5000,
@@ -8632,14 +8485,14 @@
           "distribution": {
             "1": 23,
             "2": 513,
-            "3": 1805,
+            "3": 1806,
             "4": 2045,
-            "5": 572,
-            "6": 41
+            "5": 570,
+            "6": 42
           },
           "mean": null,
-          "coveredMean": 3.5507101420284055,
-          "frequencyWeightedCoveredMean": 1.520223431083805
+          "coveredMean": 3.550510102020404,
+          "frequencyWeightedCoveredMean": 1.5201485165065483
         },
         "6000": {
           "count": 6000,
@@ -8653,14 +8506,14 @@
           "distribution": {
             "1": 23,
             "2": 514,
-            "3": 1947,
+            "3": 1948,
             "4": 2546,
-            "5": 880,
-            "6": 86
+            "5": 878,
+            "6": 87
           },
           "mean": null,
-          "coveredMean": 3.6677785190126753,
-          "frequencyWeightedCoveredMean": 1.5202956177994513
+          "coveredMean": 3.667611741160774,
+          "frequencyWeightedCoveredMean": 1.5202207052056915
         },
         "8000": {
           "count": 8000,
@@ -8684,14 +8537,14 @@
           "distribution": {
             "1": 23,
             "2": 514,
-            "3": 2137,
+            "3": 2138,
             "4": 3513,
-            "5": 1602,
+            "5": 1601,
             "6": 197
           },
           "mean": null,
-          "coveredMean": 3.8449787127473076,
-          "frequencyWeightedCoveredMean": 1.5203056346197892
+          "coveredMean": 3.8447282744803406,
+          "frequencyWeightedCoveredMean": 1.5202307086046087
         }
       },
       "observedTargets": 8000
@@ -10064,202 +9917,145 @@
         },
         "1500": {
           "count": 1500,
-          "covered": 1499,
-          "missing": [
-            "於"
-          ],
+          "covered": 1500,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 340,
             "3": 616,
-            "4": 489,
+            "4": 490,
             "5": 31
           },
-          "mean": null,
-          "coveredMean": 3.1100733822548365,
-          "frequencyWeightedCoveredMean": 1.6151580394293883
+          "mean": 3.1106666666666665,
+          "coveredMean": 3.1106666666666665,
+          "frequencyWeightedCoveredMean": 1.6152358751196583
         },
         "2000": {
           "count": 2000,
-          "covered": 1998,
-          "missing": [
-            "於",
-            "吒"
-          ],
+          "covered": 2000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 355,
             "3": 821,
-            "4": 723,
+            "4": 725,
             "5": 73,
             "6": 3
           },
-          "mean": null,
-          "coveredMean": 3.2387387387387387,
-          "frequencyWeightedCoveredMean": 1.6238524417353348
+          "mean": 3.2395,
+          "coveredMean": 3.2395,
+          "frequencyWeightedCoveredMean": 1.62394509135877
         },
         "3000": {
           "count": 3000,
-          "covered": 2997,
-          "missing": [
-            "於",
-            "吒",
-            "乾"
-          ],
+          "covered": 3000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 362,
             "3": 1099,
-            "4": 1230,
-            "5": 271,
+            "4": 1231,
+            "5": 273,
             "6": 12
           },
-          "mean": null,
-          "coveredMean": 3.467133800467134,
-          "frequencyWeightedCoveredMean": 1.629628415425566
+          "mean": 3.4683333333333333,
+          "coveredMean": 3.4683333333333333,
+          "frequencyWeightedCoveredMean": 1.6297279584596285
         },
         "4000": {
           "count": 4000,
-          "covered": 3994,
-          "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕"
-          ],
+          "covered": 4000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 370,
             "3": 1269,
-            "4": 1739,
-            "5": 552,
+            "4": 1740,
+            "5": 557,
             "6": 41
           },
-          "mean": null,
-          "coveredMean": 3.6384576865297946,
-          "frequencyWeightedCoveredMean": 1.6309288712562957
+          "mean": 3.64025,
+          "coveredMean": 3.64025,
+          "frequencyWeightedCoveredMean": 1.6310358839708217
         },
         "5000": {
           "count": 5000,
-          "covered": 4985,
+          "covered": 4995,
           "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
             "瘐",
-            "徵",
             "奄",
-            "釐",
-            "氾",
             "狡",
             "鹡",
-            "雉",
-            "蒐"
+            "雉"
           ],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1403,
-            "4": 2169,
-            "5": 923,
+            "3": 1402,
+            "4": 2173,
+            "5": 930,
             "6": 97
           },
           "mean": null,
-          "coveredMean": 3.780341023069208,
-          "frequencyWeightedCoveredMean": 1.6312249502472216
+          "coveredMean": 3.7823823823823823,
+          "frequencyWeightedCoveredMean": 1.6313334245942916
         },
         "6000": {
           "count": 6000,
-          "covered": 5975,
+          "covered": 5988,
           "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
             "瘐",
-            "徵",
             "奄",
-            "釐",
-            "氾",
             "狡",
             "鹡",
             "雉",
-            "蒐",
-            "夥",
             "煳",
             "黝",
             "墼",
             "嵇",
-            "甦",
             "碶",
-            "脩",
             "蚜",
             "帼"
           ],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1500,
-            "4": 2554,
-            "5": 1322,
-            "6": 206
+            "3": 1499,
+            "4": 2557,
+            "5": 1332,
+            "6": 207
           },
           "mean": null,
-          "coveredMean": 3.903765690376569,
-          "frequencyWeightedCoveredMean": 1.6313004538932836
+          "coveredMean": 3.906145624582498,
+          "frequencyWeightedCoveredMean": 1.6314092860329632
         },
         "8000": {
           "count": 8000,
-          "covered": 7945,
+          "covered": 7963,
           "missing": [
-            "於",
-            "吒",
-            "乾",
-            "昇",
-            "甯",
-            "祕",
             "瘐",
-            "徵",
             "奄",
-            "釐",
-            "氾",
             "狡",
             "鹡",
             "雉",
-            "蒐",
-            "夥",
             "煳",
             "黝",
             "墼",
             "嵇",
-            "甦",
             "碶",
-            "脩",
             "蚜",
             "帼",
-            "薳",
-            "薹",
             "蜮",
             "蠼",
             "襜",
             "郗",
-            "陞",
             "䏡",
             "厣",
             "幛",
             "扺",
-            "爇",
             "犄",
             "獍",
             "疫",
-            "苧",
             "茋",
             "蒺",
             "蝼",
@@ -10278,14 +10074,14 @@
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1601,
-            "4": 3263,
-            "5": 2218,
-            "6": 470
+            "3": 1599,
+            "4": 3267,
+            "5": 2232,
+            "6": 472
           },
           "mean": null,
-          "coveredMean": 4.094147262429201,
-          "frequencyWeightedCoveredMean": 1.6313107682854795
+          "coveredMean": 4.096446063041567,
+          "frequencyWeightedCoveredMean": 1.6314197379478694
         }
       },
       "observedTargets": 8000
@@ -10678,14 +10474,13 @@
           "distribution": {
             "1": 23,
             "2": 308,
-            "3": 512,
-            "4": 147,
-            "5": 9,
-            "8": 1
+            "3": 511,
+            "4": 148,
+            "5": 10
           },
-          "mean": 2.816,
-          "coveredMean": 2.816,
-          "frequencyWeightedCoveredMean": 1.540015185838212
+          "mean": 2.814,
+          "coveredMean": 2.814,
+          "frequencyWeightedCoveredMean": 1.5398614304468174
         },
         "1500": {
           "count": 1500,
@@ -10694,161 +10489,140 @@
           "distribution": {
             "1": 23,
             "2": 343,
-            "3": 719,
-            "4": 368,
-            "5": 44,
-            "6": 2,
-            "8": 1
+            "3": 718,
+            "4": 370,
+            "5": 45,
+            "6": 1
           },
-          "mean": 3.052,
-          "coveredMean": 3.052,
-          "frequencyWeightedCoveredMean": 1.561664557150171
+          "mean": 3.0493333333333332,
+          "coveredMean": 3.0493333333333332,
+          "frequencyWeightedCoveredMean": 1.561447225566802
         },
         "2000": {
           "count": 2000,
-          "covered": 1999,
-          "missing": [
-            "吒"
-          ],
+          "covered": 2000,
+          "missing": [],
           "distribution": {
             "1": 23,
             "2": 355,
-            "3": 854,
-            "4": 641,
-            "5": 116,
-            "6": 8,
-            "7": 1,
-            "8": 1
+            "3": 852,
+            "4": 644,
+            "5": 118,
+            "6": 7,
+            "7": 1
           },
-          "mean": null,
-          "coveredMean": 3.2526263131565782,
-          "frequencyWeightedCoveredMean": 1.5715784306971428
+          "mean": 3.252,
+          "coveredMean": 3.252,
+          "frequencyWeightedCoveredMean": 1.5713901155364702
         },
         "3000": {
           "count": 3000,
-          "covered": 2998,
+          "covered": 2999,
           "missing": [
-            "吒",
             "士"
           ],
           "distribution": {
             "1": 23,
             "2": 363,
-            "3": 1013,
-            "4": 1184,
-            "5": 358,
-            "6": 49,
+            "3": 1007,
+            "4": 1188,
+            "5": 362,
+            "6": 50,
             "7": 5,
-            "8": 2,
-            "11": 1
+            "8": 1
           },
           "mean": null,
-          "coveredMean": 3.5590393595730485,
-          "frequencyWeightedCoveredMean": 1.578060061318753
+          "coveredMean": 3.559519839946649,
+          "frequencyWeightedCoveredMean": 1.5778875546755589
         },
         "4000": {
           "count": 4000,
-          "covered": 3998,
+          "covered": 3999,
           "missing": [
-            "吒",
             "士"
           ],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1080,
-            "4": 1665,
-            "5": 691,
-            "6": 147,
+            "3": 1073,
+            "4": 1669,
+            "5": 697,
+            "6": 150,
             "7": 14,
-            "8": 3,
-            "9": 2,
-            "11": 2,
-            "15": 1
+            "8": 2,
+            "9": 1
           },
           "mean": null,
-          "coveredMean": 3.7961480740370184,
-          "frequencyWeightedCoveredMean": 1.5795951262011256
+          "coveredMean": 3.792448112028007,
+          "frequencyWeightedCoveredMean": 1.5794072966275674
         },
         "5000": {
           "count": 5000,
-          "covered": 4996,
+          "covered": 4998,
           "missing": [
-            "吒",
             "士",
-            "氾",
             "尜"
           ],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1131,
-            "4": 2059,
-            "5": 1065,
-            "6": 282,
-            "7": 49,
-            "8": 8,
-            "9": 4,
-            "11": 4,
-            "15": 1
+            "3": 1122,
+            "4": 2064,
+            "5": 1073,
+            "6": 288,
+            "7": 48,
+            "8": 7,
+            "9": 3
           },
           "mean": null,
-          "coveredMean": 3.985388310648519,
-          "frequencyWeightedCoveredMean": 1.5799408307224838
+          "coveredMean": 3.9809923969587837,
+          "frequencyWeightedCoveredMean": 1.579752326286952
         },
         "6000": {
           "count": 6000,
-          "covered": 5996,
+          "covered": 5998,
           "missing": [
-            "吒",
             "士",
-            "氾",
             "尜"
           ],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1169,
-            "4": 2395,
-            "5": 1472,
-            "6": 443,
-            "7": 101,
-            "8": 13,
-            "9": 4,
-            "10": 1,
-            "11": 4,
-            "15": 1
+            "3": 1159,
+            "4": 2400,
+            "5": 1476,
+            "6": 455,
+            "7": 100,
+            "8": 11,
+            "9": 3,
+            "10": 1
           },
           "mean": null,
-          "coveredMean": 4.133422281521014,
-          "frequencyWeightedCoveredMean": 1.580027784404249
+          "coveredMean": 4.130543514504835,
+          "frequencyWeightedCoveredMean": 1.5798394486821943
         },
         "8000": {
           "count": 8000,
-          "covered": 7996,
+          "covered": 7998,
           "missing": [
-            "吒",
             "士",
-            "氾",
             "尜"
           ],
           "distribution": {
             "1": 23,
             "2": 370,
-            "3": 1207,
-            "4": 2902,
-            "5": 2291,
-            "6": 906,
-            "7": 234,
-            "8": 38,
-            "9": 15,
-            "10": 4,
-            "11": 5,
-            "15": 1
+            "3": 1197,
+            "4": 2906,
+            "5": 2293,
+            "6": 925,
+            "7": 233,
+            "8": 36,
+            "9": 12,
+            "10": 3
           },
           "mean": null,
-          "coveredMean": 4.3859429714857425,
-          "frequencyWeightedCoveredMean": 1.5800403856053455
+          "coveredMean": 4.382345586396599,
+          "frequencyWeightedCoveredMean": 1.5798518588165793
         }
       },
       "observedTargets": 8000
