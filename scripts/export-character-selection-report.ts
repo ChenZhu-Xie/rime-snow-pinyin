@@ -323,10 +323,17 @@ for (const [text, code] of [
 }
 const cohorts = [500, 1000, 1500, 2000, 3000, 4000, 5000, 6000, 8000];
 const schemes = meta.schemes.map(
-	(scheme: { id: string; name: string }, index: number) => {
+	(
+		scheme: { id: string; name: string; observedTargets?: number },
+		index: number,
+	) => {
 		const map = choices[index];
 		const text = [
-			"# 无首选时采用候选编码＋翻页键＋一键选重；未实测可达性见来源列。保留输入稿首选，未对所有选重路径证明最短。",
+			scheme.observedTargets === 8000 && map.size === 8000
+				? "# 全部 8000 字均有空词典 librime 逐键候选／直出证据。选重=0：已实测首选或直出；选重=1：已实测候选可达，总键数含翻页与选重。优先无选重，最短性仅限已枚举路径。"
+				: ALL_BENCHMARK_SCHEMES.some((s) => s.id === scheme.id)
+					? "# 尚未全部实测；逐字证据见来源列，NA 表示可达性待核实。优先无选重，否则计入翻页与选重。"
+					: "# 外部方案沿用原资料，本轮未做全量 librime 复验；来源列区分已有资料和人工核对。编码、键数与选重标记保持原资料口径。",
 			"字\t编码\t总键数\t选重\t来源\t字频序\t冻结频次",
 		];
 		for (const row of rows) {
