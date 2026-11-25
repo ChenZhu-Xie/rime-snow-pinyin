@@ -1,5 +1,6 @@
 /** 在首选修订稿上加入选重兜底；离线路由与真实候选证据分别标记。 */
 import assert from "node:assert/strict";
+import { candidateSelection } from "./lib/benchmark-selection";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createReadStream, readFileSync } from "node:fs";
@@ -109,9 +110,20 @@ const missing: Set<string>[] = choices.map(
 	(map) => new Set(rows.filter((r) => !map.has(r[1])).map((r) => r[1])),
 );
 const alternatives = choices.map(() => new Map<string, Choice>());
-function add(index: number, text: string, code: string, source: string) {
+function add(
+	index: number,
+	text: string,
+	code: string,
+	source: string,
+	rank = 2,
+) {
 	if (!missing[index].has(text)) return;
-	const value = { code, keys: physicalKeys(code) + 1, selection: true, source };
+	const value = {
+		code,
+		keys: physicalKeys(code) + candidateSelection(rank, 6).keys,
+		selection: true,
+		source,
+	};
 	const old = alternatives[index].get(text);
 	const verified = source.startsWith("实测");
 	const oldVerified = old?.source.startsWith("实测") ?? false;
@@ -233,8 +245,16 @@ for (let index = 0; index < meta.schemes.length; index++) {
 		for (let n = 1; n < code.length; n++)
 			if (map.get(code.slice(0, n))?.commit) interrupted = true;
 		if (interrupted) continue;
-		for (const candidate of row.candidates.slice(1))
-			add(index, candidate.text, code, "实测候选＋理想选重一键");
+		for (const [position, candidate] of row.candidates.entries()) {
+			if (position === 0) continue;
+			add(
+				index,
+				candidate.text,
+				code,
+				position < 6 ? "实测候选＋理想选重一键" : "实测后续页候选＋翻页及选重",
+				position + 1,
+			);
+		}
 	}
 }
 const sbxh = meta.schemes.findIndex((s: { id: string }) => s.id === "sbxh");
@@ -306,7 +326,7 @@ const schemes = meta.schemes.map(
 	(scheme: { id: string; name: string }, index: number) => {
 		const map = choices[index];
 		const text = [
-			"# 无首选时采用候选编码＋一键理想选重；未实测可达性见来源列。保留输入稿首选，未对所有选重路径证明最短。",
+			"# 无首选时采用候选编码＋翻页键＋一键选重；未实测可达性见来源列。保留输入稿首选，未对所有选重路径证明最短。",
 			"字\t编码\t总键数\t选重\t来源\t字频序\t冻结频次",
 		];
 		for (const row of rows) {
@@ -368,7 +388,7 @@ for (const map of choices)
 const markdown = [
 	"# 十二方案单字键数（无首选时加一键选重）",
 	"",
-	"优先无选重：只要在枚举路径中找到首选，就使用最短首选路径，即使选重路径更短；仅未找到首选时，采用已验证候选中最短的选重路径。选重统一加一键，不计翻页，首选不计确认空格。均键按字等权，选重比例以当前前m字为分母。冰雪方案无候选证据的字记为 NA，不用词典码路估算；含此类字的总体均键显示待核实，键数分布之和也相应少于 m。外部方案保留原资料来源。最短性限于已枚举路径。原始首选 TSV 保留。",
+	"优先无选重：只要在枚举路径中找到首选，就使用最短首选路径，即使选重路径更短；仅未找到首选时，采用已验证候选中最短的选重路径。选重加一键，翻页每次加一键（六候选页），首选不计确认空格。均键按字等权，选重比例以当前前m字为分母。冰雪方案无候选证据的字记为 NA，不用词典码路估算；含此类字的总体均键显示待核实，键数分布之和也相应少于 m。外部方案保留原资料来源。最短性限于已枚举路径。原始首选 TSV 保留。",
 	"",
 	`本表是实测与预测混合的修订稿，共 96000 个方案—字记录。首选实测 ${sourceCounts["空词典引擎观测"] ?? 0} 条，首页选重候选实测 ${sourceCounts["实测候选＋理想选重一键"] ?? 0} 条；其他行保留各自来源，不是全量通过验证。采集生产提交：${meta.engineRevision}。`,
 	"",
@@ -414,6 +434,8 @@ writeOutput(
 		{
 			contract: "character-selection-hybrid-v4",
 			selectionCost: 1,
+			pageCost: 1,
+			pageSize: 6,
 			validationStatus: "mixed-unverified-selection-routes",
 			sourceCounts,
 			parentEngineRevision: meta.engineRevision,

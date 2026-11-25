@@ -1,4 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+	candidateSelection,
+	snowSelectionReplay,
+} from "./lib/benchmark-selection";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exact500Articles } from "./exact_500_articles";
@@ -261,9 +265,10 @@ function buildAlternatives(
 		const upper = countUpper(ranked.code);
 		add({
 			word: ranked.word,
-			displayCode: isFirst ? ranked.code : `${ranked.code}[${ranked.rank}]`,
+			displayCode: ranked.code + snowSelectionReplay(ranked.rank),
 			rawCode: ranked.code,
-			keyCost: ranked.code.length + upper + (isFirst ? 0 : 1),
+			keyCost:
+				ranked.code.length + upper + candidateSelection(ranked.rank, 6).keys,
 			instant: !isFirst,
 			popppable: isFirst && ranked.popppable,
 			source: isFirst ? "普通码" : "次选",

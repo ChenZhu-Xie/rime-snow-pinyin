@@ -58,7 +58,12 @@ export function benchmarkWordStatistics(
 			assert.match(word, /^\p{Script=Han}+$/u, "汉字段不能混入标点");
 			const counts = countBenchmarkKeys([code]);
 			const codeKeys =
-				counts.keys - counts.spaces - counts.shifts - counts.selections;
+				counts.keys -
+				counts.spaces -
+				counts.shifts -
+				counts.selections -
+				(counts.frequencies.PageDown ?? 0) +
+				(code.match(/\[Space\]/gu)?.length ?? 0);
 			assert.ok(codeKeys > 0, "汉字段必须有编码键");
 			assert.ok(counts.selections <= 1, "每个输出段最多一次选重");
 			const length = end - start;

@@ -25,8 +25,19 @@ export function countBenchmarkKeys(
 	};
 	for (const code of codes) {
 		for (let i = 0; i < code.length; i++) {
+			if (code.startsWith("{PageDown}", i)) {
+				press("PageDown");
+				i += "{PageDown}".length - 1;
+				continue;
+			}
+			if (code.startsWith("[Space]", i)) {
+				press("Space");
+				result.selections++;
+				i += "[Space]".length - 1;
+				continue;
+			}
 			const char = code[i];
-			const selection = code.slice(i).match(/^\[(候选)?([1-9])\]/u);
+			const selection = code.slice(i).match(/^\[(候选)?([0-9])\]/u);
 			if (selection) {
 				// 清风版回放只标候选序号，保留为逻辑选重键，不假定物理键位。
 				press(selection[1] ? `Candidate${selection[2]}` : selection[2]);
