@@ -195,6 +195,8 @@ menu.processor.init(processor_env)
 
 assert(menu.processor.func(KeyEvent("Control+Shift+grave"), processor_env) == 2,
   "Ctrl+Shift+grave 必须交给原生选单")
+assert(menu.processor.func(KeyEvent("Control+Shift+asciitilde"), processor_env) == 2,
+  "小狼毫将 Shift+grave 转成 asciitilde，必须同样交给原生选单")
 assert(menu.processor.func(KeyEvent("F4"), processor_env) == 1 and context.input == "~~'",
   "F4 必须打开 Lua 选单")
 assert(menu.processor.func(KeyEvent("Control+grave"), processor_env) == 1 and context.input == "",

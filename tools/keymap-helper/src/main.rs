@@ -929,6 +929,7 @@ impl App {
 
     fn redraw(&mut self) {
         if !self.visible {
+            trace("redraw.skipped.hidden");
             return;
         }
         let (Some(surface), Some(image)) = (self.surface.as_mut(), self.image.as_ref()) else {
@@ -939,16 +940,22 @@ impl App {
         else {
             return;
         };
-        if surface.resize(width, height).is_err() {
+        if let Err(error) = surface.resize(width, height) {
+            trace(&format!("surface.resize.failed\t{error}"));
             return;
         }
-        let Ok(mut buffer) = surface.buffer_mut() else {
-            return;
+        let mut buffer = match surface.buffer_mut() {
+            Ok(buffer) => buffer,
+            Err(error) => {
+                trace(&format!("surface.buffer.failed\t{error}"));
+                return;
+            }
         };
         if buffer.len() == image.pixels.len() {
             buffer.copy_from_slice(&image.pixels);
-            if buffer.present().is_ok() {
-                trace("presented");
+            match buffer.present() {
+                Ok(()) => trace("presented"),
+                Err(error) => trace(&format!("surface.present.failed\t{error}")),
             }
         }
     }
@@ -1015,7 +1022,10 @@ impl ApplicationHandler<UserEvent> for App {
         }
         match event {
             WindowEvent::CloseRequested => event_loop.exit(),
-            WindowEvent::RedrawRequested => self.redraw(),
+            WindowEvent::RedrawRequested => {
+                trace("redraw.requested");
+                self.redraw();
+            }
             WindowEvent::KeyboardInput { event, .. }
                 if event.state == ElementState::Pressed
                     && event.logical_key == Key::Named(NamedKey::Escape) =>

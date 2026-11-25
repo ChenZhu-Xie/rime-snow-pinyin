@@ -1,4 +1,5 @@
 # 将以下 patch 合并到用户已有的 default.custom.yaml；不要直接覆盖其中的其他全局配置。
 # F4 与 Control+grave 随后由冰雪拼音的 Lua 可筛选选单处理，Control+Shift+grave 保留原生选单。
+# 小狼毫会把 Shift+grave 转成 asciitilde，同时兼容两种前端按键表示。
 patch:
-  "switcher/hotkeys": [Control+Shift+grave]
+  "switcher/hotkeys": [Control+Shift+grave, Control+Shift+asciitilde]

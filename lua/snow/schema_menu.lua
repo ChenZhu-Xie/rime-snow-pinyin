@@ -370,7 +370,7 @@ function translator.func(input, segment, env)
             end
             context:set_property("snow_menu_options", "")
           end
-          yield(Candidate(env.tag, segment.start, segment._end, text, "切换当前方案选项"))
+          yield(Candidate(env.tag, segment.start, segment._end, text, ""))
         end
       end
     end

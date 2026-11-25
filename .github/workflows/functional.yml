@@ -173,7 +173,7 @@ jobs:
         run: |
           ./tools/keymap-helper/tests/windows-launch.ps1
       - name: 保存桌面启动测量
-        if: always() && runner.os != 'Windows'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: keymap-desktop-${{ matrix.os }}

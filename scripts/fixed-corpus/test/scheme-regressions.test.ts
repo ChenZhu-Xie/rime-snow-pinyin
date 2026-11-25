@@ -258,6 +258,7 @@ test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme
 		};
 		assert.deepEqual(customization.patch["switcher/hotkeys"], [
 			"Control+Shift+grave",
+			"Control+Shift+asciitilde",
 		]);
 	}
 
@@ -599,9 +600,7 @@ test("simplified preference source is retained but schema loading is suspended",
 		const fixed = source.indexOf("lua_filter@*snow.fix");
 		const learned = source.indexOf("lua_filter@*snow.learned_priority");
 		const postpone = source.indexOf("lua_filter@*snow.postpone");
-		assert.ok(
-			fixed >= 0 && learned > fixed && postpone > learned,
-		);
+		assert.ok(fixed >= 0 && learned > fixed && postpone > learned);
 		assert.ok(simplifier > postpone && uniquifier > simplifier);
 	}
 });
