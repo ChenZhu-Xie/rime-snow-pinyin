@@ -30,6 +30,7 @@ local snow = require "snow.snow"
 ---@field enabled_schemas table<string, boolean>
 ---@field prepare_connection Connection
 ---@field select_connection Connection
+---@field update_connection Connection
 
 local processor = {}
 local translator = {}
@@ -161,6 +162,14 @@ local function is_active(input, prefix)
   return input:sub(1, #prefix) == prefix
 end
 
+---@param context Context
+local function restore_ascii_mode(context)
+  if context.input == "" and context:get_property("snow_menu_ascii_mode") == "1" then
+    context:set_property("snow_menu_ascii_mode", "")
+    context:set_option("ascii_mode", true)
+  end
+end
+
 ---@return table<string, boolean>
 local function enabled_schemas()
   -- 和原生选单读取同一份已编译 default，不能把旧 build 产物当作当前启用列表。
@@ -215,7 +224,14 @@ function processor.func(key_event, env)
     if key_event:eq(toggle_key) then
       context:clear()
       context:set_property("snow_menu_options", "")
-      if not active then context:push_input(env.open_input) end
+      if not active then
+        -- ascii_segmentor 会把选单前缀截成 raw，必须在写入前暂停英文直通。
+        if context:get_option("ascii_mode") then
+          context:set_property("snow_menu_ascii_mode", "1")
+          context:set_option("ascii_mode", false)
+        end
+        context:push_input(env.open_input)
+      end
       return snow.kAccepted
     end
   end
@@ -266,6 +282,10 @@ function translator.init(env)
     end
   end
   local context = env.engine.context
+  env.update_connection = context.update_notifier:connect(function(ctx)
+    -- 选项入口会先清空再重开，不能在这段过渡中恢复英文直通。
+    if not env.selected_action then restore_ascii_mode(ctx) end
+  end)
   env.prepare_connection = context.select_notifier:connect(function(ctx)
     env.selected_schema_id = nil
     env.selected_action = nil
@@ -279,10 +299,11 @@ function translator.init(env)
   end, 0)
   env.select_connection = context.select_notifier:connect(function(ctx)
     local action = env.selected_action
-    env.selected_action = nil
     if action then
       ctx:clear()
       action()
+      env.selected_action = nil
+      restore_ascii_mode(ctx)
       return
     end
     local schema_id = env.selected_schema_id
@@ -321,7 +342,11 @@ function translator.func(input, segment, env)
       if states and states.size >= 2 then
         local current = 0
         if name then
-          current = context:get_option(name) and 1 or 0
+          local enabled = context:get_option(name)
+          if name == "ascii_mode" and context:get_property("snow_menu_ascii_mode") == "1" then
+            enabled = true
+          end
+          current = enabled and 1 or 0
         elseif options then
           for option_index = 0, options.size - 1 do
             local option = options:get_value_at(option_index)
@@ -335,6 +360,7 @@ function translator.func(input, segment, env)
           local text = before.value .. " → " .. after.value
           env.actions[text] = function()
             if name then
+              if name == "ascii_mode" then context:set_property("snow_menu_ascii_mode", "") end
               context:set_option(name, next_index == 1)
             elseif options then
               for option_index = 0, options.size - 1 do
@@ -377,6 +403,7 @@ end
 function translator.fini(env)
   env.prepare_connection:disconnect()
   env.select_connection:disconnect()
+  env.update_connection:disconnect()
 end
 
 return menu

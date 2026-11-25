@@ -33,6 +33,14 @@ deploy:
       - send: "{Control+grave}l{Release+l}f{Release+f}j{Release+j}d{Release+d}{space}{Release+space}"
         assert: commit == nil and preedit == nil
       # 原生 switcher 在 engine 级处理，Mira 场景不暴露其状态；Ctrl+Shift+grave 由固定语料测试核对。
+  schema_menu_ascii:
+    options:
+      ascii_mode: true
+    tests:
+      - send: "{Control+grave}l{Release+l}f{Release+f}j{Release+j}d{Release+d}"
+        assert: cand[1].text == "冰雪兰道" and cand[2] == nil
+      - send: "{Escape}abc"
+        assert: commit == "abc" and preedit == nil
   select_character:
     tests:
       # 单字定字：[ 重复该字，] 在该字后追加“得”

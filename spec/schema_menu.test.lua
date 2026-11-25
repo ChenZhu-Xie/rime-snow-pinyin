@@ -154,7 +154,11 @@ local switch_values = {}
 local context = {
   input = "",
   select_notifier = notifier(),
-  clear = function(self) self.input = "" end,
+  update_notifier = notifier(),
+  clear = function(self)
+    self.input = ""
+    for _, callback in ipairs(self.update_notifier.callbacks) do callback(self) end
+  end,
   push_input = function(self, text) self.input = self.input .. text return true end,
   pop_input = function(self, length) self.input = self.input:sub(1, -length - 1) return true end,
   confirm_current_selection = function() confirmed = confirmed + 1 return true end,
@@ -164,15 +168,17 @@ local context = {
   set_property = function(_, key, value) properties[key] = value end,
   get_property = function(_, key) return properties[key] or "" end,
 }
+local menu_switch_name = "character"
+local menu_switch_states = { "字词", "单字" }
 local config = {
   get_list_size = function(_, path) return path == "switches" and 1 or 0 end,
   get_list = function(_, path)
     if path == "switches/@0/states" then
-      return { size = 2, get_value_at = function(_, index) return { value = ({"字词", "单字"})[index + 1] } end }
+      return { size = 2, get_value_at = function(_, index) return { value = menu_switch_states[index + 1] } end }
     end
   end,
   get_string = function(_, path)
-    if path == "switches/@0/name" then return "character" end
+    if path == "switches/@0/name" then return menu_switch_name end
     if path == "schema_menu/prefix" then return "~~" end
     if path == "schema_menu/sentinel" then return "'" end
     if path == "schema_menu/tag" then return "schema_menu" end
@@ -210,6 +216,26 @@ assert(menu.processor.func(KeyEvent("Escape"), processor_env) == 1 and context.i
 
 local translator_env = { engine = engine }
 menu.translator.init(translator_env)
+
+-- 英文直通会把选单前缀分成 raw；选单期间必须暂停，退出后恢复。
+for _, closing_key in ipairs({ "Escape", "Control+grave", "BackSpace" }) do
+  switch_values.ascii_mode = true
+  context:clear()
+  assert(menu.processor.func(KeyEvent("Control+grave"), processor_env) == 1)
+  assert(context.input == "~~'" and not context:get_option("ascii_mode"),
+    "英文模式打开选单时必须停用英文直通，供原生分段器生成候选")
+  assert(menu.processor.func(KeyEvent("l"), processor_env) == 1 and context.input == "~~'l")
+  menu.processor.func(KeyEvent("Release+l"), processor_env)
+  menu.processor.func(KeyEvent("BackSpace"), processor_env)
+  menu.processor.func(KeyEvent(closing_key), processor_env)
+  assert(context.input == "" and context:get_option("ascii_mode"),
+    "取消选单必须恢复原来的英文模式：" .. closing_key)
+end
+menu.processor.func(KeyEvent("Control+grave"), processor_env)
+context:clear()
+assert(context:get_option("ascii_mode"), "外部清空选单也必须恢复英文模式")
+switch_values.ascii_mode = false
+
 local segment = {
   start = 0,
   _end = 3,
@@ -225,6 +251,8 @@ menu.translator.func("qqqq", segment, translator_env)
 assert(#yielded == 0, "无匹配时不得回落普通候选")
 
 yielded = {}
+switch_values.ascii_mode = true
+menu.processor.func(KeyEvent("Control+grave"), processor_env)
 menu.translator.func("'", segment, translator_env)
 assert(#yielded == #menu.entries + 1 and yielded[1].text == "方案选项", "空查询首项必须是方案选项，随后显示全部方案")
 assert(yielded[2].preedit == "", "空查询不得显示内部菜单前缀")
@@ -233,6 +261,7 @@ context.select_notifier.callbacks[1](context)
 assert(switch_values._auto_commit == false, "选项入口不能上屏")
 context.select_notifier.callbacks[2](context)
 assert(properties.snow_menu_options == "1" and context.input == "~~'", "首项进入当前方案选项")
+assert(not context:get_option("ascii_mode"), "进入子菜单不得提前恢复英文直通")
 yielded = {}
 menu.translator.func("'", segment, translator_env)
 assert(#yielded == 1 and yielded[1].text == "字词 → 单字", "子菜单必须读取实际方案开关")
@@ -240,14 +269,34 @@ selected_candidate = yielded[1]
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(switch_values.character and context.input == "" and properties.snow_menu_options == "", "选择单字应切换选项且不输出文字")
+assert(context:get_option("ascii_mode"), "切换普通选项后必须恢复原来的英文模式")
+
+menu_switch_name = "ascii_mode"
+menu_switch_states = { "中文", "西文" }
+menu.processor.func(KeyEvent("Control+grave"), processor_env)
+properties.snow_menu_options = "1"
+yielded = {}
+menu.translator.func("'", segment, translator_env)
+assert(yielded[1].text == "西文 → 中文", "中英选项必须显示进入选单前的真实状态")
+selected_candidate = yielded[1]
+context.select_notifier.callbacks[1](context)
+context.select_notifier.callbacks[2](context)
+assert(not context:get_option("ascii_mode"), "明确切回中文时不得恢复旧的英文状态")
+menu_switch_name = "character"
+menu_switch_states = { "字词", "单字" }
 
 
+switch_values.ascii_mode = true
+menu.processor.func(KeyEvent("Control+grave"), processor_env)
 selected_candidate = Candidate("schema_menu", 0, 3, "冰雪清韵", "")
 context.input = "~~'bxqy"
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == "snow_qingyun" and context.input == "",
   "选择候选必须清空菜单并切换方案")
+assert(context:get_option("ascii_mode") and properties.snow_menu_ascii_mode == "",
+  "切换方案前必须结束临时模式并清除恢复标记")
+switch_values.ascii_mode = false
 
 yielded = {}
 menu.translator.func("dtld", segment, translator_env)
@@ -268,6 +317,7 @@ context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
 assert(selected_schema == nil and context.input == "", "选择当前方案只能关闭选单")
 menu.translator.fini(translator_env)
+assert(#context.update_notifier.callbacks == 0, "销毁翻译器必须断开模式恢复回调")
 
 -- 源方案在菜单中可见但尚未部署：保留提示，不得切换空 Schema 或上屏方案名。
 unavailable_schemas.snow_zhudao = true
