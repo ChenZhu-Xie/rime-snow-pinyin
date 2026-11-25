@@ -9,7 +9,14 @@ import {
 	summarizeFirstChoices,
 	type CharacterRoute,
 } from "../../lib/character-first-choice";
-import { pronunciationCodes } from "../../lib/benchmark-schemes";
+import { pronunciationCodes, productionCharacterCodes } from "../../lib/benchmark-schemes";
+
+test("四拼部件入口键本身保留候选，覆盖 CI 的滴与酒短码", () => {
+	for (const [text, reading, code] of [["滴", "di1", "di1"], ["酒", "jiu3", "jo1"]]) {
+		const routes = productionCharacterCodes("sipin", text, reading);
+		assert.ok(routes.some(route => route.code === code), `${text}/${code}`);
+	}
+});
 
 test("Top m 仅改变分母，范围外字和固定词继续占用首选", () => {
 	const routes: CharacterRoute[] = [

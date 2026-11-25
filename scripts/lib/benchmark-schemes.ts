@@ -828,7 +828,8 @@ export function productionCharacterCodes(
 	for (const base of [...result.values()].filter(
 		({ auxiliaryLength }) => auxiliaryLength === 0,
 	)) {
-		for (let length = 1; length <= shape.length; length++) {
+		// 入口键自身也会刷新候选与首选后置，尚未输入部件时不能跳过。
+		for (let length = 0; length <= shape.length; length++) {
 			const code = base.code + "1" + shape.slice(0, length);
 			result.set(code, {
 				code,
