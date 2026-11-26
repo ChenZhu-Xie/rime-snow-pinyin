@@ -392,7 +392,7 @@ for (const [schema, keys, page] of [
 	["snow_jiandao", "yxoaai", "也许"],
 	["snow_sanpin", "yxuoua", "也许"],
 	["snow_hedao", "cvoaaa", "测试"],
-	["snow_hepin", "cvaiee", "才是"],
+	["snow_hepin", "cvaiee", "才睡"],
 ]) {
 	LATENCY_CASES[schema] ??= [];
 	LATENCY_CASES[schema].push({
