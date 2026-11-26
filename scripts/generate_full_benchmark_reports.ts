@@ -837,6 +837,15 @@ async function run() {
 			}
 			console.log(`构建【${scheme.name}】空白 Rime 实际候选集...`);
 			oracle.selectSchema(scheme.schemaId);
+			// 与长语料保持相同的显式开关，按选项摘要复用逐键缓存。
+			oracle.setOptions({
+				popping: true,
+				buffered: false,
+				character: false,
+				ascii_mode: false,
+				full_shape: false,
+				traditionalization: false,
+			});
 			const before = oracle.cacheStats();
 			const result = buildAlternatives(
 				benchmarkCorpus,
