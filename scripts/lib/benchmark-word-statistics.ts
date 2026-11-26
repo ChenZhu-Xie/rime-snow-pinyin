@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
-import { countBenchmarkKeys } from "./benchmark-key-counts";
+import {
+	benchmarkFunctionKeys,
+	countBenchmarkKeys,
+	emptyBenchmarkFunctionKeyCounts,
+	type BenchmarkFunctionKeyCounts,
+} from "./benchmark-key-counts";
 import type { BenchmarkLineReplay } from "./benchmark-replay";
 
 export interface BenchmarkWordCounts {
@@ -15,6 +20,9 @@ export interface BenchmarkWordCounts {
 	keyLengths: Record<string, { count: number; rate: number }>;
 	selections: number;
 	selectionRate: number;
+	spaces: number;
+	shifts: number;
+	functionKeys: BenchmarkFunctionKeyCounts;
 }
 
 export interface BenchmarkWordStatistics {
@@ -36,6 +44,9 @@ function emptyCounts(label: string): BenchmarkWordCounts {
 		keyLengths: {},
 		selections: 0,
 		selectionRate: 0,
+		spaces: 0,
+		shifts: 0,
+		functionKeys: emptyBenchmarkFunctionKeyCounts(),
 	};
 }
 
@@ -73,6 +84,10 @@ export function benchmarkWordStatistics(
 				group.codeKeys += codeKeys;
 				group.inputKeys += counts.keys;
 				group.selections += counts.selections;
+				group.spaces += counts.spaces;
+				group.shifts += counts.shifts;
+				for (const key of benchmarkFunctionKeys)
+					group.functionKeys[key] += counts.functionKeys[key];
 				const bucket = (group.codeLengths[codeKeys] ??= { count: 0, rate: 0 });
 				bucket.count++;
 				const keyBucket = (group.keyLengths[counts.keys] ??= {
@@ -117,13 +132,13 @@ export function renderBenchmarkWordStatistics(
 ): string {
 	const ranking = [...schemes].sort((a, b) => a.totalKeys - b.totalKeys);
 	const lines = [
-		"| 方案 | 总按键 | 总均码／字 | 输出段数 | 均码／段 | 选重次数／率 |",
-		"| --- | ---: | ---: | ---: | ---: | ---: |",
+		`| 方案 | 总按键 | 总均码／字 | 输出段数 | 均码／段 | Space | Shift | ${benchmarkFunctionKeys.map((key) => `\`${key}\``).join(" | ")} | 选重次数／率 |`,
+		`| --- | ${Array(13).fill("---:").join(" | ")} |`,
 	];
 	for (const { name, totalKeys, statistics } of ranking) {
 		const total = statistics.total;
 		lines.push(
-			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **${total.tokens}** | **${total.tokens ? total.averageCodeLength.toFixed(3) : "—"}** | **${total.selections}／${percent(total.selectionRate)}** |`,
+			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **${total.tokens}** | **${total.tokens ? total.averageCodeLength.toFixed(3) : "—"}** | ${total.spaces} | ${total.shifts} | ${benchmarkFunctionKeys.map((key) => total.functionKeys[key]).join(" | ")} | **${total.selections}／${percent(total.selectionRate)}** |`,
 		);
 	}
 	for (const { name, statistics } of ranking) {
@@ -137,6 +152,12 @@ export function renderBenchmarkWordStatistics(
 			`| 输出段数／占比 | ${groups.map((g) => `${g.tokens}／${percent(g.tokenRate)}`).join(" | ")} |`,
 			`| 平均码长／段 | ${groups.map((g) => (g.tokens ? g.averageCodeLength.toFixed(3) : "—")).join(" | ")} |`,
 			`| 选重次数／率 | ${groups.map((g) => `${g.selections}／${percent(g.selectionRate)}`).join(" | ")} |`,
+			`| Space 次数 | ${groups.map((g) => g.spaces).join(" | ")} |`,
+			`| Shift 次数 | ${groups.map((g) => g.shifts).join(" | ")} |`,
+			...benchmarkFunctionKeys.map(
+				(key) =>
+					`| \`${key}\` 次数 | ${groups.map((g) => g.functionKeys[key]).join(" | ")} |`,
+			),
 		);
 		const maxCodeLength = Math.max(
 			0,

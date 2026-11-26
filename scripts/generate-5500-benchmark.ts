@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { exact500Articles } from "./exact_500_articles";
-import { countBenchmarkKeys } from "./lib/benchmark-key-counts";
+import {
+	benchmarkFunctionKeys,
+	countBenchmarkKeys,
+} from "./lib/benchmark-key-counts";
 import {
 	renderBenchmarkHeatmapGallery,
 	writeBenchmarkHeatmaps,
@@ -188,6 +191,11 @@ const corpus = {
 assert.equal(corpus.hanCharacters, 5500);
 assert.equal(corpus.punctuationCharacters, 392);
 for (const [id, scheme] of Object.entries(schemes)) {
+	assert.deepEqual(
+		scheme.wordStatistics.total.functionKeys,
+		scheme.total.functionKeys,
+		`${id}/字词功能键次数必须与全方案一致`,
+	);
 	assert.equal(
 		scheme.wordStatistics.total.codeKeys,
 		scheme.total.keys -
@@ -207,6 +215,8 @@ const report = {
 	contract: "snow-twelve-scheme-5500-v2",
 	baseline: baseline.contract,
 	corpus,
+	functionKeysDefinition:
+		"按回放分别统计 [、]、;、/、<、> 的使用次数，选重标记的方括号不计；<、> 各计一次基础键，配套 Shift 另计一次。计数为总按键的子集，不额外累加；物理键频 frequencies 中 <、> 仍分别归入逗号、句号键",
 	wordStatisticsDefinition: {
 		unit: "最优路径实际汉字输出段的出现次数，重复出现重复计数；含结构略码及追加的／了，不重新分词；不含标点段",
 		codeLength:
@@ -257,12 +267,14 @@ const markdown = [
 	"",
 	`语料：${corpus.note} 共 5500 汉字、392 标点。5000 字部分另见[十篇完整报告](./十篇五百字_当前十二方案最优切分及字词比率报告.md)。`,
 	"",
-	"| 排名 | 方案 | 总按键 | 总平均码长（键／字） | Space | Shift | 选重 |",
-	"| ---: | --- | ---: | ---: | ---: | ---: | ---: |",
+	`| 排名 | 方案 | 总按键 | 总平均码长（键／字） | Space | Shift | ${benchmarkFunctionKeys.map((key) => `\`${key}\``).join(" | ")} | 选重 |`,
+	`| ---: | --- | ${Array(11).fill("---:").join(" | ")} |`,
 	...ranking.map(
 		([, scheme], i) =>
-			`| ${i + 1} | ${scheme.name} | ${scheme.total.keys} | ${scheme.total.averageLength.toFixed(4)} | ${scheme.total.spaces} | ${scheme.total.shifts} | ${scheme.total.selections} |`,
+			`| ${i + 1} | ${scheme.name} | ${scheme.total.keys} | ${scheme.total.averageLength.toFixed(4)} | ${scheme.total.spaces} | ${scheme.total.shifts} | ${benchmarkFunctionKeys.map((key) => scheme.total.functionKeys[key]).join(" | ")} | ${scheme.total.selections} |`,
 	),
+	"",
+	"功能键按回放分别列出 `[`、`]`、`;`、`/`、`<`、`>` 的使用次数，零次也显示。`《`／`》` 功能以 `<`／`>` 表示，每次只在对应栏计一个基础键，配套的另一次击键已计入 Shift；这些栏均为总按键的子集，不再额外累加。选重标记 `[3]`、`[候选2]`、`[Space]` 中的方括号属于排版，不计功能键；热力图仍将 `<`／`>` 的基础键分别归入物理逗号／句号键。",
 	"",
 	"## 词长、码长与选重统计",
 	"",
@@ -270,6 +282,8 @@ const markdown = [
 	"按十一场景最优路径的实际汉字输出段统计，重复出现重复计数，标点不计词次。输出段包括结构略码及追加「的／了」，不再按另一套词典重新分词；五字及以上合并为多字词。第十一场景的额外 500 字同样计入。",
 	"",
 	"先按总按键从少到多给出十二方案汇总，再逐方案给出六列小表。每张小表以单字、二字、三字、四字、五字及以上为列，以实际键数为行；分布格为「次数／该词长类别占比」，空格表示零次。存在短码长词等规则，矩阵不强制为严格三角形。",
+	"",
+	"各词长小表同时列出 Space、Shift 及六个功能键的使用次数，按该键所在的实际汉字输出段归类；汇总表中的对应次数为这些类别之和。",
 	"",
 	"「输出段数／占比」统计的是字词输出段的出现次数，分母为本方案全部汉字输出段数，不是汉字数；所有方案输入的汉字均为 5500 字。「选重率」为选重次数除以对应类别的输出段数，汇总表给出全方案选重个数及比率。百分比保留两位小数，四舍五入后之和可能略偏离 100%。",
 	"",

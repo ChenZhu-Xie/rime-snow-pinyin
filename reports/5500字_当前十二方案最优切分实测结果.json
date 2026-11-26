@@ -7,6 +7,7 @@
     "punctuationCharacters": 392,
     "note": "十篇各 500 字，加与第十篇相同的独立 500 字赛文，按两个场景计入。"
   },
+  "functionKeysDefinition": "按回放分别统计 [、]、;、/、<、> 的使用次数，选重标记的方括号不计；<、> 各计一次基础键，配套 Shift 另计一次。计数为总按键的子集，不额外累加；物理键频 frequencies 中 <、> 仍分别归入逗号、句号键",
   "wordStatisticsDefinition": {
     "unit": "最优路径实际汉字输出段的出现次数，重复出现重复计数；含结构略码及追加的／了，不重新分词；不含标点段",
     "codeLength": "codeKeys、codeLengths 为基础键拆账，含辅码、定位、略码及词长直选的逗号／句号键；大写字母计一码；不含额外 Shift、Space、数字选重键和排版标记，不用于报告平均码长及分布",
@@ -26,6 +27,14 @@
         "spaces": 288,
         "shifts": 139,
         "selections": 1,
+        "functionKeys": {
+          "[": 5,
+          "]": 0,
+          ";": 184,
+          "/": 17,
+          "<": 0,
+          ">": 0
+        },
         "frequencies": {
           "1": 30,
           "2": 1,
@@ -161,7 +170,17 @@
             }
           },
           "selections": 1,
-          "selectionRate": 0.0004492362982929021
+          "selectionRate": 0.0004492362982929021,
+          "spaces": 288,
+          "shifts": 139,
+          "functionKeys": {
+            "[": 5,
+            "]": 0,
+            ";": 184,
+            "/": 17,
+            "<": 0,
+            ">": 0
+          }
         },
         "groups": [
           {
@@ -234,7 +253,17 @@
               }
             },
             "selections": 1,
-            "selectionRate": 0.002288329519450801
+            "selectionRate": 0.002288329519450801,
+            "spaces": 70,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -290,7 +319,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 148,
+            "shifts": 1,
+            "functionKeys": {
+              "[": 5,
+              "]": 0,
+              ";": 20,
+              "/": 6,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -346,7 +385,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 70,
+            "shifts": 3,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 75,
+              "/": 8,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -402,7 +451,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 1,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 19,
+              "/": 2,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -466,7 +525,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 134,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 70,
+              "/": 1,
+              "<": 0,
+              ">": 0
+            }
           }
         ]
       },
@@ -479,6 +548,14 @@
           "spaces": 15,
           "shifts": 37,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 13,
             "Space": 15,
@@ -522,6 +599,14 @@
           "spaces": 21,
           "shifts": 6,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 17,
+            "/": 1,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "1": 8,
             "S": 23,
@@ -567,6 +652,14 @@
           "spaces": 19,
           "shifts": 4,
           "selections": 0,
+          "functionKeys": {
+            "[": 5,
+            "]": 0,
+            ";": 30,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "1": 10,
             "X": 36,
@@ -612,6 +705,14 @@
           "spaces": 15,
           "shifts": 34,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 1,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "1": 3,
             "V": 24,
@@ -657,6 +758,14 @@
           "spaces": 33,
           "shifts": 15,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 12,
+            "/": 7,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "1": 2,
             "V": 38,
@@ -702,6 +811,14 @@
           "spaces": 26,
           "shifts": 22,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 14,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "F": 69,
             "W": 23,
@@ -745,6 +862,14 @@
           "spaces": 17,
           "shifts": 5,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "1": 1,
             "Z": 10,
@@ -789,6 +914,14 @@
           "spaces": 23,
           "shifts": 6,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 21,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "1": 1,
             "Z": 23,
@@ -833,6 +966,14 @@
           "spaces": 19,
           "shifts": 6,
           "selections": 1,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "1": 5,
             "2": 1,
@@ -879,6 +1020,14 @@
           "spaces": 50,
           "shifts": 2,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 11,
             "Y": 16,
@@ -922,6 +1071,14 @@
           "spaces": 50,
           "shifts": 2,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 11,
             "Y": 16,
@@ -966,6 +1123,14 @@
         "spaces": 343,
         "shifts": 259,
         "selections": 0,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 180,
+          "/": 19,
+          "<": 0,
+          ">": 4
+        },
         "frequencies": {
           "Z": 264,
           "Space": 343,
@@ -1086,7 +1251,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 343,
+          "shifts": 259,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 180,
+            "/": 19,
+            "<": 0,
+            ">": 4
+          }
         },
         "groups": [
           {
@@ -1151,7 +1326,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 225,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 1,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -1207,7 +1392,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 18,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 18,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -1259,7 +1454,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 92,
+            "shifts": 50,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 74,
+              "/": 10,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -1311,7 +1516,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 92,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 20,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -1363,7 +1578,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 8,
+            "shifts": 117,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 67,
+              "/": 1,
+              "<": 0,
+              ">": 4
+            }
           }
         ]
       },
@@ -1376,6 +1601,14 @@
           "spaces": 16,
           "shifts": 41,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 0,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "Z": 14,
             "Space": 16,
@@ -1419,6 +1652,14 @@
           "spaces": 35,
           "shifts": 16,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 1,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "C": 28,
             "X": 54,
@@ -1463,6 +1704,14 @@
           "spaces": 41,
           "shifts": 15,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 29,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "X": 49,
             "F": 37,
@@ -1506,6 +1755,14 @@
           "spaces": 32,
           "shifts": 37,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 1,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "K": 25,
             "W": 25,
@@ -1550,6 +1807,14 @@
           "spaces": 30,
           "shifts": 33,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 11,
+            "/": 9,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "K": 45,
             "E": 24,
@@ -1594,6 +1859,14 @@
           "spaces": 29,
           "shifts": 21,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 14,
+            "/": 0,
+            "<": 0,
+            ">": 2
+          },
           "frequencies": {
             "Y": 64,
             "E": 18,
@@ -1637,6 +1910,14 @@
           "spaces": 21,
           "shifts": 22,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 19,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 17,
             "Space": 21,
@@ -1680,6 +1961,14 @@
           "spaces": 37,
           "shifts": 23,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 30,
             "Space": 37,
@@ -1723,6 +2012,14 @@
           "spaces": 28,
           "shifts": 21,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 36,
             "H": 41,
@@ -1767,6 +2064,14 @@
           "spaces": 37,
           "shifts": 15,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 15,
             "S": 28,
@@ -1810,6 +2115,14 @@
           "spaces": 37,
           "shifts": 15,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 15,
             "S": 28,
@@ -1854,6 +2167,14 @@
         "spaces": 365,
         "shifts": 271,
         "selections": 0,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 171,
+          "/": 19,
+          "<": 0,
+          ">": 5
+        },
         "frequencies": {
           "Z": 257,
           "Space": 365,
@@ -1986,7 +2307,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 365,
+          "shifts": 271,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 171,
+            "/": 19,
+            "<": 0,
+            ">": 5
+          }
         },
         "groups": [
           {
@@ -2043,7 +2374,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 240,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 1,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -2099,7 +2440,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 21,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 21,
+              "/": 3,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -2159,7 +2510,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 93,
+            "shifts": 51,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 73,
+              "/": 10,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -2211,7 +2572,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 88,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 16,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -2275,7 +2646,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 11,
+            "shifts": 132,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 60,
+              "/": 2,
+              "<": 0,
+              ">": 5
+            }
           }
         ]
       },
@@ -2288,6 +2669,14 @@
           "spaces": 20,
           "shifts": 50,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 0,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "Z": 15,
             "Space": 20,
@@ -2331,6 +2720,14 @@
           "spaces": 33,
           "shifts": 19,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 16,
+            "/": 1,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "C": 27,
             "X": 55,
@@ -2375,6 +2772,14 @@
           "spaces": 43,
           "shifts": 11,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 28,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "X": 48,
             "F": 37,
@@ -2418,6 +2823,14 @@
           "spaces": 29,
           "shifts": 41,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 7,
+            "/": 1,
+            "<": 0,
+            ">": 2
+          },
           "frequencies": {
             "K": 25,
             "W": 29,
@@ -2462,6 +2875,14 @@
           "spaces": 27,
           "shifts": 26,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 11,
+            "/": 8,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "K": 48,
             "E": 22,
@@ -2506,6 +2927,14 @@
           "spaces": 31,
           "shifts": 29,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 13,
+            "/": 0,
+            "<": 0,
+            ">": 2
+          },
           "frequencies": {
             "Y": 67,
             "E": 21,
@@ -2549,6 +2978,14 @@
           "spaces": 20,
           "shifts": 18,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 17,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 17,
             "Space": 20,
@@ -2592,6 +3029,14 @@
           "spaces": 41,
           "shifts": 27,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 21,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 28,
             "Space": 41,
@@ -2634,6 +3079,14 @@
           "spaces": 29,
           "shifts": 26,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 3,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 35,
             "H": 44,
@@ -2678,6 +3131,14 @@
           "spaces": 46,
           "shifts": 12,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 15,
             "G": 33,
@@ -2721,6 +3182,14 @@
           "spaces": 46,
           "shifts": 12,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 15,
             "G": 33,
@@ -2765,6 +3234,14 @@
         "spaces": 1288,
         "shifts": 153,
         "selections": 2,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 217,
+          "/": 180,
+          "<": 0,
+          ">": 0
+        },
         "frequencies": {
           "2": 2,
           ";": 217,
@@ -2894,7 +3371,17 @@
             }
           },
           "selections": 2,
-          "selectionRate": 0.0005398110661268556
+          "selectionRate": 0.0005398110661268556,
+          "spaces": 1288,
+          "shifts": 153,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 217,
+            "/": 180,
+            "<": 0,
+            ">": 0
+          }
         },
         "groups": [
           {
@@ -2947,7 +3434,17 @@
               }
             },
             "selections": 2,
-            "selectionRate": 0.0007215007215007215
+            "selectionRate": 0.0007215007215007215,
+            "spaces": 1204,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 131,
+              "/": 101,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -2979,7 +3476,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 67,
+              "/": 75,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -3011,7 +3518,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 84,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 19,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -3035,7 +3552,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -3091,7 +3618,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 153,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           }
         ]
       },
@@ -3104,6 +3641,14 @@
           "spaces": 80,
           "shifts": 51,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 14,
+            "/": 8,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             ";": 14,
             "X": 51,
@@ -3148,6 +3693,14 @@
           "spaces": 148,
           "shifts": 5,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 23,
+            "/": 26,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "V": 27,
             "Q": 28,
@@ -3192,6 +3745,14 @@
           "spaces": 148,
           "shifts": 5,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 23,
+            "/": 20,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "V": 54,
             "K": 91,
@@ -3235,6 +3796,14 @@
           "spaces": 106,
           "shifts": 24,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 17,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 50,
             "B": 31,
@@ -3279,6 +3848,14 @@
           "spaces": 95,
           "shifts": 11,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 23,
+            "/": 11,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 47,
             "Z": 39,
@@ -3323,6 +3900,14 @@
           "spaces": 62,
           "shifts": 32,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 5,
+            "/": 13,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "L": 47,
             "W": 25,
@@ -3367,6 +3952,14 @@
           "spaces": 105,
           "shifts": 9,
           "selections": 1,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 21,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "2": 1,
             ";": 8,
@@ -3412,6 +4005,14 @@
           "spaces": 139,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 26,
+            "/": 18,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             ";": 26,
             "D": 53,
@@ -3456,6 +4057,14 @@
           "spaces": 145,
           "shifts": 4,
           "selections": 1,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 26,
+            "/": 12,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "2": 1,
             "J": 38,
@@ -3501,6 +4110,14 @@
           "spaces": 130,
           "shifts": 2,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 27,
+            "/": 17,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "K": 52,
             "V": 24,
@@ -3544,6 +4161,14 @@
           "spaces": 130,
           "shifts": 2,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 27,
+            "/": 17,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "K": 52,
             "V": 24,
@@ -3588,6 +4213,14 @@
         "spaces": 395,
         "shifts": 158,
         "selections": 0,
+        "functionKeys": {
+          "[": 7,
+          "]": 0,
+          ";": 182,
+          "/": 21,
+          "<": 15,
+          ">": 9
+        },
         "frequencies": {
           "Z": 245,
           "Space": 395,
@@ -3709,7 +4342,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 395,
+          "shifts": 158,
+          "functionKeys": {
+            "[": 7,
+            "]": 0,
+            ";": 182,
+            "/": 21,
+            "<": 15,
+            ">": 9
+          }
         },
         "groups": [
           {
@@ -3766,7 +4409,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 283,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 7,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -3822,7 +4475,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 49,
+            "shifts": 1,
+            "functionKeys": {
+              "[": 7,
+              "]": 0,
+              ";": 21,
+              "/": 5,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -3870,7 +4533,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 63,
+            "shifts": 7,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 76,
+              "/": 14,
+              "<": 0,
+              ">": 7
+            }
           },
           {
             "label": "四字",
@@ -3922,7 +4595,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 15,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 17,
+              "/": 2,
+              "<": 15,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -3982,7 +4665,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 135,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 61,
+              "/": 0,
+              "<": 0,
+              ">": 2
+            }
           }
         ]
       },
@@ -3995,6 +4688,14 @@
           "spaces": 13,
           "shifts": 39,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 16,
             "Space": 13,
@@ -4038,6 +4739,14 @@
           "spaces": 38,
           "shifts": 10,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 1,
+            "<": 2,
+            ">": 1
+          },
           "frequencies": {
             "Q": 32,
             "S": 46,
@@ -4082,6 +4791,14 @@
           "spaces": 46,
           "shifts": 6,
           "selections": 0,
+          "functionKeys": {
+            "[": 5,
+            "]": 0,
+            ";": 30,
+            "/": 3,
+            "<": 1,
+            ">": 1
+          },
           "frequencies": {
             "Y": 57,
             "I": 44,
@@ -4126,6 +4843,14 @@
           "spaces": 35,
           "shifts": 27,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 1,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "V": 23,
             "Y": 54,
@@ -4170,6 +4895,14 @@
           "spaces": 44,
           "shifts": 13,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 11,
+            "/": 8,
+            "<": 1,
+            ">": 3
+          },
           "frequencies": {
             "V": 42,
             "S": 24,
@@ -4214,6 +4947,14 @@
           "spaces": 28,
           "shifts": 31,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 14,
+            "/": 0,
+            "<": 3,
+            ">": 2
+          },
           "frequencies": {
             "W": 61,
             "I": 37,
@@ -4257,6 +4998,14 @@
           "spaces": 24,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 0,
+            "<": 3,
+            ">": 0
+          },
           "frequencies": {
             "Z": 13,
             "Space": 24,
@@ -4300,6 +5049,14 @@
           "spaces": 37,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 21,
+            "/": 0,
+            "<": 3,
+            ">": 0
+          },
           "frequencies": {
             "Z": 27,
             "Space": 37,
@@ -4343,6 +5100,14 @@
           "spaces": 28,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 21,
+            "/": 4,
+            "<": 2,
+            ">": 1
+          },
           "frequencies": {
             "X": 28,
             "U": 40,
@@ -4387,6 +5152,14 @@
           "spaces": 51,
           "shifts": 4,
           "selections": 0,
+          "functionKeys": {
+            "[": 1,
+            "]": 0,
+            ";": 18,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "F": 31,
             "Q": 16,
@@ -4431,6 +5204,14 @@
           "spaces": 51,
           "shifts": 4,
           "selections": 0,
+          "functionKeys": {
+            "[": 1,
+            "]": 0,
+            ";": 18,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "F": 31,
             "Q": 16,
@@ -4476,6 +5257,14 @@
         "spaces": 374,
         "shifts": 168,
         "selections": 0,
+        "functionKeys": {
+          "[": 4,
+          "]": 0,
+          ";": 179,
+          "/": 20,
+          "<": 21,
+          ">": 11
+        },
         "frequencies": {
           "Z": 245,
           "Space": 374,
@@ -4597,7 +5386,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 374,
+          "shifts": 168,
+          "functionKeys": {
+            "[": 4,
+            "]": 0,
+            ";": 179,
+            "/": 20,
+            "<": 21,
+            ">": 11
+          }
         },
         "groups": [
           {
@@ -4654,7 +5453,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 260,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 10,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -4710,7 +5519,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 50,
+            "shifts": 1,
+            "functionKeys": {
+              "[": 4,
+              "]": 0,
+              ";": 22,
+              "/": 3,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -4766,7 +5585,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 64,
+            "shifts": 9,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 74,
+              "/": 13,
+              "<": 0,
+              ">": 9
+            }
           },
           {
             "label": "四字",
@@ -4818,7 +5647,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 21,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 13,
+              "/": 3,
+              "<": 21,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -4878,7 +5717,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 137,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 60,
+              "/": 1,
+              "<": 0,
+              ">": 2
+            }
           }
         ]
       },
@@ -4891,6 +5740,14 @@
           "spaces": 15,
           "shifts": 41,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 7,
+            "/": 0,
+            "<": 1,
+            ">": 1
+          },
           "frequencies": {
             "Z": 15,
             "Space": 15,
@@ -4934,6 +5791,14 @@
           "spaces": 34,
           "shifts": 10,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 1,
+            "<": 3,
+            ">": 0
+          },
           "frequencies": {
             "Q": 33,
             "S": 49,
@@ -4978,6 +5843,14 @@
           "spaces": 40,
           "shifts": 5,
           "selections": 0,
+          "functionKeys": {
+            "[": 2,
+            "]": 0,
+            ";": 30,
+            "/": 3,
+            "<": 1,
+            ">": 0
+          },
           "frequencies": {
             "Y": 56,
             "I": 60,
@@ -5022,6 +5895,14 @@
           "spaces": 26,
           "shifts": 29,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 1,
+            "<": 2,
+            ">": 1
+          },
           "frequencies": {
             "V": 23,
             "Y": 53,
@@ -5066,6 +5947,14 @@
           "spaces": 37,
           "shifts": 13,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 11,
+            "/": 7,
+            "<": 1,
+            ">": 3
+          },
           "frequencies": {
             "V": 40,
             "S": 24,
@@ -5110,6 +5999,14 @@
           "spaces": 29,
           "shifts": 34,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 14,
+            "/": 0,
+            "<": 4,
+            ">": 2
+          },
           "frequencies": {
             "W": 61,
             "I": 40,
@@ -5153,6 +6050,14 @@
           "spaces": 27,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 0,
+            "<": 2,
+            ">": 1
+          },
           "frequencies": {
             "Z": 14,
             "Space": 27,
@@ -5196,6 +6101,14 @@
           "spaces": 36,
           "shifts": 10,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 22,
+            "/": 0,
+            "<": 5,
+            ">": 0
+          },
           "frequencies": {
             "Z": 28,
             "Space": 36,
@@ -5239,6 +6152,14 @@
           "spaces": 32,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 22,
+            "/": 4,
+            "<": 2,
+            ">": 1
+          },
           "frequencies": {
             "X": 28,
             "U": 42,
@@ -5283,6 +6204,14 @@
           "spaces": 49,
           "shifts": 5,
           "selections": 0,
+          "functionKeys": {
+            "[": 1,
+            "]": 0,
+            ";": 16,
+            "/": 2,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "F": 32,
             "Q": 16,
@@ -5327,6 +6256,14 @@
           "spaces": 49,
           "shifts": 5,
           "selections": 0,
+          "functionKeys": {
+            "[": 1,
+            "]": 0,
+            ";": 16,
+            "/": 2,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "F": 32,
             "Q": 16,
@@ -5372,6 +6309,14 @@
         "spaces": 341,
         "shifts": 301,
         "selections": 0,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 178,
+          "/": 18,
+          "<": 0,
+          ">": 4
+        },
         "frequencies": {
           "Z": 272,
           "Space": 341,
@@ -5504,7 +6449,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 341,
+          "shifts": 301,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 178,
+            "/": 18,
+            "<": 0,
+            ">": 4
+          }
         },
         "groups": [
           {
@@ -5561,7 +6516,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 242,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 1,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -5617,7 +6582,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 20,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -5669,7 +6644,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 92,
+            "shifts": 60,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 68,
+              "/": 9,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -5721,7 +6706,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 99,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 21,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -5785,7 +6780,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 7,
+            "shifts": 142,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 68,
+              "/": 1,
+              "<": 0,
+              ">": 4
+            }
           }
         ]
       },
@@ -5798,6 +6803,14 @@
           "spaces": 16,
           "shifts": 56,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 0,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "Z": 13,
             "Space": 16,
@@ -5841,6 +6854,14 @@
           "spaces": 34,
           "shifts": 18,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 1,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "C": 26,
             "D": 37,
@@ -5885,6 +6906,14 @@
           "spaces": 45,
           "shifts": 19,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 29,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "X": 41,
             "R": 37,
@@ -5928,6 +6957,14 @@
           "spaces": 30,
           "shifts": 33,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 1,
+            "<": 0,
+            ">": 2
+          },
           "frequencies": {
             "K": 31,
             "E": 49,
@@ -5972,6 +7009,14 @@
           "spaces": 33,
           "shifts": 35,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 11,
+            "/": 8,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "K": 45,
             "E": 24,
@@ -6016,6 +7061,14 @@
           "spaces": 28,
           "shifts": 24,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 14,
+            "/": 0,
+            "<": 0,
+            ">": 1
+          },
           "frequencies": {
             "Y": 63,
             "B": 29,
@@ -6059,6 +7112,14 @@
           "spaces": 22,
           "shifts": 27,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 19,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 24,
             "Space": 22,
@@ -6102,6 +7163,14 @@
           "spaces": 33,
           "shifts": 26,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 24,
             "Space": 33,
@@ -6145,6 +7214,14 @@
           "spaces": 24,
           "shifts": 19,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 31,
             "N": 25,
@@ -6189,6 +7266,14 @@
           "spaces": 38,
           "shifts": 22,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 17,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 31,
             "Z": 30,
@@ -6232,6 +7317,14 @@
           "spaces": 38,
           "shifts": 22,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 17,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 31,
             "Z": 30,
@@ -6276,6 +7369,14 @@
         "spaces": 387,
         "shifts": 177,
         "selections": 0,
+        "functionKeys": {
+          "[": 10,
+          "]": 0,
+          ";": 169,
+          "/": 21,
+          "<": 26,
+          ">": 18
+        },
         "frequencies": {
           "Z": 299,
           "Space": 387,
@@ -6393,7 +7494,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 387,
+          "shifts": 177,
+          "functionKeys": {
+            "[": 10,
+            "]": 0,
+            ";": 169,
+            "/": 21,
+            "<": 26,
+            ">": 18
+          }
         },
         "groups": [
           {
@@ -6450,7 +7561,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 307,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 7,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -6506,7 +7627,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 8,
+            "shifts": 1,
+            "functionKeys": {
+              "[": 10,
+              "]": 0,
+              ";": 22,
+              "/": 3,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -6562,7 +7693,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 72,
+            "shifts": 16,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 69,
+              "/": 12,
+              "<": 0,
+              ">": 16
+            }
           },
           {
             "label": "四字",
@@ -6614,7 +7755,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 27,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 10,
+              "/": 4,
+              "<": 26,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -6662,7 +7813,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 133,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 61,
+              "/": 2,
+              "<": 0,
+              ">": 2
+            }
           }
         ]
       },
@@ -6675,6 +7836,14 @@
           "spaces": 12,
           "shifts": 43,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 6,
+            "/": 0,
+            "<": 2,
+            ">": 0
+          },
           "frequencies": {
             "Z": 17,
             "Space": 12,
@@ -6718,6 +7887,14 @@
           "spaces": 40,
           "shifts": 6,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 16,
+            "/": 1,
+            "<": 1,
+            ">": 0
+          },
           "frequencies": {
             "S": 42,
             "E": 23,
@@ -6762,6 +7939,14 @@
           "spaces": 51,
           "shifts": 5,
           "selections": 0,
+          "functionKeys": {
+            "[": 7,
+            "]": 0,
+            ";": 30,
+            "/": 3,
+            "<": 1,
+            ">": 1
+          },
           "frequencies": {
             "Y": 51,
             "K": 19,
@@ -6806,6 +7991,14 @@
           "spaces": 36,
           "shifts": 28,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 7,
+            "/": 1,
+            "<": 2,
+            ">": 2
+          },
           "frequencies": {
             "V": 25,
             "D": 29,
@@ -6850,6 +8043,14 @@
           "spaces": 43,
           "shifts": 16,
           "selections": 0,
+          "functionKeys": {
+            "[": 1,
+            "]": 0,
+            ";": 9,
+            "/": 7,
+            "<": 3,
+            ">": 1
+          },
           "frequencies": {
             "V": 43,
             "X": 23,
@@ -6895,6 +8096,14 @@
           "spaces": 29,
           "shifts": 32,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 13,
+            "/": 0,
+            "<": 6,
+            ">": 3
+          },
           "frequencies": {
             "L": 67,
             "Z": 23,
@@ -6938,6 +8147,14 @@
           "spaces": 28,
           "shifts": 16,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 1,
+            "<": 7,
+            ">": 3
+          },
           "frequencies": {
             "Z": 17,
             "Space": 28,
@@ -6982,6 +8199,14 @@
           "spaces": 34,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 0,
+            "<": 2,
+            ">": 0
+          },
           "frequencies": {
             "Z": 32,
             "Space": 34,
@@ -7025,6 +8250,14 @@
           "spaces": 28,
           "shifts": 7,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 4,
+            "<": 2,
+            ">": 0
+          },
           "frequencies": {
             "S": 61,
             "V": 39,
@@ -7069,6 +8302,14 @@
           "spaces": 43,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 1,
+            "]": 0,
+            ";": 15,
+            "/": 2,
+            "<": 0,
+            ">": 4
+          },
           "frequencies": {
             "Q": 19,
             "N": 10,
@@ -7113,6 +8354,14 @@
           "spaces": 43,
           "shifts": 8,
           "selections": 0,
+          "functionKeys": {
+            "[": 1,
+            "]": 0,
+            ";": 15,
+            "/": 2,
+            "<": 0,
+            ">": 4
+          },
           "frequencies": {
             "Q": 19,
             "N": 10,
@@ -7158,6 +8407,14 @@
         "spaces": 352,
         "shifts": 308,
         "selections": 0,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 180,
+          "/": 21,
+          "<": 0,
+          ">": 4
+        },
         "frequencies": {
           "Z": 258,
           "Space": 352,
@@ -7278,7 +8535,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 352,
+          "shifts": 308,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 180,
+            "/": 21,
+            "<": 0,
+            ">": 4
+          }
         },
         "groups": [
           {
@@ -7335,7 +8602,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 230,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 1,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -7391,7 +8668,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 20,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 21,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -7443,7 +8730,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 88,
+            "shifts": 56,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 72,
+              "/": 11,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -7491,7 +8788,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 115,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 18,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -7543,7 +8850,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 14,
+            "shifts": 137,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 68,
+              "/": 2,
+              "<": 0,
+              ">": 4
+            }
           }
         ]
       },
@@ -7556,6 +8873,14 @@
           "spaces": 17,
           "shifts": 56,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 7,
+            "/": 0,
+            "<": 0,
+            ">": 2
+          },
           "frequencies": {
             "Z": 14,
             "Space": 17,
@@ -7599,6 +8924,14 @@
           "spaces": 33,
           "shifts": 18,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 16,
+            "/": 1,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 18,
             "O": 21,
@@ -7643,6 +8976,14 @@
           "spaces": 46,
           "shifts": 17,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 30,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "X": 53,
             "K": 36,
@@ -7686,6 +9027,14 @@
           "spaces": 29,
           "shifts": 41,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 8,
+            "/": 1,
+            "<": 0,
+            ">": 2
+          },
           "frequencies": {
             "E": 27,
             "D": 33,
@@ -7730,6 +9079,14 @@
           "spaces": 29,
           "shifts": 36,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 11,
+            "/": 9,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "E": 41,
             "F": 36,
@@ -7774,6 +9131,14 @@
           "spaces": 31,
           "shifts": 26,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 14,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Y": 65,
             "K": 40,
@@ -7817,6 +9182,14 @@
           "spaces": 19,
           "shifts": 25,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 19,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 16,
             "Space": 19,
@@ -7860,6 +9233,14 @@
           "spaces": 41,
           "shifts": 31,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 21,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 30,
             "Space": 41,
@@ -7903,6 +9284,14 @@
           "spaces": 27,
           "shifts": 22,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 4,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "J": 71,
             "Q": 34,
@@ -7947,6 +9336,14 @@
           "spaces": 40,
           "shifts": 18,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 17,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 19,
             "G": 28,
@@ -7990,6 +9387,14 @@
           "spaces": 40,
           "shifts": 18,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 17,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 19,
             "G": 28,
@@ -8034,6 +9439,14 @@
         "spaces": 355,
         "shifts": 320,
         "selections": 0,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 172,
+          "/": 20,
+          "<": 0,
+          ">": 5
+        },
         "frequencies": {
           "Z": 262,
           "Space": 355,
@@ -8166,7 +9579,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 355,
+          "shifts": 320,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 172,
+            "/": 20,
+            "<": 0,
+            ">": 5
+          }
         },
         "groups": [
           {
@@ -8231,7 +9654,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 229,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 1,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -8287,7 +9720,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 24,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 20,
+              "/": 3,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -8343,7 +9786,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 85,
+            "shifts": 63,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 74,
+              "/": 11,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -8399,7 +9852,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 103,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 15,
+              "/": 4,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -8463,7 +9926,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 17,
+            "shifts": 154,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 62,
+              "/": 2,
+              "<": 0,
+              ">": 5
+            }
           }
         ]
       },
@@ -8476,6 +9949,14 @@
           "spaces": 19,
           "shifts": 65,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 7,
+            "/": 0,
+            "<": 0,
+            ">": 2
+          },
           "frequencies": {
             "Z": 13,
             "Space": 19,
@@ -8519,6 +10000,14 @@
           "spaces": 34,
           "shifts": 23,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 16,
+            "/": 1,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 19,
             "O": 2,
@@ -8563,6 +10052,14 @@
           "spaces": 42,
           "shifts": 13,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 29,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "X": 53,
             "K": 33,
@@ -8606,6 +10103,14 @@
           "spaces": 27,
           "shifts": 49,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 7,
+            "/": 1,
+            "<": 0,
+            ">": 3
+          },
           "frequencies": {
             "E": 28,
             "D": 37,
@@ -8650,6 +10155,14 @@
           "spaces": 31,
           "shifts": 31,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 12,
+            "/": 8,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "E": 44,
             "F": 36,
@@ -8694,6 +10207,14 @@
           "spaces": 31,
           "shifts": 29,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 13,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Y": 68,
             "K": 40,
@@ -8737,6 +10258,14 @@
           "spaces": 18,
           "shifts": 22,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 18,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 18,
             "Space": 18,
@@ -8780,6 +10309,14 @@
           "spaces": 40,
           "shifts": 32,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 30,
             "Space": 40,
@@ -8823,6 +10360,14 @@
           "spaces": 31,
           "shifts": 30,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 20,
+            "/": 4,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "J": 77,
             "Q": 34,
@@ -8867,6 +10412,14 @@
           "spaces": 41,
           "shifts": 13,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 22,
             "G": 31,
@@ -8910,6 +10463,14 @@
           "spaces": 41,
           "shifts": 13,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 15,
+            "/": 2,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 22,
             "G": 31,
@@ -8954,6 +10515,14 @@
         "spaces": 406,
         "shifts": 0,
         "selections": 0,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 0,
+          "/": 0,
+          "<": 0,
+          ">": 0
+        },
         "frequencies": {
           "Z": 638,
           "Space": 406,
@@ -9075,7 +10644,17 @@
             }
           },
           "selections": 0,
-          "selectionRate": 0
+          "selectionRate": 0,
+          "spaces": 406,
+          "shifts": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          }
         },
         "groups": [
           {
@@ -9148,7 +10727,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 387,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -9212,7 +10801,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 19,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -9260,7 +10859,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -9324,7 +10933,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -9380,7 +10999,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           }
         ]
       },
@@ -9393,6 +11022,14 @@
           "spaces": 15,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 62,
             "Space": 15,
@@ -9434,6 +11071,14 @@
           "spaces": 36,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 51,
             "V": 6,
@@ -9475,6 +11120,14 @@
           "spaces": 65,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "X": 44,
             "I": 57,
@@ -9515,6 +11168,14 @@
           "spaces": 27,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 39,
             "Z": 72,
@@ -9556,6 +11217,14 @@
           "spaces": 25,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 52,
             "Z": 50,
@@ -9597,6 +11266,14 @@
           "spaces": 25,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Y": 62,
             "I": 58,
@@ -9638,6 +11315,14 @@
           "spaces": 46,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 45,
             "Space": 46,
@@ -9679,6 +11364,14 @@
           "spaces": 40,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 78,
             "Space": 40,
@@ -9720,6 +11413,14 @@
           "spaces": 39,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "C": 46,
             "U": 55,
@@ -9761,6 +11462,14 @@
           "spaces": 44,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 10,
             "C": 41,
@@ -9801,6 +11510,14 @@
           "spaces": 44,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 10,
             "C": 41,
@@ -9842,6 +11559,14 @@
         "spaces": 1324,
         "shifts": 0,
         "selections": 2,
+        "functionKeys": {
+          "[": 0,
+          "]": 0,
+          ";": 0,
+          "/": 0,
+          "<": 0,
+          ">": 0
+        },
         "frequencies": {
           "Z": 356,
           "Space": 1324,
@@ -9944,7 +11669,17 @@
             }
           },
           "selections": 2,
-          "selectionRate": 0.0006031363088057901
+          "selectionRate": 0.0006031363088057901,
+          "spaces": 1324,
+          "shifts": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          }
         },
         "groups": [
           {
@@ -10013,7 +11748,17 @@
               }
             },
             "selections": 2,
-            "selectionRate": 0.0015026296018031556
+            "selectionRate": 0.0015026296018031556,
+            "spaces": 1161,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "二字",
@@ -10053,7 +11798,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 152,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "三字",
@@ -10085,7 +11840,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 11,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "四字",
@@ -10109,7 +11874,17 @@
               }
             },
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           },
           {
             "label": "五字及以上",
@@ -10123,7 +11898,17 @@
             "averageCodeLength": 0,
             "keyLengths": {},
             "selections": 0,
-            "selectionRate": 0
+            "selectionRate": 0,
+            "spaces": 0,
+            "shifts": 0,
+            "functionKeys": {
+              "[": 0,
+              "]": 0,
+              ";": 0,
+              "/": 0,
+              "<": 0,
+              ">": 0
+            }
           }
         ]
       },
@@ -10136,6 +11921,14 @@
           "spaces": 75,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 21,
             "Space": 75,
@@ -10177,6 +11970,14 @@
           "spaces": 104,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "S": 39,
             "V": 47,
@@ -10218,6 +12019,14 @@
           "spaces": 203,
           "shifts": 0,
           "selections": 2,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "X": 46,
             "I": 69,
@@ -10259,6 +12068,14 @@
           "spaces": 89,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "U": 68,
             "Z": 52,
@@ -10300,6 +12117,14 @@
           "spaces": 134,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "U": 62,
             "H": 50,
@@ -10341,6 +12166,14 @@
           "spaces": 88,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Y": 71,
             "I": 96,
@@ -10382,6 +12215,14 @@
           "spaces": 123,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 19,
             "Space": 123,
@@ -10423,6 +12264,14 @@
           "spaces": 122,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Z": 34,
             "Space": 122,
@@ -10464,6 +12313,14 @@
           "spaces": 126,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "I": 80,
             "U": 78,
@@ -10505,6 +12362,14 @@
           "spaces": 130,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 12,
             "K": 28,
@@ -10545,6 +12410,14 @@
           "spaces": 130,
           "shifts": 0,
           "selections": 0,
+          "functionKeys": {
+            "[": 0,
+            "]": 0,
+            ";": 0,
+            "/": 0,
+            "<": 0,
+            ">": 0
+          },
           "frequencies": {
             "Q": 12,
             "K": 28,

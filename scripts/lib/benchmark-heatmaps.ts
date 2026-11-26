@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { readFileSync, writeFileSync } from "node:fs";
-import type { BenchmarkKeyCounts } from "./benchmark-key-counts";
+import {
+	benchmarkFunctionKeys,
+	type BenchmarkKeyCounts,
+} from "./benchmark-key-counts";
 import { rootPath } from "./paths";
 
 export const benchmarkHeatmapTitle = "十一场景 5500 字最优路径全按键键频图";
@@ -63,6 +66,12 @@ export function validateHeatmapReport(report: HeatmapReport): void {
 		);
 		assert.equal(frequencies.Space ?? 0, scheme.total.spaces, `${id}/Space`);
 		assert.equal(frequencies.Shift ?? 0, scheme.total.shifts, `${id}/Shift`);
+		for (const key of benchmarkFunctionKeys)
+			assert.equal(
+				scheme.scenes.reduce((sum, scene) => sum + scene.functionKeys[key], 0),
+				scheme.total.functionKeys[key],
+				`${id}/功能键 ${key}`,
+			);
 	}
 }
 

@@ -29,6 +29,9 @@ test("词次统计保留实际输出段，区分编码、Shift、Space、选重�
 	assert.equal(stats.total.averageCodeLength, 23 / 6);
 	assert.equal(stats.total.selections, 2);
 	assert.equal(stats.total.selectionRate, 1 / 3);
+	assert.equal(stats.total.spaces, 2);
+	assert.equal(stats.total.shifts, 1);
+	assert.equal(stats.total.functionKeys[";"], 1);
 	assert.deepEqual(
 		stats.groups.map((group) => group.tokens),
 		[2, 1, 1, 1, 1],
@@ -81,4 +84,48 @@ test("重复出现重复计词次，以 Unicode 汉字位置还原回放，空�
 	assert.throws(() =>
 		benchmarkWordStatistics([{ text: "甲，", replay: [[0, "a"]] }]),
 	);
+});
+
+test("各词长分别统计功能键与修饰键，两张表的零次和次数完整显示", () => {
+	const stats = benchmarkWordStatistics([
+		{
+			text: "甲乙丙丁戊己庚辛壬癸子丑寅卯辰，",
+			replay: [
+				[0, "a[]"],
+				[1, "bc;_"],
+				[3, "def/"],
+				[6, "ghij<"],
+				[10, "klmno>[候选2]"],
+				[15, ","],
+			],
+		},
+	]);
+	assert.deepEqual(stats.total.functionKeys, {
+		"[": 1,
+		"]": 1,
+		";": 1,
+		"/": 1,
+		"<": 1,
+		">": 1,
+	});
+	for (const key of ["[", "]", ";", "/", "<", ">"] as const)
+		assert.equal(
+			stats.groups.reduce((sum, group) => sum + group.functionKeys[key], 0),
+			stats.total.functionKeys[key],
+		);
+	assert.deepEqual(
+		stats.groups.map((g) => g.spaces),
+		[0, 1, 0, 0, 0],
+	);
+	assert.deepEqual(
+		stats.groups.map((g) => g.shifts),
+		[0, 0, 0, 1, 1],
+	);
+	const table = renderBenchmarkWordStatistics([
+		{ name: "示例", totalKeys: stats.total.inputKeys + 1, statistics: stats },
+	]);
+	assert.ok(table.includes("| `[` | `]` | `;` | `/` | `<` | `>` |"));
+	assert.ok(table.includes("| `[` 次数 | 1 | 0 | 0 | 0 | 0 |"));
+	assert.ok(table.includes("| `<` 次数 | 0 | 0 | 0 | 1 | 0 |"));
+	assert.ok(table.includes("| `>` 次数 | 0 | 0 | 0 | 0 | 1 |"));
 });

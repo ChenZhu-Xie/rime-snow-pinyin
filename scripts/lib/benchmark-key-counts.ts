@@ -1,8 +1,17 @@
+export const benchmarkFunctionKeys = ["[", "]", ";", "/", "<", ">"] as const;
+export type BenchmarkFunctionKey = (typeof benchmarkFunctionKeys)[number];
+export type BenchmarkFunctionKeyCounts = Record<BenchmarkFunctionKey, number>;
+
+export function emptyBenchmarkFunctionKeyCounts(): BenchmarkFunctionKeyCounts {
+	return { "[": 0, "]": 0, ";": 0, "/": 0, "<": 0, ">": 0 };
+}
+
 export interface BenchmarkKeyCounts {
 	keys: number;
 	spaces: number;
 	shifts: number;
 	selections: number;
+	functionKeys: BenchmarkFunctionKeyCounts;
 	frequencies: Record<string, number>;
 }
 
@@ -15,6 +24,7 @@ export function countBenchmarkKeys(
 		spaces: 0,
 		shifts: 0,
 		selections: 0,
+		functionKeys: emptyBenchmarkFunctionKeyCounts(),
 		frequencies: {},
 	};
 	const press = (key: string) => {
@@ -48,14 +58,18 @@ export function countBenchmarkKeys(
 					throw new Error(`无效 Shift 标记：${code}`);
 			} else if (char === "_") press("Space");
 			else if (char === "<" || char === ">") {
+				result.functionKeys[char]++;
 				press("Shift");
 				press(char === "<" ? "," : ".");
 			} else if (/[A-Z]/u.test(char)) {
 				press("Shift");
 				press(char);
 			} else if (/[a-z]/u.test(char)) press(char.toUpperCase());
-			else if (/[0-9,.;'\[\]\\/`-]/u.test(char)) press(char);
-			else throw new Error(`未建模的回放按键：${char}（${code}）`);
+			else if (/[0-9,.;'\[\]\\/`-]/u.test(char)) {
+				if (benchmarkFunctionKeys.includes(char as BenchmarkFunctionKey))
+					result.functionKeys[char as BenchmarkFunctionKey]++;
+				press(char);
+			} else throw new Error(`未建模的回放按键：${char}（${code}）`);
 		}
 	}
 	return result;

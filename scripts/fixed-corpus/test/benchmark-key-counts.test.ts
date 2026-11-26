@@ -31,4 +31,33 @@ test("词长直选的左右书名号各为两键，不冒充数字选重或单�
 	assert.equal(result.selections, 0);
 	assert.equal(result.frequencies[","], 1);
 	assert.equal(result.frequencies["."], 1);
+	assert.equal(result.functionKeys["<"], 1);
+	assert.equal(result.functionKeys[">"], 1);
+});
+
+test("功能键独立计次，选重括号不计，左右书名号的 Shift 不重复累加", () => {
+	const result = countBenchmarkKeys([
+		"[];;/",
+		"a[3]b[候选2]c[Space]",
+		"d<e><",
+		",.",
+	]);
+	assert.deepEqual(result.functionKeys, {
+		"[": 1,
+		"]": 1,
+		";": 2,
+		"/": 1,
+		"<": 2,
+		">": 1,
+	});
+	assert.equal(result.shifts, 3);
+	assert.equal(result.spaces, 1);
+	assert.equal(result.selections, 3);
+	assert.equal(result.frequencies[","], 3);
+	assert.equal(result.frequencies["."], 2);
+	assert.equal(result.keys, 21);
+	assert.equal(
+		Object.values(result.frequencies).reduce((sum, count) => sum + count, 0),
+		result.keys,
+	);
 });
