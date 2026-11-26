@@ -108,17 +108,19 @@ function prepareData(
 	destination: string,
 	shared: string,
 	schemas: string[],
+	source = ROOT,
+	appendCharacter?: string,
 ): void {
-	for (const name of readdirSync(ROOT)) {
+	for (const name of readdirSync(source)) {
 		if (/^snow_.*\.(?:yaml|txt)$/u.test(name) && !name.endsWith(".custom.yaml"))
-			cpSync(join(ROOT, name), join(destination, name));
+			cpSync(join(source, name), join(destination, name));
 	}
-	cpSync(join(ROOT, "lua"), join(destination, "lua"), { recursive: true });
+	cpSync(join(source, "lua"), join(destination, "lua"), { recursive: true });
 	cpSync(
-		join(ROOT, "spec", "fixtures", "default.yaml"),
+		join(source, "spec", "fixtures", "default.yaml"),
 		join(destination, "default.yaml"),
 	);
-	copyRimeDependencies(ROOT, destination);
+	copyRimeDependencies(source, destination);
 	cpSync(join(shared, "essay.txt"), join(destination, "essay.txt"));
 	const opencc = join(shared, "opencc");
 	if (existsSync(opencc))
@@ -130,11 +132,11 @@ function prepareData(
 	// 单方案预热与全量部署生成相同的只读补丁，保持缓存指纹可复用。
 	for (const name of readdirSync(destination)) {
 		if (name.startsWith("snow_") && name.endsWith(".schema.yaml"))
-			writeReadOnlyPatch(destination, name.slice(0, -".schema.yaml".length));
+			writeReadOnlyPatch(destination, name.slice(0, -".schema.yaml".length), schemas.includes(name.slice(0, -".schema.yaml".length)) ? appendCharacter : undefined);
 	}
 }
 
-function writeReadOnlyPatch(directory: string, schema: string): void {
+function writeReadOnlyPatch(directory: string, schema: string, appendCharacter?: string): void {
 	// 只冻结空白评测环境的学习；音码、固顶、候选和按键规则仍使用原方案。
 	writeFileSync(
 		join(directory, `${schema}.custom.yaml`),
@@ -145,7 +147,7 @@ function writeReadOnlyPatch(directory: string, schema: string): void {
 					`  ${namespace}/enable_schema_user_dict: false`,
 				])
 				.join("\n") +
-			"\n",
+			"\n" + (appendCharacter ? `  punctuator/half_shape/+:\n    "/": ${appendCharacter}\n` : ""),
 	);
 }
 
@@ -298,6 +300,10 @@ export class RimeCandidateOracle {
 	constructor(
 		schemas: string[],
 		options: {
+			/** 实验使用的冻结源码副本；默认仍读取当前仓库。 */
+			sourceDirectory?: string;
+			/** 仅在隔离部署中更换 / 的追加字。 */
+			appendCharacter?: string;
 			externalSbxhDirectory?: string;
 			externalSbxhReverseWords?: readonly string[];
 			/** 实验用独立缓存目录，避免多进程同时追加同一文件。 */
@@ -317,7 +323,10 @@ export class RimeCandidateOracle {
 				resolve(options.externalSbxhDirectory),
 				options.externalSbxhReverseWords,
 			);
-		else prepareData(this.dataDirectory, shared, schemas);
+		else {
+			if (options.appendCharacter && !/^\p{Script=Han}$/u.test(options.appendCharacter)) throw new Error("追加字必须是一个汉字");
+			prepareData(this.dataDirectory, shared, schemas, options.sourceDirectory ? resolve(options.sourceDirectory) : ROOT, options.appendCharacter);
+		}
 		const fingerprint = dataFingerprint(this.dataDirectory, dll);
 		this.persistentCacheDirectory = join(options.cacheRoot ?? join(ROOT, "output", "benchmark-rime-cache"), fingerprint);
 		const compiled = options.compiledCacheRoot ? join(options.compiledCacheRoot, fingerprint) : undefined;
@@ -399,6 +408,11 @@ export class RimeCandidateOracle {
 
 	candidates(code: string): string[] {
 		return this.query(code).candidates;
+	}
+
+	/** 实验读取完整缓存记录，保留中途上屏与完成输入的区别。 */
+	observe(code: string): Omit<PersistentCacheRecord, "code"> {
+		return this.query(code);
 	}
 
 	/** 只有完整输入在最后一个按键上提交才可作为直选路径。 */

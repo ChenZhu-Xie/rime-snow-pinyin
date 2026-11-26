@@ -120,6 +120,17 @@ const observed = new Map<string, AppendPrefixObservation>();
 const actualAppends = new Map<string, string>();
 const observationPath = argument("--observations");
 if (observationPath)
+	assert.equal(
+		JSON.parse(
+			readFileSync(
+				join(dirname(resolve(observationPath)), "audit.json"),
+				"utf8",
+			),
+		).revision,
+		revision,
+		"观测必须来自同一冻结源码",
+	);
+if (observationPath)
 	for (const line of readFileSync(resolve(observationPath), "utf8").split(
 		/\r?\n/u,
 	)) {
@@ -131,7 +142,7 @@ if (observationPath)
 			observed.set(`${row.schema}\t${row.input}`, {
 				candidates: row.candidates,
 				commit: row.commit,
-				completed: true,
+				completed: row.completed ?? true,
 			});
 	}
 const results: Array<{
@@ -169,9 +180,11 @@ const probes: {
 };
 const provenance: Record<string, unknown> = {};
 const validation: Record<string, unknown> = {};
+const schemeNames = new Map<string, string>();
 for (const scheme of ALL_BENCHMARK_SCHEMES.filter(
 	(scheme: { id: string }) => scheme.id !== "qingyun",
 )) {
+	schemeNames.set(scheme.id, scheme.shortName);
 	const cacheDirectory =
 		scheme.id === "sipin"
 			? baseline.reusedUnchangedCandidateCache
@@ -299,8 +312,14 @@ for (const scheme of ALL_BENCHMARK_SCHEMES.filter(
 		...variants.了,
 	];
 	probes.schemas[scheme.schemaId] = { name: scheme.shortName, variants };
+	const calibratedBaselineKeys = results.find(
+		(row) => row.scheme === scheme.id && row.char === "了",
+	)!.keys;
+	for (const row of results)
+		if (row.scheme === scheme.id) row.saved = calibratedBaselineKeys - row.keys;
 	provenance[scheme.id] = {
 		originalKeys,
+		calibratedBaselineKeys,
 		cacheSha256: createHash("sha256").update(cache).digest("hex"),
 		stateProbes: stateProbes.size,
 	};
@@ -350,7 +369,7 @@ writeFileSync(
 		"方案\t追加字\t语料字频\t总按键\t较现行节省\t选重\t使用次数\t待核前缀",
 		...results.map((row) =>
 			[
-				row.scheme,
+				schemeNames.get(row.scheme),
 				row.char,
 				row.frequency,
 				row.keys,
@@ -363,3 +382,22 @@ writeFileSync(
 	].join("\n") + "\n",
 );
 console.log(ranking.slice(0, 12));
+writeFileSync(
+	join(output, "ranking.tsv"),
+	[
+		"追加字\t语料字频\t九方案累计节省\t每方案最少节省\t每方案最多节省\t省键方案数",
+		...ranking.map((row) => {
+			const savings = results
+				.filter((entry) => entry.char === row.char)
+				.map((entry) => entry.saved);
+			return [
+				row.char,
+				row.frequency,
+				row.summedSavings,
+				Math.min(...savings),
+				Math.max(...savings),
+				savings.filter((count) => count > 0).length,
+			].join("\t");
+		}),
+	].join("\n") + "\n",
+);
