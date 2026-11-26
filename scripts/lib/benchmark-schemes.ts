@@ -432,43 +432,8 @@ function standardWordOrder(scheme: BenchmarkScheme): string {
 	return order;
 }
 
-function sipinCodes(
-	word: string,
-	sounds: string[],
-	singleAuxiliaryLimit = 4,
-): BenchmarkCode[] {
+function sipinWordCodes(sounds: string[]): BenchmarkCode[] {
 	const result = new Map<string, BenchmarkCode>();
-	if (sounds.length === 1) {
-		const main = sounds[0];
-		for (let length = 1; length <= main.length; length += 1) {
-			const code = main.slice(0, length);
-			result.set(code, { code, mainLength: length, auxiliaryLength: 0 });
-		}
-		for (const stroke of sipinStrokeCodes(word)) {
-			for (
-				let length = 1;
-				length <= Math.min(stroke.length, singleAuxiliaryLimit);
-				length += 1
-			) {
-				const code = main + stroke.slice(0, length);
-				result.set(code, {
-					code,
-					mainLength: main.length,
-					auxiliaryLength: length,
-				});
-			}
-		}
-		const shape = sipinShapeCodes.get(word) ?? "";
-		for (let length = 1; length <= shape.length; length += 1) {
-			const code = `${main}1${shape.slice(0, length)}`;
-			result.set(code, {
-				code,
-				mainLength: main.length,
-				auxiliaryLength: length + 1,
-			});
-		}
-		return [...result.values()];
-	}
 	let main = sounds
 		.map((code, index) =>
 			index < 4 ? code[0].toLowerCase() : code[0].toUpperCase(),
@@ -674,6 +639,10 @@ export function pronunciationCodes(
 ): BenchmarkCode[] {
 	if ([...word].length !== syllables.length || syllables.length === 0)
 		return [];
+	// 单字必须执行完整 speller/algebra：三键音节先补 o，再接笔画辅码。
+	// 与单字评测共用生成器，禁止在原始三键音节后直接拼接笔画。
+	if (id === "sipin" && syllables.length === 1)
+		return productionCharacterCodes(id, word, syllables[0]);
 	const scheme = schemeById(id);
 	const result = new Map<string, BenchmarkCode>();
 	let soundCombinations: string[][] = [[]];
@@ -686,11 +655,7 @@ export function pronunciationCodes(
 	}
 	for (const sounds of soundCombinations) {
 		if (scheme.soundLayout === "sipin") {
-			for (const generated of sipinCodes(
-				word,
-				sounds,
-				options.singleAuxiliaryLimit,
-			))
+			for (const generated of sipinWordCodes(sounds))
 				result.set(generated.code, generated);
 			continue;
 		}
@@ -760,7 +725,7 @@ const singleSpellingAlgebras = new Map<BenchmarkSchemeId, SpellingAlgebra>();
 const singleSpellings = new Map<string, string[]>();
 const singleInitials = new Map<string, string[]>();
 
-/** 单字离线枚举使用生产 speller；不改变 5500 字评测原有的标准码合同。 */
+/** 单字与语料评测共用生产 speller 的合法单字路径。 */
 export function productionCharacterCodes(
 	id: BenchmarkSchemeId,
 	text: string,

@@ -1,8 +1,7 @@
 {
   "contract": "current-ten-scheme-benchmark-v4-rime-oracle",
-  "candidateCache": "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\benchmark-rime-cache\\d8956b54f3e7a9f14cee4f37523ce902003834b4cce7144c65492845dde79a29",
+  "candidateCache": "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\sipin-production-fix\\source\\output\\benchmark-rime-cache\\d2655997fff655e3cb574cd4897c8462af884325d7bebc44ecbd138e689f7614",
   "candidateProtocol": "per-key-shift-readonly-terminal-commit-v3",
-  "reusedUnchangedCandidateCache": "D:\\C2D\\Documents\\rime-snow-pinyin\\output\\benchmark-rime-cache\\869a7fc618b719416b23539a5a84ec2eb96fb1ba8dfc5e7320411e6e662b54c7",
   "schemes": {
     "sipin": {
       "name": "冰雪四拼",
@@ -13,78 +12,50 @@
       "singleCharacterFirstChoiceAudit": {
         "targetCharacters": 1183,
         "fixedCodeFirst": 354,
-        "mainCodeFirst": 218,
+        "mainCodeFirst": 236,
         "promotedByAuxiliaryLength": {
-          "1": 254,
-          "2": 266,
-          "3": 61,
-          "4": 7
+          "1": 194,
+          "2": 311,
+          "3": 78,
+          "4": 9
         },
-        "unresolved": 23,
-        "unresolvedWithFourAuxiliaries": 7,
-        "unresolvedWithoutFourAuxiliaries": 16,
-        "unresolvedOccurrences": 72,
+        "unresolved": 1,
+        "unresolvedWithFourAuxiliaries": 0,
+        "unresolvedWithoutFourAuxiliaries": 1,
+        "unresolvedOccurrences": 1,
         "unresolvedExamples": [
-          "确\tqoa[2]→qoae[3]→qoa1v[2]→qoa1vi[3]\t𬒈/碏/确",
-          "理\tliu[2]→liue[3]→liu1s[2]→liu1si[3]→liu1sie[3]\t裏/禮/理",
-          "略\tloa[2]→loai[2]→loa1t[2]→loa1tu[3]\t畧/䂮/略",
-          "克\tkea[2]→keae[2]→kea1v[2]→kea1vi[2]→kea1vie[3]\t兛/兙/克",
-          "急\tjie[2]→jie1x[2]→jie1xi[3]\t㴔/惊/急",
-          "直\twie[2]→wiee[2]→wie1v[2]→wie1vi[2]→wie1vie[3]\t職/礩/直",
-          "器\tqia[2]→qiai[2]→qia1k[2]→qia1ko[3]\t呚/吱/器",
-          "布\tbua[2]→buae[3]→bua1j[2]→bua1ji[3]\t鈈/钚/布",
-          "界\tjea[2]→jeai[2]→jea1t[2]→jea1tu[3]→jea1tuo[3]\t㑘/畍/界",
-          "花\thii[2]→hii1c[2]→hii1ca[3]\t荂/芲/花",
-          "佛\t无可用编码\t前三无此字",
-          "茶\tyae[2]→yae1c[2]→yae1ca[3]\t菖/茬/茶",
-          "货\thoa[2]→hoau[2]→hoa1b[2]→hoa1be[3]\t嗀/㸌/货",
-          "坐\tzoa[2]→zoau[2]→zoa1t[2]→zoa1tu[3]\t㑅/岞/坐",
-          "苜\t无可用编码\t前三无此字",
-          "蓿\t无可用编码\t前三无此字",
-          "璃\t无可用编码\t前三无此字",
-          "指\twiu[2]→wiue[3]→wiu1v[2]→wiu1vo[2]→wiu1vou[3]\t劧/扺/指",
-          "皮\tpie[2]→pie1p[2]→pie1pi[2]→pie1pie[3]\t聠/炾/皮",
-          "弱\troa[2]→roaa[2]→roa1g[2]→roa1go[3]\t㬉/㘃/弱",
-          "吸\txii[2]→xiii[2]→xii1k[2]→xii1ko[3]→xii1kou[3]\t唏/嘻/吸",
-          "录\tlua[2]→luaa[2]→lua1j[2]→lua1ji[3]\t彔/𫘧/录",
-          "左\tzou[2]→zou1g[2]→zou1go[3]\t㔫/㊧/左"
+          "苜\t无可用编码\t前三无此字"
         ]
       },
       "total": {
-        "keys": 8783,
-        "spaces": 238,
+        "keys": 8719,
+        "spaces": 241,
         "shifts": 137,
         "tokens": {
-          "c1": 393,
-          "c2": 866,
-          "c3": 266,
+          "c1": 405,
+          "c2": 859,
+          "c3": 265,
           "c4": 321,
-          "c5plus": 148
+          "c5plus": 149
         },
         "characters": {
-          "c1": 393,
-          "c2": 1732,
-          "c3": 798,
+          "c1": 405,
+          "c2": 1718,
+          "c3": 795,
           "c4": 1284,
-          "c5plus": 793
+          "c5plus": 798
         },
-        "totalTokens": 1994,
+        "totalTokens": 1999,
         "selections": {
-          "total": 1,
-          "singleCharacter": 1,
+          "total": 0,
+          "singleCharacter": 0,
           "multiCharacter": 0,
-          "byCodeLength": {
-            "3": 1
-          },
-          "singleByCodeLength": {
-            "3": 1
-          },
+          "byCodeLength": {},
+          "singleByCodeLength": {},
           "multiByCodeLength": {},
           "fullCodeSingleExamples": [],
           "fullCodeMultiExamples": [],
-          "examples": [
-            "直\twie[2]"
-          ]
+          "examples": []
         }
       },
       "articles": [
@@ -147,37 +118,37 @@
           "genre": "科技科普",
           "hanCount": 500,
           "punctCount": 27,
-          "keys": 946,
-          "avgLength": 1.892,
+          "keys": 933,
+          "avgLength": 1.866,
           "spaces": 21,
           "shifts": 6,
           "selectionCount": 0,
           "tokenCounts": {
-            "c1": 52,
-            "c2": 103,
+            "c1": 54,
+            "c2": 102,
             "c3": 30,
             "c4": 25,
             "c5plus": 10,
-            "total": 220
+            "total": 221
           },
           "charCounts": {
-            "c1": 52,
-            "c2": 206,
+            "c1": 54,
+            "c2": 204,
             "c3": 90,
             "c4": 100,
             "c5plus": 52,
             "total": 500
           },
           "tokenRatios": {
-            "c1": 23.636363636363637,
-            "c2": 46.81818181818182,
-            "c3": 13.636363636363635,
-            "c4": 11.363636363636363,
-            "c5plus": 4.545454545454546
+            "c1": 24.43438914027149,
+            "c2": 46.15384615384615,
+            "c3": 13.574660633484163,
+            "c4": 11.312217194570136,
+            "c5plus": 4.524886877828054
           },
           "charRatios": {
-            "c1": 10.4,
-            "c2": 41.199999999999996,
+            "c1": 10.8,
+            "c2": 40.8,
             "c3": 18,
             "c4": 20,
             "c5plus": 10.4
@@ -185,7 +156,7 @@
           "sources": {
             "630": 0,
             "一简": 3,
-            "二简单字": 41,
+            "二简单字": 42,
             "二简词": 0,
             "普通码": 158,
             "结构略码": 0,
@@ -200,47 +171,47 @@
           "genre": "现代散文",
           "hanCount": 500,
           "punctCount": 35,
-          "keys": 1148,
-          "avgLength": 2.296,
+          "keys": 1128,
+          "avgLength": 2.256,
           "spaces": 19,
-          "shifts": 4,
+          "shifts": 5,
           "selectionCount": 0,
           "tokenCounts": {
-            "c1": 73,
-            "c2": 120,
-            "c3": 37,
+            "c1": 77,
+            "c2": 117,
+            "c3": 36,
             "c4": 11,
-            "c5plus": 6,
-            "total": 247
+            "c5plus": 7,
+            "total": 248
           },
           "charCounts": {
-            "c1": 73,
-            "c2": 240,
-            "c3": 111,
+            "c1": 77,
+            "c2": 234,
+            "c3": 108,
             "c4": 44,
-            "c5plus": 32,
+            "c5plus": 37,
             "total": 500
           },
           "tokenRatios": {
-            "c1": 29.554655870445345,
-            "c2": 48.582995951417004,
-            "c3": 14.979757085020243,
-            "c4": 4.4534412955465585,
-            "c5plus": 2.42914979757085
+            "c1": 31.048387096774192,
+            "c2": 47.17741935483871,
+            "c3": 14.516129032258066,
+            "c4": 4.435483870967742,
+            "c5plus": 2.82258064516129
           },
           "charRatios": {
-            "c1": 14.6,
-            "c2": 48,
-            "c3": 22.2,
+            "c1": 15.4,
+            "c2": 46.800000000000004,
+            "c3": 21.6,
             "c4": 8.799999999999999,
-            "c5plus": 6.4
+            "c5plus": 7.3999999999999995
           },
           "sources": {
             "630": 0,
             "一简": 9,
             "二简单字": 37,
             "二简词": 0,
-            "普通码": 164,
+            "普通码": 165,
             "结构略码": 5,
             "尾字键": 32,
             "次选": 0,
@@ -253,8 +224,8 @@
           "genre": "财经分析",
           "hanCount": 500,
           "punctCount": 30,
-          "keys": 843,
-          "avgLength": 1.686,
+          "keys": 830,
+          "avgLength": 1.66,
           "spaces": 15,
           "shifts": 34,
           "selectionCount": 0,
@@ -306,8 +277,8 @@
           "genre": "日常口语",
           "hanCount": 500,
           "punctCount": 38,
-          "keys": 842,
-          "avgLength": 1.684,
+          "keys": 836,
+          "avgLength": 1.672,
           "spaces": 33,
           "shifts": 15,
           "selectionCount": 0,
@@ -361,42 +332,42 @@
           "punctCount": 31,
           "keys": 729,
           "avgLength": 1.458,
-          "spaces": 26,
+          "spaces": 27,
           "shifts": 22,
           "selectionCount": 0,
           "tokenCounts": {
-            "c1": 20,
-            "c2": 62,
-            "c3": 18,
+            "c1": 23,
+            "c2": 59,
+            "c3": 19,
             "c4": 46,
             "c5plus": 22,
-            "total": 168
+            "total": 169
           },
           "charCounts": {
-            "c1": 20,
-            "c2": 124,
-            "c3": 54,
+            "c1": 23,
+            "c2": 118,
+            "c3": 57,
             "c4": 184,
             "c5plus": 118,
             "total": 500
           },
           "tokenRatios": {
-            "c1": 11.904761904761903,
-            "c2": 36.904761904761905,
-            "c3": 10.714285714285714,
-            "c4": 27.380952380952383,
-            "c5plus": 13.095238095238097
+            "c1": 13.609467455621301,
+            "c2": 34.9112426035503,
+            "c3": 11.242603550295858,
+            "c4": 27.218934911242602,
+            "c5plus": 13.017751479289942
           },
           "charRatios": {
-            "c1": 4,
-            "c2": 24.8,
-            "c3": 10.8,
+            "c1": 4.6,
+            "c2": 23.599999999999998,
+            "c3": 11.4,
             "c4": 36.8,
             "c5plus": 23.599999999999998
           },
           "sources": {
             "630": 0,
-            "一简": 3,
+            "一简": 4,
             "二简单字": 32,
             "二简词": 0,
             "普通码": 119,
@@ -412,8 +383,8 @@
           "genre": "历史社科",
           "hanCount": 500,
           "punctCount": 37,
-          "keys": 876,
-          "avgLength": 1.752,
+          "keys": 875,
+          "avgLength": 1.75,
           "spaces": 17,
           "shifts": 5,
           "selectionCount": 0,
@@ -465,8 +436,8 @@
           "genre": "教育心理",
           "hanCount": 500,
           "punctCount": 33,
-          "keys": 856,
-          "avgLength": 1.712,
+          "keys": 854,
+          "avgLength": 1.708,
           "spaces": 23,
           "shifts": 6,
           "selectionCount": 0,
@@ -518,50 +489,50 @@
           "genre": "体育竞技",
           "hanCount": 500,
           "punctCount": 34,
-          "keys": 913,
-          "avgLength": 1.826,
-          "spaces": 19,
-          "shifts": 6,
-          "selectionCount": 1,
+          "keys": 905,
+          "avgLength": 1.81,
+          "spaces": 21,
+          "shifts": 5,
+          "selectionCount": 0,
           "tokenCounts": {
-            "c1": 38,
+            "c1": 41,
             "c2": 83,
-            "c3": 27,
+            "c3": 26,
             "c4": 36,
             "c5plus": 14,
-            "total": 198
+            "total": 200
           },
           "charCounts": {
-            "c1": 38,
+            "c1": 41,
             "c2": 166,
-            "c3": 81,
+            "c3": 78,
             "c4": 144,
             "c5plus": 71,
             "total": 500
           },
           "tokenRatios": {
-            "c1": 19.19191919191919,
-            "c2": 41.91919191919192,
-            "c3": 13.636363636363635,
-            "c4": 18.181818181818183,
-            "c5plus": 7.07070707070707
+            "c1": 20.5,
+            "c2": 41.5,
+            "c3": 13,
+            "c4": 18,
+            "c5plus": 7.000000000000001
           },
           "charRatios": {
-            "c1": 7.6,
+            "c1": 8.200000000000001,
             "c2": 33.2,
-            "c3": 16.2,
+            "c3": 15.6,
             "c4": 28.799999999999997,
             "c5plus": 14.2
           },
           "sources": {
             "630": 0,
-            "一简": 5,
+            "一简": 7,
             "二简单字": 31,
             "二简词": 0,
-            "普通码": 138,
+            "普通码": 139,
             "结构略码": 1,
             "尾字键": 22,
-            "次选": 1,
+            "次选": 0,
             "词长直选": 0
           }
         },
@@ -571,8 +542,8 @@
           "genre": "输入法赛文",
           "hanCount": 500,
           "punctCount": 43,
-          "keys": 902,
-          "avgLength": 1.804,
+          "keys": 901,
+          "avgLength": 1.802,
           "spaces": 50,
           "shifts": 2,
           "selectionCount": 0,
@@ -5957,5 +5928,10 @@
         }
       ]
     }
+  },
+  "sipinEncodingCorrection": {
+    "baseline": "bed395f",
+    "rule": "单字复用生产 speller；三键音节补 o 后才接笔画；部件入口同生产生成器",
+    "source": "output/sipin-production-fix/source"
   }
 }

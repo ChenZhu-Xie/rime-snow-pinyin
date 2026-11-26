@@ -7,7 +7,7 @@
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1 | 冰雪键道 | 894 | 1.7880 | 40 | 18 | 0 | 0 |
 | 2 | 冰雪兰拼 | 895 | 1.7900 | 46 | 12 | 0 | 0 |
-| 3 | 冰雪四拼 | 902 | 1.8040 | 50 | 2 | 0 | 0 |
+| 3 | 冰雪四拼 | 901 | 1.8020 | 50 | 2 | 0 | 0 |
 | 4 | 冰雪三拼 | 905 | 1.8100 | 41 | 13 | 0 | 0 |
 | 5 | 冰雪兰道 | 908 | 1.8160 | 37 | 15 | 0 | 0 |
 | 6 | 冰雪莲道 | 911 | 1.8220 | 38 | 22 | 0 | 0 |
@@ -45,7 +45,7 @@
 
 [03]
 原文       第 一 班   公 交 车 从 路  口 慢 慢 开 过 。
-冰雪四拼　 dfi   baoi gjy_     c_ lkou   mmkai    go .
+冰雪四拼　 dfi   b1s  gjy_     c_ lkou   mmkai    go .
 冰雪兰道　 dfyf  bnv  gjs_     c_ lhpw   mmo   pkgm  .
 冰雪兰拼　 dfyf  bni  gjs_     c_ lhpw   mma   pkgm  .
 冰雪清韵　 dyi   wd_  gjce     r/ fm_ fo mm;   ki c_ .
@@ -123,7 +123,7 @@
 
 [09]
 原文       好 的 编 码 不 只 要 短   ， 还  要 让  手 指  移   动 自 然 ，
-冰雪四拼　 ha;   bma   b_ wfu   diou ,  hfu    rae vwfdoeo        zr    ,
+冰雪四拼　 h1;   bma   b_ wfu   di1v ,  hfu    rae vwfdoeo        zr    ,
 冰雪兰道　 hz;   bmvu  b_ ev    dtuv ,  hvi    ry_ keydiu         zfrn  ,
 冰雪兰拼　 hz;   bmu   b_ eau   dtu  ,  hk_ yzry   keyduv         zva   ,
 冰雪清韵　 x_ e  bma   u  zy.   zdk_ ,  dm_ yr,    na nb_ hpjg vu zr;   ,
