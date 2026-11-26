@@ -143,7 +143,7 @@ interface BenchmarkCorpus {
 	singleCharacterEntries: DictEntry[];
 }
 
-function buildBenchmarkCorpus(allLines: string[]): BenchmarkCorpus {
+export function buildBenchmarkCorpus(allLines: string[]): BenchmarkCorpus {
 	const targetWords = benchmarkTargetWords(allLines);
 	const characterOccurrences = new Map<string, number>();
 	for (const text of allLines) {
@@ -186,7 +186,7 @@ function buildBenchmarkCorpus(allLines: string[]): BenchmarkCorpus {
 	};
 }
 
-function buildAlternatives(
+export function buildAlternatives(
 	corpus: BenchmarkCorpus,
 	scheme: SchemeId,
 	candidateOracle: (code: string) => readonly string[],
@@ -1112,7 +1112,8 @@ async function run() {
 	console.log(`主报告生成成功: ${reportPath}`);
 }
 
-run().catch((error) => {
-	console.error(error);
-	process.exitCode = 1;
-});
+if (import.meta.main)
+	run().catch((error) => {
+		console.error(error);
+		process.exitCode = 1;
+	});

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
 
 /** 显式复用已审计、规则未变化的方案；缺记录即失败，绝不猜测候选。 */
@@ -9,11 +10,20 @@ export class BenchmarkCachedOracle {
 	constructor(
 		private readonly directory: string,
 		schema: string,
+		options: Record<string, boolean> = {},
 	) {
-		for (const line of readFileSync(
-			join(directory, `${schema}.jsonl`),
-			"utf8",
-		).split(/\r?\n/u)) {
+		const suffix = createHash("sha256")
+			.update(JSON.stringify(Object.entries(options).sort()))
+			.digest("hex")
+			.slice(0, 16);
+		const optionPath = join(directory, `${schema}-${suffix}.jsonl`);
+		const legacyPath = join(directory, `${schema}.jsonl`);
+		const path = existsSync(optionPath)
+			? optionPath
+			: Object.keys(options).length === 0
+				? legacyPath
+				: optionPath;
+		for (const line of readFileSync(path, "utf8").split(/\r?\n/u)) {
 			if (!line) continue;
 			const row = JSON.parse(line);
 			assert.equal(typeof row.code, "string");

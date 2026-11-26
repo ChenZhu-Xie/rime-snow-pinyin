@@ -372,7 +372,8 @@ export class RimeCandidateOracle {
 	}
 
 	private cachePath(schema: string): string {
-		return join(this.persistentCacheDirectory, `${schema}.jsonl`);
+		const options = new Bun.CryptoHasher("sha256").update(JSON.stringify(Object.entries(this.queryOptions).sort())).digest("hex").slice(0, 16);
+		return join(this.persistentCacheDirectory, `${schema}-${options}.jsonl`);
 	}
 
 	private loadPersistentCache(schema: string): void {
@@ -429,12 +430,23 @@ export class RimeCandidateOracle {
 			return cached;
 		}
 		this.cacheMisses += 1;
-		const result = this.queryFresh(code);
+		const records: PersistentCacheRecord[] = [];
+		const result = this.observeUncached(code, false, (prefix, observation) => {
+			const prefixKey = `${this.schema}\t${prefix}`;
+			const previous = this.cache.get(prefixKey);
+			if (previous && JSON.stringify(previous) !== JSON.stringify(observation))
+				throw new Error(`前缀观测冲突：${this.schema}/${prefix}`);
+			if (!previous) {
+				this.cache.set(prefixKey, observation);
+				records.push({ code: prefix, ...observation });
+			}
+		});
 		if (result.commit !== "" && !result.completed) this.rejectedQueries++;
 		this.cache.set(key, result);
+		if (!records.some(record => record.code === code)) records.push({ code, ...result });
 		appendFileSync(
 			this.cachePath(this.schema),
-			`${JSON.stringify({ code, ...result } satisfies PersistentCacheRecord)}\n`,
+			records.map(record => JSON.stringify(record)).join("\n") + "\n",
 		);
 		return result;
 	}
@@ -467,8 +479,13 @@ export class RimeCandidateOracle {
 	}
 
 	setOptions(options: Record<string, boolean>): void {
+		if (JSON.stringify(Object.entries(options).sort()) !== JSON.stringify(Object.entries(this.queryOptions).sort())) {
+			this.cache.clear();
+			this.loadedSchemas.clear();
+		}
 		this.queryOptions = { ...options };
 		for (const [name, value] of Object.entries(options)) this.library.symbols.RimeSetOption(this.session, cString(name), Number(value));
+		if (this.schema) this.loadPersistentCache(this.schema);
 	}
 
 	/** 命中缓存后仍独立实查首尾样本，防止稳定复现错误缓存。 */

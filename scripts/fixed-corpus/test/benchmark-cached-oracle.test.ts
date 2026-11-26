@@ -26,3 +26,43 @@ test("未变化方案的候选缓存保持名次，缺码或不一致提交记�
 		rmSync(directory, { recursive: true, force: true });
 	}
 });
+import { createHash } from "node:crypto";
+
+test("显式开关缓存互相隔离，不回退到无开关的旧缓存", () => {
+	const directory = mkdtempSync(join(tmpdir(), "snow-option-cache-"));
+	try {
+		writeFileSync(
+			join(directory, "snow_qingyun.jsonl"),
+			JSON.stringify({ code: "ab", candidates: ["旧模式"], commit: "" }) + "\n",
+		);
+		const options = { character: true };
+		assert.throws(
+			() => new BenchmarkCachedOracle(directory, "snow_qingyun", options),
+		);
+		const suffix = createHash("sha256")
+			.update(JSON.stringify(Object.entries(options).sort()))
+			.digest("hex")
+			.slice(0, 16);
+		writeFileSync(
+			join(directory, `snow_qingyun-${suffix}.jsonl`),
+			JSON.stringify({
+				code: "ab",
+				candidates: ["单字"],
+				commit: "",
+				completed: true,
+			}) + "\n",
+		);
+		assert.deepEqual(
+			new BenchmarkCachedOracle(directory, "snow_qingyun", options).candidates(
+				"ab",
+			),
+			["单字"],
+		);
+		assert.deepEqual(
+			new BenchmarkCachedOracle(directory, "snow_qingyun").candidates("ab"),
+			["旧模式"],
+		);
+	} finally {
+		rmSync(directory, { recursive: true, force: true });
+	}
+});

@@ -253,7 +253,9 @@ function auditObserver(schema: string, cacheDirectory: string | undefined) {
 		}>,
 	};
 	const records = new Map<string, string | null>();
-	const path = cacheDirectory ? join(cacheDirectory, `${schema}.jsonl`) : "";
+	const optionSuffix = createHash("sha256").update("[]").digest("hex").slice(0, 16);
+	const optionPath = cacheDirectory ? join(cacheDirectory, `${schema}-${optionSuffix}.jsonl`) : "";
+	const path = optionPath && existsSync(optionPath) ? optionPath : cacheDirectory ? join(cacheDirectory, `${schema}.jsonl`) : "";
 	if (path && existsSync(path)) {
 		for (const line of read(path).split(/\r?\n/u)) {
 			if (!line) continue;
