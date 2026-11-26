@@ -26,6 +26,11 @@ script: |
 deploy:
   short_shape_and_stroke_sources:
     tests:
+      # 单字 ] 追加「是」，[ 仍重复单字。
+      - send: "b]"
+        assert: commit == "不是"
+      - send: "b["
+        assert: commit == "不不"
       - send: psoo
         assert: commit == nil and cand[1].text == "口"
       - send: ynoii

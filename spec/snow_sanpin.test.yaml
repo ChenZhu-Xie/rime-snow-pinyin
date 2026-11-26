@@ -110,15 +110,15 @@ deploy:
         assert: cand[1].text == "都"
       - send: p
         assert: cand[1].text == "跑"
-      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      # 单字定字：[ 重复该字，] 在该字后追加「是」
       - send: "p["
         assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "跑得"
+        assert: commit == "跑是"
       - send: xh
         assert: cand[1].text == "学"
       - send: be
-        assert: cand[1].text == "不是"
+        assert: cand[1].text == "表示"
       - send: ya
         assert: cand[1].text == "一个"
       - send: coo

@@ -375,10 +375,15 @@ export function buildAlternatives(
 	const directSnapshot = new Map(
 		[...alternatives].map(([word, values]) => [word, [...values]]),
 	);
-	if (supportsStructuralAbbreviations(scheme)) {
+	{
 		for (const [base, baseAlternatives] of directSnapshot) {
 			if ([...base].length > 3) continue;
 			for (const generated of generateAbbreviations(base)) {
+				if (
+					!supportsStructuralAbbreviations(scheme) &&
+					generated.trigger !== "]"
+				)
+					continue;
 				if (!targetWords.has(generated.word)) continue;
 				for (const alternative of baseAlternatives) {
 					const shifted = /^[A-Z]$/u.test(generated.trigger);

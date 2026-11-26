@@ -33,7 +33,7 @@ local hints = {
       { code = "cr", text = "次日", weight = 138070 },
     },
     d = {
-      { code = "dv", text = "但是", weight = 502944 },
+      { code = "dv", text = "电商", weight = 555555 },
       { code = "dr", text = "当然", weight = 501139 },
       { code = "dc", text = "多次", weight = 500370 },
     },
@@ -65,7 +65,7 @@ local hints = {
     },
     k = {
       { code = "kw", text = "可以", weight = 505814 },
-      { code = "kv", text = "可是", weight = 501044 },
+      { code = "kv", text = "开始", weight = 502439 },
       { code = "kr", text = "客人", weight = 500378 },
       { code = "kx", text = "看出", weight = 246785 },
       { code = "kb", text = "恐怖", weight = 242810 },
@@ -206,7 +206,7 @@ local hints = {
       { code = "cr", text = "次日", weight = 138070 },
     },
     d = {
-      { code = "dv", text = "但是", weight = 502944 },
+      { code = "dv", text = "电商", weight = 555555 },
       { code = "dr", text = "当然", weight = 501139 },
       { code = "dc", text = "多次", weight = 500370 },
     },
@@ -238,7 +238,7 @@ local hints = {
     },
     k = {
       { code = "kw", text = "可以", weight = 505814 },
-      { code = "kv", text = "可是", weight = 501044 },
+      { code = "kv", text = "开始", weight = 502439 },
       { code = "kr", text = "客人", weight = 500378 },
       { code = "kx", text = "看出", weight = 246785 },
       { code = "kb", text = "恐怖", weight = 242810 },

@@ -272,7 +272,7 @@ deploy:
       - send: rc
         assert: not has("人从")
       - send: ja
-        assert: cand[1].text == "就是"
+        assert: cand[1].text == "骄傲"
       - send: yv
         assert: cand[1].text == "以及"
       - send: hzbl
@@ -290,11 +290,11 @@ deploy:
         assert: commit == "一"
       - send: "yfgs]"
         assert: commit == "个"
-      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      # 单字定字：[ 重复该字，] 在该字后追加「是」
       - send: "p["
         assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "跑得"
+        assert: commit == "跑是"
       - send: nlyy
         assert: cand[1].text == "那样"
       - send: tpvvi

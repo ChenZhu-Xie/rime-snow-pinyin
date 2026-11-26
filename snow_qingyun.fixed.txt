@@ -57,7 +57,6 @@ da	大
 do	得
 de	着
 di	而
-du	但是
 d;	前
 d,	为
 d.	很 D d
@@ -110,7 +109,6 @@ ha	山
 ho	火
 he	回
 hi	自
-hu	还是
 h;	点
 h,	业
 h.	先 H h
@@ -121,7 +119,6 @@ je	多
 ji	以
 ju	句
 j;	见
-j,	就是
 j.	金 J j
 j/	发
 qa	右
@@ -1257,7 +1254,6 @@ kz.	滇
 kco	豕
 kc;	卅
 kc/	课程
-ksa	可是
 kso	兀
 kse	开始
 ksi	汁 汜

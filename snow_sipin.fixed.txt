@@ -746,7 +746,6 @@ dk	对于
 fs	因为
 sf	所以
 sr	虽然
-dv	但是
 bg	不过
 rq	而且
 rh	然后
@@ -756,7 +755,6 @@ cr	从而
 dr	当然
 fc	因此
 rg	如果
-kv	可是
 kl	原来
 tv	同时
 hw	或者
@@ -780,12 +778,6 @@ sw	随着
 nh	你好
 gm	干嘛
 # 联系动词	
-bv	不是
-jv	就是
-hv	还是
-wvi	只是
-rv	而是
-dvi	都是
 mf	没有
 hf	还有
 wfo	只有

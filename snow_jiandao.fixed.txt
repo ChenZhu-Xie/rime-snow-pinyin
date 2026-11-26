@@ -1,5 +1,5 @@
 # 二简词
-be	不是
+be	表示
 bq	并且
 bt	不同
 bx	必须
@@ -70,7 +70,7 @@ em	上面
 fm	这么
 gm	干嘛
 hm	后面
-je	就是
+je	产生
 jz	就在
 qe	其实
 qz	正在
@@ -88,9 +88,9 @@ bii	报价
 bio	不错
 biu	不少
 biv	不会
-bo	不是
+bo	部门
 boa	不让
-boi	便是
+boi	标题
 boo	表情
 bou	不断
 bov	毕竟
@@ -118,7 +118,7 @@ cii	从业
 cio	促销
 ciu	从小
 civ	从此
-co	才是
+co	材料
 coa	测试
 coi	此时
 coo	匆忙
@@ -148,9 +148,9 @@ dii	多个
 dio	短信
 diu	动作
 div	都会
-do	但是
+do	电商
 doa	的话
-doi	都是
+doi	当时
 doo	大家
 dou	蛋糕
 dov	地方
@@ -210,7 +210,7 @@ fiu	直接
 fiv	这些
 fo	知道
 foa	中心
-foi	只是
+foi	之间
 foo	方案
 fou	之前
 fov	这次
@@ -240,7 +240,7 @@ giu	根据
 giv	观点
 go	感觉
 goa	告诉
-goi	更是
+goi	关闭
 goo	国家
 gou	跟着
 gov	改变
@@ -268,9 +268,9 @@ hii	行业
 hio	黄金
 hiu	很少
 hiv	还会
-ho	还是
+ho	会员
 hoa	好吧
-hoi	会是
+hoi	话题
 hoo	回家
 hou	呼吸
 hov	何况
@@ -298,7 +298,7 @@ jii	几个
 jio	经常
 jiu	就像
 jiv	就会
-jo	就是
+jo	产品
 joa	建议
 joi	及时
 joo	决定
@@ -328,7 +328,7 @@ kii	刻苦
 kio	块钱
 kiu	科技
 kiv	快点
-ko	可是
+ko	客户
 koa	开心
 koi	空间
 koo	肯定
@@ -358,7 +358,7 @@ lii	浏览
 lio	两位
 liu	老师
 liv	联合
-lo	老是
+lo	了吧
 loa	理论
 loi	力量
 loo	厉害
@@ -420,7 +420,7 @@ niu	难看
 niv	那些
 no	难道
 noa	耐心
-noi	那是
+noi	能量
 noo	难怪
 nou	年前
 nov	内部
@@ -540,7 +540,7 @@ siu	随手
 siv	宿舍
 so	随时
 soa	所谓
-soi	算是
+soi	思路
 soo	锁定
 sou	随着
 sov	速度
@@ -628,9 +628,9 @@ xii	羡慕
 xio	相信
 xiu	选择
 xiv	安全
-xo	而是
+xo	协商
 xoa	协议
-xoi	像是
+xoi	小时
 xoo	心情
 xou	想着
 xov	希望
@@ -660,7 +660,7 @@ yiu	优势
 yiv	一些
 yo	因为
 yoa	应该
-yoi	也是
+yoi	一旦
 yoo	一定
 you	以为
 yov	一次
@@ -688,7 +688,7 @@ zii	作业
 zio	咱们
 ziu	责任
 ziv	早上
-zo	总是
+zo	资料
 zoa	再说
 zoi	暂时
 zoo	作品

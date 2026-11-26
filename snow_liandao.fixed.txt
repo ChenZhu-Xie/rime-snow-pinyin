@@ -1437,7 +1437,7 @@ biu	不少
 biv	比例
 bo	毕竟
 boa	不让
-boi	便是
+boi	不足
 boo	表情
 bou	报道
 bov	北京
@@ -1495,12 +1495,12 @@ dii	定价
 dio	短信
 diu	多少
 div	地点
-do	但是
+do	地方
 doa	的话
-doi	都是
+doi	大量
 doo	大家
 dou	对着
-dov	地方
+dov	对方
 du	当然
 dua	多么
 dui	独自
@@ -1525,11 +1525,11 @@ eii	整个
 eio	正常
 eiu	直接
 eiv	整体
-eo	只是
+eo	之前
 eoa	中心
 eoi	证明
 eoo	只怕
-eou	之前
+eou	知道
 eov	政府
 eu	之后
 eua	准备
@@ -1587,7 +1587,7 @@ giu	根据
 giv	观点
 go	国家
 goa	告诉
-goi	更是
+goi	关闭
 goo	感情
 gou	跟着
 gov	改变
@@ -1617,7 +1617,7 @@ hiu	好像
 hiv	还会
 ho	好吧
 hoa	何必
-hoi	还是
+hoi	黑暗
 hoo	回家
 hou	呼吸
 hov	何况
@@ -1645,11 +1645,11 @@ jii	奇偶
 jio	经常
 jiu	坚持
 jiv	就会
-jo	就是
+jo	接着
 joa	精神
 joi	及时
 joo	决定
-jou	接着
+jou	简单
 jov	解决
 ju	尽管
 jua	既然
@@ -1707,7 +1707,7 @@ liu	老师
 liv	联合
 lo	厉害
 loa	理论
-loi	老是
+loi	力量
 loo	龙头
 lou	来着
 lov	两次
@@ -1767,7 +1767,7 @@ niu	难看
 niv	哪些
 no	哪怕
 noa	耐心
-noi	那是
+noi	那时
 noo	难怪
 nou	难道
 nov	那就
@@ -1917,7 +1917,7 @@ tiu	太小
 tiv	停止
 to	同时
 toa	谈话
-toi	他是
+toi	提问
 too	天空
 tou	提前
 tov	同意
@@ -1977,7 +1977,7 @@ xiu	选择
 xiv	宣传
 xo	行吧
 xoa	协议
-xoi	像是
+xoi	小时
 xoo	心情
 xou	行叭
 xov	相应
@@ -2007,7 +2007,7 @@ yiu	一件
 yiv	有些
 yo	应该
 yoa	用户
-yoi	于是
+yoi	阴暗
 yoo	一定
 you	因为
 yov	一次
@@ -2037,7 +2037,7 @@ ziu	租赁
 ziv	早上
 zo	总之
 zoa	再说
-zoi	总是
+zoi	暂时
 zoo	最快
 zou	资料
 zov	最新

@@ -36,7 +36,7 @@ function processor.func(key_event, env)
     if first then
       snow.commit_text(engine, text .. text)
     elseif last then
-      snow.commit_text(engine, text .. "得")
+      snow.commit_text(engine, text .. "是")
     else
       return snow.kNoop
     end

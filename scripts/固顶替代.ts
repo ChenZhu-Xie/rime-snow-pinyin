@@ -31,7 +31,7 @@ function characters(word: string) {
 /**
  * 不应占用 630 或二字词各级简的可直接构造词。
  *
- * 单字后的 `[`、`]`、`;`、`/` 分别构造叠字、得、的、了；二字词后的
+ * 单字后的 `[`、`]`、`;`、`/` 分别构造叠字、是、的、了；二字词后的
  * `;`、`/` 继续构造三字的／了短语。这些词即使直接短码更短，也应把
  * 稀缺槽位让给无法用现成功能构造的词。
  */
@@ -40,7 +40,7 @@ export function isDirectlyComposableFixedWord(word: string) {
 	if (values.length === 2) {
 		return (
 			values[0] === values[1] ||
-			values[1] === "得" ||
+			values[1] === "是" ||
 			values[1] === "的" ||
 			values[1] === "了"
 		);
@@ -58,7 +58,10 @@ export function generateAbbreviations(base: string): GeneratedWord[] {
 	const add = (word: string, trigger: string) =>
 		generated.push({ word, trigger });
 
-	if (values.length === 1) add(base + base, "[");
+	if (values.length === 1) {
+		add(base + base, "[");
+		add(base + "是", "]");
+	}
 	for (const [trigger, insertion] of [
 		["D", "的"],
 		["L", "了"],

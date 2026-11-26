@@ -113,11 +113,11 @@ deploy:
         assert: commit == "下"
       - send: "xq]"
         assert: commit == "去"
-      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      # 单字定字：[ 重复该字，] 在该字后追加「是」
       - send: "yi["
         assert: commit == "吃吃"
       - send: "yi]"
-        assert: commit == "吃得"
+        assert: commit == "吃是"
       # 首选后置
       # 语义集中的区块（「事物代词」），码长成组
       - send: wg

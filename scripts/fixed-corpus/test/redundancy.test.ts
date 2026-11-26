@@ -29,6 +29,8 @@ test("structure abbreviations mirror the Lua processor", () => {
 		generateAbbreviations("人").map(({ trigger, word }) => [trigger, word]),
 	);
 	assert.equal(oneCharacter.get("["), "人人");
+	assert.equal(oneCharacter.get("]"), "人是");
+	assert.equal(twoCharacters.has("]"), false);
 	assert.equal(oneCharacter.get("G"), "人个");
 	assert.equal(generateAbbreviations("春夏秋冬").length, 0);
 });
@@ -99,10 +101,10 @@ test("detects structural abbreviations without requiring a fixed base", () => {
 });
 
 test("direct composition frees repeated and suffix fixed slots", () => {
-	for (const word of ["看看", "看得", "看的", "看了", "好看的", "看完了"]) {
+	for (const word of ["看看", "可是", "看的", "看了", "好看的", "看完了"]) {
 		assert.equal(isDirectlyComposableFixedWord(word), true, word);
 	}
-	for (const word of ["看", "好看", "看得到", "看完了吗"]) {
+	for (const word of ["看", "看得", "好看", "看得到", "看完了吗"]) {
 		assert.equal(isDirectlyComposableFixedWord(word), false, word);
 	}
 });
@@ -132,6 +134,35 @@ test("six double-pinyin fixed tables do not spend slots on direct composition", 
 				false,
 				`${file} ${section} ${code} ${word}`,
 			);
+		}
+	}
+});
+
+test("all production fixed candidates exclude two-character words ending in 是", () => {
+	for (const name of [
+		"sipin",
+		"qingyun",
+		"yipin",
+		"landao",
+		"lanpin",
+		"jiandao",
+		"sanpin",
+		"liandao",
+		"hedao",
+		"hepin",
+		"huandao",
+	]) {
+		for (const line of readFileSync(
+			rootPath(`snow_${name}.fixed.txt`),
+			"utf8",
+		).split(/\r?\n/u)) {
+			if (!line.includes("\t") || line.startsWith("#")) continue;
+			for (const word of line.split("\t")[1].split(" "))
+				assert.equal(
+					/^\p{Script=Han}是$/u.test(word),
+					false,
+					`${name}: ${line}`,
+				);
 		}
 	}
 });

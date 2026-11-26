@@ -1,5 +1,5 @@
 # 二简词
-be	不是
+be	表示
 bq	并且
 bt	不同
 bx	必须
@@ -70,7 +70,7 @@ em	上面
 fm	这么
 gm	干嘛
 hm	后面
-je	就是
+je	产生
 jz	就在
 qe	其实
 qz	正在
@@ -87,7 +87,7 @@ bvv	别人
 bva	不同
 bvu	本来
 bvi	帮忙
-ba	不是
+ba	报告
 bao	不断地
 bav	白色
 baa	不会
@@ -146,7 +146,7 @@ dvv	多长时间
 dva	对于
 dvu	等于
 dvi	当时
-da	但是
+da	董事长
 dao	的话
 dav	得到
 daa	大概
@@ -207,7 +207,7 @@ fa	知道
 fao	重重地
 fav	直到
 faa	重要
-fau	只是
+fau	房地产
 fai	之后
 fu	只有
 fuv	防止
@@ -261,7 +261,7 @@ hvv	回来
 hva	会员
 hvu	好玩
 hvi	欢迎
-ha	还是
+ha	汇报
 hao	恨不得
 hav	回去
 haa	后面
@@ -290,7 +290,7 @@ jvv	成为
 jva	竟然
 jvu	简直
 jvi	出来
-ja	就是
+ja	经济
 jao	静静地
 jav	决定
 jaa	继续
@@ -319,7 +319,7 @@ kvv	科学研究
 kva	困难
 kvu	可能
 kvi	科学
-ka	可是
+ka	看到
 kao	看看吧
 kav	咳嗽
 kaa	客户
@@ -469,7 +469,7 @@ qao	这样的话
 qav	情况
 qaa	这样
 qau	准备
-qai	真是
+qai	侵犯
 qu	这里
 quo	祝你们
 quv	情感
@@ -522,7 +522,7 @@ svi	思维
 sa	三个
 sao	所爱的人
 sav	随便
-saa	算是
+saa	速度
 sau	所谓
 sai	私信
 su	所以
@@ -607,7 +607,7 @@ xvu	选择
 xvi	心情
 xa	现在
 xao	需要的话
-xav	而是
+xav	学校
 xaa	续命
 xau	想要
 xai	需要
@@ -637,7 +637,7 @@ yvi	一直
 ya	一个
 yao	意味着
 yav	严重
-yaa	要是
+yaa	用户
 yau	以后
 yai	因为
 yu	一起

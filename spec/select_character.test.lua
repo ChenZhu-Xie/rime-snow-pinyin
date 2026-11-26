@@ -55,7 +55,8 @@ end
 
 for _, example in ipairs({
   { text = "冰", key = "first", expected = "冰冰" },
-  { text = "冰", key = "last", expected = "冰得" },
+  { text = "冰", key = "last", expected = "冰是" },
+  { text = "𰻝", key = "last", expected = "𰻝是" },
   { text = "冰雪", key = "first", expected = "冰" },
   { text = "冰雪", key = "last", expected = "雪" },
 }) do

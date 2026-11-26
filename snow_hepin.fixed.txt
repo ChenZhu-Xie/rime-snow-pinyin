@@ -410,7 +410,6 @@ bh	不会
 bm	避免
 bp	不怕
 bt	不同
-bv	不是
 bw	不要
 by	必须
 cb	从不
@@ -421,7 +420,6 @@ cx	财产
 cz	存在
 dc	多次
 dr	当然
-dv	但是
 ff	侵犯
 fh	切换
 fk	情况
@@ -432,13 +430,11 @@ gw	关于
 gx	过程
 gz	工作
 hb	何必
-hv	还是
 hw	还有
 hx	好处
 hz	孩子
 jh	就会
 jy	微信
-kv	可是
 kw	可以
 kx	看出
 kz	看作

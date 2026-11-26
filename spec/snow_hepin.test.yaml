@@ -177,11 +177,11 @@ deploy:
       # 占用桶保留汉字首选，字母固定为大写第 2、小写第 3。
       - send: bn
         assert: cand[1].text == "帮" and cand[2].text == "B" and cand[3].text == "b"
-      # 单字定字：[ 重复该字，] 在该字后追加“得”
+      # 单字定字：[ 重复该字，] 在该字后追加「是」
       - send: "j["
         assert: commit == "我我"
       - send: "j]"
-        assert: commit == "我得"
+        assert: commit == "我是"
       - send: r
         assert: cand[1].text == "人"
       - send: z
