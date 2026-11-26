@@ -52,6 +52,8 @@ deploy:
     patch:
       translator/enable_user_dict: false
       translator/enable_schema_user_dict: false
+      # 此部署验证启用简体原字优先时的后置顺序；生产方案仍暂停该过滤器。
+      engine/filters/@before 4: lua_filter@*snow.simplified
     tests:
       - send: mjv
         assert: cand[1].text == "摩"

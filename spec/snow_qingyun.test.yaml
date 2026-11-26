@@ -23,13 +23,20 @@ script: |
   function annotated(index, text)
     return cand[index] ~= nil and cand[index].comment:find(text) ~= nil
   end
+  function menu_diagnostic()
+    local texts = {}
+    for index, candidate in ipairs(cand) do
+      texts[index] = candidate.text
+    end
+    error("menu preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " candidates=" .. table.concat(texts, " | "))
+  end
 deploy:
   schema_options_menu:
     tests:
       - send: "{F4}"
         assert: cand[1].text == "方案选项"
       - send: "{space}"
-        assert: cand[4].text == "字词 → 单字" and commit == nil
+        assert: (cand[4] ~= nil and cand[4].text == "字词 → 单字" and commit == nil) or menu_diagnostic()
       - send: "8wye"
         assert: cand[1].text == "玥" and commit == nil
       - send: "{space}rf,"

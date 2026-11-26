@@ -1,6 +1,5 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { Glob } from "bun";
 import { ROOT } from "./lib/paths";
 
 // 版本号只写在 lua/snow/snow.lua 里，方案、词典的 version 和生成脚本都从这里取
@@ -8,6 +7,12 @@ const LUA = join(ROOT, "lua", "snow", "snow.lua");
 const LUA_PATTERN = /^snow\.version = "([^"]*)"$/m;
 // 只改 YAML 头里的第一个 version：方案在 schema 下缩进两格，词典在顶层
 const YAML_PATTERN = /^( *)version: .*$/m;
+
+function versionFiles(): string[] {
+	return readdirSync(ROOT).filter((file) =>
+		/^snow_.*\.(schema|dict)\.yaml$/.test(file),
+	);
+}
 
 function read(): string {
 	const match = readFileSync(LUA, "utf8").match(LUA_PATTERN);
@@ -22,8 +27,7 @@ export function checkVersion(expected = VERSION): number {
 	if (expected.replace(/^v/, "") !== VERSION)
 		throw new Error(`发布版本 ${expected} 与 snow.version ${VERSION} 不一致`);
 	let count = 0;
-	const glob = new Glob("snow_*.{schema,dict}.yaml");
-	for (const file of glob.scanSync(ROOT)) {
+	for (const file of versionFiles()) {
 		const content = readFileSync(join(ROOT, file), "utf8");
 		const actual = content.match(YAML_PATTERN)?.[0].trim();
 		if (actual !== `version: "${VERSION}"`)
@@ -43,8 +47,7 @@ export function setVersion(version: string): number {
 		),
 	);
 	let count = 0;
-	const glob = new Glob("snow_*.{schema,dict}.yaml");
-	for (const file of glob.scanSync(ROOT)) {
+	for (const file of versionFiles()) {
 		const path = join(ROOT, file);
 		const content = readFileSync(path, "utf8");
 		if (!YAML_PATTERN.test(content)) continue;
