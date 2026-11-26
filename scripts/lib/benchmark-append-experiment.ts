@@ -10,12 +10,13 @@ export function appendProbeInput(displayCode: string): string {
 	return displayCode.replace(/[⇧?]/gu, "").replace(/\[([1-9])\]/gu, "$1");
 }
 
-/** 固定同一候选池，删除旧 / 路径后再追加新字；不保留旧「了」的一键收益。 */
+/** 固定同一候选池，删除旧 / 路径后前插或追加新字；保留普通整词短码参与竞争。 */
 export function retargetBenchmarkAppend(
 	pool: ReadonlyMap<string, readonly BenchmarkAlternative[]>,
 	targetWords: ReadonlySet<string>,
 	tail: string,
 	prefix: (input: string) => AppendPrefixObservation | undefined,
+	direction: "append" | "prepend" = "append",
 ): {
 	alternatives: Map<string, BenchmarkAlternative[]>;
 	missing: Array<{ input: string; word: string }>;
@@ -48,7 +49,8 @@ export function retargetBenchmarkAppend(
 			selectionCount: 0,
 		});
 	for (const route of bases) {
-		const word = route.word + tail;
+		const word =
+			direction === "prepend" ? tail + route.word : route.word + tail;
 		if (!targetWords.has(word)) continue;
 		const input = appendProbeInput(route.displayCode);
 		const observed = prefix(input);
@@ -71,7 +73,7 @@ export function retargetBenchmarkAppend(
 			keyCost: route.keyCost + 1,
 			instant: true,
 			popppable: false,
-			source: "尾字键",
+			source: direction === "prepend" ? "前插键" : "尾字键",
 		});
 	}
 	return { alternatives, missing: [...missing.values()] };

@@ -23,6 +23,50 @@ function route(word: string, code: string): BenchmarkAlternative {
 	};
 }
 
+test("前插与整词短码竞争，不按字频虚报收益", () => {
+	const pool = new Map([
+		["知道", [route("知道", "zd")]],
+		["不知道", [route("不知道", "bz")]],
+		["了", [route("了", "l"), route("了", "/")]],
+	]);
+	const run = (state: any) =>
+		retargetBenchmarkAppend(
+			pool,
+			new Set(["知道", "不知道", "不", "了"]),
+			"不",
+			() => state,
+			"prepend",
+		);
+	const { alternatives } = run({
+		candidates: ["知道"],
+		commit: "",
+		completed: true,
+	});
+	assert.ok(alternatives.get("不知道")?.some((r) => r.displayCode === "zd/"));
+	assert.equal(
+		optimizeBenchmarkLine("不知道", alternatives).tokens[0].displayCode,
+		"bz",
+	);
+	assert.deepEqual(
+		alternatives.get("了")?.map((r) => r.displayCode),
+		["l"],
+	);
+	assert.equal(
+		run({
+			candidates: ["知道"],
+			commit: "",
+			completed: false,
+		}).alternatives.get("不知道")?.length,
+		1,
+	);
+	assert.equal(
+		run({ candidates: [], commit: "知道", completed: true }).alternatives.get(
+			"不知道",
+		)?.length,
+		1,
+	);
+});
+
 test("更换追加字时撤销旧 / 收益，保留普通「了」路径，并按新字重新切分", () => {
 	const pool = new Map([
 		["甲", [route("甲", "a")]],
