@@ -1,5 +1,11 @@
 package.path = "./lua/?.lua;" .. package.path
 local aux = require "snow.initial_pair_aux"
+for _, text in ipairs({ "他的", "来了", "不是", "目的", "除了" }) do
+  assert(aux.is_composable(text), text)
+end
+for _, text in ipairs({ "是", "获得", "测试", "不知道", "来到了" }) do
+  assert(not aux.is_composable(text), text)
+end
 
 local options = { { "aiox" }, { "uova", "iuea" } }
 assert(table.concat(aux.codes(options, "12"), "/") == "uoai/iuai")

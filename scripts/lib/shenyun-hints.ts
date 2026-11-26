@@ -73,6 +73,7 @@ export function readShenyunHints(zhudao = false) {
 					characters.set(key, { code, text, weight });
 				}
 			} else if ([...text].length === 2 && codes.length === 2) {
+				if (/[的了是]$/u.test(text)) continue;
 				const code = codes.map((part) => part[0]).join("");
 				const bucket = words.get(code) ?? new Map<string, number>();
 				bucket.set(text, Math.max(bucket.get(text) ?? 0, weight));

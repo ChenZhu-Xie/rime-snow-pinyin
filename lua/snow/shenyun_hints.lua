@@ -11,8 +11,8 @@ local hints = {
   snow_hedao = {
     b = {
       { code = "by", text = "必须", weight = 502404 },
-      { code = "bv", text = "不是", weight = 501670 },
       { code = "bg", text = "不过", weight = 501600 },
+      { code = "bv", text = "表示", weight = 501400 },
       { code = "bt", text = "不同", weight = 501387 },
       { code = "bw", text = "不要", weight = 501028 },
       { code = "bh", text = "不会", weight = 500926 },
@@ -51,9 +51,9 @@ local hints = {
       { code = "gr", text = "果然", weight = 331980 },
     },
     h = {
-      { code = "hv", text = "还是", weight = 502434 },
       { code = "hw", text = "还有", weight = 501908 },
       { code = "hz", text = "孩子", weight = 501479 },
+      { code = "hv", text = "很少", weight = 500289 },
       { code = "hr", text = "忽然", weight = 499565 },
       { code = "hx", text = "好处", weight = 356080 },
       { code = "hb", text = "何必", weight = 110935 },
@@ -184,8 +184,8 @@ local hints = {
   snow_hepin = {
     b = {
       { code = "by", text = "必须", weight = 502404 },
-      { code = "bv", text = "不是", weight = 501670 },
       { code = "bg", text = "不过", weight = 501600 },
+      { code = "bv", text = "表示", weight = 501400 },
       { code = "bt", text = "不同", weight = 501387 },
       { code = "bw", text = "不要", weight = 501028 },
       { code = "bh", text = "不会", weight = 500926 },
@@ -224,9 +224,9 @@ local hints = {
       { code = "gr", text = "果然", weight = 331980 },
     },
     h = {
-      { code = "hv", text = "还是", weight = 502434 },
       { code = "hw", text = "还有", weight = 501908 },
       { code = "hz", text = "孩子", weight = 501479 },
+      { code = "hv", text = "很少", weight = 500289 },
       { code = "hr", text = "忽然", weight = 499565 },
       { code = "hx", text = "好处", weight = 356080 },
       { code = "hb", text = "何必", weight = 110935 },

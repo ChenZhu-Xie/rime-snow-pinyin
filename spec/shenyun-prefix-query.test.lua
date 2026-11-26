@@ -15,6 +15,8 @@ local translator = require "snow.shenyun"
 local emitted = {}
 yield = function(candidate) emitted[#emitted + 1] = candidate end
 local candidates = {
+  { text = "不是", _start = 0, _end = 3, comment = "" },
+  { text = "不了", _start = 0, _end = 3, comment = "" },
   { text = "不", _start = 0, _end = 1, comment = "" },
   { text = "不到", _start = 0, _end = 3, comment = "" },
   { text = "把", _start = 0, _end = 1, comment = "" },
@@ -35,12 +37,15 @@ local env = {
   auxiliary_keys = "aeuio",
   auxiliary_mode = "shape",
   pair_standard_order = "12",
-  auxiliary_cache = { ["不到\tAA\t"] = { "eaeu" }, ["不打\tAA\t"] = { "eaeu" }, ["别的\tAA\t"] = { "eeee" } },
+  auxiliary_cache = { ["不到\tAA\t"] = { "eaeu" }, ["不打\tAA\t"] = { "eaeu" }, ["别的\tAA\t"] = { "eaeu" } },
 }
 translator.func("bdeaeu", { _end = 6 }, env)
 assert(#emitted == 2 and emitted[1].text == "不到" and emitted[2].text == "不打")
 assert(emitted[1]._end == 6 and emitted[2]._end == 6)
 assert(prepared == 2, "前缀候选不应进入代理码修正；不能因此截断后续完整候选")
+emitted = {}
+translator.func("bd", { _end = 2 }, env)
+assert(#emitted == 2 and emitted[1].text == "不到" and emitted[2].text == "不打")
 print("声声查询：前后夹杂的前缀不阻断完整词，排除前缀无需代理码修正")
 
 -- 使用可区分各字位的形码，核对鹮道 R2 的 21/12/23 与空桶反序 1122。

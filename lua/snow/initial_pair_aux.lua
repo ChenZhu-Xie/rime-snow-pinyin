@@ -5,6 +5,15 @@ local auxiliary_hint = require "snow.auxiliary_hint"
 
 local initial_pair_aux = {}
 
+--- 声声短路径不占用可由单字加尾字键构造的二字词。
+---@param text string
+---@return boolean
+function initial_pair_aux.is_composable(text)
+  if utf8.len(text) ~= 2 then return false end
+  local last = text:sub(utf8.offset(text, -1))
+  return last == "的" or last == "了" or last == "是"
+end
+
 ---@param standard_order string
 ---@return integer[]
 function initial_pair_aux.positions(standard_order)

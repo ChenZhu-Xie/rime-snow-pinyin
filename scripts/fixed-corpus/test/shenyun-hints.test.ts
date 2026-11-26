@@ -6,6 +6,13 @@ import { readShenyunHints } from "../../lib/shenyun-hints";
 
 const data = readShenyunHints();
 
+test("声声提示不包含尾字键可构造的二字词", () => {
+	for (const result of [data, readShenyunHints(true)])
+		for (const entries of Object.values(result.hints))
+			for (const entry of entries)
+				assert.doesNotMatch(entry.text, /[的了是]$/u);
+});
+
 test("21×26 单键提示覆盖全部 129 个声声空桶，每桶只保留首选代表词", () => {
 	assert.equal(data.vacant.length, 142);
 	assert.equal(data.vacantAA.length, 129);

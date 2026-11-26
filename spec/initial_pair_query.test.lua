@@ -18,8 +18,9 @@ local function translation(proxy)
   return { iter = function()
     return function()
       count = count + 1
-      if count == 1 then return { text = "AB", _start = 0, _end = #proxy, quality = 0 } end
-      if count == 2 then return { text = "A", _start = 0, _end = 1, quality = 0 } end
+      local words = { "他的", "来了", "不是", "AB" }
+      if count <= #words then return { text = words[count], _start = 0, _end = #proxy, quality = 0 } end
+      if count == 5 then return { text = "A", _start = 0, _end = 1, quality = 0 } end
       error("完整声声候选结束后不应继续扫描单字前缀")
     end
   end }

@@ -384,6 +384,9 @@ local function advance(stream, env)
     -- 已消费完整 proxy 的候选经 prepare 后恰好消费 main_length。
     -- 先筛字数和辅码；只给真正进入合流的候选修正 _end / quality。
     local length = utf8.len(candidate.text)
+    if stream.route.family == "AA" and initial_pair_aux.is_composable(candidate.text) then
+      goto continue
+    end
     local is_long = length and (stream.route.family == "LONG" and length >= stream.route.length
         or stream.route.family == "AAAA" and stream.route.suffix == ""
           and candidate.type == "completion" and length >= 5)

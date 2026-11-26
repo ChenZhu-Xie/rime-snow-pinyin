@@ -150,7 +150,7 @@ function t12.func(input, segment, env)
       end
       local proxy = table.concat(groups, " ")
       translate(proxy, segment, env, env.preserve_t12_proxy_quality, function(candidate)
-        if utf8.len(candidate.text) ~= 2 then return false end
+        if utf8.len(candidate.text) ~= 2 or initial_pair_aux.is_composable(candidate.text) then return false end
         candidate.type = "initial_pair"
         candidate._end = segment._end
         candidate.preedit = input:sub(1, 1) .. " " .. input:sub(2)
@@ -273,7 +273,7 @@ function initial_pair.func(input, segment, env)
     return
   end
   translate(input, segment, env, false, function(candidate)
-    if utf8.len(candidate.text) ~= 2 then
+    if utf8.len(candidate.text) ~= 2 or initial_pair_aux.is_composable(candidate.text) then
       return false
     end
     candidate.type = "initial_pair"

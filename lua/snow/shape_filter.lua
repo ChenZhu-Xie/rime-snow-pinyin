@@ -427,6 +427,7 @@ function filter.handle_candidate(text, shape_input, env, state, candidate)
       or state.id == "snow_lanpin" or state.id == "snow_sanpin")
       and ((candidate and candidate.type == "initial_pair") or state.initial_pair
         or state.sanpin_initial_pair) then
+    if initial_pair_aux.is_composable(text) then return false, nil, nil end
     local matched, prompt, comment = initial_pair_match(text, shape_input, env, candidate)
     return matched, prompt ~= "" and prompt or nil, comment
   end
