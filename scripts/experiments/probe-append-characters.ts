@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import {
 	closeSync,
@@ -12,6 +13,8 @@ import {
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { dump } from "js-yaml";
+import { exact500Articles } from "../exact_500_articles";
+import { benchmarkTargetWords } from "../lib/benchmark-corpus";
 import { makeMiraDefaultCustomization } from "../lib/mira-default-custom";
 import { ROOT } from "../lib/paths";
 import { copyRimeDependencies } from "../lib/rime-dependencies";
@@ -39,6 +42,7 @@ const input = JSON.parse(
 	),
 ) as {
 	revision: string;
+	corpusSha256: string;
 	schemas: Record<
 		string,
 		{
@@ -51,6 +55,14 @@ const input = JSON.parse(
 	>;
 };
 const onlySchema = argument("--schema");
+assert.equal(
+	createHash("sha256").update(JSON.stringify(exact500Articles)).digest("hex"),
+	input.corpusSha256,
+	"实验语料发生变化",
+);
+const targetWords = benchmarkTargetWords(
+	exact500Articles.flatMap((article) => article.lines),
+);
 const observations = join(output, "observations.jsonl");
 mkdirSync(output, { recursive: true });
 assert.ok(!existsSync(observations), "观测文件已存在，请使用新的输出目录");
@@ -88,6 +100,30 @@ let completed = 0;
 for (const [schema, entry] of Object.entries(input.schemas)) {
 	if (onlySchema && schema !== onlySchema) continue;
 	for (const [tail, cases] of Object.entries(entry.variants)) {
+		const actualCases = new Map(cases.map((entry) => [entry.input, entry]));
+		// 第一轮「了」收集未知前缀；后续两个候选补测这些前缀实际首选的追加。
+		if (!prepareOnly && tail !== "了" && existsSync(observations))
+			for (const line of readFileSync(observations, "utf8")
+				.trim()
+				.split(/\r?\n/u)) {
+				const row = JSON.parse(line);
+				if (
+					row.schema !== schema ||
+					row.tail !== "了" ||
+					row.kind !== "state" ||
+					row.commit !== "" ||
+					!row.candidates[0]
+				)
+					continue;
+				const word = row.candidates[0] + tail;
+				if (targetWords.has(word))
+					actualCases.set(row.input + "/", {
+						input: row.input + "/",
+						kind: "append",
+						expected: word,
+					});
+			}
+		const requests = [...actualCases.values()];
 		const directory = join(output, schema, tail);
 		const staging = join(directory, "source");
 		mkdirSync(staging, { recursive: true });
@@ -140,7 +176,7 @@ for (const [schema, entry] of Object.entries(input.schemas)) {
 						full_shape: false,
 						traditionalization: false,
 					},
-					tests: cases.map((entry) => ({
+					tests: requests.map((entry) => ({
 						send: entry.input,
 						assert: `record(${[schema, tail, entry.input, entry.kind, entry.expected ?? ""].map((value) => JSON.stringify(value)).join(", ")})`,
 					})),
@@ -174,8 +210,8 @@ for (const [schema, entry] of Object.entries(input.schemas)) {
 			text,
 			/Lua\w*::\w+ error\(|Error opening (?:reversedb|db)|attempt to index a nil value/u,
 		);
-		console.log(`${schema}/${tail}：${cases.length} 条观测`);
-		completed += cases.length;
+		console.log(`${schema}/${tail}：${requests.length} 条观测`);
+		completed += requests.length;
 	}
 }
 if (!prepareOnly) {

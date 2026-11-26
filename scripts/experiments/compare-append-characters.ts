@@ -117,6 +117,7 @@ const corpus = buildBenchmarkCorpus(
 	exact500Articles.flatMap((article: { lines: string[] }) => article.lines),
 );
 const observed = new Map<string, AppendPrefixObservation>();
+const actualAppends = new Map<string, string>();
 const observationPath = argument("--observations");
 if (observationPath)
 	for (const line of readFileSync(resolve(observationPath), "utf8").split(
@@ -124,6 +125,8 @@ if (observationPath)
 	)) {
 		if (!line) continue;
 		const row = JSON.parse(line);
+		if (row.kind === "append")
+			actualAppends.set(`${row.schema}\t${row.tail}\t${row.input}`, row.commit);
 		if (row.tail === "了" && row.kind === "state")
 			observed.set(`${row.schema}\t${row.input}`, {
 				candidates: row.candidates,
@@ -143,6 +146,7 @@ const results: Array<{
 }> = [];
 const probes: {
 	revision: string;
+	corpusSha256: string;
 	definition: string;
 	schemas: Record<
 		string,
@@ -156,11 +160,15 @@ const probes: {
 	>;
 } = {
 	revision,
+	corpusSha256: createHash("sha256")
+		.update(JSON.stringify(exact500Articles))
+		.digest("hex"),
 	definition:
 		"同一冻结候选池内的追加字反事实；不是当前生产方案的新实测，清韵与外部方案不改变键义。state 补齐未知前缀；append 验证最优路径采用的 / 提交结果。",
 	schemas: {},
 };
 const provenance: Record<string, unknown> = {};
+const validation: Record<string, unknown> = {};
 for (const scheme of ALL_BENCHMARK_SCHEMES.filter(
 	(scheme: { id: string }) => scheme.id !== "qingyun",
 )) {
@@ -249,11 +257,36 @@ for (const scheme of ALL_BENCHMARK_SCHEMES.filter(
 			missingPrefixes: missing.length,
 		});
 		if (["了", "与", "在"].includes(tail)) {
+			if (observationPath) {
+				let verified = 0;
+				const unverified: Array<{ input: string; word: string }> = [];
+				const wrong: Array<{ input: string; word: string; actual: string }> =
+					[];
+				for (const route of selected) {
+					const input = appendProbeInput(route.displayCode);
+					const actual = actualAppends.get(
+						`${scheme.schemaId}\t${tail}\t${input}`,
+					);
+					if (actual === undefined)
+						unverified.push({ input, word: route.word });
+					else if (actual !== route.word)
+						wrong.push({ input, word: route.word, actual });
+					else verified++;
+				}
+				validation[scheme.id + "/" + tail] = {
+					uses: selected.length,
+					verified,
+					unverified,
+					wrong,
+				};
+			}
 			const unique = new Map<
 				string,
 				{ input: string; kind: string; expected: string }
 			>();
-			for (const route of selected) {
+			for (const route of [...alternatives.values()]
+				.flat()
+				.filter((route) => route.displayCode.includes("/"))) {
 				const input = appendProbeInput(route.displayCode);
 				unique.set(input, { input, kind: "append", expected: route.word });
 				if (input.length > 1) stateProbes.add(input.slice(0, -1));
@@ -297,6 +330,7 @@ const result = {
 		"5500 字频前 80，加常见虚词和原配置「了」，排除已由分号承担的「的」",
 	observations: observationPath ?? null,
 	provenance,
+	validation,
 	candidates,
 	frequencies: Object.fromEntries(frequencies),
 	ranking,

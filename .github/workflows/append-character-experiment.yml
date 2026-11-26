@@ -18,7 +18,7 @@ jobs:
           path: tooling
       - uses: actions/checkout@v4
         with:
-          ref: 27019df
+          ref: 27019df92c87dbdbed52da18f9ded7d8bf5ac031
           submodules: true
           path: source
       - uses: oven-sh/setup-bun@v2
