@@ -114,7 +114,7 @@ export function runMeasureCli(args: string[]): number {
 	const shenyun = layout(
 		options.repoRoot,
 		"shenyun",
-		"snow_sanpin.schema.yaml",
+		"snow_lanpin.schema.yaml",
 	);
 	const original = layout(
 		options.repoRoot,

@@ -5181,7 +5181,7 @@
         }
       }
     },
-    "snow_jiandao": {
+    "snow_landao": {
       "codes": [
         "/",
         ";",
@@ -12067,7 +12067,7 @@
         }
       }
     },
-    "snow_sanpin": {
+    "snow_lanpin": {
       "codes": [
         "/",
         ";",
@@ -26644,7 +26644,7 @@
         }
       }
     },
-    "snow_shenyun_shape": {
+    "snow_hedao": {
       "codes": [
         "/",
         ";",
@@ -33957,7 +33957,7 @@
         }
       }
     },
-    "snow_shenyun_tone": {
+    "snow_hepin": {
       "codes": [
         "/",
         ";",
@@ -40486,7 +40486,7 @@
         }
       }
     },
-    "snow_jiandao_toned": {
+    "snow_liandao": {
       "codes": [
         "/",
         ";",
@@ -46700,7 +46700,7 @@
         }
       }
     },
-    "snow_zhudao": {
+    "snow_huandao": {
       "codes": [
         "/",
         ";",
@@ -54006,7 +54006,7 @@
         }
       }
     },
-    "snow_jiandao_classic": {
+    "snow_jiandao": {
       "codes": [
         "/",
         ";",
@@ -60619,7 +60619,7 @@
         }
       }
     },
-    "snow_sanpin_classic": {
+    "snow_sanpin": {
       "codes": [
         "/",
         ";",

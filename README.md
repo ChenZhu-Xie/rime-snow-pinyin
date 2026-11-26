@@ -15,7 +15,7 @@
 
 [冰雪拼音](https://input.tansongchen.com)是一系列以普通话拼音为基础的中文输入方案。它们充分利用汉字的字音信息来实现自然优雅的编码；它们使用先进的离散优化技术和顶功技术来设计，使得编码十分高效；它们配备了智能算法，通过学习用户的语言习惯来个性化输入体验。
 
-[冰雪拼音](https://input.tansongchen.com)的发布列表包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪兰拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)、[冰雪鹤道](snow_shenyun_shape.schema.yaml)、[冰雪鹤拼](snow_shenyun_tone.schema.yaml)，以及[冰雪鹮道](docs/zhudao.md)、[冰雪莲道](docs/liandao.md)和经典的[冰雪键道](snow_jiandao_classic.schema.yaml)和[冰雪三拼](snow_sanpin_classic.schema.yaml)。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
+[冰雪拼音](https://input.tansongchen.com)的发布列表包括[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪兰拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韵](https://input.tansongchen.com/snow-qingyun/)、[冰雪鹤道](snow_hedao.schema.yaml)、[冰雪鹤拼](snow_hepin.schema.yaml)，以及[冰雪鹮道](docs/zhudao.md)、[冰雪莲道](docs/liandao.md)和经典的[冰雪键道](snow_jiandao.schema.yaml)和[冰雪三拼](snow_sanpin.schema.yaml)。您可以阅读[冰雪奇缘](https://input.tansongchen.com/snow.html)来概览各个方案，了解它们的设计理念及优缺点。您还可以点击上述各个方案的链接以进一步了解并选择适合您的输入方案。
 
 六套双拼顶功方案覆盖四份布局：冰雪兰道／冰雪兰拼共用 UED 21×21，冰雪鹤道／冰雪鹤拼共用 RC26 21×26（M=40、无飞键、无音节重码、无 630），每组分别用形辅、调辅；冰雪莲道、冰雪鹮道分别使用带调 21×21、21×26，主码已含调，后置为纯形辅。schema_id 保持兼容。
 
@@ -46,7 +46,7 @@
 
 ### RC26-39a5bfdc045342cd 21×26 双拼
 
-冰雪鹤道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）与冰雪鹤拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）现共用 [RC26-39a5bfdc045342cd 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，仓库标识为 `RC26-39a5bfdc045342cd`，来源冻结、迁移审计与验证步骤见 [RC26 布局说明](docs/hedao.md)。布局在 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 上无音节重码，M-R2 `40`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `8/5/3/1`；按 21×26 原生四码封顶、跨词长联合候选池与 `soft-page-fill-v2` 计分，方案专属稳健结果为 CKT v5.1 `9.082777229838413`。
+冰雪鹤道（[`snow_hedao`](snow_hedao.schema.yaml)）与冰雪鹤拼（[`snow_hepin`](snow_hepin.schema.yaml)）现共用 [RC26-39a5bfdc045342cd 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，仓库标识为 `RC26-39a5bfdc045342cd`，来源冻结、迁移审计与验证步骤见 [RC26 布局说明](docs/hedao.md)。布局在 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 上无音节重码，M-R2 `40`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `8/5/3/1`；按 21×26 原生四码封顶、跨词长联合候选池与 `soft-page-fill-v2` 计分，方案专属稳健结果为 CKT v5.1 `9.082777229838413`。
 
 五辅语义保持“折横撇竖点→`AEUIO`、一二三四轻→`IEUAO`”，按形义序观察声调仍为 `42310`。冰雪鹤道的二／三／四字词形辅序为 `12/12/24`，冰雪鹤拼的调辅序为 `12/21/13`；记号表示从各字位依次取辅码，运行规则以方案文件为准。
 
@@ -155,7 +155,7 @@
 
 ### UED-3158ce08b5bc 21×21 双拼
 
-冰雪兰道（`snow_jiandao`）与冰雪兰拼（`snow_sanpin`）现共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，仓库标识为 `UED-3158ce08b5bc`。布局指标为 M-R2 `41`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `5/2/2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.565504107623386`。
+冰雪兰道（`snow_landao`）与冰雪兰拼（`snow_lanpin`）现共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，仓库标识为 `UED-3158ce08b5bc`。布局指标为 M-R2 `41`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `5/2/2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.565504107623386`。
 
 五辅语义保持“折横撇竖点→`AVUIO`、一二三四轻→`IVUAO`”，按形义序观察声调同为 `42310`。冰雪兰道的二／三／四字词形辅序为 `12/231/23`，冰雪兰拼的调辅序为 `12/213/23`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
 
@@ -250,7 +250,7 @@
 
 | 属性 | 冰雪鹮道 | 冰雪莲道 |
 | --- | --- | --- |
-| schema_id | `snow_zhudao` | `snow_jiandao_toned` |
+| schema_id | `snow_huandao` | `snow_liandao` |
 | Layout ID | `T2126-V52-M4-ec60a3637a99` | `CR-REF-7e650f7a4c` |
 | 宿主键域 | 21×26 | 21×21 |
 | 声调位置 | 第二码内，不追加独立调辅 | 第二码内，不追加独立调辅 |
@@ -260,11 +260,11 @@
 | 运行时可用声声空桶 | 14 | 7 |
 | 记忆下限／守门 M-T1 | 18 / 21[^zh-benchmark-toned] | 21 / 24[^zh-benchmark-toned] |
 | CKT v5.2 | 8.640932[^zh-benchmark-v52] | 9.132009[^zh-benchmark-v52] |
-| 键位图 | [SVG](lua/snow/keymaps/snow_zhudao.svg) | [SVG](lua/snow/keymaps/snow_jiandao_toned.svg) |
+| 键位图 | [SVG](lua/snow/keymaps/snow_huandao.svg) | [SVG](lua/snow/keymaps/snow_liandao.svg) |
 
 #### 冰雪莲道 · CR-REF-7e650f7a4c
 
-![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+![冰雪莲道](lua/snow/keymaps/snow_liandao.svg)
 
 **日常八场景连续双拼键频图（含标点）**
 
@@ -303,7 +303,7 @@
 
 #### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
-![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
+![冰雪鹮道](lua/snow/keymaps/snow_huandao.svg)
 
 **日常八场景连续双拼键频图（含标点）**
 
@@ -556,11 +556,11 @@
 
 Recipe: ℞ **snow-pinyin**
 
-[Snow Pinyin](https://input.tansongchen.com) is a family of Mandarin-based Chinese input methods. It combines phonetic information, discrete optimization, top-up coding, and adaptive learning for natural, efficient, and personalized input. The release includes [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪兰拼](https://input.tansongchen.com/snow3/), [Snow One-Code](https://input.tansongchen.com/snow1/), [冰雪兰道](https://input.tansongchen.com/snow-jiandao/), [Snow Qingyun](https://input.tansongchen.com/snow-qingyun/), [冰雪鹤道](snow_shenyun_shape.schema.yaml), [冰雪鹤拼](snow_shenyun_tone.schema.yaml), and the classic [冰雪键道](snow_jiandao_classic.schema.yaml) and [冰雪三拼](snow_sanpin_classic.schema.yaml).
+[Snow Pinyin](https://input.tansongchen.com) is a family of Mandarin-based Chinese input methods. It combines phonetic information, discrete optimization, top-up coding, and adaptive learning for natural, efficient, and personalized input. The release includes [Snow Four-Code](https://input.tansongchen.com/snow4/), [冰雪兰拼](https://input.tansongchen.com/snow3/), [Snow One-Code](https://input.tansongchen.com/snow1/), [冰雪兰道](https://input.tansongchen.com/snow-jiandao/), [Snow Qingyun](https://input.tansongchen.com/snow-qingyun/), [冰雪鹤道](snow_hedao.schema.yaml), [冰雪鹤拼](snow_hepin.schema.yaml), and the classic [冰雪键道](snow_jiandao.schema.yaml) and [冰雪三拼](snow_sanpin.schema.yaml).
 
 ### RC26-39a5bfdc045342cd 21×26 double pinyin
 
-冰雪鹤道 ([`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)) and 冰雪鹤拼 ([`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)) now share the [RC26-39a5bfdc045342cd 21×26 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md), identified in this repository as `RC26-39a5bfdc045342cd`. It has no [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) syllable collisions, M-R2 `40`, and all/written/traditional-initial/final disorder A/I/D/V `8/5/3/1`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and `soft-page-fill-v2`, its scheme-specific robust score is CKT v5.1 `9.082777229838413`.
+冰雪鹤道 ([`snow_hedao`](snow_hedao.schema.yaml)) and 冰雪鹤拼 ([`snow_hepin`](snow_hepin.schema.yaml)) now share the [RC26-39a5bfdc045342cd 21×26 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md), identified in this repository as `RC26-39a5bfdc045342cd`. It has no [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) syllable collisions, M-R2 `40`, and all/written/traditional-initial/final disorder A/I/D/V `8/5/3/1`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and `soft-page-fill-v2`, its scheme-specific robust score is CKT v5.1 `9.082777229838413`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AEUIO` and tones 1/2/3/4/neutral→`IEUAO`, yielding `42310` in shape-meaning order. 冰雪鹤道 uses shape order `12/12/24` and 冰雪鹤拼 uses tone order `12/21/13` for two-/three-/four-character words.
 
@@ -669,7 +669,7 @@ Neither the letters nor the numbers consume the `21×5×21=2205` `ABA` states; t
 
 ### UED-3158ce08b5bc 21×21 double pinyin
 
-冰雪兰道 (`snow_jiandao`) and 冰雪兰拼 (`snow_sanpin`) now share the [UED-3158ce08b5bc 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json), identified as `UED-3158ce08b5bc`. Its layout metrics are M-R2 `41` and all/written/traditional-initial/final disorder A/I/D/V `5/2/2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.565504107623386`.
+冰雪兰道 (`snow_landao`) and 冰雪兰拼 (`snow_lanpin`) now share the [UED-3158ce08b5bc 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json), identified as `UED-3158ce08b5bc`. Its layout metrics are M-R2 `41` and all/written/traditional-initial/final disorder A/I/D/V `5/2/2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.565504107623386`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→`AVUIO` and tones 1/2/3/4/neutral→`IVUAO`, again yielding `42310`. 冰雪兰道 uses shape order `12/231/23`, while 冰雪兰拼 uses tone order `12/213/23`; three-character words retain the complete three-auxiliary route.
 
@@ -764,7 +764,7 @@ Numbers share the codes of their corresponding Han numerals. When Han candidates
 
 | Property | 冰雪鹮道 | 冰雪莲道 |
 | --- | --- | --- |
-| schema_id | `snow_zhudao` | `snow_jiandao_toned` |
+| schema_id | `snow_huandao` | `snow_liandao` |
 | Layout ID | `T2126-V52-M4-ec60a3637a99` | `CR-REF-7e650f7a4c` |
 | Host capacity | 21×26 | 21×21 |
 | Tone position | Inside key 2; no independent tone auxiliary | Inside key 2; no independent tone auxiliary |
@@ -774,11 +774,11 @@ Numbers share the codes of their corresponding Han numerals. When Han candidates
 | Runtime vacant initial pairs | 14 | 7 |
 | M-T1 lower / guard | 18 / 21[^en-benchmark-toned] | 21 / 24[^en-benchmark-toned] |
 | CKT v5.2 | 8.640932[^en-benchmark-v52] | 9.132009[^en-benchmark-v52] |
-| Keyboard map | [SVG](lua/snow/keymaps/snow_zhudao.svg) | [SVG](lua/snow/keymaps/snow_jiandao_toned.svg) |
+| Keyboard map | [SVG](lua/snow/keymaps/snow_huandao.svg) | [SVG](lua/snow/keymaps/snow_liandao.svg) |
 
 #### 冰雪莲道 · CR-REF-7e650f7a4c
 
-![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+![冰雪莲道](lua/snow/keymaps/snow_liandao.svg)
 
 **Continuous double-pinyin key frequencies (daily corpus, punctuation included)**
 
@@ -817,7 +817,7 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 
 #### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
-![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
+![冰雪鹮道](lua/snow/keymaps/snow_huandao.svg)
 
 **Continuous double-pinyin key frequencies (daily corpus, punctuation included)**
 
@@ -972,11 +972,11 @@ These reports cover current production configurations. [S005](https://pingshunhu
 
 配方： ℞ **snow-pinyin**
 
-[冰雪拼音](https://input.tansongchen.com)是一系列以普通話拼音為基礎的中文輸入方案，結合字音資訊、離散最佳化、頂功技術與使用習慣學習，提供自然、高效且個人化的輸入體驗。發布列表包含[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪兰拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韻](https://input.tansongchen.com/snow-qingyun/)、[冰雪鶴道](snow_shenyun_shape.schema.yaml)、[冰雪鹤拼](snow_shenyun_tone.schema.yaml)，以及經典的[冰雪鍵道](snow_jiandao_classic.schema.yaml)與[冰雪三拼](snow_sanpin_classic.schema.yaml)。
+[冰雪拼音](https://input.tansongchen.com)是一系列以普通話拼音為基礎的中文輸入方案，結合字音資訊、離散最佳化、頂功技術與使用習慣學習，提供自然、高效且個人化的輸入體驗。發布列表包含[冰雪四拼](https://input.tansongchen.com/snow4/)、[冰雪兰拼](https://input.tansongchen.com/snow3/)、[冰雪一拼](https://input.tansongchen.com/snow1/)、[冰雪兰道](https://input.tansongchen.com/snow-jiandao/)、[冰雪清韻](https://input.tansongchen.com/snow-qingyun/)、[冰雪鶴道](snow_hedao.schema.yaml)、[冰雪鹤拼](snow_hepin.schema.yaml)，以及經典的[冰雪鍵道](snow_jiandao.schema.yaml)與[冰雪三拼](snow_sanpin.schema.yaml)。
 
 ### RC26-39a5bfdc045342cd 21×26 雙拼
 
-冰雪鶴道（[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)）與冰雪鹤拼（[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)）現共用 [RC26-39a5bfdc045342cd 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，倉庫標識為 `RC26-39a5bfdc045342cd`。布局在 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 上無音節重碼，M-R2 `40`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `8/5/3/1`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 `soft-page-fill-v2` 計分，方案專屬穩健結果為 CKT v5.1 `9.082777229838413`。
+冰雪鶴道（[`snow_hedao`](snow_hedao.schema.yaml)）與冰雪鹤拼（[`snow_hepin`](snow_hepin.schema.yaml)）現共用 [RC26-39a5bfdc045342cd 21×26 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-09-rc26-ckt-v51-soft-balance-aux-order-robustness.md)，倉庫標識為 `RC26-39a5bfdc045342cd`。布局在 [Common399](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/README.md#common399) 上無音節重碼，M-R2 `40`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `8/5/3/1`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 `soft-page-fill-v2` 計分，方案專屬穩健結果為 CKT v5.1 `9.082777229838413`。
 
 五輔語義保持「折橫撇豎點→`AEUIO`、一二三四輕→`IEUAO`」，按形義序觀察聲調仍為 `42310`。冰雪鶴道的二／三／四字詞形輔序為 `12/12/24`，冰雪鹤拼的調輔序為 `12/21/13`。
 
@@ -1085,7 +1085,7 @@ These reports cover current production configurations. [S005](https://pingshunhu
 
 ### UED-3158ce08b5bc 21×21 雙拼
 
-冰雪兰道（`snow_jiandao`）與冰雪兰拼（`snow_sanpin`）現共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，倉庫標識為 `UED-3158ce08b5bc`。布局指標為 M-R2 `41`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `5/2/2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.565504107623386`。
+冰雪兰道（`snow_landao`）與冰雪兰拼（`snow_lanpin`）現共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，倉庫標識為 `UED-3158ce08b5bc`。布局指標為 M-R2 `41`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `5/2/2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.565504107623386`。
 
 五輔語義保持「折橫撇豎點→`AVUIO`、一二三四輕→`IVUAO`」，按形義序觀察聲調同為 `42310`。冰雪兰道的二／三／四字詞形輔序為 `12/231/23`，冰雪兰拼的調輔序為 `12/213/23`；三字詞保留完整三輔鍵路由。
 
@@ -1180,7 +1180,7 @@ These reports cover current production configurations. [S005](https://pingshunhu
 
 | 屬性 | 冰雪鹮道 | 冰雪莲道 |
 | --- | --- | --- |
-| schema_id | `snow_zhudao` | `snow_jiandao_toned` |
+| schema_id | `snow_huandao` | `snow_liandao` |
 | Layout ID | `T2126-V52-M4-ec60a3637a99` | `CR-REF-7e650f7a4c` |
 | 宿主鍵域 | 21×26 | 21×21 |
 | 聲調位置 | 第二碼內，不追加獨立調輔 | 第二碼內，不追加獨立調輔 |
@@ -1190,11 +1190,11 @@ These reports cover current production configurations. [S005](https://pingshunhu
 | 執行時可用聲聲空桶 | 14 | 7 |
 | 記憶下限／守門 M-T1 | 18 / 21[^zht-benchmark-toned] | 21 / 24[^zht-benchmark-toned] |
 | CKT v5.2 | 8.640932[^zht-benchmark-v52] | 9.132009[^zht-benchmark-v52] |
-| 鍵位圖 | [SVG](lua/snow/keymaps/snow_zhudao.svg) | [SVG](lua/snow/keymaps/snow_jiandao_toned.svg) |
+| 鍵位圖 | [SVG](lua/snow/keymaps/snow_huandao.svg) | [SVG](lua/snow/keymaps/snow_liandao.svg) |
 
 #### 冰雪莲道 · CR-REF-7e650f7a4c
 
-![冰雪莲道](lua/snow/keymaps/snow_jiandao_toned.svg)
+![冰雪莲道](lua/snow/keymaps/snow_liandao.svg)
 
 **日常八場景連續雙拼鍵頻圖（含標點）**
 
@@ -1233,7 +1233,7 @@ These reports cover current production configurations. [S005](https://pingshunhu
 
 #### 冰雪鹮道 · T2126-V52-M4-ec60a3637a99
 
-![冰雪鹮道](lua/snow/keymaps/snow_zhudao.svg)
+![冰雪鹮道](lua/snow/keymaps/snow_huandao.svg)
 
 **日常八場景連續雙拼鍵頻圖（含標點）**
 
@@ -1380,3 +1380,7 @@ These reports cover current production configurations. [S005](https://pingshunhu
 ### 詞庫說明
 
 [冰雪拼音](https://input.tansongchen.com)的收詞範圍與[霧凇拼音](https://github.com/iDvel/rime-ice)相同，包含約 180 萬共享詞條、持續上游同步、規範單字讀音，以及適合自動造詞的穩定詞語讀音。
+
+## 方案标识升级
+
+本次统一方案英文标识；旧版用户升级前请阅读[方案标识迁移说明](docs/schema-id-migration.md)，尤其注意兰道／键道、兰拼／三拼的旧标识复用，先迁移个人补丁再重新部署。

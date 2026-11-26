@@ -10,7 +10,7 @@ import { candidateSelection } from "../lib/benchmark-selection";
 
 // 仅复核给定缺测字；独立空词典、逐键输入，先寻找首选，再探查选重。
 const schema = process.argv[2];
-assert.ok(["snow_jiandao", "snow_jiandao_toned"].includes(schema));
+assert.ok(["snow_landao", "snow_liandao"].includes(schema));
 const base = resolve(
 	process.argv[3] ?? `output/filter-disabled-recheck/${schema}`,
 );

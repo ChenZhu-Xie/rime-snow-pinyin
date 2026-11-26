@@ -30,7 +30,7 @@ local context = {
   end },
 }
 local env = {
-  engine = { schema = { schema_id = "snow_jiandao" }, context = context },
+  engine = { schema = { schema_id = "snow_landao" }, context = context },
   shape_elements = { lookup = function(_, char)
     return ({ X = "rs", Y = "tu", Z = "vw", W = "xy" })[char]
   end },
@@ -40,7 +40,7 @@ local env = {
 
 local function active_state(current)
   return {
-    id = "snow_jiandao",
+    id = "snow_landao",
     current = current,
     is_pinyin = false,
     show_chaifen = false,
@@ -66,7 +66,7 @@ match, _, comment = filter.handle_candidate("XY", "bo", env, active_state("b"))
 assert(match and comment == "", "630 shorthand must keep its separate second-character rule")
 
 local sanpin_state = {
-  id = "snow_sanpin",
+  id = "snow_lanpin",
   current = "bkxh",
   sanpin_initial_pair = false,
   sanpin_passthrough = false,
@@ -101,7 +101,7 @@ assert(match and comment == "〔调₂₁₃ vi〕",
   "three-initial word must hint the next two tones in 2-1-3 order")
 
 local classic_state = {
-  id = "snow_sanpin_classic",
+  id = "snow_sanpin",
   current = "xyzw",
   sanpin_initial_pair = false,
   sanpin_passthrough = true,

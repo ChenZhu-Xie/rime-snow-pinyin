@@ -39,7 +39,10 @@ const definitions = {
 		args: [FFIType.u64, FFIType.cstring],
 		returns: FFIType.int,
 	},
-	RimeSetOption: { args: [FFIType.u64, FFIType.cstring, FFIType.int], returns: FFIType.void },
+	RimeSetOption: {
+		args: [FFIType.u64, FFIType.cstring, FFIType.int],
+		returns: FFIType.void,
+	},
 } as const;
 
 type RimeLibrary = Library<typeof definitions>;
@@ -132,11 +135,21 @@ function prepareData(
 	// 单方案预热与全量部署生成相同的只读补丁，保持缓存指纹可复用。
 	for (const name of readdirSync(destination)) {
 		if (name.startsWith("snow_") && name.endsWith(".schema.yaml"))
-			writeReadOnlyPatch(destination, name.slice(0, -".schema.yaml".length), schemas.includes(name.slice(0, -".schema.yaml".length)) ? appendCharacter : undefined);
+			writeReadOnlyPatch(
+				destination,
+				name.slice(0, -".schema.yaml".length),
+				schemas.includes(name.slice(0, -".schema.yaml".length))
+					? appendCharacter
+					: undefined,
+			);
 	}
 }
 
-function writeReadOnlyPatch(directory: string, schema: string, appendCharacter?: string): void {
+function writeReadOnlyPatch(
+	directory: string,
+	schema: string,
+	appendCharacter?: string,
+): void {
 	// 只冻结空白评测环境的学习；音码、固顶、候选和按键规则仍使用原方案。
 	writeFileSync(
 		join(directory, `${schema}.custom.yaml`),
@@ -147,7 +160,10 @@ function writeReadOnlyPatch(directory: string, schema: string, appendCharacter?:
 					`  ${namespace}/enable_schema_user_dict: false`,
 				])
 				.join("\n") +
-			"\n" + (appendCharacter ? `  punctuator/half_shape/+:\n    "/": ${appendCharacter}\n` : ""),
+			"\n" +
+			(appendCharacter
+				? `  punctuator/half_shape/+:\n    "/": ${appendCharacter}\n`
+				: ""),
 	);
 }
 
@@ -226,13 +242,13 @@ const CACHE_FORMAT =
 const BENCHMARK_DATA_PREFIXES = [
 	"snow_bihua.",
 	"snow_bushou.",
-	"snow_jiandao",
+	"snow_landao",
 	"snow_pinyin.",
-	"snow_sanpin",
+	"snow_lanpin",
 	"snow_shenyun_",
 	"snow_sipin.",
 	"snow_qingyun",
-	"snow_zhudao.",
+	"snow_huandao.",
 	"snow_xingpang.",
 ] as const;
 
@@ -324,13 +340,31 @@ export class RimeCandidateOracle {
 				options.externalSbxhReverseWords,
 			);
 		else {
-			if (options.appendCharacter && !/^\p{Script=Han}$/u.test(options.appendCharacter)) throw new Error("追加字必须是一个汉字");
-			prepareData(this.dataDirectory, shared, schemas, options.sourceDirectory ? resolve(options.sourceDirectory) : ROOT, options.appendCharacter);
+			if (
+				options.appendCharacter &&
+				!/^\p{Script=Han}$/u.test(options.appendCharacter)
+			)
+				throw new Error("追加字必须是一个汉字");
+			prepareData(
+				this.dataDirectory,
+				shared,
+				schemas,
+				options.sourceDirectory ? resolve(options.sourceDirectory) : ROOT,
+				options.appendCharacter,
+			);
 		}
 		const fingerprint = dataFingerprint(this.dataDirectory, dll);
-		this.persistentCacheDirectory = join(options.cacheRoot ?? join(ROOT, "output", "benchmark-rime-cache"), fingerprint);
-		const compiled = options.compiledCacheRoot ? join(options.compiledCacheRoot, fingerprint) : undefined;
-		if (compiled && existsSync(join(compiled, "build"))) cpSync(join(compiled, "build"), join(this.dataDirectory, "build"), { recursive: true });
+		this.persistentCacheDirectory = join(
+			options.cacheRoot ?? join(ROOT, "output", "benchmark-rime-cache"),
+			fingerprint,
+		);
+		const compiled = options.compiledCacheRoot
+			? join(options.compiledCacheRoot, fingerprint)
+			: undefined;
+		if (compiled && existsSync(join(compiled, "build")))
+			cpSync(join(compiled, "build"), join(this.dataDirectory, "build"), {
+				recursive: true,
+			});
 		mkdirSync(this.persistentCacheDirectory, { recursive: true });
 		this.originalDirectory = process.cwd();
 		process.chdir(this.dataDirectory);
@@ -351,7 +385,9 @@ export class RimeCandidateOracle {
 			this.library.symbols.RimeJoinMaintenanceThread();
 		if (compiled && !existsSync(join(compiled, "build"))) {
 			mkdirSync(compiled, { recursive: true });
-			cpSync(join(this.dataDirectory, "build"), join(compiled, "build"), { recursive: true });
+			cpSync(join(this.dataDirectory, "build"), join(compiled, "build"), {
+				recursive: true,
+			});
 		}
 		this.session = this.library.symbols.RimeCreateSession();
 		if (!this.session) throw new Error("无法建立空白 Rime benchmark 会话");
@@ -372,7 +408,10 @@ export class RimeCandidateOracle {
 	}
 
 	private cachePath(schema: string): string {
-		const options = new Bun.CryptoHasher("sha256").update(JSON.stringify(Object.entries(this.queryOptions).sort())).digest("hex").slice(0, 16);
+		const options = new Bun.CryptoHasher("sha256")
+			.update(JSON.stringify(Object.entries(this.queryOptions).sort()))
+			.digest("hex")
+			.slice(0, 16);
 		return join(this.persistentCacheDirectory, `${schema}-${options}.jsonl`);
 	}
 
@@ -443,10 +482,11 @@ export class RimeCandidateOracle {
 		});
 		if (result.commit !== "" && !result.completed) this.rejectedQueries++;
 		this.cache.set(key, result);
-		if (!records.some(record => record.code === code)) records.push({ code, ...result });
+		if (!records.some((record) => record.code === code))
+			records.push({ code, ...result });
 		appendFileSync(
 			this.cachePath(this.schema),
-			records.map(record => JSON.stringify(record)).join("\n") + "\n",
+			records.map((record) => JSON.stringify(record)).join("\n") + "\n",
 		);
 		return result;
 	}
@@ -464,27 +504,46 @@ export class RimeCandidateOracle {
 		if (freshSession) {
 			this.library.symbols.RimeDestroySession(this.session);
 			this.session = this.library.symbols.RimeCreateSession();
-			if (!this.session || !this.library.symbols.RimeSelectSchema(this.session, cString(this.schema))) throw new Error("无法建立独立查询会话");
+			if (
+				!this.session ||
+				!this.library.symbols.RimeSelectSchema(
+					this.session,
+					cString(this.schema),
+				)
+			)
+				throw new Error("无法建立独立查询会话");
 			this.setOptions(this.queryOptions);
 		}
-		return queryRimeCandidates(code, {
-			clearComposition: () =>
-				this.library.symbols.RimeClearComposition(this.session),
-			processKey: (keycode, modifier) => {
-				this.library.symbols.RimeProcessKey(this.session, keycode, modifier);
+		return queryRimeCandidates(
+			code,
+			{
+				clearComposition: () =>
+					this.library.symbols.RimeClearComposition(this.session),
+				processKey: (keycode, modifier) => {
+					this.library.symbols.RimeProcessKey(this.session, keycode, modifier);
+				},
+				readCandidates: () => this.readCandidates(),
+				takeCommit: () => this.takeCommit(),
 			},
-			readCandidates: () => this.readCandidates(),
-			takeCommit: () => this.takeCommit(),
-		}, observePrefix);
+			observePrefix,
+		);
 	}
 
 	setOptions(options: Record<string, boolean>): void {
-		if (JSON.stringify(Object.entries(options).sort()) !== JSON.stringify(Object.entries(this.queryOptions).sort())) {
+		if (
+			JSON.stringify(Object.entries(options).sort()) !==
+			JSON.stringify(Object.entries(this.queryOptions).sort())
+		) {
 			this.cache.clear();
 			this.loadedSchemas.clear();
 		}
 		this.queryOptions = { ...options };
-		for (const [name, value] of Object.entries(options)) this.library.symbols.RimeSetOption(this.session, cString(name), Number(value));
+		for (const [name, value] of Object.entries(options))
+			this.library.symbols.RimeSetOption(
+				this.session,
+				cString(name),
+				Number(value),
+			);
 		if (this.schema) this.loadPersistentCache(this.schema);
 	}
 

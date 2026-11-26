@@ -134,7 +134,7 @@ def run(args):
         count = lambda event: sum(name == event for _, name in events())
         serial = 0
 
-        def send(action, image="snow_jiandao_toned"):
+        def send(action, image="snow_liandao"):
             nonlocal serial
             serial += 1
             # Atomic replacement keeps partial writes out of this timing harness.

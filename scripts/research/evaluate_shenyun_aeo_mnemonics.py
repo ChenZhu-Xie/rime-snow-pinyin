@@ -85,7 +85,7 @@ def read_two_word_codes(path: Path) -> set[str]:
     return codes
 
 
-TWO_WORD_CODES = read_two_word_codes(REPO / "snow_sanpin.fixed.txt")
+TWO_WORD_CODES = read_two_word_codes(REPO / "snow_lanpin.fixed.txt")
 
 
 def daily_mx(state: np.ndarray) -> float:

@@ -17,10 +17,10 @@ local env = {
   },
   pair_standard_order = "12", three_word_order = "231", four_word_order = "23",
   pair_aux_cache = {}, pair_aux_cache_size = 0,
-  engine = { schema = { schema_id = "snow_jiandao" } },
+  engine = { schema = { schema_id = "snow_landao" } },
 }
-local state = { id = "snow_jiandao", current = "krf", is_pinyin = false, jiandao_active = true, show_chaifen = false }
-for _, id in ipairs({ "snow_jiandao", "snow_jiandao_classic", "snow_jiandao_toned" }) do
+local state = { id = "snow_landao", current = "krf", is_pinyin = false, jiandao_active = true, show_chaifen = false }
+for _, id in ipairs({ "snow_landao", "snow_jiandao", "snow_liandao" }) do
   state.id = id
   state.current = "xg"
   for _, text in ipairs({ "v", "V", "7" }) do
@@ -33,7 +33,7 @@ for _, id in ipairs({ "snow_jiandao", "snow_jiandao_classic", "snow_jiandao_tone
   -- 无形码的汉字仍按既有合同放行，不能把修复扩大到全部未知字符。
   assert(filter.handle_candidate("𠮷", "v", env, state))
 end
-state.id = "snow_jiandao"
+state.id = "snow_landao"
 state.current = "krf"
 assert(filter.handle_candidate("输入法", "uav", env, state))
 assert(not filter.handle_candidate("输入法", "uva", env, state))
@@ -41,10 +41,10 @@ state.current = "rgen"
 assert(filter.handle_candidate("人工智能", "vu", env, state))
 assert(not filter.handle_candidate("人工智能", "va", env, state))
 for _, case in ipairs({
-  { "snow_jiandao", "krfuav", 3, { 6, 4, 5 } },
-  { "snow_jiandao", "rgenvu", 4, { 1, 5, 6, 4 } },
-  { "snow_sanpin", "krfaiu", 3, { 5, 4, 6 } },
-  { "snow_sanpin", "tkdlva", 4, { 1, 5, 6, 4 } },
+  { "snow_landao", "krfuav", 3, { 6, 4, 5 } },
+  { "snow_landao", "rgenvu", 4, { 1, 5, 6, 4 } },
+  { "snow_lanpin", "krfaiu", 3, { 5, 4, 6 } },
+  { "snow_lanpin", "tkdlva", 4, { 1, 5, 6, 4 } },
 }) do
   local actual = navigator.logical_positions(case[2], case[3], case[1])
   assert(table.concat(actual, ",") == table.concat(case[4], ","), case[1] .. " " .. case[2])

@@ -52,7 +52,7 @@ def verify_keytao_shape_source() -> None:
                     if '\t' in line)
     local = {}
     started = False
-    for line in (HERE / 'snow_jiandao_chaifen.dict.yaml').open(encoding='utf-8'):
+    for line in (HERE / 'snow_landao_chaifen.dict.yaml').open(encoding='utf-8'):
         if not started:
             started = line.strip() == '...'
             continue

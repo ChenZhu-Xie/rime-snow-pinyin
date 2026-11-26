@@ -438,7 +438,7 @@ const sipinInitials: Record<string, string[]> = {
 
 const diagrams: Diagram[] = [
 	{
-		filename: "snow_zhudao",
+		filename: "snow_huandao",
 		title: "冰雪鹮道 · T2126-V52-M4-ec60a3637a99",
 		subtitle:
 			"带调 21×26：二三声上排 · 四声中排 · 一轻声下排 · 键道形辅 21/12/23",
@@ -455,21 +455,21 @@ const diagrams: Diagram[] = [
 		auxiliary: sipinAuxiliary,
 	},
 	{
-		filename: "snow_sanpin",
+		filename: "snow_lanpin",
 		title: "冰雪兰拼 · UED-3158ce08b5bc",
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: toneNotes(u357),
 	},
 	{
-		filename: "snow_jiandao",
+		filename: "snow_landao",
 		title: "冰雪兰道 · UED-3158ce08b5bc",
 		subtitle: "21×21 声韵与形笔字根映射（独立按 V 显隐）",
 		mapping: u357,
 		auxiliary: shapeNotes(u357.shapeKeysByMeaning),
 	},
 	{
-		filename: "snow_jiandao_toned",
+		filename: "snow_liandao",
 		title: "冰雪莲道 · CR-REF-7e650f7a4c",
 		subtitle: "带调 21×21：四声上排 · 二三声中排 · 一轻声下排 · 形辅 21/231/14",
 		mapping: tonedMars,
@@ -479,28 +479,28 @@ const diagrams: Diagram[] = [
 		auxiliary: shapeNotes(tonedMars.shapeKeysByMeaning),
 	},
 	{
-		filename: "snow_jiandao_classic",
+		filename: "snow_jiandao",
 		title: "冰雪键道",
 		subtitle: "经典 21×21 声韵与形笔字根映射（独立按 V 显隐）",
 		mapping: classic,
 		auxiliary: shapeNotes(classic.shapeKeysByMeaning),
 	},
 	{
-		filename: "snow_sanpin_classic",
+		filename: "snow_sanpin",
 		title: "冰雪三拼 · 经典键道",
 		subtitle: "21×21 声韵与声调映射（独立按 V 显隐）",
 		mapping: classic,
 		auxiliary: toneNotes(classic),
 	},
 	{
-		filename: "snow_shenyun_tone",
+		filename: "snow_hepin",
 		title: "冰雪鹤拼 · RC26-39a5bfdc045342cd",
 		subtitle: "21×26 声韵与声调映射（独立按 E 显隐）",
 		mapping: overall17,
 		auxiliary: toneNotes(overall17),
 	},
 	{
-		filename: "snow_shenyun_shape",
+		filename: "snow_hedao",
 		title: "冰雪鹤道 · RC26-39a5bfdc045342cd",
 		subtitle: "21×26 声韵与形笔字根映射（独立按 E 显隐）",
 		mapping: overall17,
@@ -975,9 +975,8 @@ function render(diagram: Diagram) {
 						78 / Math.max(1, label.length * 0.54),
 					);
 					const readableShenyunFinal =
-						["snow_shenyun_shape", "snow_shenyun_tone"].includes(
-							diagram.filename,
-						) && ["er", "u"].includes(value);
+						["snow_hedao", "snow_hepin"].includes(diagram.filename) &&
+						["er", "u"].includes(value);
 					const size = readableShenyunFinal
 						? Math.max(20, calculatedSize)
 						: calculatedSize;
@@ -1106,9 +1105,9 @@ for (const diagram of diagrams) {
 	const svg = styleInitialLinks(render(diagram), diagram.mapping);
 	update(join(outputDirectory, `${diagram.filename}.svg`), svg);
 	const readmeName =
-		diagram.filename === "snow_jiandao"
+		diagram.filename === "snow_landao"
 			? "shenyun-ued-3158ce08b5bc-keyboard.svg"
-			: diagram.filename === "snow_shenyun_shape"
+			: diagram.filename === "snow_hedao"
 				? "shenyun-rc26-keyboard.svg"
 				: undefined;
 	if (readmeName) update(join(root, "docs", readmeName), svg);

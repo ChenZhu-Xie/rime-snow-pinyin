@@ -28,7 +28,7 @@
           "buao": "布"
         }
       },
-      "snow_jiandao": {
+      "snow_landao": {
         "codes": [
           "xlvi",
           "cnvv",
@@ -40,7 +40,7 @@
           "hmi": "货"
         }
       },
-      "snow_sanpin": {
+      "snow_lanpin": {
         "codes": [
           "yfiv",
           "gnav",
@@ -66,7 +66,7 @@
           "nmj": "那么就"
         }
       },
-      "snow_shenyun_shape": {
+      "snow_hedao": {
         "codes": [
           "ty",
           "tyo",
@@ -80,7 +80,7 @@
           "dsia": "巅"
         }
       },
-      "snow_shenyun_tone": {
+      "snow_hepin": {
         "codes": [
           "bao",
           "dku",
@@ -123,56 +123,56 @@
         "revision": "d3b513737b7241f9a715c8949764fcbbdd6349bb",
         "runtime": "mira-rime1.13.1",
         "sources": {
-          "snow_jiandao_toned_jianpin.schema.yaml": "1bdce2b3908af144b2a05c4b76015864cfe4a6c0866b274f51c338811bf8b7bd",
+          "snow_liandao_jianpin.schema.yaml": "1bdce2b3908af144b2a05c4b76015864cfe4a6c0866b274f51c338811bf8b7bd",
           "snow_qingyun.schema.yaml": "7e9a2c9806b87e9b2f61328f08e79b3d2f06970c29bb3b288b5b8228013fb14c",
           "snow_bushou.dict.yaml": "664eedf9f1768106144a993c0d51de513983973c0858bba834bc5dbb73882575",
           "snow_bihua.dict.yaml": "f15b2ef65e7f587f13492253d63a4b52d8f0c27bb8943f1d3a398570471f2e1b",
           "snow_pinyin.user.dict.yaml": "d5d2694f4adb936691302120fbbd7dcb50d8d739ee2014be73fdd33f58180853",
-          "snow_jiandao.schema.yaml": "cafa49426c52af69c472f721220ec8e76648d785240592cd9bddd69aabab2a3a",
-          "snow_shenyun_tone.fixed.txt": "bc87292cbf4e0a8aef775c7b233ad59344d0946d2e31920d0b396e8d7b78c6c1",
+          "snow_landao.schema.yaml": "cafa49426c52af69c472f721220ec8e76648d785240592cd9bddd69aabab2a3a",
+          "snow_hepin.fixed.txt": "bc87292cbf4e0a8aef775c7b233ad59344d0946d2e31920d0b396e8d7b78c6c1",
           "snow_lingpin.schema.yaml": "9ff60abef9686b238ddd46ba4aa3dce07c1c8d0367e7692005becefc92fd907e",
-          "snow_sanpin_bihua.schema.yaml": "cc0fbc10a028f6cd83b7731f9e54125827ad67454a4782a3aa109b358103a4d5",
+          "snow_lanpin_bihua.schema.yaml": "cc0fbc10a028f6cd83b7731f9e54125827ad67454a4782a3aa109b358103a4d5",
           "snow_xingpang.dict.yaml": "78a60c4b8d056836fd8c64f6ccd060f338bb2d4b942074de0d38a6cbe5c5c84d",
-          "snow_sanpin.schema.yaml": "a4206ac2b890075e43e69ade68db0317c789932363e37e6221650aa4722982eb",
-          "snow_jiandao_classic.schema.yaml": "066fd4e744a19f80d6fb4661db3acb4e529b2cec76b362e95315564f4e3bea43",
+          "snow_lanpin.schema.yaml": "a4206ac2b890075e43e69ade68db0317c789932363e37e6221650aa4722982eb",
+          "snow_jiandao.schema.yaml": "066fd4e744a19f80d6fb4661db3acb4e529b2cec76b362e95315564f4e3bea43",
           "snow_qingyun_chaifen.schema.yaml": "e2ea4cdc17ef615a01da27a8da02151f98c47bd3483661dc0d1bcc68a9526ca2",
           "snow_xingpang.schema.yaml": "859e0d897b0c008a5b67f9304ba93e9f920989f7c852fd529f6f4a8f23a732d9",
           "snow_yipin.schema.yaml": "c871ee3a2b0f9c269f306e1613208b29f67896b2c2010a4989b397f389f00b4d",
-          "snow_sanpin_classic.schema.yaml": "81e16c7eeb9ab08262d106ea9464923e4f7320645c42b14dc8c81dea6c33b0d6",
-          "snow_shenyun_shape.fixed.txt": "782b919787ced6805f7cf0732b472922397c4b2db7d4e7ec1f8eddcdc40c541c",
-          "snow_jiandao_chaifen.dict.yaml": "102df3584c22409647c3c7300fe5b48a2826f4e263e8cd96e3e2f52c9c59907c",
+          "snow_sanpin.schema.yaml": "81e16c7eeb9ab08262d106ea9464923e4f7320645c42b14dc8c81dea6c33b0d6",
+          "snow_hedao.fixed.txt": "782b919787ced6805f7cf0732b472922397c4b2db7d4e7ec1f8eddcdc40c541c",
+          "snow_landao_chaifen.dict.yaml": "102df3584c22409647c3c7300fe5b48a2826f4e263e8cd96e3e2f52c9c59907c",
           "snow_qingyun.dict.yaml": "1e4e28ddfe3939f02f23997b3b1ad00324aff28ec83a0baba711042476029fec",
           "snow_qingyun_chaifen.dict.yaml": "e75b988876299d6eae7122dbe62711196e6b1cef89e72020a2de65796cd9ee21",
           "snow_sipin.fixed.txt": "7bb813a8a062b43229ec5c36965abd71783d125520583c15d2470597bbdfed85",
-          "snow_jiandao_toned.schema.yaml": "f550d819037b810a5b1fdb100b3c9c2f5ced4e2a6cec0663fd23416acb695bf3",
-          "snow_jiandao.fixed.txt": "44d1601d2eff4fb1f8723d91a568309fd9c0fdf3fa2ddc8ed68dc1d7aa7aa403",
-          "snow_jiandao_toned.fixed.txt": "00e4090ca3a168d6765a00331f07dbe7139625eb6065296b9fa73f3381f98909",
+          "snow_liandao.schema.yaml": "f550d819037b810a5b1fdb100b3c9c2f5ced4e2a6cec0663fd23416acb695bf3",
+          "snow_landao.fixed.txt": "44d1601d2eff4fb1f8723d91a568309fd9c0fdf3fa2ddc8ed68dc1d7aa7aa403",
+          "snow_liandao.fixed.txt": "00e4090ca3a168d6765a00331f07dbe7139625eb6065296b9fa73f3381f98909",
           "snow_pinyin.tencent.dict.yaml": "13f0f84d82444dde95c6252df0daef3de77e8c3c3447c3049b3e6c2d115aa707",
-          "snow_jiandao_chaifen.schema.yaml": "35a989da347e1a19d8cd3bc54180b19283f9c4ecb4507e7dc7703449646aa837",
+          "snow_landao_chaifen.schema.yaml": "35a989da347e1a19d8cd3bc54180b19283f9c4ecb4507e7dc7703449646aa837",
           "snow_yingpin.schema.yaml": "b1f112a1ac6ca6cc90eb810d7c498f1622ba17a1b0b432c2b25f7485a40e0388",
-          "snow_jiandao_jianpin.schema.yaml": "6685ce92086599f160a7f56cb1618eb85ce44604b15c3341781cf1e93122616d",
+          "snow_landao_jianpin.schema.yaml": "6685ce92086599f160a7f56cb1618eb85ce44604b15c3341781cf1e93122616d",
           "snow_pinyin.dict.yaml": "f27cb6c917c0f2c8ae9dedcb0962326afebc8150b8af90626e459a49686bdeeb",
           "snow_yingpin.dict.yaml": "e5a5d2cac6a7101fa4300dacf25acdddc5cd98016d15bfcd79899543fb70bdd0",
-          "snow_shenyun_tone.schema.yaml": "07c047fc63188edf396623526f4d885929c5c915740aaa44626501a11628246b",
-          "snow_zhudao.fixed.txt": "f00f2483cabad5293bcb1382a0dfe31647120d44ace5e044b60e06f722d3749e",
+          "snow_hepin.schema.yaml": "07c047fc63188edf396623526f4d885929c5c915740aaa44626501a11628246b",
+          "snow_huandao.fixed.txt": "f00f2483cabad5293bcb1382a0dfe31647120d44ace5e044b60e06f722d3749e",
           "snow_qingyun_xingma.schema.yaml": "0d64d712e28087ba0517b3a38b1dd0067ddbb6a086edc1dae263603cb1f385f1",
           "snow_yipin.fixed.txt": "0f94df8930eeacaa54500f7242ef9ef5809b0b3dbd32e55d1644600100ad7213",
-          "snow_jiandao_toned_common.yaml": "675cd2367592333a331474555cf84cc7d8d016a64ec87838fa36d9b0043a2460",
-          "snow_shenyun_shape.schema.yaml": "e451983c08cc399f65d4304d7c762fc634eb27eacd1b194a4ff590fee71649a6",
-          "snow_zhudao.schema.yaml": "9f8f185947a1c3a216e04461ffc24aab9431ea4323f552f05f281ee7a61feb6b",
-          "snow_sanpin.fixed.txt": "a7c90022d7a2be5a776dc1d4f5a08f9ff080a0f0809d99c5de2d7ce3120e1aba",
+          "snow_liandao_common.yaml": "675cd2367592333a331474555cf84cc7d8d016a64ec87838fa36d9b0043a2460",
+          "snow_hedao.schema.yaml": "e451983c08cc399f65d4304d7c762fc634eb27eacd1b194a4ff590fee71649a6",
+          "snow_huandao.schema.yaml": "9f8f185947a1c3a216e04461ffc24aab9431ea4323f552f05f281ee7a61feb6b",
+          "snow_lanpin.fixed.txt": "a7c90022d7a2be5a776dc1d4f5a08f9ff080a0f0809d99c5de2d7ce3120e1aba",
           "snow_bihua.schema.yaml": "1e3f2dfe0fc1df570a1016033c5696909bed7ab259e649cfd6adb5a4c9c2f43d",
           "snow_bushou.schema.yaml": "10c1fb823442a70ac96597c80b40163374e344ffd8ef18a29c351cc3a4ceb164",
-          "snow_jiandao_bihua.schema.yaml": "fb365f790621cf27ec58a99ee668001668fe2b9a0b88708604325d429f8ae166",
+          "snow_landao_bihua.schema.yaml": "fb365f790621cf27ec58a99ee668001668fe2b9a0b88708604325d429f8ae166",
           "snow_pinyin.ext.dict.yaml": "0f7a03f7c607dda580e3cc62e1126ce9dd23b4cfca197e4165b9ff54e8dfe0f2",
-          "snow_sanpin_classic.fixed.txt": "48b7bfe2f9e4872001aaa636365611ab1829acbaa348d6b2f8947b39cf7c88b0",
-          "snow_jiandao_classic.fixed.txt": "6088c852a55eac591aaa7dd6f1e78181d7750959e463cb8da78ea01bebff7e4e",
+          "snow_sanpin.fixed.txt": "48b7bfe2f9e4872001aaa636365611ab1829acbaa348d6b2f8947b39cf7c88b0",
+          "snow_jiandao.fixed.txt": "6088c852a55eac591aaa7dd6f1e78181d7750959e463cb8da78ea01bebff7e4e",
           "snow_pinyin.base.dict.yaml": "6a43e1696489c996ab36f0dc1f05f30feeb15924f7a18a344110fbed9855f31e",
           "snow_qingyun.fixed.txt": "99a3c356c1d6192d6193e28fcce44b86df31e56239a4fc82834d31d0a459a780",
           "snow_shenyun_common.yaml": "71d06c2fc0dfe402f30aa7afbe97d02df1fbf3102b0ea3b7aeecaf128574790e",
           "snow_sipin.schema.yaml": "b7c22559525c381d28d70df818611af0373a583abac6458fbc77bd508ac41e69",
           "snow_pinyin.schema.yaml": "5d3aa1f287a3a7e80b0cc9037f983e754da52c6f5ee6ab4cc3e2d25a5d23f3a0",
-          "snow_jiandao_classic_jianpin.schema.yaml": "134c6b6e97874430f065e804702328165d321dbd0238946ca72f2c6d44180736"
+          "snow_jiandao_jianpin.schema.yaml": "134c6b6e97874430f065e804702328165d321dbd0238946ca72f2c6d44180736"
         },
         "probes": [
           {
@@ -236,7 +236,7 @@
             ]
           },
           {
-            "schema": "snow_jiandao",
+            "schema": "snow_landao",
             "variant": "default",
             "codes": [
               "x",
@@ -253,7 +253,7 @@
             ]
           },
           {
-            "schema": "snow_jiandao",
+            "schema": "snow_landao",
             "variant": "no-postpone",
             "codes": [
               "x",
@@ -270,7 +270,7 @@
             ]
           },
           {
-            "schema": "snow_jiandao",
+            "schema": "snow_landao",
             "variant": "no-fix",
             "codes": [
               "x",
@@ -287,7 +287,7 @@
             ]
           },
           {
-            "schema": "snow_sanpin",
+            "schema": "snow_lanpin",
             "variant": "default",
             "codes": [
               "y",
@@ -306,7 +306,7 @@
             ]
           },
           {
-            "schema": "snow_sanpin",
+            "schema": "snow_lanpin",
             "variant": "no-postpone",
             "codes": [
               "y",
@@ -325,7 +325,7 @@
             ]
           },
           {
-            "schema": "snow_sanpin",
+            "schema": "snow_lanpin",
             "variant": "no-fix",
             "codes": [
               "y",
@@ -400,7 +400,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_shape",
+            "schema": "snow_hedao",
             "variant": "default",
             "codes": [
               "t",
@@ -414,7 +414,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_shape",
+            "schema": "snow_hedao",
             "variant": "no-postpone",
             "codes": [
               "t",
@@ -428,7 +428,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_shape",
+            "schema": "snow_hedao",
             "variant": "no-fix",
             "codes": [
               "t",
@@ -442,7 +442,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_tone",
+            "schema": "snow_hepin",
             "variant": "default",
             "codes": [
               "b",
@@ -458,7 +458,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_tone",
+            "schema": "snow_hepin",
             "variant": "no-postpone",
             "codes": [
               "b",
@@ -474,7 +474,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_tone",
+            "schema": "snow_hepin",
             "variant": "no-fix",
             "codes": [
               "b",
@@ -1922,7 +1922,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "x",
           "preedit": "x",
@@ -1956,7 +1956,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "xl",
           "preedit": "xl",
@@ -1990,7 +1990,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "xlv",
           "preedit": "xl 形 [v]",
@@ -2024,7 +2024,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "xlvi",
           "preedit": "xl 形 [vi]",
@@ -2058,7 +2058,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "c",
           "preedit": "c",
@@ -2092,7 +2092,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "cn",
           "preedit": "cn",
@@ -2126,7 +2126,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "cnv",
           "preedit": "cn 形 [v]",
@@ -2160,7 +2160,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "cnvv",
           "preedit": "cn 形 [vv]",
@@ -2194,7 +2194,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "h",
           "preedit": "h",
@@ -2228,7 +2228,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "hm",
           "preedit": "hm",
@@ -2262,7 +2262,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "hmi",
           "preedit": "hm 形 [i]",
@@ -2296,7 +2296,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "x",
           "preedit": "x",
@@ -2330,7 +2330,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "xl",
           "preedit": "xl",
@@ -2364,7 +2364,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "xlv",
           "preedit": "xl 形 [v]",
@@ -2398,7 +2398,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "xlvi",
           "preedit": "xl 形 [vi]",
@@ -2432,7 +2432,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "c",
           "preedit": "c",
@@ -2466,7 +2466,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "cn",
           "preedit": "cn",
@@ -2500,7 +2500,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "cnv",
           "preedit": "cn 形 [v]",
@@ -2534,7 +2534,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "cnvv",
           "preedit": "cn 形 [vv]",
@@ -2568,7 +2568,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "h",
           "preedit": "h",
@@ -2602,7 +2602,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "hm",
           "preedit": "hm",
@@ -2636,7 +2636,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "hmi",
           "preedit": "hm 形 [i]",
@@ -2670,7 +2670,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "x",
           "preedit": "x",
@@ -2704,7 +2704,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "xl",
           "preedit": "xl",
@@ -2738,7 +2738,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "xlv",
           "preedit": "xl 形 [v]",
@@ -2772,7 +2772,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "xlvi",
           "preedit": "xl 形 [vi]",
@@ -2806,7 +2806,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "c",
           "preedit": "c",
@@ -2840,7 +2840,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "cn",
           "preedit": "cn",
@@ -2874,7 +2874,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "cnv",
           "preedit": "cn 形 [v]",
@@ -2908,7 +2908,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "cnvv",
           "preedit": "cn 形 [vv]",
@@ -2942,7 +2942,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "h",
           "preedit": "h",
@@ -2976,7 +2976,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "hm",
           "preedit": "hm",
@@ -3010,7 +3010,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "hmi",
           "preedit": "hm 形 [i]",
@@ -3044,7 +3044,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "y",
           "preedit": "y",
@@ -3078,7 +3078,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "yf",
           "preedit": "yf",
@@ -3112,7 +3112,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "yfi",
           "preedit": "yfi",
@@ -3146,7 +3146,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "yfiv",
           "preedit": "yfi 笔画 [一]",
@@ -3180,7 +3180,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "g",
           "preedit": "g",
@@ -3214,7 +3214,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "gn",
           "preedit": "gn",
@@ -3248,7 +3248,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "gna",
           "preedit": "gna",
@@ -3282,7 +3282,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "gnav",
           "preedit": "gna 笔画 [一]",
@@ -3316,7 +3316,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "m",
           "preedit": "m",
@@ -3350,7 +3350,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mj",
           "preedit": "mj",
@@ -3384,7 +3384,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mjv",
           "preedit": "mjv",
@@ -3418,7 +3418,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mjvo",
           "preedit": "mjv 笔画 [丶]",
@@ -3452,7 +3452,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mjvov",
           "preedit": "mjv 笔画 [丶一]",
@@ -3486,7 +3486,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "y",
           "preedit": "y",
@@ -3520,7 +3520,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "yf",
           "preedit": "yf",
@@ -3554,7 +3554,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "yfi",
           "preedit": "yfi",
@@ -3588,7 +3588,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "yfiv",
           "preedit": "yfi 笔画 [一]",
@@ -3622,7 +3622,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "g",
           "preedit": "g",
@@ -3656,7 +3656,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "gn",
           "preedit": "gn",
@@ -3690,7 +3690,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "gna",
           "preedit": "gna",
@@ -3724,7 +3724,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "gnav",
           "preedit": "gna 笔画 [一]",
@@ -3758,7 +3758,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "m",
           "preedit": "m",
@@ -3792,7 +3792,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mj",
           "preedit": "mj",
@@ -3826,7 +3826,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mjv",
           "preedit": "mjv",
@@ -3860,7 +3860,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mjvo",
           "preedit": "mjv 笔画 [丶]",
@@ -3894,7 +3894,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mjvov",
           "preedit": "mjv 笔画 [丶一]",
@@ -3928,7 +3928,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "y",
           "preedit": "y",
@@ -3962,7 +3962,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "yf",
           "preedit": "yf",
@@ -3996,7 +3996,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "yfi",
           "preedit": "yfi",
@@ -4030,7 +4030,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "yfiv",
           "preedit": "yfi 笔画 [一]",
@@ -4064,7 +4064,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "g",
           "preedit": "g",
@@ -4098,7 +4098,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "gn",
           "preedit": "gn",
@@ -4132,7 +4132,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "gna",
           "preedit": "gna",
@@ -4166,7 +4166,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "gnav",
           "preedit": "gna 笔画 [一]",
@@ -4200,7 +4200,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "m",
           "preedit": "m",
@@ -4234,7 +4234,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mj",
           "preedit": "mj",
@@ -4268,7 +4268,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mjv",
           "preedit": "mjv",
@@ -4302,7 +4302,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mjvo",
           "preedit": "mjv 笔画 [丶]",
@@ -4336,7 +4336,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mjvov",
           "preedit": "mjv 笔画 [丶一]",
@@ -5058,7 +5058,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "t",
           "preedit": "t",
@@ -5092,7 +5092,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "ty",
           "preedit": "ty",
@@ -5126,7 +5126,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "tyo",
           "preedit": "ty 形[o]",
@@ -5156,7 +5156,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "tyoo",
           "preedit": "ty 形[oo]",
@@ -5174,7 +5174,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "d",
           "preedit": "d",
@@ -5208,7 +5208,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "ds",
           "preedit": "ds",
@@ -5242,7 +5242,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "dsi",
           "preedit": "ds 形[i]",
@@ -5276,7 +5276,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "dsia",
           "preedit": "ds 形[ia]",
@@ -5302,7 +5302,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "t",
           "preedit": "t",
@@ -5336,7 +5336,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "ty",
           "preedit": "ty",
@@ -5370,7 +5370,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "tyo",
           "preedit": "ty 形[o]",
@@ -5400,7 +5400,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "tyoo",
           "preedit": "ty 形[oo]",
@@ -5418,7 +5418,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "d",
           "preedit": "d",
@@ -5452,7 +5452,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "ds",
           "preedit": "ds",
@@ -5486,7 +5486,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "dsi",
           "preedit": "ds 形[i]",
@@ -5520,7 +5520,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "dsia",
           "preedit": "ds 形[ia]",
@@ -5546,7 +5546,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "t",
           "preedit": "t",
@@ -5580,7 +5580,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "ty",
           "preedit": "ty",
@@ -5614,7 +5614,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "tyo",
           "preedit": "ty 形[o]",
@@ -5644,7 +5644,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "tyoo",
           "preedit": "ty 形[oo]",
@@ -5662,7 +5662,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "d",
           "preedit": "d",
@@ -5696,7 +5696,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "ds",
           "preedit": "ds",
@@ -5730,7 +5730,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "dsi",
           "preedit": "ds 形[i]",
@@ -5764,7 +5764,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "dsia",
           "preedit": "ds 形[ia]",
@@ -5790,7 +5790,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "b",
           "preedit": "b",
@@ -5824,7 +5824,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "ba",
           "preedit": "ba",
@@ -5858,7 +5858,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "bao",
           "preedit": "bao",
@@ -5892,7 +5892,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "d",
           "preedit": "d",
@@ -5926,7 +5926,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dk",
           "preedit": "dk",
@@ -5960,7 +5960,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dku",
           "preedit": "dku",
@@ -5994,7 +5994,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dkuu",
           "preedit": "dku 笔[u]",
@@ -6028,7 +6028,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dkuui",
           "preedit": "dku 笔[ui]",
@@ -6062,7 +6062,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dka",
           "preedit": "dka",
@@ -6096,7 +6096,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dkau",
           "preedit": "dka 笔[u]",
@@ -6130,7 +6130,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "b",
           "preedit": "b",
@@ -6164,7 +6164,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "ba",
           "preedit": "ba",
@@ -6198,7 +6198,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "bao",
           "preedit": "bao",
@@ -6232,7 +6232,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "d",
           "preedit": "d",
@@ -6266,7 +6266,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dk",
           "preedit": "dk",
@@ -6300,7 +6300,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dku",
           "preedit": "dku",
@@ -6334,7 +6334,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dkuu",
           "preedit": "dku 笔[u]",
@@ -6368,7 +6368,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dkuui",
           "preedit": "dku 笔[ui]",
@@ -6402,7 +6402,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dka",
           "preedit": "dka",
@@ -6436,7 +6436,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dkau",
           "preedit": "dka 笔[u]",
@@ -6470,7 +6470,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "b",
           "preedit": "b",
@@ -6504,7 +6504,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "ba",
           "preedit": "ba",
@@ -6538,7 +6538,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "bao",
           "preedit": "bao",
@@ -6572,7 +6572,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "d",
           "preedit": "d",
@@ -6606,7 +6606,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dk",
           "preedit": "dk",
@@ -6640,7 +6640,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dku",
           "preedit": "dku",
@@ -6674,7 +6674,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dkuu",
           "preedit": "dku 笔[u]",
@@ -6708,7 +6708,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dkuui",
           "preedit": "dku 笔[ui]",
@@ -6742,7 +6742,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dka",
           "preedit": "dka",
@@ -6776,7 +6776,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dkau",
           "preedit": "dka 笔[u]",
@@ -6819,56 +6819,56 @@
         "revision": "d3b513737b7241f9a715c8949764fcbbdd6349bb",
         "runtime": "mira-rime1.17",
         "sources": {
-          "snow_jiandao_toned_jianpin.schema.yaml": "1bdce2b3908af144b2a05c4b76015864cfe4a6c0866b274f51c338811bf8b7bd",
+          "snow_liandao_jianpin.schema.yaml": "1bdce2b3908af144b2a05c4b76015864cfe4a6c0866b274f51c338811bf8b7bd",
           "snow_qingyun.schema.yaml": "7e9a2c9806b87e9b2f61328f08e79b3d2f06970c29bb3b288b5b8228013fb14c",
           "snow_bushou.dict.yaml": "664eedf9f1768106144a993c0d51de513983973c0858bba834bc5dbb73882575",
           "snow_bihua.dict.yaml": "f15b2ef65e7f587f13492253d63a4b52d8f0c27bb8943f1d3a398570471f2e1b",
           "snow_pinyin.user.dict.yaml": "d5d2694f4adb936691302120fbbd7dcb50d8d739ee2014be73fdd33f58180853",
-          "snow_jiandao.schema.yaml": "cafa49426c52af69c472f721220ec8e76648d785240592cd9bddd69aabab2a3a",
-          "snow_shenyun_tone.fixed.txt": "bc87292cbf4e0a8aef775c7b233ad59344d0946d2e31920d0b396e8d7b78c6c1",
+          "snow_landao.schema.yaml": "cafa49426c52af69c472f721220ec8e76648d785240592cd9bddd69aabab2a3a",
+          "snow_hepin.fixed.txt": "bc87292cbf4e0a8aef775c7b233ad59344d0946d2e31920d0b396e8d7b78c6c1",
           "snow_lingpin.schema.yaml": "9ff60abef9686b238ddd46ba4aa3dce07c1c8d0367e7692005becefc92fd907e",
-          "snow_sanpin_bihua.schema.yaml": "cc0fbc10a028f6cd83b7731f9e54125827ad67454a4782a3aa109b358103a4d5",
+          "snow_lanpin_bihua.schema.yaml": "cc0fbc10a028f6cd83b7731f9e54125827ad67454a4782a3aa109b358103a4d5",
           "snow_xingpang.dict.yaml": "78a60c4b8d056836fd8c64f6ccd060f338bb2d4b942074de0d38a6cbe5c5c84d",
-          "snow_sanpin.schema.yaml": "a4206ac2b890075e43e69ade68db0317c789932363e37e6221650aa4722982eb",
-          "snow_jiandao_classic.schema.yaml": "066fd4e744a19f80d6fb4661db3acb4e529b2cec76b362e95315564f4e3bea43",
+          "snow_lanpin.schema.yaml": "a4206ac2b890075e43e69ade68db0317c789932363e37e6221650aa4722982eb",
+          "snow_jiandao.schema.yaml": "066fd4e744a19f80d6fb4661db3acb4e529b2cec76b362e95315564f4e3bea43",
           "snow_qingyun_chaifen.schema.yaml": "e2ea4cdc17ef615a01da27a8da02151f98c47bd3483661dc0d1bcc68a9526ca2",
           "snow_xingpang.schema.yaml": "859e0d897b0c008a5b67f9304ba93e9f920989f7c852fd529f6f4a8f23a732d9",
           "snow_yipin.schema.yaml": "c871ee3a2b0f9c269f306e1613208b29f67896b2c2010a4989b397f389f00b4d",
-          "snow_sanpin_classic.schema.yaml": "81e16c7eeb9ab08262d106ea9464923e4f7320645c42b14dc8c81dea6c33b0d6",
-          "snow_shenyun_shape.fixed.txt": "782b919787ced6805f7cf0732b472922397c4b2db7d4e7ec1f8eddcdc40c541c",
-          "snow_jiandao_chaifen.dict.yaml": "102df3584c22409647c3c7300fe5b48a2826f4e263e8cd96e3e2f52c9c59907c",
+          "snow_sanpin.schema.yaml": "81e16c7eeb9ab08262d106ea9464923e4f7320645c42b14dc8c81dea6c33b0d6",
+          "snow_hedao.fixed.txt": "782b919787ced6805f7cf0732b472922397c4b2db7d4e7ec1f8eddcdc40c541c",
+          "snow_landao_chaifen.dict.yaml": "102df3584c22409647c3c7300fe5b48a2826f4e263e8cd96e3e2f52c9c59907c",
           "snow_qingyun.dict.yaml": "1e4e28ddfe3939f02f23997b3b1ad00324aff28ec83a0baba711042476029fec",
           "snow_qingyun_chaifen.dict.yaml": "e75b988876299d6eae7122dbe62711196e6b1cef89e72020a2de65796cd9ee21",
           "snow_sipin.fixed.txt": "7bb813a8a062b43229ec5c36965abd71783d125520583c15d2470597bbdfed85",
-          "snow_jiandao_toned.schema.yaml": "f550d819037b810a5b1fdb100b3c9c2f5ced4e2a6cec0663fd23416acb695bf3",
-          "snow_jiandao.fixed.txt": "44d1601d2eff4fb1f8723d91a568309fd9c0fdf3fa2ddc8ed68dc1d7aa7aa403",
-          "snow_jiandao_toned.fixed.txt": "00e4090ca3a168d6765a00331f07dbe7139625eb6065296b9fa73f3381f98909",
+          "snow_liandao.schema.yaml": "f550d819037b810a5b1fdb100b3c9c2f5ced4e2a6cec0663fd23416acb695bf3",
+          "snow_landao.fixed.txt": "44d1601d2eff4fb1f8723d91a568309fd9c0fdf3fa2ddc8ed68dc1d7aa7aa403",
+          "snow_liandao.fixed.txt": "00e4090ca3a168d6765a00331f07dbe7139625eb6065296b9fa73f3381f98909",
           "snow_pinyin.tencent.dict.yaml": "13f0f84d82444dde95c6252df0daef3de77e8c3c3447c3049b3e6c2d115aa707",
-          "snow_jiandao_chaifen.schema.yaml": "35a989da347e1a19d8cd3bc54180b19283f9c4ecb4507e7dc7703449646aa837",
+          "snow_landao_chaifen.schema.yaml": "35a989da347e1a19d8cd3bc54180b19283f9c4ecb4507e7dc7703449646aa837",
           "snow_yingpin.schema.yaml": "b1f112a1ac6ca6cc90eb810d7c498f1622ba17a1b0b432c2b25f7485a40e0388",
-          "snow_jiandao_jianpin.schema.yaml": "6685ce92086599f160a7f56cb1618eb85ce44604b15c3341781cf1e93122616d",
+          "snow_landao_jianpin.schema.yaml": "6685ce92086599f160a7f56cb1618eb85ce44604b15c3341781cf1e93122616d",
           "snow_pinyin.dict.yaml": "f27cb6c917c0f2c8ae9dedcb0962326afebc8150b8af90626e459a49686bdeeb",
           "snow_yingpin.dict.yaml": "e5a5d2cac6a7101fa4300dacf25acdddc5cd98016d15bfcd79899543fb70bdd0",
-          "snow_shenyun_tone.schema.yaml": "07c047fc63188edf396623526f4d885929c5c915740aaa44626501a11628246b",
-          "snow_zhudao.fixed.txt": "f00f2483cabad5293bcb1382a0dfe31647120d44ace5e044b60e06f722d3749e",
+          "snow_hepin.schema.yaml": "07c047fc63188edf396623526f4d885929c5c915740aaa44626501a11628246b",
+          "snow_huandao.fixed.txt": "f00f2483cabad5293bcb1382a0dfe31647120d44ace5e044b60e06f722d3749e",
           "snow_qingyun_xingma.schema.yaml": "0d64d712e28087ba0517b3a38b1dd0067ddbb6a086edc1dae263603cb1f385f1",
           "snow_yipin.fixed.txt": "0f94df8930eeacaa54500f7242ef9ef5809b0b3dbd32e55d1644600100ad7213",
-          "snow_jiandao_toned_common.yaml": "675cd2367592333a331474555cf84cc7d8d016a64ec87838fa36d9b0043a2460",
-          "snow_shenyun_shape.schema.yaml": "e451983c08cc399f65d4304d7c762fc634eb27eacd1b194a4ff590fee71649a6",
-          "snow_zhudao.schema.yaml": "9f8f185947a1c3a216e04461ffc24aab9431ea4323f552f05f281ee7a61feb6b",
-          "snow_sanpin.fixed.txt": "a7c90022d7a2be5a776dc1d4f5a08f9ff080a0f0809d99c5de2d7ce3120e1aba",
+          "snow_liandao_common.yaml": "675cd2367592333a331474555cf84cc7d8d016a64ec87838fa36d9b0043a2460",
+          "snow_hedao.schema.yaml": "e451983c08cc399f65d4304d7c762fc634eb27eacd1b194a4ff590fee71649a6",
+          "snow_huandao.schema.yaml": "9f8f185947a1c3a216e04461ffc24aab9431ea4323f552f05f281ee7a61feb6b",
+          "snow_lanpin.fixed.txt": "a7c90022d7a2be5a776dc1d4f5a08f9ff080a0f0809d99c5de2d7ce3120e1aba",
           "snow_bihua.schema.yaml": "1e3f2dfe0fc1df570a1016033c5696909bed7ab259e649cfd6adb5a4c9c2f43d",
           "snow_bushou.schema.yaml": "10c1fb823442a70ac96597c80b40163374e344ffd8ef18a29c351cc3a4ceb164",
-          "snow_jiandao_bihua.schema.yaml": "fb365f790621cf27ec58a99ee668001668fe2b9a0b88708604325d429f8ae166",
+          "snow_landao_bihua.schema.yaml": "fb365f790621cf27ec58a99ee668001668fe2b9a0b88708604325d429f8ae166",
           "snow_pinyin.ext.dict.yaml": "0f7a03f7c607dda580e3cc62e1126ce9dd23b4cfca197e4165b9ff54e8dfe0f2",
-          "snow_sanpin_classic.fixed.txt": "48b7bfe2f9e4872001aaa636365611ab1829acbaa348d6b2f8947b39cf7c88b0",
-          "snow_jiandao_classic.fixed.txt": "6088c852a55eac591aaa7dd6f1e78181d7750959e463cb8da78ea01bebff7e4e",
+          "snow_sanpin.fixed.txt": "48b7bfe2f9e4872001aaa636365611ab1829acbaa348d6b2f8947b39cf7c88b0",
+          "snow_jiandao.fixed.txt": "6088c852a55eac591aaa7dd6f1e78181d7750959e463cb8da78ea01bebff7e4e",
           "snow_pinyin.base.dict.yaml": "6a43e1696489c996ab36f0dc1f05f30feeb15924f7a18a344110fbed9855f31e",
           "snow_qingyun.fixed.txt": "99a3c356c1d6192d6193e28fcce44b86df31e56239a4fc82834d31d0a459a780",
           "snow_shenyun_common.yaml": "71d06c2fc0dfe402f30aa7afbe97d02df1fbf3102b0ea3b7aeecaf128574790e",
           "snow_sipin.schema.yaml": "b7c22559525c381d28d70df818611af0373a583abac6458fbc77bd508ac41e69",
           "snow_pinyin.schema.yaml": "5d3aa1f287a3a7e80b0cc9037f983e754da52c6f5ee6ab4cc3e2d25a5d23f3a0",
-          "snow_jiandao_classic_jianpin.schema.yaml": "134c6b6e97874430f065e804702328165d321dbd0238946ca72f2c6d44180736"
+          "snow_jiandao_jianpin.schema.yaml": "134c6b6e97874430f065e804702328165d321dbd0238946ca72f2c6d44180736"
         },
         "probes": [
           {
@@ -6932,7 +6932,7 @@
             ]
           },
           {
-            "schema": "snow_jiandao",
+            "schema": "snow_landao",
             "variant": "default",
             "codes": [
               "x",
@@ -6949,7 +6949,7 @@
             ]
           },
           {
-            "schema": "snow_jiandao",
+            "schema": "snow_landao",
             "variant": "no-postpone",
             "codes": [
               "x",
@@ -6966,7 +6966,7 @@
             ]
           },
           {
-            "schema": "snow_jiandao",
+            "schema": "snow_landao",
             "variant": "no-fix",
             "codes": [
               "x",
@@ -6983,7 +6983,7 @@
             ]
           },
           {
-            "schema": "snow_sanpin",
+            "schema": "snow_lanpin",
             "variant": "default",
             "codes": [
               "y",
@@ -7002,7 +7002,7 @@
             ]
           },
           {
-            "schema": "snow_sanpin",
+            "schema": "snow_lanpin",
             "variant": "no-postpone",
             "codes": [
               "y",
@@ -7021,7 +7021,7 @@
             ]
           },
           {
-            "schema": "snow_sanpin",
+            "schema": "snow_lanpin",
             "variant": "no-fix",
             "codes": [
               "y",
@@ -7096,7 +7096,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_shape",
+            "schema": "snow_hedao",
             "variant": "default",
             "codes": [
               "t",
@@ -7110,7 +7110,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_shape",
+            "schema": "snow_hedao",
             "variant": "no-postpone",
             "codes": [
               "t",
@@ -7124,7 +7124,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_shape",
+            "schema": "snow_hedao",
             "variant": "no-fix",
             "codes": [
               "t",
@@ -7138,7 +7138,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_tone",
+            "schema": "snow_hepin",
             "variant": "default",
             "codes": [
               "b",
@@ -7154,7 +7154,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_tone",
+            "schema": "snow_hepin",
             "variant": "no-postpone",
             "codes": [
               "b",
@@ -7170,7 +7170,7 @@
             ]
           },
           {
-            "schema": "snow_shenyun_tone",
+            "schema": "snow_hepin",
             "variant": "no-fix",
             "codes": [
               "b",
@@ -8618,7 +8618,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "x",
           "preedit": "x",
@@ -8652,7 +8652,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "xl",
           "preedit": "xl",
@@ -8686,7 +8686,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "xlv",
           "preedit": "xl 形 [v]",
@@ -8720,7 +8720,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "xlvi",
           "preedit": "xl 形 [vi]",
@@ -8754,7 +8754,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "c",
           "preedit": "c",
@@ -8788,7 +8788,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "cn",
           "preedit": "cn",
@@ -8822,7 +8822,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "cnv",
           "preedit": "cn 形 [v]",
@@ -8856,7 +8856,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "cnvv",
           "preedit": "cn 形 [vv]",
@@ -8890,7 +8890,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "h",
           "preedit": "h",
@@ -8924,7 +8924,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "hm",
           "preedit": "hm",
@@ -8958,7 +8958,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "default",
           "code": "hmi",
           "preedit": "hm 形 [i]",
@@ -8992,7 +8992,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "x",
           "preedit": "x",
@@ -9026,7 +9026,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "xl",
           "preedit": "xl",
@@ -9060,7 +9060,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "xlv",
           "preedit": "xl 形 [v]",
@@ -9094,7 +9094,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "xlvi",
           "preedit": "xl 形 [vi]",
@@ -9128,7 +9128,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "c",
           "preedit": "c",
@@ -9162,7 +9162,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "cn",
           "preedit": "cn",
@@ -9196,7 +9196,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "cnv",
           "preedit": "cn 形 [v]",
@@ -9230,7 +9230,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "cnvv",
           "preedit": "cn 形 [vv]",
@@ -9264,7 +9264,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "h",
           "preedit": "h",
@@ -9298,7 +9298,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "hm",
           "preedit": "hm",
@@ -9332,7 +9332,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-postpone",
           "code": "hmi",
           "preedit": "hm 形 [i]",
@@ -9366,7 +9366,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "x",
           "preedit": "x",
@@ -9400,7 +9400,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "xl",
           "preedit": "xl",
@@ -9434,7 +9434,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "xlv",
           "preedit": "xl 形 [v]",
@@ -9468,7 +9468,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "xlvi",
           "preedit": "xl 形 [vi]",
@@ -9502,7 +9502,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "c",
           "preedit": "c",
@@ -9536,7 +9536,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "cn",
           "preedit": "cn",
@@ -9570,7 +9570,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "cnv",
           "preedit": "cn 形 [v]",
@@ -9604,7 +9604,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "cnvv",
           "preedit": "cn 形 [vv]",
@@ -9638,7 +9638,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "h",
           "preedit": "h",
@@ -9672,7 +9672,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "hm",
           "preedit": "hm",
@@ -9706,7 +9706,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_jiandao",
+          "schema": "snow_landao",
           "variant": "no-fix",
           "code": "hmi",
           "preedit": "hm 形 [i]",
@@ -9740,7 +9740,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "y",
           "preedit": "y",
@@ -9774,7 +9774,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "yf",
           "preedit": "yf",
@@ -9808,7 +9808,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "yfi",
           "preedit": "yfi",
@@ -9842,7 +9842,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "yfiv",
           "preedit": "yfi 笔画 [一]",
@@ -9876,7 +9876,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "g",
           "preedit": "g",
@@ -9910,7 +9910,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "gn",
           "preedit": "gn",
@@ -9944,7 +9944,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "gna",
           "preedit": "gna",
@@ -9978,7 +9978,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "gnav",
           "preedit": "gna 笔画 [一]",
@@ -10012,7 +10012,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "m",
           "preedit": "m",
@@ -10046,7 +10046,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mj",
           "preedit": "mj",
@@ -10080,7 +10080,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mjv",
           "preedit": "mjv",
@@ -10114,7 +10114,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mjvo",
           "preedit": "mjv 笔画 [丶]",
@@ -10148,7 +10148,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "default",
           "code": "mjvov",
           "preedit": "mjv 笔画 [丶一]",
@@ -10182,7 +10182,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "y",
           "preedit": "y",
@@ -10216,7 +10216,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "yf",
           "preedit": "yf",
@@ -10250,7 +10250,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "yfi",
           "preedit": "yfi",
@@ -10284,7 +10284,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "yfiv",
           "preedit": "yfi 笔画 [一]",
@@ -10318,7 +10318,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "g",
           "preedit": "g",
@@ -10352,7 +10352,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "gn",
           "preedit": "gn",
@@ -10386,7 +10386,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "gna",
           "preedit": "gna",
@@ -10420,7 +10420,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "gnav",
           "preedit": "gna 笔画 [一]",
@@ -10454,7 +10454,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "m",
           "preedit": "m",
@@ -10488,7 +10488,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mj",
           "preedit": "mj",
@@ -10522,7 +10522,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mjv",
           "preedit": "mjv",
@@ -10556,7 +10556,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mjvo",
           "preedit": "mjv 笔画 [丶]",
@@ -10590,7 +10590,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-postpone",
           "code": "mjvov",
           "preedit": "mjv 笔画 [丶一]",
@@ -10624,7 +10624,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "y",
           "preedit": "y",
@@ -10658,7 +10658,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "yf",
           "preedit": "yf",
@@ -10692,7 +10692,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "yfi",
           "preedit": "yfi",
@@ -10726,7 +10726,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "yfiv",
           "preedit": "yfi 笔画 [一]",
@@ -10760,7 +10760,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "g",
           "preedit": "g",
@@ -10794,7 +10794,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "gn",
           "preedit": "gn",
@@ -10828,7 +10828,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "gna",
           "preedit": "gna",
@@ -10862,7 +10862,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "gnav",
           "preedit": "gna 笔画 [一]",
@@ -10896,7 +10896,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "m",
           "preedit": "m",
@@ -10930,7 +10930,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mj",
           "preedit": "mj",
@@ -10964,7 +10964,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mjv",
           "preedit": "mjv",
@@ -10998,7 +10998,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mjvo",
           "preedit": "mjv 笔画 [丶]",
@@ -11032,7 +11032,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_sanpin",
+          "schema": "snow_lanpin",
           "variant": "no-fix",
           "code": "mjvov",
           "preedit": "mjv 笔画 [丶一]",
@@ -11754,7 +11754,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "t",
           "preedit": "t",
@@ -11788,7 +11788,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "ty",
           "preedit": "ty",
@@ -11822,7 +11822,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "tyo",
           "preedit": "ty 形[o]",
@@ -11852,7 +11852,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "tyoo",
           "preedit": "ty 形[oo]",
@@ -11870,7 +11870,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "d",
           "preedit": "d",
@@ -11904,7 +11904,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "ds",
           "preedit": "ds",
@@ -11938,7 +11938,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "dsi",
           "preedit": "ds 形[i]",
@@ -11972,7 +11972,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "default",
           "code": "dsia",
           "preedit": "ds 形[ia]",
@@ -11998,7 +11998,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "t",
           "preedit": "t",
@@ -12032,7 +12032,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "ty",
           "preedit": "ty",
@@ -12066,7 +12066,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "tyo",
           "preedit": "ty 形[o]",
@@ -12096,7 +12096,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "tyoo",
           "preedit": "ty 形[oo]",
@@ -12114,7 +12114,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "d",
           "preedit": "d",
@@ -12148,7 +12148,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "ds",
           "preedit": "ds",
@@ -12182,7 +12182,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "dsi",
           "preedit": "ds 形[i]",
@@ -12216,7 +12216,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-postpone",
           "code": "dsia",
           "preedit": "ds 形[ia]",
@@ -12242,7 +12242,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "t",
           "preedit": "t",
@@ -12276,7 +12276,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "ty",
           "preedit": "ty",
@@ -12310,7 +12310,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "tyo",
           "preedit": "ty 形[o]",
@@ -12340,7 +12340,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "tyoo",
           "preedit": "ty 形[oo]",
@@ -12358,7 +12358,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "d",
           "preedit": "d",
@@ -12392,7 +12392,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "ds",
           "preedit": "ds",
@@ -12426,7 +12426,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "dsi",
           "preedit": "ds 形[i]",
@@ -12460,7 +12460,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_shape",
+          "schema": "snow_hedao",
           "variant": "no-fix",
           "code": "dsia",
           "preedit": "ds 形[ia]",
@@ -12486,7 +12486,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "b",
           "preedit": "b",
@@ -12520,7 +12520,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "ba",
           "preedit": "ba",
@@ -12554,7 +12554,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "bao",
           "preedit": "bao",
@@ -12588,7 +12588,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "d",
           "preedit": "d",
@@ -12622,7 +12622,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dk",
           "preedit": "dk",
@@ -12656,7 +12656,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dku",
           "preedit": "dku",
@@ -12690,7 +12690,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dkuu",
           "preedit": "dku 笔[u]",
@@ -12724,7 +12724,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dkuui",
           "preedit": "dku 笔[ui]",
@@ -12758,7 +12758,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dka",
           "preedit": "dka",
@@ -12792,7 +12792,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "default",
           "code": "dkau",
           "preedit": "dka 笔[u]",
@@ -12826,7 +12826,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "b",
           "preedit": "b",
@@ -12860,7 +12860,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "ba",
           "preedit": "ba",
@@ -12894,7 +12894,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "bao",
           "preedit": "bao",
@@ -12928,7 +12928,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "d",
           "preedit": "d",
@@ -12962,7 +12962,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dk",
           "preedit": "dk",
@@ -12996,7 +12996,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dku",
           "preedit": "dku",
@@ -13030,7 +13030,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dkuu",
           "preedit": "dku 笔[u]",
@@ -13064,7 +13064,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dkuui",
           "preedit": "dku 笔[ui]",
@@ -13098,7 +13098,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dka",
           "preedit": "dka",
@@ -13132,7 +13132,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-postpone",
           "code": "dkau",
           "preedit": "dka 笔[u]",
@@ -13166,7 +13166,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "b",
           "preedit": "b",
@@ -13200,7 +13200,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "ba",
           "preedit": "ba",
@@ -13234,7 +13234,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "bao",
           "preedit": "bao",
@@ -13268,7 +13268,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "d",
           "preedit": "d",
@@ -13302,7 +13302,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dk",
           "preedit": "dk",
@@ -13336,7 +13336,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dku",
           "preedit": "dku",
@@ -13370,7 +13370,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dkuu",
           "preedit": "dku 笔[u]",
@@ -13404,7 +13404,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dkuui",
           "preedit": "dku 笔[ui]",
@@ -13438,7 +13438,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dka",
           "preedit": "dka",
@@ -13472,7 +13472,7 @@
         },
         {
           "label": "fork",
-          "schema": "snow_shenyun_tone",
+          "schema": "snow_hepin",
           "variant": "no-fix",
           "code": "dkau",
           "preedit": "dka 笔[u]",
@@ -13519,30 +13519,30 @@
           "snow_bushou.dict.yaml": "ce86dc9f03840963d40044d7b1c13e4f3a6560d97068d02c79bffc83372cf207",
           "snow_bihua.dict.yaml": "a00e70732874574eb03ed424dbcb6d03d991a3a3d2d2a5474bbee7d39b3faaf4",
           "snow_pinyin.user.dict.yaml": "82bebf44c3ea80b552f63df2462411db3f538ba309bccc7ec031a9bbc9ad1df7",
-          "snow_jiandao.schema.yaml": "2e70a73ebab97b0db2cdb130fbc2afd86817c1e9c750bb0a3d4250a457a0b598",
+          "snow_landao.schema.yaml": "2e70a73ebab97b0db2cdb130fbc2afd86817c1e9c750bb0a3d4250a457a0b598",
           "snow_lingpin.schema.yaml": "d80cfea147af0be9c9ca8318f9939579fb99cbea62b18155042f60a82eb35e86",
           "snow_xingpang.dict.yaml": "4f58cd7347f5c29ed2c2b7fb271eef9b986b58479a13b988cf4e6fa65d404009",
-          "snow_sanpin.schema.yaml": "aa2afcfe34747938f92b1122b45a2a1a9ce36d116be4e7fe910079a2e426a331",
+          "snow_lanpin.schema.yaml": "aa2afcfe34747938f92b1122b45a2a1a9ce36d116be4e7fe910079a2e426a331",
           "snow_qingyun_chaifen.schema.yaml": "75bb1da88a6eb9624e7ca01d5dc3f6b29b516f7f6bf430e048f02ee67c310d20",
           "snow_xingpang.schema.yaml": "163f39cb994df6f8f65981855f439a2c3df17e165861cfe92525ac2186aa56f8",
           "snow_yipin.schema.yaml": "abd322233485a30e52286d952ec263287a0b040d8c03fbe771393d27f39c29d1",
-          "snow_jiandao_chaifen.dict.yaml": "7941672398295112a7841036d5882adedc5b11059a549f9c8d2c4ab258737357",
+          "snow_landao_chaifen.dict.yaml": "7941672398295112a7841036d5882adedc5b11059a549f9c8d2c4ab258737357",
           "snow_qingyun.dict.yaml": "81afc4b4e45c088b338aa74be06911bf11431b0d526d7e4de702c9376e4b8f75",
           "snow_qingyun_chaifen.dict.yaml": "2cee8809b56d6bb5cb3b54819b452760fbd2f0ed7a71641862cb1ef1df0a8672",
           "snow_sipin.fixed.txt": "7bb813a8a062b43229ec5c36965abd71783d125520583c15d2470597bbdfed85",
-          "snow_jiandao.fixed.txt": "c53d720559ed5b2e27c3e1ed02db9535480962f7578459ab435883fa6e353073",
+          "snow_landao.fixed.txt": "c53d720559ed5b2e27c3e1ed02db9535480962f7578459ab435883fa6e353073",
           "snow_pinyin.tencent.dict.yaml": "57187d56a8a0b84e57bc71d0ebc266ede89de3cf9dfbc821c518b75722b27445",
-          "snow_jiandao_chaifen.schema.yaml": "83d6401f9d55a167a4681c3db2960c46b07e3c5692b7d71dd573f031acea9f9b",
+          "snow_landao_chaifen.schema.yaml": "83d6401f9d55a167a4681c3db2960c46b07e3c5692b7d71dd573f031acea9f9b",
           "snow_yingpin.schema.yaml": "14a2447f4a732f94f1f665539d7613e1f4cb856d69c5d8e87c20255e722c7b24",
-          "snow_jiandao_jianpin.schema.yaml": "708fc20de8f2f694f39e27adfd696f85d760a641aa94787a59bcfe212e9430a2",
+          "snow_landao_jianpin.schema.yaml": "708fc20de8f2f694f39e27adfd696f85d760a641aa94787a59bcfe212e9430a2",
           "snow_pinyin.dict.yaml": "58b70bccb0c9b23efcbd2c54c2efcbfb7eba3b3a1e4fb51faf23b2ba6175157b",
           "snow_yingpin.dict.yaml": "8b881706b4988aaebc452d76552c3dfd69dfe2d24c9028cc170c0d5d3b983993",
           "snow_qingyun_xingma.schema.yaml": "b95e3b9bc10e73964c8ebc601376c804ae7ba5a0aded3f301d3ee30f05325e96",
           "snow_yipin.fixed.txt": "0f94df8930eeacaa54500f7242ef9ef5809b0b3dbd32e55d1644600100ad7213",
-          "snow_sanpin.fixed.txt": "11e4820a03254994f31031e54904252c3295da9f9ad7e75be7e09cceeae545f2",
+          "snow_lanpin.fixed.txt": "11e4820a03254994f31031e54904252c3295da9f9ad7e75be7e09cceeae545f2",
           "snow_bihua.schema.yaml": "68fe1ba54dec0f6737795e3bedaf798260803d6b1ceef358842640bb6429e486",
           "snow_bushou.schema.yaml": "00b46c81fa07430b7f1c95dab7dbd7e76d2c551ab8bfe1ccba20044d70c5dcae",
-          "snow_jiandao_bihua.schema.yaml": "3dd8e98370ccd6b518659b5b7dd582c92d8f33aba3efb2333b73d83555f3924d",
+          "snow_landao_bihua.schema.yaml": "3dd8e98370ccd6b518659b5b7dd582c92d8f33aba3efb2333b73d83555f3924d",
           "snow_pinyin.ext.dict.yaml": "0b3a8facf098a27a06a1c7ad1cc5a8b7b0b7893619cb761e446dd4570ca6c231",
           "snow_pinyin.base.dict.yaml": "583ac9720e280da985bae8da1bade5306793ebc5557b689e5f78b4d08405f4ce",
           "snow_qingyun.fixed.txt": "99a3c356c1d6192d6193e28fcce44b86df31e56239a4fc82834d31d0a459a780",
@@ -15800,30 +15800,30 @@
           "snow_bushou.dict.yaml": "ce86dc9f03840963d40044d7b1c13e4f3a6560d97068d02c79bffc83372cf207",
           "snow_bihua.dict.yaml": "a00e70732874574eb03ed424dbcb6d03d991a3a3d2d2a5474bbee7d39b3faaf4",
           "snow_pinyin.user.dict.yaml": "82bebf44c3ea80b552f63df2462411db3f538ba309bccc7ec031a9bbc9ad1df7",
-          "snow_jiandao.schema.yaml": "2e70a73ebab97b0db2cdb130fbc2afd86817c1e9c750bb0a3d4250a457a0b598",
+          "snow_landao.schema.yaml": "2e70a73ebab97b0db2cdb130fbc2afd86817c1e9c750bb0a3d4250a457a0b598",
           "snow_lingpin.schema.yaml": "d80cfea147af0be9c9ca8318f9939579fb99cbea62b18155042f60a82eb35e86",
           "snow_xingpang.dict.yaml": "4f58cd7347f5c29ed2c2b7fb271eef9b986b58479a13b988cf4e6fa65d404009",
-          "snow_sanpin.schema.yaml": "aa2afcfe34747938f92b1122b45a2a1a9ce36d116be4e7fe910079a2e426a331",
+          "snow_lanpin.schema.yaml": "aa2afcfe34747938f92b1122b45a2a1a9ce36d116be4e7fe910079a2e426a331",
           "snow_qingyun_chaifen.schema.yaml": "75bb1da88a6eb9624e7ca01d5dc3f6b29b516f7f6bf430e048f02ee67c310d20",
           "snow_xingpang.schema.yaml": "163f39cb994df6f8f65981855f439a2c3df17e165861cfe92525ac2186aa56f8",
           "snow_yipin.schema.yaml": "abd322233485a30e52286d952ec263287a0b040d8c03fbe771393d27f39c29d1",
-          "snow_jiandao_chaifen.dict.yaml": "7941672398295112a7841036d5882adedc5b11059a549f9c8d2c4ab258737357",
+          "snow_landao_chaifen.dict.yaml": "7941672398295112a7841036d5882adedc5b11059a549f9c8d2c4ab258737357",
           "snow_qingyun.dict.yaml": "81afc4b4e45c088b338aa74be06911bf11431b0d526d7e4de702c9376e4b8f75",
           "snow_qingyun_chaifen.dict.yaml": "2cee8809b56d6bb5cb3b54819b452760fbd2f0ed7a71641862cb1ef1df0a8672",
           "snow_sipin.fixed.txt": "7bb813a8a062b43229ec5c36965abd71783d125520583c15d2470597bbdfed85",
-          "snow_jiandao.fixed.txt": "c53d720559ed5b2e27c3e1ed02db9535480962f7578459ab435883fa6e353073",
+          "snow_landao.fixed.txt": "c53d720559ed5b2e27c3e1ed02db9535480962f7578459ab435883fa6e353073",
           "snow_pinyin.tencent.dict.yaml": "57187d56a8a0b84e57bc71d0ebc266ede89de3cf9dfbc821c518b75722b27445",
-          "snow_jiandao_chaifen.schema.yaml": "83d6401f9d55a167a4681c3db2960c46b07e3c5692b7d71dd573f031acea9f9b",
+          "snow_landao_chaifen.schema.yaml": "83d6401f9d55a167a4681c3db2960c46b07e3c5692b7d71dd573f031acea9f9b",
           "snow_yingpin.schema.yaml": "14a2447f4a732f94f1f665539d7613e1f4cb856d69c5d8e87c20255e722c7b24",
-          "snow_jiandao_jianpin.schema.yaml": "708fc20de8f2f694f39e27adfd696f85d760a641aa94787a59bcfe212e9430a2",
+          "snow_landao_jianpin.schema.yaml": "708fc20de8f2f694f39e27adfd696f85d760a641aa94787a59bcfe212e9430a2",
           "snow_pinyin.dict.yaml": "58b70bccb0c9b23efcbd2c54c2efcbfb7eba3b3a1e4fb51faf23b2ba6175157b",
           "snow_yingpin.dict.yaml": "8b881706b4988aaebc452d76552c3dfd69dfe2d24c9028cc170c0d5d3b983993",
           "snow_qingyun_xingma.schema.yaml": "b95e3b9bc10e73964c8ebc601376c804ae7ba5a0aded3f301d3ee30f05325e96",
           "snow_yipin.fixed.txt": "0f94df8930eeacaa54500f7242ef9ef5809b0b3dbd32e55d1644600100ad7213",
-          "snow_sanpin.fixed.txt": "11e4820a03254994f31031e54904252c3295da9f9ad7e75be7e09cceeae545f2",
+          "snow_lanpin.fixed.txt": "11e4820a03254994f31031e54904252c3295da9f9ad7e75be7e09cceeae545f2",
           "snow_bihua.schema.yaml": "68fe1ba54dec0f6737795e3bedaf798260803d6b1ceef358842640bb6429e486",
           "snow_bushou.schema.yaml": "00b46c81fa07430b7f1c95dab7dbd7e76d2c551ab8bfe1ccba20044d70c5dcae",
-          "snow_jiandao_bihua.schema.yaml": "3dd8e98370ccd6b518659b5b7dd582c92d8f33aba3efb2333b73d83555f3924d",
+          "snow_landao_bihua.schema.yaml": "3dd8e98370ccd6b518659b5b7dd582c92d8f33aba3efb2333b73d83555f3924d",
           "snow_pinyin.ext.dict.yaml": "0b3a8facf098a27a06a1c7ad1cc5a8b7b0b7893619cb761e446dd4570ca6c231",
           "snow_pinyin.base.dict.yaml": "583ac9720e280da985bae8da1bade5306793ebc5557b689e5f78b4d08405f4ce",
           "snow_qingyun.fixed.txt": "99a3c356c1d6192d6193e28fcce44b86df31e56239a4fc82834d31d0a459a780",

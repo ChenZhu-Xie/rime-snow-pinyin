@@ -14,7 +14,7 @@ import {
 } from "./固顶编译器";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
-const schemaPath = join(scriptDirectory, "..", "snow_sanpin.schema.yaml");
+const schemaPath = join(scriptDirectory, "..", "snow_lanpin.schema.yaml");
 const schemaSource = readFileSync(schemaPath, "utf8");
 if (!schemaSource.includes("erase/^(hng|m|n|ng|ê)\\d$/")) {
 	throw new Error("神韵双拼缺少 5 个未编码扩展音节的 erase 规则。");
@@ -99,7 +99,7 @@ for (const line of readFileSync(
 	if (element && code) shapeElementKeys.set(element, code);
 }
 const shapeCodes = readShapeCodes(
-	join(scriptDirectory, "..", "snow_jiandao_chaifen.dict.yaml"),
+	join(scriptDirectory, "..", "snow_landao_chaifen.dict.yaml"),
 	Object.fromEntries(shapeElementKeys),
 );
 const mainKeys = new Set([..."bpmfdtnlgkhjqxzcsrwye"]);
@@ -130,7 +130,7 @@ function fixedCodeMatches(
 		);
 	}
 	if (section === "# 630") {
-		if (file === "snow_sanpin.fixed.txt") {
+		if (file === "snow_lanpin.fixed.txt") {
 			if (pinyin.length < 2 || wordLength(word) !== pinyin.length) return false;
 			const shortCode = firstSound[0] + toneKey(pinyin[1]);
 			if (code.length === 2) return code === shortCode;
@@ -147,7 +147,7 @@ function fixedCodeMatches(
 		if (pinyin.length !== 1 || wordLength(word) !== 1) return false;
 		if (code.length === 1) return firstSound[0] === code;
 		if (code.length === 2) return firstSound === code;
-		if (file !== "snow_jiandao.fixed.txt" || code.length !== 3) return false;
+		if (file !== "snow_landao.fixed.txt" || code.length !== 3) return false;
 		const shape = shapeCodes.get(word);
 		if (!shape) return false;
 		return code === firstSound + shape[0];
@@ -158,12 +158,12 @@ function fixedCodeMatches(
 function codeBelongsToSection(file: string, section: string, code: string) {
 	if (section === "# 字母")
 		return (
-			file === "snow_sanpin.fixed.txt" &&
+			file === "snow_lanpin.fixed.txt" &&
 			sanpinLetterEntries.some(([letterCode]) => letterCode === code)
 		);
 	if (section === "# 临时数字")
 		return (
-			file === "snow_sanpin.fixed.txt" &&
+			file === "snow_lanpin.fixed.txt" &&
 			sanpinTemporaryNumberEntries.some(([numberCode]) => numberCode === code)
 		);
 	if (section === "# 二简词")
@@ -178,7 +178,7 @@ function codeBelongsToSection(file: string, section: string, code: string) {
 		if (code.length === 1) return mainKeys.has(code);
 		if (code.length === 2) return [...code].every((key) => mainKeys.has(key));
 		return (
-			file === "snow_jiandao.fixed.txt" &&
+			file === "snow_landao.fixed.txt" &&
 			code.length === 3 &&
 			mainKeys.has(code[0]) &&
 			mainKeys.has(code[1]) &&
@@ -199,10 +199,10 @@ function isSupplementalCandidate(
 	code: string,
 	word: string,
 ) {
-	if (file === "snow_jiandao.fixed.txt") {
+	if (file === "snow_landao.fixed.txt") {
 		return jiandaoSupplementalCandidates.get(code)?.includes(word) ?? false;
 	}
-	if (file !== "snow_sanpin.fixed.txt") return false;
+	if (file !== "snow_lanpin.fixed.txt") return false;
 	if (section === "# 单字") return sanpinSingleAliases.get(code) === word;
 	if (section === "# 字母")
 		return sanpinLetterCandidates.get(code)?.split(" ").includes(word) ?? false;
@@ -214,7 +214,7 @@ function isSupplementalCandidate(
 	return false;
 }
 
-for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
+for (const file of ["snow_lanpin.fixed.txt", "snow_landao.fixed.txt"]) {
 	let section = "";
 	let checkedCodes = 0;
 	let checkedWords = 0;
@@ -313,10 +313,10 @@ for (const file of ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"]) {
 		);
 	if (count("# 630", 2) !== 105)
 		fixedFailures.push(`630 二码应为 105，实际 ${count("# 630", 2)}`);
-	if (file === "snow_jiandao.fixed.txt" && count("# 630", 3) !== 525) {
+	if (file === "snow_landao.fixed.txt" && count("# 630", 3) !== 525) {
 		fixedFailures.push(`键道 630 三码应为 525，实际 ${count("# 630", 3)}`);
 	}
-	if (file === "snow_sanpin.fixed.txt" && count("# 630", 3) < 500) {
+	if (file === "snow_lanpin.fixed.txt" && count("# 630", 3) < 500) {
 		fixedFailures.push(`三拼 630 三码少于质量下限 500`);
 	}
 	if (count("# 单字", 1) !== 21 || count("# 单字", 2) !== expectedSingles) {

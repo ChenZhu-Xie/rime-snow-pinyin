@@ -3,7 +3,7 @@ import { rootPath } from "./lib/paths";
 
 // 活动配置是生产声韵映射的唯一来源；最长韵母先替换，声母转大写以隔离韵母。
 for (const [domain, filename, section] of [
-	["21x21", "snow_sanpin.schema.yaml", "sanpin_algebra"],
+	["21x21", "snow_lanpin.schema.yaml", "sanpin_algebra"],
 	["21x26", "snow_shenyun_common.yaml", "shenyun_algebra"],
 ] as const) {
 	const mapping = JSON.parse(

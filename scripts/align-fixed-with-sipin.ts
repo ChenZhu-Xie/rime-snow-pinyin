@@ -36,10 +36,22 @@ interface Target {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const targets: Target[] = [
 	{
-		schema: "snow_zhudao.schema.yaml",
-		fixed: "snow_zhudao.fixed.txt",
+		schema: "snow_huandao.schema.yaml",
+		fixed: "snow_huandao.fixed.txt",
 		kind: "21x26",
 		auxiliary: "shape",
+	},
+	{
+		schema: "snow_landao.schema.yaml",
+		fixed: "snow_landao.fixed.txt",
+		kind: "21x21",
+		auxiliary: "shape",
+	},
+	{
+		schema: "snow_lanpin.schema.yaml",
+		fixed: "snow_lanpin.fixed.txt",
+		kind: "21x21",
+		auxiliary: "tone",
 	},
 	{
 		schema: "snow_jiandao.schema.yaml",
@@ -54,32 +66,20 @@ const targets: Target[] = [
 		auxiliary: "tone",
 	},
 	{
-		schema: "snow_jiandao_classic.schema.yaml",
-		fixed: "snow_jiandao_classic.fixed.txt",
-		kind: "21x21",
-		auxiliary: "shape",
-	},
-	{
-		schema: "snow_sanpin_classic.schema.yaml",
-		fixed: "snow_sanpin_classic.fixed.txt",
-		kind: "21x21",
-		auxiliary: "tone",
-	},
-	{
-		schema: "snow_shenyun_shape.schema.yaml",
-		fixed: "snow_shenyun_shape.fixed.txt",
+		schema: "snow_hedao.schema.yaml",
+		fixed: "snow_hedao.fixed.txt",
 		kind: "21x26",
 		auxiliary: "shape",
 	},
 	{
-		schema: "snow_shenyun_tone.schema.yaml",
-		fixed: "snow_shenyun_tone.fixed.txt",
+		schema: "snow_hepin.schema.yaml",
+		fixed: "snow_hepin.fixed.txt",
 		kind: "21x26",
 		auxiliary: "tone",
 	},
 	{
-		schema: "snow_jiandao_toned.schema.yaml",
-		fixed: "snow_jiandao_toned.fixed.txt",
+		schema: "snow_liandao.schema.yaml",
+		fixed: "snow_liandao.fixed.txt",
 		kind: "21x21",
 		auxiliary: "shape",
 	},
@@ -126,7 +126,7 @@ function replacementShapeCodes() {
 			if (element && code) shape_element_keys[element] = code;
 		}
 		shape_codes_cache = readShapeCodes(
-			resolve(root, "snow_jiandao_chaifen.dict.yaml"),
+			resolve(root, "snow_landao_chaifen.dict.yaml"),
 			shape_element_keys,
 		);
 	}
@@ -791,7 +791,7 @@ function alignFixedContentOnce(fixed: string, source: string): string {
 					phrases,
 					algebra,
 					target.auxiliary,
-					target.fixed === "snow_zhudao.fixed.txt"
+					target.fixed === "snow_huandao.fixed.txt"
 						? JSON.parse(read("config/snow-zhudao-letter-buckets.json"))
 						: shenyunLetters,
 				);
@@ -806,7 +806,7 @@ export function alignFixedContent(fixed: string, source: string): string {
 		"speller/algebra",
 		{ derive: false },
 	);
-	if (fixed === "snow_jiandao_toned.fixed.txt")
+	if (fixed === "snow_liandao.fixed.txt")
 		return renderTonedFixed(target, algebra);
 	if (target.kind === "21x26") {
 		// 数字每次从稳定的汉字表重算，不把旧布局数字行反向当作选字依据。
@@ -907,9 +907,9 @@ function numberAliases(target: Target, source: string) {
 
 // 莲道按现行声母重映射兰道的 630；单字、数字和空桶按带调音码重算。
 function renderTonedFixed(target: Target, algebra: SpellingAlgebra): string {
-	const parent = read("snow_jiandao.fixed.txt");
+	const parent = read("snow_landao.fixed.txt");
 	const parentAlgebra = new SpellingAlgebra(
-		resolve(root, "snow_jiandao.schema.yaml"),
+		resolve(root, "snow_landao.schema.yaml"),
 		"speller/algebra",
 		{ derive: false },
 	);
@@ -1038,9 +1038,9 @@ function main() {
 		id: "SNOW-SHENYUN-21X26-NUMBER-CODES-V1",
 		status: "enabled",
 		schemes: {
-			shape: "snow_shenyun_shape",
-			tone: "snow_shenyun_tone",
-			tonedShape: "snow_zhudao",
+			shape: "snow_hedao",
+			tone: "snow_hepin",
+			tonedShape: "snow_huandao",
 		},
 		contract: {
 			source: "shortest-fixed-numeral-otherwise-first-auxiliary",
@@ -1052,9 +1052,9 @@ function main() {
 			digit: String(i),
 			han,
 			pinyin,
-			shapeCode: numberCodes.get("snow_shenyun_shape")![i],
-			toneCode: numberCodes.get("snow_shenyun_tone")![i],
-			tonedShapeCode: numberCodes.get("snow_zhudao")![i],
+			shapeCode: numberCodes.get("snow_hedao")![i],
+			toneCode: numberCodes.get("snow_hepin")![i],
+			tonedShapeCode: numberCodes.get("snow_huandao")![i],
 		})),
 	};
 	const serialized = `${JSON.stringify(config, null, 2)}\n`;

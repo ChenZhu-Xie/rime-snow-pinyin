@@ -75,7 +75,7 @@ const rules = [
 		),
 	"  - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/",
 ];
-const path = rootPath("snow_zhudao.schema.yaml");
+const path = rootPath("snow_huandao.schema.yaml");
 const source = readFileSync(path, "utf8").replace(/\r\n/gu, "\n");
 const rendered = source.replace(
 	/^shenyun_algebra:\n[\s\S]*?(?=\n[^ #\n])/mu,

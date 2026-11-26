@@ -2,7 +2,7 @@
 	"contract": "production-regression-diagnostic-v1",
 	"definition": "逐键记录事实；输入是待核路径，不预设目标为首选。上游经典布局独立编码。",
 	"schemas": {
-		"snow_jiandao": {
+		"snow_landao": {
 			"codes": [
 				"xgvvii",
 				"qfviua",
@@ -25,7 +25,7 @@
 				"ykoii"
 			]
 		},
-		"snow_sanpin": {
+		"snow_lanpin": {
 			"codes": [
 				"sro",
 				"sriv",
@@ -69,7 +69,7 @@
 				"fmjgU"
 			]
 		},
-		"snow_shenyun_shape": {
+		"snow_hedao": {
 			"codes": [
 				"jiaaaa",
 				"jvaaaa",
@@ -85,7 +85,7 @@
 				"wiaa"
 			]
 		},
-		"snow_shenyun_tone": {
+		"snow_hepin": {
 			"codes": [
 				"viaeieu",
 				"viaeieua",
@@ -109,7 +109,7 @@
 				"xdeiuoei"
 			]
 		},
-		"snow_jiandao_toned": {
+		"snow_liandao": {
 			"codes": [
 				"psoooo",
 				"pmoo",
@@ -125,7 +125,7 @@
 				"ynoii"
 			]
 		},
-		"snow_zhudao": {
+		"snow_huandao": {
 			"codes": [
 				"joaaaa",
 				"liiaeu",
@@ -140,7 +140,7 @@
 				"jouaa"
 			]
 		},
-		"snow_jiandao_classic": {
+		"snow_jiandao": {
 			"codes": [
 				"xgvvii",
 				"xdviio",
@@ -168,7 +168,7 @@
 				"qzoi"
 			]
 		},
-		"snow_sanpin_classic": {
+		"snow_sanpin": {
 			"codes": [
 				"jmiiuovuo",
 				"jniiuviv",
@@ -192,15 +192,8 @@
 			]
 		},
 		"snow_sipin": {
-			"codes": [
-				"mo1ma",
-				"b1vouu",
-				"ba1vouu"
-			],
-			"rankTargets": [
-				"报",
-				"摩"
-			]
+			"codes": ["mo1ma", "b1vouu", "ba1vouu"],
+			"rankTargets": ["报", "摩"]
 		}
 	}
 }

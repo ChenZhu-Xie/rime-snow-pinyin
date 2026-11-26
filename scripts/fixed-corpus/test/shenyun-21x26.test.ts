@@ -96,7 +96,7 @@ test("两个方案的全部 Common399 五调编码逐一匹配替换前提交冻
 	);
 	assert.equal(source.pinyin.length, source.codeList.length);
 	assert.equal(source.codeList.filter(Boolean).length, 399);
-	for (const schema of ["snow_shenyun_shape", "snow_shenyun_tone"]) {
+	for (const schema of ["snow_hedao", "snow_hepin"]) {
 		const algebra = new SpellingAlgebra(
 			fileURLToPath(new URL(`${schema}.schema.yaml`, root)),
 			"speller/algebra",
@@ -255,10 +255,7 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 		"SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
 	);
 	assert.equal(letterBuckets.status, "enabled");
-	assert.deepEqual(letterBuckets.schemes, [
-		"snow_shenyun_shape",
-		"snow_shenyun_tone",
-	]);
+	assert.deepEqual(letterBuckets.schemes, ["snow_hedao", "snow_hepin"]);
 	assert.deepEqual(letterBuckets.contract.candidateOrder, [
 		"existing-han",
 		"uppercase-letter",
@@ -315,10 +312,7 @@ test("21×26 字母启用映射只使用有汉字首选的占用桶", () => {
 		assert.match(entry.naturalTop3[0]?.text ?? "", /^\p{Script=Han}$/u);
 		assert.equal(entry.displacedAtLeast10000, 0, entry.code);
 	}
-	for (const filename of [
-		"snow_shenyun_shape.fixed.txt",
-		"snow_shenyun_tone.fixed.txt",
-	]) {
+	for (const filename of ["snow_hedao.fixed.txt", "snow_hepin.fixed.txt"]) {
 		const section = read(filename).split(/^# 字母\r?$/mu)[1];
 		assert.ok(section, `${filename} 缺少字母段`);
 		const actual = Object.fromEntries(
@@ -345,9 +339,9 @@ test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", 
 	assert.equal(numberCodes.id, "SNOW-SHENYUN-21X26-NUMBER-CODES-V1");
 	assert.equal(numberCodes.status, "enabled");
 	assert.deepEqual(numberCodes.schemes, {
-		shape: "snow_shenyun_shape",
-		tone: "snow_shenyun_tone",
-		tonedShape: "snow_zhudao",
+		shape: "snow_hedao",
+		tone: "snow_hepin",
+		tonedShape: "snow_huandao",
 	});
 	assert.deepEqual(numberCodes.contract, {
 		source: "shortest-fixed-numeral-otherwise-first-auxiliary",
@@ -389,8 +383,8 @@ test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", 
 		}
 	}
 	for (const [file, key] of [
-		["snow_shenyun_shape.fixed.txt", "shapeCode"],
-		["snow_shenyun_tone.fixed.txt", "toneCode"],
+		["snow_hedao.fixed.txt", "shapeCode"],
+		["snow_hepin.fixed.txt", "toneCode"],
 	] as const) {
 		const rows = new Map(
 			read(file)
@@ -407,10 +401,7 @@ test("21×26 数字码只沿用对应汉字编码，不占 ABA、AAB 或 AAAB", 
 });
 
 test("两个 21×26 方案没有 630、空固顶行或重复固顶码", () => {
-	for (const file of [
-		"snow_shenyun_shape.fixed.txt",
-		"snow_shenyun_tone.fixed.txt",
-	]) {
+	for (const file of ["snow_hedao.fixed.txt", "snow_hepin.fixed.txt"]) {
 		const source = read(file);
 		assert.doesNotMatch(source, /^# 630$/mu, file);
 		const rows = source
@@ -431,7 +422,7 @@ test("两个 21×26 方案没有 630、空固顶行或重复固顶码", () => {
 test("ue 来源拼写统一并入 ve 规范韵母", () => {
 	assert.equal(encode("gue"), "gv");
 	const sanpinRules = parseAlgebraRules(
-		read("snow_sanpin.schema.yaml"),
+		read("snow_lanpin.schema.yaml"),
 		"sanpin_algebra",
 	);
 	assert.equal(applyAlgebra("gue2", sanpinRules).canonical, "gkv");
@@ -704,7 +695,7 @@ test("21×26 显式长词后的小写新词和标点正常顶屏", () => {
 	}
 	for (const schema of [
 		"snow_shenyun_common.yaml",
-		"snow_zhudao.schema.yaml",
+		"snow_huandao.schema.yaml",
 	]) {
 		const document = load(read(schema)) as {
 			speller: { algebra: { __append: string[] } };
@@ -718,7 +709,7 @@ test("21×26 显式长词后的小写新词和标点正常顶屏", () => {
 });
 
 test("调：首 B 声调、后续 B 笔画，数字 1 独立筛部首", () => {
-	const tone = load(read("snow_shenyun_tone.schema.yaml")) as {
+	const tone = load(read("snow_hepin.schema.yaml")) as {
 		patch: {
 			"translator/shape_elements": string;
 			"translator/shape_mapping": string;
@@ -770,8 +761,8 @@ test("21×26 四码桶先补齐词长并恢复学习排序，最后后置真实�
 
 test("两个飞花原型都随部署带上共用配置", () => {
 	for (const [file, name] of [
-		["snow_shenyun_shape.schema.yaml", "冰雪鹤道"],
-		["snow_shenyun_tone.schema.yaml", "冰雪鹤拼"],
+		["snow_hedao.schema.yaml", "冰雪鹤道"],
+		["snow_hepin.schema.yaml", "冰雪鹤拼"],
 	] as const) {
 		const schema = load(read(file)) as { schema: { name: string } };
 		assert.equal(schema.schema.name, name);
@@ -790,10 +781,7 @@ test("冰雪鹤道/鹤拼接入共用 u 入口的部件全拼反查", () => {
 		);
 		assert.ok(stroke >= 0 && radical === stroke + 1, file);
 	}
-	for (const file of [
-		"snow_shenyun_shape.schema.yaml",
-		"snow_shenyun_tone.schema.yaml",
-	]) {
+	for (const file of ["snow_hedao.schema.yaml", "snow_hepin.schema.yaml"]) {
 		const schema = load(read(file)) as {
 			schema: { dependencies: string[] };
 		};
@@ -857,10 +845,7 @@ test("冰雪鹤道/调 21×26 一级简码与单字候选列表完备性", () =>
 		readings.set(character, values);
 	}
 
-	for (const filename of [
-		"snow_shenyun_shape.fixed.txt",
-		"snow_shenyun_tone.fixed.txt",
-	]) {
+	for (const filename of ["snow_hedao.fixed.txt", "snow_hepin.fixed.txt"]) {
 		const expected: Record<string, string> = {
 			...expectedFirst,
 			p: "跑",

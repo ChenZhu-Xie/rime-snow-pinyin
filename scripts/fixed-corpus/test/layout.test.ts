@@ -9,7 +9,7 @@ const repoRoot = resolve(import.meta.dirname, "../../..");
 const shenyun: LayoutDefinition = {
 	id: "shenyun",
 	rules: parseAlgebraRules(
-		readFileSync(resolve(repoRoot, "snow_sanpin.schema.yaml"), "utf8"),
+		readFileSync(resolve(repoRoot, "snow_lanpin.schema.yaml"), "utf8"),
 		"sanpin_algebra",
 	),
 };

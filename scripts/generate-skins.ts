@@ -91,13 +91,13 @@ function main() {
 		keyInfos: qwerty,
 		symbol: true,
 	};
-	const snow_jiandao = {
+	const snow_landao = {
 		colorful: true,
 		label: true,
 		keyInfos: jiandao,
 		specialCharacters: "avuio",
 	};
-	const snow_jiandao_nolabel = {
+	const snow_landao_nolabel = {
 		colorful: true,
 		label: false,
 		keyInfos: jiandao,
@@ -126,13 +126,13 @@ function main() {
 		alphabetic: general,
 	});
 	generateSkinFolder("键道 35 键", {
-		pinyin: snow_jiandao,
+		pinyin: snow_landao,
 		alphabetic: general,
 		numeric: snow_shufu,
 		symbolic: snow_shufu,
 	});
 	generateSkinFolder("键道 35 键・无刻", {
-		pinyin: snow_jiandao_nolabel,
+		pinyin: snow_landao_nolabel,
 		alphabetic: general,
 		numeric: snow_shufu,
 		symbolic: snow_shufu,

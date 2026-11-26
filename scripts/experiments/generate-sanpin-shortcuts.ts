@@ -9,7 +9,7 @@ function main() {
 			"用法：bun scripts/experiments/generate-sanpin-shortcuts.ts <词频表> [输出文件]",
 		);
 	const algebra = new SpellingAlgebra(
-		rootPath("snow_sanpin.schema.yaml"),
+		rootPath("snow_lanpin.schema.yaml"),
 		"sanpin_algebra",
 	);
 	const dict = readFileSync(rootPath("snow_pinyin.base.dict.yaml"), "utf-8")

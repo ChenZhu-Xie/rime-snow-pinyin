@@ -59,24 +59,24 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	},
 	{
 		id: "oc21-shape",
-		schemaId: "snow_jiandao",
+		schemaId: "snow_landao",
 		name: "冰雪兰道（UED-3158ce08b5bc 21×21）",
 		shortName: "冰雪兰道",
 		capacity: "21x21",
 		soundLayout: "oc21",
 		auxiliaryMode: "shape",
-		fixedFile: "snow_jiandao.fixed.txt",
+		fixedFile: "snow_landao.fixed.txt",
 		auxiliaryOrder: "12/231/23",
 	},
 	{
 		id: "oc21-tone",
-		schemaId: "snow_sanpin",
+		schemaId: "snow_lanpin",
 		name: "冰雪兰拼（UED-3158ce08b5bc 21×21）",
 		shortName: "冰雪兰拼",
 		capacity: "21x21",
 		soundLayout: "oc21",
 		auxiliaryMode: "tone",
-		fixedFile: "snow_sanpin.fixed.txt",
+		fixedFile: "snow_lanpin.fixed.txt",
 		auxiliaryOrder: "12/213/23",
 	},
 	{
@@ -92,46 +92,46 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	},
 	{
 		id: "rc26-shape",
-		schemaId: "snow_shenyun_shape",
+		schemaId: "snow_hedao",
 		name: "冰雪鹤道（RC26-39a5bfdc045342cd 21×26）",
 		shortName: "冰雪鹤道",
 		capacity: "21x26",
 		soundLayout: "rc26",
 		auxiliaryMode: "shape",
-		fixedFile: "snow_shenyun_shape.fixed.txt",
+		fixedFile: "snow_hedao.fixed.txt",
 		auxiliaryOrder: "12/12/24",
 	},
 	{
 		id: "rc26-tone",
-		schemaId: "snow_shenyun_tone",
+		schemaId: "snow_hepin",
 		name: "冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）",
 		shortName: "冰雪鹤拼",
 		capacity: "21x26",
 		soundLayout: "rc26",
 		auxiliaryMode: "tone",
-		fixedFile: "snow_shenyun_tone.fixed.txt",
+		fixedFile: "snow_hepin.fixed.txt",
 		auxiliaryOrder: "12/21/13",
 	},
 	{
 		id: "liandao",
-		schemaId: "snow_jiandao_toned",
+		schemaId: "snow_liandao",
 		name: "冰雪莲道（CR-REF-7e650f7a4c 21×21 带调）",
 		shortName: "冰雪莲道",
 		capacity: "21x21",
 		soundLayout: "liandao",
 		auxiliaryMode: "shape",
-		fixedFile: "snow_jiandao_toned.fixed.txt",
+		fixedFile: "snow_liandao.fixed.txt",
 		auxiliaryOrder: "21/231/14",
 	},
 	{
 		id: "zhudao",
-		schemaId: "snow_zhudao",
+		schemaId: "snow_huandao",
 		name: "冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）",
 		shortName: "冰雪鹮道",
 		capacity: "21x26",
 		soundLayout: "zhudao",
 		auxiliaryMode: "shape",
-		fixedFile: "snow_zhudao.fixed.txt",
+		fixedFile: "snow_huandao.fixed.txt",
 		auxiliaryOrder: "21/12/23",
 	},
 ] as const;
@@ -139,24 +139,24 @@ export const BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 export const LEGACY_BENCHMARK_SCHEMES: readonly BenchmarkScheme[] = [
 	{
 		id: "classic-shape",
-		schemaId: "snow_jiandao_classic",
+		schemaId: "snow_jiandao",
 		name: "冰雪键道",
 		shortName: "冰雪键道",
 		capacity: "21x21",
 		soundLayout: "classic",
 		auxiliaryMode: "shape",
-		fixedFile: "snow_jiandao_classic.fixed.txt",
+		fixedFile: "snow_jiandao.fixed.txt",
 		auxiliaryOrder: "12/231/24",
 	},
 	{
 		id: "classic-tone",
-		schemaId: "snow_sanpin_classic",
+		schemaId: "snow_sanpin",
 		name: "冰雪三拼",
 		shortName: "冰雪三拼",
 		capacity: "21x21",
 		soundLayout: "classic",
 		auxiliaryMode: "tone",
-		fixedFile: "snow_sanpin_classic.fixed.txt",
+		fixedFile: "snow_sanpin.fixed.txt",
 		auxiliaryOrder: "12/213/23",
 	},
 ] as const;
@@ -185,12 +185,12 @@ const rc26Algebra = new SpellingAlgebra(
 	{ derive: false },
 );
 const zhudaoAlgebra = new SpellingAlgebra(
-	rootPath("snow_zhudao.schema.yaml"),
+	rootPath("snow_huandao.schema.yaml"),
 	"shenyun_algebra",
 	{ derive: false },
 );
 const liandaoAlgebra = new SpellingAlgebra(
-	rootPath("snow_jiandao_toned_common.yaml"),
+	rootPath("snow_liandao_common.yaml"),
 	"jiandao_toned_algebra",
 	{ derive: false },
 );
@@ -223,7 +223,7 @@ for (const line of readFileSync(
 	if (element && code) shapeElementKeys.set(element, code);
 }
 const activeShapeCodes = readShapeCodes(
-	rootPath("snow_jiandao_chaifen.dict.yaml"),
+	rootPath("snow_landao_chaifen.dict.yaml"),
 	Object.fromEntries(shapeElementKeys),
 );
 const sipinElementKeys = new Map<string, string>();

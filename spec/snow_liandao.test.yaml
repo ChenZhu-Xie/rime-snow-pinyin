@@ -1,4 +1,4 @@
-schema: snow_jiandao_toned
+schema: snow_liandao
 source_dir: ..
 script: |
   function rank(text)

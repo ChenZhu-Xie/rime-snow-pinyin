@@ -125,20 +125,20 @@ test("经典 schema 保留迁移前名称并以独立 ID 进入发布方案", ()
 		],
 	);
 	const releasedJiandao = readFileSync(
-		rootPath("snow_jiandao_classic.schema.yaml"),
+		rootPath("snow_jiandao.schema.yaml"),
 		"utf8",
 	);
 	const releasedSanpin = readFileSync(
-		rootPath("snow_sanpin_classic.schema.yaml"),
+		rootPath("snow_sanpin.schema.yaml"),
 		"utf8",
 	);
-	assert.match(releasedJiandao, /schema_id: snow_jiandao_classic/u);
+	assert.match(releasedJiandao, /schema_id: snow_jiandao/u);
 	assert.match(releasedJiandao, /name: 冰雪键道/u);
 	assert.match(
 		releasedJiandao,
 		/translator\/user_dict_name: snow_jiandao_classic/u,
 	);
-	assert.match(releasedSanpin, /schema_id: snow_sanpin_classic/u);
+	assert.match(releasedSanpin, /schema_id: snow_sanpin/u);
 	assert.match(releasedSanpin, /name: 冰雪三拼/u);
 	assert.match(
 		releasedSanpin,
@@ -190,8 +190,8 @@ test("经典方案保留迁移前飞键主码并采用 CKT v5.1 辅序扩展", (
 
 test("经典发布方案接入 AA 空桶与 AAB 二字辅码", () => {
 	for (const schema of [
-		"snow_jiandao_classic.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_sanpin.schema.yaml",
 	]) {
 		const source = readFileSync(rootPath(schema), "utf8");
 		assert.match(source, /^vacancy:/mu, schema);
@@ -203,7 +203,7 @@ test("经典发布方案接入 AA 空桶与 AAB 二字辅码", () => {
 	assert.match(vacancySource, /translator:query\(input, segment\)/u);
 	assert.match(vacancySource, /projection:apply\(spelling\)/u);
 	assert.match(
-		readFileSync(rootPath("snow_jiandao_classic.schema.yaml"), "utf8"),
+		readFileSync(rootPath("snow_jiandao.schema.yaml"), "utf8"),
 		/lua_translator@\*snow\.table_like\*initial_pair/u,
 	);
 	assert.doesNotMatch(
@@ -261,7 +261,7 @@ test("经典 630 首选均符合经典声码与 CKT v5.1 辅码语义", () => {
 		if (element && code) elementKeys[element] = code;
 	}
 	const shapes = readShapeCodes(
-		rootPath("snow_jiandao_chaifen.dict.yaml"),
+		rootPath("snow_landao_chaifen.dict.yaml"),
 		elementKeys,
 	);
 	const readings = dictionaryReadings();
@@ -280,9 +280,9 @@ test("经典 630 首选均符合经典声码与 CKT v5.1 辅码语义", () => {
 		"5": "o",
 	};
 	const toneKey = (syllable: string) => toneKeys[syllable.at(-1) ?? ""] ?? "";
-	for (const [code, [word]] of fixedSections(
-		"snow_jiandao_classic.fixed.txt",
-	).get("# 630") ?? []) {
+	for (const [code, [word]] of fixedSections("snow_jiandao.fixed.txt").get(
+		"# 630",
+	) ?? []) {
 		const characters = [...word];
 		const shape = shapes.get(characters[1] ?? "") ?? "";
 		assert.ok(
@@ -296,9 +296,9 @@ test("经典 630 首选均符合经典声码与 CKT v5.1 辅码语义", () => {
 			`${code}\t${word}`,
 		);
 	}
-	for (const [code, [word]] of fixedSections(
-		"snow_sanpin_classic.fixed.txt",
-	).get("# 630") ?? []) {
+	for (const [code, [word]] of fixedSections("snow_sanpin.fixed.txt").get(
+		"# 630",
+	) ?? []) {
 		const length = [...word].length;
 		assert.ok(
 			(readings.get(word) ?? []).some((syllables) => {
@@ -315,9 +315,9 @@ test("经典 630 首选均符合经典声码与 CKT v5.1 辅码语义", () => {
 			`${code}\t${word}`,
 		);
 	}
-	for (const [code, [word]] of fixedSections(
-		"snow_sanpin_classic.fixed.txt",
-	).get("# 单字") ?? []) {
+	for (const [code, [word]] of fixedSections("snow_sanpin.fixed.txt").get(
+		"# 单字",
+	) ?? []) {
 		assert.ok(
 			(readings.get(word) ?? []).some(
 				(syllables) =>
@@ -336,28 +336,25 @@ test("经典发布版迁入现行 fixed 功能并采用 CKT v5.1 辅序", () => 
 		LEGACY_BENCHMARK_SCHEMES.map(({ auxiliaryOrder }) => auxiliaryOrder),
 		["12/231/24", "12/213/23"],
 	);
-	for (const file of [
-		"snow_jiandao_classic.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
-	]) {
+	for (const file of ["snow_jiandao.schema.yaml", "snow_sanpin.schema.yaml"]) {
 		const source = readFileSync(rootPath(file), "utf8");
 		assert.match(source, /strategy: append_raw/u, file);
 		assert.match(source, /\[A-Z\]\?/u, file);
 	}
 	assert.match(
-		readFileSync(rootPath("snow_jiandao_classic_jianpin.schema.yaml"), "utf8"),
+		readFileSync(rootPath("snow_jiandao_jianpin.schema.yaml"), "utf8"),
 		/derive\/\^\(\.\)\(\.\)\[viuoa\]\$\/\$1\\u\$2\//u,
 	);
 	const classicJiandao = readFileSync(
-		rootPath("snow_jiandao_classic.schema.yaml"),
+		rootPath("snow_jiandao.schema.yaml"),
 		"utf8",
 	);
 	assert.match(classicJiandao, /lua_translator@\*snow\.table_like\*jianpin/u);
 	assert.doesNotMatch(classicJiandao, /jianpin:\r?\n\s+tag:/u);
-	const jiandao = fixedSections("snow_jiandao_classic.fixed.txt");
-	const sanpin = fixedSections("snow_sanpin_classic.fixed.txt");
+	const jiandao = fixedSections("snow_jiandao.fixed.txt");
+	const sanpin = fixedSections("snow_sanpin.fixed.txt");
 	const classicJiandaoAlgebra = new SpellingAlgebra(
-		rootPath("snow_jiandao_classic.schema.yaml"),
+		rootPath("snow_jiandao.schema.yaml"),
 		"speller/algebra",
 		{ derive: false },
 	);

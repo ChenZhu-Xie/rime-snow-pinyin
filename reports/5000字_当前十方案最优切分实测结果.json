@@ -622,7 +622,7 @@
     },
     "oc21-shape": {
       "name": "冰雪兰道（UED-3158ce08b5bc 21×21）",
-      "schemaId": "snow_jiandao",
+      "schemaId": "snow_landao",
       "capacity": "21x21",
       "auxiliaryMode": "shape",
       "auxiliaryOrder": "12/231/23",
@@ -1213,7 +1213,7 @@
     },
     "oc21-tone": {
       "name": "冰雪兰拼（UED-3158ce08b5bc 21×21）",
-      "schemaId": "snow_sanpin",
+      "schemaId": "snow_lanpin",
       "capacity": "21x21",
       "auxiliaryMode": "tone",
       "auxiliaryOrder": "12/213/23",
@@ -2407,7 +2407,7 @@
     },
     "rc26-shape": {
       "name": "冰雪鹤道（RC26-39a5bfdc045342cd 21×26）",
-      "schemaId": "snow_shenyun_shape",
+      "schemaId": "snow_hedao",
       "capacity": "21x26",
       "auxiliaryMode": "shape",
       "auxiliaryOrder": "12/12/24",
@@ -2996,7 +2996,7 @@
     },
     "rc26-tone": {
       "name": "冰雪鹤拼（RC26-39a5bfdc045342cd 21×26）",
-      "schemaId": "snow_shenyun_tone",
+      "schemaId": "snow_hepin",
       "capacity": "21x26",
       "auxiliaryMode": "tone",
       "auxiliaryOrder": "12/21/13",
@@ -3592,7 +3592,7 @@
     },
     "liandao": {
       "name": "冰雪莲道（CR-REF-7e650f7a4c 21×21 带调）",
-      "schemaId": "snow_jiandao_toned",
+      "schemaId": "snow_liandao",
       "capacity": "21x21",
       "auxiliaryMode": "shape",
       "auxiliaryOrder": "21/231/14",
@@ -4183,7 +4183,7 @@
     },
     "zhudao": {
       "name": "冰雪鹮道（T2126-V52-M4-ec60a3637a99 21×26 带调）",
-      "schemaId": "snow_zhudao",
+      "schemaId": "snow_huandao",
       "capacity": "21x26",
       "auxiliaryMode": "shape",
       "auxiliaryOrder": "21/12/23",
@@ -4772,7 +4772,7 @@
     },
     "classic-shape": {
       "name": "冰雪键道",
-      "schemaId": "snow_jiandao_classic",
+      "schemaId": "snow_jiandao",
       "capacity": "21x21",
       "auxiliaryMode": "shape",
       "auxiliaryOrder": "12/231/24",
@@ -5364,7 +5364,7 @@
     },
     "classic-tone": {
       "name": "冰雪三拼",
-      "schemaId": "snow_sanpin_classic",
+      "schemaId": "snow_sanpin",
       "capacity": "21x21",
       "auxiliaryMode": "tone",
       "auxiliaryOrder": "12/213/23",

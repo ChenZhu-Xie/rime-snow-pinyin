@@ -35,8 +35,8 @@ class NativePageTests(unittest.TestCase):
         self.assertEqual(data["bPathBenchmark"]["schemeCount"], len(entries))
         self.assertEqual(data["bPathBenchmark"]["wordBOrder"], native["policy"]["wordBOrder"])
         self.assertEqual(data["bPathBenchmark"]["deployed21x21KeytaoWordOrder"],
-                         "first character then second (snow_jiandao shape_filter.lua)")
-        self.assertIn("21×21 键道与 snow_jiandao 实际二字全码形码顺序一致", text)
+                         "first character then second (snow_landao shape_filter.lua)")
+        self.assertIn("21×21 键道与 snow_landao 实际二字全码形码顺序一致", text)
         self.assertNotIn("现行 Lua 键道二字词仍是次字先", text)
         self.assertNotAlmostEqual(native["schemes"]["S005"]["modes"]["keytao"]["word"]["p1"],
                                   data["bPathBenchmarkLegacy"]["referenceS005"]["wj1"], places=12)

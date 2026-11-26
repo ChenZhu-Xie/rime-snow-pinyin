@@ -17,7 +17,7 @@ const dictionaryFiles = [
 	"snow_pinyin.user.dict.yaml",
 ];
 
-const schemes = ["snow_shenyun_shape", "snow_shenyun_tone"] as const;
+const schemes = ["snow_hedao", "snow_hepin"] as const;
 
 function compareText(left: string, right: string): number {
 	return left < right ? -1 : left > right ? 1 : 0;
@@ -32,7 +32,7 @@ export function readShenyunHints(zhudao = false) {
 	const initialKeys = common.translator.shenyun_initial_keys;
 	const finalKeys = common.translator.shenyun_final_keys;
 	const algebra = new SpellingAlgebra(
-		rootPath(zhudao ? "snow_zhudao.schema.yaml" : "snow_shenyun_common.yaml"),
+		rootPath(zhudao ? "snow_huandao.schema.yaml" : "snow_shenyun_common.yaml"),
 		"shenyun_algebra",
 		{ derive: false },
 	);
@@ -85,7 +85,7 @@ export function readShenyunHints(zhudao = false) {
 		.filter((code) => !occupied.has(code));
 	const vacantAA = vacant.filter((code) => initialKeys.includes(code[1]));
 	const hints: Record<string, ShenyunHint[]> = {};
-	for (const schema of zhudao ? ["snow_zhudao"] : schemes) {
+	for (const schema of zhudao ? ["snow_huandao"] : schemes) {
 		const fixed = new Map(
 			readFileSync(rootPath(`${schema}.fixed.txt`), "utf8")
 				.split(/\r?\n/u)

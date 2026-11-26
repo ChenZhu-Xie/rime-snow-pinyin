@@ -82,17 +82,17 @@ local function names(entries)
 end
 
 local expected = {
-  { "snow_jiandao_classic", "冰雪键道", "21²5⁴ 经典键道 二字词低重" },
-  { "snow_sanpin_classic", "冰雪三拼", "21²5ⁿ 经典三拼 单字简繁通打" },
-  { "snow_jiandao", "冰雪兰道", "21²5⁴ 零飞键道 三四字词低重" },
-  { "snow_sanpin", "冰雪兰拼", "21²5ⁿ 零飞三拼 人体工学" },
-  { "snow_shenyun_shape", "冰雪鹤道", "21¹26¹5⁴ 无重键道 没有 630" },
-  { "snow_shenyun_tone", "冰雪鹤拼", "21¹26¹5ⁿ 无重三拼 顶功版廿六" },
+  { "snow_jiandao", "冰雪键道", "21²5⁴ 经典键道 二字词低重" },
+  { "snow_sanpin", "冰雪三拼", "21²5ⁿ 经典三拼 单字简繁通打" },
+  { "snow_landao", "冰雪兰道", "21²5⁴ 零飞键道 三四字词低重" },
+  { "snow_lanpin", "冰雪兰拼", "21²5ⁿ 零飞三拼 人体工学" },
+  { "snow_hedao", "冰雪鹤道", "21¹26¹5⁴ 无重键道 没有 630" },
+  { "snow_hepin", "冰雪鹤拼", "21¹26¹5ⁿ 无重三拼 顶功版廿六" },
   { "snow_sipin", "冰雪四拼", "21¹5ⁿ 动态调频 多音节词王" },
   { "snow_yipin", "冰雪一拼", "1200ⁿ95ᵐ 顶功并击 带调音节/击" },
   { "snow_qingyun", "冰雪清韵", "21ᵐ9¹ 四码前缀 多字根字王" },
-  { "snow_zhudao", "冰雪鹮道", "21¹26¹5⁴ 带调鹤道 最低记忆" },
-  { "snow_jiandao_toned", "冰雪莲道", "21²5⁴ 带调兰道 字词均衡" },
+  { "snow_huandao", "冰雪鹮道", "21¹26¹5⁴ 带调鹤道 最低记忆" },
+  { "snow_liandao", "冰雪莲道", "21²5⁴ 带调兰道 字词均衡" },
 }
 
 assert(#menu.entries == #expected, "方案数必须为 11")
@@ -187,7 +187,7 @@ local config = {
 }
 local engine = {
   context = context,
-  schema = { schema_id = "snow_jiandao", config = config },
+  schema = { schema_id = "snow_landao", config = config },
   apply_schema = function(_, schema) selected_schema = schema.schema_id end,
 }
 local processor_env = { engine = engine }
@@ -309,7 +309,7 @@ selected_candidate = yielded[1]
 context.input = "~~'dtld"
 context.select_notifier.callbacks[1](context)
 context.select_notifier.callbacks[2](context)
-assert(selected_schema == "snow_jiandao_toned" and context.input == "",
+assert(selected_schema == "snow_liandao" and context.input == "",
   "选择冰雪莲道必须切换到实际带调方案")
 
 selected_schema = nil
@@ -322,7 +322,7 @@ menu.translator.fini(translator_env)
 assert(#context.update_notifier.callbacks == 0, "销毁翻译器必须断开模式恢复回调")
 
 -- 源方案在菜单中可见但尚未部署：保留提示，不得切换空 Schema 或上屏方案名。
-unavailable_schemas.snow_zhudao = true
+unavailable_schemas.snow_huandao = true
 local missing_env = { engine = engine }
 menu.translator.init(missing_env)
 yielded = {}
@@ -338,10 +338,10 @@ assert(selected_schema == nil and context.input == "", "未部署方案不得替
 menu.translator.fini(missing_env)
 
 -- 初始化时存在的部署产物若随后失效，选择时仍不能切到空方案。
-unavailable_schemas.snow_zhudao = nil
+unavailable_schemas.snow_huandao = nil
 local stale_env = { engine = engine }
 menu.translator.init(stale_env)
-unavailable_schemas.snow_zhudao = true
+unavailable_schemas.snow_huandao = true
 selected_schema = nil
 selected_candidate = Candidate("schema_menu", 0, 3, "冰雪鹮道", "")
 context.input = "~~'dthd"
@@ -351,7 +351,7 @@ assert(selected_schema == nil and context.input == "", "切换前必须再次检
 menu.translator.fini(stale_env)
 
 -- 用户只启用四拼：其他方案即使有历史编译产物，也必须禁用。
-unavailable_schemas.snow_zhudao = nil
+unavailable_schemas.snow_huandao = nil
 schema_list = { { schema = "snow_sipin" } }
 local single_env = { engine = engine }
 menu.translator.init(single_env)
@@ -374,7 +374,7 @@ assert(selected_schema == "snow_sipin", "当前启用的四拼仍可正常选择
 menu.translator.fini(single_env)
 
 -- 菜单打开后移出列表，必须在确认时再次拦截。
-schema_list = { { schema = "snow_zhudao" } }
+schema_list = { { schema = "snow_huandao" } }
 local removed_env = { engine = engine }
 menu.translator.init(removed_env)
 schema_list = { { schema = "snow_sipin" } }
@@ -387,14 +387,14 @@ assert(selected_schema == nil and context.input == "", "确认时不得选择已
 menu.translator.fini(removed_env)
 
 -- 和原生 switcher 一样尊重 schema_list 的 case 条件。
-schema_list = { { schema = "snow_zhudao", case = { "mode/experimental" } } }
+schema_list = { { schema = "snow_huandao", case = { "mode/experimental" } } }
 local conditional_env = { engine = engine }
 menu.translator.init(conditional_env)
-assert(not conditional_env.available_schemas.snow_zhudao, "未满足 case 条件的方案不能启用")
+assert(not conditional_env.available_schemas.snow_huandao, "未满足 case 条件的方案不能启用")
 menu.translator.fini(conditional_env)
 modes["mode/experimental"] = true
 menu.translator.init(conditional_env)
-assert(conditional_env.available_schemas.snow_zhudao, "满足 case 条件的方案必须可选")
+assert(conditional_env.available_schemas.snow_huandao, "满足 case 条件的方案必须可选")
 menu.translator.fini(conditional_env)
 
 schema_list = {}

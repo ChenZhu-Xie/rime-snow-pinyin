@@ -13,9 +13,9 @@ const read = (path: string) => readFileSync(join(root, path), "utf8");
 
 test("部件辅助码显式依赖其反查字典，单方案部署也能生成", () => {
 	for (const file of [
+		"snow_lanpin.schema.yaml",
 		"snow_sanpin.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
-		"snow_shenyun_tone.schema.yaml",
+		"snow_hepin.schema.yaml",
 	]) {
 		const document = load(read(file)) as {
 			schema: { dependencies: string[] };
@@ -32,10 +32,10 @@ test("部件辅助码显式依赖其反查字典，单方案部署也能生成",
 
 test("八套双拼方案在顶功前接入四主码词长直选，其他方案保持原有标点", () => {
 	for (const [file, layout] of [
+		["snow_landao.schema.yaml", "21x21"],
+		["snow_lanpin.schema.yaml", "21x21"],
 		["snow_jiandao.schema.yaml", "21x21"],
 		["snow_sanpin.schema.yaml", "21x21"],
-		["snow_jiandao_classic.schema.yaml", "21x21"],
-		["snow_sanpin_classic.schema.yaml", "21x21"],
 		["snow_shenyun_common.yaml", "21x26"],
 	]) {
 		const schema = load(read(file)) as {
@@ -63,14 +63,10 @@ test("八套双拼方案在顶功前接入四主码词长直选，其他方案�
 	])
 		assert.doesNotMatch(read(file), /snow\.select_word_length/u, file);
 	assert.match(
-		read("snow_jiandao_toned.schema.yaml"),
-		/__include: snow_jiandao\.schema\.yaml:\//u,
+		read("snow_liandao.schema.yaml"),
+		/__include: snow_landao\.schema\.yaml:\//u,
 	);
-	for (const schema of [
-		"snow_shenyun_shape",
-		"snow_shenyun_tone",
-		"snow_zhudao",
-	])
+	for (const schema of ["snow_hedao", "snow_hepin", "snow_huandao"])
 		assert.match(
 			read(`${schema}.schema.yaml`),
 			/__include: snow_shenyun_common\.yaml:\//u,
@@ -79,13 +75,13 @@ test("八套双拼方案在顶功前接入四主码词长直选，其他方案�
 
 test("double-pinyin schemes isolate fixed-code databases while sharing snow_pinyin learning", () => {
 	const fixedDatabases = new Map([
-		["snow_jiandao.schema.yaml", "snow_jiandao_ued_3158ce08b5bc"],
-		["snow_sanpin.schema.yaml", "snow_sanpin_ued_3158ce08b5bc"],
-		["snow_shenyun_shape.schema.yaml", "snow_shenyun_shape_rc26"],
-		["snow_shenyun_tone.schema.yaml", "snow_shenyun_tone_rc26"],
-		["snow_jiandao_classic.schema.yaml", "snow_jiandao_classic"],
-		["snow_sanpin_classic.schema.yaml", "snow_sanpin_classic"],
-		["snow_jiandao_toned.schema.yaml", "snow_jiandao_toned_cr_ref_7e650f7a4c"],
+		["snow_landao.schema.yaml", "snow_jiandao_ued_3158ce08b5bc"],
+		["snow_lanpin.schema.yaml", "snow_sanpin_ued_3158ce08b5bc"],
+		["snow_hedao.schema.yaml", "snow_shenyun_shape_rc26"],
+		["snow_hepin.schema.yaml", "snow_shenyun_tone_rc26"],
+		["snow_jiandao.schema.yaml", "snow_jiandao_classic"],
+		["snow_sanpin.schema.yaml", "snow_sanpin_classic"],
+		["snow_liandao.schema.yaml", "snow_jiandao_toned_cr_ref_7e650f7a4c"],
 	]);
 	assert.equal(new Set(fixedDatabases.values()).size, fixedDatabases.size);
 	for (const [file, database] of fixedDatabases) {
@@ -96,11 +92,11 @@ test("double-pinyin schemes isolate fixed-code databases while sharing snow_piny
 		);
 	}
 	for (const file of [
+		"snow_landao.schema.yaml",
+		"snow_lanpin.schema.yaml",
 		"snow_jiandao.schema.yaml",
 		"snow_sanpin.schema.yaml",
-		"snow_jiandao_classic.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
-		"snow_jiandao_toned.schema.yaml",
+		"snow_liandao.schema.yaml",
 	]) {
 		assert.match(read(file), /dictionary: snow_pinyin/u, file);
 	}
@@ -276,13 +272,13 @@ test("the searchable schema menu owns F4 and Ctrl+grave in every released scheme
 
 	for (const schema of [
 		"snow_sipin.schema.yaml",
-		"snow_sanpin.schema.yaml",
+		"snow_lanpin.schema.yaml",
 		"snow_yipin.schema.yaml",
-		"snow_jiandao.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_qingyun.schema.yaml",
 		"snow_shenyun_common.yaml",
-		"snow_jiandao_classic.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
+		"snow_jiandao.schema.yaml",
+		"snow_sanpin.schema.yaml",
 	]) {
 		const content = load(read(schema)) as {
 			engine: {
@@ -376,8 +372,8 @@ test("history selection only accepts Ctrl-number shortcuts", () => {
 test("serial schemes expose o while all schemes inherit Ctrl+B", () => {
 	for (const schema of [
 		"snow_sipin.schema.yaml",
-		"snow_sanpin.schema.yaml",
-		"snow_jiandao.schema.yaml",
+		"snow_lanpin.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_shenyun_common.yaml",
 	]) {
 		assert.match(read(schema), /lua_translator@\*snow\.buffered/u);
@@ -387,9 +383,9 @@ test("serial schemes expose o while all schemes inherit Ctrl+B", () => {
 	}
 	const combined = [
 		"snow_sipin.schema.yaml",
-		"snow_sanpin.schema.yaml",
+		"snow_lanpin.schema.yaml",
 		"snow_yipin.schema.yaml",
-		"snow_jiandao.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_qingyun.schema.yaml",
 	]
 		.map(read)
@@ -406,9 +402,9 @@ test("serial schemes expose o while all schemes inherit Ctrl+B", () => {
 test("all released schemes expose manual word addition with a visible state", () => {
 	for (const schema of [
 		"snow_sipin.schema.yaml",
-		"snow_sanpin.schema.yaml",
+		"snow_lanpin.schema.yaml",
 		"snow_yipin.schema.yaml",
-		"snow_jiandao.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_qingyun.schema.yaml",
 		"snow_shenyun_common.yaml",
 	]) {
@@ -417,9 +413,9 @@ test("all released schemes expose manual word addition with a visible state", ()
 	}
 	for (const schema of [
 		"snow_sipin.schema.yaml",
-		"snow_sanpin.schema.yaml",
+		"snow_lanpin.schema.yaml",
 		"snow_yipin.schema.yaml",
-		"snow_jiandao.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_qingyun.schema.yaml",
 		"snow_shenyun_common.yaml",
 	]) {
@@ -432,11 +428,11 @@ test("all released schemes expose manual word addition with a visible state", ()
 test("all released schemes with Unicode components expose the shared toggle", () => {
 	for (const schema of [
 		"snow_sipin.schema.yaml",
+		"snow_lanpin.schema.yaml",
 		"snow_sanpin.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
 		"snow_yipin.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_jiandao_classic.schema.yaml",
 		"snow_qingyun.schema.yaml",
 	]) {
 		const content = read(schema);
@@ -449,8 +445,8 @@ test("all released schemes with Unicode components expose the shared toggle", ()
 		assert.match(content, /accept: "Control\+q", toggle: unicode/u, schema);
 	}
 	for (const schema of [
+		"snow_landao.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_jiandao_classic.schema.yaml",
 		"snow_qingyun.schema.yaml",
 	])
 		assert.match(
@@ -519,10 +515,7 @@ test("statistics falls back when librime-lua lacks get_time_ms", () => {
 });
 
 test("Three-Code and KeyTao share the Four-Code 23890 selection layout", () => {
-	for (const schema of [
-		"snow_sanpin.schema.yaml",
-		"snow_jiandao.schema.yaml",
-	]) {
+	for (const schema of ["snow_lanpin.schema.yaml", "snow_landao.schema.yaml"]) {
 		assert.match(read(schema), /menu\/alternative_select_keys: "_23890"/u);
 	}
 	const history = read("lua/snow/history.lua");
@@ -536,7 +529,7 @@ test("Three-Code derives stroke assist codes from AVUIO shape meanings", () => {
 	assert.match(filter, /sanpin_semantics = auxiliary_semantics\["21x21"\]/u);
 	assert.match(
 		filter,
-		/elseif state\.id == "snow_sanpin"[\s\S]+stroke_match\(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map\)/u,
+		/elseif state\.id == "snow_lanpin"[\s\S]+stroke_match\(text, shape_input, env, sanpin_reverse_stroke_map, sanpin_direct_stroke_map\)/u,
 	);
 	const semantics = read("lua/snow/auxiliary_semantics.lua");
 	assert.match(semantics, /stroke_keys_by_stroke = "viuoa"/u);
@@ -549,22 +542,14 @@ test("all released schemes run word selection before popping", () => {
 	assert.match(processor, /or "bracketright"/u);
 	for (const [schema, processorSource, poppingName] of [
 		["snow_sipin.schema.yaml", "snow_sipin.schema.yaml", "popping"],
-		["snow_sanpin.schema.yaml", "snow_sanpin.schema.yaml", "popping"],
+		["snow_lanpin.schema.yaml", "snow_lanpin.schema.yaml", "popping"],
 		["snow_yipin.schema.yaml", "snow_yipin.schema.yaml", "combo_popping"],
-		["snow_jiandao.schema.yaml", "snow_jiandao.schema.yaml", "popping"],
+		["snow_landao.schema.yaml", "snow_landao.schema.yaml", "popping"],
 		["snow_qingyun.schema.yaml", "snow_qingyun.schema.yaml", "popping"],
-		["snow_shenyun_shape.schema.yaml", "snow_shenyun_common.yaml", "popping"],
-		["snow_shenyun_tone.schema.yaml", "snow_shenyun_common.yaml", "popping"],
-		[
-			"snow_jiandao_classic.schema.yaml",
-			"snow_jiandao_classic.schema.yaml",
-			"popping",
-		],
-		[
-			"snow_sanpin_classic.schema.yaml",
-			"snow_sanpin_classic.schema.yaml",
-			"popping",
-		],
+		["snow_hedao.schema.yaml", "snow_shenyun_common.yaml", "popping"],
+		["snow_hepin.schema.yaml", "snow_shenyun_common.yaml", "popping"],
+		["snow_jiandao.schema.yaml", "snow_jiandao.schema.yaml", "popping"],
+		["snow_sanpin.schema.yaml", "snow_sanpin.schema.yaml", "popping"],
 	] as const) {
 		const source = read(processorSource);
 		const selectCharacter = source.indexOf(
@@ -584,10 +569,10 @@ test("simplified preference source is retained but schema loading is suspended",
 	);
 	for (const schema of [
 		"snow_pinyin.schema.yaml",
-		"snow_sanpin.schema.yaml",
+		"snow_lanpin.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_jiandao_classic.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
+		"snow_sanpin.schema.yaml",
 		"snow_shenyun_common.yaml",
 	]) {
 		const source = read(schema);
@@ -626,7 +611,7 @@ test("reported phrase codes follow the active UED-3158ce08b5bc mapping", () => {
 	assert.equal(fixture.codes.lv, "lt");
 	assert.equal(fixture.codes.lve, "lk");
 	const rules = parseAlgebraRules(
-		read("snow_sanpin.schema.yaml"),
+		read("snow_lanpin.schema.yaml"),
 		"sanpin_algebra",
 	);
 	for (const syllable of [
@@ -687,8 +672,8 @@ test("all current schemes keep the legacy two-position jump on Ctrl+P", () => {
 		/\{ accept: "Control\+p", send_sequence: "\{Home\}\{Right\}\{Right\}", when: composing \}/u,
 	);
 	for (const schema of [
-		"snow_jiandao.schema.yaml",
-		"snow_sanpin.schema.yaml",
+		"snow_landao.schema.yaml",
+		"snow_lanpin.schema.yaml",
 		"snow_sipin.schema.yaml",
 		"snow_qingyun.schema.yaml",
 	]) {
@@ -712,7 +697,7 @@ test("Clear Rhyme shares code navigation and frees Ctrl+U for it", () => {
 });
 
 test("Three-Code supports the shared fixed-candidate controls", () => {
-	const schema = read("snow_sanpin.schema.yaml");
+	const schema = read("snow_lanpin.schema.yaml");
 	assert.match(schema, /lua_processor@\*snow\.user_dict/u);
 	assert.match(schema, /translator\/enable_schema_user_dict: true/u);
 	const processor = read("lua/snow/user_dict.lua");
@@ -744,7 +729,7 @@ test("Clear Rhyme keeps history separate from the double-backtick Lua trigger", 
 });
 
 test("Three-Code keeps two-syllable full codes ahead of colliding initial abbreviations", () => {
-	const schema = read("snow_sanpin.schema.yaml");
+	const schema = read("snow_lanpin.schema.yaml");
 	assert.match(schema, /translator\/t12_preserve_proxy_quality: true/u);
 	const translator = read("lua/snow/table_like.lua");
 	assert.match(
@@ -759,7 +744,7 @@ test("Three-Code keeps two-syllable full codes ahead of colliding initial abbrev
 
 test("OC21 KeyTao letter and number candidates follow the active schema", () => {
 	const lines = new Map(
-		read("snow_jiandao.fixed.txt")
+		read("snow_landao.fixed.txt")
 			.split(/\r?\n/u)
 			.filter((line) => line.includes("\t"))
 			.map((line) => line.split("\t", 2) as [string, string]),
@@ -806,7 +791,7 @@ test("OC21 KeyTao letter and number candidates follow the active schema", () => 
 });
 
 test("OC21 Three-Code fills every 630 slot with a unique fixed candidate", () => {
-	const fixed = read("snow_sanpin.fixed.txt");
+	const fixed = read("snow_lanpin.fixed.txt");
 	const section = fixed.match(/# 630\r?\n([\s\S]*?)\r?\n# 单字/u)?.[1];
 	assert.ok(section);
 	const rows = section
@@ -827,7 +812,7 @@ test("OC21 Three-Code fills every 630 slot with a unique fixed candidate", () =>
 });
 
 test("OC21 KeyTao fills every 630 auxiliary slot exactly once", () => {
-	const section = read("snow_jiandao.fixed.txt")
+	const section = read("snow_landao.fixed.txt")
 		.split(/^# 630\r?$/mu)[1]
 		?.split(/^#/mu)[0];
 	assert.ok(section);
@@ -848,10 +833,10 @@ test("OC21 KeyTao fills every 630 auxiliary slot exactly once", () => {
 });
 
 test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", () => {
-	const jiandao = read("snow_jiandao.schema.yaml");
-	const sanpin = read("snow_sanpin.schema.yaml");
-	assert.match(jiandao, /prism: snow_jiandao_jianpin/u);
-	assert.match(sanpin, /prism: snow_jiandao_jianpin/u);
+	const jiandao = read("snow_landao.schema.yaml");
+	const sanpin = read("snow_lanpin.schema.yaml");
+	assert.match(jiandao, /prism: snow_landao_jianpin/u);
+	assert.match(sanpin, /prism: snow_landao_jianpin/u);
 	assert.match(
 		jiandao,
 		/xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1c\//u,
@@ -860,7 +845,7 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		sanpin,
 		/xform\/~\{1,2\}\(\[bpmfdtnlgkhjqxzcsrywe\]\)\/\$1co\//u,
 	);
-	const prism = read("snow_jiandao_jianpin.schema.yaml");
+	const prism = read("snow_landao_jianpin.schema.yaml");
 	assert.match(prism, /xform\/~\{1,2\}a\/xw\//u);
 
 	const initials = [..."bpmfdtnlgkhjqxzcsrwye"];
@@ -920,11 +905,11 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		letterFullCodes.filter((code) => occupiedFullCodes.has(code)),
 		["pco", "mco", "lco", "hco", "jco", "xco", "xgo", "xlo", "xdo"],
 	);
-	const sanpinCore = read("snow_sanpin.fixed.txt").split("# 字母")[0];
+	const sanpinCore = read("snow_lanpin.fixed.txt").split("# 字母")[0];
 	for (const code of letterFullCodes) {
 		assert.doesNotMatch(sanpinCore, new RegExp(`^${code}\\t`, "mu"));
 	}
-	const jiandaoCore = read("snow_jiandao.fixed.txt");
+	const jiandaoCore = read("snow_landao.fixed.txt");
 	const letters = [...initials, "v", "i", "u", "o", "a"];
 	for (const [index, code] of letterBaseCodes.entries()) {
 		const match = jiandaoCore.match(new RegExp(`^${code}\\t(.+)$`, "mu"));
@@ -936,7 +921,7 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 		);
 	}
 
-	const sanpinFixed = read("snow_sanpin.fixed.txt");
+	const sanpinFixed = read("snow_lanpin.fixed.txt");
 	for (const [index, code] of letterFullCodes.entries()) {
 		assert.match(
 			sanpinFixed,
@@ -983,7 +968,7 @@ test("OC21 KeyTao and Three-Code keep letters and numbers on semantic codes", ()
 });
 
 test("OC21 KeyTao and Three-Code keep their processors in a compatible order", () => {
-	for (const file of ["snow_jiandao.schema.yaml", "snow_sanpin.schema.yaml"]) {
+	for (const file of ["snow_landao.schema.yaml", "snow_lanpin.schema.yaml"]) {
 		const schema = load(read(file)) as { engine: { processors: string[] } };
 		const processors = schema.engine.processors;
 		const position = (name: string) =>
@@ -1017,7 +1002,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 		.filter((code) => !occupied.has(code));
 	assert.equal(vacant.length, 81);
 	const sanpinRules = parseAlgebraRules(
-		read("snow_sanpin.schema.yaml"),
+		read("snow_lanpin.schema.yaml"),
 		"sanpin_algebra",
 	);
 	const runtimeOccupied = new Set<string>();
@@ -1037,7 +1022,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 	assert.equal(runtimeVacant.length, 87);
 	assert.equal(runtimeVacant.includes("qz"), true);
 	assert.equal(runtimeVacant.includes("zq"), true);
-	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
+	for (const file of ["snow_lanpin.schema.yaml", "snow_landao.schema.yaml"]) {
 		const schema = load(read(file)) as {
 			vacancy: { enable_user_dict: boolean };
 		};
@@ -1061,7 +1046,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 	const shapeProcessor = read("lua/snow/shape_processor.lua");
 	assert.match(shapeProcessor, /input:len\(\) ~= 2/u);
 	assert.doesNotMatch(shapeProcessor, /has_candidate/u);
-	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
+	for (const file of ["snow_lanpin.schema.yaml", "snow_landao.schema.yaml"]) {
 		assert.match(
 			read(file),
 			/vacant: true\r?\n      match: "\^\[bpmfdtnlgkhjqxzcsrwye\]\{2\}\$"/u,
@@ -1069,7 +1054,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 		);
 		assert.match(read(file), /canonical_format:\r?\n    __include: /u, file);
 	}
-	const sanpin = load(read("snow_sanpin.schema.yaml")) as {
+	const sanpin = load(read("snow_lanpin.schema.yaml")) as {
 		patch: { "translator/reserved_letter_pattern": string };
 	};
 	const reservedLetters = new RegExp(
@@ -1087,7 +1072,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 		/shape_status ~= "initial_pair"/u,
 	);
 	assert.match(
-		read("snow_jiandao.schema.yaml"),
+		read("snow_landao.schema.yaml"),
 		/lua_translator@\*snow\.table_like\*initial_pair/u,
 	);
 	assert.match(read("lua/snow/table_like.lua"), /local initial_pair = \{\}/u);
@@ -1105,11 +1090,11 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 		/Component\.Translator\(env\.engine, "initial_pair", "script_translator"\)/u,
 	);
 	assert.match(
-		read("snow_jiandao.schema.yaml"),
+		read("snow_landao.schema.yaml"),
 		/initial_pair:\r?\n  __include: \/jianpin\r?\n  tag: abc/u,
 	);
 	assert.match(
-		read("snow_jiandao.schema.yaml"),
+		read("snow_landao.schema.yaml"),
 		/translator\/reserved_initial_pair_pattern: "\^\(\?:xh\|xw\)\$"/u,
 	);
 	const enforce = read("lua/snow/enforce.lua");
@@ -1124,7 +1109,7 @@ test("vacant AA codes use runtime vacancy and bounded scheme-specific auxiliarie
 });
 
 test("Three-Code and KeyTao reserve uppercase finals for three-or-more-character jianpin", () => {
-	for (const file of ["snow_sanpin.schema.yaml", "snow_jiandao.schema.yaml"]) {
+	for (const file of ["snow_lanpin.schema.yaml", "snow_landao.schema.yaml"]) {
 		const source = read(file);
 		assert.doesNotMatch(source, /lua_processor@\*snow\.abbreviation/u);
 		assert.match(source, /strategy: append_raw/u);
@@ -1139,7 +1124,7 @@ test("Three-Code and KeyTao reserve uppercase finals for three-or-more-character
 });
 
 test("KeyTao keeps three-initial jianpin on the abc segment", () => {
-	const schema = read("snow_jiandao.schema.yaml");
+	const schema = read("snow_landao.schema.yaml");
 	assert.match(schema, /lua_translator@\*snow\.table_like\*jianpin/u);
 	assert.match(schema, /translator\/jianpin_pattern:/u);
 	assert.doesNotMatch(schema, /affix_segmentor@jianpin/u);
@@ -1149,12 +1134,12 @@ test("KeyTao keeps three-initial jianpin on the abc segment", () => {
 });
 
 test("OC21 three-character words allow a third auxiliary but four-character words stop at two", () => {
-	const keytao = read("snow_jiandao.schema.yaml");
+	const keytao = read("snow_landao.schema.yaml");
 	assert.match(keytao, /\{3\}"\r?\n\s+match_shape: "\^\.\{0,2\}\$"/u);
 	assert.match(keytao, /\{4,\}"\r?\n\s+match_shape: "\^\.\{0,1\}\$"/u);
 	assert.match(read("lua/snow/shape_filter.lua"), /three_word_order or "231"/u);
 
-	const sanpin = read("snow_sanpin.schema.yaml");
+	const sanpin = read("snow_lanpin.schema.yaml");
 	assert.match(sanpin, /\{3\}\[ivuao\]\{0,3\}/u);
 	assert.match(sanpin, /\{4,\}\[ivuao\]\{0,2\}/u);
 	assert.match(
@@ -1194,8 +1179,8 @@ test("split translators preserve native user phrase priority across routes", () 
 	assert.match(learnedPriority, /regex_match\(input, "\^\[a-z\]\+\$"\)/u);
 	assert.match(learnedPriority, /env\.cache = \{\}/u);
 	for (const schema of [
+		"snow_landao.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_jiandao_classic.schema.yaml",
 	]) {
 		const source = read(schema);
 		assert.match(
@@ -1210,10 +1195,7 @@ test("split translators preserve native user phrase priority across routes", () 
 			`${schema} 必须先恢复学习排序，再记录并后置真实首选`,
 		);
 	}
-	for (const schema of [
-		"snow_sanpin.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
-	]) {
+	for (const schema of ["snow_lanpin.schema.yaml", "snow_sanpin.schema.yaml"]) {
 		const source = read(schema);
 		assert.match(source, /lua_filter@\*snow\.learned_priority/u);
 		assert.ok(

@@ -4,7 +4,7 @@
 __include: snow_shenyun_common.yaml:/
 
 schema:
-  schema_id: snow_shenyun_tone
+  schema_id: snow_hepin
   name: 冰雪鹤拼
   version: "0.3.14"
   author:
@@ -25,11 +25,11 @@ shenyun_options:
 
 keymap:
   key: e
-  image: snow_shenyun_tone.svg
+  image: snow_hepin.svg
 
 __patch:
   - patch
-  - snow_shenyun_tone.custom:/patch?
+  - snow_hepin.custom:/patch?
 
 patch:
   speller/popping/@before 0:

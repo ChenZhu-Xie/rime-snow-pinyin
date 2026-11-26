@@ -18,10 +18,10 @@ local env = {
   },
   pair_standard_order = "21", three_word_order = "231", four_word_order = "14",
   pair_aux_cache = {}, pair_aux_cache_size = 0,
-  engine = { schema = { schema_id = "snow_jiandao_toned" } },
+  engine = { schema = { schema_id = "snow_liandao" } },
 }
 local state = {
-  id = "snow_jiandao_toned", current = "bzxd", is_pinyin = false,
+  id = "snow_liandao", current = "bzxd", is_pinyin = false,
   jiandao_active = true, show_chaifen = false,
 }
 local function match(text, input, suffix, expected)
@@ -48,7 +48,7 @@ assert(not filter.handle_candidate("冰雪", "vu", env, state))
 assert(filter.handle_candidate("人工", "i", env, state))
 assert(not filter.handle_candidate("人工", "iv", env, state))
 local function positions(input, length, expected)
-  local actual = navigator.logical_positions(input, length, "snow_jiandao_toned")
+  local actual = navigator.logical_positions(input, length, "snow_liandao")
   assert(#actual == #expected, input)
   for index, value in ipairs(expected) do assert(actual[index] == value, input .. " " .. index) end
 end

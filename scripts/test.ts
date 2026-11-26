@@ -27,16 +27,16 @@ import { copyRimeDependencies } from "./lib/rime-dependencies";
 
 const SCHEMAS = [
 	"snow_sipin",
-	"snow_sanpin",
+	"snow_lanpin",
 	"snow_yipin",
-	"snow_jiandao",
+	"snow_landao",
 	"snow_qingyun",
-	"snow_shenyun_shape",
-	"snow_shenyun_tone",
-	"snow_jiandao_classic",
-	"snow_sanpin_classic",
-	"snow_jiandao_toned",
-	"snow_zhudao",
+	"snow_hedao",
+	"snow_hepin",
+	"snow_jiandao",
+	"snow_sanpin",
+	"snow_liandao",
+	"snow_huandao",
 ];
 
 // 写时复制（APFS 上几乎不花时间），不支持时退化为普通复制

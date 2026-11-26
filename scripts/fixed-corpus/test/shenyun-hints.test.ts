@@ -67,10 +67,10 @@ test("两个 21×26 方案使用独立空桶提示，原有 21×21 方案继续�
 	assert.match(common, /lua_filter@\*snow\.shenyun_hint/u);
 	assert.doesNotMatch(common, /lua_filter@\*snow\.hint\b/u);
 	for (const schema of [
+		"snow_landao",
+		"snow_lanpin",
 		"snow_jiandao",
 		"snow_sanpin",
-		"snow_jiandao_classic",
-		"snow_sanpin_classic",
 	]) {
 		assert.match(
 			readFileSync(rootPath(`${schema}.schema.yaml`), "utf8"),

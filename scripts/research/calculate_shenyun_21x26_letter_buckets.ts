@@ -29,7 +29,7 @@ const vowels = [..."aeiou"];
 const valuableWeight = 10_000;
 const zhudao = process.argv.includes("--zhudao");
 const algebra = new SpellingAlgebra(
-	rootPath(zhudao ? "snow_zhudao.schema.yaml" : "snow_shenyun_common.yaml"),
+	rootPath(zhudao ? "snow_huandao.schema.yaml" : "snow_shenyun_common.yaml"),
 	"shenyun_algebra",
 	{ derive: false },
 );
@@ -214,9 +214,7 @@ const output = {
 		? "SNOW-ZHUDAO-OCCUPIED-LETTER-BUCKETS-V1"
 		: "SNOW-SHENYUN-21X26-OCCUPIED-LETTER-BUCKETS-V1",
 	status: "enabled",
-	schemes: zhudao
-		? ["snow_zhudao"]
-		: ["snow_shenyun_shape", "snow_shenyun_tone"],
+	schemes: zhudao ? ["snow_huandao"] : ["snow_hedao", "snow_hepin"],
 	contract: {
 		candidateOrder: ["existing-han", "uppercase-letter", "lowercase-letter"],
 		vacantBucketsUsed: 0,
@@ -232,7 +230,7 @@ const output = {
 	},
 	source: {
 		algebra: zhudao
-			? "snow_zhudao.schema.yaml:/shenyun_algebra"
+			? "snow_huandao.schema.yaml:/shenyun_algebra"
 			: "snow_shenyun_common.yaml:/shenyun_algebra",
 		dictionaries: dictionaryFiles,
 		occupiedDefinition: "single-character non-pseudo entry with weight > 1",

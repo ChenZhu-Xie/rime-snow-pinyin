@@ -13,7 +13,7 @@ import {
 } from "./lib/auxiliary-semantics";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const outputPath = join(root, "snow_sanpin.fixed.630.txt");
+const outputPath = join(root, "snow_lanpin.fixed.630.txt");
 const maximumWordsPerCode = 10;
 const auxiliarySemantics = loadAuxiliarySemantics("21x21");
 const toneKeys = keysByDigits(auxiliarySemantics.toneKeysByTone);
@@ -94,7 +94,7 @@ const output = `${lines.join("\n")}\n`;
 
 if (process.argv.includes("--check")) {
 	if (readFileSync(outputPath, "utf8").replace(/\r\n/g, "\n") !== output)
-		throw new Error("snow_sanpin.fixed.630.txt 不是当前神韵映射的生成结果。");
+		throw new Error("snow_lanpin.fixed.630.txt 不是当前神韵映射的生成结果。");
 	console.log(
 		`三拼二字词各级简码校验通过：${populatedCodes}/${codes.length} 个码位有候选。`,
 	);

@@ -31,8 +31,8 @@ sources:
     inputs:
       - adapter: ordered-fixed
         include:
-          - snow_jiandao.fixed.txt
-          - snow_sanpin.fixed.txt
+          - snow_landao.fixed.txt
+          - snow_lanpin.fixed.txt
           - snow_sipin.fixed.txt
           - snow_yipin.fixed.txt
           - snow_qingyun.fixed.txt

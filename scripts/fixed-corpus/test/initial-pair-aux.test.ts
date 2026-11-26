@@ -34,10 +34,10 @@ test("六方案声声四辅均从本方案标准二字词辅序推导，12 和 2
 
 test("四个 21×21 方案只对真实空桶接收四辅，第四辅之后阻止继续追加", () => {
 	for (const schema of [
+		"snow_landao",
+		"snow_lanpin",
 		"snow_jiandao",
 		"snow_sanpin",
-		"snow_jiandao_classic",
-		"snow_sanpin_classic",
 	]) {
 		const source = readFileSync(rootPath(`${schema}.schema.yaml`), "utf8");
 		assert.match(source, /vacant: true[\s\S]*match_shape: "\^\.\{0,3\}\$"/u);

@@ -26,7 +26,7 @@ test("UED 冻结来源逐条约束 421 音节与五辅语义", () => {
 		toneDigitsByShapeMeaning: "42310",
 	});
 	const algebra = new SpellingAlgebra(
-		rootPath("snow_sanpin.schema.yaml"),
+		rootPath("snow_lanpin.schema.yaml"),
 		"sanpin_algebra",
 	);
 	for (const [index, syllable] of source.pinyin.entries()) {

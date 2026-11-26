@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 schema:
-  schema_id: snow_jiandao_chaifen
+  schema_id: snow_landao_chaifen
   name: 冰雪兰道拆分
   version: "0.3.14"
   author:
@@ -11,4 +11,4 @@ schema:
     使用汉字自动拆分系统生成
 
 translator:
-  dictionary: snow_jiandao_chaifen
+  dictionary: snow_landao_chaifen

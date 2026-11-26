@@ -3,18 +3,18 @@ import type { KeyboardCollection } from "./types";
 const keymapRows = [
 	[
 		["snow_sipin", "四拼"],
-		["snow_jiandao_toned", "莲道"],
-		["snow_zhudao", "鹮道"],
+		["snow_liandao", "莲道"],
+		["snow_huandao", "鹮道"],
 	],
 	[
-		["snow_jiandao_classic", "键道"],
-		["snow_jiandao", "兰道"],
-		["snow_shenyun_shape", "鹤道"],
+		["snow_jiandao", "键道"],
+		["snow_landao", "兰道"],
+		["snow_hedao", "鹤道"],
 	],
 	[
-		["snow_sanpin_classic", "三拼"],
-		["snow_sanpin", "兰拼"],
-		["snow_shenyun_tone", "鹤拼"],
+		["snow_sanpin", "三拼"],
+		["snow_lanpin", "兰拼"],
+		["snow_hepin", "鹤拼"],
 	],
 ] as const;
 

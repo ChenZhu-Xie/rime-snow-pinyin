@@ -4,7 +4,7 @@
 __include: snow_bihua.schema.yaml:/
 
 schema:
-  schema_id: snow_jiandao_bihua
+  schema_id: snow_landao_bihua
   name: 冰雪兰道笔画
   version: "0.3.14"
   author:
@@ -14,14 +14,14 @@ schema:
 
 __patch:
   - patch
-  - snow_jiandao_bihua.custom:/patch?
+  - snow_landao_bihua.custom:/patch?
 
 patch:
   speller/alphabet: aviou
   speller/algebra:
     - xform/[A-Z]+$//
     - xlit/12345/viuoa/
-  translator/prism: snow_jiandao_bihua
+  translator/prism: snow_landao_bihua
   translator/preedit_format: [xlit/viuoa/一丨丿丶乙/]
   translator/comment_format:
     - xform/[A-Z]+$//

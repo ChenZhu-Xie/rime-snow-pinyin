@@ -17,7 +17,7 @@ local filter = {}
 function filter.init(env)
   local id = env.engine.schema.schema_id
   local semantics = auxiliary_semantics["21x21"]
-  local uses_tone = id == "snow_sanpin" or id == "snow_sanpin_classic"
+  local uses_tone = id == "snow_lanpin" or id == "snow_sanpin"
   env.shortcut_keys = uses_tone and semantics.tone_keys_by_tone or semantics.stroke_keys_by_stroke
   local initials = "bpmfdtnlgkhjqxzcsrywe"
   local initial_pattern = "[" .. initials .. "]"

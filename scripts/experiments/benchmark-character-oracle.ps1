@@ -1,7 +1,7 @@
 param(
   [ValidateRange(1,4)][int]$Parallelism=1,
   [ValidateSet('compare','batch','collect')][string]$Mode='compare',
-  [string[]]$Schemas=@('snow_sipin','snow_sanpin','snow_shenyun_tone','snow_qingyun'),
+  [string[]]$Schemas=@('snow_sipin','snow_lanpin','snow_hepin','snow_qingyun'),
   [string]$InputPath='scripts/data/character-budgeted-probes.json',
   [string]$OutputBase=''
 )

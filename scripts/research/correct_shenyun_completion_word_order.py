@@ -27,25 +27,25 @@ def once(text: str, old: str, new: str) -> str:
 
 
 def annotate_deployed_order(data: dict, html: str) -> str:
-    data["bPathBenchmark"]["deployed21x21KeytaoWordOrder"] = "first character then second (snow_jiandao shape_filter.lua)"
-    data["bPathBenchmark"]["comparison21x21KeytaoWordOrder"] = "first character then second (matches deployed snow_jiandao full word)"
+    data["bPathBenchmark"]["deployed21x21KeytaoWordOrder"] = "first character then second (snow_landao shape_filter.lua)"
+    data["bPathBenchmark"]["comparison21x21KeytaoWordOrder"] = "first character then second (matches deployed snow_landao full word)"
     # Previous page copies contain both the initial neutral text and the later
     # mistaken claim that deployed Keytao uses second-character B first.
     replacements = (
         (
             ("旧 21×21 八项数据采用次字先的历史口径，单独留在 bPathBenchmarkLegacy；当前列按本页新顺序计算。",
              "现行 Lua 键道二字词仍是次字先；本页 21×21 首字先是用户指定的 benchmark 合同。历史次字先八项留在 bPathBenchmarkLegacy，二者不能混用。"),
-            "snow_jiandao 实际二字全码的形码为首字先、次字后；本页 21×21 与之相同。历史次字先八项留在 bPathBenchmarkLegacy，二者不能混用。",
+            "snow_landao 实际二字全码的形码为首字先、次字后；本页 21×21 与之相同。历史次字先八项留在 bPathBenchmarkLegacy，二者不能混用。",
         ),
         (
             ("其他键道及三拼先次字 B、再首字 B。</p>",
              "其他键道及三拼先次字 B、再首字 B。现行 Lua 的 21×21 键道词也为次字先，本页首字先属于指定 benchmark 合同。</p>"),
-            "其他键道及三拼先次字 B、再首字 B；21×21 键道与 snow_jiandao 实际二字全码形码顺序一致。</p>",
+            "其他键道及三拼先次字 B、再首字 B；21×21 键道与 snow_landao 实际二字全码形码顺序一致。</p>",
         ),
         (
             ("模型速度为时间换算。</p>",
              "模型速度为时间换算；21×21 键道词首字先尚非现行 Lua 的实际输入顺序。</p>"),
-            "模型速度为时间换算；21×21 键道二字全码的 B 顺序与 snow_jiandao 实际候选过滤一致。</p>",
+            "模型速度为时间换算；21×21 键道二字全码的 B 顺序与 snow_landao 实际候选过滤一致。</p>",
         ),
     )
     for previous, corrected in replacements:

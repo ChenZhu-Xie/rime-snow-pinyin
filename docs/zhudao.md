@@ -2,9 +2,9 @@
 
 与冰雪鹤道共用四声母长词补全、大写续写和四主码词长直选；`<` 选四字词首选，`>` 优先选三字词并以五字及以上词兜底。当前布局的示例及边界见[四主码词长直选](word-length-selection.md)。
 
-冰雪鹮道（`snow_zhudao`）是生产方案，使用 21×26 键域的带调双拼＋键道形辅。布局来自本机双拼布局 Benchmark 的 `T2126-V52-M4-ec60a3637a99`（「21×26 带调 · R2 加倍成本精修 10/9/7」，布局 ID 同方案 ID）；冻结数据及来源校验值见 [配置](../config/snow-zhudao-mapping.json)。来源页面的 1,407 个实际带调音节已独立保留并逐条验证。`10/9/7` 表示上、中、下排分别使用的次键数。
+冰雪鹮道（`snow_huandao`）是生产方案，使用 21×26 键域的带调双拼＋键道形辅。布局来自本机双拼布局 Benchmark 的 `T2126-V52-M4-ec60a3637a99`（「21×26 带调 · R2 加倍成本精修 10/9/7」，布局 ID 同方案 ID）；冻结数据及来源校验值见 [配置](../config/snow-zhudao-mapping.json)。来源页面的 1,407 个实际带调音节已独立保留并逐条验证。`10/9/7` 表示上、中、下排分别使用的次键数。
 
-![冰雪鹮道键位图](../lua/snow/keymaps/snow_zhudao.svg)
+![冰雪鹮道键位图](../lua/snow/keymaps/snow_huandao.svg)
 
 ## 声韵调
 
@@ -49,7 +49,7 @@
 | 人工智能 | `rgxn`、`rgxne`、`rgxneu` |
 | 不到（声声） | `bd`、`bde`、`bdeu`、`bdeue`、`bdeuea` |
 
-「不到」先取「不」的 `eu`，再取「到」的 `ea`。输入第七码前顶出当前完整候选并重放新键；退格仍能逐码恢复筛选。上屏后的学习状态由独立的棱镜和 `snow_zhudao_r2_ec60a3637a99` 用户固顶库隔离。
+「不到」先取「不」的 `eu`，再取「到」的 `ea`。输入第七码前顶出当前完整候选并重放新键；退格仍能逐码恢复筛选。上屏后的学习状态由独立的棱镜和 `snow_huandao_r2_ec60a3637a99` 用户固顶库隔离。
 
 字母沿用「汉字首选、大写第二、小写第三」的候选合同，按当前带调布局重新计算 26 个占用桶，例如 `bm` 输入字母 `B/b`；详见 [字母桶配置](../config/snow-zhudao-letter-buckets.json)。不占用声声空桶。
 
@@ -63,10 +63,10 @@
 
 ## 安装与验证
 
-先在输入法的方案设置中启用冰雪鹮道，或在用户 `default.custom.yaml` 现有的 `patch/schema_list` 中追加 `- {schema: snow_zhudao}`，保留其他方案，然后重新部署。仅复制方案文件或在自带菜单中看到名称，不会让部署器编译它。部署后应生成 `build/snow_zhudao.schema.yaml` 和 `build/snow_zhudao.prism.bin`；未在当前方案列表启用时，自带菜单显示「未启用：请加入方案列表后重新部署」，即使留有旧编译文件也不能切换。已启用但缺少已编译方案时显示「未部署：请加入方案列表后重新部署」，选择它不会切换到空方案。
+先在输入法的方案设置中启用冰雪鹮道，或在用户 `default.custom.yaml` 现有的 `patch/schema_list` 中追加 `- {schema: snow_huandao}`，保留其他方案，然后重新部署。仅复制方案文件或在自带菜单中看到名称，不会让部署器编译它。部署后应生成 `build/snow_huandao.schema.yaml` 和 `build/snow_huandao.prism.bin`；未在当前方案列表启用时，自带菜单显示「未启用：请加入方案列表后重新部署」，即使留有旧编译文件也不能切换。已启用但缺少已编译方案时显示「未部署：请加入方案列表后重新部署」，选择它不会切换到空方案。
 
 部署完成后，在方案菜单中输入 `dthd` 选择冰雪鹮道。空输入中文模式按 `e` 显示键位图；移动端使用含鹮道入口的新版元书／同文皮肤。拼音反查为 `a`＋全拼，笔画与部件全拼反查共用 `u`，笔画顺序横竖撇点折为 `eiuoa`。`;`、`/` 分别在顶出候选后追加「的」「了」。
 
 来源页面的 1,407 个带调音节占用 526／546 桶，剩余 20 桶；本仓库现行完整词典另有扩展读音，实际占用 531 桶、剩余 15 桶，其中 14 个是声声空桶。替换前的旧精修布局在相同口径下分别占用 516／522 桶、剩余 30／24 桶，其中完整词典的声声空桶为 19 个；本次有 1,096 个参考音节改变编码。冰雪鹤道在同一完整词典口径下剩余 142 桶，其中声声空桶 129 个。两个口径不混用，扩展词典更新后以生成检查结果为准。
 
-本地运行 `bun scripts/generate-zhudao.ts --check`、`bun scripts/research/calculate_shenyun_21x26_letter_buckets.ts --zhudao --check`、`bun scripts/align-fixed-with-sipin.ts --check`、`bun scripts/generate-shenyun-hints.ts --check` 和 `bun test --cwd scripts fixed-corpus/test/zhudao.test.ts`。真实候选测试仅由 GitHub Actions 在 librime 1.13.1 与 1.17 上运行，见 [候选用例](../spec/snow_zhudao.test.yaml)；性能场景复用全部方案的统一预算。
+本地运行 `bun scripts/generate-zhudao.ts --check`、`bun scripts/research/calculate_shenyun_21x26_letter_buckets.ts --zhudao --check`、`bun scripts/align-fixed-with-sipin.ts --check`、`bun scripts/generate-shenyun-hints.ts --check` 和 `bun test --cwd scripts fixed-corpus/test/zhudao.test.ts`。真实候选测试仅由 GitHub Actions 在 librime 1.13.1 与 1.17 上运行，见 [候选用例](../spec/snow_huandao.test.yaml)；性能场景复用全部方案的统一预算。

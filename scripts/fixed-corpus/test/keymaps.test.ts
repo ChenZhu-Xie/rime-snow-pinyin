@@ -76,14 +76,14 @@ function assertEveryMovedKeycapHasOneColorLink(svg: string, image: string) {
 
 const schemes = [
 	["snow_sipin.schema.yaml", "e", "snow_sipin.svg"],
+	["snow_lanpin.schema.yaml", "v", "snow_lanpin.svg"],
+	["snow_landao.schema.yaml", "v", "snow_landao.svg"],
 	["snow_sanpin.schema.yaml", "v", "snow_sanpin.svg"],
 	["snow_jiandao.schema.yaml", "v", "snow_jiandao.svg"],
-	["snow_sanpin_classic.schema.yaml", "v", "snow_sanpin_classic.svg"],
-	["snow_jiandao_classic.schema.yaml", "v", "snow_jiandao_classic.svg"],
-	["snow_jiandao_toned.schema.yaml", "v", "snow_jiandao_toned.svg"],
-	["snow_shenyun_shape.schema.yaml", "e", "snow_shenyun_shape.svg"],
-	["snow_shenyun_tone.schema.yaml", "e", "snow_shenyun_tone.svg"],
-	["snow_zhudao.schema.yaml", "e", "snow_zhudao.svg"],
+	["snow_liandao.schema.yaml", "v", "snow_liandao.svg"],
+	["snow_hedao.schema.yaml", "e", "snow_hedao.svg"],
+	["snow_hepin.schema.yaml", "e", "snow_hepin.svg"],
+	["snow_huandao.schema.yaml", "e", "snow_huandao.svg"],
 ] as const;
 
 test("eight released diagrams bind only their vacant standalone key to a keymap", () => {
@@ -99,10 +99,10 @@ test("eight released diagrams bind only their vacant standalone key to a keymap"
 	}
 	for (const schema of [
 		"snow_sipin.schema.yaml",
+		"snow_lanpin.schema.yaml",
+		"snow_landao.schema.yaml",
 		"snow_sanpin.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
-		"snow_jiandao_classic.schema.yaml",
 		"snow_shenyun_common.yaml",
 	]) {
 		const document = load(read(schema)) as {
@@ -249,10 +249,10 @@ test("mobile skins expose all keymaps without stealing normal letter taps", () =
 
 test("active diagrams identify UED-3158ce08b5bc and RC26-39a5bfdc045342cd", () => {
 	for (const [id, name] of [
-		["snow_jiandao", "冰雪兰道"],
-		["snow_sanpin", "冰雪兰拼"],
-		["snow_shenyun_shape", "冰雪鹤道"],
-		["snow_shenyun_tone", "冰雪鹤拼"],
+		["snow_landao", "冰雪兰道"],
+		["snow_lanpin", "冰雪兰拼"],
+		["snow_hedao", "冰雪鹤道"],
+		["snow_hepin", "冰雪鹤拼"],
 	]) {
 		const schema = load(read(`${id}.schema.yaml`)) as {
 			schema: { name: string };
@@ -260,10 +260,10 @@ test("active diagrams identify UED-3158ce08b5bc and RC26-39a5bfdc045342cd", () =
 		assert.equal(schema.schema.name, name);
 		assert.ok(read(`lua/snow/keymaps/${id}.svg`).includes(`${name} · `));
 	}
-	for (const image of ["snow_jiandao.svg", "snow_sanpin.svg"]) {
+	for (const image of ["snow_landao.svg", "snow_lanpin.svg"]) {
 		assert.match(read(`lua/snow/keymaps/${image}`), /UED-3158ce08b5bc/u);
 	}
-	for (const image of ["snow_shenyun_shape.svg", "snow_shenyun_tone.svg"]) {
+	for (const image of ["snow_hedao.svg", "snow_hepin.svg"]) {
 		assert.match(read(`lua/snow/keymaps/${image}`), /RC26-39a5bfdc045342cd/u);
 	}
 	for (const [image, label] of [
@@ -326,10 +326,10 @@ test("README and popup diagrams link every moved source with one distinct color"
 });
 
 test("tone and shape diagrams keep their auxiliary semantics separate", () => {
-	const sanpin = read("lua/snow/keymaps/snow_sanpin.svg");
-	const jiandao = read("lua/snow/keymaps/snow_jiandao.svg");
-	const tone = read("lua/snow/keymaps/snow_shenyun_tone.svg");
-	const shape = read("lua/snow/keymaps/snow_shenyun_shape.svg");
+	const sanpin = read("lua/snow/keymaps/snow_lanpin.svg");
+	const jiandao = read("lua/snow/keymaps/snow_landao.svg");
+	const tone = read("lua/snow/keymaps/snow_hepin.svg");
+	const shape = read("lua/snow/keymaps/snow_hedao.svg");
 	assert.match(sanpin, /一声 ˉ/u);
 	assert.doesNotMatch(sanpin, /土\/士/u);
 	assert.match(jiandao, /土\/士 vo/u);
@@ -348,9 +348,9 @@ test("shape diagrams distinguish stroke and single-key and two-key roots", () =>
 		"double-root": 15,
 	} as const;
 	for (const image of [
+		"snow_landao.svg",
 		"snow_jiandao.svg",
-		"snow_jiandao_classic.svg",
-		"snow_shenyun_shape.svg",
+		"snow_hedao.svg",
 	]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		const colors = new Map<string, string>();
@@ -404,11 +404,11 @@ test("shape diagrams distinguish stroke and single-key and two-key roots", () =>
 		);
 	}
 	assert.match(
-		read("lua/snow/keymaps/snow_jiandao_classic.svg"),
+		read("lua/snow/keymaps/snow_jiandao.svg"),
 		/<text\b(?=[^>]*data-aux-kind="double-root")[^>]*>土\/士 vo<\/text>/u,
 	);
 	assert.match(
-		read("lua/snow/keymaps/snow_shenyun_shape.svg"),
+		read("lua/snow/keymaps/snow_hedao.svg"),
 		/<text\b(?=[^>]*data-aux-kind="double-root")[^>]*>土\/士 eo<\/text>/u,
 	);
 });
@@ -442,9 +442,9 @@ test("all diagrams reserve upper-right framed badges for the five stroke auxilia
 
 test("tone auxiliaries are centered and no smaller than shape roots", () => {
 	for (const image of [
+		"snow_lanpin.svg",
 		"snow_sanpin.svg",
-		"snow_sanpin_classic.svg",
-		"snow_shenyun_tone.svg",
+		"snow_hepin.svg",
 	]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		const tags = [
@@ -461,9 +461,9 @@ test("tone auxiliaries are centered and no smaller than shape roots", () => {
 test("tone marks use one optical center independent of font metrics", () => {
 	for (const image of [
 		"snow_sipin.svg",
+		"snow_lanpin.svg",
 		"snow_sanpin.svg",
-		"snow_sanpin_classic.svg",
-		"snow_shenyun_tone.svg",
+		"snow_hepin.svg",
 	]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		const nameTags = [
@@ -512,7 +512,7 @@ test("tone marks use one optical center independent of font metrics", () => {
 });
 
 test("both Shenyun diagrams keep the crowded er and u finals readable", () => {
-	for (const image of ["snow_shenyun_shape.svg", "snow_shenyun_tone.svg"]) {
+	for (const image of ["snow_hedao.svg", "snow_hepin.svg"]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		for (const final of ["er", "u"]) {
 			const tag = svg.match(
@@ -528,14 +528,14 @@ test("both Shenyun diagrams keep the crowded er and u finals readable", () => {
 test("moved initials pair source keycaps with target labels by distinct colors", () => {
 	const softenedKeys: Record<string, string> = {
 		"snow_sipin.svg": "",
-		"snow_sanpin.svg": "KS",
-		"snow_jiandao.svg": "KS",
-		"snow_jiandao_toned.svg": "KS",
-		"snow_sanpin_classic.svg": "",
-		"snow_jiandao_classic.svg": "",
-		"snow_shenyun_shape.svg": "QWSYX",
-		"snow_shenyun_tone.svg": "QWSYX",
-		"snow_zhudao.svg": "WYLX",
+		"snow_lanpin.svg": "KS",
+		"snow_landao.svg": "KS",
+		"snow_liandao.svg": "KS",
+		"snow_sanpin.svg": "",
+		"snow_jiandao.svg": "",
+		"snow_hedao.svg": "QWSYX",
+		"snow_hepin.svg": "QWSYX",
+		"snow_huandao.svg": "WYLX",
 	};
 	for (const [, , image] of schemes) {
 		const svg = read(`lua/snow/keymaps/${image}`);
@@ -555,11 +555,11 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 		}
 	}
 	const linkCases = [
-		["snow_shenyun_shape.svg", "Q", "F", "q", "#e83e8c"],
-		["snow_shenyun_shape.svg", "S", "Q", "s", "#00a651"],
-		["snow_shenyun_shape.svg", "X", "Y", "x", "#005bd8"],
-		["snow_jiandao.svg", "K", "P", "k", "#00acc1"],
-		["snow_jiandao.svg", "S", "C", "s", "#00a651"],
+		["snow_hedao.svg", "Q", "F", "q", "#e83e8c"],
+		["snow_hedao.svg", "S", "Q", "s", "#00a651"],
+		["snow_hedao.svg", "X", "Y", "x", "#005bd8"],
+		["snow_landao.svg", "K", "P", "k", "#00acc1"],
+		["snow_landao.svg", "S", "C", "s", "#00a651"],
 	] as const;
 	for (const [image, source, target, initial, color] of linkCases) {
 		const svg = read(`lua/snow/keymaps/${image}`);
@@ -584,7 +584,7 @@ test("moved initials pair source keycaps with target labels by distinct colors",
 	assert.notEqual(linkCases[0][4], linkCases[1][4]);
 	assert.notEqual(linkCases[0][4], linkCases[2][4]);
 
-	const d3F = keyGroup(read("lua/snow/keymaps/snow_shenyun_shape.svg"), "F");
+	const d3F = keyGroup(read("lua/snow/keymaps/snow_hedao.svg"), "F");
 	const d3FKeycap = d3F.match(/<text\b[^>]*data-key-label="true"[^>]*>/u)?.[0];
 	assert.ok(d3FKeycap);
 	assert.match(d3FKeycap, /font-weight="800"/u);
@@ -624,7 +624,7 @@ test("every moved initial contrasts strongly with the initial letter on its key"
 });
 
 test("moved W/Y zero initials use separate Morandi foregrounds and cards", () => {
-	const svg = read("lua/snow/keymaps/snow_shenyun_shape.svg");
+	const svg = read("lua/snow/keymaps/snow_hedao.svg");
 	for (const [source, target, label, foreground, background, border] of [
 		["W", "J", "Ø W", "#3e98b0", "#deedf1", "#6e9eaa"],
 		["Y", "W", "Ø Y/YU", "#b67747", "#f2e5da", "#b88a68"],
@@ -660,7 +660,7 @@ test("moved W/Y zero initials use separate Morandi foregrounds and cards", () =>
 });
 
 test("KeyTao final e does not inherit keycap emphasis", () => {
-	const svg = read("lua/snow/keymaps/snow_jiandao_classic.svg");
+	const svg = read("lua/snow/keymaps/snow_jiandao.svg");
 	const tag = svg.match(/<text\b[^>]*data-final="e"[^>]*>/u)?.[0];
 	assert.ok(tag, "KeyTao should show final e");
 	const weight = Number(tag.match(/font-weight="([^"]+)"/u)?.[1]);
@@ -694,7 +694,7 @@ test("only finals that actually shrink receive a compensating bold weight", () =
 });
 
 test("classic KeyTao and Three-Code show the X-key uang fly route", () => {
-	for (const image of ["snow_jiandao_classic.svg", "snow_sanpin_classic.svg"]) {
+	for (const image of ["snow_jiandao.svg", "snow_sanpin.svg"]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		assert.match(keyGroup(svg, "M"), /韵码 ian \/ uang/u, image);
 		assert.match(keyGroup(svg, "X"), /韵码 iang \/ uang\*/u, image);
@@ -702,7 +702,7 @@ test("classic KeyTao and Three-Code show the X-key uang fly route", () => {
 });
 
 test("classic Three-Code uses the same IVUAO tone order as current Three-Code", () => {
-	for (const image of ["snow_sanpin.svg", "snow_sanpin_classic.svg"]) {
+	for (const image of ["snow_lanpin.svg", "snow_sanpin.svg"]) {
 		const svg = read(`lua/snow/keymaps/${image}`);
 		for (const [key, tone] of [
 			["I", "一声"],
@@ -714,10 +714,7 @@ test("classic Three-Code uses the same IVUAO tone order as current Three-Code", 
 			assert.match(keyGroup(svg, key), new RegExp(`辅键 ${tone}`, "u"), image);
 		}
 	}
-	assert.match(
-		read("snow_sanpin_classic.schema.yaml"),
-		/xlit\/12345\/ivuao\//u,
-	);
+	assert.match(read("snow_sanpin.schema.yaml"), /xlit\/12345\/ivuao\//u);
 });
 
 test("Four-Code separates abdomen tail tone and stroke foreground semantics", () => {
@@ -807,11 +804,11 @@ test("semantic key roles drive fills, borders, and auxiliary treatment", () => {
 	assert.match(sipin, /<g data-key="A" data-role="rhyme-auxiliary">/u);
 	assert.match(sipin, /<g data-key="Q" data-role="initial-only">/u);
 
-	const sanpin = read("lua/snow/keymaps/snow_sanpin.svg");
+	const sanpin = read("lua/snow/keymaps/snow_lanpin.svg");
 	assert.match(sanpin, /<g data-key="A" data-role="auxiliary-only">/u);
 	assert.match(sanpin, /<g data-key="E" data-role="sound" data-multi="true">/u);
 
-	const shenyun = read("lua/snow/keymaps/snow_shenyun_shape.svg");
+	const shenyun = read("lua/snow/keymaps/snow_hedao.svg");
 	assert.match(shenyun, /<g data-key="A" data-role="rhyme-auxiliary">/u);
 	assert.match(shenyun, /fill="#748f9e"[^>]*>i<\/text>/u);
 	assert.match(shenyun, /fill="#929967"[^>]*>u<\/text>/u);
@@ -822,7 +819,7 @@ test("semantic key roles drive fills, borders, and auxiliary treatment", () => {
 });
 
 test("冰雪鹮道按实际带调音节显示声调区，并加深兼作韵键的五辅底色", () => {
-	const svg = read("lua/snow/keymaps/snow_zhudao.svg");
+	const svg = read("lua/snow/keymaps/snow_huandao.svg");
 	const mapping = JSON.parse(read("config/snow-zhudao-mapping.json")) as {
 		referenceTonedCodes: Record<string, string>;
 		shapeKeysByMeaning: string;
@@ -861,7 +858,7 @@ test("冰雪鹮道按实际带调音节显示声调区，并加深兼作韵键�
 });
 
 test("带调主码图保持跨排韵组颜色，纯形辅与无调主码图保留各自语义", () => {
-	for (const name of ["snow_zhudao", "snow_jiandao_toned"]) {
+	for (const name of ["snow_huandao", "snow_liandao"]) {
 		const svg = read(`lua/snow/keymaps/${name}.svg`);
 		const colors = new Map<string, string>();
 		for (const key of letterKeys) {
@@ -877,13 +874,13 @@ test("带调主码图保持跨排韵组颜色，纯形辅与无调主码图保�
 		assert.equal(colors.size, 10);
 		assert.equal(new Set(colors.values()).size, 10);
 	}
-	const sword = read("lua/snow/keymaps/snow_jiandao_toned.svg");
+	const sword = read("lua/snow/keymaps/snow_liandao.svg");
 	for (const key of "AVUIO") {
 		assert.match(keyGroup(sword, key), /width="92"[^>]*fill="#e8d8f5"/u);
 		assert.doesNotMatch(keyGroup(sword, key), /data-tone-region=/u);
 	}
 	for (const [, , image] of schemes) {
-		if (["snow_zhudao.svg", "snow_jiandao_toned.svg"].includes(image)) continue;
+		if (["snow_huandao.svg", "snow_liandao.svg"].includes(image)) continue;
 		assert.doesNotMatch(
 			read(`lua/snow/keymaps/${image}`),
 			/data-tone-region=/u,
@@ -892,7 +889,7 @@ test("带调主码图保持跨排韵组颜色，纯形辅与无调主码图保�
 });
 
 test("ice KeyTao is generated as searchable native SVG", () => {
-	const jiandao = read("lua/snow/keymaps/snow_jiandao_classic.svg");
+	const jiandao = read("lua/snow/keymaps/snow_jiandao.svg");
 	assert.match(jiandao, /<title id="title">冰雪键道键位映射图<\/title>/u);
 	assert.match(jiandao, />zh<\/text>/u);
 	assert.match(jiandao, />土\/士 vo<\/text>/u);

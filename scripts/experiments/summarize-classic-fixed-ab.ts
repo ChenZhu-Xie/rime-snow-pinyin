@@ -13,8 +13,8 @@ const chars = benchmarkCharacters(
 );
 const cohorts = [500, 1000, 1500, 2000, 3000, 4000, 5000, 6000, 8000];
 const names = {
-	snow_jiandao_classic: "冰雪键道",
-	snow_sanpin_classic: "冰雪三拼",
+	snow_jiandao: "冰雪键道",
+	snow_sanpin: "冰雪三拼",
 };
 const results: any[] = [];
 const differences = [
@@ -36,8 +36,8 @@ for (const [schema, name] of Object.entries(names)) {
 		.filter((k) => aManifest.sources[k] !== bManifest.sources[k])
 		.sort();
 	assert.deepEqual(changedSources, [
-		"snow_jiandao_classic.fixed.txt",
-		"snow_sanpin_classic.fixed.txt",
+		"snow_jiandao.fixed.txt",
+		"snow_sanpin.fixed.txt",
 	]);
 	const groups: any = {};
 	for (const variant of ["current", "upstream-singles"]) {

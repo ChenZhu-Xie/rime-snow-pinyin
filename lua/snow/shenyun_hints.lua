@@ -8,7 +8,7 @@
 
 ---@type table<string, table<string, ShenyunHint[]>>
 local hints = {
-  snow_shenyun_shape = {
+  snow_hedao = {
     b = {
       { code = "by", text = "必须", weight = 502404 },
       { code = "bv", text = "不是", weight = 501670 },
@@ -181,7 +181,7 @@ local hints = {
       { code = "zb", text = "坐标", weight = 114930 },
     },
   },
-  snow_shenyun_tone = {
+  snow_hepin = {
     b = {
       { code = "by", text = "必须", weight = 502404 },
       { code = "bv", text = "不是", weight = 501670 },
@@ -354,7 +354,7 @@ local hints = {
       { code = "zb", text = "坐标", weight = 114930 },
     },
   },
-  snow_zhudao = {
+  snow_huandao = {
     b = {
       { code = "bt", text = "不同", weight = 501387 },
       { code = "bd", text = "不到", weight = 500390 },

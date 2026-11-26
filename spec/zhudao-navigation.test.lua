@@ -3,7 +3,7 @@ package.loaded["snow.snow"] = { kAccepted = 1, kNoop = 2 }
 local navigator = require "snow.code_navigator"
 
 local function check(input, length, expected)
-  local actual = navigator.logical_positions(input, length, "snow_zhudao")
+  local actual = navigator.logical_positions(input, length, "snow_huandao")
   assert(#actual == #expected, input)
   for index, value in ipairs(expected) do
     assert(actual[index] == value,

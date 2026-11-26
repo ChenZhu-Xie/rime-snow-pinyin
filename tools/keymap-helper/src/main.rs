@@ -1181,7 +1181,7 @@ mod tests {
 
     #[test]
     fn parses_follow_and_legacy_toggle_commands() {
-        let follow = parse_command("follow\tsnow_jiandao:2\tC:/keymaps/snow_jiandao.svg").unwrap();
+        let follow = parse_command("follow\tsnow_landao:2\tC:/keymaps/snow_landao.svg").unwrap();
         assert_eq!(follow.action, CommandAction::Follow);
         let legacy = parse_command("snow_sipin:1\tC:/keymaps/snow_sipin.svg").unwrap();
         assert_eq!(legacy.action, CommandAction::Toggle);

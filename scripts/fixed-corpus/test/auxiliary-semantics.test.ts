@@ -106,7 +106,7 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 	assert.match(common, /^stroke:\r?\n[\s\S]*?^  prefix: "u"$/mu);
 	assert.match(common, /^radical:\r?\n[\s\S]*?^  prefix: "u"$/mu);
 
-	for (const path of ["snow_jiandao_bihua.schema.yaml"]) {
+	for (const path of ["snow_landao_bihua.schema.yaml"]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
 		assert.match(
 			schema,
@@ -119,7 +119,7 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 			path,
 		);
 	}
-	for (const path of ["snow_sanpin_bihua.schema.yaml"]) {
+	for (const path of ["snow_lanpin_bihua.schema.yaml"]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
 		assert.match(
 			schema,
@@ -134,9 +134,9 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 	}
 
 	for (const path of [
+		"snow_landao.schema.yaml",
+		"snow_liandao.schema.yaml",
 		"snow_jiandao.schema.yaml",
-		"snow_jiandao_toned.schema.yaml",
-		"snow_jiandao_classic.schema.yaml",
 	]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
 		assert.match(
@@ -148,10 +148,7 @@ test("21×21 独立 U 笔画反查保留键道形义序与三拼调键序", () =
 			path,
 		);
 	}
-	for (const path of [
-		"snow_sanpin.schema.yaml",
-		"snow_sanpin_classic.schema.yaml",
-	]) {
+	for (const path of ["snow_lanpin.schema.yaml", "snow_sanpin.schema.yaml"]) {
 		const schema = readFileSync(new URL(path, root), "utf8");
 		assert.match(
 			schema,
@@ -175,7 +172,7 @@ test("键道二分形辅保留折横撇竖点含义", () => {
 		[..."avuio"],
 	);
 	const decomposition = readFileSync(
-		new URL("snow_jiandao_chaifen.dict.yaml", root),
+		new URL("snow_landao_chaifen.dict.yaml", root),
 		"utf8",
 	).match(/^冰\t([^\r\n]+)$/mu)?.[1];
 	assert.equal(decomposition, "丶一・水");

@@ -45,7 +45,7 @@ jobs:
       - name: 核对全部版本号
         run: bun scripts/version.ts --check
       - name: 检查发布脚本
-        run: bun test scripts/benchmark-latency.test.ts scripts/version.test.ts scripts/workflows.test.ts
+        run: bun test scripts/schema-id-migration.test.ts scripts/benchmark-latency.test.ts scripts/version.test.ts scripts/workflows.test.ts
       - name: 检查方案菜单覆盖与快捷键
         run: bun test scripts/fixed-corpus/test/scheme-regressions.test.ts
       - name: 检查九个方案的全部拼音音节编码
@@ -199,25 +199,25 @@ jobs:
           - name: 冰雪四拼
             schema: snow_sipin
           - name: 冰雪兰拼
-            schema: snow_sanpin
+            schema: snow_lanpin
           - name: 冰雪一拼
             schema: snow_yipin
           - name: 冰雪兰道
-            schema: snow_jiandao
+            schema: snow_landao
           - name: 冰雪清韵
             schema: snow_qingyun
           - name: 冰雪鹤道
-            schema: snow_shenyun_shape
+            schema: snow_hedao
           - name: 冰雪鹤拼
-            schema: snow_shenyun_tone
+            schema: snow_hepin
           - name: 冰雪键道
-            schema: snow_jiandao_classic
+            schema: snow_jiandao
           - name: 冰雪三拼
-            schema: snow_sanpin_classic
+            schema: snow_sanpin
           - name: 冰雪莲道
-            schema: snow_jiandao_toned
+            schema: snow_liandao
           - name: 冰雪鹮道
-            schema: snow_zhudao
+            schema: snow_huandao
     steps:
       - name: 获取代码
         if: inputs.schema == '' || inputs.schema == matrix.scheme.schema

@@ -19,16 +19,16 @@
 
 ## 三拼适配
 
-- `snow_sanpin.schema.yaml` 的声母、韵母、零声母和字母入口全部改用 U357，声调键顺序仍为 `IVUAO`。
-- 重新生成 `snow_sanpin.fixed.txt` 与 `snow_sanpin.fixed.630.txt`。AA 区由 366 个二码单字和 75 个天然空码二简完整覆盖，不再牺牲冷门音码。
+- `snow_lanpin.schema.yaml` 的声母、韵母、零声母和字母入口全部改用 U357，声调键顺序仍为 `IVUAO`。
+- 重新生成 `snow_lanpin.fixed.txt` 与 `snow_lanpin.fixed.630.txt`。AA 区由 366 个二码单字和 75 个天然空码二简完整覆盖，不再牺牲冷门音码。
 - 三拼 630 固顶为 105 个二码词和 505 个三码词；候选审计表仍有 550/630 个码位可选。
 - 字母入口改为 `v/i/u/o/a → xg/xl/xh/xd/xw` 后追加轻声键 `o`；当前与完整音节相撞的字母全码为 `tco/hco/xgo/xlo`，固顶字母保持优先。
 - 数字、固定词、略码、全码回归和 Mira 用例均按新声韵码重写。
 
 ## 键道适配
 
-- `snow_jiandao.schema.yaml` 与共享 `snow_jiandao_jianpin.schema.yaml` 同步新的元音字母入口。
-- 重新生成 `snow_jiandao.fixed.txt`：二简与 AA 单字空间和三拼共用同一 U357 音码域；键道 630 为 105 个二码词和 525 个三码词，另有 1618 个三码单字。
+- `snow_landao.schema.yaml` 与共享 `snow_landao_jianpin.schema.yaml` 同步新的元音字母入口。
+- 重新生成 `snow_landao.fixed.txt`：二简与 AA 单字空间和三拼共用同一 U357 音码域；键道 630 为 105 个二码词和 525 个三码词，另有 1618 个三码单字。
 - 数字入口按新布局重新编码；`三` 的完整音码 `sj` 已占 AA 单字位，因此一码 `s` 只追加阿拉伯数字 `3`，避免 `s/sj` 固顶父子码重复。
 - 固定词、字母、数字、形码、简拼、全码和 Mira 用例均按新布局适配。
 

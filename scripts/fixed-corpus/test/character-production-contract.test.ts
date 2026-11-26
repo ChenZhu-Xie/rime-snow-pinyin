@@ -105,10 +105,10 @@ test("清韵单字形码与普通拼音必须保留独立来源，不能替换�
 });
 
 test("拼系也有数字别名的三码固顶，不能按方案类型丢弃", () => {
-	const text = readFileSync(rootPath("snow_shenyun_tone.fixed.txt"), "utf8");
+	const text = readFileSync(rootPath("snow_hepin.fixed.txt"), "utf8");
 	assert.match(text, /^wii\t一 1\r?$/mu);
 	assert.match(text, /^fii\t七 7\r?$/mu);
-	const shape = readFileSync(rootPath("snow_shenyun_shape.fixed.txt"), "utf8");
+	const shape = readFileSync(rootPath("snow_hedao.fixed.txt"), "utf8");
 	assert.match(shape, /^dki\t倒\r?$/mu);
 	assert.match(shape, /^dku\t岛\r?$/mu);
 });

@@ -39,37 +39,37 @@ local menu = { processor = processor, translator = translator }
 ---@type SchemaMenuEntry[]
 menu.entries = {
   {
-    schema_id = "snow_jiandao_classic",
+    schema_id = "snow_jiandao",
     name = "冰雪键道",
     comment = "21²5⁴ 经典键道 二字词低重",
     aliases = { "bxjd", "jd", "jdjd", "ezcdc", "bxjdjdjdezcdc" },
   },
   {
-    schema_id = "snow_sanpin_classic",
+    schema_id = "snow_sanpin",
     name = "冰雪三拼",
     comment = "21²5ⁿ 经典三拼 单字简繁通打",
     aliases = { "bxsp", "sp", "jdsp", "dzjftd", "bxspjdspdzjftd" },
   },
   {
-    schema_id = "snow_jiandao",
+    schema_id = "snow_landao",
     name = "冰雪兰道",
     comment = "21²5⁴ 零飞键道 三四字词低重",
     aliases = { "bxld", "ld", "lfjd", "sszcdc", "bxldlfjdsszcdc" },
   },
   {
-    schema_id = "snow_sanpin",
+    schema_id = "snow_lanpin",
     name = "冰雪兰拼",
     comment = "21²5ⁿ 零飞三拼 人体工学",
     aliases = { "bxlp", "lp", "lfsp", "rtgx", "bxlplfsprtgx" },
   },
   {
-    schema_id = "snow_shenyun_shape",
+    schema_id = "snow_hedao",
     name = "冰雪鹤道",
     comment = "21¹26¹5⁴ 无重键道 没有 630",
     aliases = { "bxhd", "hd", "wzjd", "myl", "bxhdwzjdmyl" },
   },
   {
-    schema_id = "snow_shenyun_tone",
+    schema_id = "snow_hepin",
     name = "冰雪鹤拼",
     comment = "21¹26¹5ⁿ 无重三拼 顶功版廿六",
     aliases = { "bxhp", "hp", "wzsp", "dgbenl", "bxhpwzspdgbenl" },
@@ -93,13 +93,13 @@ menu.entries = {
     aliases = { "bxqy", "qy", "smqz", "dzgzw", "bxqysmqzdzgzw" },
   },
   {
-    schema_id = "snow_zhudao",
+    schema_id = "snow_huandao",
     name = "冰雪鹮道",
     comment = "21¹26¹5⁴ 带调鹤道 最低记忆",
     aliases = { "bxhd", "hd", "dthd", "ddhd", "dtdp", "jdxf", "bxhddtdpjdxf", "zdjy", "bxhddthdzdjy" },
   },
   {
-    schema_id = "snow_jiandao_toned",
+    schema_id = "snow_liandao",
     name = "冰雪莲道",
     comment = "21²5⁴ 带调兰道 字词均衡",
     aliases = { "bxld", "ld", "dtld", "ddld", "dtjd", "ddjd", "zmhd", "bxlddtjdzmhd", "zcjh", "bxlddtldzcjh" },

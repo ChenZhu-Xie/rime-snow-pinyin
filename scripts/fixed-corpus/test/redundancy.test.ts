@@ -109,12 +109,12 @@ test("direct composition frees repeated and suffix fixed slots", () => {
 
 test("six double-pinyin fixed tables do not spend slots on direct composition", () => {
 	for (const file of [
+		"snow_landao.fixed.txt",
+		"snow_lanpin.fixed.txt",
 		"snow_jiandao.fixed.txt",
 		"snow_sanpin.fixed.txt",
-		"snow_jiandao_classic.fixed.txt",
-		"snow_sanpin_classic.fixed.txt",
-		"snow_shenyun_shape.fixed.txt",
-		"snow_shenyun_tone.fixed.txt",
+		"snow_hedao.fixed.txt",
+		"snow_hepin.fixed.txt",
 	]) {
 		let section = "";
 		for (const line of readFileSync(rootPath(file), "utf8").split(/\r?\n/u)) {

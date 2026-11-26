@@ -14,11 +14,11 @@
 				"buao": "布"
 			}
 		},
-		"snow_jiandao": {
+		"snow_landao": {
 			"codes": ["xlvi", "cnvv", "hmi"],
 			"userObserved": { "xlvi": "i", "cnvv": "弎", "hmi": "货" }
 		},
-		"snow_sanpin": {
+		"snow_lanpin": {
 			"codes": ["yfiv", "gnav", "mjvo", "mjvov"],
 			"userObserved": {
 				"yfiv": "医",
@@ -31,11 +31,11 @@
 			"codes": ["xe", "pml", "nmj"],
 			"userObserved": { "xe": "彐", "pml": "破灭了", "nmj": "那么就" }
 		},
-		"snow_shenyun_shape": {
+		"snow_hedao": {
 			"codes": ["ty", "tyo", "tyoo", "dsia"],
 			"userObserved": { "ty": "头", "tyo": "褕", "tyoo": "愉", "dsia": "巅" }
 		},
-		"snow_shenyun_tone": {
+		"snow_hepin": {
 			"codes": ["bao", "dku", "dkuu", "dkuui", "dkau"],
 			"userObserved": { "bao": "杷", "dku": "岛", "dkau": "倒" }
 		}

@@ -79,10 +79,7 @@ function renderFixedFile(filename: string) {
 	}
 }
 
-for (const filename of [
-	"snow_shenyun_shape.fixed.txt",
-	"snow_shenyun_tone.fixed.txt",
-]) {
+for (const filename of ["snow_hedao.fixed.txt", "snow_hepin.fixed.txt"]) {
 	renderFixedFile(filename);
 }
 

@@ -14,8 +14,8 @@ const root = process.cwd(),
 	up = resolve(process.argv[3] ?? "../rime-snow-pinyin_upstream");
 mkdirSync(base, { recursive: true });
 const pairs = [
-	["snow_jiandao_classic", "snow_jiandao"],
-	["snow_sanpin_classic", "snow_sanpin"],
+	["snow_jiandao", "snow_landao"],
+	["snow_sanpin", "snow_lanpin"],
 ];
 const han = (s: string) => /^\p{Script=Han}$/u.test(s);
 const parse = (s: string) =>
@@ -45,7 +45,7 @@ for (const [local, upId] of pairs) {
 		const single = ts.filter(han);
 		if (!single.length) continue;
 		const mapped =
-			upId === "snow_sanpin" && code.length >= 3
+			upId === "snow_lanpin" && code.length >= 3
 				? code.slice(0, 2) +
 					({ v: "i", i: "v", u: "u", o: "a", a: "o" }[code[2]] ?? code[2]) +
 					code.slice(3)

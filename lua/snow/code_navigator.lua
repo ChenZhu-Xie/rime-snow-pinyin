@@ -35,12 +35,12 @@ function navigator.logical_positions(input, word_length, schema_id)
   end
 
   if word_length == 2 then
-    if schema_id == "snow_jiandao_toned" and input_length >= 3
+    if schema_id == "snow_liandao" and input_length >= 3
         and ("aviuo"):find(input:sub(3, 3), 1, true) then
       -- 莲道声声空桶反序为 B₁B₁B₂B₂。
       return { math.min(input_length, 4), input_length >= 5 and input_length or 2 }
     end
-    if schema_id == "snow_zhudao" and input_length >= 3
+    if schema_id == "snow_huandao" and input_length >= 3
         and ("aeuio"):find(input:sub(3, 3), 1, true) then
       -- 鹮道标准辅序 21，声声空桶反序为 B₁B₁B₂B₂。
       return { math.min(input_length, 4), input_length >= 5 and input_length or 2 }
@@ -48,11 +48,11 @@ function navigator.logical_positions(input, word_length, schema_id)
     if input_length >= 4 then
       positions[1] = 2
       positions[2] = 4
-      local first_then_second = schema_id == "snow_jiandao"
-          or schema_id == "snow_sanpin"
-          or schema_id == "snow_jiandao_classic"
-          or schema_id == "snow_shenyun_shape"
-          or schema_id == "snow_shenyun_tone"
+      local first_then_second = schema_id == "snow_landao"
+          or schema_id == "snow_lanpin"
+          or schema_id == "snow_jiandao"
+          or schema_id == "snow_hedao"
+          or schema_id == "snow_hepin"
       if first_then_second then
         -- 当前双拼方案的二字全码：A1A1 A2A2 [B1 [B2]]。
         if input_length >= 5 then positions[1] = 5 end
@@ -73,15 +73,15 @@ function navigator.logical_positions(input, word_length, schema_id)
     end
   end
 
-  if schema_id == "snow_zhudao" and word_length == 3 and input_length >= 3 then
+  if schema_id == "snow_huandao" and word_length == 3 and input_length >= 3 then
     positions[1] = input_length >= 5 and 5 or 1
     positions[2] = input_length >= 6 and 6 or 2
     positions[3] = input_length >= 4 and 4 or 3
     return positions
   end
 
-  if (schema_id == "snow_shenyun_shape"
-      or schema_id == "snow_shenyun_tone")
+  if (schema_id == "snow_hedao"
+      or schema_id == "snow_hepin")
       and word_length == 3 and input_length >= word_length then
     -- 神韵标准三字主码为 AAAU；第 4 码仍属于第三字，后置辅码从第 5 码开始按 B2、B1 排列。
     positions[1] = input_length >= 6 and 6 or 1
@@ -105,36 +105,36 @@ function navigator.logical_positions(input, word_length, schema_id)
   local auxiliary_count = math.min(input_length - word_length, 3)
   ---@type integer[]
   local auxiliary_positions
-  if schema_id == "snow_jiandao_toned" and word_length == 3 then
+  if schema_id == "snow_liandao" and word_length == 3 then
+    auxiliary_positions = { 2, 3, 1 }
+  elseif schema_id == "snow_landao" and word_length == 3 then
+    auxiliary_positions = { 2, 3, 1 }
+  elseif schema_id == "snow_landao" and word_length == 4 then
+    auxiliary_positions = { 2, 3 }
+  elseif schema_id == "snow_liandao" and word_length == 4 then
+    auxiliary_positions = { 1, 4 }
+  elseif schema_id == "snow_lanpin" and word_length == 3 then
+    auxiliary_positions = { 2, 1, 3 }
+  elseif schema_id == "snow_lanpin" and word_length == 4 then
     auxiliary_positions = { 2, 3, 1 }
   elseif schema_id == "snow_jiandao" and word_length == 3 then
     auxiliary_positions = { 2, 3, 1 }
   elseif schema_id == "snow_jiandao" and word_length == 4 then
-    auxiliary_positions = { 2, 3 }
-  elseif schema_id == "snow_jiandao_toned" and word_length == 4 then
-    auxiliary_positions = { 1, 4 }
+    auxiliary_positions = { 2, 4 }
   elseif schema_id == "snow_sanpin" and word_length == 3 then
     auxiliary_positions = { 2, 1, 3 }
   elseif schema_id == "snow_sanpin" and word_length == 4 then
-    auxiliary_positions = { 2, 3, 1 }
-  elseif schema_id == "snow_jiandao_classic" and word_length == 3 then
-    auxiliary_positions = { 2, 3, 1 }
-  elseif schema_id == "snow_jiandao_classic" and word_length == 4 then
-    auxiliary_positions = { 2, 4 }
-  elseif schema_id == "snow_sanpin_classic" and word_length == 3 then
-    auxiliary_positions = { 2, 1, 3 }
-  elseif schema_id == "snow_sanpin_classic" and word_length == 4 then
     auxiliary_positions = { 2, 3 }
-  elseif schema_id == "snow_shenyun_shape" and word_length == 3 then
+  elseif schema_id == "snow_hedao" and word_length == 3 then
     auxiliary_positions = { 1, 2, 3 }
-  elseif schema_id == "snow_shenyun_shape" and word_length == 4 then
+  elseif schema_id == "snow_hedao" and word_length == 4 then
     auxiliary_positions = { 2, 4, 1 }
-  elseif schema_id == "snow_zhudao" and word_length == 4 then
+  elseif schema_id == "snow_huandao" and word_length == 4 then
     auxiliary_positions = { 2, 3 }
-  elseif schema_id == "snow_shenyun_tone"
+  elseif schema_id == "snow_hepin"
       and word_length == 3 then
     auxiliary_positions = { 2, 1, 3 }
-  elseif schema_id == "snow_shenyun_tone"
+  elseif schema_id == "snow_hepin"
       and word_length == 4 then
     auxiliary_positions = { 1, 3, 2 }
   else

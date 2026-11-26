@@ -20,7 +20,7 @@ const mapping = JSON.parse(read("config/snow-zhudao-mapping.json")) as {
 	toneDigitsByShapeMeaning: string;
 };
 const algebra = new SpellingAlgebra(
-	rootPath("snow_zhudao.schema.yaml"),
+	rootPath("snow_huandao.schema.yaml"),
 	"shenyun_algebra",
 );
 const zhudaoHints = readShenyunHints(true);
@@ -115,7 +115,7 @@ test("鹮道字母占用桶保留汉字首选及大写第二小写第三，未�
 		read("config/snow-zhudao-letter-buckets.json"),
 	) as { letters: Array<{ letter: string; code: string }> };
 	const fixed = new Map(
-		read("snow_zhudao.fixed.txt")
+		read("snow_huandao.fixed.txt")
 			.split(/\r?\n/u)
 			.filter((l) => l.includes("\t") && !l.startsWith("#"))
 			.map((l) => l.split("\t") as [string, string]),
@@ -136,18 +136,18 @@ test("鹮道字母占用桶保留汉字首选及大写第二小写第三，未�
 });
 
 test("鹮道复用鹤道形辅路由并独立隔离棱镜、用户词典与键位图", () => {
-	const schema = load(read("snow_zhudao.schema.yaml")) as Record<string, any>;
+	const schema = load(read("snow_huandao.schema.yaml")) as Record<string, any>;
 	assert.equal(schema.__include, "snow_shenyun_common.yaml:/");
 	assert.equal(schema.shenyun_options.auxiliary, "shape");
-	assert.equal(schema.shenyun.prism, "snow_zhudao");
-	assert.equal(schema.vacancy.prism, "snow_zhudao");
+	assert.equal(schema.shenyun.prism, "snow_huandao");
+	assert.equal(schema.vacancy.prism, "snow_huandao");
 	assert.equal(
 		schema.patch["translator/user_dict_name"],
 		"snow_zhudao_r2_ec60a3637a99",
 	);
-	assert.equal(schema.keymap.image, "snow_zhudao.svg");
+	assert.equal(schema.keymap.image, "snow_huandao.svg");
 	assert.equal(schema.patch["translator/word_auxiliary_order"], "21");
 	assert.equal(schema.patch["translator/three_word_auxiliary_order"], "12");
 	assert.equal(schema.patch["translator/four_word_auxiliary_order"], "23");
-	assert.ok(read("lua/snow/keymaps/snow_zhudao.svg").includes(mapping.id));
+	assert.ok(read("lua/snow/keymaps/snow_huandao.svg").includes(mapping.id));
 });

@@ -26,10 +26,10 @@ const mapping = JSON.parse(read("config/snow-jiandao-toned-mapping.json")) as {
 	previousLayoutAudit: { occupiedBuckets: number; vacantBuckets: number };
 };
 const algebra = new SpellingAlgebra(
-	rootPath("snow_jiandao_toned.schema.yaml"),
+	rootPath("snow_liandao.schema.yaml"),
 	"speller/algebra",
 );
-const fixedSource = read("snow_jiandao_toned.fixed.txt");
+const fixedSource = read("snow_liandao.fixed.txt");
 const fixed = new Map(
 	fixedSource
 		.split(/\r?\n/u)
@@ -116,13 +116,10 @@ test("莲道按运行时兜底音节口径回收七个声声空桶，杓 shuo2 �
 	assert.equal(algebra.apply("shuo2"), "kg");
 	assert.ok(occupied.has("kg"));
 	assert.notEqual(fixed.get("kg"), "说过");
-	const schema = load(read("snow_jiandao_toned.schema.yaml")) as Record<
-		string,
-		any
-	>;
-	assert.equal(schema.__include, "snow_jiandao.schema.yaml:/");
-	assert.equal(schema.jianpin.prism, "snow_jiandao_toned_jianpin");
-	assert.equal(schema.initial_pair.prism, "snow_jiandao_toned_jianpin");
+	const schema = load(read("snow_liandao.schema.yaml")) as Record<string, any>;
+	assert.equal(schema.__include, "snow_landao.schema.yaml:/");
+	assert.equal(schema.jianpin.prism, "snow_liandao_jianpin");
+	assert.equal(schema.initial_pair.prism, "snow_liandao_jianpin");
 	assert.equal(schema.patch["translator/word_auxiliary_order"], "21");
 	assert.equal(schema.patch["translator/three_word_auxiliary_order"], "231");
 	assert.equal(schema.patch["translator/four_word_auxiliary_order"], "14");
@@ -131,9 +128,7 @@ test("莲道按运行时兜底音节口径回收七个声声空桶，杓 shuo2 �
 		schema.patch["translator/user_dict_name"],
 		"snow_jiandao_toned_cr_ref_7e650f7a4c",
 	);
-	assert.ok(
-		read("lua/snow/keymaps/snow_jiandao_toned.svg").includes(mapping.id),
-	);
+	assert.ok(read("lua/snow/keymaps/snow_liandao.svg").includes(mapping.id));
 	const reserved = new RegExp(
 		schema.patch["translator/reserved_initial_pair_pattern"],
 	);
@@ -155,10 +150,10 @@ test("莲道按运行时兜底音节口径回收七个声声空桶，杓 shuo2 �
 
 test("莲道重算固顶音码、按声母重映射兰道全部 630，生成结果可重复", () => {
 	assert.equal(
-		alignFixedContent("snow_jiandao_toned.fixed.txt", fixedSource),
+		alignFixedContent("snow_liandao.fixed.txt", fixedSource),
 		fixedSource,
 	);
-	const parent630 = read("snow_jiandao.fixed.txt")
+	const parent630 = read("snow_landao.fixed.txt")
 		.split("# 630")[1]
 		.split("# 单字")[0]
 		.trim();
@@ -167,7 +162,7 @@ test("莲道重算固顶音码、按声母重映射兰道全部 630，生成结�
 		current630.split("\n").map((line) => line.split("\t") as [string, string]),
 	);
 	const parentAlgebra = new SpellingAlgebra(
-		rootPath("snow_jiandao.schema.yaml"),
+		rootPath("snow_landao.schema.yaml"),
 		"speller/algebra",
 	);
 	const readings = new Map<string, string[]>();

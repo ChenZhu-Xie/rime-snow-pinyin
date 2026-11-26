@@ -2,7 +2,7 @@
   "id": "SNOW-ZHUDAO-OCCUPIED-LETTER-BUCKETS-V1",
   "status": "enabled",
   "schemes": [
-    "snow_zhudao"
+    "snow_huandao"
   ],
   "contract": {
     "candidateOrder": [
@@ -22,7 +22,7 @@
     }
   },
   "source": {
-    "algebra": "snow_zhudao.schema.yaml:/shenyun_algebra",
+    "algebra": "snow_huandao.schema.yaml:/shenyun_algebra",
     "dictionaries": [
       "snow_pinyin.dict.yaml",
       "snow_pinyin.base.dict.yaml",

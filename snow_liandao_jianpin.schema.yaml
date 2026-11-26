@@ -1,10 +1,10 @@
 # Rime schema
 # encoding: utf-8
 
-__include: snow_jiandao_jianpin.schema.yaml:/
+__include: snow_landao_jianpin.schema.yaml:/
 
 schema:
-  schema_id: snow_jiandao_toned_jianpin
+  schema_id: snow_liandao_jianpin
   name: 冰雪莲道简拼
   version: "0.3.14"
   description: |
@@ -14,7 +14,7 @@ schema:
 
 speller:
   algebra:
-    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+    __include: snow_liandao_common.yaml:/jiandao_toned_algebra
     __append:
       - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1c/
       - xform/~{1,2}v/xg/
@@ -29,7 +29,7 @@ speller:
 
 __patch:
   - patch
-  - snow_jiandao_toned.custom:/patch?
+  - snow_liandao.custom:/patch?
 
 patch:
-  translator/prism: snow_jiandao_toned_jianpin
+  translator/prism: snow_liandao_jianpin

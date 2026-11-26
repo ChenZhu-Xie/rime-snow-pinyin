@@ -35,7 +35,7 @@ const baseline = JSON.parse(
 	),
 );
 const rows = new Map<string, AppendPrefixObservation>(
-	readFileSync(join(baseline.candidateCache, "snow_jiandao.jsonl"), "utf8")
+	readFileSync(join(baseline.candidateCache, "snow_landao.jsonl"), "utf8")
 		.trim()
 		.split(/\r?\n/u)
 		.map((line) => {
@@ -56,11 +56,7 @@ for (const line of readFileSync(
 	.trim()
 	.split(/\r?\n/u)) {
 	const row = JSON.parse(line);
-	if (
-		row.schema === "snow_jiandao" &&
-		row.kind === "state" &&
-		row.tail === "了"
-	)
+	if (row.schema === "snow_landao" && row.kind === "state" && row.tail === "了")
 		observations.set(row.input, row);
 }
 const corpus = buildBenchmarkCorpus(

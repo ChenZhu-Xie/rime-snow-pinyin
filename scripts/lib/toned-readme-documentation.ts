@@ -54,7 +54,7 @@ function tonedSections(language: BenchmarkLanguage) {
 	const overview = table(
 		[captions[1], "冰雪莲道", "冰雪鹮道"],
 		[
-			["schema_id", "`snow_jiandao_toned`", "`snow_zhudao`"],
+			["schema_id", "`snow_liandao`", "`snow_huandao`"],
 			["Layout ID", "`CR-REF-7e650f7a4c`", "`T2126-V52-M4-ec60a3637a99`"],
 			[captions[2], "21×21", "21×26"],
 			[captions[3], captions[4], captions[4]],
@@ -78,8 +78,8 @@ function tonedSections(language: BenchmarkLanguage) {
 			],
 			[
 				captions[10],
-				"[SVG](lua/snow/keymaps/snow_jiandao_toned.svg)",
-				"[SVG](lua/snow/keymaps/snow_zhudao.svg)",
+				"[SVG](lua/snow/keymaps/snow_liandao.svg)",
+				"[SVG](lua/snow/keymaps/snow_huandao.svg)",
 			],
 		],
 	);
@@ -133,7 +133,7 @@ function tonedSections(language: BenchmarkLanguage) {
 					: `声母／零声母、输入示例、字母占用桶、固顶同码和运行时空桶规则见[${name}](docs/${link}.md)。研究音节域的静态空码与运行时声声空桶使用不同词典和口径，不能互相替代。配置是生成来源。`;
 		details.push(
 			`#### ${name} · ${config.id}`,
-			`![${name}](lua/snow/keymaps/${scheme === "Liandao" ? "snow_jiandao_toned" : "snow_zhudao"}.svg)`,
+			`![${name}](lua/snow/keymaps/${scheme === "Liandao" ? "snow_liandao" : "snow_huandao"}.svg)`,
 			language === "en"
 				? "**Continuous double-pinyin key frequencies (daily corpus, punctuation included)**"
 				: language === "zht"

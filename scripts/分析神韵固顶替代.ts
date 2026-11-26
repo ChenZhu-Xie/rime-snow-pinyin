@@ -12,7 +12,7 @@ const baseline =
 		.find((argument) => argument.startsWith("--baseline="))
 		?.split("=", 2)[1] ?? "HEAD";
 const jsonOnly = process.argv.includes("--json");
-const files = ["snow_sanpin.fixed.txt", "snow_jiandao.fixed.txt"] as const;
+const files = ["snow_lanpin.fixed.txt", "snow_landao.fixed.txt"] as const;
 const selectableAbbreviationBases = new Set(
 	mergeDictionaries(
 		[

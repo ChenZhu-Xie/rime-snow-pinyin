@@ -1,32 +1,19 @@
 schema: snow_sanpin
 source_dir: ..
 script: |
-  -- 与上游相同：候选在完整列表中的名次，以及首页（page_size = 6）判定。
-  function rank(something)
-    for i, v in ipairs(cand) do
-      if v.text == something then return i end
-    end
-    return math.huge
-  end
   function has(something)
-    return rank(something) < math.huge
-  end
-  function page(something)
-    return rank(something) <= 6
+    for _, v in ipairs(cand) do
+      if v.text == something then
+        return true
+      end
+    end
+    return false
   end
   function comment(something)
     for _, v in ipairs(cand) do
       if v.text == something then return v.comment end
     end
     return ""
-  end
-  function pinned(index)
-    return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
-  end
-  function eq(left, right)
-    print("Left  = " .. tostring(left))
-    print("Right = " .. tostring(right))
-    return left == right
   end
   function pair_comment(text)
     for _, candidate in ipairs(cand) do
@@ -44,28 +31,15 @@ script: |
 deploy:
   short_shape_and_stroke_sources:
     tests:
-      - send: jpii
+      - send: jmii
         assert: commit == nil and cand[1].text == "尖"
-      - send: seviu
+      - send: jnviu
         assert: commit == nil and cand[1].text == "尘"
-  postpone_display_order:
-    patch:
-      translator/enable_user_dict: false
-      translator/enable_schema_user_dict: false
-      # 此部署验证启用简体原字优先时的后置顺序；生产方案仍暂停该过滤器。
-      engine/filters/@before 4: lua_filter@*snow.simplified
-    tests:
-      - send: mjv
-        assert: cand[1].text == "摩"
-      - send: mjvo
-        assert: cand[1].text == "魔"
-      - send: mjvov
-        assert: cand[1].text == "磨"
   word_length_selection:
     tests:
-      - send: "rgen{less}"
+      - send: "rgfn{less}"
         assert: commit == "人工智能"
-      - send: "pxfe{greater}"
+      - send: "kxfq{greater}"
         assert: commit == "科学发展观"
       # 不足四主码时沿用原有书名号行为。
       - send: "d{less}"
@@ -73,7 +47,7 @@ deploy:
   entry_contract:
     tests:
       # 生僻字补桶须为真实词典候选，不能只由 fixed 兜底造出同名候选。
-      - send: ce
+      - send: cn
         assert: cand[1].text == "岑" and cand[1].comment:find("📌", 1, true)
   traditional_entry_contract:
     options:
@@ -81,439 +55,104 @@ deploy:
     tests:
       - send: l
         assert: cand[1].text == "來"
-  benchmark_readonly:
-    patch:
-      translator/enable_user_dict: false
-      translator/enable_schema_user_dict: false
-      jianpin/enable_user_dict: false
-      initial_pair/enable_user_dict: false
-    tests:
-      # 错误探针会先顶出「新时代」，但只读环境不能因此把它学到 xkd 首选。
-      - send: xkdKd
-        assert: commit == "新时代" or error(pair_probe())
-      - send: xkd
-        assert: (cand[1].text == "形式的" and rank("新时代") > 1) or error(pair_probe())
   cross_route_user_phrase:
     tests:
-      # 用前三字完整声韵、第四字声母唯一上屏“方案选单”，再退回 frxd 验证跨路径用户词优先。
-      - send: "fYrNxRd frxd"
+      # 用前三字完整声韵、第四字声母唯一上屏“方案选单”，再退回 fxxd 验证跨路径用户词优先。
+      - send: "fPxFxTd fxxd"
         assert: cand[1].text == "方案选单"
   sentence:
     patch:
       'switches/@4/reset': 0
     tests:
-      # 上游 bgxhpbyb：本地 UED 四字主码为 bxpy，再按词语首辅顺序补调码 ui。
-      - send: bxpyui
-        assert: cand[1].text == "冰雪拼音"
-      # 上游 bgvxhupbvybv：四字逐音节打满声韵调；神韵调码 1=i、3=u。
-      - send: bgixkupbiybi
+      - send: bgxhpbyb
         assert: cand[1].text == "冰雪拼音"
   popping:
     tests:
-      # u 前缀的独立笔画反查沿用三拼调键序：横竖撇点折 → ivuao。
-      - send: ui
-        assert: has("一")
-      - send: uv
-        assert: has("丨")
-      - send: uu
-        assert: has("丿")
-      - send: ua
-        assert: has("丶")
-      - send: uo
-        assert: has("乙")
-      # r5 不应占用单键 r，仍能查询其他 r 声母的字
-      - send: r
-        assert: page("人") and has("日")
-      # 上游词典新增 gue2；三拼完整码以二声键 v 区分。
-      - send: gmv
-        assert: has("𨭗")
-      # r5 并入 er5 后，按本地神韵零声母与 er 韵键输入轻声「兒」
-      - send: rpv
-        assert: has("兒")
       # 组词规则
       - send: bgi
         assert: cand[1].text == "冰"
       # 未键入调辅时，单字、三字词、四字词分别提示下一至两个调辅键。
       - send: bg
         assert: has("冰") and comment("冰"):find("〔调 i〕", 1, true)
-      - send: krf
+      - send: erf
         assert: has("输入法") and comment("输入法"):find("〔调₂₁₃ ai〕", 1, true)
-      - send: jjjs
+      - send: jjjj
         assert: has("经济基础") and comment("经济基础"):find("〔调₂₃ ai〕", 1, true)
-      # 单字 IR+B1+B2：冰首笔丶 → o；当首笔丨 → i。
-      - send: bgio
-        assert: has("冰")
-      - send: dyii
-        assert: has("当")
-      - send: bgxk
+      - send: bgxh
         assert: has("冰雪")
-      - send: jbkfaa
+      - send: jbekaa
         assert: has("近世")
-      - send: krf
+      - send: erf
         assert: has("输入法")
       - send: bhhivi
         assert: has("白花花")
-      - send: smxw
+      - send: wmxw
         assert: has("充满希望")
-      # 编码导航：14567 直达字位；Y/O 物理循环，U/I 逻辑左/右循环
-      - send: "smxw1{BackSpace}"
-        assert: eq(preedit, "m x w")
-      - send: "smxw4{BackSpace}"
-        assert: eq(preedit, "sxw")
-      - send: "smxw5{BackSpace}"
-        assert: eq(preedit, "smw")
-      - send: "smxw6{BackSpace}"
-        assert: eq(preedit, "s m x")
-      - send: "smxw7{BackSpace}"
-        assert: eq(preedit, "s m x")
-      - send: "smxw{Control+y}{BackSpace}"
-        assert: eq(preedit, "smw")
-      - send: "smxw1{Control+u}{BackSpace}"
-        assert: eq(preedit, "s m x")
-      - send: "smxw1{Control+i}{BackSpace}"
-        assert: eq(preedit, "sxw")
-      - send: "smxw1{Control+y}{Control+y}{Control+y}{BackSpace}"
-        assert: eq(preedit, "smw")
-      - send: "smxw{Control+o}{Control+o}{BackSpace}"
-        assert: eq(preedit, "m x w")
-      - send: jjjsai
+      - send: jjjjai
         assert: has("经济基础")
-      # UED 四字词取第二、第三字声调；「天时地利」的一声／四声能区分第一、第三字。
-      - send: tkdl
-        assert: has("天时地利") and comment("天时地利"):find("〔调₂₃ va〕", 1, true)
-      - send: tkdlva
-        assert: has("天时地利")
-      - send: tkdlvi
-        assert: not has("天时地利")
-      - send: ewkrF
+      - send: fwerF
         assert: has("中文输入法")
-      - send: ehrmGHG
+      - send: fhrmGHG
         assert: has("中华人民共和国")
-      # 上游 p/xh/bg：单字 1、2、3 键构词（并：bg→bd，宾：bb→bg）。
-      - send: bg
-        assert: cand[1].text == "并"
-      - send: bb
-        assert: cand[1].text == "宾"
-      # 双字简码（4/5）与全码（6），声调按第一字、第二字排列。
-      - send: bgxki
-        assert: has("冰雪")
-      - send: bgxkiu
-        assert: page("冰雪")
-      # 三字简码 3/4/5 与全码 6，声调字位顺序为 2、1、3。
-      - send: krfa
-        assert: page("输入法")
-      - send: krfai
-        assert: page("输入法")
-      - send: krfaiu
-        assert: page("输入法")
-      # 四字简码 4/5 与全码 6，前两个声调取第二、第一字。
-      - send: smxwu
-        assert: page("充满希望")
-      - send: smxwui
-        assert: page("充满希望")
-      # 上游 b/d/s/y：一码固顶；本地三码 630 与两简词取本地固顶词表。
-      - send: b
-        assert: cand[1].text == "不"
-      - send: w
-        assert: cand[1].text == "我"
-      - send: y
-        assert: cand[1].text == "有" and has("1")
-      # 上游 be/fg/gc/yo：两声母固顶；本地使用 bg/hou/by/ylgs 等实际固顶。
-      - send: bj
-        assert: cand[1].text == "博"
-      # 上游 ba/bi：声母 + 末字声调的两键 630 固顶词。
-      - send: ba
-        assert: cand[1].text == "毕竟"
-      - send: bi
-        assert: cand[1].text == "北京"
-      # 上游 bai/biu（双字）、bia（多字）：630 三键不同词长。
-      - send: bai
-        assert: cand[1].text == "帮助"
-      - send: biu
-        assert: cand[1].text == "本身"
-      - send: bui
-        assert: cand[1].text == "保险公司"
-      - send: coo
-        assert: cand[1].text == "藏着呢"
+      # 后续版本迁入：三字及以上简拼的前三字可用大写韵键补全。
+      - send: eJrf
+        assert: has("输入法")
+      - send: erJf
+        assert: has("输入法")
+      - send: erfS
+        assert: has("输入法")
+      - send: eJrJfS
+        assert: has("输入法")
+      - send: zKxGwE
+        assert: has("自行车")
       # 固顶词
+      - send: d
+        assert: cand[1].text == "都"
       - send: p
         assert: cand[1].text == "跑"
-      - send: xk
-        assert: cand[1].text == "学"
-      - send: bhyz
-        assert: cand[1].text == "不要"
-      - send: fd
-        assert: cand[1].text == "非" and not has("(zhei4)")
-      - send: cd
-        assert: not has("(sei1)")
-      - send: cdu
-        assert: not has("(sei3)")
-      - send: gd
-        assert: cand[1].text == "给"
-      # 字母入口与键道共享 c 列，三拼统一追加轻声键 o。
-      - send: gq
-        assert: cand[1].text == "挂" and not has("G") and not has("g")
-      - send: gco
-        assert: cand[1].text == "G" and cand[2].text == "g"
-      - send: gca
-        assert: not has("G") and not has("g")
-      - send: rp
-        assert: cand[1].text == "二" and cand[2].text == "2"
-      - send: cn
-        assert: cand[1].text == "三" and cand[2].text == "3"
-      - send: cfa
-        assert: cand[1].text == "四" and cand[2].text == "4"
-      - send: qj
-        assert: cand[1].text == "强" and not has("2")
-      - send: sd
-        assert: not has("(chei1)") and not has("(chei2)") and not has("(chei3)") and not has("(chei4)")
-      - send: cd
-        assert: not has("四但")
-      - send: rc
-        assert: not has("人从")
-      - send: ja
-        assert: cand[1].text == "就是"
-      - send: yv
-        assert: cand[1].text == "以及"
-      - send: hzbl
-        assert: cand[1].text == "好吧"
-      - send: ho
-        assert: cand[1].text == "好的吧"
-      - send: xo
-        assert: cand[1].text == "行吧"
-      - send: xov
-        assert: cand[1].text == "行叭"
-      - send: yfgs
-        assert: cand[1].text == "一个"
-      # 以词定字：[ 取词首，] 取词尾
-      - send: "yfgs["
-        assert: commit == "一"
-      - send: "yfgs]"
-        assert: commit == "个"
       # 单字定字：[ 重复该字，] 在该字后追加“得”
       - send: "p["
         assert: commit == "跑跑"
       - send: "p]"
         assert: commit == "跑得"
-      - send: nlyy
-        assert: cand[1].text == "那样"
-      - send: tpvvi
-        assert: has("填") and cand[rank("填")].comment:find("vivv")
-      # 首选后置
-      - send: kfkf
-        assert: cand[1].text == "事实"
-      - send: kfkfa
-        assert: cand[2].text == "事实"
-      # 二字词首辅取第一字；「事」为四声，故追加 a 后将短码首选「事实」后置。
-      # 顶功
-      - send: yfgsyfgs
-        assert: commit == "一个" and cand[1].text == "一个"
-      - send: bgixku
-        assert: commit == "冰" and cand[1].text == "雪"
-      - send: pbybkrf
-        assert: commit == "拼音" and cand[1].text == "输入法"
-      # 强制上屏尾字；原 d/l 一码仍然保留
-      - send: yfgs;
-        assert: commit == "一个的"
-      - send: yfgs/
-        assert: commit == "一个了"
-      - send: d
-        assert: cand[1].text == "都"
-      - send: k
-        assert: cand[1].text == "是"
-      # 上游 pbg / xhbg / erf b：短码不能被后续声母顶出。
-      - send: pbg
-        assert: commit == nil or commit == ""
-      - send: xkbg
-        assert: commit == nil or commit == ""
-      - send: "xk "
-        assert: commit == "学"
-      - send: krfb
-        assert: commit == nil or commit == ""
-      - send: "krf "
-        assert: commit == "输入法"
-      # 上游 bja2：选字键 2 选择小写拉丁字母。
-      - send: bco2
-        assert: commit == "b"
-      # 动态码长、组词及顶功。「史诗」在新 12 辅序下五码已成为首选，
-      # 第六码会按首选后置规则将其移开；改用五码尚非首选、六码才首选的「实时」。
-      - send: "kfkfaikfkf"
-        assert: cand[1].text == "誓师"
-      - send: kfkfvv
-        assert: cand[1].text == "实时"
-      - send: kfkfvvkfkf
-        assert: commit == "实时" and cand[1].text == "实时"
-  buffered_command:
-    tests:
-      - send: o
-        assert: cand[1].text == "📝 开启缓冲" and commit == nil
-      - send: "o "
-        assert: commit == nil and preedit == nil
-      - send: "o o"
-        assert: cand[1].text == "📝 关闭缓冲" and commit == nil
-      - send: "o o "
-        assert: commit == nil and preedit == nil
-      - send: "o{Escape}krf "
-        assert: commit == "输入法"
-      - send: "o bgxkkrf "
-        assert: commit == nil
-      - send: "o bgxkkrf  krf "
-        assert: commit == "冰雪输入法输入法"
-  # 六码首选「冰次」，先选第二候选的分片「冰」，再选同音码下第二候选「四」；第二字由下一个词顶屏并完成造词。
-  encoding_popping:
-    tests:
-      - send: "bgcfia{Down}{space}{Down}b{Escape}bgcf"
-        assert: cand[1].text == "冰四"
-  encoding_buffered:
-    tests:
-      - send: "o bgcfia{Down}{space}{Down}{space}{space}bgcf"
-        assert: cand[1].text == "冰四"
-  # 上游 buffered：分片组词、字母候选与英数混输；本地选择 o 命令切换缓冲。
-  buffered:
-    tests:
-      - send: "o sy mz  symz"
-        assert: cand[1].text == "长猫"
-      - send: "o bgxkkrf  bxkrF"
-        assert: cand[1].text == "冰雪输入法"
-      # 键道与三拼共享二键基码；三拼统一追加轻声键 o。
+      - send: xh
+        assert: cand[1].text == "学"
+      - send: be
+        assert: cand[1].text == "不是"
+      - send: ya
+        assert: cand[1].text == "一个"
+      - send: coo
+        assert: cand[1].text == "存着呢"
+      # 字母全码沿用冰雪键道二键基码，并追加现行 21×21 轻声键 o。
       - send: bco
         assert: cand[1].text == "B" and cand[2].text == "b"
-      - send: xwo
-        assert: cand[1].text == "A" and cand[2].text == "a"
-      # 新大字集让 tco/hco/xgo/xlo 与轻声读音重合，字母固顶仍须优先。
-      - send: tco
-        assert: cand[1].text == "T" and cand[2].text == "t"
-      - send: hco
-        assert: cand[1].text == "H" and cand[2].text == "h"
       - send: xgo
         assert: cand[1].text == "V" and cand[2].text == "v"
-      - send: xlo
-        assert: cand[1].text == "I" and cand[2].text == "i"
-      # 上游 wjugjatyxb/dlvlsvikkamr：中文数词、字母与汉字共同造词。
-      - send: "o whu gco tji xba  wgtx"
-        assert: cand[1].text == "五G通信"
-      # 哆 dmi 和 A xwo 首选；啦 llo、梦 mra 均选第二候选，再按 dlxm 验证英数混输造词。
-      - send: "o dmi llo{Down}{space}xwo mra{Down}{space} dlxm"
-        assert: cand[1].text == "哆啦A梦"
-  # 声声二字词的调笔四辅，以及三字及以上简拼的大写补韵。
-  initial_pair_and_mixed_spelling:
-    tests:
-      - send: yxu
-        assert: has("也许") and not has("一些") and preedit == "y x 调笔[u]"
-      # 必须按词条实际读音 xu1 筛选；大字集里的「需 ru2」不能让「也需」混入二声桶。
-      - send: yxv
-        assert: not has("也需")
-      - send: "yxu "
-        assert: utf8.len(commit) == 2 and not commit:find("u", 1, true)
-      - send: yxub
-        assert: utf8.len(commit) == 2 and not commit:find("u", 1, true)
-      - send: yxi
-        assert: has("一些") and has("也需") and not has("也许")
-      - send: kHrf
-        assert: has("输入法")
-      - send: krfL
-        assert: has("输入法")
-      - send: kHrHfL
-        assert: has("输入法")
-      - send: zFxGsS
-        assert: has("自行车")
-  # 上游 advanced：反查、重复上屏、数字日期、笔画/部首辅助码、以词定字。
-  advanced:
-    tests:
-      - send: azhe
-        assert: cand[1].text == "这" and has("着")
-      # 部件全拼反查：连续输入各部件读音，候选同时显示拼音。
-      - send: "uwangyan"
-        assert: page("琰") and cand[rank("琰")].comment:find("yan3", 1, true) ~= nil and commit == nil
-      - send: "umaowenniao"
-        assert: page("鹜") and cand[rank("鹜")].comment:find("wu4", 1, true) ~= nil and commit == nil
-      # 单引号结束反查后可正常上屏，退格重输仍留在反查段。
-      - send: "uwangyan' "
-        assert: commit == "琰"
-      - send: "uwangyan{BackSpace}n"
-        assert: page("琰") and commit == nil
-      # 独立笔画反查使用调键序 IVUAO；主方案的调后笔辅另按形义序 VIUOA。
-      - send: uivuao
-        assert: cand[1].text == "札"
-      - send: "sjfh i"
-        assert: cand[1].text == "重复"
-      - send: ia
-        assert: cand[1].text == "ā"
-      - send: o123
-        assert: cand[1].text == "一百二十三" and has("壹佰贰拾叁")
-      # Unicode 码点
-      - send: o4e00
-        assert: cand[1].text == "一"
-      # Lua 脚本：计算表达式
-      - send: o1234*5678
-        assert: has("7006652")
-      - send: orq
-        assert: cand[1].text:match("^%d+年%d+月%d+日$") ~= nil
-      - send: osj
-        assert: cand[1].text:match("^%d+时%d+分%d+秒$") ~= nil
-      - send: ors
-        assert: cand[1].text:match("^%d+年%d+月%d+日%d+时%d+分%d+秒$") ~= nil
-      - send: yrvvi
-        assert: page("芫")
-      - send: rzvvv
-        assert: not page("嶅")
-      - send: rzv1k
-        assert: page("嶅")
-      - send: "xfry["
-        assert: commit == "熙"
-      # 上游以第三候选「蔷薇」取末字；本地用 jpdz 的非首选「剪刀」验证同一操作。
-      - send: "jpdz{Down}]"
-        assert: commit == "刀"
-  # 上游 schema_userdb：按顺序操作同一次部署的方案码用户词典。
-  schema_userdb:
-    tests:
-      # 上游 bmms → 本地 bian/ma = bp/ml；固定键 Ctrl+; → Ctrl+/。
-      - send: bpml
-        assert: not pinned(1)
-      - send: "bpml{Control+slash}bpml"
-        assert: cand[1].text == "编码" and pinned(1)
-      - send: "bpml{Control+slash}bpml"
-        assert: not pinned(1)
-      # 上游修复后，无编码时由应用接收的大写字母和数字也会纳入新词。
-      - send: "fpx{Control+period}fpxqC Vw 50{Control+period}fpx"
-        assert: cand[1].text == "疯狂星期四V我50"
-      # UED 兰拼 xov 固顶“行叭”：新词不得挤掉已有的首选。
-      - send: "xov{Control+period}fpxqC {Control+period}xov"
-        assert: cand[1].text == "行叭" and cand[2].text == "疯狂星期四"
-      # 上游 jmdz → 本地 jian/dao = jp/dz；交换、复原和重置固定位次。
-      - send: "jpdz{Control+slash}{Down}{Control+slash}{Up}"
-        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
-      - send: "jpdz{Control+bracketright}jpdz"
-        assert: cand[1].text == "剪刀" and cand[2].text == "见到"
-      - send: "jpdz{Down}{Control+bracketleft}jpdz"
-        assert: cand[1].text == "见到" and cand[2].text == "剪刀"
-      - send: "jpdz{Control+backslash}jpdz"
-        assert: not pinned(1) and not pinned(2)
-  shape_g:
-    patch:
-      translator/shape_sources: [G]
-    tests:
-      # 主方案 B2 为 viuoa；令的 G/T/J 笔顺分别为 34454/34154/34152。
-      - send: lgauooao
-        assert: has("令")
-      - send: lgauovao
-        assert: not has("令")
-  shape_t:
-    patch:
-      translator/shape_sources: [T]
-    tests:
-      - send: lgauovao
-        assert: has("令")
-      - send: lgauooao
-        assert: not has("令")
-  shape_none:
-    patch:
-      translator/shape_sources: []
-    tests:
-      - send: lga
-        assert: has("令")
-      - send: lgau
-        assert: not has("令")
+      # 一至四沿用已有数字汉字短码，其余数字使用完整声韵调码。
+      - send: xj
+        assert: cand[1].text == "二" and cand[2].text == "2"
+      - send: wju
+        assert: cand[1].text == "五" and cand[2].text == "5"
+      - send: lgv
+        assert: cand[1].text == "零" and cand[2].text == "0"
+      # 首选后置
+      - send: ekek
+        assert: cand[1].text == "事实"
+      - send: ekeka
+        assert: cand[2].text == "事实"
+      # 顶功
+      - send: yaya
+        assert: commit == "一个" and cand[1].text == "一个"
+      - send: bgixhu
+        assert: commit == "冰" and cand[1].text == "雪"
+      - send: pbyberf
+        assert: commit == "拼音" and cand[1].text == "输入法"
+      # 动态码长
+      - send: "ekekaiekek"
+        assert: cand[1].text == "誓师"
+      # 缓冲造词
+      - send: "{Control+b}jp mz  jpmz"
+        assert: cand[1].text == "长猫"
   initial_pair_four_aux:
     tests:
       - send: yx

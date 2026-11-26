@@ -223,7 +223,7 @@ for (const name of readdirSync(ROOT)) {
 for (const file of [
 	"snow_bihua.dict.yaml",
 	"snow_bushou.dict.yaml",
-	"snow_jiandao_chaifen.dict.yaml",
+	"snow_landao_chaifen.dict.yaml",
 	"lua/snow/radical_sipin.txt",
 	"lua/snow/radical_jiandao.txt",
 	"scripts/lib/benchmark-schemes.ts",
@@ -253,9 +253,19 @@ function auditObserver(schema: string, cacheDirectory: string | undefined) {
 		}>,
 	};
 	const records = new Map<string, string | null>();
-	const optionSuffix = createHash("sha256").update("[]").digest("hex").slice(0, 16);
-	const optionPath = cacheDirectory ? join(cacheDirectory, `${schema}-${optionSuffix}.jsonl`) : "";
-	const path = optionPath && existsSync(optionPath) ? optionPath : cacheDirectory ? join(cacheDirectory, `${schema}.jsonl`) : "";
+	const optionSuffix = createHash("sha256")
+		.update("[]")
+		.digest("hex")
+		.slice(0, 16);
+	const optionPath = cacheDirectory
+		? join(cacheDirectory, `${schema}-${optionSuffix}.jsonl`)
+		: "";
+	const path =
+		optionPath && existsSync(optionPath)
+			? optionPath
+			: cacheDirectory
+				? join(cacheDirectory, `${schema}.jsonl`)
+				: "";
 	if (path && existsSync(path)) {
 		for (const line of read(path).split(/\r?\n/u)) {
 			if (!line) continue;
@@ -371,10 +381,7 @@ function internalScheme(
 				add({ ...entry, code });
 		for (let length = 1; length < code.length; length++)
 			for (const entry of literals.get(code.slice(0, length)) ?? []) {
-				if (
-					scheme.id !== "qingyun" &&
-					/^[A-Za-z0-9]+$/u.test(entry.text)
-				)
+				if (scheme.id !== "qingyun" && /^[A-Za-z0-9]+$/u.test(entry.text))
 					continue;
 				add({ ...entry, code });
 			}

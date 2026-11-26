@@ -18,8 +18,8 @@ const audit = [
 ];
 const evidence = [];
 for (const [id, schema, count] of [
-	["oc21-shape", "snow_jiandao", 17],
-	["liandao", "snow_jiandao_toned", 18],
+	["oc21-shape", "snow_landao", 17],
+	["liandao", "snow_liandao", 18],
 ] as const) {
 	const dir = `output/filter-disabled-recheck/${schema}`;
 	const result = JSON.parse(read(dir + "/result.json"));

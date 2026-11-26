@@ -4,7 +4,7 @@
 __include: snow_shenyun_common.yaml:/
 
 schema:
-  schema_id: snow_shenyun_shape
+  schema_id: snow_hedao
   name: 冰雪鹤道
   version: "0.3.14"
   author:
@@ -18,18 +18,18 @@ schema:
     - snow_pinyin
     - radical_pinyin
     - snow_bihua
-    - snow_jiandao_chaifen
+    - snow_landao_chaifen
 
 shenyun_options:
   auxiliary: shape
 
 keymap:
   key: e
-  image: snow_shenyun_shape.svg
+  image: snow_hedao.svg
 
 __patch:
   - patch
-  - snow_shenyun_shape.custom:/patch?
+  - snow_hedao.custom:/patch?
 
 patch:
   translator/word_auxiliary_order: "12"

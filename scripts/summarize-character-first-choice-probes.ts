@@ -116,11 +116,11 @@ const lines = [
 ];
 const names: Record<string, string> = {
 	snow_sipin: "冰雪四拼",
-	snow_jiandao: "冰雪兰道",
-	snow_sanpin: "冰雪兰拼",
+	snow_landao: "冰雪兰道",
+	snow_lanpin: "冰雪兰拼",
 	snow_qingyun: "冰雪清韵",
-	snow_shenyun_shape: "冰雪鹤道",
-	snow_shenyun_tone: "冰雪鹤拼",
+	snow_hedao: "冰雪鹤道",
+	snow_hepin: "冰雪鹤拼",
 };
 for (const [schema, entry] of Object.entries(cases.schemas)) {
 	for (const [code, observed] of Object.entries(entry.userObserved))
@@ -212,7 +212,7 @@ lines.push(
 	"本地只生成／审阅隔离输入，不运行 Mira：",
 	"",
 	"```powershell",
-	"bun scripts/probe-character-first-choice.ts --prepare-only --schema snow_sanpin",
+	"bun scripts/probe-character-first-choice.ts --prepare-only --schema snow_lanpin",
 	"bun scripts/summarize-character-first-choice-probes.ts output/character-first-choice-ci/45416870951",
 	"```",
 	"",

@@ -20,12 +20,12 @@
 
 ## 冰雪鹮道
 
-- `snow_zhudao` 使用冻结的 `T2126-V52-M4-ec60a3637a99` 带调 21×26 布局，声调合入第二码；其他规则复用冰雪鹤道。来源、十韵组、空桶口径与生成验证命令见 [docs/zhudao.md](docs/zhudao.md)。
+- `snow_huandao` 使用冻结的 `T2126-V52-M4-ec60a3637a99` 带调 21×26 布局，声调合入第二码；其他规则复用冰雪鹤道。来源、十韵组、空桶口径与生成验证命令见 [docs/zhudao.md](docs/zhudao.md)。
 - 形辅序为 `21/12/23`；声声空桶按标准二字词辅序的反序逐字取两辅至六码。更改映射时同步代数、字母桶、固顶、空桶提示、键位图和候选测试。
 
 ## 冰雪莲道
 
-- `snow_jiandao_toned` 使用冻结的 `CR-REF-7e650f7a4c` 带调 21×21 布局和纯形辅序 `21/231/14`；其余逻辑沿用冰雪兰道。声声空桶按反序 `12` 逐字取两辅至六码。来源、空桶口径和验证命令见 [docs/liandao.md](docs/liandao.md)。
+- `snow_liandao` 使用冻结的 `CR-REF-7e650f7a4c` 带调 21×21 布局和纯形辅序 `21/231/14`；其余逻辑沿用冰雪兰道。声声空桶按反序 `12` 逐字取两辅至六码。来源、空桶口径和验证命令见 [docs/liandao.md](docs/liandao.md)。
 
 ## 五辅键语义
 
@@ -56,16 +56,16 @@
 | 全称 | 简称 | schema_id |
 | --- | --- | --- |
 | 冰雪四拼 | 四拼 | `snow_sipin` |
-| 冰雪兰拼 | 兰拼 | `snow_sanpin` |
+| 冰雪兰拼 | 兰拼 | `snow_lanpin` |
 | 冰雪一拼 | 一拼 | `snow_yipin` |
-| 冰雪兰道 | 兰道 | `snow_jiandao` |
+| 冰雪兰道 | 兰道 | `snow_landao` |
 | 冰雪清韵 | 清韵 | `snow_qingyun` |
-| 冰雪鹤道 | 鹤道 | `snow_shenyun_shape` |
-| 冰雪鹤拼 | 鹤拼 | `snow_shenyun_tone` |
-| 冰雪键道 | 键道 | `snow_jiandao_classic` |
-| 冰雪三拼 | 三拼 | `snow_sanpin_classic` |
-| 冰雪莲道 | 莲道 | `snow_jiandao_toned` |
-| 冰雪鹮道 | 鹮道 | `snow_zhudao` |
+| 冰雪鹤道 | 鹤道 | `snow_hedao` |
+| 冰雪鹤拼 | 鹤拼 | `snow_hepin` |
+| 冰雪键道 | 键道 | `snow_jiandao` |
+| 冰雪三拼 | 三拼 | `snow_sanpin` |
+| 冰雪莲道 | 莲道 | `snow_liandao` |
+| 冰雪鹮道 | 鹮道 | `snow_huandao` |
 
 对话和报告里称呼方案时，优先用全称（冰雪四拼），其次用简称（四拼），再次用完整的 schema_id（`snow_sipin`）。不要用不带 `snow_` 前缀的 `sipin` 之类，除非是在引用代码或命令参数。
 
@@ -221,7 +221,7 @@ bun scripts/check-latency.ts output/latency/report.json  # 复查已保存报告
 
 ## 简拼棱镜
 
-本地神韵布局的英数字母入口与上游保持同一结构：键道使用 `辅音+c`、`x+元音韵键`，三拼沿用同一二键基码并追加轻声键 `o`。键道和三拼共用 `snow_jiandao_jianpin` 棱镜。当前大字集使 `tco`、`hco`、`xko` 分别与 `tiao5`、`hua5`、`xi5` 重合，字母固顶必须保持在这些读音之前；其余 23 个三拼字母全码为空槽。
+本地神韵布局的英数字母入口与上游保持同一结构：键道使用 `辅音+c`、`x+元音韵键`，三拼沿用同一二键基码并追加轻声键 `o`。键道和三拼共用 `snow_landao_jianpin` 棱镜。当前大字集使 `tco`、`hco`、`xko` 分别与 `tiao5`、`hua5`、`xi5` 重合，字母固顶必须保持在这些读音之前；其余 23 个三拼字母全码为空槽。
 
 冰雪兰道和冰雪兰拼的三字及以上简拼都留在 `abc` 段，由 `table_like.jianpin` 查询；不要给冰雪兰道恢复无前缀的 `recognizer/patterns/jianpin`、`affix_segmentor@jianpin` 和 `script_translator@jianpin`，否则输入第三个声母时会重分段并产生明显延迟。
 
@@ -405,7 +405,7 @@ echo '{"diagnostics.groupFileStatus":{"strict":"Any","strong":"Any"},"diagnostic
 ```sh
 python3 - <<'PY'
 import re, itertools
-S = ["snow_sipin", "snow_sanpin", "snow_yipin", "snow_jiandao", "snow_qingyun"]
+S = ["snow_sipin", "snow_lanpin", "snow_yipin", "snow_landao", "snow_qingyun"]
 for sec in ("processors", "segmentors", "translators", "filters"):
     L = {}
     for s in S:

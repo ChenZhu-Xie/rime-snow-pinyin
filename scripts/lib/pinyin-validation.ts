@@ -6,7 +6,7 @@ import { rootPath } from "./paths";
 // derive 在这里保留全部完整音节分支，例如三拼、键道的声母飞键和 uang 双编码。
 export const SYLLABLE_PATTERNS = [
 	{
-		schema: "snow_zhudao",
+		schema: "snow_huandao",
 		name: "冰雪鹮道",
 		key: "shenyun_algebra",
 		pattern: /^[bpmfdtnlgkhjqwvxrzcsy][a-z]$/,
@@ -19,7 +19,7 @@ export const SYLLABLE_PATTERNS = [
 		pattern: /^[bpmfdtnlgkhjqxzcsrwyv][aeiou]{2,3}$/,
 	},
 	{
-		schema: "snow_sanpin",
+		schema: "snow_lanpin",
 		name: "冰雪兰拼",
 		key: "sanpin_algebra",
 		// snow3/spelling.md：键道的声韵两码 + 调码；声韵均不用 viuoa 五键。
@@ -35,14 +35,14 @@ export const SYLLABLE_PATTERNS = [
 			/^[bpmfdtnlgkhzcsr]j?[iuv]?(a|ai|an|ang|ao|e|ei|en|eng|ou)?[wyxq]$/,
 	},
 	{
-		schema: "snow_jiandao",
+		schema: "snow_landao",
 		name: "冰雪兰道",
 		key: "speller/algebra",
 		// snow-jiandao/index.md、snow3/spelling.md：与三拼共用声韵，无调码。
 		pattern: /^[bpmfdtnlgkhjqxzcsrywe]{2}$/,
 	},
 	{
-		schema: "snow_jiandao_toned",
+		schema: "snow_liandao",
 		name: "冰雪莲道",
 		key: "speller/algebra",
 		// 声调已经合入第二码；前两码均只使用 AVUIO 之外的 21 个音码键。
@@ -56,25 +56,25 @@ export const SYLLABLE_PATTERNS = [
 		pattern: /^[bpmfdtnlgkhjqxzcsrwyv][aeiou;,./]$/,
 	},
 	{
-		schema: "snow_shenyun_shape",
+		schema: "snow_hedao",
 		name: "冰雪鹤道",
 		key: "shenyun_algebra",
 		pattern: /^[a-z]{2}$/,
 	},
 	{
-		schema: "snow_shenyun_tone",
+		schema: "snow_hepin",
 		name: "冰雪鹤拼",
 		key: "shenyun_algebra",
 		pattern: /^[a-z]{2}$/,
 	},
 	{
-		schema: "snow_jiandao_classic",
+		schema: "snow_jiandao",
 		name: "冰雪键道",
 		key: "speller/algebra",
 		pattern: /^[a-z]{2}$/,
 	},
 	{
-		schema: "snow_sanpin_classic",
+		schema: "snow_sanpin",
 		name: "冰雪三拼",
 		key: "sanpin_algebra",
 		pattern: /^[a-z]{2}[viuoa]$/,

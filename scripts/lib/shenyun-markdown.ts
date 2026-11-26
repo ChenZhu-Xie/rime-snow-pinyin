@@ -295,14 +295,8 @@ export function linkReadmeFiles(markdown: string, host: LinkHost) {
 	const overallSource = resolveLink("overallGithub", host);
 	const u357Source = resolveLink("u357Github", host);
 	return markdown
-		.replace(
-			/(?<!\[)`snow_shenyun_shape`/gu,
-			"[`snow_shenyun_shape`](snow_shenyun_shape.schema.yaml)",
-		)
-		.replace(
-			/(?<!\[)`snow_shenyun_tone`/gu,
-			"[`snow_shenyun_tone`](snow_shenyun_tone.schema.yaml)",
-		)
+		.replace(/(?<!\[)`snow_hedao`/gu, "[`snow_hedao`](snow_hedao.schema.yaml)")
+		.replace(/(?<!\[)`snow_hepin`/gu, "[`snow_hepin`](snow_hepin.schema.yaml)")
 		.replace(
 			/(?<!\[)`SNOW-SHENYUN-21X26-PRODUCTION`/gu,
 			"[`SNOW-SHENYUN-21X26-PRODUCTION`](config/shenyun-21x26-mapping.json)",

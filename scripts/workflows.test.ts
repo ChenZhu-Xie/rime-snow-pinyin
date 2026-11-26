@@ -26,16 +26,16 @@ test("分支与 PR 复用十方案功能门禁并监听门禁实现", () => {
 	const functional = read(".github/workflows/functional.yml");
 	for (const schema of [
 		"snow_sipin",
-		"snow_sanpin",
+		"snow_lanpin",
 		"snow_yipin",
-		"snow_jiandao",
+		"snow_landao",
 		"snow_qingyun",
-		"snow_shenyun_shape",
-		"snow_shenyun_tone",
-		"snow_jiandao_classic",
-		"snow_sanpin_classic",
-		"snow_jiandao_toned",
-		"snow_zhudao",
+		"snow_hedao",
+		"snow_hepin",
+		"snow_jiandao",
+		"snow_sanpin",
+		"snow_liandao",
+		"snow_huandao",
 	])
 		expect(functional).toContain(`schema: ${schema}`);
 	expect(functional).toContain("asset: mira-rime1.13.1");

@@ -2,10 +2,10 @@
 # encoding: utf-8
 
 # 复用冰雪兰道的顶功、纯形笔辅、反查和候选处理，只替换带调双拼音码。
-__include: snow_jiandao.schema.yaml:/
+__include: snow_landao.schema.yaml:/
 
 schema:
-  schema_id: snow_jiandao_toned
+  schema_id: snow_liandao
   name: 冰雪莲道
   version: "0.3.14"
   author:
@@ -19,13 +19,13 @@ schema:
   dependencies:
     - snow_pinyin
     - radical_pinyin
-    - snow_jiandao_bihua
-    - snow_jiandao_toned_jianpin
-    - snow_jiandao_chaifen
+    - snow_landao_bihua
+    - snow_liandao_jianpin
+    - snow_landao_chaifen
 
 keymap:
   key: v
-  image: snow_jiandao_toned.svg
+  image: snow_liandao.svg
 
 speller:
   shape:
@@ -60,7 +60,7 @@ speller:
       accept: "[viuoa]"
       block: true
   algebra:
-    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+    __include: snow_liandao_common.yaml:/jiandao_toned_algebra
     __append:
       # 字母沿用键道二键入口；音节的第二码本身已经含调。
       - xform/~{1,2}([bpmfdtnlgkhjqxzcsrwye])/$1c/
@@ -72,7 +72,7 @@ speller:
 
 jianpin:
   dictionary: snow_pinyin
-  prism: snow_jiandao_toned_jianpin
+  prism: snow_liandao_jianpin
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext
@@ -80,15 +80,15 @@ jianpin:
     - snow_pinyin.user
 
 # 父方案的 /jianpin 已在其自身展开，须显式替换声声查询棱镜。
-# 否则独立部署会请求未声明依赖的 snow_jiandao_jianpin.prism.bin。
+# 否则独立部署会请求未声明依赖的 snow_landao_jianpin.prism.bin。
 initial_pair:
-  prism: snow_jiandao_toned_jianpin
+  prism: snow_liandao_jianpin
 
 vacancy:
   dictionary: snow_pinyin
-  prism: snow_jiandao_toned
+  prism: snow_liandao
   canonical_format:
-    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+    __include: snow_liandao_common.yaml:/jiandao_toned_algebra
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext
@@ -104,14 +104,14 @@ lookup_jiandao:
   overwrite_comment: true
   dictionary: snow_pinyin
   comment_format:
-    __include: snow_jiandao_toned_common.yaml:/jiandao_toned_algebra
+    __include: snow_liandao_common.yaml:/jiandao_toned_algebra
 
 __patch:
   - patch
-  - snow_jiandao_toned.custom:/patch?
+  - snow_liandao.custom:/patch?
 
 patch:
-  translator/prism: snow_jiandao_toned
+  translator/prism: snow_liandao
   translator/user_dict_name: snow_jiandao_toned_cr_ref_7e650f7a4c
   translator/word_auxiliary_order: "21"
   translator/three_word_auxiliary_order: "231"

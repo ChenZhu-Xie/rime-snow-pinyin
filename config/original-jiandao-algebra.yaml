@@ -1,5 +1,5 @@
 # 原冰雪键道双拼代数的稳定测量快照。
-# 来源：`git show b8fd127^:snow_sanpin.schema.yaml` 的 `sanpin_algebra`。
+# 来源：`git show b8fd127^:snow_lanpin.schema.yaml` 的 `sanpin_algebra`。
 # b8fd127 是神韵布局替换原键道双拼映射的提交边界；测量不依赖运行时 Git 历史。
 sanpin_algebra:
   - xform/(?<=[jqxy])u(e?\d)/v$1/

@@ -16,7 +16,7 @@ $launcher = Join-Path $binaryDirectory 'snow_keymap_launcher.dll'
 Copy-Item -LiteralPath (Join-Path $BuildDirectory 'snow-keymap.exe') -Destination $helper
 Copy-Item -LiteralPath (Join-Path $BuildDirectory 'snow_keymap_launcher.dll') -Destination $launcher
 $commandFile = Join-Path $stage 'snow-pinyin-keymap-v2.command'
-$image = Join-Path $repository 'lua/snow/keymaps/snow_jiandao_toned.svg'
+$image = Join-Path $repository 'lua/snow/keymaps/snow_liandao.svg'
 [System.IO.File]::WriteAllText($commandFile, "toggle`tsmoke:1`t$image", [System.Text.UTF8Encoding]::new($false))
 
 Add-Type -TypeDefinition @'

@@ -2,9 +2,9 @@
   "id": "SNOW-SHENYUN-21X26-NUMBER-CODES-V1",
   "status": "enabled",
   "schemes": {
-    "shape": "snow_shenyun_shape",
-    "tone": "snow_shenyun_tone",
-    "tonedShape": "snow_zhudao"
+    "shape": "snow_hedao",
+    "tone": "snow_hepin",
+    "tonedShape": "snow_huandao"
   },
   "contract": {
     "source": "shortest-fixed-numeral-otherwise-first-auxiliary",

@@ -80,8 +80,8 @@ const fixedAliases = (filename: string) =>
 			}),
 	);
 
-const qzJiandaoAliases = fixedAliases("snow_jiandao.fixed.txt");
-const qzSanpinAliases = fixedAliases("snow_sanpin.fixed.txt");
+const qzJiandaoAliases = fixedAliases("snow_landao.fixed.txt");
+const qzSanpinAliases = fixedAliases("snow_lanpin.fixed.txt");
 
 const fixedSectionCounts = (filename: string) => {
 	const counts = new Map<string, number>();
@@ -108,16 +108,16 @@ const countFixedRows = (
 	length: number,
 ) => counts.get(`${section}/${length}`) ?? 0;
 
-const d3FixedCounts = fixedSectionCounts("snow_shenyun_shape.fixed.txt");
-const d3ToneFixedCounts = fixedSectionCounts("snow_shenyun_tone.fixed.txt");
-const qzJiandaoFixedCounts = fixedSectionCounts("snow_jiandao.fixed.txt");
-const qzSanpinFixedCounts = fixedSectionCounts("snow_sanpin.fixed.txt");
+const d3FixedCounts = fixedSectionCounts("snow_hedao.fixed.txt");
+const d3ToneFixedCounts = fixedSectionCounts("snow_hepin.fixed.txt");
+const qzJiandaoFixedCounts = fixedSectionCounts("snow_landao.fixed.txt");
+const qzSanpinFixedCounts = fixedSectionCounts("snow_lanpin.fixed.txt");
 const d3FirstCodes = countFixedRows(d3FixedCounts, "一级简码", 1);
 const d3TwoKeyCharacters = countFixedRows(d3FixedCounts, "单字", 2);
 const d3TwoKeyWords = countFixedRows(d3FixedCounts, "二简词", 2);
 const d3ThreeKeyCharacters = countFixedRows(d3FixedCounts, "单字", 3);
 const zhudaoThreeKeyCharacters = countFixedRows(
-	fixedSectionCounts("snow_zhudao.fixed.txt"),
+	fixedSectionCounts("snow_huandao.fixed.txt"),
 	"单字",
 	3,
 );
@@ -295,7 +295,7 @@ function replaceCurrentLayoutDocumentation(
 		: "";
 	const zh = `### RC26-39a5bfdc045342cd 21×26 双拼
 
-冰雪鹤道（\`snow_shenyun_shape\`）与冰雪鹤拼（\`snow_shenyun_tone\`）现共用 [RC26-39a5bfdc045342cd 21×26 布局](${d3Source})，仓库标识为 \`RC26-39a5bfdc045342cd\`，来源冻结、迁移审计与验证步骤见 [RC26 布局说明](docs/hedao.md)。布局在 Common399 上无音节重码，M-R2 \`40\`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`8/5/3/1\`；按 21×26 原生四码封顶、跨词长联合候选池与 \`soft-page-fill-v2\` 计分，方案专属稳健结果为 CKT v5.1 \`9.082777229838413\`。
+冰雪鹤道（\`snow_hedao\`）与冰雪鹤拼（\`snow_hepin\`）现共用 [RC26-39a5bfdc045342cd 21×26 布局](${d3Source})，仓库标识为 \`RC26-39a5bfdc045342cd\`，来源冻结、迁移审计与验证步骤见 [RC26 布局说明](docs/hedao.md)。布局在 Common399 上无音节重码，M-R2 \`40\`，全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`8/5/3/1\`；按 21×26 原生四码封顶、跨词长联合候选池与 \`soft-page-fill-v2\` 计分，方案专属稳健结果为 CKT v5.1 \`9.082777229838413\`。
 
 五辅语义保持“折横撇竖点→\`AEUIO\`、一二三四轻→\`IEUAO\`”，按形义序观察声调仍为 \`42310\`。冰雪鹤道的二／三／四字词形辅序为 \`12/12/24\`，冰雪鹤拼的调辅序为 \`12/21/13\`；记号表示从各字位依次取辅码，运行规则以方案文件为准。
 
@@ -343,7 +343,7 @@ ${mappingTable(activeD3Layout.finalMap, ["韵母", "次键"])}
 
 ### UED-3158ce08b5bc 21×21 双拼
 
-冰雪兰道（\`snow_jiandao\`）与冰雪兰拼（\`snow_sanpin\`）现共用 [UED-3158ce08b5bc 21×21 布局](${qzSource})，仓库标识为 \`UED-3158ce08b5bc\`。布局指标为 M-R2 \`41\`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`5/2/2/5\`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 \`9.565504107623386\`。
+冰雪兰道（\`snow_landao\`）与冰雪兰拼（\`snow_lanpin\`）现共用 [UED-3158ce08b5bc 21×21 布局](${qzSource})，仓库标识为 \`UED-3158ce08b5bc\`。布局指标为 M-R2 \`41\`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V \`5/2/2/5\`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 \`9.565504107623386\`。
 
 五辅语义保持“折横撇竖点→\`AVUIO\`、一二三四轻→\`IVUAO\`”，按形义序观察声调同为 \`42310\`。冰雪兰道的二／三／四字词形辅序为 \`12/231/23\`，冰雪兰拼的调辅序为 \`12/213/23\`；三字词保留完整三辅键路由，二字词与四字词共享四码主码候选竞争池。
 
@@ -410,7 +410,7 @@ ${zhBenchmark}
 `;
 	const en = `### RC26-39a5bfdc045342cd 21×26 double pinyin
 
-冰雪鹤道 (\`snow_shenyun_shape\`) and 冰雪鹤拼 (\`snow_shenyun_tone\`) now share the [RC26-39a5bfdc045342cd 21×26 layout](${d3Source}), identified in this repository as \`RC26-39a5bfdc045342cd\`. It has no Common399 syllable collisions, M-R2 \`40\`, and all/written/traditional-initial/final disorder A/I/D/V \`8/5/3/1\`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and \`soft-page-fill-v2\`, its scheme-specific robust score is CKT v5.1 \`9.082777229838413\`.
+冰雪鹤道 (\`snow_hedao\`) and 冰雪鹤拼 (\`snow_hepin\`) now share the [RC26-39a5bfdc045342cd 21×26 layout](${d3Source}), identified in this repository as \`RC26-39a5bfdc045342cd\`. It has no Common399 syllable collisions, M-R2 \`40\`, and all/written/traditional-initial/final disorder A/I/D/V \`8/5/3/1\`. Under the native 21×26 four-code-top contract, cross-length candidate pool, and \`soft-page-fill-v2\`, its scheme-specific robust score is CKT v5.1 \`9.082777229838413\`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→\`AEUIO\` and tones 1/2/3/4/neutral→\`IEUAO\`, yielding \`42310\` in shape-meaning order. 冰雪鹤道 uses shape order \`12/12/24\` and 冰雪鹤拼 uses tone order \`12/21/13\` for two-/three-/four-character words.
 
@@ -458,7 +458,7 @@ Current 5,500-character replays and all-key frequencies are linked below.
 
 ### UED-3158ce08b5bc 21×21 double pinyin
 
-冰雪兰道 (\`snow_jiandao\`) and 冰雪兰拼 (\`snow_sanpin\`) now share the [UED-3158ce08b5bc 21×21 layout](${qzSource}), identified as \`UED-3158ce08b5bc\`. Its layout metrics are M-R2 \`41\` and all/written/traditional-initial/final disorder A/I/D/V \`5/2/2/5\`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 \`9.565504107623386\`.
+冰雪兰道 (\`snow_landao\`) and 冰雪兰拼 (\`snow_lanpin\`) now share the [UED-3158ce08b5bc 21×21 layout](${qzSource}), identified as \`UED-3158ce08b5bc\`. Its layout metrics are M-R2 \`41\` and all/written/traditional-initial/final disorder A/I/D/V \`5/2/2/5\`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 \`9.565504107623386\`.
 
 The five auxiliary semantics remain bend/horizontal/left-falling/vertical/dot→\`AVUIO\` and tones 1/2/3/4/neutral→\`IVUAO\`, again yielding \`42310\`. 冰雪兰道 uses shape order \`12/231/23\`, while 冰雪兰拼 uses tone order \`12/213/23\`; three-character words retain the complete three-auxiliary route.
 
@@ -523,7 +523,7 @@ Reproducible current production layout comparisons and external controls are in 
 `;
 	const zht = `### RC26-39a5bfdc045342cd 21×26 雙拼
 
-冰雪鶴道（\`snow_shenyun_shape\`）與冰雪鹤拼（\`snow_shenyun_tone\`）現共用 [RC26-39a5bfdc045342cd 21×26 布局](${d3Source})，倉庫標識為 \`RC26-39a5bfdc045342cd\`。布局在 Common399 上無音節重碼，M-R2 \`40\`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`8/5/3/1\`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 \`soft-page-fill-v2\` 計分，方案專屬穩健結果為 CKT v5.1 \`9.082777229838413\`。
+冰雪鶴道（\`snow_hedao\`）與冰雪鹤拼（\`snow_hepin\`）現共用 [RC26-39a5bfdc045342cd 21×26 布局](${d3Source})，倉庫標識為 \`RC26-39a5bfdc045342cd\`。布局在 Common399 上無音節重碼，M-R2 \`40\`，全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`8/5/3/1\`；按 21×26 原生四碼封頂、跨詞長聯合候選池與 \`soft-page-fill-v2\` 計分，方案專屬穩健結果為 CKT v5.1 \`9.082777229838413\`。
 
 五輔語義保持「折橫撇豎點→\`AEUIO\`、一二三四輕→\`IEUAO\`」，按形義序觀察聲調仍為 \`42310\`。冰雪鶴道的二／三／四字詞形輔序為 \`12/12/24\`，冰雪鹤拼的調輔序為 \`12/21/13\`。
 
@@ -571,7 +571,7 @@ ${mappingTable(activeD3Layout.finalMap, ["韻母", "次鍵"])}
 
 ### UED-3158ce08b5bc 21×21 雙拼
 
-冰雪兰道（\`snow_jiandao\`）與冰雪兰拼（\`snow_sanpin\`）現共用 [UED-3158ce08b5bc 21×21 布局](${qzSource})，倉庫標識為 \`UED-3158ce08b5bc\`。布局指標為 M-R2 \`41\`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`5/2/2/5\`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 \`9.565504107623386\`。
+冰雪兰道（\`snow_landao\`）與冰雪兰拼（\`snow_lanpin\`）現共用 [UED-3158ce08b5bc 21×21 布局](${qzSource})，倉庫標識為 \`UED-3158ce08b5bc\`。布局指標為 M-R2 \`41\`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V \`5/2/2/5\`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 \`9.565504107623386\`。
 
 五輔語義保持「折橫撇豎點→\`AVUIO\`、一二三四輕→\`IVUAO\`」，按形義序觀察聲調同為 \`42310\`。冰雪兰道的二／三／四字詞形輔序為 \`12/231/23\`，冰雪兰拼的調輔序為 \`12/213/23\`；三字詞保留完整三輔鍵路由。
 

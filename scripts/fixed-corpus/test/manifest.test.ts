@@ -24,8 +24,8 @@ test("expands environment and repository path candidates", () => {
 		resolve("D:\\input method/KeyTao"),
 	);
 	assert.equal(
-		expandCandidatePath("${REPO_ROOT}/snow_jiandao.fixed.txt", environment),
-		resolve("D:\\repo/snow_jiandao.fixed.txt"),
+		expandCandidatePath("${REPO_ROOT}/snow_landao.fixed.txt", environment),
+		resolve("D:\\repo/snow_landao.fixed.txt"),
 	);
 });
 

@@ -10,17 +10,17 @@ export interface LatencyCase {
 }
 
 export const SCHEMA_NAMES: Record<string, string> = {
-	snow_jiandao_toned: "冰雪莲道",
-	snow_zhudao: "冰雪鹮道",
+	snow_liandao: "冰雪莲道",
+	snow_huandao: "冰雪鹮道",
 	snow_sipin: "冰雪四拼",
-	snow_sanpin: "冰雪兰拼",
+	snow_lanpin: "冰雪兰拼",
 	snow_yipin: "冰雪一拼",
-	snow_jiandao: "冰雪兰道",
+	snow_landao: "冰雪兰道",
 	snow_qingyun: "冰雪清韵",
-	snow_shenyun_shape: "冰雪鹤道",
-	snow_shenyun_tone: "冰雪鹤拼",
-	snow_jiandao_classic: "冰雪键道",
-	snow_sanpin_classic: "冰雪三拼",
+	snow_hedao: "冰雪鹤道",
+	snow_hepin: "冰雪鹤拼",
+	snow_jiandao: "冰雪键道",
+	snow_sanpin: "冰雪三拼",
 };
 
 // 一击拆成每键按下、每键松开；最后一次松开才产生完整音节反馈。
@@ -38,7 +38,7 @@ export function chord(keys: string): string {
 }
 
 export const LATENCY_CASES: Record<string, LatencyCase[]> = {
-	snow_jiandao_toned: [
+	snow_liandao: [
 		{
 			id: "initial-pair-four-aux",
 			keys: "rfvaua",
@@ -57,7 +57,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 		},
 		{ id: "radical", keys: "uwangyan", page: "琰", source: "docs/liandao.md" },
 	],
-	snow_zhudao: [
+	snow_huandao: [
 		{
 			id: "initial-pair-four-aux",
 			keys: "bdeuea",
@@ -125,37 +125,37 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 			source: "snow4/basic.md",
 		},
 	],
-	snow_sanpin: [
+	snow_lanpin: [
 		{ id: "radical", keys: "uwangyan", page: "琰", source: "README.md" },
 		{
 			id: "single",
 			keys: "bgi",
 			page: "冰",
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 		{
 			id: "double",
 			keys: "bgxkiu",
 			page: "冰雪",
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 		{
 			id: "triple",
 			keys: "krfaiu",
 			page: "输入法",
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 		{
 			id: "four",
 			keys: "smxwui",
 			page: "充满希望",
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 		{
 			id: "long",
 			keys: "ehrmGHG",
 			page: "中华人民共和国",
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 		{
 			id: "paging",
@@ -166,23 +166,23 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 			id: "editing",
 			keys: "bgxkiu{BackSpace}",
 			page: "冰雪",
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 		{
 			id: "popping",
 			keys: "bgxkkrf",
 			commit: "冰雪",
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 		{
 			id: "buffered",
 			keys: "bgxkkrf  ",
 			commit: "冰雪输入法",
 			options: ["buffered"],
-			source: "spec/snow_sanpin.test.yaml",
+			source: "spec/snow_lanpin.test.yaml",
 		},
 	],
-	snow_jiandao: [
+	snow_landao: [
 		{ id: "radical", keys: "uwangyan", page: "琰", source: "README.md" },
 		{
 			id: "dense-prefix",
@@ -194,31 +194,31 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 			id: "single-shape",
 			keys: "bgov",
 			page: "冰",
-			source: "spec/snow_jiandao.test.yaml",
+			source: "spec/snow_landao.test.yaml",
 		},
 		{
 			id: "double",
 			keys: "bgxk",
 			page: "冰雪",
-			source: "spec/snow_jiandao.test.yaml",
+			source: "spec/snow_landao.test.yaml",
 		},
 		{
 			id: "triple",
 			keys: "krf",
 			page: "输入法",
-			source: "spec/snow_jiandao.test.yaml",
+			source: "spec/snow_landao.test.yaml",
 		},
 		{
 			id: "four",
 			keys: "smxw",
 			page: "充满希望",
-			source: "spec/snow_jiandao.test.yaml",
+			source: "spec/snow_landao.test.yaml",
 		},
 		{
 			id: "long-shape",
 			keys: "pxfeG",
 			page: "科学发展观",
-			source: "snow-jiandao/basic.md；逐字补形见 spec/snow_jiandao.test.yaml",
+			source: "snow-jiandao/basic.md；逐字补形见 spec/snow_landao.test.yaml",
 		},
 		{
 			id: "long",
@@ -230,7 +230,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 			id: "mixed",
 			keys: "kHrHfL",
 			page: "输入法",
-			source: "snow-jiandao/index.md；spec/snow_jiandao.test.yaml",
+			source: "snow-jiandao/index.md；spec/snow_landao.test.yaml",
 		},
 		{
 			id: "paging",
@@ -356,7 +356,7 @@ export const LATENCY_CASES: Record<string, LatencyCase[]> = {
 };
 
 // 单键与翻页覆盖空桶提示的首次加载和后续输出；两个 21×26 方案使用同一预算。
-for (const schema of ["snow_shenyun_shape", "snow_shenyun_tone"]) {
+for (const schema of ["snow_hedao", "snow_hepin"]) {
 	LATENCY_CASES[schema] = [
 		{
 			id: "single-initial",
@@ -387,12 +387,12 @@ for (const schema of ["snow_shenyun_shape", "snow_shenyun_tone"]) {
 
 // 声声二字词从两声母逐键追加到四辅，覆盖六方案的形辅和调笔语义。
 for (const [schema, keys, page] of [
+	["snow_landao", "yxoaai", "也许"],
+	["snow_lanpin", "yxuoua", "也许"],
 	["snow_jiandao", "yxoaai", "也许"],
 	["snow_sanpin", "yxuoua", "也许"],
-	["snow_jiandao_classic", "yxoaai", "也许"],
-	["snow_sanpin_classic", "yxuoua", "也许"],
-	["snow_shenyun_shape", "cvoaaa", "测试"],
-	["snow_shenyun_tone", "cvaiee", "才是"],
+	["snow_hedao", "cvoaaa", "测试"],
+	["snow_hepin", "cvaiee", "才是"],
 ]) {
 	LATENCY_CASES[schema] ??= [];
 	LATENCY_CASES[schema].push({
@@ -413,16 +413,16 @@ for (const [schema, keys, commit, source] of [
 		"snow4/index.md",
 	],
 	[
-		"snow_sanpin",
+		"snow_lanpin",
 		"bgxkkrf_smxw_ehrmGHG_.",
 		"冰雪输入法充满希望中华人民共和国主席。",
-		"spec/snow_sanpin.test.yaml",
+		"spec/snow_lanpin.test.yaml",
 	],
 	[
-		"snow_jiandao",
+		"snow_landao",
 		"bgxkkrf_smxw_ehrmGHG_.",
 		"冰雪输入法充满希望中华人民共和国主席。",
-		"spec/snow_jiandao.test.yaml",
+		"spec/snow_landao.test.yaml",
 	],
 	[
 		"snow_qingyun",
@@ -450,14 +450,14 @@ LATENCY_CASES.snow_yipin.push({
 
 // 四主码词长直选：在真实候选链上验证上屏，同时计入惰性菜单展开的耗时。
 for (const [schema, four, preferred, commit] of [
-	["snow_jiandao", "rgen", "pxfe", "科学发展观"],
-	["snow_sanpin", "rgen", "pxfe", "科学发展观"],
-	["snow_jiandao_classic", "rgfn", "kxfq", "科学发展观"],
-	["snow_sanpin_classic", "rgfn", "kxfq", "科学发展观"],
-	["snow_jiandao_toned", "rgen", "pxfe", "科学发展观"],
-	["snow_shenyun_shape", "rgsn", "jqji", "计算机"],
-	["snow_shenyun_tone", "rgsn", "jqji", "计算机"],
-	["snow_zhudao", "rgxn", "jsjz", "计算机"],
+	["snow_landao", "rgen", "pxfe", "科学发展观"],
+	["snow_lanpin", "rgen", "pxfe", "科学发展观"],
+	["snow_jiandao", "rgfn", "kxfq", "科学发展观"],
+	["snow_sanpin", "rgfn", "kxfq", "科学发展观"],
+	["snow_liandao", "rgen", "pxfe", "科学发展观"],
+	["snow_hedao", "rgsn", "jqji", "计算机"],
+	["snow_hepin", "rgsn", "jqji", "计算机"],
+	["snow_huandao", "rgxn", "jsjz", "计算机"],
 ]) {
 	LATENCY_CASES[schema].push(
 		{
@@ -475,9 +475,9 @@ for (const [schema, four, preferred, commit] of [
 	);
 }
 for (const [schema, prefix, continuation, fallback, commit] of [
-	["snow_shenyun_shape", "kyfs", "kyfsG", "wyzr", "有限责任公司"],
-	["snow_shenyun_tone", "kyfs", "kyfsG", "wyzr", "有限责任公司"],
-	["snow_zhudao", "kyfx", "kyfxG", "gfly", "股份有限公司"],
+	["snow_hedao", "kyfs", "kyfsG", "wyzr", "有限责任公司"],
+	["snow_hepin", "kyfs", "kyfsG", "wyzr", "有限责任公司"],
+	["snow_huandao", "kyfx", "kyfxG", "gfly", "股份有限公司"],
 ]) {
 	LATENCY_CASES[schema].push(
 		{

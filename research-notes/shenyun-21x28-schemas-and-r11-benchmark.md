@@ -85,7 +85,7 @@ Z: ve
 
 | 项目 | 冰雪简道 | 冰雪散拼 |
 |---|---|---|
-| schema ID | `snow_shenyun_shape` | `snow_shenyun_tone` |
+| schema ID | `snow_hedao` | `snow_hepin` |
 | 共用主码 | `AU / AUAU / AAA / AAAU / AAAA` | 同左 |
 | 辅键集合 | `aeuio` | `aeuio` |
 | 第一辅码语义 | 键道式部首/形辅，`v→e` | 四拼式声调，`12345→ieuao` |
@@ -95,8 +95,8 @@ Z: ve
 
 实现文件：
 
-- [`snow_shenyun_shape.schema.yaml`](../snow_shenyun_shape.schema.yaml)
-- [`snow_shenyun_tone.schema.yaml`](../snow_shenyun_tone.schema.yaml)
+- [`snow_hedao.schema.yaml`](../snow_hedao.schema.yaml)
+- [`snow_hepin.schema.yaml`](../snow_hepin.schema.yaml)
 - [`snow_shenyun_common.yaml`](../snow_shenyun_common.yaml)
 - [`lua/snow/shenyun.lua`](../lua/snow/shenyun.lua)
 

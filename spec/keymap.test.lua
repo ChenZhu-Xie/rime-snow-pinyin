@@ -73,11 +73,11 @@ end
 
 local keymap = require "snow.keymap"
 local editor_context = context()
-local editor_env = environment(editor_context, "snow_shenyun_shape", "e")
+local editor_env = environment(editor_context, "snow_hedao", "e")
 keymap.init(editor_env)
 assert(#commands == 0, "新会话初始化不能覆盖已有键位图")
 assert(keymap.func(key_event("e"), editor_env) == snow.kAccepted)
-assert(#commands == 1 and commands[1]:match("^toggle\tsnow_shenyun_shape:"))
+assert(#commands == 1 and commands[1]:match("^toggle\tsnow_hedao:"))
 local requested = commands[1]
 
 -- helper 或其他应用首次获得会话时，初始四拼不能覆盖刚请求的鹤道图。
@@ -87,9 +87,9 @@ assert(#commands == 1 and commands[1] == requested,
   "另一个会话的默认四拼不能抢写当前鹤道图")
 
 -- 同一个 context 切换方案，仍应立即让已显示的图跟随。
-local switched_env = environment(editor_context, "snow_sanpin", "v")
+local switched_env = environment(editor_context, "snow_lanpin", "v")
 keymap.init(switched_env)
-assert(#commands == 2 and commands[2]:match("^follow\tsnow_sanpin:"),
+assert(#commands == 2 and commands[2]:match("^follow\tsnow_lanpin:"),
   "当前会话切换兰拼时仍须更新浮窗")
 assert(launches == 0, "跟随命令和存活 helper 不应启动新进程")
 
@@ -105,7 +105,7 @@ assert(keymap.func(key_event("v"), switched_env) == snow.kNoop)
 assert(#commands == count, "释放、修饰键、有输入和英文模式均不能改变浮窗")
 editor_context.ascii_mode = false
 assert(keymap.func(key_event("v"), switched_env) == snow.kAccepted)
-assert(commands[#commands]:match("^toggle\tsnow_sanpin:"))
+assert(commands[#commands]:match("^toggle\tsnow_lanpin:"))
 
 -- 首次启动只调用原生 DLL；心跳尚未建立时，重复按键不能再启动一份。
 helper_running = false
@@ -116,7 +116,7 @@ assert(launches == 1, "心跳建立前应限制重复启动")
 
 -- 打包缺失 DLL 时保留正常字母输入，并给出诊断日志。
 launcher_available = false
-local unavailable = environment(context(), "snow_jiandao", "v")
+local unavailable = environment(context(), "snow_landao", "v")
 keymap.init(unavailable)
 count = #commands
 assert(not unavailable.available)
@@ -127,7 +127,7 @@ assert(#commands == count and #warnings == 1 and warnings[1]:find("missing test 
 rime_api.get_user_data_dir = function() return "/home/rime" end
 rime_api.get_distribution_code_name = function() return "ibus" end
 snow.keymap_helper_launch_time = 0
-local linux = environment(context(), "snow_sanpin", "v")
+local linux = environment(context(), "snow_lanpin", "v")
 keymap.init(linux)
 assert(linux.available and linux.launch_helper == nil)
 assert(keymap.func(key_event("v"), linux) == snow.kAccepted)

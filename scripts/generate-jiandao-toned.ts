@@ -74,7 +74,7 @@ const rules = [
 		),
 	"  - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/",
 ];
-const path = rootPath("snow_jiandao_toned_common.yaml");
+const path = rootPath("snow_liandao_common.yaml");
 const output = `# Rime schema fragment\n# encoding: utf-8\n\n# 声调合入第二码；后续仅使用冰雪兰道的形笔辅。\njiandao_toned_algebra:\n${rules.join("\n")}\n`;
 if (process.argv.includes("--check")) {
 	if (readFileSync(path, "utf8").replace(/\r\n/gu, "\n") !== output)

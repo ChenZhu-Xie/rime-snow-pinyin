@@ -489,7 +489,7 @@ function translator.init(env)
   env.vacancy_projection = Projection(config:get_list("vacancy/canonical_format") or {})
   env.memory = Memory(env.engine, env.engine.schema, "shenyun")
   env.pinyin = ReverseLookup("snow_pinyin")
-  local shape_elements = config:get_string("translator/shape_elements") or "snow_jiandao_chaifen"
+  local shape_elements = config:get_string("translator/shape_elements") or "snow_landao_chaifen"
   env.shape_elements = ReverseLookup(shape_elements)
   local shape_mapping = config:get_string("translator/shape_mapping") or "radical_jiandao.txt"
   env.shape_mapping = snow.table_from_tsv(rime_api.get_user_data_dir() .. "/lua/snow/" .. shape_mapping)

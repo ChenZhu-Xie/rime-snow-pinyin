@@ -85,7 +85,7 @@
 
 ```powershell
 bun scripts/prepare-character-conflict-probes.ts output/character-full-local/input.json --all-characters
-$schemas = @('snow_sipin','snow_jiandao','snow_sanpin','snow_qingyun','snow_shenyun_shape','snow_shenyun_tone','snow_jiandao_toned','snow_zhudao','snow_jiandao_classic','snow_sanpin_classic')
+$schemas = @('snow_sipin','snow_landao','snow_lanpin','snow_qingyun','snow_hedao','snow_hepin','snow_liandao','snow_huandao','snow_jiandao','snow_sanpin')
 & ./scripts/experiments/benchmark-character-oracle.ps1 -Mode collect -Parallelism 2 -Schemas $schemas -InputPath output/character-full-local/input.json -OutputBase output/character-full-local/run
 foreach ($schema in $schemas) { bun scripts/audit-character-conflict-probes.ts "output/character-full-local/run/$schema"; if ($LASTEXITCODE) { throw 'Audit failed' } }
 bun scripts/merge-character-oracle.ts output/character-full-local

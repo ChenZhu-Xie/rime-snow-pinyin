@@ -37,7 +37,7 @@ test("多音字的兜底优先级使用实际读音权重，不借用同字高�
 
 test("鹮道 sx 的读音兜底保留虽和尿的权重，固顶尊重四拼的吹", () => {
 	const algebra = new SpellingAlgebra(
-		rootPath("snow_zhudao.schema.yaml"),
+		rootPath("snow_huandao.schema.yaml"),
 		"speller/algebra",
 		{ derive: false },
 	);
@@ -53,7 +53,7 @@ test("鹮道 sx 的读音兜底保留虽和尿的权重，固顶尊重四拼的�
 	);
 	assert.equal(bucket.find((row) => row.word === "尿")?.weight, 199);
 	const fixed = new Map(
-		readFileSync(rootPath("snow_zhudao.fixed.txt"), "utf8")
+		readFileSync(rootPath("snow_huandao.fixed.txt"), "utf8")
 			.split(/\r?\n/u)
 			.filter((l) => l.includes("\t") && !l.startsWith("#"))
 			.map((l) => l.split("\t") as [string, string]),
@@ -66,14 +66,14 @@ test("鹮道 sx 的读音兜底保留虽和尿的权重，固顶尊重四拼的�
 test("支持分号追加「的」的九个方案统一一级固顶 d→都", () => {
 	for (const schema of [
 		"snow_sipin",
+		"snow_landao",
+		"snow_lanpin",
 		"snow_jiandao",
 		"snow_sanpin",
-		"snow_jiandao_classic",
-		"snow_sanpin_classic",
-		"snow_shenyun_shape",
-		"snow_shenyun_tone",
-		"snow_zhudao",
-		"snow_jiandao_toned",
+		"snow_hedao",
+		"snow_hepin",
+		"snow_huandao",
+		"snow_liandao",
 	]) {
 		const filename = `${schema}.fixed.txt`;
 		const fixed = readFileSync(rootPath(filename), "utf8");
@@ -84,14 +84,14 @@ test("支持分号追加「的」的九个方案统一一级固顶 d→都", () 
 test("八套双拼的 p 一简按四拼和本地声母重映射，不因全码选重深度换字", () => {
 	for (const schema of [
 		"snow_sipin",
+		"snow_landao",
+		"snow_lanpin",
 		"snow_jiandao",
 		"snow_sanpin",
-		"snow_jiandao_classic",
-		"snow_sanpin_classic",
-		"snow_shenyun_shape",
-		"snow_shenyun_tone",
-		"snow_zhudao",
-		"snow_jiandao_toned",
+		"snow_hedao",
+		"snow_hepin",
+		"snow_huandao",
+		"snow_liandao",
 	]) {
 		const fixed = new Map(
 			readFileSync(rootPath(`${schema}.fixed.txt`), "utf8")
@@ -102,7 +102,7 @@ test("八套双拼的 p 一简按四拼和本地声母重映射，不因全码�
 		// 鹮道将跑与我映射到同一声母，沿用四拼重映射后的我；其余方案保留跑。
 		assert.equal(
 			fixed.get("p"),
-			schema === "snow_zhudao" ? "我" : "跑",
+			schema === "snow_huandao" ? "我" : "跑",
 			schema,
 		);
 	}
@@ -111,7 +111,7 @@ test("八套双拼的 p 一简按四拼和本地声母重映射，不因全码�
 test("兰道和莲道重新生成时恢复 d→都 和按四拼重映射的 p→跑", {
 	timeout: 120_000,
 }, () => {
-	for (const schema of ["snow_jiandao", "snow_jiandao_toned"]) {
+	for (const schema of ["snow_landao", "snow_liandao"]) {
 		const filename = `${schema}.fixed.txt`;
 		const fixed = readFileSync(rootPath(filename), "utf8");
 		const previous = fixed
@@ -181,8 +181,8 @@ test("两套 21×26 道系列三级固顶均为合法主码加首形辅，且不
 		readings.set(row.word, values);
 	}
 	for (const [schema, scheme, expectedCount] of [
-		["snow_shenyun_shape", "rc26-shape", 1648],
-		["snow_zhudao", "zhudao", 2022],
+		["snow_hedao", "rc26-shape", 1648],
+		["snow_huandao", "zhudao", 2022],
 	] as const) {
 		const file = `${schema}.fixed.txt`;
 		const source = readFileSync(rootPath(file), "utf8").replace(/\r\n/gu, "\n");
@@ -226,7 +226,7 @@ test("两套 21×26 道系列三级固顶均为合法主码加首形辅，且不
 			`${schema} 重新生成应稳定`,
 		);
 	}
-	const toneRows = readFileSync(rootPath("snow_shenyun_tone.fixed.txt"), "utf8")
+	const toneRows = readFileSync(rootPath("snow_hepin.fixed.txt"), "utf8")
 		.split(/\r?\n/u)
 		.filter((line) => !line.startsWith("#") && line.includes("\t"));
 	assert.ok(

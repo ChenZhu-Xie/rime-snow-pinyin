@@ -238,7 +238,7 @@ translator:
   prism: snow_shenyun
   preedit_format: null
   enable_schema_user_dict: true
-  shape_elements: snow_jiandao_chaifen
+  shape_elements: snow_landao_chaifen
   shape_mapping: "radical_jiandao.txt"
   shenyun_initial_keys: bpmfdtnlgkhjqwvxrzcsy
   shenyun_final_keys: abcdefghijklmnopqrstuvwxyz

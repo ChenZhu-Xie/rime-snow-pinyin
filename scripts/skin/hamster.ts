@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import {
 	copyFileSync,
+	cpSync,
 	mkdirSync,
 	mkdtempSync,
 	readFileSync,
@@ -1197,7 +1198,9 @@ export function generateHamsterSkin(
 	name: string,
 	keyboards: KeyboardCollection,
 ) {
-	const folder = join(prefix, name);
+	mkdirSync(prefix, { recursive: true });
+	const staging = mkdtempSync(join(prefix, ".skin-source-"));
+	const folder = join(staging, name);
 	mkdirSync(folder, { recursive: true });
 	const skinConfig = makeHamsterSkinConfig(name, keyboards);
 	writeFileSync(join(folder, "config.yaml"), dump(skinConfig), "utf8");
@@ -1262,11 +1265,13 @@ export function generateHamsterSkin(
 	try {
 		const archive = join(temporary, "skin.cskin");
 		execFileSync("zip", ["-qrX", archive, name, "-x", "*.DS_Store"], {
-			cwd: prefix,
+			cwd: staging,
 			stdio: "pipe",
 		});
 		renameSync(archive, join(prefix, `${name}.cskin`));
+		cpSync(folder, join(prefix, name), { recursive: true });
 	} finally {
 		rmSync(temporary, { recursive: true, force: true });
+		rmSync(staging, { recursive: true, force: true });
 	}
 }

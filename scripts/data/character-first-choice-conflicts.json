@@ -2657,7 +2657,7 @@
 				"zii1q"
 			]
 		},
-		"snow_jiandao": {
+		"snow_landao": {
 			"id": "oc21-shape",
 			"targets": {
 				"俾": {
@@ -3115,7 +3115,7 @@
 				"zwov"
 			]
 		},
-		"snow_sanpin": {
+		"snow_lanpin": {
 			"id": "oc21-tone",
 			"targets": {
 				"罢": {
@@ -3812,7 +3812,7 @@
 				"vjp"
 			]
 		},
-		"snow_shenyun_shape": {
+		"snow_hedao": {
 			"id": "rc26-shape",
 			"targets": {
 				"湃": {
@@ -4292,7 +4292,7 @@
 				"ysiuo"
 			]
 		},
-		"snow_shenyun_tone": {
+		"snow_hepin": {
 			"id": "rc26-tone",
 			"targets": {
 				"杷": {
@@ -5493,7 +5493,7 @@
 				"zmoo"
 			]
 		},
-		"snow_jiandao_toned": {
+		"snow_liandao": {
 			"id": "liandao",
 			"targets": {
 				"般": {
@@ -6479,7 +6479,7 @@
 				"zriv"
 			]
 		},
-		"snow_zhudao": {
+		"snow_huandao": {
 			"id": "zhudao",
 			"targets": {
 				"妇": {
@@ -6799,7 +6799,7 @@
 				"yioo"
 			]
 		},
-		"snow_jiandao_classic": {
+		"snow_jiandao": {
 			"id": "classic-shape",
 			"targets": {
 				"臂": {
@@ -7598,7 +7598,7 @@
 				"zeiuv"
 			]
 		},
-		"snow_sanpin_classic": {
+		"snow_sanpin": {
 			"id": "classic-tone",
 			"targets": {
 				"罢": {

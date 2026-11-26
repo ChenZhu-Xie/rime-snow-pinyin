@@ -738,7 +738,7 @@ for (const code of reportSanpinCodes) {
 }
 
 const shapeCodes = readShapeCodes(
-	join(root, "snow_jiandao_chaifen.dict.yaml"),
+	join(root, "snow_landao_chaifen.dict.yaml"),
 	layout.shapeElementKeys,
 );
 const jiandaoPools = new Map<string, ReturnType<typeof makeCandidate>[]>();
@@ -888,13 +888,13 @@ assertNoReplaceableFixed("冰雪兰道", jiandao);
 
 const outputs = new Map([
 	[
-		"snow_sanpin.fixed.txt",
-		alignFixedContent("snow_sanpin.fixed.txt", renderSanpinFixedTable(sanpin)),
+		"snow_lanpin.fixed.txt",
+		alignFixedContent("snow_lanpin.fixed.txt", renderSanpinFixedTable(sanpin)),
 	],
 	[
-		"snow_jiandao.fixed.txt",
+		"snow_landao.fixed.txt",
 		alignFixedContent(
-			"snow_jiandao.fixed.txt",
+			"snow_landao.fixed.txt",
 			renderJiandaoFixedTable(jiandao),
 		),
 	],

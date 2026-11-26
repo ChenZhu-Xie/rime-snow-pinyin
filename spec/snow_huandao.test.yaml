@@ -1,4 +1,4 @@
-schema: snow_zhudao
+schema: snow_huandao
 source_dir: ..
 script: |
   function rank(text)
