@@ -128,4 +128,21 @@ test("各词长分别统计功能键与修饰键，两张表的零次和次数�
 	assert.ok(table.includes("| `[` 次数 | 1 | 0 | 0 | 0 | 0 |"));
 	assert.ok(table.includes("| `<` 次数 | 0 | 0 | 0 | 1 | 0 |"));
 	assert.ok(table.includes("| `>` 次数 | 0 | 0 | 0 | 0 | 1 |"));
+	assert.ok(table.includes("| 翻页键次数 | 0 | 0 | 0 | 0 | 0 |"));
+});
+
+test("翻页归入对应词长的实际码长，不混入编码键或选重次数", () => {
+	const stats = benchmarkWordStatistics([
+		{ text: "甲乙", replay: [[0, "ab{PageDown}{PageUp}[2]"]] },
+	]);
+	assert.equal(stats.total.pageTurns, 2);
+	assert.equal(stats.groups[1].pageTurns, 2);
+	assert.equal(stats.total.codeKeys, 2);
+	assert.equal(stats.total.inputKeys, 5);
+	assert.equal(stats.total.selections, 1);
+	assert.equal(stats.groups[1].keyLengths[5].count, 1);
+	const table = renderBenchmarkWordStatistics([
+		{ name: "翻页示例", totalKeys: 5, statistics: stats },
+	]);
+	assert.ok(table.includes("| 翻页键次数 | 0 | 2 | 0 | 0 | 0 |"));
 });

@@ -15,6 +15,7 @@ test("逐键回放完整计入大小写、显式 Shift、空格、两种选重�
 	assert.equal(counts.spaces, 1);
 	assert.equal(counts.shifts, 1);
 	assert.equal(counts.selections, 2);
+	assert.equal(counts.pageTurns, 0);
 	assert.equal(counts.frequencies.Candidate2, 1);
 	assert.equal(counts.frequencies["3"], 1);
 	assert.equal(
@@ -22,6 +23,17 @@ test("逐键回放完整计入大小写、显式 Shift、空格、两种选重�
 		counts.keys,
 	);
 	assert.throws(() => countBenchmarkKeys(["⇧a"]));
+});
+
+test("上下翻页各计一次按键，选重另计，不把记号字符当作实际键", () => {
+	const counts = countBenchmarkKeys(["ab{PageDown}{PageDown}{PageUp}[2]"]);
+	assert.equal(counts.keys, 6);
+	assert.equal(counts.pageTurns, 3);
+	assert.equal(counts.selections, 1);
+	assert.equal(counts.frequencies.PageDown, 2);
+	assert.equal(counts.frequencies.PageUp, 1);
+	assert.equal(counts.functionKeys["["], 0);
+	assert.equal(counts.functionKeys[">"], 0);
 });
 
 test("词长直选的左右书名号各为两键，不冒充数字选重或单键标点", () => {

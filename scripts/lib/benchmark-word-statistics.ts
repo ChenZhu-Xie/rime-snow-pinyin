@@ -22,6 +22,7 @@ export interface BenchmarkWordCounts {
 	selectionRate: number;
 	spaces: number;
 	shifts: number;
+	pageTurns: number;
 	functionKeys: BenchmarkFunctionKeyCounts;
 }
 
@@ -46,6 +47,7 @@ function emptyCounts(label: string): BenchmarkWordCounts {
 		selectionRate: 0,
 		spaces: 0,
 		shifts: 0,
+		pageTurns: 0,
 		functionKeys: emptyBenchmarkFunctionKeyCounts(),
 	};
 }
@@ -73,7 +75,7 @@ export function benchmarkWordStatistics(
 				counts.spaces -
 				counts.shifts -
 				counts.selections -
-				(counts.frequencies.PageDown ?? 0) +
+				counts.pageTurns +
 				(code.match(/\[Space\]/gu)?.length ?? 0);
 			assert.ok(codeKeys > 0, "汉字段必须有编码键");
 			assert.ok(counts.selections <= 1, "每个输出段最多一次选重");
@@ -86,6 +88,7 @@ export function benchmarkWordStatistics(
 				group.selections += counts.selections;
 				group.spaces += counts.spaces;
 				group.shifts += counts.shifts;
+				group.pageTurns += counts.pageTurns;
 				for (const key of benchmarkFunctionKeys)
 					group.functionKeys[key] += counts.functionKeys[key];
 				const bucket = (group.codeLengths[codeKeys] ??= { count: 0, rate: 0 });
@@ -132,13 +135,13 @@ export function renderBenchmarkWordStatistics(
 ): string {
 	const ranking = [...schemes].sort((a, b) => a.totalKeys - b.totalKeys);
 	const lines = [
-		`| 方案 | 总按键 | 总均码／字 | 输出段数 | 均码／段 | Space | Shift | ${benchmarkFunctionKeys.map((key) => `\`${key}\``).join(" | ")} | 选重次数／率 |`,
-		`| --- | ${Array(13).fill("---:").join(" | ")} |`,
+		`| 方案 | 总按键 | 总均码／字 | 输出段数 | 均码／段 | Space | Shift | ${benchmarkFunctionKeys.map((key) => `\`${key}\``).join(" | ")} | 翻页键次数 | 选重次数／率 |`,
+		`| --- | ${Array(14).fill("---:").join(" | ")} |`,
 	];
 	for (const { name, totalKeys, statistics } of ranking) {
 		const total = statistics.total;
 		lines.push(
-			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **${total.tokens}** | **${total.tokens ? total.averageCodeLength.toFixed(3) : "—"}** | ${total.spaces} | ${total.shifts} | ${benchmarkFunctionKeys.map((key) => total.functionKeys[key]).join(" | ")} | **${total.selections}／${percent(total.selectionRate)}** |`,
+			`| **${name}** | **${totalKeys}** | **${total.hanCharacters ? (totalKeys / total.hanCharacters).toFixed(4) : "—"}** | **${total.tokens}** | **${total.tokens ? total.averageCodeLength.toFixed(3) : "—"}** | ${total.spaces} | ${total.shifts} | ${benchmarkFunctionKeys.map((key) => total.functionKeys[key]).join(" | ")} | ${total.pageTurns} | **${total.selections}／${percent(total.selectionRate)}** |`,
 		);
 	}
 	for (const { name, statistics } of ranking) {
@@ -154,6 +157,7 @@ export function renderBenchmarkWordStatistics(
 			`| 选重次数／率 | ${groups.map((g) => `${g.selections}／${percent(g.selectionRate)}`).join(" | ")} |`,
 			`| Space 次数 | ${groups.map((g) => g.spaces).join(" | ")} |`,
 			`| Shift 次数 | ${groups.map((g) => g.shifts).join(" | ")} |`,
+			`| 翻页键次数 | ${groups.map((g) => g.pageTurns).join(" | ")} |`,
 			...benchmarkFunctionKeys.map(
 				(key) =>
 					`| \`${key}\` 次数 | ${groups.map((g) => g.functionKeys[key]).join(" | ")} |`,

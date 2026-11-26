@@ -11,11 +11,12 @@ export interface BenchmarkKeyCounts {
 	spaces: number;
 	shifts: number;
 	selections: number;
+	pageTurns: number;
 	functionKeys: BenchmarkFunctionKeyCounts;
 	frequencies: Record<string, number>;
 }
 
-/** 统计回放的实际按键；Shift、Space 和选重各自计键，排版标记不计。 */
+/** 统计回放的实际按键；Shift、Space、翻页和选重各自计键，排版标记不计。 */
 export function countBenchmarkKeys(
 	codes: readonly string[],
 ): BenchmarkKeyCounts {
@@ -24,6 +25,7 @@ export function countBenchmarkKeys(
 		spaces: 0,
 		shifts: 0,
 		selections: 0,
+		pageTurns: 0,
 		functionKeys: emptyBenchmarkFunctionKeyCounts(),
 		frequencies: {},
 	};
@@ -32,12 +34,14 @@ export function countBenchmarkKeys(
 		result.frequencies[key] = (result.frequencies[key] ?? 0) + 1;
 		if (key === "Space") result.spaces++;
 		if (key === "Shift") result.shifts++;
+		if (key === "PageUp" || key === "PageDown") result.pageTurns++;
 	};
 	for (const code of codes) {
 		for (let i = 0; i < code.length; i++) {
-			if (code.startsWith("{PageDown}", i)) {
-				press("PageDown");
-				i += "{PageDown}".length - 1;
+			const pageTurn = code.slice(i).match(/^\{(PageUp|PageDown)\}/u);
+			if (pageTurn) {
+				press(pageTurn[1]);
+				i += pageTurn[0].length - 1;
 				continue;
 			}
 			if (code.startsWith("[Space]", i)) {

@@ -191,6 +191,7 @@ const corpus = {
 assert.equal(corpus.hanCharacters, 5500);
 assert.equal(corpus.punctuationCharacters, 392);
 for (const [id, scheme] of Object.entries(schemes)) {
+	assert.equal(scheme.wordStatistics.total.pageTurns, scheme.total.pageTurns);
 	assert.deepEqual(
 		scheme.wordStatistics.total.functionKeys,
 		scheme.total.functionKeys,
@@ -202,8 +203,9 @@ for (const [id, scheme] of Object.entries(schemes)) {
 			scheme.total.spaces -
 			scheme.total.shifts -
 			scheme.total.selections -
+			scheme.total.pageTurns -
 			corpus.punctuationCharacters,
-		`${id}/编码、标点、Shift、Space、选重必须还原原始总按键`,
+		`${id}/编码、标点、Shift、Space、翻页、选重必须还原原始总按键`,
 	);
 	assert.equal(
 		scheme.wordStatistics.total.inputKeys + corpus.punctuationCharacters,
@@ -217,21 +219,23 @@ const report = {
 	corpus,
 	functionKeysDefinition:
 		"按回放分别统计 [、]、;、/、<、> 的使用次数，选重标记的方括号不计；<、> 各计一次基础键，配套 Shift 另计一次。计数为总按键的子集，不额外累加；物理键频 frequencies 中 <、> 仍分别归入逗号、句号键",
+	pageTurnsDefinition:
+		"pageTurns 为回放中 {PageUp} 与 {PageDown} 翻页按键的总次数，每次计一键，已包含在 keys、inputKeys 及码长分布中；翻页与随后选重分别计键，不将翻页次数并入 selections。本轮全部方案均为 0，仍在表格显示",
 	wordStatisticsDefinition: {
 		unit: "最优路径实际汉字输出段的出现次数，重复出现重复计数；含结构略码及追加的／了，不重新分词；不含标点段",
 		codeLength:
-			"codeKeys、codeLengths 为基础键拆账，含辅码、定位、略码及词长直选的逗号／句号键；大写字母计一码；不含额外 Shift、Space、数字选重键和排版标记，不用于报告平均码长及分布",
+			"codeKeys、codeLengths 为基础键拆账，含辅码、定位、略码及词长直选的逗号／句号键；大写字母计一码；不含额外 Shift、Space、数字选重键、翻页键和排版标记，不用于报告平均码长及分布",
 		inputLength:
-			"inputKeys、keyLengths 为字词实际按键，包含编码、额外 Shift、Space、选重键；用于报告的码长分布及平均码长；标点另计入方案总按键",
+			"inputKeys、keyLengths 为字词实际按键，包含编码、额外 Shift、Space、翻页与选重键；用于报告的码长分布及平均码长；标点另计入方案总按键",
 		tokenRateDenominator: "各方案全部汉字输出段数",
 		codeLengthRateDenominator: "本词长类别的汉字输出段数",
 		selectionRateDenominator: "对应行的汉字输出段数；合计行为全方案",
 		averageEncodingLength:
 			"JSON 中保留的基础键拆账字段＝codeKeys／汉字输出段数，不用于报告平均码长",
 		averageCodeLength:
-			"字词平均码长＝inputKeys／汉字输出段数，包含额外 Shift、Space、选重键；用于报告均码／段",
+			"字词平均码长＝inputKeys／汉字输出段数，包含额外 Shift、Space、翻页与选重键；用于报告均码／段",
 		totalAverageLength:
-			"全方案总按键／5500 汉字；包含编码、Space、Shift、选重与标点",
+			"全方案总按键／5500 汉字；包含编码、Space、Shift、翻页、选重与标点",
 	},
 	schemes,
 };
@@ -256,40 +260,41 @@ const comparisonSchemes = [schemes.qingyun, schemes.flypy];
 const comparison = comparisonSchemes.map((scheme) => ({
 	tokens: scheme.wordStatistics.total.tokens,
 	mean: scheme.wordStatistics.total.averageCodeLength.toFixed(3),
-	breakdown: `${scheme.wordStatistics.total.codeKeys}＋${scheme.total.spaces}＋${scheme.total.shifts}＋${scheme.total.selections}＋${corpus.punctuationCharacters}＝${scheme.total.keys}`,
+	breakdown: `${scheme.wordStatistics.total.codeKeys}＋${scheme.total.spaces}＋${scheme.total.shifts}＋${scheme.total.pageTurns}＋${scheme.total.selections}＋${corpus.punctuationCharacters}＝${scheme.total.keys}`,
 }));
 const markdown = [
 	"# 十一场景 5500 字：当前十二方案最优切分对比",
 	"",
-	"按每个方案自身规则枚举合法编码，在独立会话、空白用户词典并关闭学习的候选顺序下，先最少化选重次数，再最少化实际按键；总按键相同时优先最短标准码。Shift、Space、标点和选重均计键。候选枚举按物理键数比较，不能因较短编码含 Shift 而漏掉实际更省键的较长小写码。结果为规则内最优切分模型，不代表真人速度。",
+	"按每个方案自身规则枚举合法编码，在独立会话、空白用户词典并关闭学习的候选顺序下，先最少化选重次数，再最少化实际按键；总按键相同时优先最短标准码。Shift、Space、标点、翻页和选重均计键。候选枚举按物理键数比较，不能因较短编码含 Shift 而漏掉实际更省键的较长小写码。结果为规则内最优切分模型，不代表真人速度。",
 	"",
 	"本轮已作废旧候选缓存并校正查询协议：逐键读取候选、发送真实 Shift 修饰键、分方案隔离会话、关闭学习，并排除中途上屏的编码。旧回放误将冰雪莲道 `xkd`、冰雪鹮道 `yvd` 记作「新时代」首选；干净部署中两者均为「形式的」首选，「新时代」排第五。本报告使用校正后重新求解的全部路径。",
 	"",
 	`语料：${corpus.note} 共 5500 汉字、392 标点。5000 字部分另见[十篇完整报告](./十篇五百字_当前十二方案最优切分及字词比率报告.md)。`,
 	"",
-	`| 排名 | 方案 | 总按键 | 总平均码长（键／字） | Space | Shift | ${benchmarkFunctionKeys.map((key) => `\`${key}\``).join(" | ")} | 选重 |`,
-	`| ---: | --- | ${Array(11).fill("---:").join(" | ")} |`,
+	`| 排名 | 方案 | 总按键 | 总平均码长（键／字） | Space | Shift | ${benchmarkFunctionKeys.map((key) => `\`${key}\``).join(" | ")} | 翻页键次数 | 选重 |`,
+	`| ---: | --- | ${Array(12).fill("---:").join(" | ")} |`,
 	...ranking.map(
 		([, scheme], i) =>
-			`| ${i + 1} | ${scheme.name} | ${scheme.total.keys} | ${scheme.total.averageLength.toFixed(4)} | ${scheme.total.spaces} | ${scheme.total.shifts} | ${benchmarkFunctionKeys.map((key) => scheme.total.functionKeys[key]).join(" | ")} | ${scheme.total.selections} |`,
+			`| ${i + 1} | ${scheme.name} | ${scheme.total.keys} | ${scheme.total.averageLength.toFixed(4)} | ${scheme.total.spaces} | ${scheme.total.shifts} | ${benchmarkFunctionKeys.map((key) => scheme.total.functionKeys[key]).join(" | ")} | ${scheme.total.pageTurns} | ${scheme.total.selections} |`,
 	),
 	"",
 	"功能键按回放分别列出 `[`、`]`、`;`、`/`、`<`、`>` 的使用次数，零次也显示。`《`／`》` 功能以 `<`／`>` 表示，每次只在对应栏计一个基础键，配套的另一次击键已计入 Shift；这些栏均为总按键的子集，不再额外累加。选重标记 `[3]`、`[候选2]`、`[Space]` 中的方括号属于排版，不计功能键；热力图仍将 `<`／`>` 的基础键分别归入物理逗号／句号键。",
 	"",
 	"## 词长、码长与选重统计",
 	"",
+	"「翻页键次数」统计回放中 `{PageUp}` 与 `{PageDown}` 的按键次数之和，每次计一键，已经包含在总按键、字词实际码长及码长分布中；翻页和随后按键选重分别计键，翻页次数不并入选重次数。本轮十二方案均未使用翻页键，表中仍明确显示为 0。",
 	"",
 	"按十一场景最优路径的实际汉字输出段统计，重复出现重复计数，标点不计词次。输出段包括结构略码及追加「的／了」，不再按另一套词典重新分词；五字及以上合并为多字词。第十一场景的额外 500 字同样计入。",
 	"",
 	"先按总按键从少到多给出十二方案汇总，再逐方案给出六列小表。每张小表以单字、二字、三字、四字、五字及以上为列，以实际键数为行；分布格为「次数／该词长类别占比」，空格表示零次。存在短码长词等规则，矩阵不强制为严格三角形。",
 	"",
-	"各词长小表同时列出 Space、Shift 及六个功能键的使用次数，按该键所在的实际汉字输出段归类；汇总表中的对应次数为这些类别之和。",
+	"各词长小表同时列出 Space、Shift、翻页键及六个功能键的使用次数，按该键所在的实际汉字输出段归类；汇总表中的对应次数为这些类别之和。",
 	"",
 	"「输出段数／占比」统计的是字词输出段的出现次数，分母为本方案全部汉字输出段数，不是汉字数；所有方案输入的汉字均为 5500 字。「选重率」为选重次数除以对应类别的输出段数，汇总表给出全方案选重个数及比率。百分比保留两位小数，四舍五入后之和可能略偏离 100%。",
 	"",
-	"方案总平均码长、各词长类别的平均码长及码长分布均按实际按键统计，包含编码键、额外 Shift、Space、选重键；大写字母需要的 Shift 另计一键，排版标记不计。「总均码／字」＝含标点的全方案总按键／5500 汉字，保留四位小数；「均码／段」＝对应行汉字输出段的实际按键总数／输出段数，保留三位小数。标点段不属于字词，单独计入方案总按键；没有输出段的类别以「—」表示均码。",
+	"方案总平均码长、各词长类别的平均码长及码长分布均按实际按键统计，包含编码键、额外 Shift、Space、翻页与选重键；大写字母需要的 Shift 另计一键，排版标记不计。「总均码／字」＝含标点的全方案总按键／5500 汉字，保留四位小数；「均码／段」＝对应行汉字输出段的实际按键总数／输出段数，保留三位小数。标点段不属于字词，单独计入方案总按键；没有输出段的类别以「—」表示均码。",
 	"",
-	`例如，冰雪清韵将 5500 字切为 ${comparison[0].tokens} 个输出段，小鹤音形（清风版）切为 ${comparison[1].tokens} 段；含 Shift、Space、选重的平均每段实际按键分别为 ${comparison[0].mean} 和 ${comparison[1].mean}。拆账为纯编码＋Space＋Shift＋选重＋标点，分别为 ${comparison[0].breakdown} 键、${comparison[1].breakdown} 键，故按总按键排序与按输出段数排序可以不同。`,
+	`例如，冰雪清韵将 5500 字切为 ${comparison[0].tokens} 个输出段，小鹤音形（清风版）切为 ${comparison[1].tokens} 段；含 Shift、Space、翻页与选重的平均每段实际按键分别为 ${comparison[0].mean} 和 ${comparison[1].mean}。拆账为纯编码＋Space＋Shift＋翻页＋选重＋标点，分别为 ${comparison[0].breakdown} 键、${comparison[1].breakdown} 键，故按总按键排序与按输出段数排序可以不同。`,
 	"",
 	wordStatisticsTable,
 	"",

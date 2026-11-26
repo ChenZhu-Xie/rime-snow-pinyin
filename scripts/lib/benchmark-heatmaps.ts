@@ -53,7 +53,13 @@ export function validateHeatmapReport(report: HeatmapReport): void {
 			}
 		}
 		assert.deepEqual(frequencies, scheme.total.frequencies, `${id}/逐场景键频`);
-		for (const field of ["keys", "spaces", "shifts", "selections"] as const)
+		for (const field of [
+			"keys",
+			"spaces",
+			"shifts",
+			"selections",
+			"pageTurns",
+		] as const)
 			assert.equal(
 				scheme.scenes.reduce((sum, scene) => sum + scene[field], 0),
 				scheme.total[field],
@@ -66,6 +72,11 @@ export function validateHeatmapReport(report: HeatmapReport): void {
 		);
 		assert.equal(frequencies.Space ?? 0, scheme.total.spaces, `${id}/Space`);
 		assert.equal(frequencies.Shift ?? 0, scheme.total.shifts, `${id}/Shift`);
+		assert.equal(
+			(frequencies.PageUp ?? 0) + (frequencies.PageDown ?? 0),
+			scheme.total.pageTurns,
+			`${id}/翻页键`,
+		);
 		for (const key of benchmarkFunctionKeys)
 			assert.equal(
 				scheme.scenes.reduce((sum, scene) => sum + scene.functionKeys[key], 0),
@@ -115,15 +126,19 @@ export function renderBenchmarkHeatmap(scheme: HeatmapScheme): string {
 	const logical = Object.keys(frequencies).filter((key) =>
 		/^Candidate[1-9]$/u.test(key),
 	);
-	for (const [i, key] of logical.sort().entries())
+	const extraKeys = [
+		...logical.sort(),
+		...["PageUp", "PageDown"].filter((key) => frequencies[key] > 0),
+	];
+	for (const [i, key] of extraKeys.entries())
 		specs.push({
 			key,
-			label: `候选 ${key.slice(9)}（逻辑）`,
+			label: key.startsWith("Candidate") ? `候选 ${key.slice(9)}（逻辑）` : key,
 			x: 18 + i * 180,
 			y: top + 354,
 			width: 172,
 		});
-	const height = top + 354 + (logical.length > 0 ? 88 : 0);
+	const height = top + 354 + (extraKeys.length > 0 ? 88 : 0);
 	const known = new Set(specs.map(({ key }) => key));
 	for (const [key, count] of Object.entries(frequencies))
 		assert.ok(count === 0 || known.has(key), `键盘图缺少按键：${key}`);

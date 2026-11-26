@@ -119,3 +119,13 @@ test("两份 README 三语分别展示六个现行成员，十二方案报告图
 			id,
 		);
 });
+
+test("上下翻页各绘制实际次数，与选重键分开", () => {
+	const total = countBenchmarkKeys(["ab{PageDown}{PageDown}{PageUp}[2]"]);
+	const counts = svgCounts(
+		renderBenchmarkHeatmap({ name: "翻页示例", total, scenes: [] }),
+	);
+	assert.equal(counts.PageDown, 2);
+	assert.equal(counts.PageUp, 1);
+	assert.equal(counts["2"], 1);
+});
