@@ -257,6 +257,7 @@ function processor.func(key_event, env)
     if key_event:eq(confirm_key) then
       env.swallowed_keys[key_event.keycode] = true
       context:confirm_current_selection()
+      io.stderr:write("MENU confirm input=" .. context.input .. " options=" .. context:get_property("snow_menu_options") .. "\n")
       return snow.kAccepted
     end
   end
@@ -294,6 +295,7 @@ function translator.init(env)
     local genuine = candidate:get_genuine()
     if genuine.type ~= env.tag then return end
     env.selected_action = env.actions[genuine.text]
+    io.stderr:write("MENU prepare text=" .. genuine.text .. " action=" .. tostring(env.selected_action ~= nil) .. "\n")
     env.selected_schema_id = schema_id_for_name(genuine.text)
     if env.selected_schema_id or env.selected_action then ctx:set_option("_auto_commit", false) end
   end, 0)
@@ -302,6 +304,7 @@ function translator.init(env)
     if action then
       ctx:clear()
       action()
+      io.stderr:write("MENU action input=" .. ctx.input .. " options=" .. ctx:get_property("snow_menu_options") .. "\n")
       env.selected_action = nil
       restore_ascii_mode(ctx)
       return
@@ -333,6 +336,7 @@ function translator.func(input, segment, env)
   env.actions = {}
   local context = env.engine.context
   if context:get_property("snow_menu_options") == "1" then
+    io.stderr:write("MENU translate options count=" .. env.engine.schema.config:get_list_size("switches") .. "\n")
     local config = env.engine.schema.config
     for index = 0, config:get_list_size("switches") - 1 do
       local path = "switches/@" .. index
