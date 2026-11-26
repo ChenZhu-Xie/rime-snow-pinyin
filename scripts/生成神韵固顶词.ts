@@ -330,8 +330,8 @@ const baseWordEntries = mergeDictionaries([
 	...supplementalEverydayEntries,
 ]).filter((entry) => !hasTailKeyReplacement(entry));
 
-function readLegacy(file: string) {
-	if (!legacyReference) return readLegacyFixed(join(root, file));
+function readLegacy(file: string, currentFile: string) {
+	if (!legacyReference) return readLegacyFixed(join(root, currentFile));
 	return parseLegacyFixed(
 		execFileSync("git", ["show", `${legacyReference}:${file}`], {
 			cwd: root,
@@ -340,8 +340,14 @@ function readLegacy(file: string) {
 	);
 }
 
-const legacySanpin = readLegacy("snow_sanpin.fixed.txt");
-const legacyJiandao = readLegacy("snow_jiandao.fixed.txt");
+const legacySanpin = readLegacy(
+	"snow_sanpin.fixed.txt",
+	"snow_lanpin.fixed.txt",
+);
+const legacyJiandao = readLegacy(
+	"snow_jiandao.fixed.txt",
+	"snow_landao.fixed.txt",
+);
 // 单字首选由冰雪四拼语义重映射统一决定，不能再反向作为通用编译器的历史偏好，
 // 否则“先编译、再对齐”的最终产物会在下一次生成时改变编译结果。
 legacySanpin.delete("# 单字");
