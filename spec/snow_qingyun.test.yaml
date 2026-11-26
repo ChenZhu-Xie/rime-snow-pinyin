@@ -23,31 +23,25 @@ script: |
   function annotated(index, text)
     return cand[index] ~= nil and cand[index].comment:find(text) ~= nil
   end
-  function menu_diagnostic()
-    local texts = {}
-    for index, candidate in ipairs(cand) do
-      texts[index] = candidate.text
-    end
-    error("menu preedit=" .. tostring(preedit) .. " commit=" .. tostring(commit) .. " candidates=" .. table.concat(texts, " | "))
-  end
 deploy:
   schema_options_menu:
+    # 每条 send 都创建新会话，菜单与临时模式的前置按键必须包含在同一条输入内。
     tests:
       - send: "{F4}"
         assert: cand[1].text == "方案选项"
-      - send: "{space}"
-        assert: (cand[4] ~= nil and cand[4].text == "字词 → 单字" and commit == nil) or menu_diagnostic()
-      - send: "8wye"
+      - send: "{F4}{space}"
+        assert: cand[4].text == "字词 → 单字" and commit == nil
+      - send: "{F4}{space}8wye"
         assert: cand[1].text == "玥" and commit == nil
-      - send: "{space}rf,"
+      - send: "{F4}{space}8wye{space}rf,"
         assert: cand[1].text == "昉"
-      - send: "{Shift+Tab}"
+      - send: "{F4}{space}8wye{space}rf,{Shift+Tab}"
         assert: cand[1].text == "乳房"
-      - send: "{space}wye"
+      - send: "{F4}{space}8wye{space}rf,{Shift+Tab}{space}wye"
         assert: cand[1].text == "玥"
-      - send: "{Escape}{Control+grave}{space}"
+      - send: "{F4}{space}8{Escape}{Control+grave}{space}"
         assert: cand[4].text == "单字 → 字词" and commit == nil
-      - send: "8wye"
+      - send: "{F4}{space}8{Escape}{Control+grave}{space}8wye"
         assert: cand[1].text == "网页" and commit == nil
   cold_character_selection:
     tests:
