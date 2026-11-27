@@ -67,6 +67,8 @@ jobs:
           lua5.4 spec/select_word_length.test.lua
           lua5.4 spec/select_character.test.lua
           lua5.4 spec/append_shi.test.lua
+          lua5.4 spec/vacancy.test.lua
+          lua5.4 spec/length_balance.test.lua
           lua5.4 spec/candidate_priority.test.lua
           lua5.4 spec/learned_priority.test.lua
           lua5.4 spec/postpone-learning.test.lua

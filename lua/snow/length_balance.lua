@@ -21,12 +21,13 @@ local function group_of(candidate)
 end
 
 ---@param candidates Candidate[]
+---@param groups table<Candidate, integer>
 ---@return integer[]
-local function group_counts(candidates)
+local function group_counts(candidates, groups)
   local counts = { 0, 0, 0 }
   for _, candidate in ipairs(candidates) do
-    local group = group_of(candidate)
-    if group then counts[group] = counts[group] + 1 end
+    local group = groups[candidate]
+    if group and group > 0 then counts[group] = counts[group] + 1 end
   end
   return counts
 end
@@ -53,23 +54,24 @@ end
 
 ---@param candidates Candidate[]
 ---@param page_size integer
+---@param groups table<Candidate, integer>
 ---@return Candidate[], Candidate[]
-local function take_page(candidates, page_size)
+local function take_page(candidates, page_size, groups)
   local page_length = math.min(page_size, #candidates)
-  local available = group_counts(candidates)
+  local available = group_counts(candidates, groups)
   local grouped_slots = math.min(page_length, available[1] + available[2] + available[3])
   local targets = balanced_targets(available, grouped_slots)
   local selected = {}
   for index = 1, page_length do selected[index] = true end
   local page = {}
   for index = 1, page_length do table.insert(page, candidates[index]) end
-  local counts = group_counts(page)
+  local counts = group_counts(page, groups)
 
   for needed_group = 1, 3 do
     while counts[needed_group] < targets[needed_group] do
       local replacement = nil
       for index = page_length + 1, #candidates do
-        if not selected[index] and group_of(candidates[index]) == needed_group then
+        if not selected[index] and groups[candidates[index]] == needed_group then
           replacement = index
           break
         end
@@ -77,15 +79,15 @@ local function take_page(candidates, page_size)
       if not replacement then break end
       local displaced = nil
       for index = page_length, 1, -1 do
-        local group = group_of(candidates[index])
-        if selected[index] and group and counts[group] > targets[group] then
+        local group = groups[candidates[index]]
+        if selected[index] and group and group > 0 and counts[group] > targets[group] then
           displaced = index
           break
         end
       end
       if not displaced then break end
-      local displaced_group = group_of(candidates[displaced])
-      if not displaced_group then break end
+      local displaced_group = groups[candidates[displaced]]
+      if not displaced_group or displaced_group == 0 then break end
       selected[displaced] = false
       selected[replacement] = true
       counts[displaced_group] = counts[displaced_group] - 1
@@ -106,15 +108,27 @@ local function take_page(candidates, page_size)
 end
 
 ---@param candidates Candidate[]
+---@return table<Candidate, integer>
+local function classify(candidates)
+  -- 同批候选的文本不变，只跨 C++ 边界读取一次，避免每页重算全部词长。
+  ---@type table<Candidate, integer>
+  local groups = {}
+  for _, candidate in ipairs(candidates) do
+    if groups[candidate] == nil then groups[candidate] = group_of(candidate) or 0 end
+  end
+  return groups
+end
+
+---@param candidates Candidate[]
 ---@param page_size integer
 ---@return Candidate[]
 function filter.rebalance(candidates, page_size)
-  ---@type Candidate[]
   local remaining = candidates
+  local groups = classify(candidates)
   local result = {}
   while #remaining > 0 do
     local page
-    page, remaining = take_page(remaining, page_size)
+    page, remaining = take_page(remaining, page_size, groups)
     for _, candidate in ipairs(page) do
       table.insert(result, candidate)
     end
@@ -149,8 +163,13 @@ function filter.func(translation, env)
       table.insert(buffered, candidate)
     end
     if #buffered == 0 then break end
-    for _, candidate in ipairs(filter.rebalance(buffered, env.page_size)) do
-      yield(candidate)
+    -- 保留完整批次参与第一页补位，但后续页等消费者需要时再计算。
+    local groups = classify(buffered)
+    local remaining = buffered
+    while #remaining > 0 do
+      local page
+      page, remaining = take_page(remaining, env.page_size, groups)
+      for _, candidate in ipairs(page) do yield(candidate) end
     end
     if #buffered < env.maximum_candidates then break end
   end

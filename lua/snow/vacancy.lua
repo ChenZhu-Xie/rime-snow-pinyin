@@ -56,7 +56,6 @@ end
 function vacancy.is_empty(input, segment, translator, memory, projection, cache)
   local cached = cache[input]
   if cached ~= nil then return cached end
-  local occupied = false
   local translation = translator:query(input, segment)
   if translation then
     for candidate in translation:iter() do
@@ -65,12 +64,14 @@ function vacancy.is_empty(input, segment, translator, memory, projection, cache)
       local consumed = genuine._end - genuine.start
       if phrase and consumed == input:len() and utf8.len(candidate.text) == 1
           and occupies_bucket(phrase.entry, memory, projection, input) then
-        occupied = true
+        -- 这里只判存在性，找到占桶单字后不再拉取后续惰性候选。
+        cache[input] = false
+        return false
       end
     end
   end
-  cache[input] = not occupied
-  return not occupied
+  cache[input] = true
+  return true
 end
 
 return vacancy

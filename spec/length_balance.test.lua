@@ -68,4 +68,46 @@ for index = 1, 6 do
 end
 assert(counts[1] == 1 and counts[2] + counts[3] == 5)
 
+local reads = 0
+local batch = {}
+for index = 1, 120 do
+  local text = ({ "一", "二字", "三字词", "四字成语" })[index % 4 + 1]
+  batch[index] = setmetatable({}, { __index = function(_, key)
+    assert(key == "text")
+    reads = reads + 1
+    return text
+  end })
+end
+local balanced = balance.rebalance(batch, 6)
+assert(#balanced == #batch and reads == #batch, "每个候选只读取一次文本")
+local seen = {}
+for _, value in ipairs(balanced) do
+  assert(not seen[value], "不能重复输出候选")
+  seen[value] = true
+end
+for _, value in ipairs(batch) do assert(seen[value], "不能丢失候选") end
+
+-- 实际过滤器惰性分页必须与完整重排逐项相同，包括跨 120 候选批次。
+local stream = {}
+for index = 1, 257 do stream[index] = candidate(string.rep("字", index % 5 + 1)) end
+local expected = {}
+for start = 1, #stream, 120 do
+  local chunk = {}
+  for index = start, math.min(start + 119, #stream) do chunk[#chunk + 1] = stream[index] end
+  for _, value in ipairs(balance.rebalance(chunk, 6)) do expected[#expected + 1] = value end
+end
+local pulled = 0
+local translation = { iter = function()
+  return function() pulled = pulled + 1; return stream[pulled] end
+end }
+yield = coroutine.yield
+local task = coroutine.create(function()
+  balance.func(translation, { maximum_candidates = 120, page_size = 6 })
+end)
+for index, value in ipairs(expected) do
+  local ok, actual = coroutine.resume(task)
+  assert(ok and actual == value, "惰性过滤器不能改变跨页顺序")
+  if index == 1 then assert(pulled == 120, "首项须保留原有完整预取批次") end
+end
+assert(coroutine.resume(task) and coroutine.status(task) == "dead")
 print("length_balance.test.lua: ok")
