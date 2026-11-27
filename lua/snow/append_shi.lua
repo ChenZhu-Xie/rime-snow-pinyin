@@ -1,17 +1,20 @@
 -- 单音节的「×是」自适应上屏。通过当前引擎试查标准词码，复用完整过滤链。
 local snow = require "snow.snow"
 local priority = require "snow.candidate_priority"
+local fix = require "snow.fix"
 
 local append = {}
 
 ---@class AppendShiRoute
 ---@field code string
 ---@field readings table<string, boolean>
+---@field system boolean
 
 ---@class AppendShiEnv: Env
 ---@field shi_routes table<string, AppendShiRoute[]>|nil
 ---@field shi_memory Memory|nil
 ---@field shi_pinyin ReverseLookup|nil
+---@field shi_fixed FixEnv|nil
 
 ---@param env AppendShiEnv
 local function load_routes(env)
@@ -20,10 +23,10 @@ local function load_routes(env)
   local file = io.open(path, "r")
   if not file then return end
   for line in file:lines() do
-    local input, code, readings = line:match("^([^#\t]+)\t([^\t]+)\t(.+)$")
+    local input, code, readings, system = line:match("^([^#\t]+)\t([^\t]+)\t([^\t]+)\t([01])$")
     if input and code and readings then
       ---@type AppendShiRoute
-      local route = { code = code, readings = {} }
+      local route = { code = code, readings = {}, system = system == "1" }
       for reading in readings:gmatch("%S+") do route.readings[reading] = true end
       env.shi_routes[input] = env.shi_routes[input] or {}
       table.insert(env.shi_routes[input], route)
@@ -32,6 +35,29 @@ local function load_routes(env)
   file:close()
   env.shi_memory = Memory(env.engine, env.engine.schema, "translator")
   env.shi_pinyin = ReverseLookup("snow_pinyin")
+  env.shi_fixed = { engine = env.engine, name_space = "translator" }
+  fix.init(env.shi_fixed)
+end
+
+---@param route AppendShiRoute
+---@param env AppendShiEnv
+local function may_have_word(route, env)
+  if route.system ~= false then return true end
+  if env.shi_fixed then
+    for _, word in ipairs(fix.get_customized_list(env.shi_fixed, route.code)) do
+      if utf8.len(word) == 2 and word:sub(-3) == "是" then return true end
+    end
+  end
+  local user_dict = env.shi_memory and env.shi_memory.user_dict
+  if user_dict then
+    for reading in pairs(route.readings) do
+      local entries = user_dict:lookup_words(reading .. " shi4", false, 0)
+      for entry in entries:iter() do
+        if utf8.len(entry.text) == 2 and entry.text:sub(-3) == "是" then return true end
+      end
+    end
+  end
+  return false
 end
 
 ---@param candidate Candidate
@@ -80,6 +106,7 @@ function append.commit(env)
   local weights = {}
   local ok, message = pcall(function()
     for _, route in ipairs(routes) do
+      if not may_have_word(route, env) then goto continue end
       context.input = route.code
       local current = context.composition:toSegmentation():back()
       if current and current.start == 0 and current._end == #route.code then
@@ -103,6 +130,7 @@ function append.commit(env)
           index = index + 1
         end
       end
+      ::continue::
     end
     if best and best_code and best_index ~= nil then
       context.input = best_code
@@ -127,6 +155,8 @@ end
 ---@param env AppendShiEnv
 function append.fini(env)
   env.shi_routes = nil
+  if env.shi_fixed then fix.fini(env.shi_fixed) end
+  env.shi_fixed = nil
   if env.shi_memory then env.shi_memory:disconnect() end
   env.shi_memory = nil
   env.shi_pinyin = nil

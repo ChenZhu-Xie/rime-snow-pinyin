@@ -188,7 +188,7 @@ deploy:
       - send: cvoa
         assert: has("测试") and not has("才是")
       - send: cvoi
-        assert: has("才是") and not has("测试")
+        assert: not has("才是") and not has("测试")
       # 各级主码候选均随新声韵映射重算：AUAU、AAA、AAAU、AAAA。
       - send: bqyv
         assert: has("冰雪")

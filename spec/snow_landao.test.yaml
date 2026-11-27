@@ -227,7 +227,7 @@ deploy:
       - send: "p["
         assert: commit == "跑跑"
       - send: "p]"
-        assert: (commit == "怕是") or error("adaptive commit=" .. tostring(commit))
+        assert: (commit == "可是") or error("adaptive commit=" .. tostring(commit))
       - send: nv
         assert: cand[1].text == "那样"
       # 首选后置

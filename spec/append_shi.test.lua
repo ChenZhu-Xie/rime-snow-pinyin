@@ -9,7 +9,7 @@ local function candidate(text, reading, pinned, quality, learned)
   return result
 end
 
-local function run(menus, routes, original, fail)
+local function run(menus, routes, original, fail, user_words, fixed_words)
   local value = "b"
   local properties = { shape_input = "", snow_append_query = "" }
   local selected, committed
@@ -42,7 +42,16 @@ local function run(menus, routes, original, fail)
   })
   log = { error = function() end }
   local env = { engine = { context = context }, shi_routes = { b = routes },
-    shi_memory = { decode = function(_, code) return code end } }
+    shi_memory = { decode = function(_, code) return code end },
+    shi_fixed = { dict = fixed_words or {} } }
+  if user_words then
+    env.shi_memory.user_dict = { lookup_words = function(_, code)
+      return { iter = function()
+        local index = 0
+        return function() index = index + 1; return (user_words[code] or {})[index] end
+      end }
+    end }
+  end
   local result = append.commit(env)
   assert(properties.snow_append_query == "", "scope must be restored")
   return result, committed, value, queried
@@ -65,4 +74,13 @@ local result, committed, input = run({ buki = { candidate("不适", "bu4") } }, 
 assert(not result and not committed and input == "b", "empty query must restore input")
 result, committed, input = run({}, { bu }, nil, "buki")
 assert(not result and not committed and input == "b", "failed query must restore input")
+local absent = { code = "buki", readings = { bu4 = true }, system = false }
+local _, _, _, queried = run({}, { absent })
+assert(#queried == 1 and queried[1] == "b", "absent routes must not compose a menu")
+result, committed = run({ buki = { candidate("不是", "bu4") } }, { absent }, nil, nil,
+  { ["bu4 shi4"] = { { text = "不是" } } })
+assert(result and committed == "不是", "new user words must bypass static absence")
+result, committed = run({ buki = { candidate("不是", "bu4", true) } }, { absent }, nil, nil,
+  nil, { buki = { "不是" } })
+assert(result and committed == "不是", "pinned words must bypass static absence")
 print("append_shi: passed")
