@@ -1011,6 +1011,215 @@
           "bytes": 32132428
         }
       ]
+    },
+    {
+      "id": "20261127T195621Z-e2a294d-ae5d34",
+      "archiveBranch": "main",
+      "archiveHead": "e2a294dff76bb7cafbc3b60643747748504582d9",
+      "documentation": "docs/cold-storage-round5.md",
+      "documentationReceipt": "completion.json",
+      "indexSha256": "d88330db7cbf814731c846dbdfd305235cfaea357b5d277a96a9c67652cdad8a",
+      "entries": [
+        {
+          "original": "output/production-upstream-prepare",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/production-upstream-prepare",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 208,
+          "bytes": 272794892,
+          "manifest": "582a116d0a4c9a7c.files.jsonl",
+          "manifestSha256": "ff2b261bb3b917084ca29aa4b912fec06f9c0ec9759880757fed3444f74fd404",
+          "provenance": {
+            "sourceCommit": "99c1d6010ff7252175f2b373f05ff30e9541f3c3",
+            "sourceBranch": null,
+            "repositoryRole": "upstream",
+            "runtime": "prepare-only",
+            "basis": "Original prepare-only manifest revision and source hashes; deployed variants remain frozen in snapshot."
+          }
+        },
+        {
+          "original": "output/full8k-prepare-sipin",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/full8k-prepare-sipin",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 124,
+          "bytes": 119579184,
+          "manifest": "bf323a1254f01c15.files.jsonl",
+          "manifestSha256": "583140815bd5b4a025a873d8a429be3ee9a221246263b7ec65a07d3cf2113662",
+          "provenance": {
+            "sourceCommit": "576adbe5d1272ea6344884abace29ccee88629cd",
+            "sourceBranch": null,
+            "repositoryRole": "fork",
+            "runtime": "prepare-only",
+            "basis": "Original prepare-only manifest revision and source hashes; deployed variants remain frozen in snapshot."
+          }
+        },
+        {
+          "original": "output/aux-rank-prepare",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/aux-rank-prepare",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 124,
+          "bytes": 95287257,
+          "manifest": "7a7c2f995bccd4ad.files.jsonl",
+          "manifestSha256": "d84bec2898c3f736e5b9a1cde9cd44bfbb7b1e6f99d7588098c8e6dfbc1677f5",
+          "provenance": {
+            "sourceCommit": "df5f91d81c34b9309020cd02f86a6fc6c2da788b",
+            "sourceBranch": null,
+            "repositoryRole": "fork",
+            "runtime": "prepare-only",
+            "basis": "Original prepare-only manifest revision and source hashes; deployed variants remain frozen in snapshot."
+          }
+        },
+        {
+          "original": "output/probe-ranktargets-verify",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/probe-ranktargets-verify",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 124,
+          "bytes": 95287376,
+          "manifest": "a88a73c8383ca714.files.jsonl",
+          "manifestSha256": "1fca4b59756c7ce7eb957a8e247d13e3867cd0f97ed6f16641fa5c4f76601558",
+          "provenance": {
+            "sourceCommit": "b4b1c94a876c0885f840f166ed82902ddef72164",
+            "sourceBranch": null,
+            "repositoryRole": "fork",
+            "runtime": "prepare-only",
+            "basis": "Original prepare-only manifest revision and source hashes; deployed variants remain frozen in snapshot."
+          }
+        },
+        {
+          "original": "output/budgeted-probe-prepare",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/budgeted-probe-prepare",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 124,
+          "bytes": 95385887,
+          "manifest": "f1f53caf2a5864cd.files.jsonl",
+          "manifestSha256": "7640f786a2e8094a5c7999ce4970bd6eb9c7e0632654812f4ea83d7b784065be",
+          "provenance": {
+            "sourceCommit": "9223de2b25ee990baa41ec9c0cb9dfdac5b288d2",
+            "sourceBranch": null,
+            "repositoryRole": "fork",
+            "runtime": "prepare-only",
+            "basis": "Original prepare-only manifest revision and source hashes; deployed variants remain frozen in snapshot."
+          }
+        },
+        {
+          "original": "output/probe-conflict-ranktargets-verify",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/probe-conflict-ranktargets-verify",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 124,
+          "bytes": 97586462,
+          "manifest": "9b4f5543dde7254f.files.jsonl",
+          "manifestSha256": "b1fece30e64134fceb46c55ec7fe6fbc8a2792aaaf933c79643a48e5fe2c540c",
+          "provenance": {
+            "sourceCommit": "b4b1c94a876c0885f840f166ed82902ddef72164",
+            "sourceBranch": null,
+            "repositoryRole": "fork",
+            "runtime": "prepare-only",
+            "basis": "Original prepare-only manifest revision and source hashes; deployed variants remain frozen in snapshot."
+          }
+        },
+        {
+          "original": "output/append-baseline-27019df",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/append-baseline-27019df",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 724,
+          "bytes": 108739026,
+          "manifest": "00482a0f622d85ef.files.jsonl",
+          "manifestSha256": "441b6cb1be1827d334bdc52545e640adf44fb8cdf7dac0de3e2ee425471abbc4",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Directory/archive name associates it with 27019df; bytes frozen separately, not claimed to be a clean checkout.",
+            "relatedCommit": "27019df92c87dbdbed52da18f9ded7d8bf5ac031"
+          }
+        },
+        {
+          "original": "output/append-shi-ci-25e3ea3",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/append-shi-ci-25e3ea3",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 13,
+          "bytes": 320337680,
+          "manifest": "d1f82e4780d494db.files.jsonl",
+          "manifestSha256": "697db1bd565d510cf208a8e3e127783fd66015de7fc1c14e357dd2218d13e104",
+          "provenance": {
+            "sourceCommit": "25e3ea3bd04b6de0b6e3b183309eeadccf6970dc",
+            "sourceBranch": null,
+            "sourceSha256": "64fae485d9411b97bca68058bb2d197492bee939fdb86e7e52353289da5eea0a",
+            "dirty": "",
+            "reportedDateUtc": "2026-11-27T11:24:22.417Z",
+            "basis": "CI report metadata commit and source fingerprint; ref working-tree is not a branch name."
+          }
+        },
+        {
+          "original": "output/keymap-desktop",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/keymap-desktop",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 172,
+          "bytes": 101986841,
+          "manifest": "9bc02e509bacfbba.files.jsonl",
+          "manifestSha256": "c80bce3876def7f6d56b9e75911863f36dd388454e1da8696eb050cfb2910e35",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Historical output; authoritative creation commit and branch not recorded. Archive HEAD is not a source commit."
+          }
+        },
+        {
+          "original": "output/release-v0.3.13",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/release-v0.3.13",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 4,
+          "bytes": 50896176,
+          "manifest": "3a959125652eaaed.files.jsonl",
+          "manifestSha256": "26a30756389c0a93123efef82505afb59c1fc0c9f314ec5af60b8544f139f754",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Historical release/download inspection; no independently established artifact build commit. Filename or release version alone is not a source commit."
+          }
+        },
+        {
+          "original": "output/release-inspect-834fac3cd64f4682b14ac1c2c708ba7c",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/release-inspect-834fac3cd64f4682b14ac1c2c708ba7c",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 1,
+          "bytes": 26542383,
+          "manifest": "a6a1fe4f97710497.files.jsonl",
+          "manifestSha256": "49f7fa7219cd33bf2718efedb38ef8b7ad494ac10662f22eea6e0318e40f5004",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Historical release/download inspection; no independently established artifact build commit. Filename or release version alone is not a source commit."
+          }
+        },
+        {
+          "original": "output/append-baseline-27019df.zip",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/append-baseline-27019df.zip",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 1,
+          "bytes": 30708368,
+          "manifest": "42d87a82456cf7e0.files.jsonl",
+          "manifestSha256": "7d6dc4299fc82ddf619bf1a9be7944a0e8d1debe5c0f5ccbf8420fc4ce5a5ce7",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Directory/archive name associates it with 27019df; bytes frozen separately, not claimed to be a clean checkout.",
+            "relatedCommit": "27019df92c87dbdbed52da18f9ded7d8bf5ac031"
+          }
+        },
+        {
+          "original": "output/current-layout-validation.zip",
+          "coldRelative": "20261127T195621Z-e2a294d-ae5d34/output/current-layout-validation.zip",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 1,
+          "bytes": 30455764,
+          "manifest": "8e9cf3b4cfbb9d68.files.jsonl",
+          "manifestSha256": "f3478a59bdd536530103b41983904a7bb5755ee92a32265c1557f5911e3e25d1",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Historical output; authoritative creation commit and branch not recorded. Archive HEAD is not a source commit."
+          }
+        }
+      ]
     }
   ]
 }
