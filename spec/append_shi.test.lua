@@ -29,8 +29,9 @@ local function run(menus, routes, original, fail, user_words, fixed_words)
     set_property = function(_, name, text) properties[name] = text end,
     composition = { toSegmentation = function() return { back = segment } end },
     highlight = function(_, index) selected = index end,
-    select = function(_, index) selected = index; return true end,
-    commit = function() committed = menus[value][selected + 1].text end,
+    select = function() error("shortcut must not select a learning candidate") end,
+    commit = function() error("shortcut must not trigger commit_notifier") end,
+    clear = function() assert(committed, "commit statistics before clearing input"); value = "" end,
   }, {
     __index = function(_, key) if key == "input" then return value elseif key == "caret_pos" then return #value end end,
     __newindex = function(_, key, next_value)
@@ -44,6 +45,7 @@ local function run(menus, routes, original, fail, user_words, fixed_words)
   local env = { engine = { context = context }, shi_routes = { b = routes },
     shi_memory = { decode = function(_, code) return code end },
     shi_fixed = { dict = fixed_words or {} } }
+  env.engine.commit_text = function(_, text) committed = text end
   if user_words then
     env.shi_memory.user_dict = { lookup_words = function(_, code)
       return { iter = function()
@@ -53,6 +55,11 @@ local function run(menus, routes, original, fail, user_words, fixed_words)
     end }
   end
   local result = append.commit(env)
+  if result then
+    assert(properties.direct_commit_text == committed and properties.commit_text == committed,
+      "direct commit must notify text collection and statistics")
+    assert(value == "", "successful direct commit must clear composition")
+  end
   assert(properties.snow_append_query == "", "scope must be restored")
   return result, committed, value, queried
 end

@@ -97,10 +97,6 @@ function append.commit(env)
   context:set_property("snow_append_query", "1")
   ---@type Candidate|nil
   local best
-  ---@type string|nil
-  local best_code
-  ---@type integer|nil
-  local best_index
   ---@type table<string, UserPhraseWeight>
   local weights = {}
   local ok, message = pcall(function()
@@ -135,7 +131,7 @@ function append.commit(env)
             if not best or (pinned and not best_pinned)
                 or (not not pinned == not not best_pinned
                   and priority.better_across_routes(candidate, best, env.shi_memory, weights)) then
-              best, best_code, best_index = candidate, route.code, index
+              best = candidate
             end
             break
           end
@@ -143,14 +139,12 @@ function append.commit(env)
         end
       end
     end
-    if best and best_code and best_index ~= nil then
-      context.input = best_code
-      local current = context.composition:toSegmentation():back()
-      local candidate = current and current:get_candidate_at(best_index)
-      if candidate and candidate.text == best.text and context:select(best_index) then
-        context:commit()
-        return true
-      end
+    if best then
+      -- 快捷上屏只读标准词码排序。不能 select/commit，否则原生 Memory
+      -- 和 learned_priority 的 commit_notifier 都可能把本次上屏写成学习。
+      snow.commit_text(env.engine, best.text)
+      context:clear()
+      return true
     end
     return false
   end)

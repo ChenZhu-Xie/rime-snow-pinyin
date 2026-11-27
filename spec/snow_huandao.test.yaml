@@ -10,6 +10,14 @@ script: |
   function has(text) return rank(text) < math.huge end
   function page(text) return rank(text) <= 6 end
   function comment(text) return has(text) and cand[rank(text)].comment or "" end
+  function append_order(key, remember)
+    local texts = {}
+    for index, candidate in ipairs(cand) do texts[index] = candidate.text end
+    local value = table.concat(texts, "|")
+    append_orders = append_orders or {}
+    if remember then append_orders[key] = value; return true end
+    return value == append_orders[key]
+  end
   function remember_top()
     six_code_top = cand[1].text
     return true
@@ -22,6 +30,16 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  adaptive_append_readonly:
+    tests:
+      - send: "bhvk"
+        assert: append_order("full", true)
+      - send: "bv"
+        assert: append_order("short", true)
+      - send: "b]b]b]bhvk"
+        assert: commit == "不是不是不是" and append_order("full", false)
+      - send: "bv"
+        assert: append_order("short", false)
   adaptive_append_shi:
     tests:
       - send: "b]"
