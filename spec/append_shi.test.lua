@@ -1,98 +1,62 @@
 package.path = "./lua/?.lua;" .. package.path
 local append = require "snow.append_shi"
-
-local function candidate(text, reading, pinned, quality, learned)
-  local result = { text = text, comment = pinned and "📌" or "", quality = quality or 0,
-    type = learned and "user_phrase" or "phrase", _start = 0, _end = 4 }
-  result.get_genuine = function() return result end
-  result.to_phrase = function() return { entry = { code = { reading, "shi4" } } } end
-  return result
-end
-
-local function run(menus, routes, original, fail, user_words, fixed_words)
-  local value = "b"
-  local properties = { shape_input = "", snow_append_query = "" }
-  local selected, committed
-  local queried = {}
-  local function segment()
-    local candidates = value == "b" and { candidate(original or "不", "bu4") } or menus[value] or {}
-    local menu = {
-      prepare = function(_, size) return math.min(size, #candidates) end,
-      get_candidate_at = function(_, index) return candidates[index + 1] end,
-    }
-    return { start = 0, _end = #value, selected_index = 0, menu = menu,
-      has_tag = function() return true end,
-      get_candidate_at = menu.get_candidate_at }
-  end
+local bu = { code = "bhvk", readings = { bu4 = true } }
+local bi = { code = "bkvk", readings = { bi4 = true } }
+local function run(options)
+  options = options or {}
+  local properties = { shape_input = "", snow_postpone_known = options.known or "" }
+  local committed, cleared, queries = nil, false, 0
   local context = setmetatable({
-    get_property = function(_, name) return properties[name] end,
-    set_property = function(_, name, text) properties[name] = text end,
-    composition = { toSegmentation = function() return { back = segment } end },
-    highlight = function(_, index) selected = index end,
-    select = function() error("shortcut must not select a learning candidate") end,
-    commit = function() error("shortcut must not trigger commit_notifier") end,
-    clear = function() assert(committed, "commit statistics before clearing input"); value = "" end,
+    composition = { toSegmentation = function() return { back = function()
+      return { start = 0, _end = 1, has_tag = function() return true end,
+        menu = setmetatable({}, { __index = function() error("must not read menus") end }) }
+    end } end },
+    get_property = function(_, key) return properties[key] or "" end,
+    set_property = function(_, key, value) properties[key] = value end,
+    get_option = function(_, key) return key == "popping" or key == "traditionalization" and options.traditional end,
+    clear = function() assert(committed); cleared = true end,
+    select = function() error("must not select or learn") end,
+    commit = function() error("must not trigger commit_notifier") end,
   }, {
-    __index = function(_, key) if key == "input" then return value elseif key == "caret_pos" then return #value end end,
-    __newindex = function(_, key, next_value)
-      assert(key == "input")
-      if fail and next_value == fail then error("query failure") end
-      value = next_value
-      queried[#queried + 1] = value
-    end,
+    __index = function(_, key) if key == "input" then return "b" elseif key == "caret_pos" then return 1 end end,
+    __newindex = function() error("must not rewrite input") end,
   })
-  log = { error = function() end }
-  local env = { engine = { context = context }, shi_routes = { b = routes },
-    shi_memory = { decode = function(_, code) return code end },
-    shi_fixed = { dict = fixed_words or {} } }
-  env.engine.commit_text = function(_, text) committed = text end
-  if user_words then
-    env.shi_memory.user_dict = { lookup_words = function(_, code)
+  log = { error = function(message) error(message) end }
+  local env = { engine = { context = context, commit_text = function(_, text) committed = text end },
+    shi_routes = { b = options.routes or { bu, bi } },
+    shi_words = options.words or { bu4 = { ["不是"] = 100, ["不适"] = 99999 }, bi4 = { ["必是"] = 10 } },
+    shi_fixed = { dict = options.pins or {} },
+    shi_pinyin = { lookup = function(_, text) return text == "布" and "bu4" or "ma1" end },
+    shi_converter = { convert_text = function(_, text) return text == "还是" and "還是" or text end },
+    shi_memory = { user_dict = { lookup_words = function(_, code, predictive, limit)
+      assert(not predictive and limit == 0)
+      queries = queries + 1
+      local values = (options.users or {})[code] or {}
       return { iter = function()
         local index = 0
-        return function() index = index + 1; return (user_words[code] or {})[index] end
+        return function() index = index + 1; return values[index] end
       end }
-    end }
-  end
+    end } },
+  }
   local result = append.commit(env)
-  if result then
-    assert(properties.direct_commit_text == committed and properties.commit_text == committed,
-      "direct commit must notify text collection and statistics")
-    assert(value == "", "successful direct commit must clear composition")
-  end
-  assert(properties.snow_append_query == "", "scope must be restored")
-  return result, committed, value, queried
+  assert(result == (committed ~= nil) and cleared == result)
+  if result then assert(properties.direct_commit_text == committed and properties.commit_text == committed) end
+  return committed, queries
 end
-
-local bu = { code = "buki", readings = { bu4 = true } }
-local bi = { code = "biki", readings = { bi4 = true } }
-local function check(expected, menus, routes, original)
-  local result, committed = run(menus, routes or { bu }, original)
-  assert(result and committed == expected, "expected " .. expected .. ", got " .. tostring(committed))
-end
-check("不是", { buki = { candidate("不适", "bu4", true, 999), candidate("不是", "bu4") } })
-check("必是", { buki = { candidate("不是", "bu4", false, 100) }, biki = { candidate("必是", "bi4", true) } }, { bu, bi })
-check("必是", { buki = { candidate("不是", "bu4", false, 100) }, biki = { candidate("必是", "bi4", false, 1, true) } }, { bu, bi })
--- 菜单已完成后置；不能再按 quality 把该路第二个匹配词提前。
-check("不是", { buki = { candidate("不是", "bu4", false, 1), candidate("布是", "bu4", false, 100) } })
-check("不是", { buki = { candidate("必是", "bi4", false, 999), candidate("不是", "bu4") } })
-check("不是", { buki = { candidate("不是", "bu4") } }, { bu }, "不同")
-local result, committed, input = run({ buki = { candidate("不适", "bu4") } }, { bu })
-assert(not result and not committed and input == "b", "empty query must restore input")
-result, committed, input = run({}, { bu }, nil, "buki")
-assert(not result and not committed and input == "b", "failed query must restore input")
-local absent = { code = "buki", readings = { bu4 = true }, system = false }
-local _, _, _, queried = run({}, { absent })
-assert(#queried == 1 and queried[1] == "b", "absent routes must not compose a menu")
-result, committed = run({ buki = { candidate("不是", "bu4") } }, { absent }, nil, nil,
-  { ["bu4 shi4"] = { { text = "不是" } } })
-assert(result and committed == "不是", "new user words must bypass static absence")
-result, committed = run({ buki = { candidate("不是", "bu4", true) } }, { absent }, nil, nil,
-  nil, { buki = { "不是" } })
-assert(result and committed == "不是", "pinned words must bypass static absence")
-local learned_bu = candidate("不是", "bu4", false, 10, true)
-result, committed, input, queried = run({ buki = { learned_bu }, biki = { candidate("必是", "bi4") } },
-  { bi, bu }, nil, nil, { ["bu4 shi4"] = { { text = "不是", weight = 10 } } })
-assert(result and committed == "不是")
-for _, code in ipairs(queried) do assert(code ~= "biki", "unlearned route cannot beat a learned winner") end
-print("append_shi: passed")
+assert(run() == "不是")
+assert(run({ pins = { bhvk = { "不适" } } }) == "不是")
+assert(run({ pins = { bkvk = { "必是" } } }) == "必是")
+assert(run({ users = { ["bi4 shi4"] = { { text = "必是", weight = -5 } } } }) == "必是")
+assert(run({ users = { ["bu4 shi4"] = { { text = "不是", weight = 0 } },
+  ["bi4 shi4"] = { { text = "必是", weight = -1 } } } }) == "不是")
+assert(run({ known = "1\t不是" }) == "必是")
+assert(run({ known = "1\t不是", pins = { bhvk = { "不是" } } }) == "不是")
+assert(run({ words = {}, users = { ["bu4 shi4"] = { { text = "布是", weight = 0 } } } }) == "布是")
+assert(run({ words = {}, pins = { bhvk = { "布是", "妈是" } } }) == "布是")
+assert(run({ words = {}, pins = { bhvk = { "妈是" } } }) == nil)
+assert(run({ words = {} }) == nil)
+assert(run({ words = { bu4 = { ["还是"] = 1 } }, traditional = true }) == "還是")
+local _, count = run({ routes = { bu, bu, bi } })
+assert(count == 2, "同一次按键的重复读音只查一次，下一次重新读用户库")
+assert(run({ words = { bu4 = { ["不是"] = 1 }, bi4 = { ["必是"] = 1 } } }) == "不是")
+print("append_shi: direct dictionary ranking passed")

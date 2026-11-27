@@ -55,6 +55,21 @@ local function format_candidate_list(list)
   return table.concat(result, ", ")
 end
 
+-- 供单音节快捷上屏读取当前后置状态，不触发菜单重建。
+local function publish(env)
+  local context = env.engine.context
+  if not context.set_property then return end
+  local values = {}
+  for word, length in pairs(env.known_candidates) do
+    values[#values + 1] = tostring(length) .. "\t" .. word
+  end
+  table.sort(values)
+  local value = table.concat(values, "\n")
+  if context:get_property("snow_postpone_known") ~= value then
+    context:set_property("snow_postpone_known", value)
+  end
+end
+
 ---@param postponed_candidates Candidate[]
 ---@param regular_candidates Candidate[]
 ---@param final_table Candidate[]
@@ -83,6 +98,7 @@ function filter.finalize(postponed_candidates, regular_candidates, final_table, 
   if not rime_api.regex_match(input, env.disable) then
     env.known_candidates[first.text] = input:len()
   end
+  publish(env)
   for _, candidate in ipairs(final_table) do
     if candidate.text ~= snow.placeholder then
       yield(candidate)
@@ -129,6 +145,7 @@ function filter.func(translation, env)
     for candidate in translation:iter() do
       if first then
         if record then env.known_candidates[candidate.text] = full_input:len() end
+        publish(env)
         first = false
       end
       yield(candidate)
