@@ -191,7 +191,7 @@ jobs:
 
   test:
     name: ${{ matrix.scheme.name }} / librime ${{ matrix.runtime.version }}
-    needs: [dictionary, validate-shenyun, keymaps]
+    needs: [dictionary, validate-shenyun]
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
