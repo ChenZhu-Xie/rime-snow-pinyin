@@ -119,17 +119,6 @@ end
 ---@param translation Translation
 ---@param env LearnedPriorityEnv
 function filter.func(translation, env)
-  -- 每次读取当前用户库，不缓存空库状态；刚学习、同步或切换方案后立即生效。
-  -- 没有任何有效用户词时，学习排序不可能改变顺序，无需预取整批候选。
-  local user_dict = env.memory.user_dict
-  if user_dict then
-    local entries = user_dict:lookup_words("", true, 1)
-    local iterator = entries:iter()
-    if iterator(entries) == nil then
-      for candidate in translation:iter() do yield(candidate) end
-      return
-    end
-  end
   local input = snow.current(env.engine.context) or ""
   local iterator = translation:iter()
   while true do

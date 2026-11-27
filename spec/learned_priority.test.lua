@@ -84,40 +84,4 @@ assert(result[1].text == "方案选单",
 assert(result[2].text == "前缀" and result[3].text == "普通",
   "partial candidates must retain ordinary relative order")
 
-local has_words = false
-local probes, pulls = 0, 0
-local streaming_memory = {
-  decode = memory.decode,
-  user_dict = { lookup_words = function(_, code, predictive, limit)
-    if code ~= "" then return memory.user_dict:lookup_words(code) end
-    assert(predictive and limit == 1)
-    probes = probes + 1
-    local pending = has_words
-    return { iter = function() return function()
-      if pending then pending = false; return { text = "方案选单" } end
-    end end }
-  end },
-}
-local env = { memory = streaming_memory, engine = { context = {} }, cache = {}, maximum_candidates = 120 }
-local function output()
-  pulls = 0
-  local translation = { iter = function()
-    local index = 0
-    return function() index = index + 1; pulls = pulls + 1; return source[index] end
-  end }
-  yield = coroutine.yield
-  return coroutine.create(function() learned_priority.func(translation, env) end)
-end
-local task = output()
-local ok, first = coroutine.resume(task)
-assert(ok and first == source[1] and pulls == 1, "空用户词库必须流式输出首项，不预取 120 项")
-for index = 2, #source do
-  local success, value = coroutine.resume(task)
-  assert(success and value == source[index])
-end
-has_words = true
-task = output()
-ok, first = coroutine.resume(task)
-assert(ok and first.text == "方案选单" and probes == 2,
-  "新增学习词后必须立即恢复学习排序，不能缓存空库判断")
 print("learned_priority.test.lua: ok")
