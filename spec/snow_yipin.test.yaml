@@ -18,6 +18,10 @@ script: |
     return rank(something) <= 6
   end
 deploy:
+  adaptive_append_shi:
+    tests:
+      - send: "wj{Release+w}{Release+j}]"
+        assert: commit == "不是"
   schema_menu:
     tests:
       - send: "{F4}"

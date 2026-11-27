@@ -266,7 +266,8 @@ function processor.init(env)
   -- 分组回调先于引擎的 OnSelect，避免自动上屏先把按键结算掉；缓冲模式下则留到整句上屏时结算
   env.select_connection = context.select_notifier:connect(function(ctx)
     if not env.db or ctx:get_option("ascii_mode") or env.finishing or snow.redispatching
-        or snow.handover or not ctx:get_selected_candidate() then
+        or snow.handover or ctx:get_property("snow_append_query") == "1"
+        or not ctx:get_selected_candidate() then
       return
     end
     if not env.last_key or now() - env.last_key > click_ms then

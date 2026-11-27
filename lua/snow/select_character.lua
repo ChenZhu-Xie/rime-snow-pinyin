@@ -2,10 +2,11 @@
 -- https://github.com/BlindingDark/rime-lua-select-character
 
 local snow = require "snow.snow"
+local append_shi = require "snow.append_shi"
 
 local processor = {}
 
----@class SelectCharacterEnv: Env
+---@class SelectCharacterEnv: AppendShiEnv
 ---@field first_key KeyEvent
 ---@field last_key KeyEvent
 
@@ -31,6 +32,7 @@ function processor.func(key_event, env)
   end
   local first = key_event:eq(env.first_key)
   local last = key_event:eq(env.last_key)
+  if last and append_shi.commit(env) then return snow.kAccepted end
   local length = utf8.len(text)
   if length == 1 then
     if first then
@@ -54,6 +56,11 @@ function processor.func(key_event, env)
     end
   end
   return snow.kNoop
+end
+
+---@param env SelectCharacterEnv
+function processor.fini(env)
+  append_shi.fini(env)
 end
 
 return processor

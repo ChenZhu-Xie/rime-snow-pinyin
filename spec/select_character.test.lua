@@ -19,6 +19,8 @@ utf8 = {
 }
 
 local committed = ""
+-- 本文件只测旧的以词定字回退；真实自适应查询另由 append_shi.test.lua 覆盖。
+package.loaded["snow.append_shi"] = { commit = function() return false end }
 package.loaded["snow.snow"] = {
   kAccepted = 1,
   kNoop = 2,

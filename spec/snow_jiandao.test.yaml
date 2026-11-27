@@ -23,6 +23,10 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  adaptive_append_shi:
+    tests:
+      - send: "b]"
+        assert: commit == "不是"
   short_shape_and_stroke_sources:
     tests:
       - send: ykaa

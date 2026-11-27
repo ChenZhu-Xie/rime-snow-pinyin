@@ -24,6 +24,10 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  adaptive_append_shi:
+    tests:
+      - send: "b]"
+        assert: commit == "不是"
   short_shape_and_stroke_sources:
     tests:
       # 单字 ] 追加「是」，[ 仍重复单字。

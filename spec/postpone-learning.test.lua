@@ -69,6 +69,17 @@ local function apply_pipeline(input, candidates)
   return apply_postpone(input, learned_priority.prioritize(candidates, {}, {}, #input))
 end
 
+-- 试查继承后置顺序，但不得修改真实记录；包括清理较长记录和记录新首选。
+env.known_candidates = { ["甲是"] = 2, ["旧词"] = 6 }
+local old_get_property = context.get_property
+context.get_property = function(_, name) return name == "snow_append_query" and "1" or "" end
+local queried = apply_postpone("buki", { candidate("甲是", 4), candidate("乙是", 4) })
+assert(queried[1].text == "乙是")
+assert(env.known_candidates["甲是"] == 2 and env.known_candidates["旧词"] == 6)
+assert(env.known_candidates["乙是"] == nil)
+context.get_property = old_get_property
+env.known_candidates = {}
+
 -- 重现旧顺序：先后置、再提升用户词，会把「经常」重新抬回首选。
 apply_postpone("jnse", { candidate("经常", 4, true), candidate("精髓", 4) })
 local old = learned_priority.prioritize(apply_postpone("jnsei", {

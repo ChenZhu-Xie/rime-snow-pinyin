@@ -94,6 +94,12 @@ end
 ---@param env PostponeEnv
 function filter.func(translation, env)
   local context = env.engine.context
+  -- 自适应「×是」试查继承当前后置记录，但不能让试查路线相互污染。
+  if context:get_property("snow_append_query") == "1" then
+    local known = {}
+    for word, length in pairs(env.known_candidates) do known[word] = length end
+    env = setmetatable({ known_candidates = known }, { __index = env })
+  end
   local segment = context.composition:toSegmentation():back()
   -- 取出输入中当前正在翻译的一部分
   local input = snow.current(context)

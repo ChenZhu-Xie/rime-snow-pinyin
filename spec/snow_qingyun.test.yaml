@@ -24,6 +24,10 @@ script: |
     return cand[index] ~= nil and cand[index].comment:find(text) ~= nil
   end
 deploy:
+  adaptive_append_shi:
+    tests:
+      - send: "b]"
+        assert: commit == "不是"
   schema_options_menu:
     # 每条 send 都创建新会话，菜单与临时模式的前置按键必须包含在同一条输入内。
     tests:
