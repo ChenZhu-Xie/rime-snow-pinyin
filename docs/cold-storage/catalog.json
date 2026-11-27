@@ -650,6 +650,115 @@
           "manifestSha256": "3bc7346b1df33995ca1596b696da5b053b148d02247603e7d5cbf436cad730af"
         }
       ]
+    },
+    {
+      "id": "20261127T183041Z-904965b-ca1c3f",
+      "archiveBranch": "main",
+      "archiveHead": "904965baebfb022c6b56cdc47bc0bc5ec28d44a6",
+      "documentation": "docs/cold-storage-worktree-review.md",
+      "documentationReceipt": "completion.json",
+      "indexSha256": "6fc9e01cfe44d3ed8c935ae79284b8eb34c0027e73081d655b89f5ad56e09aa0",
+      "evidenceManifestSha256": "8eee0f5b220f69ba0c431f8e8d35a835e167a980f456f679df2ef590351e6b82",
+      "bundles": [
+        {
+          "name": "repository",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/bundles/repository.bundle",
+          "bytes": 62256046,
+          "sha256": "3b9606b079385c638f8422dd2ac194d44c1d5aef4991fa8d69b01070b03d73a9",
+          "prerequisiteFreeVerified": true,
+          "sourceHead": "904965baebfb022c6b56cdc47bc0bc5ec28d44a6",
+          "heads": "a138b769f98eca54411c1d89712d41b7b4d28e14 refs/heads/codex/merge-upstream-main-20261013\n068aa5a332107e124e73d7dff8d7fa525c2b7be4 refs/heads/codex/merge-upstream-main-20261013-v2\na573616c341b15efbdda4bb4dddff82b5d4f0adf refs/heads/codex/merge-upstream-main-20261028\nfb89a7457eb0bdf72933cbfed5993fc63f721e96 refs/heads/codex/next-generation-shuangpin\n38b66f31658a99ac66069ac1f2530deee7363dd4 refs/heads/codex/shenyun-r10-21x26\n70b618fdf415c847632638e681417f151de41c7e refs/heads/feat/logical-code-navigation\n39c7b8b1841b2e550e94bd8ef3d53ef135d35843 refs/heads/feat/restore-rc26-hedao-hepin\n65457f59eb7e97f576b8ab9d4acf69c1db3fa1dc refs/heads/feat/snow-jiandao-toned\n7008a48c99c75eea8f10c0769184ec0e90a472d9 refs/heads/feat/snow-liandao-cr-lan\nd52712528504264c370e47f09ba59a9b48cb63e2 refs/heads/feat/snow-zhudao\nc1d6ba0ad321ae056ca655ebfe60e64c7306afe2 refs/heads/feat/um40-hedao-hepin\n4ddd60336b32d573fdf2079e65b5df7e4d82ad53 refs/heads/feat/word-length-selection\n78ccdbc2dbca5966887142d2c1eb7011d845b633 refs/heads/fix/qingyun-reverse\n904965baebfb022c6b56cdc47bc0bc5ec28d44a6 refs/heads/main\n54c5853e4f91cca53eaca7333ad84c81f3014392 refs/remotes/origin/HEAD\na138b769f98eca54411c1d89712d41b7b4d28e14 refs/remotes/origin/codex/merge-upstream-main-20261013\n068aa5a332107e124e73d7dff8d7fa525c2b7be4 refs/remotes/origin/codex/merge-upstream-main-20261013-v2\na573616c341b15efbdda4bb4dddff82b5d4f0adf refs/remotes/origin/codex/merge-upstream-main-20261028\nfb89a7457eb0bdf72933cbfed5993fc63f721e96 refs/remotes/origin/codex/next-generation-shuangpin\n38b66f31658a99ac66069ac1f2530deee7363dd4 refs/remotes/origin/codex/shenyun-r10-21x26\n9805c48568ce5b5ad80a9ac849382f496d5fb624 refs/remotes/origin/diagnose/upstream-qingyun-20261105\n70b618fdf415c847632638e681417f151de41c7e refs/remotes/origin/feat/logical-code-navigation\n39c7b8b1841b2e550e94bd8ef3d53ef135d35843 refs/remotes/origin/feat/restore-rc26-hedao-hepin\n65457f59eb7e97f576b8ab9d4acf69c1db3fa1dc refs/remotes/origin/feat/snow-jiandao-toned\n7008a48c99c75eea8f10c0769184ec0e90a472d9 refs/remotes/origin/feat/snow-liandao-cr-lan\nd52712528504264c370e47f09ba59a9b48cb63e2 refs/remotes/origin/feat/snow-zhudao\nc1d6ba0ad321ae056ca655ebfe60e64c7306afe2 refs/remotes/origin/feat/um40-hedao-hepin\n4ddd60336b32d573fdf2079e65b5df7e4d82ad53 refs/remotes/origin/feat/word-length-selection\n78ccdbc2dbca5966887142d2c1eb7011d845b633 refs/remotes/origin/fix/qingyun-reverse\n54c5853e4f91cca53eaca7333ad84c81f3014392 refs/remotes/origin/main\n89a9590acd8355232a3717ce4379388911a94d26 refs/remotes/upstream-tags/v0.1.0\n4d55c1e48ebaa49c331d85ba09e6b1469eaf09d0 refs/remotes/upstream-tags/v0.2.0\n16034c42340c4d6795f78c7b730763b9c8b73fcb refs/remotes/upstream-tags/v0.2.0-rc.1\n7ac437f1bd4b3cccc662eca36109755866b4ffca refs/remotes/upstream-tags/v0.2.0-rc.2\n2225cbeb46b6cff9d7cb3f149a86b715ed4d2a58 refs/remotes/upstream-tags/v0.2.0-rc.3\n89f3610d895cbd8302d5b536be98a28f62f19a19 refs/remotes/upstream-tags/v0.2.0-rc.4\neeb16adb3983d33dcde27559413963fb524176dc refs/remotes/upstream-tags/v0.2.1\n012a606d7997733984a1588a2cfcd270cd664e1f refs/remotes/upstream-tags/v0.2.2\n9a32187f14280dc2d3ffb8a1372858161eff2a8b refs/remotes/upstream-tags/v0.2.3\nc366d82385166f52a72734bffd2d31eb88fd2d19 refs/remotes/upstream-tags/v0.2.4\n1b3fda46c9245df2c20f5e85821839b4322dec76 refs/remotes/upstream-tags/v0.2.5\n06ab5f55ac4f62cac88274f476af48c417b19b4e refs/remotes/upstream-tags/v0.3.0\n3f13af30a19bb0e6e369e477eaa2993df646ab21 refs/remotes/upstream-tags/v0.3.1\n1ca9f223e12e8ea99e397472c393187a12ca6afd refs/remotes/upstream-tags/v0.3.10\nf697667041bd0d411051d956c78daf7046ae2526 refs/remotes/upstream-tags/v0.3.11\nf6e760cdcc842ed479f3da03d87c7c86ea6323c7 refs/remotes/upstream-tags/v0.3.12\n99684002c9472a59517a85154a9e9cd4852111cd refs/remotes/upstream-tags/v0.3.13\ne23f78387023f62a6eacf4f6fa813be76948b9ef refs/remotes/upstream-tags/v0.3.14\nf66cecdb3b01be6ea782bf2adfeabbf49361212f refs/remotes/upstream-tags/v0.3.2\n2f4425d1b80b043d4ff7b269acdab179d9d92d59 refs/remotes/upstream-tags/v0.3.3\n5c6ca34c573eddd809250a0ea68d8f744991728c refs/remotes/upstream-tags/v0.3.4\nbc23e24eff39ca5d9b1929ffc3241fc711b573a1 refs/remotes/upstream-tags/v0.3.5\n8e87a323aed7f290595e974007024cd944c8cc5d refs/remotes/upstream-tags/v0.3.6\n73e24487aaa9732d53df35c8ee81611be88b3d95 refs/remotes/upstream-tags/v0.3.7\ne035ce73d491b3e58a72af383cdb5147c9893117 refs/remotes/upstream-tags/v0.3.8\n340168ab05d3fa8bc1112206555cbaad6ffa19e2 refs/remotes/upstream-tags/v0.3.9\nec256a5d0bcef3862f7badfd53707b6db0935e4d refs/remotes/upstream/main\n89a9590acd8355232a3717ce4379388911a94d26 refs/tags/upstream/v0.1.0\n4d55c1e48ebaa49c331d85ba09e6b1469eaf09d0 refs/tags/upstream/v0.2.0\n16034c42340c4d6795f78c7b730763b9c8b73fcb refs/tags/upstream/v0.2.0-rc.1\n7ac437f1bd4b3cccc662eca36109755866b4ffca refs/tags/upstream/v0.2.0-rc.2\n2225cbeb46b6cff9d7cb3f149a86b715ed4d2a58 refs/tags/upstream/v0.2.0-rc.3\n89f3610d895cbd8302d5b536be98a28f62f19a19 refs/tags/upstream/v0.2.0-rc.4\neeb16adb3983d33dcde27559413963fb524176dc refs/tags/upstream/v0.2.1\n012a606d7997733984a1588a2cfcd270cd664e1f refs/tags/upstream/v0.2.2\n9a32187f14280dc2d3ffb8a1372858161eff2a8b refs/tags/upstream/v0.2.3\nc366d82385166f52a72734bffd2d31eb88fd2d19 refs/tags/upstream/v0.2.4\n1b3fda46c9245df2c20f5e85821839b4322dec76 refs/tags/upstream/v0.2.5\n06ab5f55ac4f62cac88274f476af48c417b19b4e refs/tags/upstream/v0.3.0\n3f13af30a19bb0e6e369e477eaa2993df646ab21 refs/tags/upstream/v0.3.1\n1ca9f223e12e8ea99e397472c393187a12ca6afd refs/tags/upstream/v0.3.10\nf697667041bd0d411051d956c78daf7046ae2526 refs/tags/upstream/v0.3.11\nf6e760cdcc842ed479f3da03d87c7c86ea6323c7 refs/tags/upstream/v0.3.12\nf66cecdb3b01be6ea782bf2adfeabbf49361212f refs/tags/upstream/v0.3.2\n2f4425d1b80b043d4ff7b269acdab179d9d92d59 refs/tags/upstream/v0.3.3\n5c6ca34c573eddd809250a0ea68d8f744991728c refs/tags/upstream/v0.3.4\nbc23e24eff39ca5d9b1929ffc3241fc711b573a1 refs/tags/upstream/v0.3.5\n8e87a323aed7f290595e974007024cd944c8cc5d refs/tags/upstream/v0.3.6\n73e24487aaa9732d53df35c8ee81611be88b3d95 refs/tags/upstream/v0.3.7\ne035ce73d491b3e58a72af383cdb5147c9893117 refs/tags/upstream/v0.3.8\n340168ab05d3fa8bc1112206555cbaad6ffa19e2 refs/tags/upstream/v0.3.9\n89a9590acd8355232a3717ce4379388911a94d26 refs/tags/v0.1.0\n4d55c1e48ebaa49c331d85ba09e6b1469eaf09d0 refs/tags/v0.2.0\n16034c42340c4d6795f78c7b730763b9c8b73fcb refs/tags/v0.2.0-rc.1\n7ac437f1bd4b3cccc662eca36109755866b4ffca refs/tags/v0.2.0-rc.2\n2225cbeb46b6cff9d7cb3f149a86b715ed4d2a58 refs/tags/v0.2.0-rc.3\n89f3610d895cbd8302d5b536be98a28f62f19a19 refs/tags/v0.2.0-rc.4\neeb16adb3983d33dcde27559413963fb524176dc refs/tags/v0.2.1\n012a606d7997733984a1588a2cfcd270cd664e1f refs/tags/v0.2.2\n9a32187f14280dc2d3ffb8a1372858161eff2a8b refs/tags/v0.2.3\nc366d82385166f52a72734bffd2d31eb88fd2d19 refs/tags/v0.2.4\n1b3fda46c9245df2c20f5e85821839b4322dec76 refs/tags/v0.2.5\n06ab5f55ac4f62cac88274f476af48c417b19b4e refs/tags/v0.3.0\n3f13af30a19bb0e6e369e477eaa2993df646ab21 refs/tags/v0.3.1\n3207a5d64a26f711fd684c92b566ba6b0df83d32 refs/tags/v0.3.10\nf697667041bd0d411051d956c78daf7046ae2526 refs/tags/v0.3.11\nf6e760cdcc842ed479f3da03d87c7c86ea6323c7 refs/tags/v0.3.12\n655c5f1c8d381b1c53114eae94b1ad1199915aee refs/tags/v0.3.13\n132bd1cf858ae44fda25406617f4c3c46256658c refs/tags/v0.3.14\nf66cecdb3b01be6ea782bf2adfeabbf49361212f refs/tags/v0.3.2\n2f4425d1b80b043d4ff7b269acdab179d9d92d59 refs/tags/v0.3.3\n5c6ca34c573eddd809250a0ea68d8f744991728c refs/tags/v0.3.4\nbc23e24eff39ca5d9b1929ffc3241fc711b573a1 refs/tags/v0.3.5\n8e87a323aed7f290595e974007024cd944c8cc5d refs/tags/v0.3.6\n73e24487aaa9732d53df35c8ee81611be88b3d95 refs/tags/v0.3.7\ne035ce73d491b3e58a72af383cdb5147c9893117 refs/tags/v0.3.8\n78596700656283cc11703d3863cb98541751325c refs/tags/v0.3.9\n89a9590acd8355232a3717ce4379388911a94d26 refs/upstream-tags/v0.1.0\n4d55c1e48ebaa49c331d85ba09e6b1469eaf09d0 refs/upstream-tags/v0.2.0\n16034c42340c4d6795f78c7b730763b9c8b73fcb refs/upstream-tags/v0.2.0-rc.1\n7ac437f1bd4b3cccc662eca36109755866b4ffca refs/upstream-tags/v0.2.0-rc.2\n2225cbeb46b6cff9d7cb3f149a86b715ed4d2a58 refs/upstream-tags/v0.2.0-rc.3\n89f3610d895cbd8302d5b536be98a28f62f19a19 refs/upstream-tags/v0.2.0-rc.4\neeb16adb3983d33dcde27559413963fb524176dc refs/upstream-tags/v0.2.1\n012a606d7997733984a1588a2cfcd270cd664e1f refs/upstream-tags/v0.2.2\n9a32187f14280dc2d3ffb8a1372858161eff2a8b refs/upstream-tags/v0.2.3\nc366d82385166f52a72734bffd2d31eb88fd2d19 refs/upstream-tags/v0.2.4\n1b3fda46c9245df2c20f5e85821839b4322dec76 refs/upstream-tags/v0.2.5\n06ab5f55ac4f62cac88274f476af48c417b19b4e refs/upstream-tags/v0.3.0\n3f13af30a19bb0e6e369e477eaa2993df646ab21 refs/upstream-tags/v0.3.1\n1ca9f223e12e8ea99e397472c393187a12ca6afd refs/upstream-tags/v0.3.10\nf697667041bd0d411051d956c78daf7046ae2526 refs/upstream-tags/v0.3.11\nf6e760cdcc842ed479f3da03d87c7c86ea6323c7 refs/upstream-tags/v0.3.12\n99684002c9472a59517a85154a9e9cd4852111cd refs/upstream-tags/v0.3.13\ne23f78387023f62a6eacf4f6fa813be76948b9ef refs/upstream-tags/v0.3.14\nf66cecdb3b01be6ea782bf2adfeabbf49361212f refs/upstream-tags/v0.3.2\n2f4425d1b80b043d4ff7b269acdab179d9d92d59 refs/upstream-tags/v0.3.3\n5c6ca34c573eddd809250a0ea68d8f744991728c refs/upstream-tags/v0.3.4\nbc23e24eff39ca5d9b1929ffc3241fc711b573a1 refs/upstream-tags/v0.3.5\n8e87a323aed7f290595e974007024cd944c8cc5d refs/upstream-tags/v0.3.6\n73e24487aaa9732d53df35c8ee81611be88b3d95 refs/upstream-tags/v0.3.7\ne035ce73d491b3e58a72af383cdb5147c9893117 refs/upstream-tags/v0.3.8\n340168ab05d3fa8bc1112206555cbaad6ffa19e2 refs/upstream-tags/v0.3.9\n904965baebfb022c6b56cdc47bc0bc5ec28d44a6 HEAD\nc369ff7cc0ce1829aa4c7c3241ddab1a8728e2ec worktrees/benchmark-postpone-c369ff7/HEAD\n4ddd60336b32d573fdf2079e65b5df7e4d82ad53 worktrees/benchmark-word-length-4ddd603/HEAD\n78ccdbc2dbca5966887142d2c1eb7011d845b633 worktrees/fix-qingyun-reverse/HEAD"
+        },
+        {
+          "name": "rime-ice",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/bundles/rime-ice.bundle",
+          "bytes": 18051896,
+          "sha256": "72562ed5e26a4ed96594c597e5b188b7ca43f72c8a36323cbc4599fe1291a37b",
+          "prerequisiteFreeVerified": true,
+          "sourceHead": "18b74f86df44282c6d00cd09af5e497e011f2521",
+          "heads": "99662ba01e3affa6a0f009174ca530b887bac3b6 refs/heads/main\n99662ba01e3affa6a0f009174ca530b887bac3b6 refs/remotes/origin/HEAD\n99662ba01e3affa6a0f009174ca530b887bac3b6 refs/remotes/origin/main\n18b74f86df44282c6d00cd09af5e497e011f2521 HEAD"
+        },
+        {
+          "name": "rime-easy-en",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/bundles/rime-easy-en.bundle",
+          "bytes": 4230874,
+          "sha256": "4c06c851ba782cb03bda9b50c2306f2cad937f9f41871c65f8a911fe5c13aa88",
+          "prerequisiteFreeVerified": true,
+          "sourceHead": "54a4a07289412efc54134092c0d945f895a71ed3",
+          "heads": "54a4a07289412efc54134092c0d945f895a71ed3 refs/heads/master\n54a4a07289412efc54134092c0d945f895a71ed3 refs/remotes/origin/HEAD\n54a4a07289412efc54134092c0d945f895a71ed3 refs/remotes/origin/master\n54a4a07289412efc54134092c0d945f895a71ed3 HEAD"
+        },
+        {
+          "name": "rime-radical-pinyin",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/bundles/rime-radical-pinyin.bundle",
+          "bytes": 3008160,
+          "sha256": "68fd8b6bb6c94b09a0de5c1f6fa88fbdda1e0e1e988a6627cd80ac853c580abd",
+          "prerequisiteFreeVerified": true,
+          "sourceHead": "87e73d7182916f3db9dbc0b6a4d18a78a775b298",
+          "heads": "87e73d7182916f3db9dbc0b6a4d18a78a775b298 refs/heads/master\n87e73d7182916f3db9dbc0b6a4d18a78a775b298 refs/remotes/origin/HEAD\n87e73d7182916f3db9dbc0b6a4d18a78a775b298 refs/remotes/origin/master\n87e73d7182916f3db9dbc0b6a4d18a78a775b298 HEAD"
+        }
+      ],
+      "entries": [
+        {
+          "original": ".worktrees/benchmark-postpone-c369ff7",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/worktree-snapshots/benchmark-postpone-c369ff7",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 717,
+          "bytes": 109810574,
+          "manifest": "efaa17c29e8ada5b.files.jsonl",
+          "manifestSha256": "0fa6bb2aeb4790f46b9c545da70ea8571246d19799fe27fe4f0f5564f68aadaa",
+          "sourceHead": "c369ff7cc0ce1829aa4c7c3241ddab1a8728e2ec"
+        },
+        {
+          "original": ".git/worktrees/benchmark-postpone-c369ff7",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/git-admin/benchmark-postpone-c369ff7",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 6,
+          "bytes": 80094,
+          "manifest": "43a88ec02e345b33.files.jsonl",
+          "manifestSha256": "f3310be49a75bb3898af6537444c265b0e6ec925a913e7b8b924ef379d534943",
+          "sourceHead": "c369ff7cc0ce1829aa4c7c3241ddab1a8728e2ec"
+        },
+        {
+          "original": ".worktrees/benchmark-word-length-4ddd603",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/worktree-snapshots/benchmark-word-length-4ddd603",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 746,
+          "bytes": 112696220,
+          "manifest": "04626af9744f1e0f.files.jsonl",
+          "manifestSha256": "8f58de8ff057d9a7a2d8bb08984e8e96c363e92e5d718a97c794a804b52f4db3",
+          "sourceHead": "4ddd60336b32d573fdf2079e65b5df7e4d82ad53"
+        },
+        {
+          "original": ".git/worktrees/benchmark-word-length-4ddd603",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/git-admin/benchmark-word-length-4ddd603",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 6,
+          "bytes": 82120,
+          "manifest": "a53b2dfff28793d4.files.jsonl",
+          "manifestSha256": "70aa41595abe910564ade10f15fd27c1d27f3eef51e542663a7d32b54eca08d2",
+          "sourceHead": "4ddd60336b32d573fdf2079e65b5df7e4d82ad53"
+        },
+        {
+          "original": ".worktrees/fix-qingyun-reverse",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/worktree-snapshots/fix-qingyun-reverse",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 3696,
+          "bytes": 395094350,
+          "manifest": "e4dda4aeaeafabd5.files.jsonl",
+          "manifestSha256": "91cf6e222fd96a951b710d5598cfe2da05d4a3bb86ab5ba906811c6be2b58ac6",
+          "sourceHead": "78ccdbc2dbca5966887142d2c1eb7011d845b633"
+        },
+        {
+          "original": ".git/worktrees/fix-qingyun-reverse",
+          "coldRelative": "20261127T183041Z-904965b-ca1c3f/git-admin/fix-qingyun-reverse",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 188,
+          "bytes": 42076735,
+          "manifest": "d77ac4d35adb7769.files.jsonl",
+          "manifestSha256": "3eb1824403b06065b5bc029ebee14bfcbeb3d1d233e8b3ba2d1f70a005b2fc78",
+          "sourceHead": "78ccdbc2dbca5966887142d2c1eb7011d845b633"
+        }
+      ]
     }
   ]
 }

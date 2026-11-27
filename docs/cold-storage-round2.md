@@ -1,6 +1,6 @@
 # 第二批历史资料冷存与工作树整理
 
-当前统一使用地址映射，迁移创建的目录与文件别名已移除。后续规范见 [周期冷存规范](cold-storage-policy.md)，逐项地址见 [Git 总索引](cold-storage/catalog.json)。
+当前统一使用地址映射，迁移创建的目录与文件别名已移除。后续规范见 [周期冷存规范](cold-storage-policy.md)，逐项地址见 [Git 总索引](cold-storage/catalog.json)。本轮当时保留的三个工作树，后续已完成[审阅及第三批冷存](cold-storage-worktree-review.md)。
 
 批次为 `2026-11-28-main-e3fde76`，操作开始于 `main` 的 `e3fde765afd497b7bf59adcb2aa92df381240bf4`。冷盘根目录为 `N:\snow_pinyin\rime-snow-pinyin\2026-11-28-main-e3fde76`，本地清单目录为 `output/cold-storage/2026-11-28-main-e3fde76/`。第一批路径与恢复说明见 [本机冷存清单](cold-storage.md)。
 
@@ -49,4 +49,4 @@ N 盘在线时按 `coldPath` 显式读取。要重新实验，复制到独立工
 
 恢复工作树时在主仓库使用 `git worktree add --detach <新路径> <完整HEAD>` 或保留分支，初始化子模块后从快照复制所需文件，不覆盖新 `.git` 指针。Git 管理快照用于查证和必要时恢复私有子模块对象，不直接覆盖当前 `.git/worktrees`。需要性能资料时按映射单独恢复。当前 `verified-and-mapped` 表示仅保留映射；访问变更及原回执分别保存为 `address-mapping-receipt.json`、`index.before-address-mapping.json`。
 
-本轮保留当前长语料目录、用户词典备份、`output/connection-study/`、本机 `build/`、主 helper 的 `target/`，以及三处上述仍需保留的工作树。全部逐项状态和最终统计见两边相同的 `index.json`。
+本轮当时保留当前长语料目录、用户词典备份、`output/connection-study/`、本机 `build/`、主 helper 的 `target/`，以及三处待审阅的工作树。第三批已另行冻结并移除这三个检出，分支保留；第二批的 `index.json` 继续保留当时状态，不改写成第三批的操作结果。
