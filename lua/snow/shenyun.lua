@@ -22,6 +22,7 @@ local shenyun_semantics = auxiliary_semantics["21x26"]
 local translator = {}
 
 ---@class ShenyunEnv: BihuaEnv
+---@field profile_remaining integer|nil
 ---@field translator Translator
 ---@field vacancy_translator Translator
 ---@field vacancy_memory Memory
@@ -491,6 +492,7 @@ end
 
 ---@param env ShenyunEnv
 function translator.init(env)
+  env.profile_remaining = os.getenv("SNOW_APPEND_PROFILE") == "1" and 12 or 0
   local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
@@ -519,12 +521,15 @@ end
 ---@param segment Segment
 ---@param env ShenyunEnv
 function translator.func(input, segment, env)
+  local profiling = (env.profile_remaining or 0) > 0
+  if profiling then env.profile_remaining = env.profile_remaining - 1 end
   ---@type ShenyunStream[]
   local streams = {}
   local internal_query = env.engine.context:get_property("snow_append_query") == "1"
   ---@type table<string, UserPhraseWeight>
   local learned_cache = {}
   for _, route in ipairs(routes_for(input, segment, env)) do
+    local profile_start = profiling and os.clock() or 0
     local translation = env.translator:query(route.proxy, segment)
     if translation then
       local stream = {
@@ -537,6 +542,10 @@ function translator.func(input, segment, env)
       if advance(stream, env) then
         table.insert(streams, stream)
       end
+    end
+    if profiling then
+      io.stderr:write(("append_shi profile shenyun input=%s family=%s init_cpu_ms=%.3f\n"):format(
+        input, route.family, (os.clock() - profile_start) * 1000))
     end
   end
   ---@type table<string, boolean>

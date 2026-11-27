@@ -4,6 +4,7 @@
 local snow = require "snow.snow"
 
 ---@class LengthBalanceEnv: Env
+---@field profile_remaining integer|nil
 ---@field page_size integer
 ---@field maximum_candidates integer
 ---@field minimum_input_length integer
@@ -138,6 +139,7 @@ end
 
 ---@param env LengthBalanceEnv
 function filter.init(env)
+  env.profile_remaining = os.getenv("SNOW_APPEND_PROFILE") == "1" and 12 or 0
   local config = env.engine.schema.config
   env.page_size = config:get_int("menu/page_size") or 6
   env.maximum_candidates = config:get_int("length_balance/maximum_candidates") or 120
@@ -154,13 +156,20 @@ end
 ---@param translation Translation
 ---@param env LengthBalanceEnv
 function filter.func(translation, env)
+  local profiling = (env.profile_remaining or 0) > 0
+  if profiling then env.profile_remaining = env.profile_remaining - 1 end
   local iterator = translation:iter()
   while true do
+    local profile_start = profiling and os.clock() or 0
     local buffered = {}
     while #buffered < env.maximum_candidates do
       local candidate = iterator(translation)
       if not candidate then break end
       table.insert(buffered, candidate)
+    end
+    if profiling then
+      io.stderr:write(("append_shi profile length_balance input=%s count=%d upstream_cpu_ms=%.3f\n"):format(
+        snow.current(env.engine.context) or "", #buffered, (os.clock() - profile_start) * 1000))
     end
     if #buffered == 0 then break end
     -- 保留完整批次参与第一页补位，但后续页等消费者需要时再计算。

@@ -18,6 +18,7 @@ local function is_fixed(candidate)
 end
 
 ---@class LearnedPriorityEnv: Env
+---@field profile_remaining integer|nil
 ---@field memory Memory
 ---@field cache table<string, UserPhraseWeight>
 ---@field connection Connection
@@ -78,6 +79,7 @@ end
 
 ---@param env LearnedPriorityEnv
 function filter.init(env)
+  env.profile_remaining = os.getenv("SNOW_APPEND_PROFILE") == "1" and 12 or 0
   local config = env.engine.schema.config
   local name_space = config:get_string("learned_priority/memory_namespace") or "translator"
   env.memory = Memory(env.engine, env.engine.schema, name_space)
@@ -119,14 +121,21 @@ end
 ---@param translation Translation
 ---@param env LearnedPriorityEnv
 function filter.func(translation, env)
+  local profiling = (env.profile_remaining or 0) > 0
+  if profiling then env.profile_remaining = env.profile_remaining - 1 end
   local input = snow.current(env.engine.context) or ""
   local iterator = translation:iter()
   while true do
+    local profile_start = profiling and os.clock() or 0
     local buffered = {}
     while #buffered < env.maximum_candidates do
       local candidate = iterator(translation)
       if not candidate then break end
       table.insert(buffered, candidate)
+    end
+    if profiling then
+      io.stderr:write(("append_shi profile learned_priority input=%s count=%d upstream_cpu_ms=%.3f\n"):format(
+        snow.current(env.engine.context) or "", #buffered, (os.clock() - profile_start) * 1000))
     end
     if #buffered == 0 then break end
     for _, candidate in ipairs(filter.prioritize(buffered, env.memory, env.cache, input:len())) do
