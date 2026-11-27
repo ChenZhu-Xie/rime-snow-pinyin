@@ -1,4 +1,9 @@
-import { countHan, Corpus500 } from "./prepare_10x500_corpus";
+interface Corpus500 {
+	id: number;
+	title: string;
+	genre: string;
+	lines: string[];
+}
 
 // 严格保证每篇汉字数正好等于 500 字，总计 10 篇 = 5000 汉字
 export const exact500Articles: Corpus500[] = [
