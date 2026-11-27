@@ -1401,6 +1401,211 @@
           }
         }
       ]
+    },
+    {
+      "id": "20261127T202610Z-947a840-a9104d",
+      "archiveBranch": "main",
+      "archiveHead": "947a840e15cd0b98627cd857672627a5da7860d2",
+      "documentation": "docs/cold-storage-round7.md",
+      "documentationReceipt": "completion.json",
+      "indexSha256": "7ff3c1b75bc173265dc6487d6c1be4ea453940734c4d567e885c71245c17cb13",
+      "entries": [
+        {
+          "original": "output/oracle-comparison",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/oracle-comparison",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 214,
+          "bytes": 376691124,
+          "manifest": "c83386981826b32e.files.jsonl",
+          "manifestSha256": "e3be7a91fb73e8c0ed9471c415cfaad576876e75d4dc4d9ad0d38518d08a2b06",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/ckt5-nested-frontier",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/ckt5-nested-frontier",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 170,
+          "bytes": 38414580,
+          "manifest": "b06c4d87c90a1e68.files.jsonl",
+          "manifestSha256": "80ea3a8125e5656872a1c7eeb6efc01221e5ec7f461800f611a03f3a16e642ed",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Historical layout frontier experiment; original manifest records createdAt, updatedAt, completedModes and configuration, but no authoritative source commit."
+          }
+        },
+        {
+          "original": "output/keymap-launch-fix",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/keymap-launch-fix",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 468,
+          "bytes": 40249447,
+          "manifest": "a02ce9367a220f07.files.jsonl",
+          "manifestSha256": "a644f94b01ba67c46ef43fd2fcc7e2920d3bcf2c1129cbf4f108040c1c7e3914",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Historical desktop launch verification; keep per-file evidence without inferring a build commit from timestamps."
+          }
+        },
+        {
+          "original": "output/character-first-choice-v2",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/character-first-choice-v2",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 32,
+          "bytes": 7335304,
+          "manifest": "1bf1cf71d00d1d7f.files.jsonl",
+          "manifestSha256": "35cc4612d139db0c5c27fe99439d11a56ee830bc7317dee9bcaa7c471165a0b2",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/character-first-choice-v3",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/character-first-choice-v3",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 17,
+          "bytes": 5522705,
+          "manifest": "c473672efdbe6a1c.files.jsonl",
+          "manifestSha256": "bfd0072ec1b3d1b36a0f285ab9ab18b20ea4b87c6f7f11064425312ee364f5db",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/character-first-choice-v4",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/character-first-choice-v4",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 18,
+          "bytes": 6005457,
+          "manifest": "361eceebc93a3741.files.jsonl",
+          "manifestSha256": "02b8042d6d9587cbb8b780debe4760ac8b6a6dd0eadfde2760ca08b9cc441153",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/character-first-choice-v5-offline",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/character-first-choice-v5-offline",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 15,
+          "bytes": 4476269,
+          "manifest": "cdc47dae2e5c7bf4.files.jsonl",
+          "manifestSha256": "f01d860047d9727877322fe88e767a71a611e9199925a8e6be671eaf383fd101",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/character-first-choice-v6-offline",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/character-first-choice-v6-offline",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 15,
+          "bytes": 4461395,
+          "manifest": "acc31483e4756c7b.files.jsonl",
+          "manifestSha256": "7d893e19689e2bbd9758677484750e44ce18842736fff1ac54da91ee7f1cc640",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/character-first-choice-v7-observed",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/character-first-choice-v7-observed",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 15,
+          "bytes": 4527787,
+          "manifest": "ee7c5215ae99a159.files.jsonl",
+          "manifestSha256": "c743c2877e4be3842f0cbd446d0550a4e0bb71edf96ca868e43badd35348df48",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/character-first-choice-v8-selection",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/archive/output/character-first-choice-v8-selection",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 16,
+          "bytes": 6279071,
+          "manifest": "afa557456e1d8068.files.jsonl",
+          "manifestSha256": "0f8cfbd92ab03e486b274e2e8bc49ec514071b27de012ef68c34a926f9caa3a7",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "No reliable overall source commit or branch recorded. Frozen reports, inputs and per-variant fingerprints are retained; archive HEAD is separate."
+          }
+        },
+        {
+          "original": "output/userdb-reset-20261109-004923",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/backups/output/userdb-reset-20261109-004923",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 36,
+          "bytes": 65166929,
+          "manifest": "0badfba77220a93b.files.jsonl",
+          "manifestSha256": "cbcac297195ecabb4f0720e4117db480a34e38deb4fad1eb1c9223bfb7835db1",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Existing historical user-data/configuration backup only; not the live user dictionary. Preserve original bytes and source; creation commit and branch unknown."
+          }
+        },
+        {
+          "original": "schema-id-migration-backup",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/backups/schema-id-migration-backup",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 3,
+          "bytes": 1617,
+          "manifest": "6a6dd5b06238fe7d.files.jsonl",
+          "manifestSha256": "a99d4d344a2a82073fa227663b7b3a4eb37023c03032440d2597b2965476abd8",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Existing historical user-data/configuration backup only; not the live user dictionary. Preserve original bytes and source; creation commit and branch unknown."
+          }
+        },
+        {
+          "original": "output/weasel-upgrade-backup-20261111-181151.zip",
+          "coldRelative": "20261127T202610Z-947a840-a9104d/backups/output/weasel-upgrade-backup-20261111-181151.zip",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 1,
+          "bytes": 73540,
+          "manifest": "2aad3a1d71fb9d05.files.jsonl",
+          "manifestSha256": "7924a40b5689475e165db06dfe5512fca301270dc338b1aa4c0726dc132650a9",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Existing historical user-data/configuration backup only; not the live user dictionary. Preserve original bytes and source; creation commit and branch unknown."
+          }
+        }
+      ]
     }
   ]
 }
