@@ -85,3 +85,24 @@ check_policy("rgxneu", "人工智能", "r g x n 形[eu]")
 check_policy("bdeuea", "不到", "b d 形[euea]")
 check_policy("vjkoi", "数据库", "v j k 形[oi]")
 print("鹮道 R2：标准词形辅 21/12/23、声声反序 1122 与 AAA+B 空桶路由通过")
+
+-- 内部无辅码试查只省略提示计算，不省略候选；实际有辅码时仍必须筛选。
+local shape_lookups = 0
+env.auxiliary_cache = {}
+env.shape_elements.lookup = function(_, character)
+  shape_lookups = shape_lookups + 1
+  return character
+end
+env.engine.context.get_property = function(_, name)
+  return name == "snow_append_query" and "1" or ""
+end
+emitted = {}
+translator.func("bnyw", { _end = 4 }, env)
+assert(#emitted == 1 and emitted[1].text == "冰雪")
+assert(shape_lookups == 0, "无辅码的内部菜单不能计算不会显示的提示")
+emitted = {}
+translator.func("bnyweo", { _end = 6 }, env)
+assert(#emitted == 1 and emitted[1].text == "冰雪" and shape_lookups > 0)
+emitted = {}
+translator.func("bnywaa", { _end = 6 }, env)
+assert(#emitted == 0, "有辅码约束时不能绕过筛选")

@@ -307,6 +307,12 @@ end
 local function auxiliary_match(candidate, suffix, env, initial_pair)
   local text = candidate.text
   local radical_input = env.engine.context:get_property("shape_input") or ""
+  -- 自适应上屏的菜单只用于选词，不展示形辅提示。无辅码约束时无需
+  -- 对预取的每个候选做部件反查；保留原有候选流，让后续排序完全一致。
+  if suffix == "" and radical_input == ""
+      and env.engine.context:get_property("snow_append_query") == "1" then
+    return true, ""
+  end
   if (suffix ~= "" or radical_input ~= "") and text:match("^[A-Za-z0-9]+$") then
     return false, ""
   end
