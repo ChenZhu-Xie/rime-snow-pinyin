@@ -500,3 +500,13 @@ for (const [schema, prefix, continuation, fallback, commit] of [
 		},
 	);
 }
+
+// 自适应查询的声母输入覆盖最大音节分支数，沿用统一延迟预算。
+for (const [schema, cases] of Object.entries(LATENCY_CASES)) {
+	cases.push({
+		id: "adaptive-append-shi",
+		keys: schema === "snow_yipin" ? `${chord("wj")}]` : "b]",
+		commit: "不是",
+		source: "docs/adaptive-append-shi.md",
+	});
+}

@@ -59,6 +59,8 @@ deploy:
     tests:
       - send: "b]"
         assert: commit == "不是"
+      - send: "bu]"
+        assert: commit == "不是"
   short_shape_and_stroke_sources:
     tests:
       - send: jsii
@@ -185,7 +187,7 @@ deploy:
       - send: "j["
         assert: commit == "我我"
       - send: "j]"
-        assert: commit == "我是"
+        assert: (commit == "就是") or error("adaptive commit=" .. tostring(commit))
       - send: r
         assert: cand[1].text == "人"
       - send: z
@@ -264,31 +266,31 @@ deploy:
   initial_pair_four_aux:
     tests:
       - send: cv
-        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ ai〕", 1, true)
+        assert: has("才睡") and pair_comment("才睡"):find("〔调笔₂₂₁₁ ai〕", 1, true)
       - send: cva
-        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ ie〕", 1, true)
+        assert: has("才睡") and pair_comment("才睡"):find("〔调笔₂₂₁₁ ie〕", 1, true)
       - send: cvai
-        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ ee〕", 1, true)
+        assert: has("才睡") and pair_comment("才睡"):find("〔调笔₂₂₁₁ ee〕", 1, true)
       - send: cvaie
-        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ e〕", 1, true)
+        assert: has("才睡") and pair_comment("才睡"):find("〔调笔₂₂₁₁ e〕", 1, true)
       - send: cvaiee
-        assert: has("才是") and not pair_comment("才是"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
+        assert: has("才睡") and not pair_comment("才睡"):find("〔调笔₂₂₁₁", 1, true) and commit == nil
       - send: cvaiee{BackSpace}
-        assert: has("才是") and pair_comment("才是"):find("〔调笔₂₂₁₁ e〕", 1, true)
+        assert: has("才睡") and pair_comment("才睡"):find("〔调笔₂₂₁₁ e〕", 1, true)
   initial_pair_reverse_policy:
     patch:
       translator/word_auxiliary_order: "21"
     tests:
       - send: cv
-        assert: has("才是") and pair_comment("才是"):find("〔调笔₁₁₂₂ ee〕", 1, true)
+        assert: has("才睡") and pair_comment("才睡"):find("〔调笔₁₁₂₂ ee〕", 1, true)
       - send: cveeai
-        assert: has("才是") and commit == nil
+        assert: has("才睡") and commit == nil
   initial_pair_learning:
     tests:
       # 先证明确实需要学习，再从四辅全码上屏，确认下一次短辅码首选前移。
       - send: cva
-        assert: (cand[1].text ~= "才是") or error(pair_probe())
+        assert: (cand[1].text ~= "才睡") or error(pair_probe())
       - send: cvaiee
-        assert: (cand[2].text == "才是") or error(pair_probe())
-      - send: "cvaiee2cva"
-        assert: (cand[1].text == "才是") or error(pair_probe())
+        assert: (cand[1].text == "才睡") or error(pair_probe())
+      - send: "cvaiee cva"
+        assert: (cand[1].text == "才睡") or error(pair_probe())

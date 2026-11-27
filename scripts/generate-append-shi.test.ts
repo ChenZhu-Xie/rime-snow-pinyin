@@ -7,8 +7,8 @@ test("四拼完整、前缀及补 o 编码都保留正确读音约束", () => {
 		"bu4",
 		"bi4",
 	]);
-	expect(result).toContain("m\tmuuvia\tmu3");
-	expect(result).toContain("mu\tmuuvia\tmu3");
+	expect(result).toContain("m\tmvia\tmu3");
+	expect(result).toContain("mu\tmuvia\tmu3");
 	expect(result).toContain("muuo\tmuuvia\tmu3");
 	expect(result).not.toContain("mueaa\t");
 });

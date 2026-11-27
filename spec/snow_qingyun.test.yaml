@@ -28,6 +28,8 @@ deploy:
     tests:
       - send: "b]"
         assert: commit == "不是"
+      - send: "bu]"
+        assert: commit == "不是"
   schema_options_menu:
     # 每条 send 都创建新会话，菜单与临时模式的前置按键必须包含在同一条输入内。
     tests:
@@ -171,7 +173,7 @@ deploy:
       - send: "yo["
         assert: commit == "一"
       - send: "yo]"
-        assert: commit == "个"
+        assert: (commit == "要是") or error("adaptive commit=" .. tostring(commit))
       # 单字定字：[ 重复该字，] 在该字后追加「是」
       - send: "kv["
         assert: commit == "清清"

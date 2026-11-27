@@ -27,6 +27,8 @@ deploy:
     tests:
       - send: "b]"
         assert: commit == "不是"
+      - send: "bj]"
+        assert: commit == "不是"
   short_shape_and_stroke_sources:
     tests:
       - send: ykaa
@@ -98,7 +100,7 @@ deploy:
       - send: "p["
         assert: commit == "跑跑"
       - send: "p]"
-        assert: commit == "跑是"
+        assert: (commit == "怕是") or error("adaptive commit=" .. tostring(commit))
       - send: xh
         assert: cand[1].text == "学"
       - send: bgov

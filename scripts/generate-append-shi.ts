@@ -29,7 +29,10 @@ export function generateRoutes(
 			if (schema === "snow_sipin" && code.length === 3) inputs.add(`${code}o`);
 			for (const input of inputs) {
 				for (const tail of tails) {
-					const route = `${input}\t${pairCode(schema, code, tail)}`;
+					// 四拼的标准词码支持首音节的原始前缀；不擅自补全它，
+					// 否则 b] 会绕过 bvia 上的置顶、学习和后置排序。
+					const first = schema === "snow_sipin" ? input : code;
+					const route = `${input}\t${pairCode(schema, first, tail)}`;
 					const values = routes.get(route) ?? new Set<string>();
 					values.add(reading);
 					routes.set(route, values);

@@ -21,7 +21,8 @@ local function load_routes(env)
   if not file then return end
   for line in file:lines() do
     local input, code, readings = line:match("^([^#\t]+)\t([^\t]+)\t(.+)$")
-    if input then
+    if input and code and readings then
+      ---@type AppendShiRoute
       local route = { code = code, readings = {} }
       for reading in readings:gmatch("%S+") do route.readings[reading] = true end
       env.shi_routes[input] = env.shi_routes[input] or {}
@@ -64,12 +65,18 @@ function append.commit(env)
       or context.caret_pos ~= #context.input or not segment:has_tag("abc")
       or context:get_property("shape_input") ~= "" then return false end
   if not env.shi_routes then load_routes(env) end
-  local routes = env.shi_routes[context.input]
+  local routes = env.shi_routes and env.shi_routes[context.input]
   if not routes then return false end
   local input, selected_index = context.input, segment.selected_index
   local previous_scope = context:get_property("snow_append_query")
   context:set_property("snow_append_query", "1")
-  local best, best_code, best_index
+  ---@type Candidate|nil
+  local best
+  ---@type string|nil
+  local best_code
+  ---@type integer|nil
+  local best_index
+  ---@type table<string, UserPhraseWeight>
   local weights = {}
   local ok, message = pcall(function()
     for _, route in ipairs(routes) do
@@ -97,7 +104,7 @@ function append.commit(env)
         end
       end
     end
-    if best then
+    if best and best_code and best_index ~= nil then
       context.input = best_code
       local current = context.composition:toSegmentation():back()
       local candidate = current and current:get_candidate_at(best_index)

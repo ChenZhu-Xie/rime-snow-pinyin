@@ -21,9 +21,27 @@ script: |
     return cand[index] ~= nil and cand[index].comment:find("📌") ~= nil
   end
 deploy:
+  adaptive_append_pin_other:
+    patch:
+      "punctuator/half_shape/:": { commit: "不适" }
+    tests:
+      - send: "bvia{Control+period}:{Control+period}bvia"
+        assert: cand[1].text == "不适" and pinned(1)
+      - send: "b]"
+        assert: commit == "不是"
+  adaptive_append_pin_shi:
+    patch:
+      "punctuator/half_shape/:": { commit: "本是" }
+    tests:
+      - send: "bvia{Control+period}:{Control+period}bvia"
+        assert: cand[1].text == "本是" and pinned(1)
+      - send: "b]"
+        assert: commit == "本是"
   adaptive_append_shi:
     tests:
       - send: "b]"
+        assert: commit == "不是"
+      - send: "bua]"
         assert: commit == "不是"
   # 整句模式
   sentence:

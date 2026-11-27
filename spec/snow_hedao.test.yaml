@@ -46,6 +46,8 @@ deploy:
     tests:
       - send: "b]"
         assert: commit == "不是"
+      - send: "bu]"
+        assert: commit == "不是"
   short_shape_and_stroke_sources:
     tests:
       - send: jiuaa
@@ -159,7 +161,7 @@ deploy:
       - send: "j["
         assert: commit == "我我"
       - send: "j]"
-        assert: commit == "我是"
+        assert: (commit == "就是") or error("adaptive commit=" .. tostring(commit))
       - send: r
         assert: cand[1].text == "人"
       - send: z
