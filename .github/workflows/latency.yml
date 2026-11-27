@@ -79,7 +79,7 @@ jobs:
         run: |
           if [ '${{ inputs.profile_append }}' = 'true' ]; then
             printf '诊断运行启用了分路线计时，不作为正式延迟结果。\n' >> "$GITHUB_STEP_SUMMARY"
-            rg 'append_shi profile' output/latency-ci/ || true
+            grep -R 'append_shi profile' output/latency-ci/ || true
           fi
           if [ -f output/latency-ci/report.json ]; then
             bun scripts/summarize-latency.ts output/latency-ci/report.json >> "$GITHUB_STEP_SUMMARY"

@@ -114,7 +114,7 @@ function append.commit(env)
       return a.rank > b.rank or a.rank == b.rank and a.index < b.index
     end)
     if profiling then
-      log.warning(("append_shi profile routes=%d priority_cpu_ms=%.3f"):format(
+      io.stderr:write(("append_shi profile routes=%d priority_cpu_ms=%.3f\n"):format(
         #ordered, (os.clock() - started) * 1000))
     end
     for _, item in ipairs(ordered) do
@@ -152,7 +152,7 @@ function append.commit(env)
         end
       end
       if profiling then
-        log.warning(("append_shi profile code=%s compose_cpu_ms=%.3f scan_cpu_ms=%.3f scanned=%d"):format(
+        io.stderr:write(("append_shi profile code=%s compose_cpu_ms=%.3f scan_cpu_ms=%.3f scanned=%d\n"):format(
           route.code, (compose_end - query_start) * 1000, (os.clock() - compose_end) * 1000, scanned))
       end
     end
