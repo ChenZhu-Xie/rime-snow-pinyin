@@ -99,6 +99,9 @@ end
 emitted = {}
 translator.func("bnyw", { _end = 4 }, env)
 assert(#emitted == 1 and emitted[1].text == "冰雪")
+assert(emitted[1].preedit == nil and emitted[1].comment == "",
+  "内部候选不应计算不会显示的预编辑与提示，但须保留文本和完整消费长度")
+assert(emitted[1]._end == 4)
 assert(shape_lookups == 0, "无辅码的内部菜单不能计算不会显示的提示")
 emitted = {}
 translator.func("bnyweo", { _end = 6 }, env)

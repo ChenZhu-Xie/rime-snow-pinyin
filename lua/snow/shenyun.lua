@@ -521,6 +521,7 @@ end
 function translator.func(input, segment, env)
   ---@type ShenyunStream[]
   local streams = {}
+  local internal_query = env.engine.context:get_property("snow_append_query") == "1"
   ---@type table<string, UserPhraseWeight>
   local learned_cache = {}
   for _, route in ipairs(routes_for(input, segment, env)) do
@@ -560,29 +561,35 @@ function translator.func(input, segment, env)
     if not seen[candidate.text] then
       seen[candidate.text] = true
       candidate._end = segment._end
-      candidate.preedit = format_preedit(stream.route, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
-      local length = utf8.len(candidate.text)
-      local order = ""
-      if length and length >= 2 then
-        local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
-        local raw_order = ("%d%d"):format(positions[1], positions[2])
-        order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
-      end
-      local label = (env.auxiliary_mode == "tone" and "调" or "形") .. order
-      if stream.route.family == "AA" then
-        candidate.type = "initial_pair"
-        local codes = auxiliary_codes(candidate, env, true)
-        local _, _, comment = initial_pair_aux.match(codes, stream.route.suffix,
-          env.auxiliary_mode, env.pair_standard_order)
-        if comment ~= "" then snow.comment(candidate, comment) end
-      elseif stream.route.family == "A" then
-        local spellings = actual_spellings(candidate, env)
-        if spellings and spellings[1] then
-          local code = env.vacancy_projection:apply(spellings[1])
-          snow.comment(candidate, ("〔声韵 %s〕"):format(code))
+      -- 内部菜单只消费文本、类型、质量和读音；展示文本不参与排序。
+      -- 声声类型仍须保留，供下游识别标准候选语义。
+      if internal_query then
+        if stream.route.family == "AA" then candidate.type = "initial_pair" end
+      else
+        candidate.preedit = format_preedit(stream.route, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
+        local length = utf8.len(candidate.text)
+        local order = ""
+        if length and length >= 2 then
+          local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
+          local raw_order = ("%d%d"):format(positions[1], positions[2])
+          order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
         end
-      elseif stream.auxiliary ~= "" then
-        snow.comment(candidate, ("〔%s %s〕"):format(label, stream.auxiliary))
+        local label = (env.auxiliary_mode == "tone" and "调" or "形") .. order
+        if stream.route.family == "AA" then
+          candidate.type = "initial_pair"
+          local codes = auxiliary_codes(candidate, env, true)
+          local _, _, comment = initial_pair_aux.match(codes, stream.route.suffix,
+            env.auxiliary_mode, env.pair_standard_order)
+          if comment ~= "" then snow.comment(candidate, comment) end
+        elseif stream.route.family == "A" then
+          local spellings = actual_spellings(candidate, env)
+          if spellings and spellings[1] then
+            local code = env.vacancy_projection:apply(spellings[1])
+            snow.comment(candidate, ("〔声韵 %s〕"):format(code))
+          end
+        elseif stream.auxiliary ~= "" then
+          snow.comment(candidate, ("〔%s %s〕"):format(label, stream.auxiliary))
+        end
       end
       yield(candidate)
     end

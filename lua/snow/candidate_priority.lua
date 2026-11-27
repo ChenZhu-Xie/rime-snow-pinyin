@@ -35,18 +35,21 @@ function priority.user_phrase_weight(candidate, memory, cache)
   if cached ~= nil then
     return cached ~= false and cached or nil
   end
-  ---@type number|nil
-  local weight
+  -- 同音词共用一次完整的规范码查询；空结果也按码缓存。
+  -- 缓存生命周期仍由调用方管理，正常学习后照常失效。
+  local scanned_key = "\0" .. code
+  if cache[scanned_key] ~= nil then return nil end
   -- Memory:user_lookup 接收方案棱镜输入；这里的 code 已由 DictEntry 解码为用户库的规范音节键，
   -- 必须绕过棱镜直接查 UserDictionary，否则 jxxd 一类缩写候选永远读不到真实用户权重。
   local entries = memory.user_dict:lookup_words(code, false, 0)
   for entry in entries:iter() do
-    if entry.text == candidate.text then
-      weight = math.max(weight or entry.weight, entry.weight)
-    end
+    local key = code .. "\t" .. entry.text
+    local previous = cache[key]
+    cache[key] = math.max(previous or entry.weight, entry.weight)
   end
-  cache[cache_key] = weight or false
-  return weight
+  cache[scanned_key] = false
+  local weight = cache[cache_key]
+  return weight ~= false and weight or nil
 end
 
 ---@param candidate Candidate

@@ -114,4 +114,36 @@ assert(priority.better_across_routes(hidden_user, ordinary, weighted_memory, {})
 assert(not priority.better_across_routes(ordinary, hidden_user, weighted_memory, {}),
   "a lower user weight must not fall back to the higher static route quality")
 
+local same_code_calls = 0
+local entries = {
+  { text = "不是", weight = -7 }, { text = "布市", weight = 0 },
+  { text = "不是", weight = -2 },
+}
+local same_code_memory = {
+  decode = function(_, code) return code end,
+  user_dict = { lookup_words = function(_, code, predictive, limit)
+    assert(code == "bu4 shi4" and not predictive and limit == 0)
+    same_code_calls = same_code_calls + 1
+    return { iter = function()
+      local index = 0
+      return function() index = index + 1; return entries[index] end
+    end }
+  end },
+}
+local same_code_cache = {}
+local function weight(text, cache)
+  return priority.user_phrase_weight(phrase_candidate(text, { "bu4", "shi4" }),
+    same_code_memory, cache or same_code_cache)
+end
+assert(weight("不适") == nil)
+assert(weight("不是") == -2 and weight("布市") == 0)
+assert(weight("部室") == nil and same_code_calls == 1,
+  "同码查询须一次缓存所有词的最大权重，以及未学习的同音词")
+entries = { { text = "不是", weight = 3 } }
+assert(weight("不是", {}) == 3 and same_code_calls == 2,
+  "调用方重建缓存后必须读取新学习权重")
+entries = {}
+same_code_cache = {}
+assert(weight("不是") == nil and weight("布市") == nil and same_code_calls == 3,
+  "同码空结果也只查一次")
 print("candidate_priority.test.lua: ok")
