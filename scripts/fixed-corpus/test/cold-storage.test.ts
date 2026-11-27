@@ -24,6 +24,24 @@ import {
 const hash = (value: string) =>
 	createHash("sha256").update(value).digest("hex");
 
+test("保留源文件的冷备份与已迁出的归档显示为不同用途", () => {
+	const f = fixture();
+	try {
+		const entry = f.catalog.batches[0].entries[0];
+		entry.state = "verified-backup-source-retained";
+		const backup = findArchives(f.catalog, f.locations, entry.original)[0];
+		assert.equal(backup.kind, "backup");
+		assert.equal("state" in backup && backup.state, entry.state);
+		entry.state = "source-removed-after-verified-snapshot";
+		assert.equal(
+			findArchives(f.catalog, f.locations, entry.original)[0].kind,
+			"archive",
+		);
+	} finally {
+		f.cleanup();
+	}
+});
+
 function fixture() {
 	const root = mkdtempSync(join(tmpdir(), "snow-cold-storage-"));
 	const locations = {

@@ -268,7 +268,11 @@ export function findArchives(
 				batch: batch.id,
 				original: entry.original,
 				target,
-				kind: "archive",
+				kind:
+					entry.state === "verified-backup-source-retained"
+						? "backup"
+						: "archive",
+				state: entry.state,
 				sourceHead: entry.sourceHead ?? entry.provenance?.sourceCommit ?? null,
 				archiveBranch: batch.archiveBranch,
 				archiveHead: batch.archiveHead,

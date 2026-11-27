@@ -1220,6 +1220,187 @@
           }
         }
       ]
+    },
+    {
+      "id": "20261127T201322Z-1383691-bc1ccb",
+      "archiveBranch": "main",
+      "archiveHead": "1383691e02f5017b3561f2c41c356108ce4f9991",
+      "documentation": "docs/cold-storage-round6.md",
+      "documentationReceipt": "completion.json",
+      "indexSha256": "3ee68b2b35d9372b85199d7a97a5e9c603bd9da3efb967fcd05e90e179e7eec1",
+      "entries": [
+        {
+          "original": "output/classic-fixed-ab",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/archive/output/classic-fixed-ab",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 425,
+          "bytes": 418955681,
+          "manifest": "ab0d48201bbcde0f.files.jsonl",
+          "manifestSha256": "a5a25943492d8d3574feab6ffaeead7aa404be31feee0e4bc10d9dac6a7033dc",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Original provenance.json explicitly distinguishes local and upstream commits and changed fixed entries; no single commit describes both.",
+            "sourceCommitsByVariant": {
+              "local": "83a5bee425d83af63d7ffe2e417012c7329b3764",
+              "upstream": "99c1d6010ff7252175f2b373f05ff30e9541f3c3"
+            }
+          }
+        },
+        {
+          "original": "output/character-first-choice-ci",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/archive/output/character-first-choice-ci",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 201,
+          "bytes": 128629548,
+          "manifest": "5686aaef2f0e2266.files.jsonl",
+          "manifestSha256": "1bf306f6af1e9e17e2f667d2d46858afb6a4e49dc14c5648549ac6bb49279f4c",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        },
+        {
+          "original": "output/character-conflict-probes",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/archive/output/character-conflict-probes",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 147,
+          "bytes": 102423192,
+          "manifest": "c357c9ff05a2a412.files.jsonl",
+          "manifestSha256": "06ccba9dcd6db2a1eadff94d88280163d6d9194b9ecd03043150d56d6c5c4a73",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "prepare-check manifest revision describes that subdeployment only; source hashes and probe inputs remain in snapshot.",
+            "prepareCommit": "30a2096772dbc2a4bbd61b64579701a3fb8e3df0"
+          }
+        },
+        {
+          "original": "output/upstream-two-schemes",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/archive/output/upstream-two-schemes",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 38,
+          "bytes": 42831088,
+          "manifest": "8c549a61d4a5438b.files.jsonl",
+          "manifestSha256": "ea73b246b10c474c3e92751ef860b0c066f45a5f051469683b95bb1ccb655cbe",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        },
+        {
+          "original": "output/character-first-choice-b4b1c94",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/archive/output/character-first-choice-b4b1c94",
+          "action": "move",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 101,
+          "bytes": 60472099,
+          "manifest": "7f76d0d230aa5fe6.files.jsonl",
+          "manifestSha256": "ff4c1692e3a4e9201609b6ba534ac66169b8389c7813ae50c7f551e48b3c53ea",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Diagnostic manifest commit differs from the directory name; keep per-variant evidence, do not infer source from name.",
+            "diagnosticCommit": "02a775866b68f5dfd70839cc509a729b173f1a95"
+          }
+        },
+        {
+          "original": "output/character-full-current",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/backups/output/character-full-current",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 135,
+          "bytes": 155055036,
+          "manifest": "1d666c872b6f321d.files.jsonl",
+          "manifestSha256": "61fbb241c7ce112a348cc71bf9aee7ae7cc4deab40338740719afc80cfbdf24f",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        },
+        {
+          "original": "output/character-full-local",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/backups/output/character-full-local",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 145,
+          "bytes": 183148360,
+          "manifest": "9691e6ff3f0732a8.files.jsonl",
+          "manifestSha256": "2c681e9cd818f6e6c412410bb2dbe196a69ff2633f70c813d90739f0337492ac",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        },
+        {
+          "original": "output/qingyun-130",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/backups/output/qingyun-130",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 72,
+          "bytes": 233873550,
+          "manifest": "f2d95cc8cb70b84d.files.jsonl",
+          "manifestSha256": "70c4f2593556c3deb5e1a6ce79b541baeff6f98d87e6702c0c91bcd6aa9b7b35",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        },
+        {
+          "original": "output/qingyun-character-full",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/backups/output/qingyun-character-full",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 48,
+          "bytes": 113387610,
+          "manifest": "fd8bcd3d891e9ee9.files.jsonl",
+          "manifestSha256": "c59742a62679737bee29c5ef26bc8188ae59ad1f6fe8639520be7a43bd5ea12b",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        },
+        {
+          "original": "output/filter-disabled-recheck",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/backups/output/filter-disabled-recheck",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 56,
+          "bytes": 178137690,
+          "manifest": "cc201c9fc09be8f5.files.jsonl",
+          "manifestSha256": "ea81f6083b4a3735dee8e279933515721a883fdaa854d016ffef5bd6cd923e67",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        },
+        {
+          "original": "output/four-character-compare",
+          "coldRelative": "20261127T201322Z-1383691-bc1ccb/backups/output/four-character-compare",
+          "action": "backup",
+          "state": "verified-backup-source-retained",
+          "files": 144,
+          "bytes": 186379293,
+          "manifest": "c5427cda9a9a44ff.files.jsonl",
+          "manifestSha256": "58db55a94058cf4116a3d51698fb69804562806757e276f32fbceafa218853e8",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Source branch/creation commit unknown; original manifests, observation fingerprints and variant data are frozen, archive HEAD is recorded separately."
+          }
+        }
+      ]
     }
   ]
 }
