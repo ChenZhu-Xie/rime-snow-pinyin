@@ -21,6 +21,9 @@ keymap:
   key: e
   image: snow_sipin.svg
 
+abbreviation:
+  alt_repeat_key: a # Alt+A 复用大写 A 的完整重复略码，供 PC 端实测。
+
 engine:
   processors:
     - lua_processor@*snow.statistics*processor

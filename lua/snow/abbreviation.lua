@@ -3,6 +3,7 @@
 local snow = require "snow.snow"
 
 ---@class AbbreviationEnv: Env
+---@field alt_repeat_key string|nil
 ---@field long_word_initials string|nil
 ---@field long_word_pattern string|nil
 
@@ -11,6 +12,7 @@ local processor = {}
 ---@param env AbbreviationEnv
 function processor.init(env)
   local config = env.engine.schema.config
+  env.alt_repeat_key = config:get_string("abbreviation/alt_repeat_key")
   if config:get_string("word_length/layout") == "21x26" then
     local initials = config:get_string("speller/initials") or ""
     env.long_word_initials = initials
@@ -50,10 +52,18 @@ function processor.func(key_event, env)
   if length >= 4 then
     return snow.kNoop
   end
-  if key_event:release() or key_event:alt() or key_event:ctrl() or key_event:caps() then
+  if key_event:release() or key_event:ctrl() or key_event:caps() then
     return snow.kNoop
   end
   local incoming = utf8.char(key_event.keycode)
+  if key_event:alt() then
+    -- 仅配置的纯 Alt 组合键复用完整重复略码，其他 Alt 按键继续放行。
+    if key_event.modifier ~= snow.kAlt or incoming ~= env.alt_repeat_key
+        or context:get_option("ascii_mode") then
+      return snow.kNoop
+    end
+    incoming = "A"
+  end
   local input = snow.current(context) or ""
   -- 21×26 显式长词续写优先于略码，与飞码开关和当前短词首选无关。
   if env.long_word_initials and env.long_word_pattern and incoming:match("^[A-Z]$")

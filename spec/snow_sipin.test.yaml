@@ -386,6 +386,9 @@ deploy:
       # 略码：完整重复，双音节及以上的词用 `A`
       - send: "wgA"
         assert: commit == "这个这个"
+      # Alt+A 新入口与原大写 A 并存。
+      - send: "wg{Alt+a}"
+        assert: commit == "这个这个"
       # 本地四码后的大写字母继续参与编码；略码以短码示例覆盖。
       # 略码：ＡＡＢＢ 型用 `O`
       - send: "krO"
