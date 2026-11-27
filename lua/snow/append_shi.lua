@@ -15,9 +15,11 @@ local append = {}
 ---@field shi_memory Memory|nil
 ---@field shi_pinyin ReverseLookup|nil
 ---@field shi_fixed FixEnv|nil
+---@field shi_profile_remaining integer|nil
 
 ---@param env AppendShiEnv
 local function load_routes(env)
+  env.shi_profile_remaining = os.getenv("SNOW_APPEND_PROFILE") == "1" and 2 or 0
   env.shi_routes = {}
   local path = rime_api.get_user_data_dir() .. "/lua/snow/append_shi_" .. env.engine.schema.schema_id .. ".txt"
   local file = io.open(path, "r")
@@ -100,6 +102,9 @@ function append.commit(env)
   ---@type table<string, UserPhraseWeight>
   local weights = {}
   local ok, message = pcall(function()
+    local profiling = (env.shi_profile_remaining or 0) > 0
+    if profiling then env.shi_profile_remaining = env.shi_profile_remaining - 1 end
+    local started = profiling and os.clock() or 0
     local ordered = {}
     for index, route in ipairs(routes) do
       local rank = route_priority(route, env)
@@ -108,6 +113,10 @@ function append.commit(env)
     table.sort(ordered, function(a, b)
       return a.rank > b.rank or a.rank == b.rank and a.index < b.index
     end)
+    if profiling then
+      log.warning(("append_shi profile routes=%d priority_cpu_ms=%.3f"):format(
+        #ordered, (os.clock() - started) * 1000))
+    end
     for _, item in ipairs(ordered) do
       local route = item.route
       -- 与 better_across_routes 的优先级完全一致：只有确定不能胜出时才剪枝。
@@ -115,12 +124,16 @@ function append.commit(env)
           or best.comment:find(snow.fixed_notfound_symbol, 1, true))
       if best_pinned and item.rank < 2 then break end
       if best and item.rank == 0 and priority.is_learned_phrase(best, env.shi_memory, weights) then break end
+      local query_start = profiling and os.clock() or 0
       context.input = route.code
+      local compose_end = profiling and os.clock() or 0
+      local scanned = 0
       local current = context.composition:toSegmentation():back()
       if current and current.start == 0 and current._end == #route.code then
         local index = 0
         while current.menu:prepare(index + 1) > index do
           local candidate = current.menu:get_candidate_at(index)
+          scanned = scanned + 1
           if candidate._end < #route.code then break end
           if candidate._end == #route.code and matches(candidate, route, env) then
             -- 每一路仅取最终菜单中首个匹配词；非「×是」的 pin 不参与比较。
@@ -137,6 +150,10 @@ function append.commit(env)
           end
           index = index + 1
         end
+      end
+      if profiling then
+        log.warning(("append_shi profile code=%s compose_cpu_ms=%.3f scan_cpu_ms=%.3f scanned=%d"):format(
+          route.code, (compose_end - query_start) * 1000, (os.clock() - compose_end) * 1000, scanned))
       end
     end
     if best then

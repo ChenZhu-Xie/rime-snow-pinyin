@@ -12,6 +12,10 @@ on:
         description: 单独复测的场景正则（需同时指定方案）
         type: string
         default: "^initial-pair-four-aux$"
+      profile_append:
+        description: 记录前两次自适应上屏的分路线 CPU 耗时（诊断运行）
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -62,6 +66,7 @@ jobs:
         env:
           TARGET_SCHEMA: ${{ inputs.schema }}
           TARGET_CASE: ${{ inputs.case }}
+          SNOW_APPEND_PROFILE: ${{ inputs.profile_append && '1' || '' }}
         run: |
           args=(--ci)
           if [ -n "$TARGET_SCHEMA" ]; then
@@ -72,6 +77,10 @@ jobs:
       - name: 展示性能结果
         if: always()
         run: |
+          if [ '${{ inputs.profile_append }}' = 'true' ]; then
+            printf '诊断运行启用了分路线计时，不作为正式延迟结果。\n' >> "$GITHUB_STEP_SUMMARY"
+            rg 'append_shi profile' output/latency-ci/ || true
+          fi
           if [ -f output/latency-ci/report.json ]; then
             bun scripts/summarize-latency.ts output/latency-ci/report.json >> "$GITHUB_STEP_SUMMARY"
           else

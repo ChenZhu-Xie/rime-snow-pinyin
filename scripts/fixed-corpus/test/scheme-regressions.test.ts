@@ -1152,7 +1152,9 @@ test("split translators preserve native user phrase priority across routes", () 
 	const priority = read("lua/snow/candidate_priority.lua");
 	assert.match(priority, /genuine\.type == "user_phrase"/u);
 	assert.match(priority, /memory\.user_dict:lookup_words\(code, false, 0\)/u);
-	assert.match(priority, /entry\.text == candidate\.text/u);
+	assert.match(priority, /local cache_key = code \.\. "\\t" \.\. candidate\.text/u);
+	assert.match(priority, /local key = code \.\. "\\t" \.\. entry\.text/u);
+	assert.match(priority, /local weight = cache\[cache_key\]/u);
 	assert.match(priority, /function priority\.consumes_input/u);
 	assert.match(
 		priority,
