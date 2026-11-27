@@ -30,6 +30,12 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  adaptive_append_selected_word:
+    tests:
+      - send: "dj"
+        assert: cand[1].text == "大家"
+      - send: "dj]"
+        assert: commit == "家"
   adaptive_append_readonly:
     tests:
       - send: "bhvk"

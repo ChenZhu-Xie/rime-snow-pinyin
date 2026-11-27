@@ -32,8 +32,10 @@ function processor.func(key_event, env)
   end
   local first = key_event:eq(env.first_key)
   local last = key_event:eq(env.last_key)
-  if last and append_shi.commit(env) then return snow.kAccepted end
   local length = utf8.len(text)
+  -- 短码可能同时有多字固顶和单音节候选，先尊重用户当前选中的词长。
+  -- 多字以词定字不应进入自适应试查，也不承担查询菜单的开销。
+  if last and length == 1 and append_shi.commit(env) then return snow.kAccepted end
   if length == 1 then
     if first then
       snow.commit_text(engine, text .. text)
