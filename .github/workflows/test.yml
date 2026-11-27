@@ -34,6 +34,8 @@ on:
       - 'scripts/research/calculate_shenyun_21x26_letter_buckets.ts'
       - 'scripts/generate-shenyun-letters.ts'
       - 'scripts/generate-shenyun-hints.ts'
+      - 'scripts/generate-append-shi.ts'
+      - 'scripts/generate-append-shi.test.ts'
       - 'scripts/data/latency-cases.ts'
       - 'scripts/generate-keymaps.ts'
       - 'scripts/generate-skins.ts'

@@ -41,11 +41,10 @@ end
 
 ---@param route AppendShiRoute
 ---@param env AppendShiEnv
-local function may_have_word(route, env)
-  if route.system ~= false then return true end
+local function route_priority(route, env)
   if env.shi_fixed then
     for _, word in ipairs(fix.get_customized_list(env.shi_fixed, route.code)) do
-      if utf8.len(word) == 2 and word:sub(-3) == "是" then return true end
+      if utf8.len(word) == 2 and word:sub(-3) == "是" then return 2 end
     end
   end
   local user_dict = env.shi_memory and env.shi_memory.user_dict
@@ -53,11 +52,11 @@ local function may_have_word(route, env)
     for reading in pairs(route.readings) do
       local entries = user_dict:lookup_words(reading .. " shi4", false, 0)
       for entry in entries:iter() do
-        if utf8.len(entry.text) == 2 and entry.text:sub(-3) == "是" then return true end
+        if utf8.len(entry.text) == 2 and entry.text:sub(-3) == "是" then return 1 end
       end
     end
   end
-  return false
+  return route.system ~= false and 0 or -1
 end
 
 ---@param candidate Candidate
@@ -105,8 +104,21 @@ function append.commit(env)
   ---@type table<string, UserPhraseWeight>
   local weights = {}
   local ok, message = pcall(function()
-    for _, route in ipairs(routes) do
-      if not may_have_word(route, env) then goto continue end
+    local ordered = {}
+    for index, route in ipairs(routes) do
+      local rank = route_priority(route, env)
+      if rank >= 0 then table.insert(ordered, { route = route, rank = rank, index = index }) end
+    end
+    table.sort(ordered, function(a, b)
+      return a.rank > b.rank or a.rank == b.rank and a.index < b.index
+    end)
+    for _, item in ipairs(ordered) do
+      local route = item.route
+      -- 与 better_across_routes 的优先级完全一致：只有确定不能胜出时才剪枝。
+      local best_pinned = best and (best.comment:find(snow.fixed_symbol, 1, true)
+          or best.comment:find(snow.fixed_notfound_symbol, 1, true))
+      if best_pinned and item.rank < 2 then break end
+      if best and item.rank == 0 and priority.is_learned_phrase(best, env.shi_memory, weights) then break end
       context.input = route.code
       local current = context.composition:toSegmentation():back()
       if current and current.start == 0 and current._end == #route.code then
@@ -130,7 +142,6 @@ function append.commit(env)
           index = index + 1
         end
       end
-      ::continue::
     end
     if best and best_code and best_index ~= nil then
       context.input = best_code

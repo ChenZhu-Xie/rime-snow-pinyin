@@ -83,4 +83,9 @@ assert(result and committed == "不是", "new user words must bypass static abse
 result, committed = run({ buki = { candidate("不是", "bu4", true) } }, { absent }, nil, nil,
   nil, { buki = { "不是" } })
 assert(result and committed == "不是", "pinned words must bypass static absence")
+local learned_bu = candidate("不是", "bu4", false, 10, true)
+result, committed, input, queried = run({ buki = { learned_bu }, biki = { candidate("必是", "bi4") } },
+  { bi, bu }, nil, nil, { ["bu4 shi4"] = { { text = "不是", weight = 10 } } })
+assert(result and committed == "不是")
+for _, code in ipairs(queried) do assert(code ~= "biki", "unlearned route cannot beat a learned winner") end
 print("append_shi: passed")
