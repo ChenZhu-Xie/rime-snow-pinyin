@@ -5,3 +5,7 @@ benchmark-5500 *args:
 # 直接读取已验证的报告生成紫色全按键图；--check 校验图与文档。
 benchmark-heatmaps *args:
     bun scripts/generate-5500-keyboard-heatmaps.ts {{args}}
+
+# 冷存地址查询与清单核验；只读，--full 重读文件哈希。
+cold-storage *args:
+    bun scripts/cold-storage.ts {{args}}

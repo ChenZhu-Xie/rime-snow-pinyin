@@ -759,6 +759,258 @@
           "sourceHead": "78ccdbc2dbca5966887142d2c1eb7011d845b633"
         }
       ]
+    },
+    {
+      "id": "20261127T185026Z-d34a052-0ec657",
+      "archiveBranch": "main",
+      "archiveHead": "d34a0521708c2bf110f83e61868cdfad67b67802",
+      "documentation": "docs/cold-storage-round4.md",
+      "documentationReceipt": "completion.json",
+      "indexSha256": "38d7d4de43562beea0664a4feb6827e03f1f0143c808d291e73c11e0450e9744",
+      "entries": [
+        {
+          "original": "output/release-v0.3.14-27019df",
+          "coldRelative": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 17,
+          "bytes": 105567870,
+          "manifest": "0d132aa155b1bfcc.files.jsonl",
+          "manifestSha256": "581555cf03239143fb39e2d1b1ce118f2e66f0a3e6c6b2f2422fe4b7adad6893",
+          "provenance": {
+            "sourceCommit": null,
+            "basis": "Batch name plus retained release verification and API receipts; individual artifacts remain hash identified. Commit is a directory-name marker, not an independently established artifact build commit.",
+            "sourceBranch": null,
+            "relatedCommit": "27019df92c87dbdbed52da18f9ded7d8bf5ac031"
+          }
+        },
+        {
+          "original": "output/release-verify-v0.3.14-62e5375",
+          "coldRelative": "20261127T185026Z-d34a052-0ec657/output/release-verify-v0.3.14-62e5375",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 7,
+          "bytes": 131229575,
+          "manifest": "6cc4ad0fd306cad9.files.jsonl",
+          "manifestSha256": "eb2e236073c14241da5a8b76fb3a05fd19fe939c7f4dc028ca8a694e0d5fb04b",
+          "provenance": {
+            "sourceCommit": null,
+            "basis": "Batch name indicates historical release; individual artifact provenance is retained in files, not claimed as a clean checkout. Commit is a directory-name marker, not an independently established artifact build commit.",
+            "sourceBranch": null,
+            "relatedCommit": "62e53751bf23df7bcb2e43a1d7959ce011257dc8"
+          }
+        },
+        {
+          "original": "output/um40",
+          "coldRelative": "20261127T185026Z-d34a052-0ec657/output/um40",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 499,
+          "bytes": 317455390,
+          "manifest": "0de642ed3be11b1f.files.jsonl",
+          "manifestSha256": "39e46ec24a3228e9f31b61f4cbf0018692a78ea6b5cd59590c1f9452f097e318",
+          "provenance": {
+            "sourceCommit": null,
+            "relatedCommit": "ddab179ec6de219e454ab05f3e22716d3ef1bb10",
+            "basis": "Frozen UM40-ac9707a932d1 entry and audit match the historical layout integration; original creation commit/branch not recorded.",
+            "sourceBranch": null
+          }
+        },
+        {
+          "original": "output/append-probes-static",
+          "coldRelative": "20261127T185026Z-d34a052-0ec657/output/append-probes-static",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 372,
+          "bytes": 285877925,
+          "manifest": "ea91789978cc9731.files.jsonl",
+          "manifestSha256": "34aaedac8915712316bb12d8d4e6e345f74bceaf604b7423abf3e50623ac17d3",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Historical static probe deployment. No authoritative source commit recorded; archive HEAD is not its source identity."
+          }
+        },
+        {
+          "original": "output/append-probes-static-v2",
+          "coldRelative": "20261127T185026Z-d34a052-0ec657/output/append-probes-static-v2",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 372,
+          "bytes": 285914347,
+          "manifest": "254d86cfe123b009.files.jsonl",
+          "manifestSha256": "515464e846de3cb5f96e02db4990492af0d3c14b20afe53827314ce683fcb897",
+          "provenance": {
+            "sourceCommit": null,
+            "sourceBranch": null,
+            "basis": "Second historical static probe deployment. No authoritative source commit recorded."
+          }
+        },
+        {
+          "original": "output/character-first-choice-state-prepare",
+          "coldRelative": "20261127T185026Z-d34a052-0ec657/output/character-first-choice-state-prepare",
+          "state": "source-removed-after-verified-snapshot",
+          "files": 367,
+          "bytes": 286197634,
+          "manifest": "f2743ee9c74c26fb.files.jsonl",
+          "manifestSha256": "685a92d142ad67eecfde8351eb5f25a805d7848c34ed5d619da04bfad930e45c",
+          "provenance": {
+            "sourceCommit": "d3b513737b7241f9a715c8949764fcbbdd6349bb",
+            "sourceBranch": null,
+            "basis": "Original prepare-only manifest revision; variants and source hashes preserved."
+          }
+        }
+      ],
+      "deduplicated": [
+        {
+          "original": "ice",
+          "retained": {
+            "location": "hot",
+            "path": "deps/rime-ice"
+          },
+          "files": 98,
+          "bytes": 50398341
+        },
+        {
+          "original": "rime-easy-en",
+          "retained": {
+            "location": "hot",
+            "path": "deps/rime-easy-en"
+          },
+          "files": 9,
+          "bytes": 15409813
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-gitee/snow-pinyin-build.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-build.zip"
+          },
+          "files": 1,
+          "bytes": 33655599
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-github/snow-pinyin-build.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-build.zip"
+          },
+          "files": 1,
+          "bytes": 33655599
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-gitee/snow-pinyin-skins-hamster.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-skins-hamster.zip"
+          },
+          "files": 1,
+          "bytes": 31589447
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-github/snow-pinyin-skins-hamster.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-skins-hamster.zip"
+          },
+          "files": 1,
+          "bytes": 31589447
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/gh-cli-test/snow-pinyin-skins-trime.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-skins-trime.zip"
+          },
+          "files": 1,
+          "bytes": 1133626
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/network-test.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-skins-trime.zip"
+          },
+          "files": 1,
+          "bytes": 1133626
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-gitee/snow-pinyin-skins-trime.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-skins-trime.zip"
+          },
+          "files": 1,
+          "bytes": 1133626
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-github/snow-pinyin-skins-trime.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin-skins-trime.zip"
+          },
+          "files": 1,
+          "bytes": 1133626
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-gitee/snow-pinyin.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin.zip"
+          },
+          "files": 1,
+          "bytes": 33258167
+        },
+        {
+          "original": "output/release-v0.3.14-27019df/verify-github/snow-pinyin.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-v0.3.14-27019df/artifacts/snow-pinyin.zip"
+          },
+          "files": 1,
+          "bytes": 33258167
+        },
+        {
+          "original": "output/release-verify-v0.3.14-62e5375/github-public/snow-pinyin-build.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-verify-v0.3.14-62e5375/gitee-public/snow-pinyin-build.zip"
+          },
+          "files": 1,
+          "bytes": 35659564
+        },
+        {
+          "original": "output/release-verify-v0.3.14-62e5375/github-public/snow-pinyin-skins-hamster.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-verify-v0.3.14-62e5375/gitee-public/snow-pinyin-skins-hamster.zip"
+          },
+          "files": 1,
+          "bytes": 37201369
+        },
+        {
+          "original": "output/release-verify-v0.3.14-62e5375/github-public/snow-pinyin-skins-trime.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-verify-v0.3.14-62e5375/gitee-public/snow-pinyin-skins-trime.zip"
+          },
+          "files": 1,
+          "bytes": 1330658
+        },
+        {
+          "original": "output/release-verify-v0.3.14-62e5375/github/snow-pinyin-skins-trime.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-verify-v0.3.14-62e5375/gitee-public/snow-pinyin-skins-trime.zip"
+          },
+          "files": 1,
+          "bytes": 1330658
+        },
+        {
+          "original": "output/release-verify-v0.3.14-62e5375/github-public/snow-pinyin.zip",
+          "retained": {
+            "location": "cold",
+            "path": "20261127T185026Z-d34a052-0ec657/output/release-verify-v0.3.14-62e5375/gitee-public/snow-pinyin.zip"
+          },
+          "files": 1,
+          "bytes": 32132428
+        }
+      ]
     }
   ]
 }
