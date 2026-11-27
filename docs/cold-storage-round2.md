@@ -1,5 +1,7 @@
 # 第二批历史资料冷存与工作树整理
 
+当前统一使用地址映射，迁移创建的目录与文件别名已移除。后续规范见 [周期冷存规范](cold-storage-policy.md)，逐项地址见 [Git 总索引](cold-storage/catalog.json)。
+
 批次为 `2026-11-28-main-e3fde76`，操作开始于 `main` 的 `e3fde765afd497b7bf59adcb2aa92df381240bf4`。冷盘根目录为 `N:\snow_pinyin\rime-snow-pinyin\2026-11-28-main-e3fde76`，本地清单目录为 `output/cold-storage/2026-11-28-main-e3fde76/`。第一批路径与恢复说明见 [本机冷存清单](cold-storage.md)。
 
 本轮已完成 66 项、23,088 个文件的迁移和核验，共 9,434,194,261 字节（约 8.79 GiB）：历史资料约 7.63 GiB，三个工作树及专属管理数据快照约 1.16 GiB。D 盘仓库本地占用由约 19 GiB 降至约 10 GiB（`dust` 不跟随联接）。原有缓存全部保留在对应冷存目录或工作树快照内。
@@ -8,7 +10,7 @@
 
 ## 冷存范围
 
-以下源路径均相对于主仓库，历史产物在冷盘保持同样的相对目录结构。历史产物迁移后原路径建立目录联接；唯一保留的 payload 文件使用符号链接。原路径与冷盘是同一份数据的两个入口，不是两份备份。缓存、编译产物、隐藏文件和原有符号链接均保存，复制后逐文件核对源与目标 SHA-256，成功后才移除源副本。
+以下源路径相对于主仓库，冷盘历史产物保持相同的相对结构。旧路径仅作历史来源记录，不保留目录或文件链接。缓存、编译产物、隐藏文件及历史原有依赖链接完整保存；复制并核对源与目标 SHA-256 后才移除源副本。
 
 | 原路径范围 | 用途与历史依据 |
 | --- | --- |
@@ -17,16 +19,16 @@
 | `output/production-fork-prepare/` | 历史 fork 部署副本，来源以目录内 `manifest.json` 和清单提取的原有元数据为准。 |
 | `output/character-first-choice-upstream-prepare/` | 历史上游首选验证部署副本，保留原 manifest；上游提交不能误认为 fork 提交。 |
 | `output/keymap-bitblt-probe/` | 桌面键位图实验及 Rust 编译缓存；保留完整目录，不删除缓存。 |
-| `output/readme-benchmark-payload.json` | 第一批去重后保留的唯一 payload，移到冷盘并保留原文件入口。 |
+| `output/readme-benchmark-payload.json` | 第一批去重后保留的唯一 payload，移到冷盘，仅通过清单记录旧地址。 |
 | `.worktrees/word-length-selection/.superpowers/sdd/2026-11-22-word-length-selection/latency*` | `feat/word-length-selection` 的 `4ddd60336b32d573fdf2079e65b5df7e4d82ad53` 工作树中的五组性能记录；具体 CI 提交以各报告元数据为准。 |
 
-原文件没有记录的创建分支、提交明确视为未知；工作树 HEAD、报告所测提交、归档时主仓库 HEAD 分开记录，不能相互代替。实验文件也可能包含未提交的隔离变体，不承诺是某个提交的纯净检出。冷存文件内保存的绝对路径不批量改写，以免破坏历史证据；旧路径通过联接继续访问。
+原文件未记录的创建分支、提交明确视为未知；工作树 HEAD、报告所测提交、归档时 HEAD 分开记录，不能互代。实验可能含隔离修改，不能声称是某提交的纯净检出。归档文件内绝对路径不批量改写，通过清单查找其冷盘映射。
 
 ## 工作树处理
 
 先确认 `git status --porcelain --ignore-submodules=all`、提交是否在 `main` 历史中，再保存完整文件快照（含忽略文件和依赖）及对应 `.git/worktrees/<名称>/` 管理数据快照。对确认可移除的检出，完成文件校验后通过 `git worktree remove` 移除；分支、主仓库对象库和已合入的提交均保留。快照中的 `.git` 指针属于历史记录，冷盘快照不登记为活动工作树，不直接作为 Git 工作目录使用。
 
-词长选择工作树的整体快照单独位于冷盘 `worktree-snapshots/word-length-selection/`，其中性能目录以链接指向冷盘 `.worktrees/word-length-selection/.superpowers/sdd/2026-11-22-word-length-selection/latency*`。这样源码快照与已独立归档的性能数据各有明确入口，具体映射以 `index.json` 的 `coldPath` 为准。移除工作树后，它在 D 盘的性能入口也随检出移除，保留入口位于冷盘工作树快照中；清单的 `originalPath` 表示迁移前路径，`retainedEntryPath` 表示最终可用入口。原路径下的五组目录及一份同前缀日志均已冷存。
+词长选择整体快照位于冷盘 `worktree-snapshots/word-length-selection/`；五组性能目录及一份日志单独位于冷盘 `.worktrees/word-length-selection/.superpowers/sdd/2026-11-22-word-length-selection/latency*`。两者仅通过清单关联，不保留互指链接。`originalPath` 表示迁移前路径，`coldPath` 表示保存位置；原文件哈希清单不包含这些链接，历史链接记录保存在原始回执中。
 
 | 工作树 | HEAD 与分支 | 处理依据 |
 | --- | --- | --- |
@@ -41,10 +43,10 @@
 
 ## 使用与恢复
 
-N 盘在线时原实验路径继续有效；通过旧路径写入也会修改冷盘资料。文件清单表示迁移时的状态，后续重新实验应使用新批次，避免覆盖历史证据。N 盘离线时不要在断开的路径上重新创建实验目录。
+N 盘在线时按 `coldPath` 显式读取。要重新实验，复制到独立工作目录并核验后运行；旧脚本绝对路径在恢复副本或运行配置中调整。以后产物使用新批次，避免覆盖历史证据。
 
-移回历史产物时，先停止相关程序，核对入口的链接类型和目标，只移除链接本身，再复制冷盘目录回原路径并按文件清单核验；在确认成功前保留冷盘副本。子目录可能含外部依赖链接，其目标记录在 `index.json`，不能把链接目标当作可删内容。
+移回历史产物时选择不存在的独立目录，复制并按文件清单核验；保留冷盘原件。历史原有外部依赖链接的目标单独记录，恢复时显式安装或初始化依赖，不自动跟随链接迁移外部内容。
 
-恢复已移除工作树时，在主仓库执行 `git worktree add --detach <新路径> <清单中的完整HEAD>`，或指定保留的分支。初始化需要的子模块，再从冷盘快照复制所需源码和本地资料；不要覆盖新工作树或子模块的 `.git` 指针。管理数据快照用于历史查证和必要时找回私有子模块对象，不直接覆盖当前 `.git/worktrees/`。快照内原性能目录的链接继续指向本批次冷盘位置。
+恢复工作树时在主仓库使用 `git worktree add --detach <新路径> <完整HEAD>` 或保留分支，初始化子模块后从快照复制所需文件，不覆盖新 `.git` 指针。Git 管理快照用于查证和必要时恢复私有子模块对象，不直接覆盖当前 `.git/worktrees`。需要性能资料时按映射单独恢复。当前 `verified-and-mapped` 表示仅保留映射；访问变更及原回执分别保存为 `address-mapping-receipt.json`、`index.before-address-mapping.json`。
 
 本轮保留当前长语料目录、用户词典备份、`output/connection-study/`、本机 `build/`、主 helper 的 `target/`，以及三处上述仍需保留的工作树。全部逐项状态和最终统计见两边相同的 `index.json`。

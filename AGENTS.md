@@ -51,6 +51,10 @@
 
 始终用中文回复。
 
+## 周期冷存
+
+- 遵循 [docs/cold-storage-policy.md](docs/cold-storage-policy.md)，使用 Git 地址映射总索引关联冷盘批次；不创建指向冷盘的目录联接或符号链接，归档原件不直接运行或覆盖。
+
 ## 方案名称
 
 | 全称 | 简称 | schema_id |
