@@ -84,4 +84,19 @@ assert(result[1].text == "方案选单",
 assert(result[2].text == "前缀" and result[3].text == "普通",
   "partial candidates must retain ordinary relative order")
 
+-- Native Translation:iter returns an iterator that requires its Translation state.
+-- A zero-argument Lua closure would hide a missing C++ userdata argument.
+local translation, source_index, emitted = {}, 0, {}
+translation.iter = function()
+  return function(state)
+    assert(state == translation, "native translation iterators require the Translation argument")
+    source_index = source_index + 1
+    return source[source_index]
+  end
+end
+yield = function(value) emitted[#emitted + 1] = value end
+learned_priority.func(translation, {
+  engine = { context = {} }, memory = memory, cache = {}, maximum_candidates = 120,
+})
+assert(#emitted == 3 and emitted[1].text == "方案选单")
 print("learned_priority.test.lua: ok")

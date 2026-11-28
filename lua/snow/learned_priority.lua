@@ -129,12 +129,12 @@ function filter.func(translation, env)
   local profiling = (env.profile_remaining or 0) > 0
   if profiling then env.profile_remaining = env.profile_remaining - 1 end
   local input = snow.current(env.engine.context) or ""
-  local iterator = translation:iter()
+  local iterator = translation:iter() --[[@as fun(translation: Translation): Candidate?]]
   while true do
     local profile_start = profiling and os.clock() or 0
     local buffered = {}
     while #buffered < env.maximum_candidates do
-      local candidate = iterator()
+      local candidate = iterator(translation)
       if not candidate then break end
       table.insert(buffered, candidate)
     end

@@ -44,6 +44,8 @@ script: |
 deploy:
   sbs:
     tests:
+      - send: rug
+        assert: has("如果") and commit == nil
       - send: vuf
         assert: has("输入法") and commit == nil
       - send: vufeoa
