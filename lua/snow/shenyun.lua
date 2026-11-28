@@ -16,6 +16,7 @@ local auxiliary_hint = require "snow.auxiliary_hint"
 local candidate_priority = require "snow.candidate_priority"
 local initial_pair_aux = require "snow.initial_pair_aux"
 local sbs = require "snow.sbs"
+local sbs_query = require "snow.sbs_query"
 
 local jiandao_semantics = auxiliary_semantics["21x21"]
 local shenyun_semantics = auxiliary_semantics["21x26"]
@@ -44,6 +45,9 @@ local translator = {}
 ---@field three_word_order string?
 ---@field four_word_order string?
 ---@field shape_cache table<string, string>?
+---@field sbs_cache SbsQueryCache|nil
+---@field sbs_commit_connection Connection|nil
+---@field sbs_delete_connection Connection|nil
 
 local function contains(keys, character)
   return keys:find(character, 1, true) ~= nil
@@ -332,6 +336,15 @@ local function auxiliary_match(candidate, suffix, env, initial_pair, sbs_length)
   if (suffix ~= "" or radical_input ~= "") and text:match("^[A-Za-z0-9]+$") then
     return false, ""
   end
+  if sbs_length and env.auxiliary_mode == "shape" then
+    -- 第二字首辅不匹配时立即跳过，无需展开其余字位的全部辅码。
+    local second = utf8.offset(text, 2)
+    local third = utf8.offset(text, 3)
+    if not second or not third
+        or encode_radical(text:sub(second, third - 1), env):sub(1, 1) ~= suffix:sub(1, 1) then
+      return false, ""
+    end
+  end
   if radical_input ~= "" then
     if env.auxiliary_mode ~= "tone" or utf8.len(text) ~= 1
         or radical_input:sub(1, 1) ~= "1" then
@@ -520,6 +533,12 @@ function translator.init(env)
   local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
   env.sbs_translator = Component.Translator(env.engine, "shenyun_sbs", "script_translator")
+  env.sbs_cache = sbs_query.new()
+  local function clear_sbs_cache()
+    if env.sbs_cache then sbs_query.clear(env.sbs_cache) end
+  end
+  env.sbs_commit_connection = env.engine.context.commit_notifier:connect(clear_sbs_cache)
+  env.sbs_delete_connection = env.engine.context.delete_notifier:connect(clear_sbs_cache)
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
   env.vacancy_projection = Projection(config:get_list("vacancy/canonical_format") or {})
@@ -557,12 +576,20 @@ function translator.func(input, segment, env)
   for _, route in ipairs(routes_for(input, segment, env)) do
     local profile_start = profiling and os.clock() or 0
     local native = route.family == "SBS" and env.sbs_translator or env.translator
-    local translation = native:query(route.proxy, segment)
+    ---@type Translation|nil
+    local translation
+    ---@type (fun(translation: Translation): Candidate?)|nil
+    local iterator
+    if route.family == "SBS" and env.sbs_cache then
+      translation, iterator = sbs_query.open(env.sbs_cache, native, route.proxy, segment)
+    else
+      translation = native:query(route.proxy, segment)
+    end
     if translation then
       local stream = {
         route = route,
         translation = translation,
-        iterator = translation:iter(),
+        iterator = iterator or translation:iter(),
         candidate = nil,
         auxiliary = "",
       }
@@ -640,6 +667,9 @@ end
 
 ---@param env ShenyunEnv
 function translator.fini(env)
+  if env.sbs_commit_connection then env.sbs_commit_connection:disconnect() end
+  if env.sbs_delete_connection then env.sbs_delete_connection:disconnect() end
+  env.sbs_cache = nil
   env.translator = nil
   env.sbs_translator = nil
   env.vacancy_translator = nil
