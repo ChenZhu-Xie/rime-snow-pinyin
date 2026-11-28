@@ -25,6 +25,7 @@ local translator = {}
 ---@class ShenyunEnv: BihuaEnv
 ---@field profile_remaining integer|nil
 ---@field translator Translator
+---@field sbs_translator Translator|nil
 ---@field vacancy_translator Translator
 ---@field vacancy_memory Memory
 ---@field vacancy_projection Projection
@@ -518,6 +519,7 @@ function translator.init(env)
   env.profile_remaining = os.getenv("SNOW_APPEND_PROFILE") == "1" and 12 or 0
   local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "shenyun", "script_translator")
+  env.sbs_translator = Component.Translator(env.engine, "shenyun_sbs", "script_translator")
   env.vacancy_translator = Component.Translator(env.engine, "vacancy", "script_translator")
   env.vacancy_memory = Memory(env.engine, env.engine.schema, "vacancy")
   env.vacancy_projection = Projection(config:get_list("vacancy/canonical_format") or {})
@@ -554,7 +556,8 @@ function translator.func(input, segment, env)
   local learned_cache = {}
   for _, route in ipairs(routes_for(input, segment, env)) do
     local profile_start = profiling and os.clock() or 0
-    local translation = env.translator:query(route.proxy, segment)
+    local native = route.family == "SBS" and env.sbs_translator or env.translator
+    local translation = native:query(route.proxy, segment)
     if translation then
       local stream = {
         route = route,
@@ -638,6 +641,7 @@ end
 ---@param env ShenyunEnv
 function translator.fini(env)
   env.translator = nil
+  env.sbs_translator = nil
   env.vacancy_translator = nil
   env.vacancy_memory = nil
   env.vacancy_projection = nil

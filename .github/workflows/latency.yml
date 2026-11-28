@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       schema:
-        description: 单独复测的 schema_id（留空执行完整门禁）
+        description: 单独复测的 schema_id；sbs 串行测三套 21×26（留空执行完整门禁）
         type: string
         default: ""
       case:
@@ -69,7 +69,10 @@ jobs:
           SNOW_APPEND_PROFILE: ${{ inputs.profile_append && '1' || '' }}
         run: |
           args=(--ci)
-          if [ -n "$TARGET_SCHEMA" ]; then
+          if [ "$TARGET_SCHEMA" = sbs ]; then
+            args=(snow_hedao snow_hepin snow_huandao --case "$TARGET_CASE" --rounds 200 --max-p99-ms 50)
+            printf '本次串行复测三套 21×26 的指定场景，不代替完整性能门禁。\n' >> "$GITHUB_STEP_SUMMARY"
+          elif [ -n "$TARGET_SCHEMA" ]; then
             args=("$TARGET_SCHEMA" --case "$TARGET_CASE" --rounds 200 --max-p99-ms 50)
             printf '本次为指定场景复测，不代替完整性能门禁。\n' >> "$GITHUB_STEP_SUMMARY"
           fi

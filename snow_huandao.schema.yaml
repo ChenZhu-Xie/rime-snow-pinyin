@@ -284,6 +284,9 @@ speller:
 shenyun:
   prism: snow_huandao
 
+shenyun_sbs:
+  prism: snow_huandao
+
 vacancy:
   prism: snow_huandao
   canonical_format:

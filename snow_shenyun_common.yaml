@@ -156,6 +156,11 @@ learned_priority:
   short_input_pattern: "^[bpmfdtnlgkhjqwvxrzcsy][aeuio][bpmfdtnlgkhjqwvxrzcsy]$"
   maximum_candidates: 120
 
+# 声辅声只接受明确的三／四字词；不能先展开所有长补全再交给 Lua 丢弃。
+shenyun_sbs:
+  __include: /shenyun
+  enable_word_completion: false
+
 # 空桶只看系统词典，不受个人调频影响；词频 0/1 的大字集兜底读音由 Lua 忽略。
 vacancy:
   dictionary: snow_pinyin

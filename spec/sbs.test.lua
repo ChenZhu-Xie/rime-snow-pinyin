@@ -95,4 +95,18 @@ assert(#emitted == 1, "the other permitted first stroke must also be available")
 env.auxiliary_cache = {}
 query("bifoui", { ["B?F"] = { { "甲乙丙" } } })
 assert(#emitted == 0, "a different tone must not match the same polyphonic text through a different reading")
+
+-- The exact-length SBS route must use its own native translator; ordinary and long-word
+-- routes keep their original translator and completion settings.
+local exact_queries, ordinary_queries = 0, 0
+env.sbs_translator = { query = function(_, proxy)
+  exact_queries = exact_queries + 1
+  assert(proxy == "B?F")
+  return nil
+end }
+query("bef", {})
+assert(exact_queries == 1 and #queries == 1 and queries[1] == "be f")
+env.translator = { query = function() ordinary_queries = ordinary_queries + 1 end }
+translator.func("bn", { start = 0, _end = 2 }, env)
+assert(exact_queries == 1 and ordinary_queries == 1)
 print("SBS: 2123/214, partial pairs, merged native candidates, full consumption, tone/stroke variants and vacancy independence passed")
