@@ -39,7 +39,8 @@ deploy:
       - send: vufeoa
         assert: cand[1].text == "输入法" and commit == nil
       - send: rexn
-        assert: cand[1].text == "人工智能" and commit == nil
+        # 与二字词混排；四字词类内首选由下方 < 上屏断言验证。
+        assert: page("人工智能") and commit == nil
       # 四码已是首选，继续补辅沿用首选后置；仍须保留符合辅码的目标。
       - send: rexnia
         assert: has("人工智能") and commit == nil
