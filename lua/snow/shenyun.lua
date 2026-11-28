@@ -344,6 +344,10 @@ local function auxiliary_match(candidate, suffix, env, initial_pair, sbs_length)
         or encode_radical(text:sub(second, third - 1), env):sub(1, 1) ~= suffix:sub(1, 1) then
       return false, ""
     end
+  elseif sbs_length then
+    local spellings = actual_spellings(candidate, env)
+    local tone = spellings and spellings[2] and spellings[2]:match("([1-5])$")
+    if tone and tone_keys[tone] ~= suffix:sub(1, 1) then return false, "" end
   end
   if radical_input ~= "" then
     if env.auxiliary_mode ~= "tone" or utf8.len(text) ~= 1
@@ -395,6 +399,7 @@ end
 ---@field iterator fun(translation: Translation): Candidate?
 ---@field candidate Candidate?
 ---@field auxiliary string
+---@field copy_candidate? fun(candidate: Candidate): Candidate
 
 ---@param stream ShenyunStream
 ---@param env ShenyunEnv
@@ -435,6 +440,7 @@ local function advance(stream, env)
       local matches, auxiliary = auxiliary_match(candidate, stream.route.suffix, env, stream.route.family == "AA",
         stream.route.family == "SBS" and stream.route.length or nil)
       if matches then
+        if stream.copy_candidate then candidate = stream.copy_candidate(candidate) end
         stream.candidate = snow.prepare(candidate, stream.route.proxy)
         stream.auxiliary = auxiliary
         return true
@@ -580,8 +586,10 @@ function translator.func(input, segment, env)
     local translation
     ---@type (fun(translation: Translation): Candidate?)|nil
     local iterator
+    ---@type (fun(candidate: Candidate): Candidate)|nil
+    local copy_candidate
     if route.family == "SBS" and env.sbs_cache then
-      translation, iterator = sbs_query.open(env.sbs_cache, native, route.proxy, segment)
+      translation, iterator, copy_candidate = sbs_query.open(env.sbs_cache, native, route.proxy, segment)
     else
       translation = native:query(route.proxy, segment)
     end
@@ -592,6 +600,7 @@ function translator.func(input, segment, env)
         iterator = iterator or translation:iter(),
         candidate = nil,
         auxiliary = "",
+        copy_candidate = copy_candidate,
       }
       if advance(stream, env) then
         table.insert(streams, stream)

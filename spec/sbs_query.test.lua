@@ -29,14 +29,14 @@ local native = { query = function(_, proxy, segment)
   return state
 end }
 local segment = { start = 2 }
-local state, iterator = cache_query.open(cache, native, "B?F", segment)
-local first = iterator(state)
+local state, iterator, copy = cache_query.open(cache, native, "B?F", segment)
+local first = copy(iterator(state))
 assert(queries == 1 and generated == 1 and first.text == "B?F1")
 first._end, first.quality = 99, -1
 first:get_genuine().comment = "changed"
 first:get_genuine().preedit = "changed"
-local state2, iterator2 = cache_query.open(cache, native, "B?F", segment)
-local again = iterator2(state2)
+local state2, iterator2, copy2 = cache_query.open(cache, native, "B?F", segment)
+local again = copy2(iterator2(state2))
 assert(queries == 1 and generated == 1, "extension/backspace must reuse the same lazy native query")
 assert(again._end == 5 and again.quality == 11, "prepare must never corrupt cached raw length or quality")
 assert(again:get_genuine().comment == "native" and again:get_genuine().preedit == "B?F")

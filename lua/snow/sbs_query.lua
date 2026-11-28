@@ -29,7 +29,7 @@ end
 ---@param native Translator
 ---@param proxy string
 ---@param segment Segment
----@return Translation?, (fun(translation: Translation): Candidate?)?
+---@return Translation?, (fun(translation: Translation): Candidate?)?, (fun(candidate: Candidate): Candidate)?
 function query.open(cache, native, proxy, segment)
   local key = tostring(segment.start) .. "\t" .. proxy
   local entry = cache.entries[key]
@@ -48,6 +48,8 @@ function query.open(cache, native, proxy, segment)
   while #cache.keys > 2 do cache.entries[table.remove(cache.keys, 1)] = nil end
   local current = entry
   local index = 0
+  ---@type { candidate: Candidate, comment: string, preedit: string }|nil
+  local pending
   local function next_candidate()
     index = index + 1
     local row = current.rows[index]
@@ -62,13 +64,19 @@ function query.open(cache, native, proxy, segment)
       -- 极大词桶继续完整迭代，只停止留存；下一次查询重新打开，不能截断候选。
       if index <= 8192 then current.rows[index] = row else current.reusable = false end
     end
-    -- Shadow 保留原生 Phrase 与读音供学习；消耗长度和 quality 每次独立修正。
-    -- comment/preedit 的 Lua setter 会落到 genuine，复用前恢复原生展示字段。
-    row.candidate.comment = row.comment
-    row.candidate.preedit = row.preedit
-    return ShadowCandidate(row.candidate, row.candidate.type)
+    pending = row
+    return row.candidate
   end
-  return current.translation, next_candidate
+  local function copy_candidate(candidate)
+    -- 只给真正通过辅码筛选的候选创建 Shadow，拒绝项直接跳过。
+    -- comment/preedit 的 Lua setter 会落到 genuine，复用前恢复原生展示字段。
+    if pending and pending.candidate == candidate then
+      candidate.comment = pending.comment
+      candidate.preedit = pending.preedit
+    end
+    return ShadowCandidate(candidate, candidate.type)
+  end
+  return current.translation, next_candidate, copy_candidate
 end
 
 return query
