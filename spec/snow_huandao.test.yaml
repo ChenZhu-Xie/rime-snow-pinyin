@@ -30,6 +30,24 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  sbs:
+    tests:
+      - send: vuf
+        assert: has("输入法") and commit == nil
+      - send: vufeoa
+        assert: cand[1].text == "输入法" and commit == nil
+      - send: rexnia
+        assert: cand[1].text == "人工智能" and commit == nil
+      - send: "vufeoa{BackSpace}a"
+        assert: has("输入法") and commit == nil
+      - send: "rexnia{less}"
+        assert: commit == "人工智能"
+  sbs_learning:
+    tests:
+      - send: "vufeoa "
+        assert: commit == "输入法"
+      - send: vuf
+        assert: cand[1].text == "输入法" and commit == nil
   adaptive_append_selected_word:
     tests:
       - send: "dj"

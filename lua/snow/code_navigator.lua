@@ -34,6 +34,20 @@ function navigator.logical_positions(input, word_length, schema_id)
     return { input_length }
   end
 
+  if (schema_id == "snow_hedao" or schema_id == "snow_hepin" or schema_id == "snow_huandao")
+      and input_length >= 3 and ("aeuio"):find(input:sub(2, 2), 1, true)
+      and ("bpmfdtnlgkhjqwvxrzcsy"):find(input:sub(3, 3), 1, true) then
+    if word_length == 2 and input_length == 3 then return { 2, 3 } end
+    if word_length == 3 then
+      -- S1 B2 S3 B1 B2 B3；返回该字最后一个已输入码位。
+      return { input_length >= 4 and 4 or 1, input_length >= 5 and 5 or 2,
+        input_length >= 6 and 6 or 3 }
+    elseif word_length == 4 then
+      -- S1 B2 S3 S4 B1 B4。
+      return { input_length >= 5 and 5 or 1, 2, 3, input_length >= 6 and 6 or 4 }
+    end
+  end
+
   if word_length == 2 then
     if schema_id == "snow_liandao" and input_length >= 3
         and ("aviuo"):find(input:sub(3, 3), 1, true) then

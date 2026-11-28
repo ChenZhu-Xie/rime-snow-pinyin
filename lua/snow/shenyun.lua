@@ -1,6 +1,6 @@
 -- 冰雪鹤道 / 冰雪鹤拼的飞码式翻译器
 --
--- 主码族：一简 A、单字 AU / AUBBBB、空桶二字 AA、二字 AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA、显式长词 AAAA+A…。
+-- 主码族：一简 A、单字 AU / AUBBBB、空桶二字 AA、二字 AUA/AUAU、三字 AAA / AAAU / 空桶 AAA+B、四字 AAAA、声辅声 SBS、显式长词 AAAA+A…。
 -- 两个活动方案共用 RC26-39a5bfdc045342cd 声韵映射，只在 B 辅码语义上不同：
 --   shape: 键道式部首形辅，物理键 avuio -> aeuio；
 --   tone:  第一个 B 为声调 12345 -> ieuao，后续 B 为五笔画；数字 1 独立进入部首码。
@@ -15,6 +15,7 @@ local auxiliary_semantics = require "snow.auxiliary_semantics"
 local auxiliary_hint = require "snow.auxiliary_hint"
 local candidate_priority = require "snow.candidate_priority"
 local initial_pair_aux = require "snow.initial_pair_aux"
+local sbs = require "snow.sbs"
 
 local jiandao_semantics = auxiliary_semantics["21x21"]
 local shenyun_semantics = auxiliary_semantics["21x26"]
@@ -41,6 +42,7 @@ local translator = {}
 ---@field pair_standard_order string
 ---@field three_word_order string?
 ---@field four_word_order string?
+---@field shape_cache table<string, string>?
 
 local function contains(keys, character)
   return keys:find(character, 1, true) ~= nil
@@ -83,13 +85,17 @@ end
 ---@param env ShenyunEnv
 ---@return string
 local function encode_radical(character, env)
+  local cached = env.shape_cache and env.shape_cache[character]
+  if cached then return cached end
   -- radical_jiandao.txt 使用 21×21 形义键；逐义迁移到 21×26，不能把调序当成形序。
   local source = jiandao_semantics.shape_keys_by_meaning
   local target = shenyun_semantics.shape_keys_by_meaning
-  return (encode_elements(character, env):gsub(".", function(key)
+  local result = (encode_elements(character, env):gsub(".", function(key)
     local index = source:find(key, 1, true)
     return index and target:sub(index, index) or ""
   end))
+  if env.shape_cache then env.shape_cache[character] = result end
+  return result
 end
 
 ---@param value string
@@ -244,17 +250,19 @@ end
 ---@param candidate Candidate
 ---@param env ShenyunEnv
 ---@param initial_pair? boolean
+---@param sbs_length? integer
 ---@return string[]
-local function auxiliary_codes(candidate, env, initial_pair)
+local function auxiliary_codes(candidate, env, initial_pair, sbs_length)
   local text = candidate.text
   local spellings = env.auxiliary_mode == "tone" and actual_spellings(candidate, env) or nil
   local cache_key = text .. "\t" .. (initial_pair and "AA\t" or "")
+      .. (sbs_length and "SBS\t" or "")
       .. (spellings and table.concat(spellings, " ") or "")
   local cached = env.auxiliary_cache[cache_key]
   if cached then return cached end
   ---@type string[]
   local codes
-  if initial_pair then
+  if initial_pair or sbs_length then
     ---@type string[][]
     local options = {}
     for index, character in ipairs(characters(text)) do
@@ -272,7 +280,8 @@ local function auxiliary_codes(candidate, env, initial_pair)
         options[index] = { encode_radical(character, env) }
       end
     end
-    codes = initial_pair_aux.codes(options, env.pair_standard_order)
+    codes = sbs_length and sbs.codes(options, sbs_length)
+        or initial_pair_aux.codes(options, env.pair_standard_order)
   elseif env.auxiliary_mode == "tone" then
     codes = tone_codes(text, env, spellings)
   else
@@ -286,6 +295,10 @@ end
 ---@param mode string
 ---@return string
 local function format_preedit(route, mode, first_generation, pair_standard_order, three_word_order, four_word_order)
+  if route.family == "SBS" then
+    local sounds = route.proxy:lower():gsub(".", "%0 "):sub(1, -2):gsub("%?", "·")
+    return sounds .. (mode == "tone" and " 调笔[" or " 形[") .. route.suffix .. "]"
+  end
   if route.family == "AA" then
     return route.proxy .. (route.suffix ~= "" and
       (mode == "tone" and " 调笔[" or " 形[") .. route.suffix .. "]" or "")
@@ -304,8 +317,9 @@ end
 ---@param suffix string
 ---@param env ShenyunEnv
 ---@param initial_pair boolean
+---@param sbs_length? integer
 ---@return boolean, string
-local function auxiliary_match(candidate, suffix, env, initial_pair)
+local function auxiliary_match(candidate, suffix, env, initial_pair, sbs_length)
   local text = candidate.text
   local radical_input = env.engine.context:get_property("shape_input") or ""
   -- 自适应上屏的菜单只用于选词，不展示形辅提示。无辅码约束时无需
@@ -328,7 +342,7 @@ local function auxiliary_match(candidate, suffix, env, initial_pair)
       return false, radical_code
     end
   end
-  local codes = auxiliary_codes(candidate, env, initial_pair)
+  local codes = auxiliary_codes(candidate, env, initial_pair, sbs_length)
   if suffix == "" then return true, auxiliary_hint.next_codes(codes, suffix) end
   for _, code in ipairs(codes) do
     if code:sub(1, suffix:len()) == suffix then
@@ -404,7 +418,8 @@ local function advance(stream, env)
         stream.auxiliary = ""
         return true
       end
-      local matches, auxiliary = auxiliary_match(candidate, stream.route.suffix, env, stream.route.family == "AA")
+      local matches, auxiliary = auxiliary_match(candidate, stream.route.suffix, env, stream.route.family == "AA",
+        stream.route.family == "SBS" and stream.route.length or nil)
       if matches then
         stream.candidate = snow.prepare(candidate, stream.route.proxy)
         stream.auxiliary = auxiliary
@@ -452,6 +467,14 @@ local function routes_for(input, segment, env)
 
   if n == 1 and contains(A, input) then
     add_route(routes, "A", input, "", 1)
+  end
+  if n == 3 and contains(A, input:sub(1, 1)) and contains(B, input:sub(2, 2))
+      and contains(A, input:sub(3, 3)) then
+    add_route(routes, "AUA", input:sub(1, 2) .. " " .. input:sub(3), "", 2)
+  end
+  local sbs_length, sbs_proxy, sbs_suffix = sbs.route(input, A, B)
+  if sbs_length and sbs_proxy and sbs_suffix then
+    add_route(routes, "SBS", sbs_proxy, sbs_suffix, sbs_length)
   end
   if n >= 2 and contains(A, input:sub(1, 1)) and contains(U, input:sub(2, 2))
       and not first_vacant and all_in(input, 3, B) then
@@ -513,6 +536,7 @@ function translator.init(env)
   env.four_word_order = config:get_string("translator/four_word_auxiliary_order")
   env.first_generation = env.engine.schema.schema_id:match("_first$") ~= nil
   env.auxiliary_cache = {}
+  env.shape_cache = {}
   env.vacancy_cache = {}
   if env.auxiliary_mode == "tone" then bihua.load_strokes(env) end
 end
@@ -579,11 +603,13 @@ function translator.func(input, segment, env)
         local length = utf8.len(candidate.text)
         local order = ""
         if length and length >= 2 then
-          local positions = auxiliary_positions(length, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
-          local raw_order = ("%d%d"):format(positions[1], positions[2])
+          local positions = stream.route.family == "SBS" and sbs.positions(length)
+              or auxiliary_positions(length, env.auxiliary_mode, env.first_generation, env.pair_standard_order, env.three_word_order, env.four_word_order)
+          local raw_order = table.concat(positions)
           order = raw_order:gsub("1", "₁"):gsub("2", "₂"):gsub("3", "₃"):gsub("4", "₄")
         end
-        local label = (env.auxiliary_mode == "tone" and "调" or "形") .. order
+        local label = (env.auxiliary_mode == "tone" and
+          (stream.route.family == "SBS" and "调笔" or "调") or "形") .. order
         if stream.route.family == "AA" then
           candidate.type = "initial_pair"
           local codes = auxiliary_codes(candidate, env, true)

@@ -14,6 +14,7 @@ schema:
     冰雪鹤道使用形辅：RC26-39a5bfdc045342cd 为 M=40、D=3、V=1、无音节重码、无 630
     共用 RC26-39a5bfdc045342cd 声韵布局，B 使用键道式形辅，物理键由 avuio 映射到 aeuio
     单字 AU 后最多追加四个形辅；二／三／四字词形辅字位顺序：12/12/24
+    声辅声分支共用三字词 2123、四字词 214；重复字位继续取下一形辅
   dependencies:
     - snow_pinyin
     - radical_pinyin

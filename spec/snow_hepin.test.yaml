@@ -55,6 +55,24 @@ script: |
     return table.concat(parts, " | ")
   end
 deploy:
+  sbs:
+    tests:
+      - send: vaf
+        assert: has("输入法") and commit == nil
+      - send: vafiuu
+        assert: cand[1].text == "输入法" and commit == nil
+      - send: risnee
+        assert: cand[1].text == "人工智能" and commit == nil
+      - send: "vafiuu{BackSpace}u"
+        assert: has("输入法") and commit == nil
+      - send: "risnee{less}"
+        assert: commit == "人工智能"
+  sbs_learning:
+    tests:
+      - send: "vafiuu "
+        assert: commit == "输入法"
+      - send: vaf
+        assert: cand[1].text == "输入法" and commit == nil
   adaptive_append_shi:
     tests:
       - send: "b]"

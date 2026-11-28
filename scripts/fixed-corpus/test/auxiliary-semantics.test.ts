@@ -253,7 +253,7 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		"tian1",
 		"di2",
 		"ren3",
-	]);
+	]).filter(({ code }) => !"aeuio".includes(code[1]));
 	assert.deepEqual(
 		d3Three
 			.filter(({ auxiliaryLength }) => auxiliaryLength === 0)
@@ -273,7 +273,7 @@ test("benchmark schemes use the current main-code contracts and auxiliary orders
 		"di2",
 		"ren3",
 		"he2",
-	]);
+	]).filter(({ code }) => !"aeuio".includes(code[1]));
 	assert.equal(d3Four.at(-1)?.code.slice(-2), "iu");
 
 	const jiandaoSingle = pronunciationCodes("oc21-shape", "时", ["shi2"]);

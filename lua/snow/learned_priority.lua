@@ -24,6 +24,7 @@ end
 ---@field connection Connection
 ---@field maximum_candidates integer
 ---@field minimum_input_length integer
+---@field short_input_pattern string|nil
 
 ---@param candidates Candidate[]
 ---@param memory Memory
@@ -33,6 +34,7 @@ end
 function filter.prioritize(candidates, memory, cache, expected_length)
   ---@type { candidate: Candidate, weight: number|nil }[]
   local learned = {}
+  ---@type Candidate[]
   local ordinary = {}
   for _, candidate in ipairs(candidates) do
     if not is_fixed(candidate) then
@@ -86,12 +88,14 @@ function filter.init(env)
   env.cache = {}
   env.maximum_candidates = config:get_int("learned_priority/maximum_candidates") or 120
   env.minimum_input_length = config:get_int("learned_priority/minimum_input_length") or 4
+  env.short_input_pattern = config:get_string("learned_priority/short_input_pattern")
   env.connection = env.engine.context.commit_notifier:connect(function(ctx)
     local input = snow.current(ctx)
     local segment = ctx.composition:toSegmentation():back()
     local candidate = ctx:get_selected_candidate()
     if env.memory.user_dict and not ctx:get_option("buffered")
         and input and (input:len() >= env.minimum_input_length
+          or env.short_input_pattern and rime_api.regex_match(input, env.short_input_pattern)
           or candidate and candidate.type == "initial_pair")
         and rime_api.regex_match(input, "^[a-z]+$")
         and segment and segment:has_tag("abc") and candidate
@@ -114,7 +118,8 @@ function filter.tags_match(segment, env)
   local context = env.engine.context
   local input = snow.current(context)
   return not context:get_option("buffered")
-      and segment:has_tag("abc") and input ~= nil and input:len() >= env.minimum_input_length
+      and segment:has_tag("abc") and input ~= nil and (input:len() >= env.minimum_input_length
+        or env.short_input_pattern ~= nil and rime_api.regex_match(input, env.short_input_pattern))
       and rime_api.regex_match(input, "^[a-z]+$")
 end
 
@@ -129,7 +134,7 @@ function filter.func(translation, env)
     local profile_start = profiling and os.clock() or 0
     local buffered = {}
     while #buffered < env.maximum_candidates do
-      local candidate = iterator(translation)
+      local candidate = iterator()
       if not candidate then break end
       table.insert(buffered, candidate)
     end

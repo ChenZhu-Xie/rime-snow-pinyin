@@ -631,6 +631,66 @@ export function initialPairCodes(
 	return [...result.values()];
 }
 
+/** 21×26 新增 SBS 混合入口；重复字位继续同一字的下一辅，缺辅即止。 */
+export function sbsCodes(
+	id: BenchmarkSchemeId,
+	word: string,
+	syllables: string[],
+): BenchmarkCode[] {
+	const scheme = schemeById(id);
+	const length = syllables.length;
+	if (
+		scheme.capacity !== "21x26" ||
+		length < 2 ||
+		length > 4 ||
+		[...word].length !== length
+	)
+		return [];
+	const sounds = syllables.map((p) => soundCodes(scheme, p)[0]);
+	if (sounds.some((code) => !code)) return [];
+	if (length === 2) {
+		if (!semantics["21x26"].shapeKeysByMeaning.includes(sounds[0][1]))
+			return [];
+		return [
+			{ code: sounds[0] + sounds[1][0], mainLength: 3, auxiliaryLength: 0 },
+		];
+	}
+	const options = [...word].map((c, i) =>
+		scheme.auxiliaryMode === "shape"
+			? [shapeCode(c, scheme)]
+			: auxiliarySequences(scheme, c, [syllables[i]]).map((v) => v.join("")),
+	);
+	let combinations: string[][] = [[]];
+	for (const values of options) {
+		combinations = combinations.flatMap((prefix) =>
+			values.map((v) => [...prefix, v]),
+		);
+	}
+	const result = new Map<string, BenchmarkCode>();
+	for (const combination of combinations) {
+		const used = [0, 0, 0, 0];
+		let aux = "";
+		const positions = length === 3 ? [2, 1, 2, 3] : [2, 1, 4];
+		for (const [index, position] of positions.entries()) {
+			const key = combination[position - 1][used[position - 1]++];
+			if (!key) break;
+			aux += key;
+			const main =
+				sounds[0][0] +
+				aux[0] +
+				sounds[2][0] +
+				(length === 4 ? sounds[3][0] : "");
+			const code = main + aux.slice(1);
+			result.set(code, {
+				code,
+				mainLength: main.length,
+				auxiliaryLength: index,
+			});
+		}
+	}
+	return [...result.values()];
+}
+
 export function pronunciationCodes(
 	id: BenchmarkSchemeId,
 	word: string,
@@ -703,6 +763,7 @@ export function pronunciationCodes(
 			}
 		}
 	}
+	for (const code of sbsCodes(id, word, syllables)) result.set(code.code, code);
 	if (scheme.soundLayout === "qingyun" && syllables.length === 1) {
 		for (const readings of qingyunShapeReadings.get(word) ?? []) {
 			let combinations: string[][] = [[]];

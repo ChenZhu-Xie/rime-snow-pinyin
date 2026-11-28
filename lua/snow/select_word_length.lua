@@ -43,6 +43,8 @@ local function four_main_codes(input, segment, env)
       if not env.auxiliary_keys:find(input:sub(index, index), 1, true) then return false end
     end
     local second_initial = env.initial_keys:find(input:sub(2, 2), 1, true) ~= nil
+    -- SBSU 同时承载二字全码与声辅声三／四字词，AU 空桶不再决定入口是否成立。
+    if not second_initial then return true end
     if second_initial and env.initial_keys:find(input:sub(4, 4), 1, true) then return true end
     local translator, memory, projection = env.vacancy_translator, env.vacancy_memory, env.vacancy_projection
     if not translator or not memory or not projection then return false end

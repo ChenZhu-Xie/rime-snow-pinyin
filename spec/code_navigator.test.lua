@@ -59,6 +59,17 @@ assert_positions("wmxjiv", 4, { 5, 2, 6, 4 }, "snow_hepin")
 
 assert_positions("hoo", 4, { 1, 2, 3 })
 
+for _, schema_id in ipairs({ "snow_hedao", "snow_hepin", "snow_huandao" }) do
+  assert_positions("vuf", 2, { 2, 3 }, schema_id)
+  assert_positions("vuf", 3, { 1, 2, 3 }, schema_id)
+  assert_positions("vufe", 3, { 4, 2, 3 }, schema_id)
+  assert_positions("vufeo", 3, { 4, 5, 3 }, schema_id)
+  assert_positions("vufeoa", 3, { 4, 5, 6 }, schema_id)
+  assert_positions("resn", 4, { 1, 2, 3, 4 }, schema_id)
+  assert_positions("resni", 4, { 5, 2, 3, 4 }, schema_id)
+  assert_positions("resnia", 4, { 5, 2, 3, 6 }, schema_id)
+end
+
 assert(navigator.index_for_digit("1", 4) == 1)
 assert(navigator.index_for_digit("4", 4) == 2)
 assert(navigator.index_for_digit("5", 4) == 3)

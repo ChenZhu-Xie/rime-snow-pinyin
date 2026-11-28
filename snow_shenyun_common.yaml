@@ -153,6 +153,7 @@ shenyun:
 learned_priority:
   memory_namespace: shenyun
   minimum_input_length: 4
+  short_input_pattern: "^[bpmfdtnlgkhjqwvxrzcsy][aeuio][bpmfdtnlgkhjqwvxrzcsy]$"
   maximum_candidates: 120
 
 # 空桶只看系统词典，不受个人调频影响；词频 0/1 的大字集兜底读音由 Lua 忽略。
@@ -226,6 +227,8 @@ speller:
       - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/$1/
       # 四声母／长词代理专用等长入口，不与小写 AU 完整音节竞争。
       - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/\U$1/
+      # SBS 内部代理：? 省略第二字音码；不属于实际输入字母表。
+      - abbrev/^[a-z]{2}$/?/
 
 lookup_shenyun:
   tags: [pinyin]

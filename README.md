@@ -153,6 +153,8 @@
 
 字母和数字均不侵占 `ABA` 的 `21×5×21=2205` 个状态，既有 `AAB`、`AAAB` 路由也保持不变。
 
+三套 21×26 方案共用 [SBS 声辅声混合入口](docs/sbs.md)：二字词按「声₁韵₁声₂」在三码即可选词；三字词按「声₁辅₂声₃」进入，辅序统一为 `2123`；第四键为声母时转入四字词「声₁辅₂声₃声₄」，辅序统一为 `214`。新增词语与相同输入的二字词混排，最多六码；重复字位取下一形辅，冰雪鹤拼则在声调后取首笔。标准入口继续沿用原辅序。
+
 ### UED-3158ce08b5bc 21×21 双拼
 
 冰雪兰道（`snow_landao`）与冰雪兰拼（`snow_lanpin`）现共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，仓库标识为 `UED-3158ce08b5bc`。布局指标为 M-R2 `41`、全声母／字母声母／传统声母／韵母乱序度 A/I/D/V `5/2/2/5`；按传统 21×21 原生路由与方案专属稳健辅序计分，CKT v5.1 `9.565504107623386`。
@@ -342,7 +344,7 @@
 
 ### 固顶、空桶与逐级简码
 
-- 冰雪鹤道、冰雪鹤拼的现行 fixed 表各含 21 个一级简码、378 个二码单字、108 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
+- 冰雪鹤道、冰雪鹤拼的现行 fixed 表各含 21 个一级简码、378 个二码单字、104 个二简词和 26 个字母入口；二简词只占不与单字音节冲突的码位，两个方案没有 630 区。
 - 冰雪鹤道另有 1,648 个三级单字固顶，冰雪鹮道另有 2,022 个，均为两码主码加第一形辅，与短码固定单字不重复；参考四拼单字偏好，现有读音权重只作兜底，见[选字原则](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 360 个二码单字和 81 个二简词完整覆盖 441 个 `AA` 位置。两方案的 630 区均由 105 个二码位与 525 个三码位组成，每码固定一个不重复词项。
 - 冰雪兰道、冰雪兰拼及对应经典方案的大写字母用于三字及以上简拼补韵：前三字可写成 `A[U]A[U]A[U]`，第四字起只取声母；已有四个小写声母后，大写字母恢复为下一字声母。
@@ -671,6 +673,8 @@ All three 21×26 schemes enable fixed numeral aliases from 0 through 10. They re
 
 Neither the letters nor the numbers consume the `21×5×21=2205` `ABA` states; the existing `AAB` and `AAAB` routes are also preserved.
 
+All three 21×26 schemes share the [SBS mixed entry](docs/sbs.md): two-character words can be selected after the first full syllable and the second initial; three-character words use first initial, second-character auxiliary, third initial, with auxiliary order `2123`. A fourth initial switches to four-character words with order `214`. These candidates compete with two-character words at the same input, up to six keys. Repeated character positions take the next shape auxiliary, or the first stroke after the tone in 冰雪鹤拼. Standard routes retain their own auxiliary orders.
+
 ### UED-3158ce08b5bc 21×21 double pinyin
 
 冰雪兰道 (`snow_landao`) and 冰雪兰拼 (`snow_lanpin`) now share the [UED-3158ce08b5bc 21×21 layout](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json), identified as `UED-3158ce08b5bc`. Its layout metrics are M-R2 `41` and all/written/traditional-initial/final disorder A/I/D/V `5/2/2/5`; its traditional native 21×21 routing with scheme-specific robust auxiliary orders scores CKT v5.1 `9.565504107623386`.
@@ -860,7 +864,7 @@ Initial/carrier mapping, examples, occupied letter buckets, shortcut collisions 
 
 ### Fixed candidates, vacant buckets, and staged abbreviations
 
-- Each current 冰雪鹤道/冰雪鹤拼 fixed table contains 21 one-key abbreviations, 378 two-key characters, 108 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
+- Each current 冰雪鹤道/冰雪鹤拼 fixed table contains 21 one-key abbreviations, 378 two-key characters, 104 two-key word abbreviations, and 26 letter entries. Word abbreviations use only codes that do not collide with single-character syllables; neither scheme has a 630 section.
 - 冰雪鹤道 additionally fixes 1,648 characters at three keys, and 冰雪鹮道 fixes 2,022. Each uses the two-key main code plus the first shape auxiliary, without repeating shorter fixed characters. Selection follows 四拼 character preferences with reading weights as fallback; see the [selection policy](docs/fixed-candidates.md).
 - 冰雪兰道 and 冰雪兰拼 cover all 441 `AA` positions with 360 two-key characters and 81 two-key word abbreviations. Each 630 section comprises 105 two-key and 525 three-key slots, with one non-repeated word fixed per code.
 - In 冰雪兰道, 冰雪兰拼, and their classic counterparts, uppercase letters complete finals only in three-or-more-character jianpin: the first three characters may use `A[U]A[U]A[U]`, later characters use initials only, and uppercase reverts to a following initial after four lowercase initials.
@@ -1087,6 +1091,8 @@ These reports cover current production configurations. [S005](https://pingshunhu
 
 字母和數字均不侵占 `ABA` 的 `21×5×21=2205` 個狀態，既有 `AAB`、`AAAB` 路由也保持不變。
 
+三套 21×26 方案共用 [SBS 聲輔聲混合入口](docs/sbs.md)：二字詞按「聲₁韻₁聲₂」在三碼即可選詞；三字詞按「聲₁輔₂聲₃」進入，輔序統一為 `2123`；第四鍵為聲母時轉入四字詞「聲₁輔₂聲₃聲₄」，輔序統一為 `214`。新增詞語與相同輸入的二字詞混排，最多六碼；重複字位取下一形輔，冰雪鹤拼則在聲調後取首筆。標準入口繼續沿用原輔序。
+
 ### UED-3158ce08b5bc 21×21 雙拼
 
 冰雪兰道（`snow_landao`）與冰雪兰拼（`snow_lanpin`）現共用 [UED-3158ce08b5bc 21×21 布局](https://github.com/more-14-different/shuangpin-layout-benchmark/blob/main/research/notes/2026-11-21-u7e-pinky-r11-scores-UED-3158ce08b5bc.json)，倉庫標識為 `UED-3158ce08b5bc`。布局指標為 M-R2 `41`、全聲母／字母聲母／傳統聲母／韻母亂序度 A/I/D/V `5/2/2/5`；按傳統 21×21 原生路由與方案專屬穩健輔序計分，CKT v5.1 `9.565504107623386`。
@@ -1276,7 +1282,7 @@ These reports cover current production configurations. [S005](https://pingshunhu
 
 ### 固頂、空桶與逐級簡碼
 
-- 冰雪鶴道、冰雪鹤拼的現行 fixed 表各含 21 個一級簡碼、378 個二碼單字、108 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
+- 冰雪鶴道、冰雪鹤拼的現行 fixed 表各含 21 個一級簡碼、378 個二碼單字、104 個二簡詞和 26 個字母入口；二簡詞只占不與單字音節衝突的碼位，兩個方案沒有 630 區。
 - 冰雪鶴道另有 1,648 個三級單字固頂，冰雪鹮道另有 2,022 個，均為兩碼主碼加第一形輔，與短碼固定單字不重複；參考四拼單字偏好，現有讀音權重只作兜底，見[選字原則](docs/fixed-candidates.md)。
 - 冰雪兰道、冰雪兰拼以 360 個二碼單字和 81 個二簡詞完整覆蓋 441 個 `AA` 位置。兩方案的 630 區均由 105 個二碼位與 525 個三碼位組成，每碼固定一個不重複詞項。
 - 冰雪兰道、冰雪兰拼及對應經典方案的大寫字母用於三字及以上簡拼補韻：前三字可寫成 `A[U]A[U]A[U]`，第四字起只取聲母；已有四個小寫聲母後，大寫字母恢復為下一字聲母。

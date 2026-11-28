@@ -501,6 +501,25 @@ for (const [schema, prefix, continuation, fallback, commit] of [
 	);
 }
 
+// SBS 覆盖三码大桶、三／四字补辅与编辑；每键都进入原生混合候选链。
+for (const [schema, triple, four] of [
+	["snow_hedao", "vufeoa", "resnia"],
+	["snow_hepin", "vafiuu", "risnee"],
+	["snow_huandao", "vufeoa", "rexnia"],
+]) {
+	LATENCY_CASES[schema].push(
+		{ id: "sbs-prefix", keys: triple.slice(0, 3), source: "docs/sbs.md" },
+		{ id: "sbs-triple", keys: triple, page: "输入法", source: "docs/sbs.md" },
+		{ id: "sbs-four", keys: four, page: "人工智能", source: "docs/sbs.md" },
+		{
+			id: "sbs-editing",
+			keys: triple + "{BackSpace}" + triple.at(-1),
+			page: "输入法",
+			source: "docs/sbs.md",
+		},
+	);
+}
+
 // 自适应查询的声母输入覆盖最大音节分支数，沿用统一延迟预算。
 for (const [schema, cases] of Object.entries(LATENCY_CASES)) {
 	cases.push({

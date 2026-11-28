@@ -14,6 +14,7 @@ schema:
     带调双拼＋键道形辅的 21×26 飞码式四码顶方案
     T2126-V52-M4-ec60a3637a99：R2 加倍成本精修，上排二三声、中排四声、下排一轻声
     单字 AU 后最多四形辅；二／三／四字词形辅字位顺序为 21/12/23，最多六码
+    声辅声分支共用三字词 2123、四字词 214；重复字位继续取下一形辅
   dependencies:
     - snow_pinyin
     - radical_pinyin
@@ -277,6 +278,8 @@ speller:
     __append:
       - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/$1/
       - abbrev/^([bpmfdtnlgkhjqwvxrzcsy]).+$/\U$1/
+      # SBS 内部代理：? 省略第二字音码；不属于实际输入字母表。
+      - abbrev/^[a-z]{2}$/?/
 
 shenyun:
   prism: snow_huandao

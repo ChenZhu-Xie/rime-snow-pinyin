@@ -133,8 +133,12 @@ for _, code in ipairs({ 60, 62 }) do
   local _, result = selected("21x26", "ysgi", { "新中国" }, code, 0, { vacant = { gi = true } })
   assert(result == snow.kNoop, "three-main-code vacant-bucket auxiliary must preserve punctuation")
 end
-local _, invalid_pair = selected("21x26", "yafo", { "二字" }, 62, 0, { vacant = { ya = true } })
-assert(invalid_pair == snow.kNoop, "a vacant first AU without four initials cannot be a four-main-code route")
+assert(selected("21x26", "yafo", { "二字", "三个字" }, 62, 0,
+  { vacant = { ya = true, fo = true } }) == "三个字",
+  "SBSB must retain three-character selection even when both AU buckets are vacant")
+assert(selected("21x26", "yafg", { "二字", "四个汉字" }, 60, 0,
+  { vacant = { ya = true, fg = true } }) == "四个汉字",
+  "SBSS must retain four-character selection independently of AU vacancy")
 
 for _, row in ipairs({
   { text = "🈚️", type = "hint" },

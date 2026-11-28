@@ -311,6 +311,8 @@ ${d3NumberTable(["数字", "冰雪鹤道", "冰雪鹤拼"])}
 
 字母和数字均不侵占 \`ABA\` 的 \`21×5×21=2205\` 个状态，既有 \`AAB\`、\`AAAB\` 路由也保持不变。
 
+三套 21×26 方案共用 [SBS 声辅声混合入口](docs/sbs.md)：二字词按「声₁韵₁声₂」在三码即可选词；三字词按「声₁辅₂声₃」进入，辅序统一为 \`2123\`；第四键为声母时转入四字词「声₁辅₂声₃声₄」，辅序统一为 \`214\`。新增词语与相同输入的二字词混排，最多六码；重复字位取下一形辅，冰雪鹤拼则在声调后取首笔。标准入口继续沿用原辅序。
+
 #### 声韵编码规则
 
 声母及零声母载体使用下列首键：
@@ -426,6 +428,8 @@ ${d3NumberTable(["Number", "冰雪鹤道", "冰雪鹤拼"])}
 
 Neither the letters nor the numbers consume the \`21×5×21=2205\` \`ABA\` states; the existing \`AAB\` and \`AAAB\` routes are also preserved.
 
+All three 21×26 schemes share the [SBS mixed entry](docs/sbs.md): two-character words can be selected after the first full syllable and the second initial; three-character words use first initial, second-character auxiliary, third initial, with auxiliary order \`2123\`. A fourth initial switches to four-character words with order \`214\`. These candidates compete with two-character words at the same input, up to six keys. Repeated character positions take the next shape auxiliary, or the first stroke after the tone in 冰雪鹤拼. Standard routes retain their own auxiliary orders.
+
 #### Initial and final coding rules
 
 Initials and zero-initial carriers use these first keys:
@@ -538,6 +542,8 @@ ${d3LetterTable(["字母", "輸入碼", "原首選"])}
 ${d3NumberTable(["數字", "冰雪鶴道", "冰雪鹤拼"])}
 
 字母和數字均不侵占 \`ABA\` 的 \`21×5×21=2205\` 個狀態，既有 \`AAB\`、\`AAAB\` 路由也保持不變。
+
+三套 21×26 方案共用 [SBS 聲輔聲混合入口](docs/sbs.md)：二字詞按「聲₁韻₁聲₂」在三碼即可選詞；三字詞按「聲₁輔₂聲₃」進入，輔序統一為 \`2123\`；第四鍵為聲母時轉入四字詞「聲₁輔₂聲₃聲₄」，輔序統一為 \`214\`。新增詞語與相同輸入的二字詞混排，最多六碼；重複字位取下一形輔，冰雪鹤拼則在聲調後取首筆。標準入口繼續沿用原輔序。
 
 #### 聲韻編碼規則
 
