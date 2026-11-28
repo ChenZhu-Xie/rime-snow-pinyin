@@ -63,11 +63,14 @@ deploy:
         assert: has("输入法") and commit == nil
       - send: vafiuu
         assert: cand[1].text == "输入法" and commit == nil
-      - send: risnee
+      - send: risn
         assert: cand[1].text == "人工智能" and commit == nil
+      # 四码已是首选，继续补辅沿用首选后置；仍须保留符合辅码的目标。
+      - send: risnee
+        assert: has("人工智能") and commit == nil
       - send: "vafiuu{BackSpace}u"
         assert: has("输入法") and commit == nil
-      - send: "risnee{less}"
+      - send: "risn{less}"
         assert: commit == "人工智能"
   sbs_learning:
     tests:
